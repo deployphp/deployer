@@ -108,6 +108,8 @@ class Tool
     {
         $this->checkConnected();
 
+        $local = realpath($local);
+
         if (is_file($local) && is_readable($local)) {
             $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
             $this->remote->uploadFile($local, $remote);

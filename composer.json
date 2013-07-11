@@ -1,0 +1,24 @@
+{
+    "name": "elfet/deployer",
+    "description": "Deployment Tool",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Elfet",
+            "email": "anton@elfet.ru"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Deployer": "src/"
+        }
+    },
+    "require": {
+        "symfony/finder": "2.3.*",
+        "symfony/console": "2.3.*",
+        "phpseclib/phpseclib": "0.3.*@dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }
+}

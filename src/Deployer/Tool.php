@@ -169,7 +169,7 @@ class Tool
     public function run($command)
     {
         $this->checkConnected();
-        $this->writeln("Running command <info>$command</info>.");
+        $this->writeln("Running command <info>$command</info>");
         $output = $this->remote->execute($command);
         $this->write($output);
     }

@@ -87,6 +87,22 @@ run(command)
 ```
 Run `command` on remote server in directory provided by `cd` function.
 
+```
+writeln(message)
+write(message)
+```
+Write `message` with/without new line.
+
+If your do not want include functions, you can use methods:
+```php
+$tool = new Deployer\Tool(false);
+
+$tool->task('connect', function () use ($tool) {
+    $tool->connect('ssh.domain.com', 'user', 'password');
+});
+```
+Every function is alias to `Deployer\Tool` methods.
+
 License
 -------
 Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php

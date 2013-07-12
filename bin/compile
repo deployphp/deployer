@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+<?php
+
+use Deployer\Utils\Compiler;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+error_reporting(-1);
+ini_set('display_errors', 1);
+
+try {
+    $compiler = new Compiler();
+    $compiler->compile(__DIR__ . '/../', 'deployer.phar');
+} catch (\Exception $e) {
+    echo 'Failed to compile phar:' . $e->getMessage() . ' at ' . $e->getFile() . ':' . $e->getLine();
+    exit(1);
+}

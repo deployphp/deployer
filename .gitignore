@@ -1,3 +1,4 @@
 vendor/
 deployer.phar
+pages/*
 .idea/

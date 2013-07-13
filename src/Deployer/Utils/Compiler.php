@@ -11,8 +11,16 @@ use Symfony\Component\Finder\Finder;
 
 class Compiler
 {
+    protected $fromDir;
+
     public function compile($fromDir, $pharFile = 'deployer.phar')
     {
+        $this->fromDir = realpath(rtrim($fromDir, DIRECTORY_SEPARATOR));
+
+        if (!is_dir($this->fromDir)) {
+            throw new \RuntimeException("Directory '$fromDir' does not exist.");
+        }
+
         if (file_exists($pharFile)) {
             unlink($pharFile);
         }
@@ -26,14 +34,18 @@ class Compiler
         $finder->files()
             ->ignoreVCS(true)
             ->name('*.php')
+            ->exclude('phpunit')
             ->exclude('Tests')
+            ->exclude('test')
             ->exclude('bin')
             ->notName('Compiler.php')
-            ->in($fromDir);
+            ->in($this->fromDir);
 
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
         }
+
+        $this->addFile($phar, new \SplFileInfo($this->fromDir . '/LICENSE'), false);
 
         $phar->setStub($this->getStub());
 
@@ -46,7 +58,7 @@ class Compiler
 
     private function addFile(\Phar $phar, \SplFileInfo $file, $strip = true)
     {
-        $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
+        $path = str_replace($this->fromDir . DIRECTORY_SEPARATOR, '', $file->getRealPath());
 
         $content = file_get_contents($file);
         if ($strip) {
@@ -94,8 +106,8 @@ class Compiler
     {
         return <<<'EOF'
 <?php
-require __DIR__ . '/vendor/autoload.php';
-new Deployer\Tool();
+require 'phar://deployer.phar/vendor/autoload.php';
+deployer();
 __HALT_COMPILER();
 EOF;
     }

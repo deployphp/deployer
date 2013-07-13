@@ -11,7 +11,8 @@
     "autoload": {
         "psr-0": {
             "Deployer": "src/"
-        }
+        },
+        "files": ["src/deployer.php"]
     },
     "require": {
         "symfony/finder": "2.3.*",

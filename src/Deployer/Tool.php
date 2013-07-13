@@ -48,13 +48,8 @@ class Tool
      */
     private $ignore = array();
 
-    public function __construct($includeFunction = true)
+    public function __construct()
     {
-        Context::push($this);
-        if ($includeFunction) {
-            include_once __DIR__ . '/functions.php';
-        }
-
         $this->app = new Application('Deployer', '0.1');
         $this->input = new ArgvInput();
         $this->output = new ConsoleOutput();
@@ -89,7 +84,15 @@ class Tool
 
     public function start()
     {
-        $this->app->addCommands($this->tasks);
+        $commands = array();
+
+        foreach ($this->tasks as $task) {
+            if (!$task->isPrivate()) {
+                $commands[] = $task->createCommand();
+            }
+        }
+
+        $this->app->addCommands($commands);
         $this->app->run($this->input, $this->output);
     }
 

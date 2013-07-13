@@ -7,16 +7,29 @@
 
 namespace Deployer;
 
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Deployer\Tool\Command;
 
-class Task extends Command
+class Task
 {
+    /**
+     * @var string
+     */
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $description;
+
     /**
      * @var callable
      */
     private $callback;
+
+    /**
+     * @var bool
+     */
+    private $private;
 
     /**
      * @param $name
@@ -25,18 +38,46 @@ class Task extends Command
      */
     public function __construct($name, $description, \Closure $callback)
     {
-        parent::__construct($name);
-        $this->setDescription($description);
+        $this->name = $name;
+        $this->description = $description;
         $this->callback = $callback;
+        $this->private = false === $description;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->call();
-    }
-
-    public function call()
+    /**
+     * Run task.
+     */
+    public function run()
     {
         call_user_func($this->callback);
+    }
+
+    public function createCommand()
+    {
+        return new Command($this);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrivate()
+    {
+        return $this->private;
     }
 }

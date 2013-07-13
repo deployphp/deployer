@@ -50,7 +50,7 @@ class Tool
 
     public function __construct()
     {
-        $this->app = new Application('Deployer', '0.1');
+        $this->app = new Application('Deployer', '0.2.0');
         $this->input = new ArgvInput();
         $this->output = new ConsoleOutput();
     }

@@ -13,7 +13,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 {
     public function testTask()
     {
-        $tool = new Tool();
+        $tool = deployer();
 
         $str = '';
 
@@ -27,7 +27,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         task('all', ['second', 'first']);
 
-        $tool->getApp()->addCommands($tool->getTasks());
+        $tool->getApp()->addCommands($tool->getCommands());
         $tool->getApp()->setAutoExit(false);
         $tool->getApp()->setCatchExceptions(false);
         $app = new ApplicationTester($tool->getApp());

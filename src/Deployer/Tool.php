@@ -10,6 +10,7 @@ namespace Deployer;
 use Deployer\Tool\Context;
 use Deployer\Tool\Remote;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressHelper;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -69,7 +70,7 @@ class Tool
             $task = new Task($name, $description, function () use ($that, $callback) {
                 foreach ($callback as $name) {
                     if (isset($that->tasks[$name])) {
-                        $that->tasks[$name]->call();
+                        $that->tasks[$name]->run();
                     } else {
                         throw new \InvalidArgumentException("Task '$name' does not exist.");
                     }
@@ -84,15 +85,7 @@ class Tool
 
     public function start()
     {
-        $commands = array();
-
-        foreach ($this->tasks as $task) {
-            if (!$task->isPrivate()) {
-                $commands[] = $task->createCommand();
-            }
-        }
-
-        $this->app->addCommands($commands);
+        $this->app->addCommands($this->getCommands());
         $this->app->run($this->input, $this->output);
     }
 
@@ -194,13 +187,35 @@ class Tool
         $this->output->writeln($message);
     }
 
+    /**
+     * @return Application
+     */
     public function getApp()
     {
         return $this->app;
     }
 
+    /**
+     * @return Task[]
+     */
     public function getTasks()
     {
         return $this->tasks;
+    }
+
+    /**
+     * @return Command[]
+     */
+    public function getCommands()
+    {
+        $commands = array();
+
+        foreach ($this->tasks as $task) {
+            if (!$task->isPrivate()) {
+                $commands[] = $task->createCommand();
+            }
+        }
+
+        return $commands;
     }
 }

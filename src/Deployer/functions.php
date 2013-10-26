@@ -96,3 +96,12 @@ function run($command)
 {
     Context::get()->run($command);
 }
+
+/**
+ * Run command locally.
+ * @param string $command
+ */
+function runLocally($command)
+{
+    Context::get()->runLocally($command);
+}

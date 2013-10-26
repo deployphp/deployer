@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Tool\Context;
+use Deployer\Tool\Local;
 use Deployer\Tool\Remote;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -45,6 +46,11 @@ class Tool
     private $remote;
 
     /**
+     * @var Local
+     */
+    private $local;
+
+    /**
      * @var array
      */
     private $ignore = array();
@@ -54,6 +60,7 @@ class Tool
         $this->app = new Application('Deployer', '0.2.1');
         $this->input = new ArgvInput();
         $this->output = new ConsoleOutput();
+        $this->local = new Local();
     }
 
     public function task($name, $descriptionOrCallback, $callback = null)
@@ -68,9 +75,10 @@ class Tool
         if (is_array($callback)) {
             $that = $this;
             $task = new Task($name, $description, function () use ($that, $callback) {
+                $tasks = $that->getTasks();
                 foreach ($callback as $name) {
-                    if (isset($that->tasks[$name])) {
-                        $that->tasks[$name]->run();
+                    if (isset($tasks[$name])) {
+                        $tasks[$name]->run();
                     } else {
                         throw new \InvalidArgumentException("Task '$name' does not exist.");
                     }
@@ -167,6 +175,13 @@ class Tool
         $this->checkConnected();
         $this->writeln("Running command <info>$command</info>");
         $output = $this->remote->execute($command);
+        $this->write($output);
+    }
+
+    public function runLocally($command)
+    {
+        $this->writeln("Running locally command <info>$command</info>");
+        $output = $this->local->execute($command);
         $this->write($output);
     }
 

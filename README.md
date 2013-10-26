@@ -103,6 +103,11 @@ run(command)
 Run `command` on remote server in directory provided by `cd` function.
 
 ```php
+runLocally(command)
+```
+Run `command` locally.
+
+```php
 writeln(message)
 write(message)
 ```

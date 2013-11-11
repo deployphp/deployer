@@ -100,10 +100,10 @@ class Tool
     public function connect($server, $user, $password, $name = null)
     {
         $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $name ? " ($name)" : ""));
-        $this->remote[] = [
+        $this->remote[] = array(
             'name'       => $name,
             'connection' => new Remote($server, $user, $password),
-        ];
+        );
     }
 
     public function ignore($ignore = array())

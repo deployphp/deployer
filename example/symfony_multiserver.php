@@ -17,7 +17,7 @@ ignore([
     'web/bundles/*',
 ]);
 
-task('connect', 'Connect to server.', function () {
+task('connect', 'Connect to servers.', function () {
     connect('node1.domain.com', user, rsa('~/.ssh/id_rsa'), master);
     connect('node2.domain.com', user, rsa('~/.ssh/id_rsa'));
     connect('node3.domain.com', user, rsa('~/.ssh/id_rsa'));
@@ -25,11 +25,11 @@ task('connect', 'Connect to server.', function () {
     cd(remote);
 });
 
-task('upload', 'Upload files to remote server.', function () {
+task('upload', 'Upload files to remote servers.', function () {
     upload(local, remote);
 });
 
-task('clone', 'Clone repository on remote server.', function () {
+task('clone', 'Clone repository on remote servers.', function () {
     run('git clone git@github.com:user/repository.git .');
 });
 
@@ -42,7 +42,7 @@ task('upload_parameters', 'Upload server parameters.yml files.', function () {
     upload(local . '/share/parameters.yml', remote . '/app/config/parameters.yml');
 });
 
-task('vendors', 'Update vendors on remote server.', function () {
+task('vendors', 'Update vendors on remote servers.', function () {
     run('composer update --no-dev');
 });
 
@@ -58,11 +58,11 @@ task('symlink_www', 'Symlink www folder to web folder.', function () {
     run('rm www && ln -s web www');
 });
 
-task('migrate', 'Run migrations on master node.', function () {
+task('migrate', 'Run migrations on master server.', function () {
     run('php app/console doctrine:migrations:migrate --no-interaction', master);
 });
 
-task('install', 'Install application on server.', ['connect', 'clone']);
-task('update', 'Update server application.', ['connect', 'pull', 'upload_parameters', 'vendors', 'cache', 'migrate', 'assetic', 'symlink_www']);
+task('install', 'Install application on servers.', ['connect', 'clone']);
+task('update', 'Update servers application.', ['connect', 'pull', 'upload_parameters', 'vendors', 'cache', 'migrate', 'assetic', 'symlink_www']);
 
 start();

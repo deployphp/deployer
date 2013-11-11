@@ -41,7 +41,7 @@ class Tool
     private $output;
 
     /**
-     * @var Remote
+     * @var Remote[]
      */
     private $remote;
 
@@ -97,10 +97,13 @@ class Tool
         $this->app->run($this->input, $this->output);
     }
 
-    public function connect($server, $user, $password)
+    public function connect($server, $user, $password, $name = null)
     {
-        $this->writeln("Connecting to <info>$server</info>");
-        $this->remote = new Remote($server, $user, $password);
+        $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $name ? " ($name)" : ""));
+        $this->remote[] = [
+            'name'       => $name,
+            'connection' => new Remote($server, $user, $password),
+        ];
     }
 
     public function ignore($ignore = array())
@@ -108,17 +111,28 @@ class Tool
         $this->ignore = $ignore;
     }
 
-    public function upload($local, $remote)
+    public function upload($local, $remote, $serverName = null)
     {
         $this->checkConnected();
 
         $local = realpath($local);
 
         if (is_file($local) && is_readable($local)) {
-            $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
-            $this->remote->uploadFile($local, $remote);
+            if ($serverName) {
+                $this->writeln("Uploading file <info>$local</info> to <info>$remote</info> (<info>$serverName</info>)");
+                $this->getRemoteByName($serverName)->uploadFile($local, $remote);
+            }
+            else {
+                $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
+                foreach($this->remote as $item) {
+                    $item['connection']->uploadFile($local, $remote);
+                }
+            }
         } else if (is_dir($local)) {
-            $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>:");
+            if ($serverName)
+                $this->writeln("Uploading from <info>$local</info> to <info>$remote</info> (<info>$serverName</info>):");
+            else
+                $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>:");
 
             $ignore = array_map(function ($pattern) {
                 $pattern = preg_quote($pattern);
@@ -144,38 +158,66 @@ class Tool
 
             /** @var $progress ProgressHelper */
             $progress = $this->app->getHelperSet()->get('progress');
-            $progress->start($this->output, $files->count());
 
-            /** @var $file \SplFileInfo */
-            foreach ($files as $file) {
-
-                $from = $file->getRealPath();
-                $to = str_replace($local, '', $from);
-                $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
-
-                $this->remote->uploadFile($from, $to);
-                $progress->advance();
+            if ($serverName) {
+                $progress->start($this->output, $files->count());
+                $this->uploadFiles($files, $local, $remote, $this->getRemoteByName($serverName), $progress);
+            }
+            else {
+                $progress->start($this->output, $files->count() * sizeof($this->remote));
+                foreach($this->remote as $item) {
+                    $this->uploadFiles($files, $local, $remote, $item['connection'], $progress);
+                }
             }
 
             $progress->finish();
-
-        } else {
+        }
+        else {
             throw new \RuntimeException("Uploading path '$local' does not exist.");
         }
     }
 
-    public function cd($directory)
+    private function uploadFiles($files, $local, $remote, $server, &$progress)
     {
-        $this->checkConnected();
-        $this->remote->cd($directory);
+        foreach ($files as $file) {
+            $from = $file->getRealPath();
+            $to = str_replace($local, '', $from);
+            $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
+
+            $server->uploadFile($from, $to);
+            $progress->advance();
+        }
     }
 
-    public function run($command)
+    public function cd($directory, $serverName = null)
     {
-        $this->checkConnected();
-        $this->writeln("Running command <info>$command</info>");
-        $output = $this->remote->execute($command);
-        $this->write($output);
+        $this->checkConnected($serverName);
+
+        if ($serverName) {
+            $this->getRemoteByName($serverName)->cd($directory);
+        }
+        else {
+            foreach($this->remote as $item) {
+                $item['connection']->cd($directory);
+            }
+        }
+    }
+
+    public function run($command, $serverName = null)
+    {
+        $this->checkConnected($serverName);
+        $this->writeln("Running command <info>$command</info>" . ($serverName ? " (<info>$serverName</info>)" : ""));
+
+        if ($serverName) {
+            $output = $this->getRemoteByName($serverName)->execute($command);
+            $this->write($output);
+        }
+        else {
+            foreach($this->remote as $item) {
+                $output = $item['connection']->execute($command);
+                $this->write($output);
+            }
+        }
     }
 
     public function runLocally($command)
@@ -185,10 +227,28 @@ class Tool
         $this->write($output);
     }
 
-    private function checkConnected()
+    private function getRemoteByName($serverName = null)
     {
-        if (null === $this->remote) {
-            throw new \RuntimeException("You need connect to server first.");
+        foreach($this->remote as $item) {
+            if ($item['name'] === $serverName) {
+                return $item['connection'];
+            }
+        }
+
+        return null;
+    }
+
+    private function checkConnected($serverName = null)
+    {
+        if ($serverName) {
+            if (null === $this->getRemoteByName($serverName)) {
+                throw new \RuntimeException("You need connect to server first.");
+            }
+        }
+        else {
+            if (!sizeof($this->remote)) {
+                throw new \RuntimeException("You need connect to server first.");
+            }
         }
     }
 

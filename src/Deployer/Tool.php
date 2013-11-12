@@ -66,7 +66,7 @@ class Tool
     public function task($name, $descriptionOrCallback, $callback = null)
     {
         if (null === $callback) {
-            $description = '';
+            $description = false;
             $callback = $descriptionOrCallback;
         } else {
             $description = $descriptionOrCallback;

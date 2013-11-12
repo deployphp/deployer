@@ -4,10 +4,7 @@ deployer();
 
 define('local', __DIR__);
 define('remote', '/home/www.domain.com');
-
 define('user',   'webmaster');
-define('master', 'master');
-
 
 ignore([
     'Tests/*',
@@ -18,10 +15,10 @@ ignore([
 ]);
 
 task('connect', 'Connect to servers.', function () {
-    connect('node1.domain.com', user, rsa('~/.ssh/id_rsa'), master);
-    connect('node2.domain.com', user, rsa('~/.ssh/id_rsa'));
-    connect('node3.domain.com', user, rsa('~/.ssh/id_rsa'));
-    connect('node4.domain.com', user, rsa('~/.ssh/id_rsa'));
+    connect('job.domain.com', user, rsa('~/.ssh/id_rsa'), 'job');
+    connect('node1.domain.com', user, rsa('~/.ssh/id_rsa'), 'node');
+    connect('node2.domain.com', user, rsa('~/.ssh/id_rsa'), 'node');
+    connect('node3.domain.com', user, rsa('~/.ssh/id_rsa'), 'node');
     cd(remote);
 });
 
@@ -59,7 +56,7 @@ task('symlink_www', 'Symlink www folder to web folder.', function () {
 });
 
 task('migrate', 'Run migrations on master server.', function () {
-    run('php app/console doctrine:migrations:migrate --no-interaction', master);
+    run('php app/console doctrine:migrations:migrate --no-interaction', 'job');
 });
 
 task('install', 'Install application on servers.', ['connect', 'clone']);

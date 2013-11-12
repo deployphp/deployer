@@ -55,10 +55,10 @@ class Tool
      */
     private $ignore = array();
 
-    public function __construct()
+    public function __construct(array $argv = null)
     {
         $this->app = new Application('Deployer', '0.3.0');
-        $this->input = new ArgvInput();
+        $this->input = new ArgvInput($argv);
         $this->output = new ConsoleOutput();
         $this->local = new Local();
     }

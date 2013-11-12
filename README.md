@@ -73,9 +73,9 @@ task(name, [description], callback)
 
 
 ```php
-connect(server, user, key)
+connect(server, user, key, group = null)
 ```
-Connect to `server` and login as `user` with `key` which is password or RSA key.
+Connect to `server`, login as `user` with `key` which is password or RSA key and add to `group`.
 
 ```php
 rsa(path, [password])
@@ -83,14 +83,14 @@ rsa(path, [password])
 Can be used as `key` in `connect` function with `path` to your RSA key (~/.ssh/id_rsa) and `password` of your key.
 
 ```php
-cd(path)
+cd(path, group = null)
 ```
-Change remote directory to given `path`.
+Change remote directory to given `path` on servers from `group` or on all connected servers if `group` is null.
 
 ```php
-upload(from, to)
+upload(from, to, group = null)
 ```
-Upload local files or directories `from` to remote `to`.
+Upload local files or directories `from` to remote `to` on servers from `group` or on all connected servers if `group` is null.
 
 ```php
 ignore(array)
@@ -98,9 +98,9 @@ ignore(array)
 Ignore this files while uploading directories. `array` of string with `*` patterns.
 
 ```php
-run(command)
+run(command, group = null)
 ```
-Run `command` on remote server in directory provided by `cd` function.
+Run `command` in directory provided by `cd` function on remote server from `group` or on all connected servers if `group` is null.
 
 ```php
 runLocally(command)

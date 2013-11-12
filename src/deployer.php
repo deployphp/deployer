@@ -9,11 +9,12 @@
  * Start deployer script.
  *
  * @param bool $includeFunction Include or not helpful functions.
+ * @param array|null $argv
  * @return \Deployer\Tool
  */
-function deployer($includeFunction = true)
+function deployer($includeFunction = true, array $argv = null)
 {
-    $tool = new Deployer\Tool();
+    $tool = new Deployer\Tool($argv);
 
     if ($includeFunction) {
         Deployer\Tool\Context::push($tool);

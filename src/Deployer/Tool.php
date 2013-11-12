@@ -41,7 +41,7 @@ class Tool
     private $output;
 
     /**
-     * @var Remote
+     * @var Remote[]
      */
     private $remote;
 
@@ -55,10 +55,10 @@ class Tool
      */
     private $ignore = array();
 
-    public function __construct()
+    public function __construct(array $argv = null)
     {
         $this->app = new Application('Deployer', '0.3.0');
-        $this->input = new ArgvInput();
+        $this->input = new ArgvInput($argv);
         $this->output = new ConsoleOutput();
         $this->local = new Local();
     }
@@ -66,7 +66,7 @@ class Tool
     public function task($name, $descriptionOrCallback, $callback = null)
     {
         if (null === $callback) {
-            $description = '';
+            $description = false;
             $callback = $descriptionOrCallback;
         } else {
             $description = $descriptionOrCallback;
@@ -97,10 +97,13 @@ class Tool
         $this->app->run($this->input, $this->output);
     }
 
-    public function connect($server, $user, $password)
+    public function connect($server, $user, $password, $group = null)
     {
-        $this->writeln("Connecting to <info>$server</info>");
-        $this->remote = new Remote($server, $user, $password);
+        $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
+        $this->remote[] = array(
+            'group'      => $group,
+            'connection' => new Remote($server, $user, $password),
+        );
     }
 
     public function ignore($ignore = array())
@@ -108,17 +111,20 @@ class Tool
         $this->ignore = $ignore;
     }
 
-    public function upload($local, $remote)
+    public function upload($local, $remote, $group = null)
     {
-        $this->checkConnected();
+        $this->checkConnected($group);
 
         $local = realpath($local);
+        $connections = $group ? $this->getGroupServers($group) : $this->remote;
 
         if (is_file($local) && is_readable($local)) {
             $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
-            $this->remote->uploadFile($local, $remote);
+            foreach($connections as $item) {
+                $item['connection']->uploadFile($local, $remote);
+            }
         } else if (is_dir($local)) {
-            $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>:");
+            $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>" . ($group ? " (<info>$group</info>):" : ":"));
 
             $ignore = array_map(function ($pattern) {
                 $pattern = preg_quote($pattern);
@@ -144,38 +150,46 @@ class Tool
 
             /** @var $progress ProgressHelper */
             $progress = $this->app->getHelperSet()->get('progress');
-            $progress->start($this->output, $files->count());
+            $progress->start($this->output, $files->count() * sizeof($connections));
 
-            /** @var $file \SplFileInfo */
-            foreach ($files as $file) {
+            foreach($connections as $item) {
+                foreach ($files as $file) {
+                    $from = $file->getRealPath();
+                    $to = str_replace($local, '', $from);
+                    $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
 
-                $from = $file->getRealPath();
-                $to = str_replace($local, '', $from);
-                $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
-
-                $this->remote->uploadFile($from, $to);
-                $progress->advance();
+                    $item['connection']->uploadFile($from, $to);
+                    $progress->advance();
+                }
             }
 
             $progress->finish();
-
-        } else {
+        }
+        else {
             throw new \RuntimeException("Uploading path '$local' does not exist.");
         }
     }
 
-    public function cd($directory)
+    public function cd($directory, $group = null)
     {
-        $this->checkConnected();
-        $this->remote->cd($directory);
+        $this->checkConnected($group);
+
+        $connections = $group ? $this->getGroupServers($group) : $this->remote;
+        foreach($connections as $item) {
+            $item['connection']->cd($directory);
+        }
     }
 
-    public function run($command)
+    public function run($command, $group = null)
     {
-        $this->checkConnected();
-        $this->writeln("Running command <info>$command</info>");
-        $output = $this->remote->execute($command);
-        $this->write($output);
+        $this->checkConnected($group);
+        $this->writeln("Running command <info>$command</info>" . ($group ? " (<info>$group</info>)" : ""));
+
+        $connections = $group ? $this->getGroupServers($group) : $this->remote;
+        foreach($connections as $item) {
+            $output = $item['connection']->execute($command);
+            $this->write($output);
+        }
     }
 
     public function runLocally($command)
@@ -185,9 +199,22 @@ class Tool
         $this->write($output);
     }
 
-    private function checkConnected()
+    private function getGroupServers($group = null)
     {
-        if (null === $this->remote) {
+        $result = [];
+        foreach($this->remote as $item) {
+            if ($item['group'] === $group) {
+                $result[] = $item;
+            }
+        }
+
+        return $result;
+    }
+
+    private function checkConnected($group = null)
+    {
+        $connections = $group ? $this->getGroupServers($group) : $this->remote;
+        if (!sizeof($connections)) {
             throw new \RuntimeException("You need connect to server first.");
         }
     }

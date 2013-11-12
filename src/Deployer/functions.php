@@ -46,10 +46,11 @@ function writeln($message)
  * @param string $server
  * @param string $user
  * @param string|Deployer\Tool\Remote\Key $password
+ * @param string|null $group
  */
-function connect($server, $user, $password)
+function connect($server, $user, $password, $group = null)
 {
-    Context::get()->connect($server, $user, $password);
+    Context::get()->connect($server, $user, $password, $group);
 }
 
 /**
@@ -73,28 +74,31 @@ function ignore($ignore = array())
 /**
  * @param string $from
  * @param string $to
+ * @param string|null $group
  */
-function upload($from, $to)
+function upload($from, $to, $group = null)
 {
-    Context::get()->upload($from, $to);
+    Context::get()->upload($from, $to, $group);
 }
 
 /**
  * Change current directory for whole connect session.
  * @param string $directory
+ * @param string|null $group
  */
-function cd($directory)
+function cd($directory, $group = null)
 {
-    Context::get()->cd($directory);
+    Context::get()->cd($directory, $group);
 }
 
 /**
  * Run command on remote server.
  * @param string $command
+ * @param string|null $group
  */
-function run($command)
+function run($command, $group = null)
 {
-    Context::get()->run($command);
+    Context::get()->run($command, $group);
 }
 
 /**

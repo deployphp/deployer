@@ -101,7 +101,7 @@ class Tool
     {
         $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
         $this->remote[] = array(
-            'group'      => $group,
+            'group' => $group,
             'connection' => new Remote($server, $user, $password),
         );
     }
@@ -120,7 +120,7 @@ class Tool
 
         if (is_file($local) && is_readable($local)) {
             $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
-            foreach($connections as $item) {
+            foreach ($connections as $item) {
                 $item['connection']->uploadFile($local, $remote);
             }
         } else if (is_dir($local)) {
@@ -152,7 +152,7 @@ class Tool
             $progress = $this->app->getHelperSet()->get('progress');
             $progress->start($this->output, $files->count() * sizeof($connections));
 
-            foreach($connections as $item) {
+            foreach ($connections as $item) {
                 foreach ($files as $file) {
                     $from = $file->getRealPath();
                     $to = str_replace($local, '', $from);
@@ -164,8 +164,7 @@ class Tool
             }
 
             $progress->finish();
-        }
-        else {
+        } else {
             throw new \RuntimeException("Uploading path '$local' does not exist.");
         }
     }
@@ -175,7 +174,7 @@ class Tool
         $this->checkConnected($group);
 
         $connections = $group ? $this->getGroupServers($group) : $this->remote;
-        foreach($connections as $item) {
+        foreach ($connections as $item) {
             $item['connection']->cd($directory);
         }
     }
@@ -186,7 +185,7 @@ class Tool
         $this->writeln("Running command <info>$command</info>" . ($group ? " (<info>$group</info>)" : ""));
 
         $connections = $group ? $this->getGroupServers($group) : $this->remote;
-        foreach($connections as $item) {
+        foreach ($connections as $item) {
             $output = $item['connection']->execute($command);
             $this->write($output);
         }
@@ -202,7 +201,7 @@ class Tool
     private function getGroupServers($group = null)
     {
         $result = [];
-        foreach($this->remote as $item) {
+        foreach ($this->remote as $item) {
             if ($item['group'] === $group) {
                 $result[] = $item;
             }

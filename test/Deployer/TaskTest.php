@@ -35,4 +35,36 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('secondfirst', $str);
     }
+
+    public function testRun()
+    {
+        $called = false;
+
+        $task = new Task('name', 'desc', function () use (&$called) {
+            $called = true;
+        });
+
+        $task->run();
+
+        $this->assertTrue($called, 'Task was not called.');
+    }
+
+    public function testCreateCommand()
+    {
+        $task = new Task('name', 'desc', function () {
+        });
+
+        $this->assertInstanceOf('Deployer\Tool\Command', $task->createCommand());
+    }
+
+    public function testIsPrivate()
+    {
+        $task = new Task('name', false, function () {
+        });
+        $this->assertTrue($task->isPrivate());
+
+        $task = new Task('name', 'desc', function () {
+        });
+        $this->assertFalse($task->isPrivate());
+    }
 }

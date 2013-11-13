@@ -25,7 +25,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             $str .= 'second';
         });
 
-        task('all', ['second', 'first']);
+        task('all', 'Run all', ['second', 'first']);
 
         $tool->getApp()->addCommands($tool->getCommands());
         $tool->getApp()->setAutoExit(false);

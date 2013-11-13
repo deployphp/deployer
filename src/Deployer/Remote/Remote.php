@@ -5,12 +5,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Tool;
+namespace Deployer\Remote;
 
 use Deployer\Tool\Remote\Key;
 use Symfony\Component\Finder\SplFileInfo;
 
-class Remote
+class Remote implements RemoteInterface
 {
     private $server;
 

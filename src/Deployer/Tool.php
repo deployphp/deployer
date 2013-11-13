@@ -9,7 +9,9 @@ namespace Deployer;
 
 use Deployer\Tool\Context;
 use Deployer\Tool\Local;
-use Deployer\Tool\Remote;
+use Deployer\Remote\Remote;
+use Deployer\Remote\RemoteGroup;
+use Deployer\Remote\RemoteInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressHelper;
@@ -41,7 +43,7 @@ class Tool
     private $output;
 
     /**
-     * @var Remote[]
+     * @var RemoteInterface
      */
     private $remote;
 
@@ -57,7 +59,7 @@ class Tool
 
     public function __construct(array $argv = null)
     {
-        $this->app = new Application('Deployer', '0.3.0');
+        $this->app = new Application('Deployer', '0.4.0');
         $this->input = new ArgvInput($argv);
         $this->output = new ConsoleOutput();
         $this->local = new Local();
@@ -100,10 +102,20 @@ class Tool
     public function connect($server, $user, $password, $group = null)
     {
         $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
-        $this->remote[] = array(
-            'group' => $group,
-            'connection' => new Remote($server, $user, $password),
-        );
+        if (null === $group) {
+            $this->remote = new Remote($server, $user, $password);
+        } else {
+            if (null === $this->remote) {
+                $this->remote = new RemoteGroup();
+            }
+
+            if ($this->remote instanceof RemoteGroup) {
+                $this->remote->add($group, new Remote($server, $user, $password));
+            } else {
+                throw new \RuntimeException("You are trying to connect to group after connecting without group.");
+            }
+
+        }
     }
 
     public function ignore($ignore = array())
@@ -111,20 +123,17 @@ class Tool
         $this->ignore = $ignore;
     }
 
-    public function upload($local, $remote, $group = null)
+    public function upload($local, $remote)
     {
-        $this->checkConnected($group);
+        $this->checkConnected();
 
         $local = realpath($local);
-        $connections = $group ? $this->getGroupServers($group) : $this->remote;
 
         if (is_file($local) && is_readable($local)) {
             $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
-            foreach ($connections as $item) {
-                $item['connection']->uploadFile($local, $remote);
-            }
+            $this->remote->uploadFile($local, $remote);
         } else if (is_dir($local)) {
-            $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>" . ($group ? " (<info>$group</info>):" : ":"));
+            $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>:");
 
             $ignore = array_map(function ($pattern) {
                 $pattern = preg_quote($pattern);
@@ -150,17 +159,17 @@ class Tool
 
             /** @var $progress ProgressHelper */
             $progress = $this->app->getHelperSet()->get('progress');
-            $progress->start($this->output, $files->count() * sizeof($connections));
+            $progress->start($this->output, $files->count());
 
-            foreach ($connections as $item) {
-                foreach ($files as $file) {
-                    $from = $file->getRealPath();
-                    $to = str_replace($local, '', $from);
-                    $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
+            /** @var $file \SplFileInfo */
+            foreach ($files as $file) {
 
-                    $item['connection']->uploadFile($from, $to);
-                    $progress->advance();
-                }
+                $from = $file->getRealPath();
+                $to = str_replace($local, '', $from);
+                $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
+
+                $this->remote->uploadFile($from, $to);
+                $progress->advance();
             }
 
             $progress->finish();
@@ -169,26 +178,18 @@ class Tool
         }
     }
 
-    public function cd($directory, $group = null)
+    public function cd($directory)
     {
-        $this->checkConnected($group);
-
-        $connections = $group ? $this->getGroupServers($group) : $this->remote;
-        foreach ($connections as $item) {
-            $item['connection']->cd($directory);
-        }
+        $this->checkConnected();
+        $this->remote->cd($directory);
     }
 
-    public function run($command, $group = null)
+    public function run($command)
     {
-        $this->checkConnected($group);
-        $this->writeln("Running command <info>$command</info>" . ($group ? " (<info>$group</info>)" : ""));
-
-        $connections = $group ? $this->getGroupServers($group) : $this->remote;
-        foreach ($connections as $item) {
-            $output = $item['connection']->execute($command);
-            $this->write($output);
-        }
+        $this->checkConnected();
+        $this->writeln("Running command <info>$command</info>");
+        $output = $this->remote->execute($command);
+        $this->write($output);
     }
 
     public function runLocally($command)
@@ -198,22 +199,9 @@ class Tool
         $this->write($output);
     }
 
-    private function getGroupServers($group = null)
+    private function checkConnected()
     {
-        $result = [];
-        foreach ($this->remote as $item) {
-            if ($item['group'] === $group) {
-                $result[] = $item;
-            }
-        }
-
-        return $result;
-    }
-
-    private function checkConnected($group = null)
-    {
-        $connections = $group ? $this->getGroupServers($group) : $this->remote;
-        if (!sizeof($connections)) {
+        if (null === $this->remote) {
             throw new \RuntimeException("You need connect to server first.");
         }
     }
@@ -226,6 +214,25 @@ class Tool
     public function writeln($message)
     {
         $this->output->writeln($message);
+    }
+
+    public function group($group, \Closure $action)
+    {
+        if ($this->remote instanceof RemoteGroup) {
+            if ($this->remote->isGroupExist($group)) {
+
+                $this->remote->group($group);
+                {
+                    call_user_func($action);
+                }
+                $this->remote->endGroup();
+
+            } else {
+                throw new \RuntimeException("Group \"$group\" connection does not defined.");
+            }
+        } else {
+            throw new \RuntimeException("An group connection does not defined.");
+        }
     }
 
     /**

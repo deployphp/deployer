@@ -109,3 +109,12 @@ function runLocally($command)
 {
     Context::get()->runLocally($command);
 }
+
+/**
+ * @param string $group
+ * @param callable $action
+ */
+function group($group, \Closure $action)
+{
+    Context::get()->group($group, $action);
+}

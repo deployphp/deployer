@@ -83,14 +83,14 @@ rsa(path, [password])
 Can be used as `key` in `connect` function with `path` to your RSA key (~/.ssh/id_rsa) and `password` of your key.
 
 ```php
-cd(path, group = null)
+cd(path)
 ```
-Change remote directory to given `path` on servers from `group` or on all connected servers if `group` is null.
+Change remote directory to given `path`.
 
 ```php
-upload(from, to, group = null)
+upload(from, to)
 ```
-Upload local files or directories `from` to remote `to` on servers from `group` or on all connected servers if `group` is null.
+Upload local files or directories `from` to remote `to`.
 
 ```php
 ignore(array)
@@ -98,9 +98,9 @@ ignore(array)
 Ignore this files while uploading directories. `array` of string with `*` patterns.
 
 ```php
-run(command, group = null)
+run(command)
 ```
-Run `command` in directory provided by `cd` function on remote server from `group` or on all connected servers if `group` is null.
+Run `command` in directory provided by `cd` function.
 
 ```php
 runLocally(command)
@@ -112,6 +112,13 @@ writeln(message)
 write(message)
 ```
 Write `message` with/without new line.
+
+```php
+group(group_name, function () {
+    // run, cd, upload and ext commands
+})
+```
+Run commands `run`, `cd`, `upload` only for group connections.
 
 If your do not want include functions, you can use methods:
 ```php

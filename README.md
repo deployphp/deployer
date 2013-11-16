@@ -22,8 +22,8 @@ task('clear', function () {
     run('php bin/clear');
 });
 
-task('prod', ['prod_server', 'upload', 'clear']);
-task('test', ['test_server', 'upload', 'clear']);
+task('prod', 'Deploy on production.', ['prod_server', 'upload', 'clear']);
+task('test', 'Deploy on test server.', ['test_server', 'upload', 'clear']);
 
 start();
 ```

@@ -8,7 +8,6 @@
 namespace Deployer\Tool;
 
 use Deployer\Tool\Context;
-use Deployer\Tool;
 
 class ContextTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,11 +15,11 @@ class ContextTest extends \PHPUnit_Framework_TestCase
     {
         Context::clear();
 
-        $t1 = new Tool();
+        $t1 = $this->getMockBuilder('Deployer\Tool')->disableOriginalConstructor()->getMock();
         Context::push($t1);
         $this->assertInstanceOf('Deployer\Tool', Context::get());
 
-        $t2 = new Tool();
+        $t2 = $this->getMockBuilder('Deployer\Tool')->disableOriginalConstructor()->getMock();
         Context::push($t2);
         $this->assertInstanceOf('Deployer\Tool', Context::get());
 

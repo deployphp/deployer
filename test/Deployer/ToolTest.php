@@ -128,14 +128,12 @@ class ToolTest extends \PHPUnit_Framework_TestCase
         $remote = $this->getMock('Deployer\Remote\RemoteInterface');
 
         $remote
-            ->expects($this->at(0))
+            ->expects($this->exactly(2))
             ->method('uploadFile')
-            ->with($local . '/file', '/remote/file');
-
-        $remote
-            ->expects($this->at(1))
-            ->method('uploadFile')
-            ->with($local . '/src/some.php', '/remote/src/some.php');
+            ->with($this->logicalOr(
+                $local . '/file', '/remote/file',
+                $local . '/src/some.php', '/remote/src/some.php'
+            ));
 
         $remoteFactory = $this->getMock('Deployer\Remote\RemoteFactory');
         $remoteFactory

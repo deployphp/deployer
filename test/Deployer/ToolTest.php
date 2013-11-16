@@ -69,7 +69,7 @@ class ToolTest extends \PHPUnit_Framework_TestCase
     {
         $this->deployer();
 
-        $calls = [];
+        $calls = array();
 
         task('one', function () use (&$calls) {
             $calls[] = 'one';
@@ -79,7 +79,7 @@ class ToolTest extends \PHPUnit_Framework_TestCase
             $calls[] = 'two';
         });
 
-        task('comp', 'Call one and two', ['one', 'two']);
+        task('comp', 'Call one and two', array('one', 'two'));
 
         $this->start('comp');
         $this->assertContains('one', $calls);

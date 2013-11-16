@@ -146,7 +146,7 @@ class ToolTest extends \PHPUnit_Framework_TestCase
         $this->deployer($remoteFactory);
 
         connect('localhost', 'user', 'password');
-        ignore(['ignor*']);
+        ignore(array('ignor*'));
         upload($local, '/remote');
     }
 

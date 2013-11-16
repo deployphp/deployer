@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/elfet/deployer.png?branch=master)](https://travis-ci.org/elfet/deployer)
+
 Introduction
 ------------
 There are a lot of deployment tools, even in php. But none of them are simple and functional like Deployer.

@@ -8,16 +8,16 @@
 namespace Deployer;
 
 use Deployer\Tool\Context;
-use Deployer\Tool\Local;
+use Deployer\Utils\Local;
 use Deployer\Remote\Remote;
 use Deployer\Remote\RemoteGroup;
+use Deployer\Remote\RemoteFactory;
 use Deployer\Remote\RemoteInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressHelper;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
 class Tool
@@ -43,6 +43,11 @@ class Tool
     private $output;
 
     /**
+     * @var RemoteFactory
+     */
+    private $remoteFactory;
+
+    /**
      * @var RemoteInterface
      */
     private $remote;
@@ -57,12 +62,13 @@ class Tool
      */
     private $ignore = array();
 
-    public function __construct(array $argv = null)
+    public function __construct(Application $app, InputInterface $input, OutputInterface $output, Local $local, RemoteFactory $remoteFactory)
     {
-        $this->app = new Application('Deployer', '0.4.0');
-        $this->input = new ArgvInput($argv);
-        $this->output = new ConsoleOutput();
-        $this->local = new Local();
+        $this->app = $app;
+        $this->input = $input;
+        $this->output = $output;
+        $this->local = $local;
+        $this->remoteFactory = $remoteFactory;
     }
 
     public function task($name, $descriptionOrCallback, $callback = null)
@@ -103,14 +109,14 @@ class Tool
     {
         $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
         if (null === $group) {
-            $this->remote = new Remote($server, $user, $password);
+            $this->remote = $this->remoteFactory->create($server, $user, $password);
         } else {
             if (null === $this->remote) {
                 $this->remote = new RemoteGroup();
             }
 
             if ($this->remote instanceof RemoteGroup) {
-                $this->remote->add($group, new Remote($server, $user, $password));
+                $this->remote->add($group, $this->remoteFactory->create($server, $user, $password));
             } else {
                 throw new \RuntimeException("You are trying to connect to group after connecting without group.");
             }
@@ -233,14 +239,6 @@ class Tool
         } else {
             throw new \RuntimeException("An group connection does not defined.");
         }
-    }
-
-    /**
-     * @return Application
-     */
-    public function getApp()
-    {
-        return $this->app;
     }
 
     /**

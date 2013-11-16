@@ -74,31 +74,28 @@ function ignore($ignore = array())
 /**
  * @param string $from
  * @param string $to
- * @param string|null $group
  */
-function upload($from, $to, $group = null)
+function upload($from, $to)
 {
-    Context::get()->upload($from, $to, $group);
+    Context::get()->upload($from, $to);
 }
 
 /**
  * Change current directory for whole connect session.
  * @param string $directory
- * @param string|null $group
  */
-function cd($directory, $group = null)
+function cd($directory)
 {
-    Context::get()->cd($directory, $group);
+    Context::get()->cd($directory);
 }
 
 /**
  * Run command on remote server.
  * @param string $command
- * @param string|null $group
  */
-function run($command, $group = null)
+function run($command)
 {
-    Context::get()->run($command, $group);
+    Context::get()->run($command);
 }
 
 /**

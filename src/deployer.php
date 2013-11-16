@@ -5,6 +5,14 @@
  * file that was distributed with this source code.
  */
 
+use Deployer\Tool;
+use Deployer\Tool\Context;
+use Deployer\Utils\Local;
+use Deployer\Remote\RemoteFactory;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
 /**
  * Start deployer script.
  *
@@ -14,10 +22,16 @@
  */
 function deployer($includeFunction = true, array $argv = null)
 {
-    $tool = new Deployer\Tool($argv);
+    $tool = new Tool(
+        new Application('Deployer', '0.4.1'),
+        new ArgvInput($argv),
+        new ConsoleOutput(),
+        new Local(),
+        new RemoteFactory()
+    );
 
     if ($includeFunction) {
-        Deployer\Tool\Context::push($tool);
+        Context::push($tool);
         include_once __DIR__ . '/Deployer/functions.php';
     }
 

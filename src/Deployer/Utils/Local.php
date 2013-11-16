@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Tool;
+namespace Deployer\Utils;
 
 class Local 
 {

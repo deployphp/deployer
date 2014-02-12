@@ -9,6 +9,7 @@ namespace Deployer;
 
 use Deployer\Tool\Context;
 use Deployer\Utils\Local;
+use Deployer\Utils\Path;
 use Deployer\Remote\Remote;
 use Deployer\Remote\RemoteGroup;
 use Deployer\Remote\RemoteFactory;
@@ -133,7 +134,7 @@ class Tool
     {
         $this->checkConnected();
 
-        $local = realpath($local);
+        $local = Path::normalize(realpath($local));
 
         if (is_file($local) && is_readable($local)) {
             $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
@@ -170,7 +171,7 @@ class Tool
             /** @var $file \SplFileInfo */
             foreach ($files as $file) {
 
-                $from = $file->getRealPath();
+                $from = Path::normalize($file->getRealPath());
                 $to = str_replace($local, '', $from);
                 $to = rtrim($remote, '/') . '/' . ltrim($to, '/');
 

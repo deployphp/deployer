@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 function deployer($includeFunction = true, array $argv = null)
 {
     $tool = new Tool(
-        new Application('Deployer', '0.4.1'),
+        new Application('Deployer', '0.4.2'),
         new ArgvInput($argv),
         new ConsoleOutput(),
         new Local(),

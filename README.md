@@ -8,12 +8,13 @@ Here is simple example of deployment script (deploy.php):
 ```php
 require 'deployer.phar';
 
-task('prod_server', function () {
-    connect('prod.ssh.domain.com', 'user');
+$key = '~/.ssh/id_rsa';
+task('prod_server', function () use ($key) {
+    connect('prod.ssh.domain.com', 'user', $key);
 });
 
-task('test_server', function () {
-    connect('test.ssh.domain.com', 'user');
+task('test_server', function () use ($key) {
+    connect('test.ssh.domain.com', 'user', $key);
 });
 
 task('upload', function () {

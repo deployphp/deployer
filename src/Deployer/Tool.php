@@ -143,7 +143,7 @@ class Tool
             $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>:");
 
             $ignore = array_map(function ($pattern) {
-                $pattern = preg_quote($pattern);
+                $pattern = preg_quote($pattern, '#');
                 $pattern = str_replace('\*', '(.*?)', $pattern);
                 $pattern = "#$pattern#";
                 return $pattern;

@@ -96,7 +96,8 @@ function cd($directory)
  */
 function run($command)
 {
-    return Context::get()->run($command);
+    $method = array(Context::get(), 'run');
+    return call_user_func_array($method, func_get_args());
 }
 
 /**
@@ -106,7 +107,8 @@ function run($command)
  */
 function runLocally($command)
 {
-    return Context::get()->runLocally($command);
+    $method = array(Context::get(), 'runLocally');
+    return call_user_func_array($method, func_get_args());
 }
 
 /**

@@ -191,8 +191,34 @@ class Tool
         $this->remote->cd($directory);
     }
 
+    /**
+     * Escapes all arguments but first.
+     * First argument is not escaped for BC.
+     * @param array $args
+     * @return string
+     */
+    private function buildCommand(array $args)
+    {
+        $command = array_shift($args);
+        foreach ($args as $arg)
+        {
+            $command .= ' ' . escapeshellarg($arg);
+        }
+        return $command;
+    }
+
+    /**
+     * <code>
+     * $path = '/srv/foo bar/';
+     * run("ls -lA $path"); // path not escaped, will fail
+     * run("ls -lA", $path); // path escaped
+     * </code>
+     * @param ...$command
+     * @return string output
+     */
     public function run($command)
     {
+        $command = $this->buildCommand(func_get_args());
         $this->checkConnected();
         $this->writeln("Running command <info>$command</info>");
         $output = $this->remote->execute($command);
@@ -200,8 +226,14 @@ class Tool
         return $output;
     }
 
+    /**
+     * @see run
+     * @param ...$command
+     * @return string output
+     */
     public function runLocally($command)
     {
+        $command = $this->buildCommand(func_get_args());
         $this->writeln("Running locally command <info>$command</info>");
         $output = $this->local->execute($command);
         $this->write($output);

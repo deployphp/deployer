@@ -92,19 +92,21 @@ function cd($directory)
 /**
  * Run command on remote server.
  * @param string $command
+ * @return string output
  */
 function run($command)
 {
-    Context::get()->run($command);
+    return Context::get()->run($command);
 }
 
 /**
  * Run command locally.
  * @param string $command
+ * @return string output
  */
 function runLocally($command)
 {
-    Context::get()->runLocally($command);
+    return Context::get()->runLocally($command);
 }
 
 /**

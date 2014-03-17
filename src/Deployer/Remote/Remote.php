@@ -59,4 +59,14 @@ class Remote implements RemoteInterface
         }
         $this->sftp->put($to, $from, NET_SFTP_LOCAL_FILE);
     }
+    
+    /**
+     * download file from remote in current directory
+     * @param type $from
+     * @param type $to
+     */
+    public function downloadFile($from, $to)
+    {
+        return $this->sftp->get($from, $to);
+    }
 }

@@ -185,6 +185,20 @@ class Tool
         }
     }
 
+    public function download($remote, $local)
+    {
+        $this->checkConnected();
+
+        $this->writeln("Downloading file <info>$remote</info> to <info>$local</info>");
+        $status = $this->remote->downloadFile($remote , $local );
+        
+        if (!$status) {
+             throw new \RuntimeException("Download error");
+        }
+            
+        $this->writeln("Download complete");
+    }
+    
     public function cd($directory)
     {
         $this->checkConnected();

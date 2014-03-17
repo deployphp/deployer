@@ -81,6 +81,17 @@ function upload($from, $to)
 }
 
 /**
+ * 
+ * @param type $from
+ * @param type $to
+ */
+function download($from, $to)
+{
+    Context::get()->download($from, $to);
+}
+
+
+/**
  * Change current directory for whole connect session.
  * @param string $directory
  */

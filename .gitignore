@@ -2,3 +2,4 @@ vendor/
 deployer.phar
 pages/
 .idea/
+/nbproject/

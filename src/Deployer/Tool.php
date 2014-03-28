@@ -211,6 +211,7 @@ class Tool
         $this->writeln("Running command <info>$command</info>");
         $output = $this->remote->execute($command);
         $this->write($output);
+        return $output;
     }
 
     public function runLocally($command)
@@ -218,6 +219,7 @@ class Tool
         $this->writeln("Running locally command <info>$command</info>");
         $output = $this->local->execute($command);
         $this->write($output);
+        return $output;
     }
 
     private function checkConnected()

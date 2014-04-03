@@ -92,19 +92,23 @@ function cd($directory)
 /**
  * Run command on remote server.
  * @param string $command
+ * @return string output
  */
 function run($command)
 {
-    Context::get()->run($command);
+    $method = array(Context::get(), 'run');
+    return call_user_func_array($method, func_get_args());
 }
 
 /**
  * Run command locally.
  * @param string $command
+ * @return string output
  */
 function runLocally($command)
 {
-    Context::get()->runLocally($command);
+    $method = array(Context::get(), 'runLocally');
+    return call_user_func_array($method, func_get_args());
 }
 
 /**
@@ -114,4 +118,9 @@ function runLocally($command)
 function group($group, \Closure $action)
 {
     Context::get()->group($group, $action);
+}
+
+function silent($set = TRUE)
+{
+    Context::get()->silent($set);
 }

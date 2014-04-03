@@ -44,8 +44,9 @@ class Remote implements RemoteInterface
 
     public function execute($command)
     {
-        if(null !== $this->cd) {
-            $command = "cd $this->cd && $command";
+        if (null !== $this->cd) {
+            $path = escapeshellarg($this->cd);
+            $command = "cd $path && $command";
         }
         return $this->sftp->exec($command);
     }

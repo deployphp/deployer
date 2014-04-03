@@ -58,6 +58,8 @@ class Tool
      */
     private $local;
 
+    private $silent = FALSE;
+
     /**
      * @var array
      */
@@ -108,7 +110,7 @@ class Tool
 
     public function connect($server, $user, $password, $group = null)
     {
-        $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
+        $this->logln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
         if (null === $group) {
             $this->remote = $this->remoteFactory->create($server, $user, $password);
         } else {
@@ -137,10 +139,10 @@ class Tool
         $local = Path::normalize(realpath($local));
 
         if (is_file($local) && is_readable($local)) {
-            $this->writeln("Uploading file <info>$local</info> to <info>$remote</info>");
+            $this->logln("Uploading file <info>$local</info> to <info>$remote</info>");
             $this->remote->uploadFile($local, $remote);
         } else if (is_dir($local)) {
-            $this->writeln("Uploading from <info>$local</info> to <info>$remote</info>:");
+            $this->logln("Uploading from <info>$local</info> to <info>$remote</info>:");
 
             $ignore = array_map(function ($pattern) {
                 $pattern = preg_quote($pattern, '#');
@@ -220,9 +222,9 @@ class Tool
     {
         $command = $this->buildCommand(func_get_args());
         $this->checkConnected();
-        $this->writeln("Running command <info>$command</info>");
+        $this->logln("Running command <info>$command</info>");
         $output = $this->remote->execute($command);
-        $this->write($output);
+        $this->log($output);
         return $output;
     }
 
@@ -234,9 +236,9 @@ class Tool
     public function runLocally($command)
     {
         $command = $this->buildCommand(func_get_args());
-        $this->writeln("Running locally command <info>$command</info>");
+        $this->logln("Running locally command <info>$command</info>");
         $output = $this->local->execute($command);
-        $this->write($output);
+        $this->log($output);
         return $output;
     }
 
@@ -244,6 +246,22 @@ class Tool
     {
         if (null === $this->remote) {
             throw new \RuntimeException("You need connect to server first.");
+        }
+    }
+
+    public function log($message)
+    {
+        if (!$this->silent)
+        {
+            $this->write($message);
+        }
+    }
+
+    public function logln($message)
+    {
+        if (!$this->silent)
+        {
+            $this->writeln($message);
         }
     }
 
@@ -298,5 +316,10 @@ class Tool
         }
 
         return $commands;
+    }
+
+    public function silent($set = TRUE)
+    {
+        $this->silent = $set;
     }
 }

@@ -119,3 +119,8 @@ function group($group, \Closure $action)
 {
     Context::get()->group($group, $action);
 }
+
+function silent($set = TRUE)
+{
+    Context::get()->silent($set);
+}

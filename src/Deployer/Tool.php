@@ -185,6 +185,20 @@ class Tool
         }
     }
 
+    public function download($remote, $local)
+    {
+        $this->checkConnected();
+
+        $this->writeln("Downloading file <info>$remote</info> to <info>$local</info>");
+        $status = $this->remote->downloadFile($remote , $local );
+        
+        if (!$status) {
+             throw new \RuntimeException("Download error");
+        }
+            
+        $this->writeln("Download complete");
+    }
+    
     public function cd($directory)
     {
         $this->checkConnected();
@@ -197,6 +211,7 @@ class Tool
         $this->writeln("Running command <info>$command</info>");
         $output = $this->remote->execute($command);
         $this->write($output);
+        return $output;
     }
 
     public function runLocally($command)
@@ -204,6 +219,7 @@ class Tool
         $this->writeln("Running locally command <info>$command</info>");
         $output = $this->local->execute($command);
         $this->write($output);
+        return $output;
     }
 
     private function checkConnected()

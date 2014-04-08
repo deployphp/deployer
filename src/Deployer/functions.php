@@ -81,6 +81,17 @@ function upload($from, $to)
 }
 
 /**
+ * 
+ * @param type $from
+ * @param type $to
+ */
+function download($from, $to)
+{
+    Context::get()->download($from, $to);
+}
+
+
+/**
  * Change current directory for whole connect session.
  * @param string $directory
  */
@@ -95,7 +106,7 @@ function cd($directory)
  */
 function run($command)
 {
-    Context::get()->run($command);
+    return Context::get()->run($command);
 }
 
 /**
@@ -104,7 +115,7 @@ function run($command)
  */
 function runLocally($command)
 {
-    Context::get()->runLocally($command);
+    return Context::get()->runLocally($command);
 }
 
 /**

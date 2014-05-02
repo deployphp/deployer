@@ -15,8 +15,8 @@
         "files": ["src/deployer.php"]
     },
     "require": {
-        "symfony/finder": "2.3.*",
-        "symfony/console": "2.3.*",
+        "symfony/finder": "~2.3",
+        "symfony/console": "~2.3",
         "phpseclib/phpseclib": "0.3.*@dev"
     },
     "require-dev": {

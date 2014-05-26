@@ -119,6 +119,15 @@ function runLocally($command)
 }
 
 /**
+ * Run task
+ * @param string $name
+ */
+function runTask($name)
+{
+    Context::get()->runTask($name);
+}
+
+/**
  * @param string $group
  * @param callable $action
  */

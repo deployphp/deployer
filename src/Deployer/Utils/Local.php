@@ -33,6 +33,10 @@ class Local
         $error = stream_get_contents($pipes[2]);
         fclose($pipes[2]);
 
+        if($error) {
+            throw new \RuntimeException($error);
+        }
+
         fclose($pipes[3]);
 
         // Close all pipes before proc_close!

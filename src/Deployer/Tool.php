@@ -223,6 +223,16 @@ class Tool
         return $output;
     }
 
+    public function runTask($name)
+    {
+        if(!isset($this->tasks[$name])) {
+            throw new \LogicException(sprintf('Unable to find "%s" task', $name));
+        }
+
+        $this->tasks[$name]->run();
+    }
+
+
     private function checkConnected()
     {
         if (null === $this->remote) {

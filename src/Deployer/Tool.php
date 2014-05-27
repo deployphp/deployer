@@ -240,6 +240,40 @@ class Tool
         $this->output->writeln($message);
     }
 
+    public function askConfirmation($message)
+    {
+        $dialog = $this->app->getHelperSet()->get('dialog');
+        $message = "<question>$message [y/n]</question> ";
+
+        if (!$dialog->askConfirmation($this->output, $message, false)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public function ask($message, $default = null)
+    {
+        $dialog = $this->app->getHelperSet()->get('dialog');
+
+        if($default) {
+            $message = "<question>$message [$default]</question> ";
+        } else {
+            $message = "<question>$message</question> ";
+        }
+
+        return $dialog->ask($this->output, $message, $default);
+    }
+
+    public function askHiddenResponse($message)
+    {
+        $dialog = $this->app->getHelperSet()->get('dialog');
+
+        $message = "<question>$message</question> ";
+
+        return $dialog->askHiddenResponse($this->output, $message);
+    }
+
     public function group($group, \Closure $action)
     {
         if ($this->remote instanceof RemoteGroup) {

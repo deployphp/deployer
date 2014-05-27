@@ -43,6 +43,37 @@ function writeln($message)
 }
 
 /**
+ * @param $message
+ *
+ * @return bool
+ */
+function askConfirmation($message)
+{
+    return Context::get()->askConfirmation($message);
+}
+
+/**
+ * @param string $message
+ * @param string $default
+ *
+ * @return string
+ */
+function ask($message, $default = null)
+{
+    return Context::get()->ask($message, $default);
+}
+
+/**
+ * @param $message
+ *
+ * @return string
+ */
+function askHiddenResponse($message)
+{
+    return Context::get()->askHiddenResponse($message);
+}
+
+/**
  * @param string $server
  * @param string $user
  * @param string|Deployer\Tool\Remote\Key $password

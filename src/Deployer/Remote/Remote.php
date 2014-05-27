@@ -47,7 +47,14 @@ class Remote implements RemoteInterface
         if(null !== $this->cd) {
             $command = "cd $this->cd && $command";
         }
-        return $this->sftp->exec($command);
+
+        $result = $this->sftp->exec($command);
+
+        if($this->sftp->getStdError()) {
+            throw new \RuntimeException($this->sftp->getStdError());
+        }
+
+        return $result;
     }
 
     public function uploadFile($from, $to)
@@ -58,6 +65,11 @@ class Remote implements RemoteInterface
             $this->directories[$dir] = true;
         }
         $this->sftp->put($to, $from, NET_SFTP_LOCAL_FILE);
+
+        if($this->sftp->getSFTPErrors()) {
+            throw new \RuntimeException(current($this->sftp->getSFTPErrors()));
+        }
+
     }
     
     /**

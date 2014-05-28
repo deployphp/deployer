@@ -15,7 +15,7 @@ class RemoteGroup implements RemoteInterface
 
     public function add($group, RemoteInterface $remote)
     {
-        $this->remotes[] = array($group, $remote);
+        $this->remotes[] = array((array)$group, $remote);
     }
 
     public function group($group)
@@ -32,7 +32,7 @@ class RemoteGroup implements RemoteInterface
     {
         foreach ($this->remotes as $list) {
             list($group, $remote) = $list;
-            if($group === $isGroup) {
+            if (in_array($isGroup, $group)) {
                 return true;
             }
         }
@@ -78,7 +78,7 @@ class RemoteGroup implements RemoteInterface
             foreach ($this->remotes as $list) {
                 list($group, $remote) = $list;
 
-                if ($group === $this->group) {
+                if (in_array($this->group, $group)) {
                     $remotes[] = $remote;
                 }
             }

@@ -64,10 +64,9 @@ class Remote implements RemoteInterface
             $this->sftp->mkdir($dir, -1, true);
             $this->directories[$dir] = true;
         }
-        $this->sftp->put($to, $from, NET_SFTP_LOCAL_FILE);
 
-        if($this->sftp->getSFTPErrors()) {
-            throw new \RuntimeException(current($this->sftp->getSFTPErrors()));
+        if(!$this->sftp->put($to, $from, NET_SFTP_LOCAL_FILE)) {
+            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
 
     }

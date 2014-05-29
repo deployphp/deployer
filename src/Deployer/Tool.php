@@ -108,8 +108,9 @@ class Tool
 
     public function connect($server, $user, $password, $group = null)
     {
-        $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " ($group)" : ""));
-        if (null === $group) {
+        $group = (array)$group;
+        $this->writeln(sprintf("Connecting to <info>%s%s</info>", $server, $group ? " (". implode(', ', $group) .")" : ""));
+        if (!count($group)) {
             $this->remote = $this->remoteFactory->create($server, $user, $password);
         } else {
             if (null === $this->remote) {

@@ -1,5 +1,5 @@
-vendor/
-deployer.phar
-pages/
-.idea/
+/vendor/
+/pages/
+/.idea/
 /nbproject/
+deployer.phar

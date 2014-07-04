@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Task\TaskFactory;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -61,7 +62,7 @@ class Deployer
      */
     public function run()
     {
-        foreach (Task::getTasks() as $name => $task) {
+        foreach (TaskFactory::getTasks() as $name => $task) {
             $command = new Command($name);
             $command->setCode(function () use ($task) {
                 $task->run();
@@ -86,5 +87,13 @@ class Deployer
     public function getOutput()
     {
         return $this->output;
+    }
+
+    /**
+     * @return Application
+     */
+    public function getConsole()
+    {
+        return $this->app;
     }
 }

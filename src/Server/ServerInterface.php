@@ -7,11 +7,17 @@
 
 namespace Deployer\Server;
 
-interface ServerInterface 
+interface ServerInterface
 {
+    /**
+     * Connect to remote server.
+     */
+    public function connect();
+
     /**
      * Run shell command on remote server.
      * @param string $command
+     * @return string Output of command.
      */
     public function run($command);
 

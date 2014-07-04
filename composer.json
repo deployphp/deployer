@@ -24,7 +24,8 @@
 
         "symfony/finder": "~2.5",
         "symfony/console": "~2.5",
-        "herzult/php-ssh": "~1.0"
+        "herzult/php-ssh": "~1.0",
+        "phpseclib/phpseclib": "0.3.*@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~3.7"

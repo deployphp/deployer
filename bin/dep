@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 /* (c) Anton Medvedev <anton@elfet.ru>
  *
@@ -5,12 +6,6 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Remote;
+require __DIR__ . '/../vendor/autoload.php';
 
-class RemoteFactory
-{
-    public function create($server, $user, $password)
-    {
-        return new Remote($server, $user, $password);
-    }
-} 
+echo getcwd();

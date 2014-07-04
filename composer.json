@@ -9,17 +9,23 @@
         }
     ],
     "autoload": {
-        "psr-0": {
-            "Deployer": "src/"
+        "psr-4": {
+            "Deployer\\": "src/"
         },
-        "files": ["src/deployer.php"]
+        "files": [
+            "src/functions.php"
+        ]
     },
+    "bin": [
+        "bin/dep"
+    ],
     "require": {
-        "symfony/finder": "2.3.*",
-        "symfony/console": "2.3.*",
-        "phpseclib/phpseclib": "0.3.*@dev"
+        "php": ">=5.4.0",
+
+        "symfony/finder": "~2.5",
+        "symfony/console": "~2.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "~3.7"
     }
 }

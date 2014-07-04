@@ -19,6 +19,15 @@ class PhpSecLib implements ServerInterface
      */
     private $sftp;
 
+    /**
+     * Array of created directories during upload.
+     * @var array
+     */
+    private $directories = [];
+
+    /**
+     * @param Configuration $config
+     */
     public function __construct(Configuration $config)
     {
         $this->config = $config;
@@ -69,23 +78,45 @@ class PhpSecLib implements ServerInterface
     public function run($command)
     {
         $this->checkConnection();
-        return $this->sftp->exec($command);
+
+        $result = $this->sftp->exec($command);
+
+        if ($this->sftp->getStdError()) {
+            throw new \RuntimeException($this->sftp->getStdError());
+        }
+
+        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function upload($from, $to)
+    public function upload($local, $remote)
     {
-        // TODO: Implement upload() method.
+        $this->checkConnection();
+
+        $dir = dirname($remote);
+
+        if (!isset($this->directories[$dir])) {
+            $this->sftp->mkdir($dir, -1, true);
+            $this->directories[$dir] = true;
+        }
+
+        if (!$this->sftp->put($remote, $local, NET_SFTP_LOCAL_FILE)) {
+            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function download($to, $from)
+    public function download($local, $remote)
     {
-        // TODO: Implement download() method.
+        $this->checkConnection();
+
+        if (!$this->sftp->get($remote, $local)) {
+            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
+        }
     }
 
 } 

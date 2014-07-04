@@ -9,7 +9,7 @@ namespace Deployer\Server;
 
 use Ssh;
 
-class Ssh2
+class Ssh2 implements ServerInterface
 {
     /**
      * SSH session.
@@ -23,9 +23,14 @@ class Ssh2
      */
     private $config;
 
+    /**
+     * Array of created directories during upload.
+     * @var array
+     */
+    private $directories = [];
 
     /**
-     * @param string $domain
+     * @param Configuration $config
      */
     public function __construct(Configuration $config)
     {
@@ -94,22 +99,38 @@ class Ssh2
     public function run($command)
     {
         $this->checkConnection();
+
         return $this->session->getExec()->run($command);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function upload($from, $to)
+    public function upload($local, $remote)
     {
-        // TODO: Implement upload() method.
+        $this->checkConnection();
+
+        $dir = dirname($remote);
+
+        if (!isset($this->directories[$dir])) {
+            $this->session->getSftp()->mkdir($dir, -1, true);
+            $this->directories[$dir] = true;
+        }
+
+        if (!$this->session->getSftp()->send($local, $remote)) {
+            throw new \RuntimeException('Can not upload file.');
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function download($to, $from)
+    public function download($local, $remote)
     {
-        // TODO: Implement download() method.
+        $this->checkConnection();
+
+        if(!$this->session->getSftp()->receive($remote, $local)) {
+            throw new \RuntimeException('Can not download file.');
+        }
     }
 } 

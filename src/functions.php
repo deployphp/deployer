@@ -5,6 +5,7 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
+use Deployer\Parameter;
 use Deployer\Server;
 use Deployer\Task;
 
@@ -31,6 +32,39 @@ function task($name, $callback)
 }
 
 /**
+ * Run command on current server.
+ * @param string $command
+ * @return string
+ */
+function run($command)
+{
+    $server = Server\Current::getServer();
+    return $server->run($command);
+}
+
+/**
+ * Upload file or directory to current server.
+ * @param string $local
+ * @param string $remote
+ */
+function upload($local, $remote)
+{
+    $server = Server\Current::getServer();
+    $server->upload($local, $remote);
+}
+
+/**
+ * Download ONE FILE from remote server.
+ * @param string $local
+ * @param string $remote
+ */
+function download($local, $remote)
+{
+    $server = Server\Current::getServer();
+    $server->download($local, $remote);
+}
+
+/**
  * Writes a message to the output and adds a newline at the end.
  * @param string $message
  */
@@ -48,7 +82,45 @@ function write($message)
     Deployer::get()->getOutput()->write($message);
 }
 
+/**
+ * @param string $key
+ * @param mixed $value
+ */
+function set($key, $value)
+{
+    Deployer::$parameters[$key] = $value;
+}
 
+/**
+ * @param string $key
+ * @param mixed $default Default key must always be specified.
+ * @return mixed
+ */
+function get($key, $default)
+{
+    return array_key_exists($key, Deployer::$parameters) ? Deployer::$parameters[$key] : $default;
+}
+
+/**
+ * @param string $message
+ * @param string $default
+ * @return string
+ */
+function ask($message, $default)
+{
+    $output = Deployer::get()->getOutput();
+    $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
+
+    $message = "<question>$message [$default]</question> ";
+
+    return $dialog->ask($output, $message, $default);
+}
+
+/**
+ * @param string $message
+ * @param bool $default
+ * @return bool
+ */
 function askConfirmation($message, $default = false)
 {
     $output = Deployer::get()->getOutput();
@@ -63,16 +135,10 @@ function askConfirmation($message, $default = false)
     return true;
 }
 
-function ask($message, $default)
-{
-    $output = Deployer::get()->getOutput();
-    $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
-
-    $message = "<question>$message [$default]</question> ";
-
-    return $dialog->ask($output, $message, $default);
-}
-
+/**
+ * @param string $message
+ * @return string
+ */
 function askHiddenResponse($message)
 {
     $output = Deployer::get()->getOutput();

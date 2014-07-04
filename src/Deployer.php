@@ -7,9 +7,10 @@
 
 namespace Deployer;
 
+use Deployer\Console\Command;
+use Deployer\Server\ServerInterface;
 use Deployer\Task\TaskFactory;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -37,6 +38,24 @@ class Deployer
     private $output;
 
     /**
+     * List of all tasks.
+     * @var TaskInterface[]
+     */
+    public static $tasks = [];
+
+    /**
+     * List of all servers.
+     * @var ServerInterface[]
+     */
+    public static $servers = [];
+
+    /**
+     * Array of global parameters.
+     * @var array
+     */
+    public static $parameters = [];
+
+    /**
      * @param Application $app
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -62,11 +81,8 @@ class Deployer
      */
     public function run()
     {
-        foreach (TaskFactory::getTasks() as $name => $task) {
-            $command = new Command($name);
-            $command->setCode(function () use ($task) {
-                $task->run();
-            });
+        foreach (self::$tasks as $name => $task) {
+            $command = new Command($name, $task);
             $this->app->add($command);
         }
 

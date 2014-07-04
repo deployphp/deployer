@@ -7,12 +7,11 @@
 
 namespace Deployer\Server;
 
+use Deployer\Deployer;
+
 class ServerFactory
 {
-    /**
-     * @var ServerInterface[]
-     */
-    private static $servers;
+
 
     /**
      * @param string $name
@@ -23,19 +22,11 @@ class ServerFactory
     public static function create($name, $host, $port = 22)
     {
         $configuration = new Configuration($host, $port);
-        if (function_exists('ssh2_exec')) {
-            self::$servers[$name] = new Ssh2($configuration);
+        if (get('use_ssh2', function_exists('ssh2_exec'))) {
+            Deployer::$servers[$name] = new Ssh2($configuration);
         } else {
-            self::$servers[$name] = new PhpSecLib($configuration);
+            Deployer::$servers[$name] = new PhpSecLib($configuration);
         }
         return $configuration;
-    }
-
-    /**
-     * @return ServerInterface[]
-     */
-    public static function getServers()
-    {
-        return self::$servers;
     }
 }

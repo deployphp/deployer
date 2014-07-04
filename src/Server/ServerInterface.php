@@ -23,15 +23,15 @@ interface ServerInterface
 
     /**
      * Upload file to remote server.
-     * @param string $from Local path to file.
-     * @param string $to Remote path where upload.
+     * @param string $local Local path to file.
+     * @param string $remote Remote path where upload.
      */
-    public function upload($from, $to);
+    public function upload($local, $remote);
 
     /**
      * Download file from remote server.
-     * @param string $to Where to download file on local machine.
-     * @param string $from Which file to download from remote server.
+     * @param string $local Where to download file on local machine.
+     * @param string $remote Which file to download from remote server.
      */
-    public function download($to, $from);
+    public function download($local, $remote);
 }

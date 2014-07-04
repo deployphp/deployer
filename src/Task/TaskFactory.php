@@ -17,7 +17,7 @@ class TaskFactory
      * Create task and save to tasks list.
      * @param string $name Task name.
      * @param callable|array $callback Code of task or array of other tasks.
-     * @return TaskInterface
+     * @return AbstractTask
      */
     public static function create($name, $callback)
     {

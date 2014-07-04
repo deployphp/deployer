@@ -119,4 +119,11 @@ class PhpSecLib implements ServerInterface
         }
     }
 
+    /**
+     *{@inheritdoc}
+     */
+    public function getConfiguration()
+    {
+        return $this->config;
+    }
 } 

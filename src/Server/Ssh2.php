@@ -133,4 +133,12 @@ class Ssh2 implements ServerInterface
             throw new \RuntimeException('Can not download file.');
         }
     }
+
+    /**
+     *{@inheritdoc}
+     */
+    public function getConfiguration()
+    {
+        return $this->config;
+    }
 } 

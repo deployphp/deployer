@@ -9,10 +9,12 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Server\Current;
+use Deployer\Server\DryRun;
 use Deployer\TaskInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Command extends BaseCommand
@@ -30,12 +32,52 @@ class Command extends BaseCommand
     {
         parent::__construct($name);
         $this->task = $task;
+        $this->setDescription($task->getDescription());
+        $this->addOption(
+            'dry-run',
+            null,
+            InputOption::VALUE_NONE,
+            'Run without execution command on servers.'
+        );
+        $this->addOption(
+            'server',
+            null,
+            InputOption::VALUE_OPTIONAL,
+            'Run tasks only on ths server.',
+            null
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (OutputInterface::VERBOSITY_NORMAL <= $output->getVerbosity()) {
+            $output->writeln("<info>"
+                . (empty($this->getDescription()) ? $this->getName() : $this->getDescription())
+                . "</info>"
+            );
+        }
+
         foreach (Deployer::$servers as $name => $server) {
+
+            if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $output->getVerbosity()) {
+                $output->writeln("Run task <info>{$this->getName()}</info> on server <info>{$name}</info>");
+            }
+
+            // Skip to specified server.
+            $onServer = $input->getOption('server');
+            if (null !== $onServer && $onServer !== $name) {
+                continue;
+            }
+
+            // Convert to dry run.
+            if ($input->getOption('dry-run')) {
+                $server = new DryRun($server->getConfiguration());
+            }
+
+            // Set current server.
             Current::setServer($name, $server);
+
+            // Run task.
             $this->task->run();
         }
     }

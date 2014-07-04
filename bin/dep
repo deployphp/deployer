@@ -22,5 +22,5 @@ if(is_file($deployFile) && is_readable($deployFile)) {
 
     $deployer->run();
 } else {
-    echo "deploy.php file does not found.";
+    echo "deploy.php file does not found.\n";
 }

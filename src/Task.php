@@ -7,7 +7,9 @@
 
 namespace Deployer;
 
-class Task implements TaskInterface
+use Deployer\Task\AbstractTask;
+
+class Task extends AbstractTask
 {
     /**
      * Callable body of current task.
@@ -24,7 +26,7 @@ class Task implements TaskInterface
     }
 
     /**
-     * Run callback of current task.
+     * {@inheritdoc}
      */
     public function run()
     {

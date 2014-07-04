@@ -5,9 +5,9 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
-use Deployer\Parameter;
 use Deployer\Server;
 use Deployer\Task;
+use Deployer\Utils\Path;
 
 /**
  * @param string $name
@@ -24,7 +24,7 @@ function server($name, $domain, $port = 22)
  * Define a new task and save to tasks list.
  * @param string $name Name of current task.
  * @param callable|array $callback Callable task or array of names of other tasks.
- * @return \Deployer\TaskInterface
+ * @return \Deployer\Task\AbstractTask
  */
 function task($name, $callback)
 {
@@ -39,6 +39,11 @@ function task($name, $callback)
 function run($command)
 {
     $server = Server\Current::getServer();
+
+    if (output()->isDebug()) {
+        writeln("[{$server->getConfiguration()->getHost()}] $command");
+    }
+
     return $server->run($command);
 }
 
@@ -50,7 +55,47 @@ function run($command)
 function upload($local, $remote)
 {
     $server = Server\Current::getServer();
-    $server->upload($local, $remote);
+
+    $remote = $server->getConfiguration()->getPath() . '/' . $remote;
+
+    if (is_file($local)) {
+
+        writeln("Upload file <info>$local</info> to <info>$remote</info>");
+
+        $server->upload($local, $remote);
+
+    } elseif (is_dir($local)) {
+
+        writeln("Upload from <info>$local</info> to <info>$remote</info>");
+
+        $finder = new Symfony\Component\Finder\Finder();
+        $files = $finder
+            ->files()
+            ->ignoreUnreadableDirs()
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(false)
+            ->in($local);
+
+        if (output()->isVerbose()) {
+            $progress = progressHelper($files->count());
+        }
+
+        /** @var $file \Symfony\Component\Finder\SplFileInfo */
+        foreach ($files as $file) {
+
+            $server->upload(
+                $file->getRealPath(),
+                Path::normalize($remote . '/' . $file->getRelativePathname())
+            );
+
+            if (output()->isVerbose()) {
+                $progress->advance();
+            }
+        }
+
+    } else {
+        throw new \RuntimeException("Uploading path '$local' does not exist.");
+    }
 }
 
 /**
@@ -108,12 +153,15 @@ function get($key, $default)
  */
 function ask($message, $default)
 {
-    $output = Deployer::get()->getOutput();
+    if (output()->isQuiet()) {
+        return $default;
+    }
+
     $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
 
     $message = "<question>$message [$default]</question> ";
 
-    return $dialog->ask($output, $message, $default);
+    return $dialog->ask(output(), $message, $default);
 }
 
 /**
@@ -123,12 +171,15 @@ function ask($message, $default)
  */
 function askConfirmation($message, $default = false)
 {
-    $output = Deployer::get()->getOutput();
+    if (output()->isQuiet()) {
+        return $default;
+    }
+
     $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
 
     $message = "<question>$message [y/n]</question> ";
 
-    if (!$dialog->askConfirmation($output, $message, $default)) {
+    if (!$dialog->askConfirmation(output(), $message, $default)) {
         return false;
     }
 
@@ -141,10 +192,28 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
-    $output = Deployer::get()->getOutput();
     $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
 
     $message = "<question>$message</question> ";
 
-    return $dialog->askHiddenResponse($output, $message);
+    return $dialog->askHiddenResponse(output(), $message);
+}
+
+/**
+ * @param int $count
+ * @return \Symfony\Component\Console\Helper\ProgressHelper
+ */
+function progressHelper($count)
+{
+    $progress = Deployer::get()->getConsole()->getHelperSet()->get('progress');
+    $progress->start(output(), $count);
+    return $progress;
+}
+
+/**
+ * @return \Symfony\Component\Console\Output\Output
+ */
+function output()
+{
+    return Deployer::get()->getOutput();
 }

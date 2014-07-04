@@ -34,4 +34,9 @@ interface ServerInterface
      * @param string $remote Which file to download from remote server.
      */
     public function download($local, $remote);
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration();
 }

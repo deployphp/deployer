@@ -9,5 +9,8 @@ namespace Deployer;
 
 interface TaskInterface 
 {
+    /**
+     * Run current task.
+     */
     public function run();
 } 

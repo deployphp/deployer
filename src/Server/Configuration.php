@@ -36,6 +36,12 @@ class Configuration
     private $port;
 
     /**
+     * Base path of server.
+     * @var string
+     */
+    private $path;
+
+    /**
      * User of remote server.
      * @var string
      */
@@ -79,6 +85,16 @@ class Configuration
     {
         $this->setHost($host);
         $this->setPort($port);
+    }
+
+    /**
+     * @param string $path
+     * @return $this
+     */
+    public function path($path)
+    {
+        $this->path = $path;
+        return $this;
     }
 
     /**
@@ -156,6 +172,14 @@ class Configuration
         }
 
         return $this->password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->path;
     }
 
     /**

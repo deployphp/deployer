@@ -4,6 +4,33 @@ Introduction
 
 There are a lot of deployment tools, even in php. But none of them are simple and functional like Deployer.
 
+Create `deploy.php` in your project:
+
+```php
+require 'recipe/symfony.php';
+
+server('main', 'domain.com')
+    ->user('you')
+    ->pubKey();
+
+server('test', 'test.domain.com')
+    ->user('you');
+
+task('deploy:done', function () {
+    write('Deploy done!');
+});
+
+alter('deploy', 'deploy:done');
+```
+
+And run command:
+
+```
+dep deploy
+```
+
+Done! You just deploy your project.
+
 Requirements
 ------------
 Deployer is only supported on PHP 5.4.0 and up (yes, it's time to grow up).

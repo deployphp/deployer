@@ -9,24 +9,36 @@ namespace Deployer\Task;
 
 use Deployer\Deployer;
 use Deployer\Task;
-use Deployer\TaskInterface;
 
 class TaskFactory
 {
     /**
-     * Create task and save to tasks list.
-     * @param string $name Task name.
-     * @param callable|array $callback Code of task or array of other tasks.
-     * @return AbstractTask
+     * Create task.
+     * @param callable|string|array $body Code of task or name of other task or array of other tasks.
+     * @return TaskInterface
      */
-    public static function create($name, $callback)
+    public static function create($body)
     {
-        if (is_callable($callback)) {
-            return Deployer::$tasks[$name] = new Task($callback);
-        //} elseif (is_array($callback)) {
+        if ($body instanceof \Closure) {
+
+            return new Task($body);
+
+        } elseif (is_string($body)) {
+
+            if (array_key_exists($body, Deployer::$tasks)) {
+                return new ReferenceTask(Deployer::$tasks[$body]);
+            } else {
+                throw new \RuntimeException("Task \"$body\" does not defined.");
+            }
+
+        } elseif (is_array($body)) {
+
+            return new GroupTask(array_map(function ($body) {
+                return self::create($body);
+            }, $body));
 
         } else {
-            throw new \InvalidArgumentException("Task can be an closure or array of other tasks names.");
+            throw new \InvalidArgumentException("Task can be an closure or string or array of other tasks names.");
         }
 
     }

@@ -11,8 +11,6 @@ use Deployer\Deployer;
 
 class ServerFactory
 {
-
-
     /**
      * @param string $name
      * @param string $host

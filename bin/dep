@@ -13,7 +13,7 @@ $deployFile = getcwd() . '/deploy.php';
 
 if(is_file($deployFile) && is_readable($deployFile)) {
     $deployer = new \Deployer\Deployer(
-        new \Symfony\Component\Console\Application('Deployer'),
+        new \Symfony\Component\Console\Application('Deployer', '1.0.0'),
         new \Symfony\Component\Console\Input\ArgvInput(),
         new \Symfony\Component\Console\Output\ConsoleOutput()
     );

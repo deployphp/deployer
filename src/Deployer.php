@@ -10,7 +10,9 @@ namespace Deployer;
 use Deployer\Console\Command;
 use Deployer\Server\ServerInterface;
 use Deployer\Task\TaskFactory;
+use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,6 +40,11 @@ class Deployer
     private $output;
 
     /**
+     * @var HelperSet
+     */
+    private $helperSet;
+
+    /**
      * List of all tasks.
      * @var TaskInterface[]
      */
@@ -60,11 +67,12 @@ class Deployer
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    public function __construct(Application $app, InputInterface $input, OutputInterface $output)
+    public function __construct(Application $app, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
     {
         $this->app = $app;
         $this->input = $input;
         $this->output = $output;
+        $this->helperSet = null === $helperSet ? $app->getHelperSet() : $helperSet;
         self::$instance = $this;
     }
 
@@ -81,12 +89,20 @@ class Deployer
      */
     public function run()
     {
+        $this->transformTasksToConsoleCommands();
+
+        $this->app->run($this->input, $this->output);
+    }
+
+    /**
+     * Transform tasks to console commands. Run it before run of console app.
+     */
+    public function transformTasksToConsoleCommands()
+    {
         foreach (self::$tasks as $name => $task) {
             $command = new Command($name, $task);
             $this->app->add($command);
         }
-
-        $this->app->run($this->input, $this->output);
     }
 
     /**
@@ -111,5 +127,13 @@ class Deployer
     public function getConsole()
     {
         return $this->app;
+    }
+
+    /**
+     * @return HelperSet
+     */
+    public function getHelperSet()
+    {
+        return $this->helperSet;
     }
 }

@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer;
+namespace Deployer\Task;
 
 interface TaskInterface 
 {

@@ -24,11 +24,11 @@ function server($name, $domain, $port = 22)
  * Define a new task and save to tasks list.
  * @param string $name Name of current task.
  * @param callable|array $callback Callable task or array of names of other tasks.
- * @return \Deployer\Task\AbstractTask
+ * @return \Deployer\Task
  */
 function task($name, $callback)
 {
-    return Task\TaskFactory::create($name, $callback);
+    return Deployer::$tasks[$name] = Task\TaskFactory::create($callback);
 }
 
 /**
@@ -115,7 +115,7 @@ function download($local, $remote)
  */
 function writeln($message)
 {
-    Deployer::get()->getOutput()->writeln($message);
+    output()->writeln($message);
 }
 
 /**
@@ -124,7 +124,7 @@ function writeln($message)
  */
 function write($message)
 {
-    Deployer::get()->getOutput()->write($message);
+    output()->write($message);
 }
 
 /**
@@ -157,7 +157,7 @@ function ask($message, $default)
         return $default;
     }
 
-    $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
+    $dialog = Deployer::get()->getHelperSet()->get('dialog');
 
     $message = "<question>$message [$default]</question> ";
 
@@ -175,7 +175,7 @@ function askConfirmation($message, $default = false)
         return $default;
     }
 
-    $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
+    $dialog = Deployer::get()->getHelperSet()->get('dialog');
 
     $message = "<question>$message [y/n]</question> ";
 
@@ -192,7 +192,7 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
-    $dialog = Deployer::get()->getConsole()->getHelperSet()->get('dialog');
+    $dialog = Deployer::get()->getHelperSet()->get('dialog');
 
     $message = "<question>$message</question> ";
 
@@ -205,7 +205,7 @@ function askHiddenResponse($message)
  */
 function progressHelper($count)
 {
-    $progress = Deployer::get()->getConsole()->getHelperSet()->get('progress');
+    $progress = Deployer::get()->getHelperSet()->get('progress');
     $progress->start(output(), $count);
     return $progress;
 }

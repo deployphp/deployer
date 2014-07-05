@@ -7,8 +7,6 @@
 
 namespace Deployer\Task;
 
-use Deployer\TaskInterface;
-
 abstract class AbstractTask implements TaskInterface
 {
     /**

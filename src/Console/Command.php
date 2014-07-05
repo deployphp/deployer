@@ -10,7 +10,8 @@ namespace Deployer\Console;
 use Deployer\Deployer;
 use Deployer\Server\Current;
 use Deployer\Server\DryRun;
-use Deployer\TaskInterface;
+use Deployer\Task\AbstractTask;
+use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,7 +33,11 @@ class Command extends BaseCommand
     {
         parent::__construct($name);
         $this->task = $task;
-        $this->setDescription($task->getDescription());
+
+        if ($task instanceof AbstractTask) {
+            $this->setDescription($task->getDescription());
+        }
+
         $this->addOption(
             'dry-run',
             null,

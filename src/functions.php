@@ -7,7 +7,7 @@
 use Deployer\Deployer;
 use Deployer\Server;
 use Deployer\Task;
-use Deployer\Utils\Path;
+use Deployer\Utils;
 
 /**
  * @param string $name
@@ -48,6 +48,16 @@ function run($command)
 }
 
 /**
+ * Execute commands og local machine.
+ * @param string $command Command to run locally.
+ * @return string Output of command.
+ */
+function runLocally($command)
+{
+    return Utils\Local::run($command);
+}
+
+/**
  * Upload file or directory to current server.
  * @param string $local
  * @param string $remote
@@ -85,7 +95,7 @@ function upload($local, $remote)
 
             $server->upload(
                 $file->getRealPath(),
-                Path::normalize($remote . '/' . $file->getRelativePathname())
+                Utils\Path::normalize($remote . '/' . $file->getRelativePathname())
             );
 
             if (output()->isVerbose()) {

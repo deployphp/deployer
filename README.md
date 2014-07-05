@@ -19,14 +19,14 @@ To install Deployer use [Composer](https://getcomposer.org):
 composer global require elfet/deployer:dev-master
 ```
 
-Make sure what `~/.composer/vendor/elfet/deployer/bin/` in your `PATH`.
+Make sure what `~/.composer/vendor/bin` in your `PATH`.
 
 Install via PHAR: TODO
 
 Documentation
 -------------
 
-Documentation can be found on site (deployer.in)[http://deployer.in].
+Documentation can be found on site [deployer.in](http://deployer.in).
 
 License
 -------

@@ -54,6 +54,10 @@ section {
     border-radius: 100%;
 }
 
+.toolbar i:hover {
+    opacity: 0.5;
+}
+
 .toolbar i.x {
     left: 10px;
     background-color: #F0725E;
@@ -84,4 +88,17 @@ section {
     border-top-right-radius: 0;
     height: 300px;
     overflow-y: hidden;
+}
+
+.code label {
+    float: left;
+    margin-top: 3px;
+}
+
+.code input {
+    background: transparent;
+    display: block;
+    margin-left: 15px;
+    border: none;
+    outline: none;
 }

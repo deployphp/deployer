@@ -2,49 +2,36 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>Deployer &mdash; {{page.title}}</title>
 
-    <link rel="stylesheet" href="{{ site.baseurl}}/stylesheets/styles.css">
-    <link rel="stylesheet" href="{{ site.baseurl}}/stylesheets/pygment_trac.css">
-    <script src="{{ site.baseurl}}/javascripts/scale.fix.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="stylesheets/styles.css">
 </head>
 <body>
-<div class="wrapper">
-    <header>
+<header>
+    <div class="container">
         <h1>Deployer</h1>
-        <p>Deployment Tool on PHP</p>
-        <p class="view"><a href="https://github.com/elfet/deployer">View the Project on GitHub <small>elfet/deployer</small></a></p>
-        <ul>
-            <li><a href="{{ site.baseurl}}/deployer.phar">Download <strong>PHAR</strong></a></li>
-            <li><a href="https://github.com/elfet/deployer">View On <strong>GitHub</strong></a></li>
-        </ul>
-    </header>
-    <section>
-        {{ content }}
-    </section>
+    </div>
+</header>
+<div class="container">
+    {{ content }}
 </div>
-<footer>
-    <p>Project maintained by <a href="https://github.com/elfet">elfet</a></p>
-    <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-</footer>
-<!--[if !IE]><script>fixScale(document);</script><![endif]-->
+
+<script src="lib/jquery.min.js"></script>
 <script type="text/javascript">
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-42432799-1']);
-  _gaq.push(['_trackPageview']);
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-42432799-1']);
+    _gaq.push(['_trackPageview']);
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
 
 </script>
 </body>

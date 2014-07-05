@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Task\TaskFactory;
+
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
     public function testRun()
@@ -17,6 +19,23 @@ class TaskTest extends \PHPUnit_Framework_TestCase
             echo 'ok';
         });
         $task->run();
+    }
+
+    public function testDescription()
+    {
+        $task = new Task(function () {
+        });
+        $task->description('desc');
+
+        $this->assertEquals('desc', $task->getDescription());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testFactoryInvalidArgumentException()
+    {
+        TaskFactory::create(null);
     }
 }
  

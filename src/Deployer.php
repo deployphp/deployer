@@ -136,4 +136,19 @@ class Deployer
     {
         return $this->helperSet;
     }
+
+    /**
+     * Return task by name.
+     * @param string $name Task name.
+     * @return TaskInterface
+     * @throws \RuntimeException If task does not defined.
+     */
+    public static function getTask($name)
+    {
+        if (array_key_exists($name, self::$tasks)) {
+            return self::$tasks[$name];
+        } else {
+            throw new \RuntimeException("Task \"$name\" does not defined.");
+        }
+    }
 }

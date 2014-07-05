@@ -25,11 +25,7 @@ class TaskFactory
 
         } elseif (is_string($body)) {
 
-            if (array_key_exists($body, Deployer::$tasks)) {
-                return new ReferenceTask(Deployer::$tasks[$body]);
-            } else {
-                throw new \RuntimeException("Task \"$body\" does not defined.");
-            }
+            return new ReferenceTask(Deployer::getTask($body));
 
         } elseif (is_array($body)) {
 

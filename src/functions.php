@@ -23,12 +23,40 @@ function server($name, $domain, $port = 22)
 /**
  * Define a new task and save to tasks list.
  * @param string $name Name of current task.
- * @param callable|array $callback Callable task or array of names of other tasks.
+ * @param callable|array $body Callable task or array of names of other tasks.
  * @return \Deployer\Task
  */
-function task($name, $callback)
+function task($name, $body)
 {
-    return Deployer::$tasks[$name] = Task\TaskFactory::create($callback);
+    return Deployer::$tasks[$name] = Task\TaskFactory::create($body);
+}
+
+/**
+ * Add $task to call before $name task runs.
+ * @param string $name Name of task before which to call $task
+ * @param callable|string|array $task
+ */
+function before($name, $task)
+{
+    $before = Deployer::getTask($name);
+
+    if ($before instanceof Task\AbstractTask) {
+        $before->before(Task\TaskFactory::create($task));
+    }
+}
+
+/**
+ * Add $task to call after $name task runs.
+ * @param string $name Name of task after which to call $task
+ * @param callable|string|array $task
+ */
+function after($name, $task)
+{
+    $after = Deployer::getTask($name);
+
+    if ($after instanceof Task\AbstractTask) {
+        $after->after(Task\TaskFactory::create($task));
+    }
 }
 
 /**

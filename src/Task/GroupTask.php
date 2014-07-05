@@ -27,8 +27,10 @@ class GroupTask extends AbstractTask
      */
     public function run()
     {
+        $this->runBeforeTasks();
         foreach ($this->tasks as $task) {
             $task->run();
         }
+        $this->runAfterTasks();
     }
 }

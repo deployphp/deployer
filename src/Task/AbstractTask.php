@@ -15,6 +15,16 @@ abstract class AbstractTask implements TaskInterface
     protected $description;
 
     /**
+     * @var TaskInterface[]
+     */
+    protected $afterTasks = [];
+
+    /**
+     * @var TaskInterface[]
+     */
+    protected $beforeTasks = [];
+
+    /**
      * Set task description
      * @param string $description
      * @return $this
@@ -32,5 +42,41 @@ abstract class AbstractTask implements TaskInterface
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @param TaskInterface $task
+     */
+    public function before(TaskInterface $task)
+    {
+        $this->beforeTasks[] = $task;
+    }
+
+    /**
+     * @param TaskInterface $task
+     */
+    public function after(TaskInterface $task)
+    {
+        $this->afterTasks[] = $task;
+    }
+
+    /**
+     * Run before tasks.
+     */
+    protected function runBeforeTasks()
+    {
+        foreach ($this->beforeTasks as $task) {
+            $task->run();
+        }
+    }
+
+    /**
+     * Run after tasks.
+     */
+    protected function runAfterTasks()
+    {
+        foreach ($this->afterTasks as $task) {
+            $task->run();
+        }
     }
 } 

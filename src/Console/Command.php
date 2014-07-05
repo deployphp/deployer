@@ -62,6 +62,11 @@ class Command extends BaseCommand
             );
         }
 
+        // Configure deployer to dry run.
+        if ($input->getOption('dry-run')) {
+            // Nothing to do now.
+        }
+
         foreach (Deployer::$servers as $name => $server) {
 
             if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $output->getVerbosity()) {
@@ -74,7 +79,7 @@ class Command extends BaseCommand
                 continue;
             }
 
-            // Convert to dry run.
+            // Convert server to dry run server.
             if ($input->getOption('dry-run')) {
                 $server = new DryRun($server->getConfiguration());
             }

@@ -35,7 +35,7 @@ class DryRun implements ServerInterface
      */
     public function run($command)
     {
-        writeln("[{$this->config->getHost()}] Run command: {$command}.");
+        writeln("[{$this->config->getHost()}] Run command: {$command}");
     }
 
     /**

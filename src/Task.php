@@ -30,6 +30,7 @@ class Task extends AbstractTask
      */
     public function run()
     {
+        $this->printDescription();
         $this->runBeforeTasks();
         call_user_func($this->callback);
         $this->runAfterTasks();

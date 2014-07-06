@@ -45,6 +45,16 @@ abstract class AbstractTask implements TaskInterface
     }
 
     /**
+     * Print description.
+     */
+    public function printDescription()
+    {
+        if (!output()->isQuiet() && !empty($this->description)) {
+            writeln("<info>{$this->description}</info>");
+        }
+    }
+
+    /**
      * @param TaskInterface $task
      */
     public function before(TaskInterface $task)

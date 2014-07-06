@@ -55,11 +55,6 @@ class Command extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (OutputInterface::VERBOSITY_NORMAL <= $output->getVerbosity()) {
-            $desc = $this->getDescription();
-            $output->writeln("<info>" . (empty($desc) ? $this->getName() : $desc) . "</info>");
-        }
-
         // Configure deployer to dry run.
         if ($input->getOption('dry-run')) {
             // Nothing to do now.

@@ -24,6 +24,9 @@ if (!$loaded) {
     );
 }
 
+// Recipe include path
+set_include_path(__DIR__ . '/../');
+
 $deployFile = getcwd() . '/deploy.php';
 
 if (is_file($deployFile) && is_readable($deployFile)) {

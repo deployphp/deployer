@@ -38,7 +38,7 @@ section {
 
     color: #000;
     display: block;
-    font: 14px "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 30px;
     text-align: center;
     text-shadow: 0 1px 0 #fff;
@@ -90,15 +90,64 @@ section {
     overflow-y: hidden;
 }
 
+.code .console {
+    white-space: pre;
+}
+
+.code .console i {
+    font-style: normal;
+    color: #00b200;
+}
+
+.code form {
+    display: table;
+}
+
 .code label {
-    float: left;
-    margin-top: 3px;
+    display: table-cell;
+    width: auto;
+    vertical-align: middle;
+    font-weight: normal;
+}
+
+.code .input {
+    display: table-cell;
+    width: 100%;
 }
 
 .code input {
     background: transparent;
-    display: block;
-    margin-left: 15px;
+    width: 100%;
+    margin-left: 8px;
     border: none;
     outline: none;
+    font-weight: normal;
+    padding: 0;
+}
+
+.autocomplete .repeat {
+    margin-left: 8px;
+}
+
+.autocomplete .guess {
+    color: #a9a9a9;
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 767px) {
+    .toolbar {
+        display: none;
+    }
+
+    .code {
+        display: none;
+    }
+
+    header {
+        height: auto;
+    }
+
+    ul {
+        display: none;
+    }
 }

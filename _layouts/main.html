@@ -70,10 +70,13 @@
         var delay = function (answer) {
             console.append(answer.shift());
             scroll();
-            setTimeout(function () {
-                delay(answer);
-            }, 1000);
+            if (answer.length > 0) {
+                setTimeout(function () {
+                    delay(answer);
+                }, 1000);
+            }
         };
+
         var to = function (command, need, answer) {
             if (need.indexOf(command) != -1) {
 
@@ -86,8 +89,21 @@
             }
         };
 
+        var delayInput = function (command) {
+            input.val(input.val() + command.shift());
+            if (command.length > 0) {
+                setTimeout(function () {
+                    delayInput(command);
+                }, 200);
+            }
+        };
+
+        setTimeout(function () {
+            delayInput('dep deploy'.split(''));
+        }, 1000);
+
         input.autocomplete({
-            '^\\w*$': ['ls', 'pwd', 'dep', 'help'],
+            '^\\w*$': ['ls', 'pwd', 'dep', 'help', 'php -v'],
             '^dep \\w*$': ['deploy', 'rollback', 'migrate', 'help', 'list']
         });
 
@@ -141,6 +157,16 @@
                 '--> Clear controllers.......................................✔\n',
                 '--> Setting permissions.....................................✔\n',
                 '--> <i>Successfully deployed!</i>\n']);
+
+            to(command, ['dep rollback'], [
+                '--> Restoring previous releases.............................✔\n',
+                '--> <i>Successfully restored!</i>\n']);
+
+            to(command, ['dep migrate'], [
+                '--> Migrating prod database.................................✔\n',
+                '--> <i>Successfully migrated!</i>\n']);
+
+            to(command, ['php', 'php -v'], 'PHP 6.0.0 (cli) (built: Jun 28 2016 10:29:43)\n');
 
             if (notFound) {
                 console.append('Sorry but this command can not be run in the emulator.\n');

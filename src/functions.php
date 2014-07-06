@@ -78,20 +78,13 @@ function run($command, $raw = false)
         writeln("[{$server->getConfiguration()->getHost()}] $command");
     }
 
-    try {
+    $output = $server->run($command);
 
-        $output = $server->run($command);
-
-        if(output()->isDebug()) {
-            write("[{$config->getHost()}] :: $output\n");
-        }
-
-        return $output;
-
-    } catch (\Exception $e) {
-        Deployer::getTask('rollback')->run();
-        throw $e;
+    if (output()->isDebug()) {
+        write("[{$config->getHost()}] :: $output\n");
     }
+
+    return $output;
 }
 
 /**
@@ -182,6 +175,35 @@ function writeln($message)
 function write($message)
 {
     output()->write($message);
+}
+
+/**
+ * Print description of running task.
+ * @param string $description
+ */
+function info($description)
+{
+    if (!output()->isQuiet() && !empty($description)) {
+        write("<info>$description</info>");
+
+        if (output()->isVerbose()) {
+            write("\n");
+        } else {
+            $tit = 60 - strlen($description);
+            $dots = str_repeat('.', $tit > 0 ? $tit : 0);
+            write("$dots");
+        }
+    }
+}
+
+/**
+ * Print "ok" sign.
+ */
+function ok()
+{
+    if (!output()->isQuiet()) {
+        writeln("<info>✔</info>");
+    }
 }
 
 /**

@@ -11,12 +11,16 @@ class DeployerTest extends DeployerTester
 {
     public function testRun()
     {
-        task('task', function () {
-            writeln('task');
+        $mock = $this->getMock('stdClass', ['callback']);
+        $mock->expects($this->exactly(1))
+            ->method('callback')
+            ->will($this->returnValue(true));
+
+        task('task', function () use ($mock) {
+            $mock->callback();
         });
 
         $appTester = $this->runCommand('task');
-        $this->assertEquals("task\n", $appTester->getDisplay());
     }
 }
  

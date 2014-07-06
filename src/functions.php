@@ -62,17 +62,36 @@ function after($name, $task)
 /**
  * Run command on current server.
  * @param string $command
+ * @param bool $raw If true $command will not be modified.
  * @return string
  */
-function run($command)
+function run($command, $raw = false)
 {
     $server = Server\Current::getServer();
+    $config = $server->getConfiguration();
+
+    if (!$raw) {
+        $command = "cd {$config->getPath()} && $command";
+    }
 
     if (output()->isDebug()) {
         writeln("[{$server->getConfiguration()->getHost()}] $command");
     }
 
-    return $server->run($command);
+    try {
+
+        $output = $server->run($command);
+
+        if(output()->isDebug()) {
+            write("[{$config->getHost()}] :: $output\n");
+        }
+
+        return $output;
+
+    } catch (\Exception $e) {
+        Deployer::getTask('rollback')->run();
+        throw $e;
+    }
 }
 
 /**

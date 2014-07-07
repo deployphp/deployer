@@ -16,10 +16,6 @@ header h2 {
     text-align: center;
 }
 
-section {
-    padding-top: 20px;
-}
-
 .terminal {
     max-width: 800px;
     margin: 0 auto;
@@ -138,11 +134,15 @@ section {
     color: #a9a9a9;
 }
 
-h2:first-child {
+section {
+    padding-top: 20px;
+}
+
+section h2:first-child {
     margin-top: 0;
 }
 
-h2:not(:first-child) {
+section h2:not(:first-child) {
     margin-top: 50px;
 }
 

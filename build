@@ -2,7 +2,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-$version = '1.0.0';
+$version = '1.0.1';
 $pharName = 'deployer.phar';
 $pharFile = __DIR__ . '/' . $pharName;
 

@@ -138,6 +138,14 @@ section {
     color: #a9a9a9;
 }
 
+h2:first-child {
+    margin-top: 0;
+}
+
+h2:not(:first-child) {
+    margin-top: 50px;
+}
+
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 767px) {
     .toolbar {

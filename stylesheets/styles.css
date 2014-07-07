@@ -148,19 +148,11 @@ h2:not(:first-child) {
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 767px) {
-    .toolbar {
-        display: none;
-    }
-
-    .code {
+    .terminal {
         display: none;
     }
 
     header {
         height: auto;
-    }
-
-    ul {
-        display: none;
     }
 }

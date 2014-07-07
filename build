@@ -20,7 +20,6 @@ $finder->files()
     ->ignoreVCS(true)
     ->name('*.php')
     ->name('*.json')
-    ->name('dep')
     ->exclude('phpunit')
     ->exclude('Tests')
     ->exclude('test')
@@ -34,6 +33,11 @@ foreach ($finder as $fileInfo) {
 
     $phar->addFile($fileInfo->getRealPath(), $file);
 }
+
+// Add bin/dep file
+$depContent = file_get_contents(__DIR__ . '/bin/dep');
+$depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
+$phar->addFromString('bin/dep', $depContent);
 
 $stub = <<<'STUB'
 #!/usr/bin/env php

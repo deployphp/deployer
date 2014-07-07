@@ -81,7 +81,9 @@ function run($command, $raw = false)
     $output = $server->run($command);
 
     if (output()->isDebug()) {
-        write("[{$config->getHost()}] :: $output\n");
+        array_map(function ($output) use ($config) {
+            write("[{$config->getHost()}] :: $output\n");
+        }, explode("\n", $output));
     }
 
     return $output;

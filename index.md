@@ -4,30 +4,44 @@ title: Deployment Tool for PHP
 ---
 <h2><a name="introduction">Introduction</a></h2>
 
-There are a lot of deployment tools, even in php. But none of them are simple and functional like Deployer.
+<p class="lead">
+    Deployer is a deployment tool written in PHP, it's simple and functional.
+    Deploy your code to all servers you want, it's support deploy via copy, or via VCS (like git), or via rsync.
+    Run your tasks on all your servers, or use our recipes of common tasks for Symfony, Laravel, Zend Framework and Yii.
+</p>
 
-Here is simple example of deployment script (deploy.php):
+
+
+Create simple deployment script `deploy.php`:
 
 ~~~ php
 require 'recipe/symfony.php';
 
 server('main', 'domain.com')
-    ->user('you')
-    ->pubKey();
-
-server('test', 'test.domain.com')
     ->user('you');
 
-task('deploy:done', function () {
-    write('Deploy done!');
-});
+set('repository', 'git@github.com:you/project.git');
 
-alter('deploy', 'deploy:done');
+alter('deploy', function () {
+    run('service php5-fpm reload');
+});
 ~~~
 
-<h2><a name="get-started">Get started</a></h2>
+And deploy your project with command:
 
-TODO
+~~~
+dep deploy
+~~~
+
+If something went wrong:
+
+~~~
+dep rollback
+~~~
+
+<h2><a name="getting-started">Getting Started</a></h2>
+
+<a class="btn btn-primary btn-lg" href="deployer.phar">Download PHAR</a>
 
 <h2><a name="installation">Installation</a></h2>
 

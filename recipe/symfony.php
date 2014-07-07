@@ -70,7 +70,6 @@ task('deploy:update_code', function () {
 
     run("git clone -q $repository $releaseDir");
     run("chmod -R g+w $releaseDir");
-    run("touch $releaseDir/$release.release");
 
     ok();
 })->description('Update code');
@@ -88,8 +87,6 @@ task('deploy:create_cache_dir', function () {
         run("if [ -d \"$cacheDir\" ]; then rm -rf $cacheDir; fi");
 
         run("mkdir -p $cacheDir");
-        run("chmod -R 0777 $cacheDir");
-        run("chmod -R g+w $cacheDir");
     }
 
     ok();
@@ -134,6 +131,53 @@ task('deploy:shared', function () {
 
     ok();
 })->description('Create symlinks for shared directories and files');
+
+task('deploy:writeable_dirs', function () {
+    info('Make writeable dirs');
+    $config = Server\Current::getServer()->getConfiguration();
+    $user = $config->getUser();
+    $wwwUser = get('www_user', 'www-data');
+    $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
+
+    $releaseDir = get('release_dir', null);
+
+    if (null !== $releaseDir) {
+
+        foreach ($dirs as $dir) {
+            run("cd $releaseDir && rm -rf $dir/*");
+            run("cd $releaseDir && chmod -R 0777 $dir");
+            run("cd $releaseDir && chmod -R g+w $dir");
+        }
+    }
+
+    ok();
+})->description('Set right permissions');
+
+task('deploy:permissions:setfacl', function () {
+    info('Setting permissions');
+    $config = Server\Current::getServer()->getConfiguration();
+    $user = $config->getUser();
+    $wwwUser = get('www_user', 'www-data');
+    $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
+
+    if (empty(run("if which setfacl; then echo \"ok\"; fi"))) {
+        writeln('<comment>Enable ACL support and install "setfacl"</comment>');
+        return;
+    }
+
+    $releaseDir = get('release_dir', null);
+
+    if (null !== $releaseDir) {
+
+        foreach ($dirs as $dir) {
+            run("cd $releaseDir && rm -rf $dir/*");
+            run("cd $releaseDir && setfacl -R -m u:$wwwUser:rwX -m u:$user:rwX $dir");
+            run("cd $releaseDir && setfacl -dR -m u:$wwwUser:rwX -m u:$user:rwX $dir");
+        }
+    }
+
+    ok();
+})->description('Set right permissions');
 
 task('deploy:assets', function () {
     info('Normalizing asset timestamps');
@@ -207,14 +251,8 @@ task('deploy:cache:warmup', function () {
 
 task('database:migrate', function () {
     info('Migrating database');
-
-    $releaseDir = get('release_dir', null);
-
-    if (null !== $releaseDir) {
-        $prod = get('env', 'prod');
-        run("php $releaseDir/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
-    }
-
+    $prod = get('env', 'prod');
+    run("php current/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
     ok();
 })->description('Migrate database');
 
@@ -253,18 +291,24 @@ task('cleanup', function () {
     ok();
 })->description('Cleanup old releases');
 
+task('deploy:start', function () {});
+task('deploy:end', function () {});
+
 task('deploy', [
+    'deploy:start',
     'deploy:prepare',
     'deploy:update_code',
     'deploy:shared',
+    'deploy:writeable_dirs',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assetic:dump',
-    (get('automigrate', false) ? 'migrate' : function () {
+    (get('auto_migrate', false) ? 'migrate' : function () {
     }),
     'deploy:cache:warmup',
     'deploy:symlink',
-    'cleanup'
+    'cleanup',
+    'deploy:end'
 ])->description('Deploy your project');
 
 after('deploy', function () {

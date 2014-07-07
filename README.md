@@ -20,7 +20,7 @@ task('deploy:done', function () {
     write('Deploy done!');
 });
 
-alter('deploy', 'deploy:done');
+after('deploy', 'deploy:done');
 ```
 
 And run command:

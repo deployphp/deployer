@@ -55,7 +55,7 @@ chmod +x /usr/local/bin/dep
 Now you can use Deployer via `dep` command. Later, to update Deployer to latest version run `dep update` command.
 
 Next create `deploy.php` file in your project directory. Let's imagine that you project is based on Symfony2 Framework
-(over frameworks described in docs), so it will be good to use existing recipe for deploying Symfony.
+(other frameworks described in docs), so it will be good to use existing recipe for deploying Symfony.
 
 ~~~ php
 require 'recipe/symfony.php';

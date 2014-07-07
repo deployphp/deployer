@@ -2,6 +2,7 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+$version = '1.0.0';
 $pharName = 'deployer.phar';
 $pharFile = __DIR__ . '/' . $pharName;
 
@@ -44,5 +45,31 @@ STUB;
 
 $phar->setStub($stub);
 $phar->stopBuffering();
-
 unset($phar);
+
+echo "deployer.phar created successful.\n";
+
+// Generate sha1 sum and put it to manifest.json
+$newPharManifest = [
+    'name' => $pharName,
+    'sha1' => sha1_file($pharFile),
+    'url' => 'http://deployer.in/deployer.phar',
+    'version' => $version,
+];
+
+$manifest = json_decode(file_get_contents(__DIR__ . '/manifest.json'), true);
+
+$alreadyExistVersion = null;
+foreach ($manifest as $i => $old) {
+    if ($old['version'] === $version) {
+        $alreadyExistVersion = $i;
+    }
+}
+
+if (null === $alreadyExistVersion) {
+    $manifest[] = $newPharManifest;
+} else {
+    $manifest[$alreadyExistVersion] = $newPharManifest;
+}
+
+file_put_contents(__DIR__ . '/manifest.json', json_encode($manifest, JSON_PRETTY_PRINT));

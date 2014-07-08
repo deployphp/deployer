@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Task\AbstractTask;
+use Deployer\Task\Runner;
 
 class Task extends AbstractTask
 {
@@ -28,10 +29,12 @@ class Task extends AbstractTask
     /**
      * {@inheritdoc}
      */
-    public function run()
+    public function get()
     {
-        $this->runBeforeTasks();
-        call_user_func($this->callback);
-        $this->runAfterTasks();
+        return array_merge(
+            $this->getBefore(),
+            [new Runner($this->callback, $this->getDescription())],
+            $this->getAfter()
+        );
     }
 }

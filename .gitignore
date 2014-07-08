@@ -2,4 +2,4 @@
 /pages/
 /.idea/
 /nbproject/
-deployer.phar
+*.phar

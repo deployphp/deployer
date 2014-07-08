@@ -25,8 +25,8 @@ class ReferenceTask implements TaskInterface
     /**
      * {@inheritdoc}
      */
-    public function run()
+    public function get()
     {
-        $this->reference->run();
+        return $this->reference->get();
     }
 }

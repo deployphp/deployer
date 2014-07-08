@@ -10,7 +10,8 @@ namespace Deployer\Task;
 interface TaskInterface 
 {
     /**
-     * Run current task.
+     * Return task body.
+     * @return Runner[]
      */
-    public function run();
+    public function get();
 } 

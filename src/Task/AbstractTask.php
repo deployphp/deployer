@@ -29,10 +29,20 @@ abstract class AbstractTask implements TaskInterface
      * @param string $description
      * @return $this
      */
-    public function description($description)
+    public function desc($description)
     {
         $this->description = $description;
         return $this;
+    }
+
+    /**
+     * @param string $description
+     * @return $this
+     * @deprecated Use desc method instead of.
+     */
+    public function description($description)
+    {
+        return $this->desc($description);
     }
 
     /**
@@ -61,22 +71,28 @@ abstract class AbstractTask implements TaskInterface
     }
 
     /**
-     * Run before tasks.
+     * Get before runners.
+     * @return Runner[]
      */
-    protected function runBeforeTasks()
+    protected function getBefore()
     {
+        $runners = [];
         foreach ($this->beforeTasks as $task) {
-            $task->run();
+            $runners = array_merge($runners, $task->get());
         }
+        return $runners;
     }
 
     /**
-     * Run after tasks.
+     * Get after runners
+     * @return Runner[]
      */
-    protected function runAfterTasks()
+    protected function getAfter()
     {
+        $runners = [];
         foreach ($this->afterTasks as $task) {
-            $task->run();
+            $runners = array_merge($runners, $task->get());
         }
+        return $runners;
     }
 } 

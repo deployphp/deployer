@@ -25,12 +25,17 @@ class GroupTask extends AbstractTask
     /**
      * {@inheritdoc}
      */
-    public function run()
+    public function get()
     {
-        $this->runBeforeTasks();
+        $runners = [];
         foreach ($this->tasks as $task) {
-            $task->run();
+            $runners = array_merge($runners, $task->get());
         }
-        $this->runAfterTasks();
+
+        return array_merge(
+            $this->getBefore(),
+            $runners,
+            $this->getAfter()
+        );
     }
 }

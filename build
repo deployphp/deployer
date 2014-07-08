@@ -3,7 +3,7 @@
 require __DIR__ . '/vendor/autoload.php';
 
 $version = '1.1.0-beta';
-$pharName = 'deployer.phar';
+$pharName = "deployer-$version.phar";
 $pharFile = __DIR__ . '/' . $pharName;
 
 if (file_exists($pharFile)) {
@@ -52,13 +52,13 @@ $phar->setStub($stub);
 $phar->stopBuffering();
 unset($phar);
 
-echo "deployer.phar created successful.\n";
+echo "$pharName created successful.\n";
 
 // Generate sha1 sum and put it to manifest.json
 $newPharManifest = [
     'name' => $pharName,
     'sha1' => sha1_file($pharFile),
-    'url' => 'http://deployer.in/deployer.phar',
+    'url' => "http://deployer.in/$pharName",
     'version' => $version,
 ];
 

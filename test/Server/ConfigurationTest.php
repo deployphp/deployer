@@ -13,7 +13,7 @@ class ConfigurationTest extends DeployerTester
 {
     public function testUserAuth()
     {
-        $config = new Configuration('host');
+        $config = new Configuration('main', 'host');
         $config->user('user');
 
         $this->assertEquals('password', $config->getPassword());
@@ -22,7 +22,7 @@ class ConfigurationTest extends DeployerTester
 
     public function testConfigFileAuth()
     {
-        $config = new Configuration('host');
+        $config = new Configuration('main', 'host');
         $config->user('user')->configFile('~/.ssh/config');
 
         $this->assertEquals(Configuration::AUTH_BY_CONFIG, $config->getAuthenticationMethod());
@@ -30,7 +30,7 @@ class ConfigurationTest extends DeployerTester
 
     public function testPubKeyAuth()
     {
-        $config = new Configuration('host');
+        $config = new Configuration('main', 'host');
         $config->user('user')->pubKey();
 
         $this->assertEquals(Configuration::AUTH_BY_PUBLIC_KEY, $config->getAuthenticationMethod());

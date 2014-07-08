@@ -22,7 +22,7 @@ class TaskTest extends DeployerTester
             $mock->callback();
         });
 
-        $task->run();
+        $task->get()[0]->run();
     }
 
     public function testDescription()

@@ -4,26 +4,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Deployer\Server;
 
-function releases()
-{
-    $releases = run("ls releases");
-    $releases = explode("\n", $releases);
-    rsort($releases);
-
-    return array_filter($releases, function ($release) {
-        $release = trim($release);
-        return !empty($release);
-    });
-}
-
+/**
+ * Rollback to previous release.
+ */
 task('rollback', function () {
-    info('Rollback to previous release');
+    $basePath = config()->getPath();
 
-    $basePath = Server\Current::getServer()->getConfiguration()->getPath();
-
-    $releases = releases();
+    $releases = env()->releases();
 
     if (count($releases) >= 2) {
         $releaseDir = "releases/" . $releases[1];
@@ -32,16 +20,16 @@ task('rollback', function () {
     } else {
         writeln("<comment>No more releases you can revert to.</comment>");
     }
+})->desc('Rollback to previous release');
 
-    ok();
-})->description('Rollback to previous release');
 
+/**
+ * Preparing server for deployment.
+ */
 task('deploy:prepare', function () {
-    info('Preparing server for deploy');
+    $basePath = config()->getPath();
 
-    $basePath = Server\Current::getServer()->getConfiguration()->getPath();
-
-    // Check if base dir exist.
+    // Check if base path exist.
     run("if [ ! -d \"$basePath\" ]; then mkdir $basePath; fi", true);
 
     // Create releases dir.
@@ -49,115 +37,116 @@ task('deploy:prepare', function () {
 
     // Create shared dir.
     run("if [ ! -d \"shared\" ]; then mkdir shared; fi");
+})->desc('Preparing server for deploy');
 
-    ok();
-})->description('Prepare server for deploy');
 
+/**
+ * Update project code
+ */
 task('deploy:update_code', function () {
-    info('Updating code');
+    $basePath = config()->getPath();
+    $repository = get('repository', false);
 
-    $repository = get('repository', null);
-
-    if (null === $repository) {
+    if (false === $repository) {
         throw new \RuntimeException('You have to specify repository.');
     }
 
     $release = date('Ymd') . substr((string)time(), -5);
-    $releaseDir = "releases/$release";
+    $releasePath = "$basePath/releases/$release";
 
-    set('release', $release);
-    set('release_dir', $releaseDir);
+    env()->setRelease($release);
+    env()->setReleasePath($releasePath);
 
-    run("git clone -q $repository $releaseDir");
-    run("chmod -R g+w $releaseDir");
+    run("git clone -q $repository $releasePath");
+    run("chmod -R g+w $releasePath");
+})->desc('Updating code');
 
-    ok();
-})->description('Update code');
 
+/**
+ * Create cache dir
+ */
 task('deploy:create_cache_dir', function () {
-    info('Creating cache dir');
+    $releasePath = env()->getReleasePath();
 
-    $releaseDir = get('release_dir', null);
+    // Set cache dir
+    env()->set('cache_dir', $cacheDir = "$releasePath/app/cache");
 
-    if (null !== $releaseDir) {
-        $cacheDir = "$releaseDir/app/cache";
+    // Remove cache dir if it exist
+    run("if [ -d \"$cacheDir\" ]; then rm -rf $cacheDir; fi");
 
-        set('cache_dir', $cacheDir);
-
-        run("if [ -d \"$cacheDir\" ]; then rm -rf $cacheDir; fi");
-
-        run("mkdir -p $cacheDir");
-    }
-
-    ok();
-})->description('Create cache dir');
+    // Create cache dir
+    run("mkdir -p $cacheDir");
+})->desc('Creating cache dir');
 
 after('deploy:update_code', 'deploy:create_cache_dir');
 
+
+/**
+ * Create symlinks for shared directories and files
+ */
 task('deploy:shared', function () {
-    info('Creating symlinks for shared files');
+    $basePath = config()->getPath();
+    $sharedPath = "$basePath/shared";
+    $releasePath = env()->getReleasePath();
 
-    $basePath = Server\Current::getServer()->getConfiguration()->getPath();
-    $sharedDirBase = "$basePath/shared";
+    // User specified shared directories
+    $sharedDirs = (array)get('shared_dirs', ['app/logs']);
 
-    $releaseDir = get('release_dir', null);
-    if (null !== $releaseDir) {
-        // Shared dirs
-        $sharedDirs = (array)get('shared_dirs', ['app/logs']);
-        foreach ($sharedDirs as $dir) {
-            // Remove dir from source
-            run("if [ -d \"$releaseDir/$dir\" ]; then rm -rf $releaseDir/$dir; fi");
+    foreach ($sharedDirs as $dir) {
+        // Remove dir from source
+        run("if [ -d \"$releasePath/$dir\" ]; then rm -rf $releasePath/$dir; fi");
 
-            // Create shared dir
-            run("mkdir -p $sharedDirBase/$dir");
+        // Create shared dir if does not exist
+        run("mkdir -p $sharedPath/$dir");
 
-            // Symlink
-            run("ln -nfs $sharedDirBase/$dir $releaseDir/$dir");
-        }
-
-        // Shared files
-        $sharedFiles = (array)get('shared_dirs', ['app/config/parameters.yml']);
-        foreach ($sharedFiles as $file) {
-            // Create dir of shared file
-            run("mkdir -p $sharedDirBase/" . dirname($file));
-
-            // Touch shared file
-            run("touch $sharedDirBase/$file");
-
-            // Symlink
-            run("ln -nfs $sharedDirBase/$file $releaseDir/$file");
-        }
+        // Symlink shared dir to release dir
+        run("ln -nfs $sharedPath/$dir $releasePath/$dir");
     }
 
-    ok();
-})->description('Create symlinks for shared directories and files');
+    // User specified shared files
+    $sharedFiles = (array)get('shared_dirs', ['app/config/parameters.yml']);
 
+    foreach ($sharedFiles as $file) {
+        // Create dir of shared file
+        run("mkdir -p $sharedPath/" . dirname($file));
+
+        // Touch shared file
+        run("touch $sharedPath/$file");
+
+        // Symlink shared file to release file
+        run("ln -nfs $sharedPath/$file $releasePath/$file");
+    }
+})->desc('Creating symlinks for shared files');
+
+
+/**
+ * Make writeable dirs
+ */
 task('deploy:writeable_dirs', function () {
-    info('Make writeable dirs');
-    $config = Server\Current::getServer()->getConfiguration();
-    $user = $config->getUser();
-    $wwwUser = get('www_user', 'www-data');
+    $user = config()->getUser();
+    $wwwUser = config()->getWwwUser();
+    $releasePath = env()->getReleasePath();
+
+    cd($releasePath);
+
+    // User specified writeable dirs
     $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
 
-    $releaseDir = get('release_dir', null);
-
-    if (null !== $releaseDir) {
-
-        foreach ($dirs as $dir) {
-            run("cd $releaseDir && rm -rf $dir/*");
-            run("cd $releaseDir && chmod -R 0777 $dir");
-            run("cd $releaseDir && chmod -R g+w $dir");
-        }
+    foreach ($dirs as $dir) {
+        run("chmod -R 0777 $dir");
+        run("chmod -R g+w $dir");
     }
+})->desc('Make writeable dirs');
 
-    ok();
-})->description('Set right permissions');
 
+/**
+ * Set right permissions
+ */
 task('deploy:permissions:setfacl', function () {
-    info('Setting permissions');
-    $config = Server\Current::getServer()->getConfiguration();
-    $user = $config->getUser();
-    $wwwUser = get('www_user', 'www-data');
+    $user = config()->getUser();
+    $wwwUser = config()->getWwwUser();
+    $releasePath = env()->getReleasePath();
+
     $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
 
     if (empty(run("if which setfacl; then echo \"ok\"; fi"))) {
@@ -165,117 +154,122 @@ task('deploy:permissions:setfacl', function () {
         return;
     }
 
-    $releaseDir = get('release_dir', null);
+    cd($releasePath);
 
-    if (null !== $releaseDir) {
-
-        foreach ($dirs as $dir) {
-            run("cd $releaseDir && rm -rf $dir/*");
-            run("cd $releaseDir && setfacl -R -m u:$wwwUser:rwX -m u:$user:rwX $dir");
-            run("cd $releaseDir && setfacl -dR -m u:$wwwUser:rwX -m u:$user:rwX $dir");
-        }
+    foreach ($dirs as $dir) {
+        run("setfacl -R -m u:$wwwUser:rwX -m u:$user:rwX $dir");
+        run("setfacl -dR -m u:$wwwUser:rwX -m u:$user:rwX $dir");
     }
+})->desc('Setting permissions');
 
-    ok();
-})->description('Set right permissions');
 
+/**
+ * Normalize asset timestamps
+ */
 task('deploy:assets', function () {
-    info('Normalizing asset timestamps');
+    $releasePath = env()->getReleasePath();
 
-    $basePath = Server\Current::getServer()->getConfiguration()->getPath();
-    $releaseDir = get('release_dir', null);
+    $assets = get('assets', ['web/css', 'web/images', 'web/js']);
 
-    if (null !== $releaseDir) {
-        $assets = get('assets', ['web/css', 'web/images', 'web/js']);
+    $assets = array_map(function ($asset) use ($releasePath) {
+        return "$releasePath/$asset";
+    }, $assets);
+    $assets = implode(' ', $assets);
 
-        $assets = array_map(function ($asset) use ($releaseDir, $basePath) {
-            return "$basePath/$releaseDir/$asset";
-        }, $assets);
-        $assets = implode(' ', $assets);
+    $time = date('Ymdhi.s');
 
-        $time = date('Ymdhi.s');
+    run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
+})->desc('Normalizing asset timestamps');
 
-        run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
-    }
 
-    ok();
-})->description('Normalize asset timestamps');
-
+/**
+ * Install vendors
+ */
 task('deploy:vendors', function () {
-    info('Installing vendors');
+    $releasePath = env()->getReleasePath();
 
-    $releaseDir = get('release_dir', null);
-
-    if (null !== $releaseDir) {
-        $isComposer = run("if [ -e $releaseDir/composer.phar ]; then echo 'true'; fi");
-
-        if ('true' !== $isComposer) {
-            run("cd $releaseDir && curl -s http://getcomposer.org/installer | php");
-        }
-
-        $prod = get('env', 'prod');
-
-        run("cd $releaseDir && SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
-    }
-
-    ok();
-})->description('Install vendors');
-
-task('deploy:assetic:dump', function () {
-    info('Dumping assets');
-
-    $releaseDir = get('release_dir', null);
-
-    if (null !== $releaseDir) {
-        $prod = get('env', 'prod');
-        run("php $releaseDir/app/console assetic:dump --env=$prod --no-debug");
-    }
-
-    ok();
-})->description('Dump all assets to the filesystem');
-
-task('deploy:cache:warmup', function () {
-    info('Warming up cache');
-
-    $releaseDir = get('release_dir', null);
-    $cacheDir = get('cache_dir', null);
-
-    if (null !== $cacheDir && null !== $releaseDir) {
-        $prod = get('env', 'prod');
-        run("php $releaseDir/app/console cache:warmup  --env=$prod --no-debug");
-        run("chmod -R g+w $cacheDir");
-    }
-
-    ok();
-})->description('Warm up cache');
-
-task('database:migrate', function () {
-    info('Migrating database');
+    cd($releasePath);
     $prod = get('env', 'prod');
-    run("php current/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
-    ok();
-})->description('Migrate database');
+    $isComposer = run("if [ -e $releasePath/composer.phar ]; then echo 'true'; fi");
 
+    if ('true' !== $isComposer) {
+        run("curl -s http://getcomposer.org/installer | php");
+    }
+
+    run("SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
+
+})->desc('Installing vendors');
+
+
+/**
+ * Dump all assets to the filesystem
+ */
+task('deploy:assetic:dump', function () {
+    $releasePath = env()->getReleasePath();
+    $prod = get('env', 'prod');
+
+    run("php $releasePath/app/console assetic:dump --env=$prod --no-debug");
+
+})->desc('Dumping assets');
+
+
+/**
+ * Warm up cache
+ */
+task('deploy:cache:warmup', function () {
+    $releasePath = env()->getReleasePath();
+    $cacheDir = env()->get('cache_dir', "$releasePath/app/cache");
+
+    $prod = get('env', 'prod');
+
+    run("php $releasePath/app/console cache:warmup  --env=$prod --no-debug");
+
+    run("chmod -R g+w $cacheDir");
+
+})->desc('Warming up cache');
+
+
+/**
+ * Migrate database
+ */
+task('database:migrate', function () {
+    $releasePath = env()->getReleasePath();
+    $prod = get('env', 'prod');
+
+    run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
+
+})->desc('Migrating database');
+
+
+/**
+ * Remove app_dev.php files
+ */
 task('deploy:clear_controllers', function () {
-    run("rm -f web/app_*.php");
-})->description('Remove app_dev.php files');
+    $releasePath = env()->getReleasePath();
+
+    run("rm -f $releasePath/web/app_*.php");
+});
 
 after('deploy:update_code', 'deploy:clear_controllers');
 
+
+/**
+ * Create symlink to last release
+ */
 task('deploy:symlink', function () {
-    $basePath = Server\Current::getServer()->getConfiguration()->getPath();
+    $releasePath = env()->getReleasePath();
     $releaseDir = get('release_dir', null);
 
-    if (null !== $releaseDir) {
-        run("rm -f current");
-        run("ln -s $basePath/$releaseDir current");
-    }
-})->description('Create symlink to last release');
+    run("rm -f current && ln -s $releasePath current");
 
+})->desc('Creating symlink to release');
+
+
+/**
+ * Cleanup old releases
+ */
 task('cleanup', function () {
-    info('Cleaning up old releases');
-
-    $releases = releases();
+    $releases = env()->releases();
 
     $keep = get('keep_releases', 3);
 
@@ -288,12 +282,26 @@ task('cleanup', function () {
         run("rm -rf releases/$release");
     }
 
-    ok();
-})->description('Cleanup old releases');
+})->desc('Cleaning up old releases');
 
-task('deploy:start', function () {});
-task('deploy:end', function () {});
 
+/**
+ * Helper task
+ */
+task('deploy:start', function () {
+});
+
+
+/**
+ * Helper task
+ */
+task('deploy:end', function () {
+});
+
+
+/**
+ * Main task
+ */
 task('deploy', [
     'deploy:start',
     'deploy:prepare',
@@ -309,10 +317,13 @@ task('deploy', [
     'deploy:symlink',
     'cleanup',
     'deploy:end'
-])->description('Deploy your project');
+])->desc('Deploy your project');
 
+/**
+ * Success message
+ */
 after('deploy', function () {
-    $host = Server\Current::getServer()->getConfiguration()->getHost();
+    $host = config()->getHost();
     writeln("<info>Successfully deployed on</info> <fg=cyan>$host</fg=cyan>");
 });
 

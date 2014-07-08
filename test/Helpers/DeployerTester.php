@@ -35,7 +35,18 @@ class DeployerTester extends \PHPUnit_Framework_TestCase
             $helperSetMock
         );
 
-        Deployer::$servers['main'] = $this->getMock('Deployer\Server\ServerInterface');
+        $main = $this->getMock('Deployer\Server\ServerInterface');
+        $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
+        $env = $this->getMockBuilder('Deployer\Server\Environment')->disableOriginalConstructor()->getMock();
+        $main->expects($this->any())
+            ->method('getConfiguration')
+            ->will($this->returnValue($config));
+        $main->expects($this->any())
+            ->method('getEnvironment')
+            ->will($this->returnValue($env));
+
+
+        Deployer::$servers['main'] = $main;
     }
 
     protected function tearDown()

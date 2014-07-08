@@ -39,4 +39,9 @@ interface ServerInterface
      * @return Configuration
      */
     public function getConfiguration();
+
+    /**
+     * @return Environment
+     */
+    public function getEnvironment();
 }

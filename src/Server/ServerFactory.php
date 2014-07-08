@@ -19,7 +19,7 @@ class ServerFactory
      */
     public static function create($name, $host, $port = 22)
     {
-        $configuration = new Configuration($host, $port);
+        $configuration = new Configuration($name, $host, $port);
         if (get('use_ssh2', function_exists('ssh2_exec'))) {
             Deployer::$servers[$name] = new Ssh2($configuration);
         } else {

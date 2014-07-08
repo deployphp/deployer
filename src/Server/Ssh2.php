@@ -9,7 +9,7 @@ namespace Deployer\Server;
 
 use Ssh;
 
-class Ssh2 implements ServerInterface
+class Ssh2 extends AbstractServer
 {
     /**
      * SSH session.
@@ -17,25 +17,12 @@ class Ssh2 implements ServerInterface
      */
     private $session;
 
-    /**
-     * Server config.
-     * @var Configuration
-     */
-    private $config;
 
     /**
      * Array of created directories during upload.
      * @var array
      */
     private $directories = [];
-
-    /**
-     * @param Configuration $config
-     */
-    public function __construct(Configuration $config)
-    {
-        $this->config = $config;
-    }
 
     /**
      * {@inheritdoc}
@@ -132,13 +119,5 @@ class Ssh2 implements ServerInterface
         if(!$this->session->getSftp()->receive($remote, $local)) {
             throw new \RuntimeException('Can not download file.');
         }
-    }
-
-    /**
-     *{@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        return $this->config;
     }
 } 

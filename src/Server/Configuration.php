@@ -24,6 +24,12 @@ class Configuration
     private $authenticationMethod = self::AUTH_BY_PASSWORD;
 
     /**
+     * Server name
+     * @var string
+     */
+    private $name;
+
+    /**
      * Server host.
      * @var string
      */
@@ -78,11 +84,18 @@ class Configuration
     private $passPhrase;
 
     /**
+     * WWW user name.
+     * @var string
+     */
+    private $wwwUser = 'www-data';
+
+    /**
      * @param string $host
      * @param int $port
      */
-    public function __construct($host, $port = 22)
+    public function __construct($name, $host, $port = 22)
     {
+        $this->setName($name);
         $this->setHost($host);
         $this->setPort($port);
     }
@@ -317,5 +330,41 @@ class Configuration
     {
         $this->user = $user;
         return $this;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $wwwUser
+     * @return $this
+     */
+    public function setWwwUser($wwwUser)
+    {
+        $this->wwwUser = $wwwUser;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWwwUser()
+    {
+        return $this->wwwUser;
     }
 }

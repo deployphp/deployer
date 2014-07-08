@@ -7,21 +7,8 @@
 
 namespace Deployer\Server;
 
-class DryRun implements ServerInterface
+class DryRun extends AbstractServer
 {
-    /**
-     * @var Configuration
-     */
-    private $config;
-
-    /**
-     * @param Configuration $config
-     */
-    public function __construct(Configuration $config)
-    {
-        $this->config = $config;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -52,13 +39,5 @@ class DryRun implements ServerInterface
     public function download($local, $remote)
     {
         writeln("[{$this->config->getHost()}] Download file {$remote} to {$local}");
-    }
-
-    /**
-     *{@inheritdoc}
-     */
-    public function getConfiguration()
-    {
-        return $this->config;
     }
 }

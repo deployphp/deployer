@@ -7,7 +7,7 @@
 
 namespace Deployer;
 
-use Deployer\Console\Command;
+use Deployer\Console\RunTaskCommand;
 use Deployer\Server\ServerInterface;
 use Deployer\Task\TaskFactory;
 use Deployer\Task\TaskInterface;
@@ -100,7 +100,7 @@ class Deployer
     public function transformTasksToConsoleCommands()
     {
         foreach (self::$tasks as $name => $task) {
-            $command = new Command($name, $task);
+            $command = new RunTaskCommand($name, $task);
             $this->app->add($command);
         }
     }

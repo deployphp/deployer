@@ -8,9 +8,10 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Server\Current;
 use Deployer\Server\DryRun;
+use Deployer\Server\Environment;
 use Deployer\Task\AbstractTask;
+use Deployer\Task\Runner;
 use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -60,28 +61,74 @@ class RunTaskCommand extends BaseCommand
             // Nothing to do now.
         }
 
-        foreach (Deployer::$servers as $name => $server) {
+        foreach ($this->task->get() as $runner) {
+            $isPrinted = $this->writeDesc($output, $runner->getDesc());
 
-            if (OutputInterface::VERBOSITY_VERY_VERBOSE <= $output->getVerbosity()) {
-                $output->writeln("Run task <info>{$this->getName()}</info> on server <info>{$name}</info>");
+            foreach (Deployer::$servers as $name => $server) {
+                // Skip to specified server.
+                $onServer = $input->getOption('server');
+                if (null !== $onServer && $onServer !== $name) {
+                    continue;
+                }
+
+                // Convert server to dry run server.
+                if ($input->getOption('dry-run')) {
+                    $server = new DryRun($server->getConfiguration());
+                }
+
+                // Set server environment.
+                $env = $server->getEnvironment();
+                $env->set('working_path', $server->getConfiguration()->getPath());
+                Environment::setCurrent($env);
+
+                if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+                    $output->writeln("On server <info>{$name}</info>");
+                }
+
+
+                // Run task.
+                $runner->run();
             }
 
-            // Skip to specified server.
-            $onServer = $input->getOption('server');
-            if (null !== $onServer && $onServer !== $name) {
-                continue;
+            if ($isPrinted) {
+                $this->writeOk($output);
+            }
+        }
+    }
+
+    /**
+     * Print description of running task.
+     * @param OutputInterface $output
+     * @param string $desc
+     * @return bool True if desc was printed.
+     */
+    private function writeDesc(OutputInterface $output, $desc)
+    {
+        if (OutputInterface::VERBOSITY_QUIET !== $output->getVerbosity() && !empty($desc)) {
+            $output->write("<info>$desc</info>");
+
+            if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+                $output->write("\n");
+            } else {
+                $tit = 60 - strlen($desc);
+                $dots = str_repeat('.', $tit > 0 ? $tit : 0);
+                $output->write("$dots");
             }
 
-            // Convert server to dry run server.
-            if ($input->getOption('dry-run')) {
-                $server = new DryRun($server->getConfiguration());
-            }
+            return true;
+        }
 
-            // Set current server.
-            Current::setServer($name, $server);
+        return false;
+    }
 
-            // Run task.
-            $this->task->run();
+    /**
+     * Print "ok" sign.
+     * @param OutputInterface $output
+     */
+    private function writeOk(OutputInterface $output)
+    {
+        if (OutputInterface::VERBOSITY_QUIET !== $output->getVerbosity()) {
+            $output->writeln("<info>✔</info>");
         }
     }
 }

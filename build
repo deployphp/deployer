@@ -40,13 +40,13 @@ $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace('__VERSION__', $version, $depContent);
 $phar->addFromString('bin/dep', $depContent);
 
-$stub = "
+$stub = <<<STUB
 #!/usr/bin/env php
 <?php
 Phar::mapPhar('{$pharName}');
 require 'phar://{$pharName}/bin/dep';
 __HALT_COMPILER();
-";
+STUB;
 
 $phar->setStub($stub);
 $phar->stopBuffering();

@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "90e6a3a5a60f45424a01482750c913ba",
+    "hash": "2806e786ac5df100060479e6eca63dc4",
     "packages": [
         {
             "name": "herrera-io/json",
@@ -355,6 +355,67 @@
                 "update"
             ],
             "time": "2013-11-09 17:50:41"
+        },
+        {
+            "name": "misterion/ko-process",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/misterion/ko-process.git",
+                "reference": "37305b852697997def02df3ff6d1208fc4914ea1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/misterion/ko-process/zipball/37305b852697997def02df3ff6d1208fc4914ea1",
+                "reference": "37305b852697997def02df3ff6d1208fc4914ea1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": ">=4.0.0"
+            },
+            "suggest": {
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "ext-proctitle": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Ko": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nikolay Bondarenko",
+                    "email": "misterionkell@gmail.com",
+                    "homepage": "http://misterion.ru/",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Simple pcntl fork wrapper and process manager",
+            "homepage": "https://github.com/misterion/ko-process",
+            "keywords": [
+                "Thread",
+                "ampq",
+                "background",
+                "cli",
+                "exit_code",
+                "fork",
+                "pcntl",
+                "posix",
+                "semaphore",
+                "sharedmemory",
+                "signal",
+                "utility"
+            ],
+            "time": "2014-05-06 09:03:31"
         },
         {
             "name": "phpseclib/phpseclib",
@@ -1027,7 +1088,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpseclib/phpseclib": 20
+        "phpseclib/phpseclib": 20,
+        "misterion/ko-process": 20
     },
     "platform": {
         "php": ">=5.4.0"

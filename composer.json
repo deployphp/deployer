@@ -26,6 +26,7 @@
         "symfony/console": "~2.5",
         "herzult/php-ssh": "~1.0",
         "phpseclib/phpseclib": "0.3.*@dev",
+        "misterion/ko-process": "0.3.*@dev",
         "kherge/amend": "~3.0"
     },
     "require-dev": {

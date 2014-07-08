@@ -60,6 +60,15 @@ function after($name, $task)
 }
 
 /**
+ * Set working path for task.
+ * @param string $path
+ */
+function cd($path)
+{
+    env()->set('working_path', $path);
+}
+
+/**
  * Run command on current server.
  * @param string $command
  * @param bool $raw If true $command will not be modified.
@@ -67,11 +76,12 @@ function after($name, $task)
  */
 function run($command, $raw = false)
 {
-    $server = Server\Current::getServer();
-    $config = $server->getConfiguration();
+    $server = env()->getServer();
+    $config = config();
+    $workingPath = env()->get('working_path');
 
     if (!$raw) {
-        $command = "cd {$config->getPath()} && $command";
+        $command = "cd {$workingPath} && $command";
     }
 
     if (output()->isDebug()) {
@@ -106,9 +116,9 @@ function runLocally($command)
  */
 function upload($local, $remote)
 {
-    $server = Server\Current::getServer();
+    $server = env()->getServer();
 
-    $remote = $server->getConfiguration()->getPath() . '/' . $remote;
+    $remote = config()->getPath() . '/' . $remote;
 
     if (is_file($local)) {
 
@@ -157,7 +167,7 @@ function upload($local, $remote)
  */
 function download($local, $remote)
 {
-    $server = Server\Current::getServer();
+    $server = env()->getServer();
     $server->download($local, $remote);
 }
 
@@ -180,32 +190,22 @@ function write($message)
 }
 
 /**
- * Print description of running task.
+ * Prints info.
  * @param string $description
+ * @deprecated Use writeln("<info>...</info>") instead of.
  */
 function info($description)
 {
-    if (!output()->isQuiet() && !empty($description)) {
-        write("<info>$description</info>");
-
-        if (output()->isVerbose()) {
-            write("\n");
-        } else {
-            $tit = 60 - strlen($description);
-            $dots = str_repeat('.', $tit > 0 ? $tit : 0);
-            write("$dots");
-        }
-    }
+    writeln("<info>$description</info>");
 }
 
 /**
- * Print "ok" sign.
+ * Prints "ok" sign.
+ * @deprecated
  */
 function ok()
 {
-    if (!output()->isQuiet()) {
-        writeln("<info>✔</info>");
-    }
+    writeln("<info>✔</info>");
 }
 
 /**
@@ -297,4 +297,22 @@ function progressHelper($count)
 function output()
 {
     return Deployer::get()->getOutput();
+}
+
+/**
+ * Return current server env.
+ * @return Server\Environment
+ */
+function env()
+{
+    return Server\Environment::getCurrent();
+}
+
+/**
+ * Return current server configuration.
+ * @return Server\Configuration
+ */
+function config()
+{
+    return env()->getConfig();
 }

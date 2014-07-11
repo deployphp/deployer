@@ -236,7 +236,9 @@ task('database:migrate', function () {
     $releasePath = env()->getReleasePath();
     $prod = get('env', 'prod');
 
-    run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
+    if (askConfirmation("Run migrations?", get('auto_migrate', false))) {
+        run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
+    }
 
 })->desc('Migrating database');
 
@@ -311,8 +313,7 @@ task('deploy', [
     'deploy:assets',
     'deploy:vendors',
     'deploy:assetic:dump',
-    (get('auto_migrate', false) ? 'migrate' : function () {
-    }),
+    'database:migrate',
     'deploy:cache:warmup',
     'deploy:symlink',
     'cleanup',

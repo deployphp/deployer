@@ -259,7 +259,8 @@ function askConfirmation($message, $default = false)
 
     $dialog = Deployer::get()->getHelperSet()->get('dialog');
 
-    $message = "<question>$message [y/n]</question> ";
+    $yesOrNo = $default ? 'Y/n' : 'y/N';
+    $message = "<question>$message [$yesOrNo]</question> ";
 
     if (!$dialog->askConfirmation(output(), $message, $default)) {
         return false;

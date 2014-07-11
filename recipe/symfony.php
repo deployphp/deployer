@@ -235,8 +235,9 @@ task('deploy:cache:warmup', function () {
 task('database:migrate', function () {
     $releasePath = env()->getReleasePath();
     $prod = get('env', 'prod');
+    $serverName = config()->getName();
 
-    if (askConfirmation("Run migrations?", get('auto_migrate', false))) {
+    if (askConfirmation("Run migrations on <info>$serverName</info> server?", get('auto_migrate', false))) {
         run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
     }
 

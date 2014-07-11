@@ -14,7 +14,6 @@ use Deployer\Task\AbstractTask;
 use Deployer\Task\Runner;
 use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -74,6 +73,9 @@ class RunTaskCommand extends BaseCommand
 
     private function runSeries(Runner $runner, InputInterface $input, OutputInterface $output)
     {
+        $taskName = $runner->getName();
+        $taskName = empty($taskName) ? 'UnNamed' : $taskName;
+
         foreach (Deployer::$servers as $name => $server) {
             // Skip to specified server.
             $onServer = $input->getOption('server');
@@ -92,7 +94,7 @@ class RunTaskCommand extends BaseCommand
             Environment::setCurrent($env);
 
             if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-                $output->writeln("On server <info>{$name}</info>");
+                $output->writeln("Run task <comment>$taskName</comment> on server <info>{$name}</info>");
             }
 
             // Run task.

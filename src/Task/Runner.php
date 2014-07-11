@@ -17,15 +17,21 @@ class Runner
     /**
      * @var string
      */
+    private $name;
+
+    /**
+     * @var string
+     */
     private $desc;
 
     /**
      * @param callable $closure
      * @param string $desc
      */
-    public function __construct(\Closure $closure, $desc = null)
+    public function __construct(\Closure $closure, $name = null, $desc = null)
     {
         $this->closure = $closure;
+        $this->name = $name;
         $this->desc = $desc;
     }
 
@@ -35,6 +41,22 @@ class Runner
     public function run()
     {
         call_user_func($this->closure);
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

@@ -15,13 +15,14 @@ class TaskFactory
     /**
      * Create task.
      * @param callable|string|array $body Code of task or name of other task or array of other tasks.
+     * @param string $name Task name.
      * @return TaskInterface
      */
-    public static function create($body)
+    public static function create($body, $name = null)
     {
         if ($body instanceof \Closure) {
 
-            return new Task($body);
+            return new Task($body, $name);
 
         } elseif (is_string($body)) {
 

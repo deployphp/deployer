@@ -29,7 +29,7 @@ function server($name, $domain, $port = 22)
  */
 function task($name, $body)
 {
-    return Deployer::$tasks[$name] = Task\TaskFactory::create($body);
+    return Deployer::$tasks[$name] = Task\TaskFactory::create($body, $name);
 }
 
 /**

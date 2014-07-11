@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2806e786ac5df100060479e6eca63dc4",
+    "hash": "90e6a3a5a60f45424a01482750c913ba",
     "packages": [
         {
             "name": "herrera-io/json",
@@ -357,67 +357,6 @@
             "time": "2013-11-09 17:50:41"
         },
         {
-            "name": "misterion/ko-process",
-            "version": "v0.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/misterion/ko-process.git",
-                "reference": "37305b852697997def02df3ff6d1208fc4914ea1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/misterion/ko-process/zipball/37305b852697997def02df3ff6d1208fc4914ea1",
-                "reference": "37305b852697997def02df3ff6d1208fc4914ea1",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": ">=4.0.0"
-            },
-            "suggest": {
-                "ext-pcntl": "*",
-                "ext-posix": "*",
-                "ext-proctitle": "*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Ko": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nikolay Bondarenko",
-                    "email": "misterionkell@gmail.com",
-                    "homepage": "http://misterion.ru/",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Simple pcntl fork wrapper and process manager",
-            "homepage": "https://github.com/misterion/ko-process",
-            "keywords": [
-                "Thread",
-                "ampq",
-                "background",
-                "cli",
-                "exit_code",
-                "fork",
-                "pcntl",
-                "posix",
-                "semaphore",
-                "sharedmemory",
-                "signal",
-                "utility"
-            ],
-            "time": "2014-05-06 09:03:31"
-        },
-        {
             "name": "phpseclib/phpseclib",
             "version": "dev-master",
             "source": {
@@ -563,17 +502,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "ef4ca73b0b3a10cbac653d3ca482d0cdd4502b2c"
+                "reference": "2e3df33dd72a9cdef7e9745d930e29ff844fe055"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/ef4ca73b0b3a10cbac653d3ca482d0cdd4502b2c",
-                "reference": "ef4ca73b0b3a10cbac653d3ca482d0cdd4502b2c",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/2e3df33dd72a9cdef7e9745d930e29ff844fe055",
+                "reference": "2e3df33dd72a9cdef7e9745d930e29ff844fe055",
                 "shasum": ""
             },
             "require": {
@@ -616,21 +555,21 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-22 08:54:24"
+            "time": "2014-07-08 12:21:33"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "307aad2c541bbdf43183043645e186ef2cd6b973"
+                "reference": "614f0f46f81873d952684e355af7acceb85409b9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/307aad2c541bbdf43183043645e186ef2cd6b973",
-                "reference": "307aad2c541bbdf43183043645e186ef2cd6b973",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/614f0f46f81873d952684e355af7acceb85409b9",
+                "reference": "614f0f46f81873d952684e355af7acceb85409b9",
                 "shasum": ""
             },
             "require": {
@@ -665,7 +604,7 @@
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-22 13:47:45"
+            "time": "2014-07-08 12:21:33"
         }
     ],
     "packages-dev": [
@@ -1037,17 +976,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.5.0",
+            "version": "v2.5.1",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c"
+                "reference": "1057e87364c0b38b50f5695fc9df9dd189036bec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/b4b09c68ec2f2727574544ef0173684281a5033c",
-                "reference": "b4b09c68ec2f2727574544ef0173684281a5033c",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/1057e87364c0b38b50f5695fc9df9dd189036bec",
+                "reference": "1057e87364c0b38b50f5695fc9df9dd189036bec",
                 "shasum": ""
             },
             "require": {
@@ -1082,14 +1021,13 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-05-16 14:25:18"
+            "time": "2014-07-08 12:21:33"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpseclib/phpseclib": 20,
-        "misterion/ko-process": 20
+        "phpseclib/phpseclib": 20
     },
     "platform": {
         "php": ">=5.4.0"

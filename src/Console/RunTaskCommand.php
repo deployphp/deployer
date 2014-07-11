@@ -9,7 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Server\DryRun;
-use Deployer\Server\Environment;
+use Deployer\Environment;
 use Deployer\Task\AbstractTask;
 use Deployer\Task\Runner;
 use Deployer\Task\TaskInterface;
@@ -45,12 +45,12 @@ class RunTaskCommand extends BaseCommand
             InputOption::VALUE_NONE,
             'Run without execution command on servers.'
         );
+
         $this->addOption(
             'server',
             null,
             InputOption::VALUE_OPTIONAL,
-            'Run tasks only on ths server.',
-            null
+            'Run tasks only on ths server.'
         );
     }
 
@@ -64,35 +64,39 @@ class RunTaskCommand extends BaseCommand
         foreach ($this->task->get() as $runner) {
             $isPrinted = $this->writeDesc($output, $runner->getDesc());
 
-            foreach (Deployer::$servers as $name => $server) {
-                // Skip to specified server.
-                $onServer = $input->getOption('server');
-                if (null !== $onServer && $onServer !== $name) {
-                    continue;
-                }
-
-                // Convert server to dry run server.
-                if ($input->getOption('dry-run')) {
-                    $server = new DryRun($server->getConfiguration());
-                }
-
-                // Set server environment.
-                $env = $server->getEnvironment();
-                $env->set('working_path', $server->getConfiguration()->getPath());
-                Environment::setCurrent($env);
-
-                if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-                    $output->writeln("On server <info>{$name}</info>");
-                }
-
-
-                // Run task.
-                $runner->run();
-            }
+            $this->runSeries($runner, $input, $output);
 
             if ($isPrinted) {
                 $this->writeOk($output);
             }
+        }
+    }
+
+    private function runSeries(Runner $runner, InputInterface $input, OutputInterface $output)
+    {
+        foreach (Deployer::$servers as $name => $server) {
+            // Skip to specified server.
+            $onServer = $input->getOption('server');
+            if (null !== $onServer && $onServer !== $name) {
+                continue;
+            }
+
+            // Convert server to dry run server.
+            if ($input->getOption('dry-run')) {
+                $server = new DryRun($server->getConfiguration());
+            }
+
+            // Set server environment.
+            $env = $server->getEnvironment();
+            $env->set('working_path', $server->getConfiguration()->getPath());
+            Environment::setCurrent($env);
+
+            if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+                $output->writeln("On server <info>{$name}</info>");
+            }
+
+            // Run task.
+            $runner->run();
         }
     }
 

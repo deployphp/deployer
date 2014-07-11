@@ -5,6 +5,7 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
+use Deployer\Environment;
 use Deployer\Server;
 use Deployer\Task;
 use Deployer\Utils;
@@ -65,7 +66,7 @@ function after($name, $task)
  */
 function cd($path)
 {
-    env()->set('working_path', $path);
+    env()->setWorkingPath($path);
 }
 
 /**
@@ -78,7 +79,7 @@ function run($command, $raw = false)
 {
     $server = env()->getServer();
     $config = config();
-    $workingPath = env()->get('working_path');
+    $workingPath = env()->getWorkingPath();
 
     if (!$raw) {
         $command = "cd {$workingPath} && $command";
@@ -301,11 +302,11 @@ function output()
 
 /**
  * Return current server env.
- * @return Server\Environment
+ * @return \Deployer\Environment
  */
 function env()
 {
-    return Server\Environment::getCurrent();
+    return Environment::getCurrent();
 }
 
 /**

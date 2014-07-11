@@ -7,6 +7,8 @@
 
 namespace Deployer\Server;
 
+use Deployer\Environment;
+
 abstract class AbstractServer implements ServerInterface
 {
     /**

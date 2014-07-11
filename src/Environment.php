@@ -5,7 +5,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Server;
+namespace Deployer;
+
+use Deployer\Server\Configuration;
+use Deployer\Server\ServerInterface;
 
 class Environment
 {
@@ -23,18 +26,6 @@ class Environment
      * @var array
      */
     private $parameters = [];
-
-    /**
-     * Current release number.
-     * @var int
-     */
-    private $release;
-
-    /**
-     * Current release path.
-     * @var string
-     */
-    private $releasePath;
 
 
     public function __construct(ServerInterface $server)
@@ -107,7 +98,7 @@ class Environment
      */
     public function setRelease($release)
     {
-        $this->release = $release;
+        $this->set('release', $release);
     }
 
     /**
@@ -115,7 +106,7 @@ class Environment
      */
     public function getRelease()
     {
-        return $this->release;
+        return $this->get('release');
     }
 
     /**
@@ -123,7 +114,7 @@ class Environment
      */
     public function setReleasePath($releasePath)
     {
-        $this->releasePath = $releasePath;
+        $this->set('release_path', $releasePath);
     }
 
     /**
@@ -131,7 +122,7 @@ class Environment
      */
     public function getReleasePath()
     {
-        return $this->releasePath;
+        return $this->get('release_path');
     }
 
     /**
@@ -147,5 +138,21 @@ class Environment
             $release = trim($release);
             return !empty($release);
         });
+    }
+
+    /**
+     * @param string $workingPath
+     */
+    public function setWorkingPath($workingPath)
+    {
+        $this->set('working_path', $workingPath);
+    }
+
+    /**
+     * @return string
+     */
+    public function getWorkingPath()
+    {
+        return $this->get('working_path');
     }
 }

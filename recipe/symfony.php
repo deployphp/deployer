@@ -237,7 +237,13 @@ task('database:migrate', function () {
     $prod = get('env', 'prod');
     $serverName = config()->getName();
 
-    if (askConfirmation("Run migrations on <info>$serverName</info> server?", get('auto_migrate', false))) {
+    $run = get('auto_migrate', false);
+
+    if (output()->isVerbose()) {
+        $run = askConfirmation("Run migrations on $serverName server?", $run);
+    }
+
+    if ($run) {
         run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
     }
 

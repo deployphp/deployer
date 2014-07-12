@@ -69,7 +69,16 @@ task('deploy:update_code', function () {
  * Delete new release if something goes wrong
  */
 task('deploy:rollback', function () {
+    if (env()->get('is_new_release', false)) {
+        $server = config()->getName();
+        writeln("<error>Rolling back to previous release on server $server</error>");
 
+        $releasePath = env()->getReleasePath();
+        // Remove release
+        run("rm -rf $releasePath");
+    } else {
+        writeln("<comment>If you want to rollback run \"rollback\" task</comment>");
+    }
 });
 
 /**

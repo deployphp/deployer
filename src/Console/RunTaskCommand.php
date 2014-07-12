@@ -60,14 +60,21 @@ class RunTaskCommand extends BaseCommand
             // Nothing to do now.
         }
 
-        foreach ($this->task->get() as $runner) {
-            $isPrinted = $this->writeDesc($output, $runner->getDesc());
+        try {
 
-            $this->runSeries($runner, $input, $output);
+            foreach ($this->task->get() as $runner) {
+                $isPrinted = $this->writeDesc($output, $runner->getDesc());
 
-            if ($isPrinted) {
-                $this->writeOk($output);
+                $this->runSeries($runner, $input, $output);
+
+                if ($isPrinted) {
+                    $this->writeOk($output);
+                }
             }
+
+        } catch (\Exception $e) {
+            $this->rollbackOnDeploy($input, $output);
+            throw $e;
         }
     }
 
@@ -135,6 +142,24 @@ class RunTaskCommand extends BaseCommand
     {
         if (OutputInterface::VERBOSITY_QUIET !== $output->getVerbosity()) {
             $output->writeln("<info>✔</info>");
+        }
+    }
+
+    /**
+     * Rollback if something goes wrong.
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    private function rollbackOnDeploy(InputInterface $input, OutputInterface $output)
+    {
+        if (!isset(Deployer::$tasks['deploy:rollback'])) {
+            return;
+        }
+
+        $task = Deployer::$tasks['deploy:rollback'];
+
+        foreach ($task->get() as $runner) {
+            $this->runSeries($runner, $input, $output);
         }
     }
 }

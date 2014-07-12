@@ -54,7 +54,6 @@ task('deploy:update_code', function () {
     $release = date('Ymd') . substr((string)time(), -5);
     $releasePath = "$basePath/releases/$release";
 
-    env()->setRelease($release);
     env()->setReleasePath($releasePath);
 
     run("git clone -q $repository $releasePath");

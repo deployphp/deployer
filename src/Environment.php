@@ -94,22 +94,6 @@ class Environment
     }
 
     /**
-     * @param int $release
-     */
-    public function setRelease($release)
-    {
-        $this->set('release', $release);
-    }
-
-    /**
-     * @return int
-     */
-    public function getRelease()
-    {
-        return $this->get('release');
-    }
-
-    /**
      * @param string $releasePath
      */
     public function setReleasePath($releasePath)
@@ -122,7 +106,14 @@ class Environment
      */
     public function getReleasePath()
     {
-        return $this->get('release_path');
+        $releasePath = $this->get('release_path', false);
+
+        if (false === $releasePath) {
+            $releasePath = run("readlink -n current");
+            $this->setReleasePath($releasePath);
+        }
+
+        return $releasePath;
     }
 
     /**

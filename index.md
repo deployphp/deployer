@@ -311,6 +311,11 @@ server(...)
 This can be used only with installed ssh2 pecl extension.
 
 
+<h4><a name="upload-and-download">Upload and download</a></h4>
+
+You can upload file or directory with `upload(local, remote)` function.
+
+And download file with `download(local, remote)` function.
 
 <h2><a name="verbosity">Verbosity</a></h2>
 
@@ -339,4 +344,52 @@ task('my_task', function () {
         // ...
     }
 });
+~~~
+
+
+
+<h2><a name="environment">Environment</a></h2>
+
+To get current environment it task call `env()` function.
+
+~~~ php
+task('my_task', function () {
+    env()->get(...);
+});
+~~~
+
+To set environment parameter:
+
+~~~ php
+env()->set('key', 'value');
+~~~
+
+To get environment parameter:
+
+~~~ php
+env()->get('key');
+~~~
+
+To get release path:
+
+~~~ php
+env()->getReleasePath();
+~~~
+
+To get server configuration:
+
+~~~ php
+config();
+
+// Is same as
+
+env()->getConfig();
+~~~
+
+To set <mark>global</mark> Deployer parameters use `set` and `get`:
+
+~~~ php
+set('key', 'value');
+
+get('key');
 ~~~

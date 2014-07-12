@@ -40,15 +40,24 @@ Deployer will work with [PHPSecLib](https://github.com/phpseclib/phpseclib).
 Installation
 ------------
 
-To install Deployer use [Composer](https://getcomposer.org):
+To install Deployer download [deployer.phar](http://deployer.in/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
-```
-composer global require elfet/deployer:dev-master
-```
+~~~
+mv deployer.phar /usr/local/bin/dep
+chmod +x /usr/local/bin/dep
+~~~
 
-Make sure what `~/.composer/vendor/bin` in your `PATH`.
+To upgrade Deployer run command:
 
-Install via PHAR: TODO
+~~~
+dep self-update
+~~~
+
+Or via composer:
+
+~~~
+composer require elfet/deployer:~1.0
+~~~
 
 Documentation
 -------------

@@ -119,7 +119,7 @@ class Environment
     /**
      * @return array
      */
-    public function releases()
+    public function getReleases()
     {
         $releases = $this->server->run("cd {$this->getConfig()->getPath()} && ls releases");
         $releases = explode("\n", $releases);

@@ -10,7 +10,7 @@
  */
 task('rollback', function () {
     $basePath = config()->getPath();
-    $releases = env()->releases();
+    $releases = env()->getReleases();
     $currentReleasePath = env()->getReleasePath();
 
     if (isset($releases[1])) {
@@ -288,7 +288,7 @@ task('deploy:symlink', function () {
  * Cleanup old releases
  */
 task('cleanup', function () {
-    $releases = env()->releases();
+    $releases = env()->getReleases();
 
     $keep = get('keep_releases', 3);
 

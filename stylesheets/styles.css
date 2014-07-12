@@ -146,6 +146,10 @@ section h2:not(:first-child) {
     margin-top: 50px;
 }
 
+section h4 {
+    margin-top: 40px;
+}
+
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 767px) {
     .terminal {
@@ -155,4 +159,20 @@ section h2:not(:first-child) {
     header {
         height: auto;
     }
+}
+
+.nav li a {
+    padding: 6px 8px;
+    background-color: transparent;
+    border-left: solid 2px transparent;
+}
+
+.nav li a:hover {
+    background-color: transparent;
+    border-left: solid 2px #91170a;
+}
+
+.nav .nav li a {
+    padding-left: 20px;
+    font-size: 90%;
 }

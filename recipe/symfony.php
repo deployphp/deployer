@@ -10,13 +10,17 @@
  */
 task('rollback', function () {
     $basePath = config()->getPath();
-
     $releases = env()->releases();
+    $currentReleasePath = env()->getReleasePath();
 
-    if (count($releases) >= 2) {
-        $releaseDir = "releases/" . $releases[1];
+    if (isset($releases[1])) {
+        $releaseDir = "{$basePath}/releases/{$releases[1]}";
+        // Symlink to old release.
         run("rm -f current");
-        run("ln -s $basePath/$releaseDir current");
+        run("ln -s $releaseDir current");
+
+        // Remove release
+        run("rm -rf $currentReleasePath");
     } else {
         writeln("<comment>No more releases you can revert to.</comment>");
     }
@@ -55,11 +59,18 @@ task('deploy:update_code', function () {
     $releasePath = "$basePath/releases/$release";
 
     env()->setReleasePath($releasePath);
+    env()->set('is_new_release', true);
 
     run("git clone -q $repository $releasePath");
     run("chmod -R g+w $releasePath");
 })->desc('Updating code');
 
+/**
+ * Delete new release if something goes wrong
+ */
+task('deploy:rollback', function () {
+
+});
 
 /**
  * Create cache dir

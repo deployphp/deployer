@@ -34,7 +34,7 @@ task('deploy:prepare', function () {
     $basePath = config()->getPath();
 
     // Check if base path exist.
-    run("if [ ! -d \"$basePath\" ]; then mkdir $basePath; fi", true);
+    run("if [ ! -d $(echo $basePath) ]; then mkdir $basePath; fi", true);
 
     // Create releases dir.
     run("if [ ! -d \"releases\" ]; then mkdir releases; fi");
@@ -96,7 +96,7 @@ task('deploy:shared', function () {
 
     foreach ($sharedDirs as $dir) {
         // Remove dir from source
-        run("if [ -d \"$releasePath/$dir\" ]; then rm -rf $releasePath/$dir; fi");
+        run("if [ -d $(echo $releasePath/$dir) ]; then rm -rf $releasePath/$dir; fi");
 
         // Create shared dir if does not exist
         run("mkdir -p $sharedPath/$dir");

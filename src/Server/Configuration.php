@@ -17,6 +17,8 @@ class Configuration
 
     const AUTH_BY_PUBLIC_KEY = 2;
 
+    const AUTH_BY_PEM_FILE = 3;
+
     /**
      * Type of authentication.
      * @var int
@@ -90,6 +92,12 @@ class Configuration
     private $wwwUser = 'www-data';
 
     /**
+     * Pem file.
+     * @var string
+     */
+    private $pemFile;
+
+    /**
      * @param string $host
      * @param int $port
      */
@@ -148,6 +156,13 @@ class Configuration
         $this->setPublicKey($publicKeyFile);
         $this->setPrivateKey($privateKeyFile);
         $this->setPassPhrase($passPhrase);
+        return $this;
+    }
+
+    public function pemFile($pemFile)
+    {
+        $this->setAuthenticationMethod(self::AUTH_BY_PEM_FILE);
+        $this->setPemFile($pemFile);
         return $this;
     }
 
@@ -366,5 +381,24 @@ class Configuration
     public function getWwwUser()
     {
         return $this->wwwUser;
+    }
+
+    /**
+     * @param string $pemFile
+     */
+    public function setPemFile($pemFile)
+    {
+        if (isset($_SERVER['HOME'])) {
+            $pemFile = str_replace('~', $_SERVER['HOME'], $pemFile);
+        }
+        $this->pemFile = $pemFile;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPemFile()
+    {
+        return $this->pemFile;
     }
 }

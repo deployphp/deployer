@@ -25,6 +25,9 @@ class PhpSecLib extends AbstractServer
      */
     public function connect()
     {
+        // Fix bug #434 in PhpSecLib
+        set_include_path(__DIR__ . '/../../vendor/phpseclib/phpseclib/phpseclib/');
+
         $this->sftp = new \Net_SFTP($this->config->getHost(), $this->config->getPort());
 
         switch ($this->config->getAuthenticationMethod()) {
@@ -40,6 +43,14 @@ class PhpSecLib extends AbstractServer
                 $key->setPassword($this->config->getPassPhrase());
                 $key->loadKey(file_get_contents($this->config->getPrivateKey()));
 
+                $this->sftp->login($this->config->getUser(), $key);
+
+                break;
+
+            case Configuration::AUTH_BY_PEM_FILE:
+
+                $key = new \Crypt_RSA();
+                $key->loadKey(file_get_contents($this->config->getPemFile()));
                 $this->sftp->login($this->config->getUser(), $key);
 
                 break;

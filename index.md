@@ -311,6 +311,19 @@ server(...)
 This can be used only with installed ssh2 pecl extension.
 
 
+<h4><a name="with-pem-file">With pem file</a></h4>
+
+Auth with pem file now supported only with PhpSecLib.
+
+~~~ php
+// Switch to PhpSecLib
+set('use_ssh2', false);
+
+server('ec2', 'host.aws.amazon.com')
+    ->user('ec2-user')
+    ->pemFile('~/.ssh/keys.pem');
+~~~
+
 <h4><a name="upload-and-download">Upload and download</a></h4>
 
 You can upload file or directory with `upload(local, remote)` function.

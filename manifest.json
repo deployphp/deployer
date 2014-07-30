@@ -1,8 +1,8 @@
 [
     {
-        "name": "deployer-1.1.0.phar",
-        "sha1": "84be2705b330bba6212532f77e6eab45dd9cef11",
+        "name": "deployer-1.1.1.phar",
+        "sha1": "702ea3eacca20bee2d6875c93e0a2151469a0da6",
         "url": "http:\/\/deployer.in\/deployer.phar",
-        "version": "1.1.0"
+        "version": "1.1.1"
     }
 ]

@@ -384,14 +384,17 @@ class Configuration
     }
 
     /**
+     * To auth with pem file use pemFile() method instead of this.
      * @param string $pemFile
+     * @return $this
      */
-    public function setPemFile($pemFile)
+    private function setPemFile($pemFile)
     {
         if (isset($_SERVER['HOME'])) {
             $pemFile = str_replace('~', $_SERVER['HOME'], $pemFile);
         }
         $this->pemFile = $pemFile;
+        return $this;
     }
 
     /**

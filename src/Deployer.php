@@ -56,6 +56,25 @@ class Deployer
      */
     public static $servers = [];
 
+
+    /**
+     * Turn on/off multistage support
+     * @var bool
+     */
+    public static $multistage = false;
+
+    /**
+     * Default deploy stage
+     * @var string
+     */
+    public static $defaultStage = 'develop';
+
+    /**
+     * List of all stages.
+     * @var array[]
+     */
+    public static $stages = [];
+
     /**
      * Array of global parameters.
      * @var array

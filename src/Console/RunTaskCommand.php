@@ -14,6 +14,7 @@ use Deployer\Task\AbstractTask;
 use Deployer\Task\Runner;
 use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Command\Command as BaseCommand;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -43,6 +44,13 @@ class RunTaskCommand extends BaseCommand
             null,
             InputOption::VALUE_NONE,
             'Run without execution command on servers.'
+        );
+
+        $this->addArgument(
+            'stage',
+            InputArgument::OPTIONAL,
+            'Run tasks for a specific environment',
+            Deployer::$defaultStage
         );
 
         $this->addOption(
@@ -83,7 +91,19 @@ class RunTaskCommand extends BaseCommand
         $taskName = $runner->getName();
         $taskName = empty($taskName) ? 'UnNamed' : $taskName;
 
-        foreach (Deployer::$servers as $name => $server) {
+        $servers = Deployer::$servers;
+
+        if ( Deployer::$multistage ) {
+            if (null === $input->getArgument('stage')) {
+                throw new \InvalidArgumentException('You have turned on multistage support, but not defined a stage (or default stage).');
+            }
+            if (!isset(Deployer::$stages[$input->getArgument('stage')])) {
+                throw new \InvalidArgumentException('This stage is not defined.');
+            }
+            $servers = Deployer::$stages[$input->getArgument('stage')];
+        }
+
+        foreach ($servers as $name => $server) {
             // Skip to specified server.
             $onServer = $input->getOption('server');
             if (null !== $onServer && $onServer !== $name) {

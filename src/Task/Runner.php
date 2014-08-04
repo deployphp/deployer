@@ -7,7 +7,9 @@
 
 namespace Deployer\Task;
 
-class Runner 
+use Symfony\Component\Console\Input\InputInterface;
+
+class Runner
 {
     /**
      * @var callable
@@ -38,9 +40,9 @@ class Runner
     /**
      * Run closure.
      */
-    public function run()
+    public function run(InputInterface $input = null)
     {
-        call_user_func($this->closure);
+        call_user_func($this->closure, $input);
     }
 
     /**

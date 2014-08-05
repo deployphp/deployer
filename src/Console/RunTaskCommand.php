@@ -59,8 +59,10 @@ class RunTaskCommand extends BaseCommand
             'Run tasks only on ths server.'
         );
 
-        foreach ( $task->getOptions() as $option ) {
-            $this->getDefinition()->addOption($option);
+        if ($task instanceof AbstractTask) {
+            foreach ($task->getOptions() as $option) {
+                $this->getDefinition()->addOption($option);
+            }
         }
     }
 

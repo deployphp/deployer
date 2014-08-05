@@ -26,7 +26,12 @@ class PhpSecLib extends AbstractServer
     public function connect()
     {
         // Fix bug #434 in PhpSecLib
-        set_include_path(__DIR__ . '/../../vendor/phpseclib/phpseclib/phpseclib/');
+        if (preg_match("~^.+/vendor/~U", __DIR__, $matches) !== false) {
+            set_include_path($matches[0] . '/phpseclib/phpseclib/phpseclib/' . PATH_SEPARATOR . get_include_path());
+        }
+        else {
+            throw new \RuntimeException('Unable to determine vendor directory path in order to define include path for phpseclib');
+        }
 
         $this->sftp = new \Net_SFTP($this->config->getHost(), $this->config->getPort());
 
@@ -116,4 +121,4 @@ class PhpSecLib extends AbstractServer
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }
-} 
+}

@@ -240,6 +240,27 @@ before('task', function () {
 ~~~
 
 
+<h4><a name="input-options">Using input options</a></h4>
+
+You can define additional input options by calling `option` on your defined tasks.
+
+~~~ php
+// Task->option(name, shortcut = null, description = '', default = null);
+
+task('deploy:upload_code', function (InputInterface $input) {
+    $branch = $input->getArgument('stage') !== 'production'?$input->getOption('branch',get('branch', null)):get('branch', null);
+    ...
+})->option('branch', 'b', 'Set the deployed branch', 'develop');
+
+
+task('deploy', [
+    ...
+    'deploy:upload_code'
+    ...
+])->option('branch', 'b', 'Set the deployed branch', 'develop');
+~~~
+**define the option on the complete chain else it will not be available**
+
 <h2><a name="servers">Servers</a></h2>
 
 Deployer uses ssh2 pecl extension, but if you do not install it on you machine - do not worry,

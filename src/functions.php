@@ -101,7 +101,7 @@ function run($command, $raw = false)
 }
 
 /**
- * Execute commands og local machine.
+ * Execute commands on local machine.
  * @param string $command Command to run locally.
  * @return string Output of command.
  */

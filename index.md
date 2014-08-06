@@ -383,6 +383,9 @@ It is also possible to set a specific option
 stage('production', array('production-server'))->set('branch','master');
 ~~~
 
+the options will overwrite the ones set in your deploy.php and just like other options you can retrieve them by calling `get`.
+
+
 <h2><a name="verbosity">Verbosity</a></h2>
 
 Deployer has levels of verbosity. To specify it add one of next options to `dep` command.

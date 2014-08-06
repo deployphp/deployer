@@ -8,15 +8,14 @@ use Deployer\Deployer;
 
 class StageFactory
 {
-
     /**
      * @param $name
      * @param array $servers
      * @param bool $default
-     * @return array
+     * @return Stage
      * @throws \RuntimeException
      */
-    public static function create($name, array $servers, $default = false)
+    public static function create($name, array $servers, array $options = array(), $default = false)
     {
         if ( count(Deployer::$servers) == 0 ) {
             throw new \RuntimeException('Server should be defined before you define any stages.');
@@ -35,13 +34,13 @@ class StageFactory
         });
 
         // Register the stage serverlist
-        Deployer::$stages[$name] = $servers;
+        Deployer::$stages[$name] = new Stage($name, $servers, $options);
 
         // When defined as default, set the stage as default on Deployer
         if ( $default ) {
             Deployer::$defaultStage = $name;
         }
 
-        return $servers;
+        return Deployer::$stages[$name];
     }
 } 

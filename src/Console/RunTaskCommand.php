@@ -8,8 +8,9 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Server\DryRun;
 use Deployer\Environment;
+use Deployer\Server\ServerInterface;
+use Deployer\Stage\Stage;
 use Deployer\Task\AbstractTask;
 use Deployer\Task\Runner;
 use Deployer\Task\TaskInterface;
@@ -68,12 +69,29 @@ class RunTaskCommand extends BaseCommand
             // Nothing to do now.
         }
 
+        $servers = Deployer::$servers;
+
+        if (Deployer::$multistage) {
+            if (null === $input->getArgument('stage')) {
+                throw new \InvalidArgumentException('You have turned on multistage support, but not defined a stage (or default stage).');
+            }
+            if (!isset(Deployer::$stages[$input->getArgument('stage')])) {
+                throw new \InvalidArgumentException('This stage is not defined.');
+            }
+            /** @var Stage $stage */
+            $stage = Deployer::$stages[$input->getArgument('stage')];
+            $servers = $stage->getServers();
+            foreach ( $stage->getOptions() as $key => $value ) {
+                set($key, $value);
+            }
+        }
+
         try {
 
             foreach ($this->task->get() as $runner) {
                 $isPrinted = $this->writeDesc($output, $runner->getDesc());
 
-                $this->runSeries($runner, $input, $output);
+                $this->runSeries($runner, $servers, $input, $output);
 
                 if ($isPrinted) {
                     $this->writeOk($output);
@@ -81,28 +99,20 @@ class RunTaskCommand extends BaseCommand
             }
 
         } catch (\Exception $e) {
-            $this->rollbackOnDeploy($input, $output);
+            $this->rollbackOnDeploy($servers, $input, $output);
             throw $e;
         }
     }
 
-    private function runSeries(Runner $runner, InputInterface $input, OutputInterface $output)
+    private function runSeries(Runner $runner, array $servers, InputInterface $input, OutputInterface $output)
     {
         $taskName = $runner->getName();
         $taskName = empty($taskName) ? 'UnNamed' : $taskName;
 
-        $servers = Deployer::$servers;
-
-        if ( Deployer::$multistage ) {
-            if (null === $input->getArgument('stage')) {
-                throw new \InvalidArgumentException('You have turned on multistage support, but not defined a stage (or default stage).');
-            }
-            if (!isset(Deployer::$stages[$input->getArgument('stage')])) {
-                throw new \InvalidArgumentException('This stage is not defined.');
-            }
-            $servers = Deployer::$stages[$input->getArgument('stage')];
-        }
-
+        /**
+         * @var string $name
+         * @var ServerInterface $server
+         */
         foreach ($servers as $name => $server) {
             // Skip to specified server.
             $onServer = $input->getOption('server');
@@ -170,7 +180,7 @@ class RunTaskCommand extends BaseCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    private function rollbackOnDeploy(InputInterface $input, OutputInterface $output)
+    private function rollbackOnDeploy(array $servers, InputInterface $input, OutputInterface $output)
     {
         if (!isset(Deployer::$tasks['deploy:rollback'])) {
             return;
@@ -179,7 +189,7 @@ class RunTaskCommand extends BaseCommand
         $task = Deployer::$tasks['deploy:rollback'];
 
         foreach ($task->get() as $runner) {
-            $this->runSeries($runner, $input, $output);
+            $this->runSeries($runner, $servers, $input, $output);
         }
     }
 }

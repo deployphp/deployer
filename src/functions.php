@@ -31,9 +31,17 @@ function multistage($defaultStage = 'develop')
     Deployer::$defaultStage = $defaultStage;
 }
 
-function stage($name, array $servers, $default = false)
+/**
+ * Define a new stage
+ * @param string $name Name of current stage
+ * @param array $servers List of servers
+ * @param array $options List of addition options
+ * @param bool $default Set as default stage
+ * @return Stage\Stage
+ */
+function stage($name, array $servers, array $options = array(), $default = false)
 {
-    return Stage\StageFactory::create($name, $servers, $default);
+    return Stage\StageFactory::create($name, $servers, $options, $default);
 }
 
 /**

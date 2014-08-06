@@ -250,6 +250,9 @@ class Configuration
      */
     public function getUser()
     {
+        if(null === $this->user) {
+            $this->user = ask("User:", trim(runLocally('whoami')));
+        }
         return $this->user;
     }
 

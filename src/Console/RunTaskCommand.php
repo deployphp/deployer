@@ -129,7 +129,7 @@ class RunTaskCommand extends BaseCommand
             if (!isset($servers[$serverName])) {
                 throw new \RuntimeException("Server $serverName not defined");
             }
-            $this->_run($taskName, $runner, $input, $output, $local, $servers[$serverName]);
+            $this->runOnServer($taskName, $runner, $input, $output, $local, $servers[$serverName]);
         } else {
             /**
              * @var string $name
@@ -140,12 +140,12 @@ class RunTaskCommand extends BaseCommand
                 if ($input->getOption('dry-run')) {
                     $server = new DryRunServer($server->getConfiguration(), $server->getEnvironment());
                 }
-                $this->_run($taskName, $runner, $input, $output, $local, $server);
+                $this->runOnServer($taskName, $runner, $input, $output, $local, $server);
             }
         }
     }
 
-    private function _run($taskName, Runner $runner, InputInterface $input, OutputInterface $output,
+    private function runOnServer($taskName, Runner $runner, InputInterface $input, OutputInterface $output,
                           LocalInterface $local, ServerInterface $server)
     {
         if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {

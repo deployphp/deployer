@@ -7,6 +7,7 @@
 use Deployer\Deployer;
 use Deployer\Environment;
 use Deployer\Server;
+use Deployer\Stage;
 use Deployer\Task;
 use Deployer\Utils;
 
@@ -19,6 +20,28 @@ use Deployer\Utils;
 function server($name, $domain, $port = 22)
 {
     return Server\ServerFactory::create($name, $domain, $port);
+}
+
+/**
+ * @param string $defaultStage
+ */
+function multistage($defaultStage = 'develop')
+{
+    Deployer::$multistage = true;
+    Deployer::$defaultStage = $defaultStage;
+}
+
+/**
+ * Define a new stage
+ * @param string $name Name of current stage
+ * @param array $servers List of servers
+ * @param array $options List of addition options
+ * @param bool $default Set as default stage
+ * @return Stage\Stage
+ */
+function stage($name, array $servers, array $options = array(), $default = false)
+{
+    return Stage\StageFactory::create($name, $servers, $options, $default);
 }
 
 /**

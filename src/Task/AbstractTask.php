@@ -7,12 +7,16 @@
 
 namespace Deployer\Task;
 
+use Symfony\Component\Console\Input\InputOption;
+
 abstract class AbstractTask implements TaskInterface
 {
     /**
      * @var string
      */
     protected $description;
+
+    protected $options = [];
 
     /**
      * @var TaskInterface[]
@@ -43,6 +47,17 @@ abstract class AbstractTask implements TaskInterface
     public function description($description)
     {
         return $this->desc($description);
+    }
+
+    public function option($name, $short = null, $description = '', $default = null)
+    {
+        $this->options[$name] = new InputOption($name, $short, InputOption::VALUE_OPTIONAL, $description, $default);
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        return $this->options;
     }
 
     /**

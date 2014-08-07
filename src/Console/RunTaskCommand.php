@@ -55,11 +55,24 @@ class RunTaskCommand extends BaseCommand
         );
 
         $this->addOption(
+            'dry-run',
+            null,
+            InputOption::VALUE_NONE,
+            'Run without execution command on servers.'
+        );
+
+        $this->addOption(
             'server',
             null,
             InputOption::VALUE_OPTIONAL,
             'Run tasks only on ths server.'
         );
+
+        if ($task instanceof AbstractTask) {
+            foreach ($task->getOptions() as $option) {
+                $this->getDefinition()->addOption($option);
+            }
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -135,7 +148,7 @@ class RunTaskCommand extends BaseCommand
             }
 
             // Run task.
-            $runner->run();
+            $runner->run($input);
         }
     }
 

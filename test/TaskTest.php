@@ -8,6 +8,8 @@
 namespace Deployer;
 
 use Deployer\Task\TaskFactory;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Tester\ApplicationTester;
 
 class TaskTest extends DeployerTester
 {
@@ -32,6 +34,24 @@ class TaskTest extends DeployerTester
         $task->description('desc');
 
         $this->assertEquals('desc', $task->getDescription());
+    }
+
+
+    public function testCustomOption()
+    {
+        $testCase = $this;
+        $task = task('task', function (InputInterface $input) use ($testCase) {
+            $testCase->assertArrayHasKey('brand', $input->getOptions());
+            $testCase->assertEquals('develop', $input->getOption('brand'));
+        })->option('brand', 'b', 'set customer brand', 'master');
+
+        $this->assertCount(1, $task->getOptions());
+        $this->assertArrayHasKey('brand', $task->getOptions());
+
+        $dep = Deployer::get();
+        $dep->transformTasksToConsoleCommands();
+        $appTester = new ApplicationTester($dep->getConsole());
+        $appTester->run(['command' => 'task', '--brand' => 'develop']);
     }
 
     /**

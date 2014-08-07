@@ -240,6 +240,27 @@ before('task', function () {
 ~~~
 
 
+<h4><a name="input-options">Using input options</a></h4>
+
+You can define additional input options by calling `option` on your defined tasks.
+
+~~~ php
+// Task->option(name, shortcut = null, description = '', default = null);
+
+task('deploy:upload_code', function (InputInterface $input) {
+    $branch = $input->getArgument('stage') !== 'production'?$input->getOption('branch',get('branch', null)):get('branch', null);
+    ...
+})->option('branch', 'b', 'Set the deployed branch', 'develop');
+
+
+task('deploy', [
+    ...
+    'deploy:upload_code'
+    ...
+])->option('branch', 'b', 'Set the deployed branch', 'develop');
+~~~
+**define the option on the complete chain else it will not be available**
+
 <h2><a name="servers">Servers</a></h2>
 
 Deployer uses ssh2 pecl extension, but if you do not install it on you machine - do not worry,
@@ -330,6 +351,41 @@ You can upload file or directory with `upload(local, remote)` function.
 
 And download file with `download(local, remote)` function.
 
+<h2><a name="stages">Stages</a></h2>
+
+You can define stages with `stage` function. Here is example of stage definition:
+
+~~~ php
+// stage(string name, array serverlist, array options = array(), bool default = true)
+stage('development', array('development-server'), array('branch'=>'develop'), true);
+stage('production', array('production-primary', 'production-secondary'), array('branch'=>'master'));
+~~~
+
+<h4><a name="default-stage">Default stage</a></h4>
+
+You can defined the default stage with `multistage` function. Here is example of stage definition:
+
+~~~ php
+multistage('develop');
+~~~
+
+<h4><a name="with-options">Options</a></h4>
+
+Besides passing the option through the helper method, it is also possible to add them afterwards.
+
+~~~ php
+stage('production', array('production-server'))->options(array('branch'=>'master'));
+~~~
+
+It is also possible to set a specific option
+
+~~~ php
+stage('production', array('production-server'))->set('branch','master');
+~~~
+
+the options will overwrite the ones set in your deploy.php and just like other options you can retrieve them by calling `get`.
+
+
 <h2><a name="verbosity">Verbosity</a></h2>
 
 Deployer has levels of verbosity. To specify it add one of next options to `dep` command.
@@ -358,8 +414,6 @@ task('my_task', function () {
     }
 });
 ~~~
-
-
 
 <h2><a name="environment">Environment</a></h2>
 

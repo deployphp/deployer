@@ -5,7 +5,6 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
-use Deployer\Environment;
 use Deployer\Server;
 use Deployer\Stage;
 use Deployer\Task;
@@ -140,7 +139,49 @@ function runLocally($command)
  */
 function upload($local, $remote)
 {
-    Task\Runner::local()->upload(Task\Runner::server(), $local, $remote);
+    $server = Task\Runner::server();
+    $remote = config()->getPath() . '/' . $remote;
+
+    if (is_file($local)) {
+
+        writeln("Upload file <info>$local</info> to <info>$remote</info>");
+
+        $server->upload($local, $remote);
+
+    } elseif (is_dir($local)) {
+
+        writeln("Upload from <info>$local</info> to <info>$remote</info>");
+
+        $finder = new \Symfony\Component\Finder\Finder();
+        $files = $finder
+            ->files()
+            ->ignoreUnreadableDirs()
+            ->ignoreVCS(true)
+            ->ignoreDotFiles(false)
+            ->in($local);
+
+        if (output()->isVerbose()) {
+            $progress = progressHelper($files->count());
+        }
+
+        /** @var $file \Symfony\Component\Finder\SplFileInfo */
+        foreach ($files as $file) {
+
+            $server->upload(
+                $file->getRealPath(),
+                Utils\Path::normalize($remote . '/' . $file->getRelativePathname())
+            );
+
+            if (output()->isVerbose()) {
+                $progress->advance();
+            }
+        }
+
+    } elseif ($server instanceof Server\DryRunServer) {
+        writeln("Upload from <info>$local</info> to <info>$remote</info>");
+    } else {
+        throw new \RuntimeException("Uploading path '$local' does not exist.");
+    }
 }
 
 /**

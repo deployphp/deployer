@@ -100,7 +100,7 @@ function cd($path)
  */
 function run($command, $raw = false)
 {
-    $server = env()->getServer();
+    $server = Task\Runner::server();
     $config = config();
     $workingPath = env()->getWorkingPath();
 
@@ -130,7 +130,7 @@ function run($command, $raw = false)
  */
 function runLocally($command)
 {
-    return Utils\Local::run($command);
+    return Task\Runner::local()->run($command);
 }
 
 /**
@@ -140,48 +140,7 @@ function runLocally($command)
  */
 function upload($local, $remote)
 {
-    $server = env()->getServer();
-
-    $remote = config()->getPath() . '/' . $remote;
-
-    if (is_file($local)) {
-
-        writeln("Upload file <info>$local</info> to <info>$remote</info>");
-
-        $server->upload($local, $remote);
-
-    } elseif (is_dir($local)) {
-
-        writeln("Upload from <info>$local</info> to <info>$remote</info>");
-
-        $finder = new Symfony\Component\Finder\Finder();
-        $files = $finder
-            ->files()
-            ->ignoreUnreadableDirs()
-            ->ignoreVCS(true)
-            ->ignoreDotFiles(false)
-            ->in($local);
-
-        if (output()->isVerbose()) {
-            $progress = progressHelper($files->count());
-        }
-
-        /** @var $file \Symfony\Component\Finder\SplFileInfo */
-        foreach ($files as $file) {
-
-            $server->upload(
-                $file->getRealPath(),
-                Utils\Path::normalize($remote . '/' . $file->getRelativePathname())
-            );
-
-            if (output()->isVerbose()) {
-                $progress->advance();
-            }
-        }
-
-    } else {
-        throw new \RuntimeException("Uploading path '$local' does not exist.");
-    }
+    Task\Runner::local()->upload(Task\Runner::server(), $local, $remote);
 }
 
 /**
@@ -191,8 +150,7 @@ function upload($local, $remote)
  */
 function download($local, $remote)
 {
-    $server = env()->getServer();
-    $server->download($local, $remote);
+    Task\Runner::server()->download($local, $remote);
 }
 
 /**
@@ -330,7 +288,7 @@ function output()
  */
 function env()
 {
-    return Environment::getCurrent();
+    return Task\Runner::server()->getEnvironment();
 }
 
 /**
@@ -339,5 +297,5 @@ function env()
  */
 function config()
 {
-    return env()->getConfig();
+    return Task\Runner::server()->getConfiguration();
 }

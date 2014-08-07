@@ -8,8 +8,8 @@
 namespace Deployer;
 
 use Deployer\Console\RunTaskCommand;
+use Deployer\Local\LocalInterface;
 use Deployer\Server\ServerInterface;
-use Deployer\Task\TaskFactory;
 use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -28,6 +28,11 @@ class Deployer
      * @var Application
      */
     private $app;
+
+    /**
+     * @var LocalInterface
+     */
+    private $local;
 
     /**
      * @var InputInterface
@@ -83,12 +88,15 @@ class Deployer
 
     /**
      * @param Application $app
+     * @param LocalInterface $local
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @param HelperSet $helperSet
      */
-    public function __construct(Application $app, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
+    public function __construct(Application $app, LocalInterface $local, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
     {
         $this->app = $app;
+        $this->local = $local;
         $this->input = $input;
         $this->output = $output;
         $this->helperSet = null === $helperSet ? $app->getHelperSet() : $helperSet;
@@ -119,7 +127,7 @@ class Deployer
     public function transformTasksToConsoleCommands()
     {
         foreach (self::$tasks as $name => $task) {
-            $command = new RunTaskCommand($name, $task);
+            $command = new RunTaskCommand($name, $task, $this);
             $this->app->add($command);
         }
     }
@@ -146,6 +154,14 @@ class Deployer
     public function getConsole()
     {
         return $this->app;
+    }
+
+    /**
+     * @return LocalInterface
+     */
+    public function getLocal()
+    {
+        return $this->local;
     }
 
     /**

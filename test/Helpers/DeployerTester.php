@@ -30,6 +30,7 @@ class DeployerTester extends \PHPUnit_Framework_TestCase
 
         new Deployer(
             $app,
+            $this->getMock('Deployer\Local\Local'),
             $this->getMockForAbstractClass('\Symfony\Component\Console\Input\Input'),
             $this->getMockForAbstractClass('\Symfony\Component\Console\Output\Output'),
             $helperSetMock

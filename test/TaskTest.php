@@ -24,7 +24,11 @@ class TaskTest extends DeployerTester
             $mock->callback();
         });
 
-        $task->get()[0]->run();
+        $input = $this->getMock('Symfony\Component\Console\Input\ArrayInput', array(), array(array()));
+        $output = $this->getMock('Symfony\Component\Console\Output\ConsoleOutput');
+        $local = $this->getMock('Deployer\Local\Local');
+
+        $task->get()[0]->run($input, $output, $local);
     }
 
     public function testDescription()

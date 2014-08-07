@@ -7,63 +7,12 @@
 
 namespace Deployer;
 
-use Deployer\Server\Configuration;
-use Deployer\Server\ServerInterface;
-
 class Environment
 {
-    /**
-     * @var Environment
-     */
-    private static $current;
-
-    /**
-     * @var ServerInterface
-     */
-    private $server;
-
     /**
      * @var array
      */
     private $parameters = [];
-
-
-    public function __construct(ServerInterface $server)
-    {
-        $this->server = $server;
-    }
-
-    /**
-     * @param Environment $current
-     */
-    public static function setCurrent($current)
-    {
-        self::$current = $current;
-    }
-
-    /**
-     * @return Environment
-     */
-    public static function getCurrent()
-    {
-        return self::$current;
-    }
-
-    /**
-     * @return ServerInterface
-     */
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
-    {
-        return $this->server->getConfiguration();
-    }
 
     /**
      * @param string $param
@@ -91,44 +40,6 @@ class Environment
                 throw new \RuntimeException("In current environment not exist parameter `$param`.");
             }
         }
-    }
-
-    /**
-     * @param string $releasePath
-     */
-    public function setReleasePath($releasePath)
-    {
-        $this->set('release_path', $releasePath);
-    }
-
-    /**
-     * @return string
-     */
-    public function getReleasePath()
-    {
-        $releasePath = $this->get('release_path', false);
-
-        if (false === $releasePath) {
-            $releasePath = run("readlink -n current");
-            $this->setReleasePath($releasePath);
-        }
-
-        return $releasePath;
-    }
-
-    /**
-     * @return array
-     */
-    public function getReleases()
-    {
-        $releases = $this->server->run("cd {$this->getConfig()->getPath()} && ls releases");
-        $releases = explode("\n", $releases);
-        rsort($releases);
-
-        return array_filter($releases, function ($release) {
-            $release = trim($release);
-            return !empty($release);
-        });
     }
 
     /**

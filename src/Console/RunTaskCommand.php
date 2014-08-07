@@ -8,7 +8,9 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Environment;
+use Deployer\Local\DryRunLocal;
+use Deployer\Local\LocalInterface;
+use Deployer\Server\DryRunServer;
 use Deployer\Server\ServerInterface;
 use Deployer\Stage\Stage;
 use Deployer\Task\AbstractTask;
@@ -28,24 +30,23 @@ class RunTaskCommand extends BaseCommand
     private $task;
 
     /**
+     * @var Deployer
+     */
+    private $deployer;
+
+    /**
      * @param null|string $name
      * @param TaskInterface $task
      */
-    public function __construct($name, TaskInterface $task)
+    public function __construct($name, TaskInterface $task, Deployer $deployer)
     {
         parent::__construct($name);
+        $this->deployer = $deployer;
         $this->task = $task;
 
         if ($task instanceof AbstractTask) {
             $this->setDescription($task->getDescription());
         }
-
-        $this->addOption(
-            'dry-run',
-            null,
-            InputOption::VALUE_NONE,
-            'Run without execution command on servers.'
-        );
 
         $this->addArgument(
             'stage',
@@ -77,11 +78,6 @@ class RunTaskCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // Configure deployer to dry run.
-        if ($input->getOption('dry-run')) {
-            // Nothing to do now.
-        }
-
         $servers = Deployer::$servers;
 
         if (Deployer::$multistage) {
@@ -94,7 +90,7 @@ class RunTaskCommand extends BaseCommand
             /** @var Stage $stage */
             $stage = Deployer::$stages[$input->getArgument('stage')];
             $servers = $stage->getServers();
-            foreach ( $stage->getOptions() as $key => $value ) {
+            foreach ($stage->getOptions() as $key => $value) {
                 set($key, $value);
             }
         }
@@ -122,34 +118,42 @@ class RunTaskCommand extends BaseCommand
         $taskName = $runner->getName();
         $taskName = empty($taskName) ? 'UnNamed' : $taskName;
 
-        /**
-         * @var string $name
-         * @var ServerInterface $server
-         */
-        foreach ($servers as $name => $server) {
-            // Skip to specified server.
-            $onServer = $input->getOption('server');
-            if (null !== $onServer && $onServer !== $name) {
-                continue;
-            }
+        $local = $this->deployer->getLocal();
 
-            // Convert server to dry run server.
-            if ($input->getOption('dry-run')) {
-                $server = new DryRun($server->getConfiguration());
-            }
-
-            // Set server environment.
-            $env = $server->getEnvironment();
-            $env->set('working_path', $server->getConfiguration()->getPath());
-            Environment::setCurrent($env);
-
-            if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
-                $output->writeln("Run task <comment>$taskName</comment> on server <info>{$name}</info>");
-            }
-
-            // Run task.
-            $runner->run($input);
+        // Convert local to dry run local.
+        if ($input->getOption('dry-run')) {
+            $local = new DryRunLocal();
         }
+
+        if ($serverName = $input->getOption('server')) {
+            if (!isset($servers[$serverName])) {
+                throw new \RuntimeException("Server $serverName not defined");
+            }
+            $this->runOnServer($taskName, $runner, $input, $output, $local, $servers[$serverName]);
+        } else {
+            /**
+             * @var string $name
+             * @var ServerInterface $server
+             */
+            foreach ($servers as $name => $server) {
+                // Convert server to dry run server.
+                if ($input->getOption('dry-run')) {
+                    $server = new DryRunServer($server->getConfiguration(), $server->getEnvironment());
+                }
+                $this->runOnServer($taskName, $runner, $input, $output, $local, $server);
+            }
+        }
+    }
+
+    private function runOnServer($taskName, Runner $runner, InputInterface $input, OutputInterface $output,
+                          LocalInterface $local, ServerInterface $server)
+    {
+        if (OutputInterface::VERBOSITY_VERBOSE <= $output->getVerbosity()) {
+            $output->writeln("Run task <comment>$taskName</comment> on server <info>{$server->getConfiguration()->getName()}</info>");
+        }
+
+        // Run task.
+        $runner->run($input, $output, $local, $server);
     }
 
     /**

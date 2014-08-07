@@ -7,7 +7,7 @@
 
 namespace Deployer\Server;
 
-class DryRun extends AbstractServer
+class DryRunServer extends AbstractServer
 {
     /**
      * {@inheritdoc}

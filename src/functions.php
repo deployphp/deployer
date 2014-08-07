@@ -5,7 +5,6 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
-use Deployer\Environment;
 use Deployer\Server;
 use Deployer\Stage;
 use Deployer\Task;
@@ -100,7 +99,7 @@ function cd($path)
  */
 function run($command, $raw = false)
 {
-    $server = env()->getServer();
+    $server = Task\Runner::server();
     $config = config();
     $workingPath = env()->getWorkingPath();
 
@@ -130,7 +129,7 @@ function run($command, $raw = false)
  */
 function runLocally($command)
 {
-    return Utils\Local::run($command);
+    return Task\Runner::local()->run($command);
 }
 
 /**
@@ -140,8 +139,7 @@ function runLocally($command)
  */
 function upload($local, $remote)
 {
-    $server = env()->getServer();
-
+    $server = Task\Runner::server();
     $remote = config()->getPath() . '/' . $remote;
 
     if (is_file($local)) {
@@ -154,7 +152,7 @@ function upload($local, $remote)
 
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
 
-        $finder = new Symfony\Component\Finder\Finder();
+        $finder = new \Symfony\Component\Finder\Finder();
         $files = $finder
             ->files()
             ->ignoreUnreadableDirs()
@@ -179,6 +177,8 @@ function upload($local, $remote)
             }
         }
 
+    } elseif ($server instanceof Server\DryRunServer) {
+        writeln("Upload from <info>$local</info> to <info>$remote</info>");
     } else {
         throw new \RuntimeException("Uploading path '$local' does not exist.");
     }
@@ -191,8 +191,7 @@ function upload($local, $remote)
  */
 function download($local, $remote)
 {
-    $server = env()->getServer();
-    $server->download($local, $remote);
+    Task\Runner::server()->download($local, $remote);
 }
 
 /**
@@ -330,7 +329,7 @@ function output()
  */
 function env()
 {
-    return Environment::getCurrent();
+    return Task\Runner::server()->getEnvironment();
 }
 
 /**
@@ -339,5 +338,5 @@ function env()
  */
 function config()
 {
-    return env()->getConfig();
+    return Task\Runner::server()->getConfiguration();
 }

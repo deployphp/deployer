@@ -176,7 +176,7 @@ task('deploy:symlink', function () {
  * Cleanup old releases
  */
 task('cleanup', function () {
-    $releases = env()->getReleases();
+    $releases = env()->getReleasesByTime();
 
     $keep = get('keep_releases', 3);
 

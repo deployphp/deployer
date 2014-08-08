@@ -61,7 +61,7 @@ task('deploy:update_code', function () {
     env()->setReleasePath($releasePath);
     env()->set('is_new_release', true);
 
-    run("git clone -q $repository $releasePath");
+    run("git clone --recursive -q $repository $releasePath");
     run("chmod -R g+w $releasePath");
 })->desc('Updating code');
 

@@ -8,20 +8,19 @@
     "packages": [
         {
             "name": "elfet/php-ssh",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elfet/php-ssh.git",
-                "reference": "864de1e0f815087155acfb8ffee8f3e3f29ca256"
+                "reference": "16da47bdbb2be5beafdff1b8a46c89229bd7f00f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elfet/php-ssh/zipball/864de1e0f815087155acfb8ffee8f3e3f29ca256",
-                "reference": "864de1e0f815087155acfb8ffee8f3e3f29ca256",
+                "url": "https://api.github.com/repos/elfet/php-ssh/zipball/16da47bdbb2be5beafdff1b8a46c89229bd7f00f",
+                "reference": "16da47bdbb2be5beafdff1b8a46c89229bd7f00f",
                 "shasum": ""
             },
             "require": {
-                "ext-ssh2": "*",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -58,7 +57,7 @@
                 "ssh",
                 "ssh2"
             ],
-            "time": "2014-06-15 09:18:18"
+            "time": "2014-07-31 18:12:59"
         },
         {
             "name": "herrera-io/json",
@@ -107,7 +106,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -167,7 +166,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -219,7 +218,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -287,7 +286,7 @@
                 },
                 {
                     "name": "Robert Schönthal",
-                    "email": "seroscho@googlemail.com",
+                    "email": "robert.schoenthal@gmail.com",
                     "homepage": "http://digitalkaoz.net"
                 }
             ],
@@ -342,7 +341,7 @@
                 {
                     "name": "Kevin Herrera",
                     "email": "kevin@herrera.io",
-                    "homepage": "http://kevin.herrera.io",
+                    "homepage": "http://kevin.herrera.io/",
                     "role": "Developer"
                 }
             ],
@@ -361,12 +360,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "5ea6502cec8d182fdf8cc2b57d814facfe6d0c25"
+                "reference": "c52441e7f2951965f5e6052560abcedb003b4af7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/5ea6502cec8d182fdf8cc2b57d814facfe6d0c25",
-                "reference": "5ea6502cec8d182fdf8cc2b57d814facfe6d0c25",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/c52441e7f2951965f5e6052560abcedb003b4af7",
+                "reference": "c52441e7f2951965f5e6052560abcedb003b4af7",
                 "shasum": ""
             },
             "require": {
@@ -451,7 +450,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2014-07-31 09:51:13"
+            "time": "2014-08-04 22:10:19"
         },
         {
             "name": "seld/jsonlint",
@@ -501,17 +500,17 @@
         },
         {
             "name": "symfony/console",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "target-dir": "Symfony/Component/Console",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "386fa63407805959bd2c5fe540294721ad4224c8"
+                "reference": "cd2d1e4bac2206b337326b0140ff475fe9ad5f63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/386fa63407805959bd2c5fe540294721ad4224c8",
-                "reference": "386fa63407805959bd2c5fe540294721ad4224c8",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/cd2d1e4bac2206b337326b0140ff475fe9ad5f63",
+                "reference": "cd2d1e4bac2206b337326b0140ff475fe9ad5f63",
                 "shasum": ""
             },
             "require": {
@@ -542,33 +541,31 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-15 14:15:12"
+            "time": "2014-08-05 09:00:40"
         },
         {
             "name": "symfony/finder",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder.git",
-                "reference": "576d8f69feec477067e91b6bd0367c113e76a1a0"
+                "reference": "090fe4eaff414d8f2171c7a4748ea868d530775f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Finder/zipball/576d8f69feec477067e91b6bd0367c113e76a1a0",
-                "reference": "576d8f69feec477067e91b6bd0367c113e76a1a0",
+                "url": "https://api.github.com/repos/symfony/Finder/zipball/090fe4eaff414d8f2171c7a4748ea868d530775f",
+                "reference": "090fe4eaff414d8f2171c7a4748ea868d530775f",
                 "shasum": ""
             },
             "require": {
@@ -591,19 +588,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Finder Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-15 14:15:12"
+            "time": "2014-07-28 13:20:46"
         }
     ],
     "packages-dev": [
@@ -929,13 +924,13 @@
             "version": "1.2.3",
             "source": {
                 "type": "git",
-                "url": "git://github.com/sebastianbergmann/phpunit-mock-objects.git",
-                "reference": "1.2.3"
+                "url": "https://github.com/sebastianbergmann/phpunit-mock-objects.git",
+                "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/sebastianbergmann/phpunit-mock-objects/archive/1.2.3.zip",
-                "reference": "1.2.3",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit-mock-objects/zipball/5794e3c5c5ba0fb037b11d8151add2a07fa82875",
+                "reference": "5794e3c5c5ba0fb037b11d8151add2a07fa82875",
                 "shasum": ""
             },
             "require": {
@@ -975,17 +970,17 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v2.5.2",
+            "version": "v2.5.3",
             "target-dir": "Symfony/Component/Yaml",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Yaml.git",
-                "reference": "f868ecdbcc0276b6158dfbf08b9e98ce07f014e1"
+                "reference": "5a75366ae9ca8b4792cd0083e4ca4dff9fe96f1f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Yaml/zipball/f868ecdbcc0276b6158dfbf08b9e98ce07f014e1",
-                "reference": "f868ecdbcc0276b6158dfbf08b9e98ce07f014e1",
+                "url": "https://api.github.com/repos/symfony/Yaml/zipball/5a75366ae9ca8b4792cd0083e4ca4dff9fe96f1f",
+                "reference": "5a75366ae9ca8b4792cd0083e4ca4dff9fe96f1f",
                 "shasum": ""
             },
             "require": {
@@ -1008,19 +1003,17 @@
             ],
             "authors": [
                 {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com",
-                    "homepage": "http://fabien.potencier.org",
-                    "role": "Lead Developer"
-                },
-                {
                     "name": "Symfony Community",
                     "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
                 }
             ],
             "description": "Symfony Yaml Component",
             "homepage": "http://symfony.com",
-            "time": "2014-07-09 09:05:48"
+            "time": "2014-08-05 09:00:40"
         }
     ],
     "aliases": [],

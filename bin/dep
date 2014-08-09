@@ -25,7 +25,7 @@ if (!$loaded) {
 }
 
 // Recipe include path
-set_include_path(__DIR__ . '/../');
+set_include_path(__DIR__ . '/../' . PATH_SEPARATOR . get_include_path());
 
 // Init Deployer
 $deployer = new \Deployer\Deployer(

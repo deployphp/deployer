@@ -130,6 +130,21 @@ class Environment
             return !empty($release);
         });
     }
+    
+    /**
+     * Let ls sort by time
+     * No need to rsort
+     */
+    public function getReleasesByTime()
+    {
+        $releases = $this->server->run("cd {$this->getConfig()->getPath()} && ls -t releases");
+        $releases = explode("\n", $releases);
+
+        return array_filter($releases, function ($release) {
+            $release = trim($release);
+            return !empty($release);
+        });
+    }
 
     /**
      * @param string $workingPath

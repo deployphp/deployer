@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Deployer
 {
     /**
-     * Singleton instance of deployer. It's can be accessed only after constructor call.
+     * Global instance of deployer. It's can be accessed only after constructor call.
      * @var Deployer
      */
     private static $instance;
@@ -48,38 +48,37 @@ class Deployer
      * List of all tasks.
      * @var TaskInterface[]
      */
-    public static $tasks = [];
+    private $tasks = [];
 
     /**
      * List of all servers.
      * @var ServerInterface[]
      */
-    public static $servers = [];
-
+    private $servers = [];
 
     /**
      * Turn on/off multistage support
      * @var bool
      */
-    public static $multistage = false;
+    private $multistage = false;
 
     /**
      * Default deploy stage
      * @var string
      */
-    public static $defaultStage = 'develop';
+    private $defaultStage = 'develop';
 
     /**
      * List of all stages.
      * @var array[]
      */
-    public static $stages = [];
+    private $stages = [];
 
     /**
      * Array of global parameters.
      * @var array
      */
-    public static $parameters = [];
+    private $parameters = [];
 
     /**
      * @param Application $app
@@ -162,10 +161,10 @@ class Deployer
      * @return TaskInterface
      * @throws \RuntimeException If task does not defined.
      */
-    public static function getTask($name)
+    public function getTask($name)
     {
-        if (array_key_exists($name, self::$tasks)) {
-            return self::$tasks[$name];
+        if (array_key_exists($name, $this->tasks)) {
+            return $this->tasks[$name];
         } else {
             throw new \RuntimeException("Task \"$name\" does not defined.");
         }

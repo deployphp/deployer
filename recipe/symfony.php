@@ -35,7 +35,8 @@ task('deploy:permissions:setfacl', function () {
 
     $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
 
-    if (empty(run("if which setfacl; then echo \"ok\"; fi"))) {
+    $run = run("if which setfacl; then echo \"ok\"; fi");
+    if (empty($run)) {
         writeln('<comment>Enable ACL support and install "setfacl"</comment>');
         return;
     }

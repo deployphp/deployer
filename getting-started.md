@@ -1,3 +1,8 @@
+---
+layout: main
+title: Getting Started
+---
+
 # Getting Started
 
 To install Deployer download <mark>deployer.phar</mark> archive.

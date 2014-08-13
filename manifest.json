@@ -4,5 +4,11 @@
         "sha1": "8b4db89f9a799bd786b45ea16be6bf9f6eca65d6",
         "url": "http:\/\/deployer.in\/deployer.phar",
         "version": "1.1.2"
+    },
+    {
+        "name": "deployer-2.0.0-pre.phar",
+        "sha1": "8579c00d814dcee5372fd2866874812c332ffb5b",
+        "url": "http:\/\/deployer.in\/releases\/deployer-2.0.0-pre.phar",
+        "version": "2.0.0-pre"
     }
 ]

@@ -45,4 +45,4 @@ dep deploy
 
 To list all available commands, run `dep` command.
 
-&larr; [Introduction](index.html) &harr; [Installation](installation.html) &rarr;
+&larr; [Introduction](index.html) &divide; [Installation](installation.html) &rarr;

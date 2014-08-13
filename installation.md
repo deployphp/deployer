@@ -37,7 +37,7 @@ To upgrade to next major release, if available add option `--upgrade (-u)`
 dep self-update --upgrade
 ~~~
 
-## Via Composer
+### Via Composer
 You can install Deployer with composer:
 
 ~~~
@@ -50,7 +50,7 @@ Then to run Deployer run next command:
 php vendors/bin/dep
 ~~~
 
-## Source Code
+### Source Code
 
 If you want build Deployer from source code, clone project from GitHub:
 
@@ -64,5 +64,8 @@ And run next command in project directory:
 php ./build
 ~~~
 
-This will build phar archive <code>deployer-<mark>version</mark>.phar</code>
+This will build phar archive `deployer.phar`
+
+&larr; [Getting Started](getting-started.html) &divide; [Tasks](tasks.html) &rarr;
+
 

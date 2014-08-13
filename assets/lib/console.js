@@ -115,7 +115,7 @@ $(function () {
 
         to(command, ['php', 'php -v'], 'PHP 6.0.0 (cli) (built: Feb 30 2016 10:96:69)\n');
 
-        to(command, ['tit', 'boobs'], ['<img src="images/tit.gif" alt="">\n', '']);
+        to(command, ['tit', 'boobs'], ['<img src="assets/img/tit.gif" alt="">\n', '']);
 
         if (notFound) {
             console.append('Sorry but this command can not be run in the emulator.\n');

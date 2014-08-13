@@ -1,6 +1,6 @@
 ---
 layout: main
-title: 
+title: Examples
 ---
 
 # Examples

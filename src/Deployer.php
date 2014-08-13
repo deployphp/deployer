@@ -9,6 +9,7 @@ namespace Deployer;
 
 use Deployer\Console\RunTaskCommand;
 use Deployer\Server\ServerInterface;
+use Deployer\Stage\Stage;
 use Deployer\Task\TaskFactory;
 use Deployer\Task\TaskInterface;
 use Symfony\Component\Console\Application;
@@ -57,20 +58,20 @@ class Deployer
     private $servers = [];
 
     /**
-     * Turn on/off multistage support
+     * Turn on/off multistage support.
      * @var bool
      */
     private $multistage = false;
 
     /**
-     * Default deploy stage
+     * Default deploy stage.
      * @var string
      */
     private $defaultStage = 'develop';
 
     /**
      * List of all stages.
-     * @var array[]
+     * @var Stage[]
      */
     private $stages = [];
 
@@ -84,6 +85,7 @@ class Deployer
      * @param Application $app
      * @param InputInterface $input
      * @param OutputInterface $output
+     * @param HelperSet $helperSet
      */
     public function __construct(Application $app, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
     {
@@ -117,8 +119,8 @@ class Deployer
      */
     public function transformTasksToConsoleCommands()
     {
-        foreach (self::$tasks as $name => $task) {
-            $command = new RunTaskCommand($name, $task);
+        foreach ($this->tasks as $name => $task) {
+            $command = new RunTaskCommand($name, $task, $this);
             $this->app->add($command);
         }
     }
@@ -156,17 +158,164 @@ class Deployer
     }
 
     /**
+     * @param string $name
+     * @param ServerInterface $server
+     */
+    public function addServer($name, ServerInterface $server)
+    {
+        $this->servers[$name] = $server;
+    }
+
+    /**
+     * @return ServerInterface
+     * @throws \RuntimeException when server not found.
+     */
+    public function getServer($name)
+    {
+        if ($this->hasServer($name)) {
+            return $this->servers[$name];
+        } else {
+            throw new \RuntimeException(sprintf('Server "%s" not found', $name));
+        }
+    }
+
+    /**
+     * @return ServerInterface[]
+     */
+    public function getServers()
+    {
+        return $this->servers;
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasServer($name)
+    {
+        return array_key_exists($name, $this->servers);
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $default
+     */
+    public function getParameter($key, $default)
+    {
+        return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : $default;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     */
+    public function setParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+    }
+
+    /**
+     * @param boolean $multistage
+     */
+    public function setMultistage($multistage)
+    {
+        $this->multistage = $multistage;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getMultistage()
+    {
+        return $this->multistage;
+    }
+
+    /**
+     * @param string $defaultStage
+     */
+    public function setDefaultStage($defaultStage)
+    {
+        $this->defaultStage = $defaultStage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultStage()
+    {
+        return $this->defaultStage;
+    }
+
+    /**
+     * @param string $name
+     * @param Stage $stage
+     */
+    public function addStage($name, Stage $stage)
+    {
+        $this->stages[$name] = $stage;
+    }
+
+    /**
+     * @param $name
+     * @return Stage
+     * @throws \RuntimeException
+     */
+    public function getStage($name)
+    {
+        if ($this->hasStage($name)) {
+            return $this->stages[$name];
+        } else {
+            throw new \RuntimeException(sprintf('Stage "%s" not found', $name));
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasStage($name)
+    {
+        return array_key_exists($name, $this->stages);
+    }
+
+    /**
+     * @return Stage[]
+     */
+    public function getStages()
+    {
+        return $this->stages;
+    }
+
+    /**
+     * @param string $name
+     * @param TaskInterface $task
+     */
+    public function addTask($name, TaskInterface $task)
+    {
+        return $this->tasks[$name] = $task;
+    }
+
+    /**
      * Return task by name.
      * @param string $name Task name.
      * @return TaskInterface
-     * @throws \RuntimeException If task does not defined.
+     * @throws \RuntimeException if task does not defined.
      */
     public function getTask($name)
     {
-        if (array_key_exists($name, $this->tasks)) {
+        if ($this->hasTask($name)) {
             return $this->tasks[$name];
         } else {
             throw new \RuntimeException("Task \"$name\" does not defined.");
         }
+    }
+
+    /**
+     * @param string $name
+     * @return bool
+     */
+    public function hasTask($name)
+    {
+        return array_key_exists($name, $this->tasks);
     }
 }

@@ -19,12 +19,18 @@ class ServerFactory
      */
     public static function create($name, $host, $port = 22)
     {
+        $deployer = Deployer::get();
+
         $configuration = new Configuration($name, $host, $port);
+
         if (get('use_ssh2', function_exists('ssh2_exec'))) {
-            Deployer::$servers[$name] = new Ssh2($configuration);
+            $server = new Ssh2($configuration);
         } else {
-            Deployer::$servers[$name] = new PhpSecLib($configuration);
+            $server = new PhpSecLib($configuration);
         }
+
+        $deployer->addServer($name, $server);
+
         return $configuration;
     }
 }

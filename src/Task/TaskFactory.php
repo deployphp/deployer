@@ -26,7 +26,7 @@ class TaskFactory
 
         } elseif (is_string($body)) {
 
-            return new ReferenceTask(Deployer::getTask($body));
+            return new ReferenceTask(Deployer::get()->getTask($body));
 
         } elseif (is_array($body)) {
 

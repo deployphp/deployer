@@ -9,6 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Environment;
+use Deployer\Server\DryRun;
 use Deployer\Server\ServerInterface;
 use Deployer\Stage\Stage;
 use Deployer\Task\AbstractTask;
@@ -28,13 +29,19 @@ class RunTaskCommand extends BaseCommand
     private $task;
 
     /**
+     * @var Deployer
+     */
+    private $deployer;
+
+    /**
      * @param null|string $name
      * @param TaskInterface $task
      */
-    public function __construct($name, TaskInterface $task)
+    public function __construct($name, TaskInterface $task, Deployer $deployer)
     {
         parent::__construct($name);
         $this->task = $task;
+        $this->deployer = $deployer;
 
         if ($task instanceof AbstractTask) {
             $this->setDescription($task->getDescription());
@@ -51,7 +58,7 @@ class RunTaskCommand extends BaseCommand
             'stage',
             InputArgument::OPTIONAL,
             'Run tasks for a specific environment',
-            Deployer::$defaultStage
+            $deployer->getDefaultStage()
         );
 
         $this->addOption(
@@ -82,20 +89,24 @@ class RunTaskCommand extends BaseCommand
             // Nothing to do now.
         }
 
-        $servers = Deployer::$servers;
+        $servers = $this->deployer->getServers();
 
-        if (Deployer::$multistage) {
+        if ($this->deployer->getMultistage()) {
+
             if (null === $input->getArgument('stage')) {
                 throw new \InvalidArgumentException('You have turned on multistage support, but not defined a stage (or default stage).');
             }
+
             if (!isset(Deployer::$stages[$input->getArgument('stage')])) {
                 throw new \InvalidArgumentException('This stage is not defined.');
             }
-            /** @var Stage $stage */
-            $stage = Deployer::$stages[$input->getArgument('stage')];
+
+            $stage = $this->deployer->getStage($input->getArgument('stage'));
+
             $servers = $stage->getServers();
-            foreach ( $stage->getOptions() as $key => $value ) {
-                set($key, $value);
+
+            foreach ($stage->getOptions() as $key => $value) {
+                $this->deployer->setParameter($key, $value);
             }
         }
 
@@ -117,7 +128,13 @@ class RunTaskCommand extends BaseCommand
         }
     }
 
-    private function runSeries(Runner $runner, array $servers, InputInterface $input, OutputInterface $output)
+    /**
+     * @param Runner $runner
+     * @param ServerInterface[] $servers
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     */
+    private function runSeries(Runner $runner, $servers, InputInterface $input, OutputInterface $output)
     {
         $taskName = $runner->getName();
         $taskName = empty($taskName) ? 'UnNamed' : $taskName;
@@ -195,11 +212,11 @@ class RunTaskCommand extends BaseCommand
      */
     private function rollbackOnDeploy(array $servers, InputInterface $input, OutputInterface $output)
     {
-        if (!isset(Deployer::$tasks['deploy:rollback'])) {
+        if (!$this->deployer->hasTask('deploy:rollback')) {
             return;
         }
 
-        $task = Deployer::$tasks['deploy:rollback'];
+        $task = $this->deployer->getTask('deploy:rollback');
 
         foreach ($task->get() as $runner) {
             $this->runSeries($runner, $servers, $input, $output);

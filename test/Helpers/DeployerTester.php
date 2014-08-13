@@ -28,7 +28,7 @@ class DeployerTester extends \PHPUnit_Framework_TestCase
         $app->setAutoExit(false);
         $app->setCatchExceptions(false);
 
-        new Deployer(
+        $deployer = new Deployer(
             $app,
             $this->getMockForAbstractClass('\Symfony\Component\Console\Input\Input'),
             $this->getMockForAbstractClass('\Symfony\Component\Console\Output\Output'),
@@ -51,14 +51,7 @@ class DeployerTester extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($env));
 
 
-        Deployer::$servers['main'] = $main;
-    }
-
-    protected function tearDown()
-    {
-        Deployer::$parameters = [];
-        Deployer::$servers = [];
-        Deployer::$tasks = [];
+        $deployer->addServer('main', $main);
     }
 
     protected function runCommand($command)

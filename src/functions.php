@@ -27,8 +27,8 @@ function server($name, $domain, $port = 22)
  */
 function multistage($defaultStage = 'develop')
 {
-    Deployer::$multistage = true;
-    Deployer::$defaultStage = $defaultStage;
+    Deployer::get()->setMultistage(true);
+    Deployer::get()->setDefaultStage($defaultStage);
 }
 
 /**
@@ -52,7 +52,7 @@ function stage($name, array $servers, array $options = array(), $default = false
  */
 function task($name, $body)
 {
-    return Deployer::$tasks[$name] = Task\TaskFactory::create($body, $name);
+    return Deployer::get()->addTask($name, Task\TaskFactory::create($body, $name));
 }
 
 /**
@@ -62,7 +62,7 @@ function task($name, $body)
  */
 function before($name, $task)
 {
-    $before = Deployer::getTask($name);
+    $before = Deployer::get()->getTask($name);
 
     if ($before instanceof Task\AbstractTask) {
         $before->before(Task\TaskFactory::create($task));
@@ -76,7 +76,7 @@ function before($name, $task)
  */
 function after($name, $task)
 {
-    $after = Deployer::getTask($name);
+    $after = Deployer::get()->getTask($name);
 
     if ($after instanceof Task\AbstractTask) {
         $after->after(Task\TaskFactory::create($task));
@@ -238,7 +238,7 @@ function ok()
  */
 function set($key, $value)
 {
-    Deployer::$parameters[$key] = $value;
+    Deployer::get()->setParameter($key, $value);
 }
 
 /**
@@ -248,7 +248,7 @@ function set($key, $value)
  */
 function get($key, $default)
 {
-    return array_key_exists($key, Deployer::$parameters) ? Deployer::$parameters[$key] : $default;
+    return Deployer::get()->getParameter($key, $default);
 }
 
 /**

@@ -2,9 +2,28 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-$version = '2.0.0';
-$pharName = "deployer-$version.phar";
+$version = false;
+$pharName = "deployer.phar";
 $pharFile = __DIR__ . '/' . $pharName;
+
+$opt = getopt('v::');
+
+if (array_key_exists('v', $opt)) {
+    $version = $opt['v'];
+    if (!preg_match('/^\d+\.\d+\.\d+(-[\d\w\.]+)?$/i', $version)) {
+        die("Version number must follow semantic versioning.\n");
+    }
+
+    $pharName = "deployer-$version.phar";
+
+    $dir = __DIR__ . '/pages/releases';
+    if (!is_dir($dir)) {
+        die("Release directory `$dir` does not exist.\n");
+    }
+
+    $pharFile = $dir . '/' . $pharName;
+}
+
 
 if (file_exists($pharFile)) {
     unlink($pharFile);
@@ -53,27 +72,32 @@ unset($phar);
 
 echo "$pharName created successful.\n";
 
-// Generate sha1 sum and put it to manifest.json
-$newPharManifest = [
-    'name' => $pharName,
-    'sha1' => sha1_file($pharFile),
-    'url' => "http://deployer.in/$pharName",
-    'version' => $version,
-];
+// Update manifest only in version is specified.
+if (false !== $version) {
 
-$manifest = json_decode(file_get_contents(__DIR__ . '/manifest.json'), true);
+    // Generate sha1 sum and put it to manifest.json
+    $newPharManifest = [
+        'name' => $pharName,
+        'sha1' => sha1_file($pharFile),
+        'url' => "http://deployer.in/releases/$pharName",
+        'version' => $version,
+    ];
 
-$alreadyExistVersion = null;
-foreach ($manifest as $i => $old) {
-    if ($old['version'] === $version) {
-        $alreadyExistVersion = $i;
+    $manifest = json_decode(file_get_contents(__DIR__ . '/manifest.json'), true);
+
+    $alreadyExistVersion = null;
+    foreach ($manifest as $i => $old) {
+        if ($old['version'] === $version) {
+            $alreadyExistVersion = $i;
+        }
     }
-}
 
-if (null === $alreadyExistVersion) {
-    $manifest[] = $newPharManifest;
-} else {
-    $manifest[$alreadyExistVersion] = $newPharManifest;
-}
+    if (null === $alreadyExistVersion) {
+        $manifest[] = $newPharManifest;
+    } else {
+        $manifest[$alreadyExistVersion] = $newPharManifest;
+    }
 
-file_put_contents(__DIR__ . '/manifest.json', json_encode($manifest, JSON_PRETTY_PRINT));
+    file_put_contents(__DIR__ . '/manifest.json', json_encode($manifest, JSON_PRETTY_PRINT));
+
+}

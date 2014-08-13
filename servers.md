@@ -94,4 +94,4 @@ You can upload file or directory with `upload(local, remote)` function.
 And download file with `download(local, remote)` function.
 
 
-&larr; [Tasks](tasks.html) &divide; [Stages](stages.md) &rarr;
+&larr; [Tasks](tasks.html) &divide; [Stages](stages.html) &rarr;

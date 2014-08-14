@@ -46,7 +46,7 @@ Building
 To build deployer.phar run `./build` command.
 
 To create new release, clone this repository at `pages` dir, checkout `gh-pages` branch and run `./build -v=VERSION`.
-THis command will create phar archive in `pages/releases` dir and automatically updates `manifest.json` file.
+This command will create phar archive in `pages/releases` dir and automatically updates `manifest.json` file.
 
 
 Contributing

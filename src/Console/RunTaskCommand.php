@@ -97,7 +97,7 @@ class RunTaskCommand extends BaseCommand
                 throw new \InvalidArgumentException('You have turned on multistage support, but not defined a stage (or default stage).');
             }
 
-            if (!isset(Deployer::$stages[$input->getArgument('stage')])) {
+            if (!$this->deployer->hasStage($input->getArgument('stage'))){
                 throw new \InvalidArgumentException('This stage is not defined.');
             }
 

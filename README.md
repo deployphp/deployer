@@ -62,6 +62,7 @@ which borrowed from Symfony.
 
 If you would like to help take a look at the [list of issues](https://github.com/elfet/deployer/issues).
 
+To make a release update version number in `bin/dep` file. And run `./build -v=VERSION` command.
 
 License
 -------

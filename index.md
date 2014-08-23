@@ -7,7 +7,7 @@ title: Deployment Tool for PHP
 
 <p class="lead">
     Deployer is a deployment tool written in PHP, it's simple and functional.
-    Deploy your code to all servers you want, it's support deploy via copy, or via VCS (like git), or via rsync.
+    Deploy your code to all servers you want, it supports deploy via copy, or via VCS (like git), or via rsync.
     Run your tasks on all your servers, or use our recipes of common tasks for Symfony, Laravel, Zend Framework and Yii.
 </p>
 

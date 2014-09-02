@@ -18,7 +18,7 @@ chmod +x /usr/local/bin/dep
 
 Now you can use Deployer via `dep` command. Later, to upgrade Deployer to latest version run `dep self-update` command.
 
-Next create `deploy.php` file in your project directory. Let's imagine that you project is based on Symfony2 Framework
+Next create `deploy.php` file in your project directory. Let's imagine that your project is based on Symfony2 Framework
 (other frameworks described in docs), so it will be good to use existing recipe for deploying Symfony.
 
 ~~~ php

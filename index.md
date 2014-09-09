@@ -21,7 +21,7 @@ server('main', 'domain.com')
 
 set('repository', 'git@github.com:you/project.git');
 
-alter('deploy', function () {
+after('deploy', function () {
     run('service php5-fpm reload');
 });
 ~~~

@@ -41,7 +41,7 @@ dep self-update --upgrade
 You can install Deployer with composer:
 
 ~~~
-composer require elfet/deployer:~1.0
+composer require elfet/deployer:~2.0
 ~~~
 
 Then to run Deployer run next command:

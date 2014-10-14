@@ -67,3 +67,5 @@ To make a release update version number in `bin/dep` file. And run `./build -v=V
 License
 -------
 Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
+
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)

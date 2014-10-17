@@ -1,6 +1,8 @@
 Introduction
 ------------
-[![Build Status](https://travis-ci.org/elfet/deployer.png?branch=master)](https://travis-ci.org/elfet/deployer)
+[![Build Status](http://img.shields.io/travis/elfet/deployer.svg?style=flat)](https://travis-ci.org/elfet/deployer)
+[![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer)
+[![Version](http://img.shields.io/packagist/v/elfet/deployer.svg?style=flat)](https://packagist.org/packages/elfet/deployer)
 
 Deployer is a deployment tool written in PHP.
 

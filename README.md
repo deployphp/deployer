@@ -4,6 +4,9 @@ Introduction
 [![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer)
 [![Version](http://img.shields.io/packagist/v/elfet/deployer.svg?style=flat)](https://packagist.org/packages/elfet/deployer)
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
+
+
 Deployer is a deployment tool written in PHP.
 
 See [http://deployer.in](http://deployer.in) for more information and documentation.
@@ -69,5 +72,3 @@ To make a release update version number in `bin/dep` file. And run `./build -v=V
 License
 -------
 Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
-
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)

@@ -7,37 +7,82 @@
 
 namespace Deployer\Server;
 
-use Deployer\Environment;
-
 abstract class AbstractServer implements ServerInterface
 {
     /**
-     * Server config.
+     * Server name.
+     * @var string
+     */
+    private $name;
+
+    /**
      * @var Configuration
      */
-    protected $config;
+    private $configuration;
 
     /**
-     * Server env.
      * @var Environment
      */
-    protected $environment;
+    private $environment;
 
     /**
-     * @param Configuration $environment
+     * @param string$name
+     * @param Configuration $configuration
+     * @param Environment $environment
      */
-    public function __construct(Configuration $config)
+    public function __construct($name, Configuration $configuration, Environment $environment)
     {
-        $this->config = $config;
-        $this->environment = new Environment($this);
+        $this->configuration = $configuration;
+        $this->environment = $environment;
+        $this->name = $name;
     }
 
     /**
-     *{@inheritdoc}
+     * {@inheritdoc}
+     */
+    public function connect()
+    {
+        // TODO: Implement connect() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run($command)
+    {
+        // TODO: Implement run() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function upload($local, $remote)
+    {
+        // TODO: Implement upload() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function download($local, $remote)
+    {
+        // TODO: Implement download() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getConfiguration()
     {
-        return $this->config;
+        return $this->configuration;
     }
 
     /**

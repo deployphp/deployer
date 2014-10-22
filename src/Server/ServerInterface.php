@@ -38,6 +38,11 @@ interface ServerInterface
     public function download($local, $remote);
 
     /**
+     * @return string
+     */
+    public function getName();
+
+    /**
      * @return Configuration
      */
     public function getConfiguration();

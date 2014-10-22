@@ -86,12 +86,6 @@ class Configuration
     private $passPhrase;
 
     /**
-     * WWW user name.
-     * @var string
-     */
-    private $wwwUser = 'www-data';
-
-    /**
      * Pem file.
      * @var string
      */
@@ -147,7 +141,7 @@ class Configuration
     /**
      * @param string $publicKeyFile
      * @param string $privateKeyFile
-     * @param null|string $passPhrase
+     * @param string $passPhrase
      * @return $this
      */
     public function pubKey($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
@@ -159,11 +153,40 @@ class Configuration
         return $this;
     }
 
+    /**
+     * @param $pemFile
+     * @return $this
+     */
     public function pemFile($pemFile)
     {
         $this->setAuthenticationMethod(self::AUTH_BY_PEM_FILE);
         $this->setPemFile($pemFile);
         return $this;
+    }
+
+    /**
+     * To auth with pem file use pemFile() method instead of this.
+     * @param string $pemFile
+     * @return $this
+     */
+    private function setPemFile($pemFile)
+    {
+        $this->pemFile = $this->parseHome($pemFile);
+        return $this;
+    }
+
+    /**
+     * Parse "~" symbol from path.
+     * @param string $path
+     * @return string
+     */
+    private function parseHome($path)
+    {
+        if (isset($_SERVER['HOME'])) {
+            $path = str_replace('~', $_SERVER['HOME'], $path);
+        }
+
+        return $path;
     }
 
     /**
@@ -175,11 +198,27 @@ class Configuration
     }
 
     /**
+     * @param int $authenticationMethod
+     */
+    public function setAuthenticationMethod($authenticationMethod)
+    {
+        $this->authenticationMethod = $authenticationMethod;
+    }
+
+    /**
      * @return string
      */
     public function getConfigFile()
     {
         return $this->configFile;
+    }
+
+    /**
+     * @param string $configFile
+     */
+    public function setConfigFile($configFile)
+    {
+        $this->configFile = $configFile;
     }
 
     /**
@@ -191,15 +230,31 @@ class Configuration
     }
 
     /**
+     * @param string $host
+     * @return $this
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getPassword()
     {
-        if(null === $this->password) {
-            $this->password = askHiddenResponse('Password:');
-        }
-
         return $this->password;
+    }
+
+    /**
+     * @param string $password
+     * @return $this
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
     }
 
     /**
@@ -219,6 +274,16 @@ class Configuration
     }
 
     /**
+     * @param int $port
+     * @return $this
+     */
+    public function setPort($port)
+    {
+        $this->port = $port;
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getPublicKey()
@@ -227,59 +292,21 @@ class Configuration
     }
 
     /**
+     * @param string $path
+     * @return $this
+     */
+    public function setPublicKey($path)
+    {
+        $this->publicKey = $this->parseHome($path);
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getPassPhrase()
     {
-        if(null === $this->passPhrase) {
-            $this->passPhrase = askHiddenResponse('PassPhrase:');
-        }
         return $this->passPhrase;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrivateKey()
-    {
-        return $this->privateKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUser()
-    {
-        if(null === $this->user) {
-            $this->user = ask("User:", trim(runLocally('whoami')));
-        }
-        return $this->user;
-    }
-
-    /**
-     * @param int $authenticationMethod
-     */
-    public function setAuthenticationMethod($authenticationMethod)
-    {
-        $this->authenticationMethod = $authenticationMethod;
-    }
-
-    /**
-     * @param string $configFile
-     */
-    public function setConfigFile($configFile)
-    {
-        $this->configFile = $configFile;
-    }
-
-    /**
-     * @param string $host
-     * @return $this
-     */
-    public function setHost($host)
-    {
-        $this->host = $host;
-        return $this;
     }
 
     /**
@@ -293,23 +320,11 @@ class Configuration
     }
 
     /**
-     * @param string $password
-     * @return $this
+     * @return string
      */
-    public function setPassword($password)
+    public function getPrivateKey()
     {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @param int $port
-     * @return $this
-     */
-    public function setPort($port)
-    {
-        $this->port = $port;
-        return $this;
+        return $this->privateKey;
     }
 
     /**
@@ -318,26 +333,16 @@ class Configuration
      */
     public function setPrivateKey($path)
     {
-        if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
-        }
-
-        $this->privateKey = $path;
+        $this->privateKey = $this->parseHome($path);
         return $this;
     }
 
     /**
-     * @param string $path
-     * @return $this
+     * @return string
      */
-    public function setPublicKey($path)
+    public function getUser()
     {
-        if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
-        }
-
-        $this->publicKey = $path;
-        return $this;
+        return $this->user;
     }
 
     /**
@@ -351,16 +356,6 @@ class Configuration
     }
 
     /**
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName()
@@ -369,34 +364,12 @@ class Configuration
     }
 
     /**
-     * @param string $wwwUser
+     * @param string $name
      * @return $this
      */
-    public function setWwwUser($wwwUser)
+    public function setName($name)
     {
-        $this->wwwUser = $wwwUser;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getWwwUser()
-    {
-        return $this->wwwUser;
-    }
-
-    /**
-     * To auth with pem file use pemFile() method instead of this.
-     * @param string $pemFile
-     * @return $this
-     */
-    private function setPemFile($pemFile)
-    {
-        if (isset($_SERVER['HOME'])) {
-            $pemFile = str_replace('~', $_SERVER['HOME'], $pemFile);
-        }
-        $this->pemFile = $pemFile;
+        $this->name = $name;
         return $this;
     }
 

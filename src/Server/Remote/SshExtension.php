@@ -5,18 +5,19 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Server;
+namespace Deployer\Server\Remote;
 
+use Deployer\Server\AbstractServer;
+use Deployer\Server\Configuration;
 use Ssh;
 
-class Ssh2 extends AbstractServer
+class SshExtension extends AbstractServer
 {
     /**
      * SSH session.
      * @var Ssh\Session
      */
     private $session;
-
 
     /**
      * Array of created directories during upload.
@@ -29,25 +30,26 @@ class Ssh2 extends AbstractServer
      */
     public function connect()
     {
-        $configuration = new Ssh\Configuration($this->config->getHost(), $this->config->getPort());
+        $serverConfig = $this->getConfiguration();
+        $configuration = new Ssh\Configuration($serverConfig->getHost(), $serverConfig->getPort());
 
-        switch ($this->config->getAuthenticationMethod()) {
+        switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
                 $authentication = new Ssh\Authentication\Password(
-                    $this->config->getUser(),
-                    $this->config->getPassword()
+                    $serverConfig->getUser(),
+                    $serverConfig->getPassword()
                 );
                 break;
 
             case Configuration::AUTH_BY_CONFIG:
                 $configuration = new Ssh\SshConfigFileConfiguration(
-                    $this->config->getConfigFile(),
-                    $this->config->getHost(),
-                    $this->config->getPort()
+                    $serverConfig->getConfigFile(),
+                    $serverConfig->getHost(),
+                    $serverConfig->getPort()
                 );
                 $authentication = $configuration->getAuthentication(
-                    $this->config->getPassword(),
-                    $this->config->getUser()
+                    $serverConfig->getPassword(),
+                    $serverConfig->getUser()
                 );
 
                 break;
@@ -55,10 +57,10 @@ class Ssh2 extends AbstractServer
             case Configuration::AUTH_BY_PUBLIC_KEY:
 
                 $authentication = new Ssh\Authentication\PublicKeyFile(
-                    $this->config->getUser(),
-                    $this->config->getPublicKey(),
-                    $this->config->getPrivateKey(),
-                    $this->config->getPassPhrase()
+                    $serverConfig->getUser(),
+                    $serverConfig->getPublicKey(),
+                    $serverConfig->getPrivateKey(),
+                    $serverConfig->getPassPhrase()
                 );
 
                 break;
@@ -124,4 +126,4 @@ class Ssh2 extends AbstractServer
             throw new \RuntimeException('Can not download file.');
         }
     }
-} 
+}

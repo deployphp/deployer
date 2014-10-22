@@ -5,7 +5,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Server;
+namespace Deployer\Server\Remote;
+
+use Deployer\Server\AbstractServer;
+use Deployer\Server\Configuration;
 
 class PhpSecLib extends AbstractServer
 {
@@ -28,30 +31,31 @@ class PhpSecLib extends AbstractServer
         // Fix bug #434 in PhpSecLib
         set_include_path(__DIR__ . '/../../vendor/phpseclib/phpseclib/phpseclib/');
 
-        $this->sftp = new \Net_SFTP($this->config->getHost(), $this->config->getPort());
+        $serverConfig = $this->getConfiguration();
+        $this->sftp = new \Net_SFTP($serverConfig->getHost(), $serverConfig->getPort());
 
-        switch ($this->config->getAuthenticationMethod()) {
+        switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
 
-                $this->sftp->login($this->config->getUser(), $this->config->getPassword());
+                $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
 
                 break;
 
             case Configuration::AUTH_BY_PUBLIC_KEY:
 
                 $key = new \Crypt_RSA();
-                $key->setPassword($this->config->getPassPhrase());
-                $key->loadKey(file_get_contents($this->config->getPrivateKey()));
+                $key->setPassword($serverConfig->getPassPhrase());
+                $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
 
-                $this->sftp->login($this->config->getUser(), $key);
+                $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;
 
             case Configuration::AUTH_BY_PEM_FILE:
 
                 $key = new \Crypt_RSA();
-                $key->loadKey(file_get_contents($this->config->getPemFile()));
-                $this->sftp->login($this->config->getUser(), $key);
+                $key->loadKey(file_get_contents($serverConfig->getPemFile()));
+                $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;
 
@@ -116,4 +120,4 @@ class PhpSecLib extends AbstractServer
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }
-} 
+}

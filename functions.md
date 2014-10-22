@@ -11,7 +11,7 @@ Deployer also provide a lot of helpful functions.
 run(string $command)
 ~~~
 
-Runs command on remote server in working path (`server(...)->path('/woking/path')`).
+Runs command on remote server in working path (`server(...)->path('/working/path')`).
 
 ~~~ php
 cd(string $path)

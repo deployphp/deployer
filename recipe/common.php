@@ -61,7 +61,13 @@ task('deploy:update_code', function () {
     env()->setReleasePath($releasePath);
     env()->set('is_new_release', true);
 
-    run("git clone --recursive -q $repository $releasePath");
+    if (get('branch', false)) {
+        $branch = get('branch', false);
+        run("git clone --recursive -q $repository --branch $branch $releasePath");
+    } else {
+        run("git clone --recursive -q $repository $releasePath");
+    }
+
     run("chmod -R g+w $releasePath");
 })->desc('Updating code');
 

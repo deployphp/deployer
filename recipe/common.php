@@ -155,7 +155,27 @@ task('deploy:vendors', function () {
         run("curl -s http://getcomposer.org/installer | php");
     }
 
-    run("SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
+    // Check if we're to copy the vendors
+    if (get('composer_copy_vendors', false)) {
+        $releases = env()->getReleases();
+
+        if (isset($releases[1])) {
+            // Existing previous release, so copy vendors folder from it
+            $basePath = config()->getPath();
+            $vendorsDir = "{$basePath}/releases/{$releases[1]}/vendor";
+
+            run("if [ -d $(echo $vendorsDir) ]; then cp -r $vendorsDir $releasePath; fi");
+        }
+    }
+
+    // Choose to run install or update
+    if (get('composer_update', false)) {
+        $action = 'update';
+    } else {
+        $action = 'install';
+    }
+
+    run("SYMFONY_ENV=$prod php composer.phar $action --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
 
 })->desc('Installing vendors');
 

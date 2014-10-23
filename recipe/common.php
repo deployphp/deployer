@@ -125,8 +125,6 @@ task('deploy:shared', function () {
  * Make writeable dirs
  */
 task('deploy:writeable_dirs', function () {
-    $user = config()->getUser();
-    $wwwUser = config()->getWwwUser();
     $releasePath = env()->getReleasePath();
 
     cd($releasePath);

@@ -33,7 +33,9 @@ class PhpSecLib extends AbstractServer
         switch ($this->config->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
 
-                $this->sftp->login($this->config->getUser(), $this->config->getPassword());
+                if (!$this->sftp->login($this->config->getUser(), $this->config->getPassword())) {
+                    throw new \RuntimeException('Could not login with PhpSecLib.');
+                }
 
                 break;
 
@@ -43,7 +45,9 @@ class PhpSecLib extends AbstractServer
                 $key->setPassword($this->config->getPassPhrase());
                 $key->loadKey(file_get_contents($this->config->getPrivateKey()));
 
-                $this->sftp->login($this->config->getUser(), $key);
+                if (!$this->sftp->login($this->config->getUser(), $key)) {
+                    throw new \RuntimeException('Could not login with PhpSecLib.');
+                }
 
                 break;
 
@@ -51,7 +55,9 @@ class PhpSecLib extends AbstractServer
 
                 $key = new \Crypt_RSA();
                 $key->loadKey(file_get_contents($this->config->getPemFile()));
-                $this->sftp->login($this->config->getUser(), $key);
+                if (!$this->sftp->login($this->config->getUser(), $key)) {
+                    throw new \RuntimeException('Could not login with PhpSecLib.');
+                }
 
                 break;
 

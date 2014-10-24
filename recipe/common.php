@@ -168,14 +168,7 @@ task('deploy:vendors', function () {
         }
     }
 
-    // Choose to run install or update
-    if (get('composer_update', false)) {
-        $action = 'update';
-    } else {
-        $action = 'install';
-    }
-
-    run("SYMFONY_ENV=$prod php composer.phar $action --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
+    run("SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
 
 })->desc('Installing vendors');
 

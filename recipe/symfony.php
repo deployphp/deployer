@@ -33,7 +33,7 @@ task('deploy:permissions:setfacl', function () {
     $wwwUser = config()->getWwwUser();
     $releasePath = env()->getReleasePath();
 
-    $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
+    $dirs = (array)get('writeable_dirs', []);
 
     $run = run("if which setfacl; then echo \"ok\"; fi");
     if (empty($run)) {
@@ -56,7 +56,7 @@ task('deploy:permissions:setfacl', function () {
 task('deploy:assets', function () {
     $releasePath = env()->getReleasePath();
 
-    $assets = get('assets', ['web/css', 'web/images', 'web/js']);
+    $assets = get('assets', []);
 
     $assets = array_map(function ($asset) use ($releasePath) {
         return "$releasePath/$asset";
@@ -129,6 +129,8 @@ task('deploy:clear_controllers', function () {
 
 after('deploy:update_code', 'deploy:clear_controllers');
 
+// Symfony Assets
+set('assets', ['web/css', 'web/images', 'web/js']);
 
 // Symfony shared dirs
 set('shared_dirs', ['app/logs']);

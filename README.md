@@ -45,7 +45,7 @@ composer require elfet/deployer:*
 
 Documentation
 -------------
-Documentation can be found on site [deployer.in](http://deployer.in).
+Documentation can be found on site [deployer.in](http://deployer.in). Documentation source is located in [gh-pages](https://github.com/elfet/deployer/tree/gh-pages) tree.
 
 
 Building

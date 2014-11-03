@@ -128,23 +128,49 @@ task('deploy:shared', function () {
 
 
 /**
- * Make writeable dirs
+ * Make writable dirs
  */
-task('deploy:writeable_dirs', function () {
+task('deploy:writable_dirs', function () {
     $user = config()->getUser();
     $wwwUser = config()->getWwwUser();
+    $permissionMethod = get('permission_method', 'acl');
     $releasePath = env()->getReleasePath();
 
     cd($releasePath);
 
-    // User specified writeable dirs
-    $dirs = (array)get('writeable_dirs', []);
+    // User specified writable dirs
+    $dirs = (array)get('writable_dirs', []);
+
+    switch ($permissionMethod) {
+        case 'acl':
+            $run = run("if which setfacl; then echo \"ok\"; fi");
+            if (empty($run)) {
+                writeln('<comment>Enable ACL support and install "setfacl"</comment>');
+                return;
+            }
+
+            $commands = [
+                'setfacl -R -m u:' . $user . ':rwX -m u:' . $wwwUser . ':rwX %s',
+                'setfacl -dR -m u:' . $user . ':rwx -m u:' . $wwwUser . ':rwx %s'
+            ];
+            break;
+        case 'chmod':
+            $commands = [
+                'chmod +a "' . $user . ' allow delete,write,append,file_inherit,directory_inherit" %s',
+                'chmod +a "' . $wwwUser . ' allow delete,write,append,file_inherit,directory_inherit" %s'
+            ];
+            break;
+        case 'chmod_bad':
+            $commands = ['chmod -R a+w %s'];
+            break;
+    }
 
     foreach ($dirs as $dir) {
-        run("chmod -R 0777 $dir");
-        run("chmod -R g+w $dir");
+        foreach ($commands as $command) {
+            run(sprintf($command, $dir));
+        }
     }
-})->desc('Make writeable dirs');
+})->desc('Make writable dirs');
 
 
 /**

@@ -33,7 +33,7 @@ task('deploy:permissions:setfacl', function () {
     $wwwUser = config()->getWwwUser();
     $releasePath = env()->getReleasePath();
 
-    $dirs = (array)get('writeable_dirs', ['app/cache', 'app/logs']);
+    $dirs = (array)get('writable_dirs', ['app/cache', 'app/logs']);
 
     $run = run("if which setfacl; then echo \"ok\"; fi");
     if (empty($run)) {
@@ -136,8 +136,8 @@ set('shared_dirs', ['app/logs']);
 // Symfony shared files
 set('shared_files', ['app/config/parameters.yml']);
 
-// Symfony writeable dirs
-set('writeable_dirs', ['app/cache', 'app/logs']);
+// Symfony writable dirs
+set('writable_dirs', ['app/cache', 'app/logs']);
 
 
 /**
@@ -148,7 +148,7 @@ task('deploy', [
     'deploy:prepare',
     'deploy:update_code',
     'deploy:shared',
-    'deploy:writeable_dirs',
+    'deploy:writable_dirs',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assetic:dump',

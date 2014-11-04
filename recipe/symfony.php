@@ -26,31 +26,6 @@ task('deploy:create_cache_dir', function () {
 after('deploy:update_code', 'deploy:create_cache_dir');
 
 /**
- * Set right permissions
- */
-task('deploy:permissions:setfacl', function () {
-    $user = config()->getUser();
-    $wwwUser = config()->getWwwUser();
-    $releasePath = env()->getReleasePath();
-
-    $dirs = (array)get('writable_dirs', ['app/cache', 'app/logs']);
-
-    $run = run("if which setfacl; then echo \"ok\"; fi");
-    if (empty($run)) {
-        writeln('<comment>Enable ACL support and install "setfacl"</comment>');
-        return;
-    }
-
-    cd($releasePath);
-
-    foreach ($dirs as $dir) {
-        run("setfacl -R -m u:$wwwUser:rwX -m u:$user:rwX $dir");
-        run("setfacl -dR -m u:$wwwUser:rwX -m u:$user:rwX $dir");
-    }
-})->desc('Setting permissions');
-
-
-/**
  * Normalize asset timestamps
  */
 task('deploy:assets', function () {

@@ -200,7 +200,7 @@ task('deploy:vendors', function () {
         }
     }
 
-    run("export SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
+    run("export SYMFONY_ENV=$prod && php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
 
 })->desc('Installing vendors');
 

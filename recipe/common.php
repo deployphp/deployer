@@ -199,9 +199,14 @@ task('deploy:vendors', function () {
             run("if [ -d $(echo $vendorsDir) ]; then cp -r $vendorsDir $releasePath; fi");
         }
     }
+    
+    $options = '--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress';
+    $ignorePlatformReqs = get('ignore_platform_reqs', 'false');
+    if ('true' === $ignorePlatformReqs) {
+        $options .= ' --ignore-platform-reqs';
+    }
 
-    run("SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
-
+    run("SYMFONY_ENV=$prod php composer.phar install $options");
 })->desc('Installing vendors');
 
 

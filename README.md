@@ -1,6 +1,6 @@
 Introduction
 ------------
-[![Build Status](http://img.shields.io/travis/elfet/deployer.svg?style=flat)](https://travis-ci.org/elfet/deployer)
+[![Build Status](http://img.shields.io/travis/elfet/deployer/2.x.svg?style=flat)](https://travis-ci.org/elfet/deployer)
 [![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer)
 [![Code Climate](http://img.shields.io/codeclimate/github/elfet/deployer.svg?style=flat)](https://codeclimate.com/github/elfet/deployer)
 [![Version](http://img.shields.io/packagist/v/elfet/deployer.svg?style=flat)](https://packagist.org/packages/elfet/deployer)

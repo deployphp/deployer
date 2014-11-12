@@ -27,7 +27,7 @@ class PhpSecLib extends AbstractServer
     {
         // Fix bug #434 in PhpSecLib
         if (preg_match("~^.+/vendor/~U", __DIR__, $matches) !== false) {
-            set_include_path($matches[0] . '/phpseclib/phpseclib/phpseclib/' . PATH_SEPARATOR . get_include_path());
+            set_include_path((isset($matches[0]) ? $matches[0] : ''). '/phpseclib/phpseclib/phpseclib/' . PATH_SEPARATOR . get_include_path());
         }
         else {
             throw new \RuntimeException('Unable to determine vendor directory path in order to define include path for phpseclib');

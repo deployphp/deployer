@@ -21,7 +21,6 @@
     ],
     "require": {
         "php": ">=5.4.0",
-
         "symfony/finder": "~2.5",
         "symfony/console": "~2.5",
         "elfet/php-ssh": "~1.0",
@@ -30,5 +29,10 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~3.7"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1.x-dev"
+        }
     }
 }

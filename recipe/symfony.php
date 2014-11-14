@@ -126,9 +126,9 @@ task('deploy', [
     'deploy:writable_dirs',
     'deploy:assets',
     'deploy:vendors',
+    'deploy:cache:warmup',
     'deploy:assetic:dump',
     'database:migrate',
-    'deploy:cache:warmup',
     'deploy:symlink',
     'cleanup',
     'deploy:end'
@@ -142,6 +142,3 @@ after('deploy', function () {
     $host = config()->getHost();
     writeln("<info>Successfully deployed on</info> <fg=cyan>$host</fg=cyan>");
 });
-
-
- 

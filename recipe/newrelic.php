@@ -42,5 +42,3 @@ task('deploy:newrelic', function () {
         throw new \RuntimeException($php_errormsg);
     }
 })->desc('Notifying New Relic of deployment');
-
-before('deploy:end', 'deploy:newrelic');

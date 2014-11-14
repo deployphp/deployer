@@ -50,9 +50,8 @@ task('deploy:assets', function () {
 task('deploy:assetic:dump', function () {
     $releasePath = env()->getReleasePath();
     $prod = get('env', 'prod');
-    $consoleBin = get('console_bin', 'app/console');
 
-    run("php $releasePath/$consoleBin assetic:dump --env=$prod --no-debug");
+    run("php $releasePath/app/console assetic:dump --env=$prod --no-debug");
 
 })->desc('Dumping assets');
 
@@ -65,9 +64,8 @@ task('deploy:cache:warmup', function () {
     $cacheDir = env()->get('cache_dir', "$releasePath/app/cache");
 
     $prod = get('env', 'prod');
-    $consoleBin = get('console_bin', 'app/console');
 
-    run("php $releasePath/$consoleBin cache:warmup  --env=$prod --no-debug");
+    run("php $releasePath/app/console cache:warmup  --env=$prod --no-debug");
 
     run("chmod -R g+w $cacheDir");
 
@@ -89,8 +87,7 @@ task('database:migrate', function () {
     }
 
     if ($run) {
-        $consoleBin = get('console_bin', 'app/console');
-        run("php $releasePath/$consoleBin doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
+        run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
     }
 
 })->desc('Migrating database');

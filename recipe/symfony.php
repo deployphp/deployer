@@ -7,15 +7,6 @@
 
 require_once __DIR__ . '/common.php';
 
-function sfconsole($arguments)
-{
-    $releasePath = env()->getReleasePath();
-    $prod = get('env', 'prod');
-    $consoleBin = get('console_bin', 'app/console');
-
-    run("php {$releasePath}/{$consoleBin} --env={$prod} --no-debug {$arguments}");
-}
-
 /**
  * Create cache dir
  */
@@ -142,3 +133,45 @@ after('deploy', function () {
     $host = config()->getHost();
     writeln("<info>Successfully deployed on</info> <fg=cyan>$host</fg=cyan>");
 });
+
+function sfconsole($arguments)
+{
+    $releasePath = env()->getReleasePath();
+    $prod = get('env', 'prod');
+
+    $consoleBin = get('_symfony_console_bin', 'app/console');
+    $composerJson = getcwd() . '/composer.json';
+
+    if (!get('_symfony_console_bin', false) && is_file($composerJson) && is_readable($composerJson)) {
+        $data = json_decode(file_get_contents($composerJson));
+
+        if (isset($data->extra)) {
+            $props = [ 'symfony-bin-dir', 'symfony-app-dir' ];
+
+            foreach ($props as $prop) {
+                if (isset($data->extra->$prop)) {
+                    $paths[] = $data->extra->$prop;
+                }
+            }
+        }
+
+        $paths[] = 'bin';
+        $paths[] = 'app';
+
+        foreach (array_unique($paths) as $path) {
+            if (is_file("{$path}/console")) {
+                $consoleBin = $path;
+                break;
+            }
+        }
+
+        unset($data);
+
+        // save cache for future lookups
+        set('_symfony_console_bin', $consoleBin);
+    }
+
+    $consoleBin = get('symfony_console_bin', $consoleBin);
+
+    run("php {$releasePath}/{$consoleBin} --env={$prod} --no-debug {$arguments}");
+}

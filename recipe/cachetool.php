@@ -8,9 +8,9 @@
 /**
  * Suggested usage
  *
- * before('cleanup', 'cachetool:clear:opcache');
+ * after('deploy:symlink', 'cachetool:clear:opcache');
  * or
- * before('cleanup', 'cachetool:clear:apc');
+ * after('deploy:symlink', 'cachetool:clear:apc');
  */
 
 /**

@@ -7,6 +7,15 @@
 
 require_once __DIR__ . '/common.php';
 
+function sfconsole($arguments)
+{
+    $releasePath = env()->getReleasePath();
+    $prod = get('env', 'prod');
+    $consoleBin = get('console_bin', 'app/console');
+
+    run("php {$releasePath}/{$consoleBin} --env={$prod} --no-debug {$arguments}");
+}
+
 /**
  * Create cache dir
  */
@@ -48,11 +57,7 @@ task('deploy:assets', function () {
  * Dump all assets to the filesystem
  */
 task('deploy:assetic:dump', function () {
-    $releasePath = env()->getReleasePath();
-    $prod = get('env', 'prod');
-
-    run("php $releasePath/app/console assetic:dump --env=$prod --no-debug");
-
+    sfconsole('assetic:dump');
 })->desc('Dumping assets');
 
 
@@ -63,12 +68,9 @@ task('deploy:cache:warmup', function () {
     $releasePath = env()->getReleasePath();
     $cacheDir = env()->get('cache_dir', "$releasePath/app/cache");
 
-    $prod = get('env', 'prod');
-
-    run("php $releasePath/app/console cache:warmup  --env=$prod --no-debug");
+    sfconsole('cache:warmup');
 
     run("chmod -R g+w $cacheDir");
-
 })->desc('Warming up cache');
 
 
@@ -76,8 +78,6 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    $releasePath = env()->getReleasePath();
-    $prod = get('env', 'prod');
     $serverName = config()->getName();
 
     $run = get('auto_migrate', false);
@@ -87,7 +87,7 @@ task('database:migrate', function () {
     }
 
     if ($run) {
-        run("php $releasePath/app/console doctrine:migrations:migrate --env=$prod --no-debug --no-interaction");
+        sfconsole('doctrine:migrations:migrate --no-interaction');
     }
 
 })->desc('Migrating database');

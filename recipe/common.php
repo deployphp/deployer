@@ -199,8 +199,9 @@ task('deploy:vendors', function () {
             run("if [ -d $(echo $vendorsDir) ]; then cp -r $vendorsDir $releasePath; fi");
         }
     }
-
-    run("SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
+    
+    $options = get('composer_install_options', '--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress');
+    run("SYMFONY_ENV=$prod php composer.phar install $options");
 
 })->desc('Installing vendors');
 

@@ -8,9 +8,17 @@
 /**
  * Suggested usage
  *
+ * set('cachetool', '/var/run/php5-fpm.sock');
+ * or
+ * set('cachetool', '127.0.0.1:9000');
+ * or
+ * have a cachetool.yml in your directory (see: https://github.com/gordalina/cachetool#configuration-file)
+ *
  * after('deploy:symlink', 'cachetool:clear:opcache');
  * or
  * after('deploy:symlink', 'cachetool:clear:apc');
+ *
+ * Read more at: https://github.com/gordalina/cachetool
  */
 
 /**
@@ -19,6 +27,10 @@
 task('cachetool:clear:apc', function () {
     $releasePath = env()->getReleasePath();
     $options = get('cachetool', '');
+
+    if (strlen($options)) {
+        $options = "--fcgi={$options}";
+    }
 
     cd($releasePath);
     $hasCachetool = run("if [ -e $releasePath/cachetool.phar ]; then echo 'true'; fi");
@@ -36,6 +48,10 @@ task('cachetool:clear:apc', function () {
 task('cachetool:clear:opcache', function () {
     $releasePath = env()->getReleasePath();
     $options = get('cachetool', '');
+
+    if (strlen($options)) {
+        $options = "--fcgi={$options}";
+    }
 
     cd($releasePath);
     $hasCachetool = run("if [ -e $releasePath/cachetool.phar ]; then echo 'true'; fi");

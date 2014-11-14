@@ -6,6 +6,19 @@
  */
 
 /**
+ * Suggested usage:
+ *
+ * set('newrelic', [
+ *     'license' => 'xad3...',
+ *     'application_id' => '12873',
+ *     // or
+ *     'app_name' => 'your_app_name'
+ * ]);
+ *
+ * before('deploy:end', 'deploy:newrelic');
+ */
+
+/**
  * Notify New Relic of successful deployment
  */
 task('deploy:newrelic', function () {

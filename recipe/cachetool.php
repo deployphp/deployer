@@ -6,6 +6,14 @@
  */
 
 /**
+ * Suggested usage
+ *
+ * before('cleanup', 'cachetool:clear:opcache');
+ * or
+ * before('cleanup', 'cachetool:clear:apc');
+ */
+
+/**
  * Clear apc cache
  */
 task('cachetool:clear:apc', function () {

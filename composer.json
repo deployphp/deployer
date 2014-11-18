@@ -34,5 +34,8 @@
         "branch-alias": {
             "dev-master": "2.1.x-dev"
         }
+    },
+    "suggest": {
+        "deployphp/recipes": "3rd party recipes for Deployer"
     }
 }

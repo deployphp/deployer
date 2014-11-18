@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c9009df68c51f279ec40837e300a3e49",
+    "hash": "2b587147aca5a59ab8a5ffd9f11894ff",
     "packages": [
         {
             "name": "elfet/php-ssh",

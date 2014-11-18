@@ -59,7 +59,7 @@ Recipes
 -------
 Deployer contains core and popular recipes. For 3rd party and user contributed recipes there is a repository [deployphp/recipes](http://github.com/deployphp/recipes) which contains all of these which extend Deployer's core recipes. You can see all available recipes at http://github.com/deployphp/recipes
 
-You can install it by calling `$ php composer.phar require --dev "deployphp/recipes >=1.0@dev"`.
+You can install it by calling `composer require --dev "deployphp/recipes >=1.0@dev"`.
 To use a recipe you can simply require it in your `deploy.php` file by inserting:
 `require 'vendor/deployphp/recipes/recipes/recipe_name.php';`
 

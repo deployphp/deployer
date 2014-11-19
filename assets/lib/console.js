@@ -70,7 +70,7 @@ $(function () {
             'Try type the following commands and press enter:\n' +
             'dep\n' +
             'dep deploy\n' +
-            'dep rollback' +
+            'dep rollback\n' +
             'ls\n');
 
         to(command, ['dep', 'dep help', 'dep list'], 'Deployer\n' +

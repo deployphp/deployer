@@ -165,7 +165,10 @@ task('deploy:writable_dirs', function () {
             break;
     }
 
+    $releasePath = env()->getReleasePath();
     foreach ($dirs as $dir) {
+        // Create shared dir if does not exist
+        run("mkdir -p $releasePath/$dir");
         foreach ($commands as $command) {
             run(sprintf($command, $dir));
         }
@@ -199,7 +202,7 @@ task('deploy:vendors', function () {
             run("if [ -d $(echo $vendorsDir) ]; then cp -r $vendorsDir $releasePath; fi");
         }
     }
-    
+
     $options = get('composer_install_options', '--no-dev --verbose --prefer-dist --optimize-autoloader --no-progress');
     run("SYMFONY_ENV=$prod php composer.phar install $options");
 

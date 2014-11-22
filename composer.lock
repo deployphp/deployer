@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "2b587147aca5a59ab8a5ffd9f11894ff",
+    "hash": "a8fff967c5139a90d720186491e0682a",
     "packages": [
         {
             "name": "elfet/php-ssh",
@@ -453,6 +453,50 @@
             "time": "2014-08-04 22:10:19"
         },
         {
+            "name": "phresque/spork",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phresque/spork.git",
+                "reference": "4c36c17c0f98c1c9867055a4c9c7382afff69cc0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phresque/spork/zipball/4c36c17c0f98c1c9867055a4c9c7382afff69cc0",
+                "reference": "4c36c17c0f98c1c9867055a4c9c7382afff69cc0",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcntl": "*",
+                "ext-posix": "*",
+                "php": ">=5.3.0",
+                "symfony/event-dispatcher": "*"
+            },
+            "require-dev": {
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Spork": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kris Wallsmith",
+                    "email": "kris.wallsmith@gmail.com",
+                    "homepage": "http://kriswallsmith.net/"
+                }
+            ],
+            "description": "Asynchronous PHP",
+            "homepage": "https://github.com/phresque/spork",
+            "time": "2014-10-19 17:31:11"
+        },
+        {
             "name": "seld/jsonlint",
             "version": "1.2.0",
             "source": {
@@ -552,6 +596,63 @@
             "description": "Symfony Console Component",
             "homepage": "http://symfony.com",
             "time": "2014-08-05 09:00:40"
+        },
+        {
+            "name": "symfony/event-dispatcher",
+            "version": "v2.5.7",
+            "target-dir": "Symfony/Component/EventDispatcher",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/EventDispatcher.git",
+                "reference": "bb6fc12085cd195dceaf48016087b12b632df497"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/EventDispatcher/zipball/bb6fc12085cd195dceaf48016087b12b632df497",
+                "reference": "bb6fc12085cd195dceaf48016087b12b632df497",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/config": "~2.0",
+                "symfony/dependency-injection": "~2.0,<2.6.0",
+                "symfony/stopwatch": "~2.2"
+            },
+            "suggest": {
+                "symfony/dependency-injection": "",
+                "symfony/http-kernel": ""
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.5-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Symfony\\Component\\EventDispatcher\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "http://symfony.com/contributors"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Symfony EventDispatcher Component",
+            "homepage": "http://symfony.com",
+            "time": "2014-10-30 20:17:55"
         },
         {
             "name": "symfony/finder",

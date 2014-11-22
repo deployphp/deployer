@@ -15,6 +15,8 @@ use Deployer\Stage\Stage;
 use Deployer\Task\AbstractTask;
 use Deployer\Task\Runner;
 use Deployer\Task\TaskInterface;
+use Spork\ProcessManager;
+use Spork\Exception\ProcessControlException;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -138,6 +140,7 @@ class RunTaskCommand extends BaseCommand
     {
         $taskName = $runner->getName();
         $taskName = empty($taskName) ? 'UnNamed' : $taskName;
+        $manager = new ProcessManager();
 
         /**
          * @var string $name
@@ -165,8 +168,18 @@ class RunTaskCommand extends BaseCommand
             }
 
             // Run task.
-            $runner->run($input);
+            try {
+                $manager->fork(function () use ($runner, $input) {
+                    $runner->run($input);
+                });
+            } catch (ProcessControlException $e) {
+                // couldn't fork, lets do it synchronously
+                $runner->run($input);
+            }
         }
+
+        // wait for tasks to finish
+        $manager->wait($hang = true);
     }
 
     /**

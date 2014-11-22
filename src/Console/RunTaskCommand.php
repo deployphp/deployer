@@ -168,14 +168,14 @@ class RunTaskCommand extends BaseCommand
             }
 
             // Run task.
-            // try {
-            //     $manager->fork(function () use ($runner, $input) {
-            //         $runner->run($input);
-            //     });
-            // } catch (ProcessControlException $e) {
+            try {
+                $manager->fork(function () use ($runner, $input) {
+                    $runner->run($input);
+                });
+            } catch (ProcessControlException $e) {
                 // couldn't fork, lets do it synchronously
                 $runner->run($input);
-            // }
+            }
         }
 
         // wait for tasks to finish

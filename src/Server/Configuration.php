@@ -150,7 +150,7 @@ class Configuration
      * @param null|string $passPhrase
      * @return $this
      */
-    public function pubKey($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
+    public function pubKey($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = null)
     {
         $this->setAuthenticationMethod(self::AUTH_BY_PUBLIC_KEY);
         $this->setPublicKey($publicKeyFile);

@@ -25,7 +25,8 @@
         "symfony/console": "~2.5",
         "elfet/php-ssh": "~1.0",
         "phpseclib/phpseclib": "0.3.*@dev",
-        "kherge/amend": "~3.0"
+        "kherge/amend": "~3.0",
+        "phresque/spork": " ~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~3.7"

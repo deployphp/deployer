@@ -115,10 +115,14 @@ class RunTaskCommand extends BaseCommand
             foreach ($this->task->get() as $runner) {
                 $isPrinted = $this->writeDesc($output, $runner->getDesc());
 
-                $this->runSeries($runner, $servers, $input, $output);
+                $result = $this->runSeries($runner, $servers, $input, $output);
 
                 if ($isPrinted) {
-                    $this->writeOk($output);
+                    if ($result) {
+                        $this->writeOk($output);
+                    } else {
+                        $this->writeError($output);
+                    }
                 }
             }
 
@@ -136,6 +140,7 @@ class RunTaskCommand extends BaseCommand
      */
     private function runSeries(Runner $runner, $servers, InputInterface $input, OutputInterface $output)
     {
+        $status = true;
         $taskName = $runner->getName();
         $taskName = empty($taskName) ? 'UnNamed' : $taskName;
 
@@ -165,7 +170,13 @@ class RunTaskCommand extends BaseCommand
             }
 
             // Run task.
-            $runner->run($input);
+            $result = $runner->run($input);
+
+            // if result is explicitly false, then lets print an error
+            // note that this does not halt deployment
+            if ($result === false) {
+                $status = false;
+            }
         }
     }
 
@@ -202,6 +213,17 @@ class RunTaskCommand extends BaseCommand
     {
         if (OutputInterface::VERBOSITY_QUIET !== $output->getVerbosity()) {
             $output->writeln("<info>✔</info>");
+        }
+    }
+
+    /**
+     * Print "error" sign.
+     * @param OutputInterface $output
+     */
+    private function writeError(OutputInterface $output)
+    {
+        if (OutputInterface::VERBOSITY_QUIET !== $output->getVerbosity()) {
+            $output->writeln("<fg=red>✘</fg=red>");
         }
     }
 

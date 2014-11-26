@@ -115,6 +115,22 @@ class Deployer
     }
 
     /**
+     * Get deploy-file from option or use default 'deploy.php'
+     */
+    public function requireDeployFile() {
+        $inputoption = new InputOption('deploy-file', null, InputOption::VALUE_REQUIRED, 'The deploy file to use', getcwd() . '/deploy.php');
+        $inputdefinition = $this->app->getDefinition();
+        $inputdefinition->addOption($inputoption);
+
+        $input = new ArgvInput();
+        $input->bind($inputdefinition);
+        $deployFile = $input->getOption('deploy-file');
+        if (is_file($deployFile) && is_readable($deployFile)) {
+            require $deployFile;
+        }
+    }
+
+    /**
      * Transform tasks to console commands. Run it before run of console app.
      */
     public function transformTasksToConsoleCommands()

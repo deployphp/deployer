@@ -98,6 +98,12 @@ class Configuration
     private $pemFile;
 
     /**
+     * PHP executable path
+     * @var type
+     */
+    private $phpPath = 'php';
+
+    /**
      * @param string $host
      * @param int $port
      */
@@ -406,5 +412,22 @@ class Configuration
     public function getPemFile()
     {
         return $this->pemFile;
+    }
+
+    /**
+     * Set path to php executable
+     * @param string $phpPath
+     */
+    public function setPhpPath($phpPath)
+    {
+        $this->phpPath = $phpPath;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhpPath()
+    {
+        return $this->phpPath;
     }
 }

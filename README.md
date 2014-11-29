@@ -19,7 +19,8 @@ See [http://deployer.in](http://deployer.in) for more information and documentat
 Requirements
 ------------
 * PHP 5.4.0 and up.
-That all!
+
+That's all!
 
 You can install [ssh2 extension](http://php.net/manual/en/book.ssh2.php) to speedup deployment process and enable [sockets](http://php.net/manual/en/book.sockets.php) for parallel deployment.
 

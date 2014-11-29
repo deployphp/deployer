@@ -28,6 +28,15 @@ Deployer 3.0 developing roadmap:
   * [ ] Local tasks `->once()`
   * [ ] Parallel task execution
   * [ ] Better output 
+  * [ ] Reach 100% code coverage
+* [ ] Refactor recipes
+  * [ ] Refactor common recipe
+  * [ ] Refactor Symfony recipe 
+* [ ] New recipes
+  * [ ] Zend Framework recipe
+  * [ ] Laravel recipe
+  * [ ] WordPress recipe
+  * [ ] Yii recipe
 * [ ] New site on deployer.org
   * [ ] Separate docs and site code
   * [ ] Auto updating docs script

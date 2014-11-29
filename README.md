@@ -15,6 +15,24 @@ Deployer is a deployment tool written in PHP.
 
 See [http://deployer.in](http://deployer.in) for more information and documentation.
 
+Deployer 3.0
+============
+Deployer 3.0 developing roadmap:
+
+* [x] Refactor Source
+  * [x] Refactor tasks
+  * [x] Refactor servers
+  * [x] Refactor Deployer class
+* [ ] New features
+  * [ ] Environment inheritance
+  * [ ] Local tasks `->once()`
+  * [ ] Parallel task execution
+  * [ ] Better output 
+* [ ] New site on deployer.org
+  * [ ] Separate docs and site code
+  * [ ] Auto updating docs script
+  * [ ] Auto phar build script
+
 
 Requirements
 ------------

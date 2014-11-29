@@ -1,8 +1,10 @@
 Introduction
 ------------
-[![Build Status](http://img.shields.io/travis/elfet/deployer.svg?style=flat)](https://travis-ci.org/elfet/deployer)
-[![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer)
+[![Build Status](http://img.shields.io/travis/elfet/deployer/develop.svg?style=flat)](https://travis-ci.org/elfet/deployer)
+[![HHVM Tested](http://img.shields.io/hhvm/elfet/deployer/dev-develop.svg?style=flat)](http://hhvm.h4cc.de/package/elfet/deployer)
+[![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer/develop.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer/?branch=develop)
 [![Code Climate](http://img.shields.io/codeclimate/github/elfet/deployer.svg?style=flat)](https://codeclimate.com/github/elfet/deployer)
+[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/elfet/deployer/develop.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer/?branch=develop)
 [![Version](http://img.shields.io/packagist/v/elfet/deployer.svg?style=flat)](https://packagist.org/packages/elfet/deployer)
 [![Support via Gittip](http://img.shields.io/gittip/elfet.svg?style=flat)](https://www.gittip.com/elfet)
 

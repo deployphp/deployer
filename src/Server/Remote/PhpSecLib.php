@@ -7,11 +7,16 @@
 
 namespace Deployer\Server\Remote;
 
-use Deployer\Server\AbstractServer;
 use Deployer\Server\Configuration;
+use Deployer\Server\ServerInterface;
 
-class PhpSecLib extends AbstractServer
+class PhpSecLib implements ServerInterface
 {
+    /**
+     * @var Configuration
+     */
+    private $configuration;
+    
     /**
      * @var \Net_SFTP
      */
@@ -22,6 +27,14 @@ class PhpSecLib extends AbstractServer
      * @var array
      */
     private $directories = [];
+
+    /**
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
     /**
      * {@inheritdoc}
@@ -119,5 +132,13 @@ class PhpSecLib extends AbstractServer
         if (!$this->sftp->get($remote, $local)) {
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
     }
 }

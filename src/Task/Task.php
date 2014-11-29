@@ -7,14 +7,8 @@
 
 namespace Deployer\Task;
 
-class Task implements TaskInterface
+class Task
 {
-    /**
-     * Task name.
-     * @var string
-     */
-    private $name;
-
     /**
      * Task code.
      * @var callable
@@ -22,17 +16,21 @@ class Task implements TaskInterface
     private $callback;
 
     /**
-     * @param string $name Task name.
+     * Task description.
+     * @var string
+     */
+    private $description;
+
+    /**
      * @param callable $callback Task code.
      */
-    public function __construct($name, \Closure $callback)
+    public function __construct(\Closure $callback)
     {
-        $this->name = $name;
         $this->callback = $callback;
     }
 
     /**
-     * {@inheritdoc}
+     * Run task.
      */
     public function run()
     {
@@ -40,10 +38,21 @@ class Task implements TaskInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return string
      */
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
+        return $this->description;
+    }
+
+    /**
+     * Set task description.
+     * @param string $description
+     * @return $this
+     */
+    public function desc($description)
+    {
+        $this->description = $description;
+        return $this;
     }
 }

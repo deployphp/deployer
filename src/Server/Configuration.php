@@ -7,8 +7,6 @@
 
 namespace Deployer\Server;
 
-use Ssh;
-
 class Configuration
 {
     const AUTH_BY_PASSWORD = 0;
@@ -42,12 +40,6 @@ class Configuration
      * @var int
      */
     private $port;
-
-    /**
-     * Base path of server.
-     * @var string
-     */
-    private $path;
 
     /**
      * User of remote server.
@@ -92,6 +84,7 @@ class Configuration
     private $pemFile;
 
     /**
+     * @param string $name
      * @param string $host
      * @param int $port
      */
@@ -100,93 +93,6 @@ class Configuration
         $this->setName($name);
         $this->setHost($host);
         $this->setPort($port);
-    }
-
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function path($path)
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-    /**
-     * Define user name for authentication.
-     * @param string $name
-     * @param null|string $password If you did not define password it will be asked on connection.
-     * @return $this
-     */
-    public function user($name, $password = null)
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_PASSWORD);
-        $this->setUser($name);
-        $this->setPassword($password);
-        return $this;
-    }
-
-    /**
-     * If you use an ssh config file you can user it.
-     * @param string $file Config file path
-     * @return $this
-     */
-    public function configFile($file)
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_CONFIG);
-        $this->setConfigFile($file);
-        return $this;
-    }
-
-    /**
-     * @param string $publicKeyFile
-     * @param string $privateKeyFile
-     * @param string $passPhrase
-     * @return $this
-     */
-    public function pubKey($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_PUBLIC_KEY);
-        $this->setPublicKey($publicKeyFile);
-        $this->setPrivateKey($privateKeyFile);
-        $this->setPassPhrase($passPhrase);
-        return $this;
-    }
-
-    /**
-     * @param $pemFile
-     * @return $this
-     */
-    public function pemFile($pemFile)
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_PEM_FILE);
-        $this->setPemFile($pemFile);
-        return $this;
-    }
-
-    /**
-     * To auth with pem file use pemFile() method instead of this.
-     * @param string $pemFile
-     * @return $this
-     */
-    private function setPemFile($pemFile)
-    {
-        $this->pemFile = $this->parseHome($pemFile);
-        return $this;
-    }
-
-    /**
-     * Parse "~" symbol from path.
-     * @param string $path
-     * @return string
-     */
-    private function parseHome($path)
-    {
-        if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
-        }
-
-        return $path;
     }
 
     /**
@@ -199,10 +105,12 @@ class Configuration
 
     /**
      * @param int $authenticationMethod
+     * @return $this
      */
     public function setAuthenticationMethod($authenticationMethod)
     {
         $this->authenticationMethod = $authenticationMethod;
+        return $this;
     }
 
     /**
@@ -215,10 +123,12 @@ class Configuration
 
     /**
      * @param string $configFile
+     * @return $this
      */
     public function setConfigFile($configFile)
     {
-        $this->configFile = $configFile;
+        $this->configFile = $this->parseHome($configFile);
+        return $this;
     }
 
     /**
@@ -258,14 +168,6 @@ class Configuration
     }
 
     /**
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
      * @return int
      */
     public function getPort()
@@ -299,6 +201,20 @@ class Configuration
     {
         $this->publicKey = $this->parseHome($path);
         return $this;
+    }
+
+    /**
+     * Parse "~" symbol from path.
+     * @param string $path
+     * @return string
+     */
+    private function parseHome($path)
+    {
+        if (isset($_SERVER['HOME'])) {
+            $path = str_replace('~', $_SERVER['HOME'], $path);
+        }
+
+        return $path;
     }
 
     /**
@@ -379,5 +295,16 @@ class Configuration
     public function getPemFile()
     {
         return $this->pemFile;
+    }
+
+    /**
+     * To auth with pem file use pemFile() method instead of this.
+     * @param string $pemFile
+     * @return $this
+     */
+    public function setPemFile($pemFile)
+    {
+        $this->pemFile = $this->parseHome($pemFile);
+        return $this;
     }
 }

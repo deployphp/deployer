@@ -7,12 +7,19 @@
 
 namespace Deployer;
 
-use Deployer\Task\TaskInterface;
-use Deployer\Server\ServerInterface;
-use Symfony\Component\Console\Application as Console;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Deployer\Server;
+use Deployer\Task;
+use Deployer\Collection;
+use Deployer\Console\TaskCommand;
+use Symfony\Component\Console;
 
+/**
+ * @property Task\TaskCollection|Task\Task[] $tasks
+ * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] $scenarios
+ * @property Server\ServerCollection|Server\ServerInterface[] $servers
+ * @property Server\GroupCollection|array $serverGroups
+ * @property Server\EnvironmentCollection|Server\Environment[] $environments
+ */
 class Deployer
 {
     /**
@@ -22,42 +29,43 @@ class Deployer
     private static $instance;
 
     /**
-     * @var Console
+     * @var Console\Application
      */
     private $console;
 
     /**
-     * @var InputInterface
+     * @var Console\Input\InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface
+     * @var Console\Output\OutputInterface
      */
     private $output;
 
     /**
-     * Array of tasks where keys are tasks names.
-     * @var TaskInterface[]
+     * @var Collection\Collection
      */
-    private $tasks = [];
+    private $collections;
 
     /**
-     * Array of servers where keys are servers names.
-     * @var ServerInterface[]
+     * @param Console\Application $console
+     * @param Console\Input\InputInterface $input
+     * @param Console\Output\OutputInterface $output
      */
-    private $servers = [];
-
-    /**
-     * @param Console $app
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     */
-    public function __construct(Console $console, InputInterface $input, OutputInterface $output)
+    public function __construct(Console\Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $this->console = $console;
         $this->input = $input;
         $this->output = $output;
+
+        $this->collections = new Collection\Collection();
+        $this->collections['tasks'] = new Task\TaskCollection();
+        $this->collections['scenarios'] = new Task\Scenario\ScenarioCollection();
+        $this->collections['servers'] = new Server\ServerCollection();
+        $this->collections['serverGroups'] = new Server\GroupCollection();
+        $this->collections['environments'] = new Server\EnvironmentCollection();
+
         self::$instance = $this;
     }
 
@@ -85,13 +93,12 @@ class Deployer
     public function transformTasksToConsoleCommands()
     {
         foreach ($this->tasks as $name => $task) {
-            $command = new RunTaskCommand($name, $task, $this);
-            $this->console->add($command);
+            $this->console->add(new TaskCommand($name, $task, $this));
         }
     }
 
     /**
-     * @return InputInterface
+     * @return Console\Input\InputInterface
      */
     public function getInput()
     {
@@ -99,7 +106,7 @@ class Deployer
     }
 
     /**
-     * @return OutputInterface
+     * @return Console\Output\OutputInterface
      */
     public function getOutput()
     {
@@ -107,80 +114,16 @@ class Deployer
     }
 
     /**
-     * @return Console
-     */
-    public function getConsole()
-    {
-        return $this->console;
-    }
-
-    /**
-     * @param TaskInterface $task
-     */
-    public function addTask(TaskInterface $task)
-    {
-        return $this->tasks[$task->getName()] = $task;
-    }
-
-    /**
-     * Return task by name.
      * @param string $name
-     * @return TaskInterface
-     * @throws \RuntimeException if task does not defined.
+     * @return mixed
+     * @throws \InvalidArgumentException
      */
-    public function getTask($name)
+    public function __get($name)
     {
-        if ($this->hasTask($name)) {
-            return $this->tasks[$name];
+        if ($this->collections->has($name)) {
+            return $this->collections[$name];
         } else {
-            throw new \RuntimeException("Task `$name` does not defined.");
+            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasTask($name)
-    {
-        return array_key_exists($name, $this->tasks);
-    }
-
-    /**
-     * @param ServerInterface $server
-     */
-    public function addServer(ServerInterface $server)
-    {
-        $this->servers[$server->getName()] = $server;
-    }
-
-    /**
-     * @return ServerInterface
-     * @throws \RuntimeException when server not found.
-     */
-    public function getServer($name)
-    {
-        if ($this->hasServer($name)) {
-            return $this->servers[$name];
-        } else {
-            throw new \RuntimeException("Server `$name` does not defined.");
-        }
-    }
-
-    /**
-     * @return ServerInterface[]
-     */
-    public function getServers()
-    {
-        return $this->servers;
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasServer($name)
-    {
-        return array_key_exists($name, $this->servers);
     }
 }

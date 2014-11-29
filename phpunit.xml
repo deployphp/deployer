@@ -1,7 +1,15 @@
 <phpunit bootstrap="test/bootstrap.php">
     <testsuites>
-        <testsuite name="Deployer">
-            <directory>test/</directory>
+        <testsuite name="Source">
+            <directory>test/src/</directory>
+        </testsuite>
+        <testsuite name="Recipes">
+            <directory>test/recipe/</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+    </filter>
 </phpunit>

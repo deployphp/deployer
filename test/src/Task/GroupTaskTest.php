@@ -7,16 +7,14 @@
 
 namespace Deployer\Task;
 
-interface TaskInterface 
+class GroupTaskTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Run task.
+     * @expectedException \RuntimeException
      */
-    public function run();
-
-    /**
-     * Return task name.
-     * @return string
-     */
-    public function getName();
-} 
+    public function testGroupTask()
+    {
+        $task = new GroupTask();
+        $task->run();
+    }
+}

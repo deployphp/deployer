@@ -7,20 +7,23 @@
 
 namespace Deployer;
 
-class DeployerTest extends DeployerTester
+use Deployer\Task\Task;
+
+class TaskTest extends \PHPUnit_Framework_TestCase
 {
-    public function testRun()
+    public function testTask()
     {
         $mock = $this->getMock('stdClass', ['callback']);
         $mock->expects($this->exactly(1))
-            ->method('callback')
-            ->will($this->returnValue(true));
+            ->method('callback');
 
-        task('task', function () use ($mock) {
+        $task = new Task(function () use ($mock) {
             $mock->callback();
         });
 
-        $appTester = $this->runCommand('task');
+        $task->run();
+
+        $task->desc('Task description.');
+        $this->assertEquals('Task description.', $task->getDescription());
     }
 }
- 

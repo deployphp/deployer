@@ -7,12 +7,17 @@
 
 namespace Deployer\Server\Remote;
 
-use Deployer\Server\AbstractServer;
+use Deployer\Server\ServerInterface;
 use Deployer\Server\Configuration;
 use Ssh;
 
-class SshExtension extends AbstractServer
+class SshExtension implements ServerInterface
 {
+    /**
+     * @var Configuration
+     */
+    private $configuration;
+    
     /**
      * SSH session.
      * @var Ssh\Session
@@ -24,6 +29,14 @@ class SshExtension extends AbstractServer
      * @var array
      */
     private $directories = [];
+
+    /**
+     * @param Configuration $configuration
+     */
+    public function __construct(Configuration $configuration)
+    {
+        $this->configuration = $configuration;
+    }
 
     /**
      * {@inheritdoc}
@@ -125,5 +138,13 @@ class SshExtension extends AbstractServer
         if(!$this->session->getSftp()->receive($remote, $local)) {
             throw new \RuntimeException('Can not download file.');
         }
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
     }
 }

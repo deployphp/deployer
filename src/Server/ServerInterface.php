@@ -7,8 +7,6 @@
 
 namespace Deployer\Server;
 
-use Deployer\Environment;
-
 interface ServerInterface
 {
     /**
@@ -36,19 +34,4 @@ interface ServerInterface
      * @param string $remote Which file to download from remote server.
      */
     public function download($local, $remote);
-
-    /**
-     * @return string
-     */
-    public function getName();
-
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration();
-
-    /**
-     * @return Environment
-     */
-    public function getEnvironment();
 }

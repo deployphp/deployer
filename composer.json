@@ -11,10 +11,7 @@
     "autoload": {
         "psr-4": {
             "Deployer\\": "src/"
-        },
-        "files": [
-            "src/functions.php"
-        ]
+        }
     },
     "bin": [
         "bin/dep"
@@ -22,8 +19,9 @@
     "require": {
         "php": ">=5.4.0",
 
-        "symfony/finder": "~2.5",
-        "symfony/console": "~2.5",
+        "symfony/finder": "~2.6",
+        "symfony/console": "~2.6",
+        "symfony/process": "~2.6",
         "elfet/php-ssh": "~1.0",
         "phpseclib/phpseclib": "0.3.*@dev",
         "kherge/amend": "~3.0"

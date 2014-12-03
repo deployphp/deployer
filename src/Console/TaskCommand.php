@@ -48,6 +48,6 @@ class TaskCommand extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        
+        $this->deployer->execute($this->task, $input, $output);
     }
 }

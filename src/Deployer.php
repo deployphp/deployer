@@ -126,4 +126,17 @@ class Deployer
             throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
     }
+
+    /**
+     * @param Task\Task $task
+     * @param Console\Input\InputInterface $input
+     * @param Console\Output\Output $output
+     */
+    public function execute(Task\Task $task, Console\Input\InputInterface $input, Console\Output\Output $output)
+    {
+
+
+        $context = new Task\Context($server, $input, $output);
+        $task->run($context);
+    }
 }

@@ -5,9 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer;
-
-use Deployer\Task\Task;
+namespace Deployer\Task;
 
 class TaskTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,8 +18,10 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $task = new Task(function () use ($mock) {
             $mock->callback();
         });
+        
+        $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
-        $task->run();
+        $task->run($context);
 
         $task->desc('Task description.');
         $this->assertEquals('Task description.', $task->getDescription());

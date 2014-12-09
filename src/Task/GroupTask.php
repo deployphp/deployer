@@ -9,12 +9,18 @@ namespace Deployer\Task;
 
 class GroupTask extends Task
 {
+    /**
+     * Yes, it is constructor.
+     */
     public function __construct()
     {
         // Do nothing
     }
 
-    public function run()
+    /**
+     * {@inheritdoc
+     */
+    public function run(Context $context)
     {
         throw new \RuntimeException('Group task should never be running.');
     }

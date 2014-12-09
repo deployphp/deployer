@@ -82,18 +82,18 @@ class Deployer
      */
     public function run()
     {
-        $this->transformTasksToConsoleCommands();
+        $this->addConsoleCommands();
 
         $this->console->run($this->input, $this->output);
     }
 
     /**
-     * Transform tasks to console commands. Run it before run of console app.
+     * Transform tasks to console commands. 
      */
-    public function transformTasksToConsoleCommands()
+    public function addConsoleCommands()
     {
         foreach ($this->tasks as $name => $task) {
-            $this->console->add(new TaskCommand($name, $task, $this));
+            $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }
 
@@ -125,18 +125,5 @@ class Deployer
         } else {
             throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
-    }
-
-    /**
-     * @param Task\Task $task
-     * @param Console\Input\InputInterface $input
-     * @param Console\Output\Output $output
-     */
-    public function execute(Task\Task $task, Console\Input\InputInterface $input, Console\Output\Output $output)
-    {
-
-
-        $context = new Task\Context($server, $input, $output);
-        $task->run($context);
     }
 }

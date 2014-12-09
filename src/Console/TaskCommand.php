@@ -8,7 +8,8 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Task\Task;
+use Deployer\Executor\SeriesExecutor;
+use Deployer\Task\Scenario\Scenario;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -22,21 +23,15 @@ class TaskCommand extends Command
     private $deployer;
 
     /**
-     * @var Task
-     */
-    private $task;
-
-    /**
      * @param string $name
-     * @param Task $task
+     * @param string $description
      * @param Deployer $deployer
      */
-    public function __construct($name, Task $task, Deployer $deployer)
+    public function __construct($name, $description, Deployer $deployer)
     {
         parent::__construct($name);
+        $this->setDescription($description);
         $this->deployer = $deployer;
-        $this->task = $task;
-        $this->setDescription($task->getDescription());
 
         $this->addOption(
             'server',
@@ -46,8 +41,37 @@ class TaskCommand extends Command
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(Input $input, Output $output)
     {
-        $this->deployer->execute($this->task, $input, $output);
+        $tasks = [];
+        foreach ($this->deployer->scenarios->get($this->getName())->getTasks() as $taskName) {
+            $tasks[$taskName] = $this->deployer->tasks->get($taskName);
+        }
+        
+        $serverName = $input->getOption('server');
+        
+        if (!empty($serverName)) {
+
+            if ($this->deployer->serverGroups->has($serverName)) {
+                $servers = array_map(function ($name) {
+                    return $this->deployer->servers->get($name);
+                }, $this->deployer->serverGroups->get($serverName));
+            } else {
+                $servers = $this->deployer->servers->get($serverName);
+            }
+        } else {
+            $servers = iterator_to_array($this->deployer->servers->getIterator());
+        }
+        
+        if (empty($servers)) {
+            throw new \RuntimeException('You need specify at least one server.');
+        }
+
+        $executor = new SeriesExecutor();
+        
+        $executor->run($tasks, $servers, $input, $output);
     }
 }

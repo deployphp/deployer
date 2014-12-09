@@ -33,7 +33,7 @@ require_once 'src/functions.php';
 // Init Deployer
 $console = new \Deployer\Console\Application('Deployer', '3.0.0-beta');
 $input = new \Symfony\Component\Console\Input\ArgvInput();
-$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$output = new \Deployer\Console\StateOutput();
 $deployer = new \Deployer\Deployer($console, $input, $output);
 
 // Require deploy.php script

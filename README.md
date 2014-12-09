@@ -23,11 +23,13 @@ Deployer 3.0 developing roadmap:
   * [x] Refactor tasks
   * [x] Refactor servers
   * [x] Refactor Deployer class
+  * [x] Refactor task execution
 * [ ] New features
   * [ ] Environment inheritance
-  * [ ] Local tasks `->once()`
+  * [x] Local tasks `->once()`
+  * [x] Server filters `->onlyOn(...)`
   * [ ] Parallel task execution
-  * [ ] Better output 
+  * [x] Better output 
   * [ ] Reach 100% code coverage
 * [ ] Refactor recipes
   * [ ] Refactor common recipe
@@ -38,7 +40,7 @@ Deployer 3.0 developing roadmap:
   * [ ] WordPress recipe
   * [ ] Yii recipe
 * [ ] New site on deployer.org
-  * [ ] Separate docs and site code
+  * [x] Separate docs and site code
   * [ ] Auto updating docs script
   * [ ] Auto phar build script
 

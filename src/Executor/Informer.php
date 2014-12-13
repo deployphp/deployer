@@ -7,22 +7,22 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\StateOutput;
+use Deployer\Console\OutputWatcher;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
 {
     /**
-     * @var OutputInterface
+     * @var OutputWatcher
      */
     private $output;
 
     /**
-     * @param OutputInterface $output
+     * @param OutputWatcher $output
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputWatcher $output)
     {
-        $this->output = $output;
+        $this->output = $output;        
     }
 
     /**
@@ -38,10 +38,8 @@ class Informer
             }
 
             $this->output->writeln("Executing task $taskName");
-
-            if ($this->output instanceof StateOutput) {
-                $this->output->setWasWritten(false);
-            }
+            
+            $this->output->setWasWritten(false);
         }
     }
 
@@ -50,7 +48,7 @@ class Informer
      */
     public function endTask()
     {
-        if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && $this->output instanceof StateOutput && !$this->output->getWasWritten()) {
+        if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
             $this->output->write("\033[k\033[1A<info>✔</info>\n");
         } else {
             $this->output->writeln("<info>✔</info> Ok");

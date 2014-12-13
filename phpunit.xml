@@ -1,4 +1,4 @@
-<phpunit bootstrap="test/bootstrap.php">
+<phpunit bootstrap="test/bootstrap.php" backupGlobals="false">
     <testsuites>
         <testsuite name="Source">
             <directory>test/src/</directory>

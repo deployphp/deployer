@@ -7,7 +7,7 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\StateOutput;
+use Deployer\Console\OutputWatcher;
 use Deployer\Server\Environment;
 use Deployer\Server\ServerInterface;
 use Deployer\Task\Context;
@@ -21,6 +21,7 @@ class SeriesExecutor implements ExecutorInterface
      */
     public function run($tasks, $servers, $input, $output)
     {
+        $output = new OutputWatcher($output);
         $informer = new Informer($output);
         
         $environments = [];

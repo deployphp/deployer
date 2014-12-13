@@ -8,6 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Deployer\Task\Scenario\Scenario;
 use Symfony\Component\Console\Command\Command;
@@ -39,6 +40,13 @@ class TaskCommand extends Command
             Option::VALUE_OPTIONAL,
             'Run tasks only on this server or group of servers.'
         );
+
+        $this->addOption(
+            'parallel',
+            'p',
+            Option::VALUE_NONE,
+            'Run tests in parallel.'
+        );
     }
 
     /**
@@ -50,9 +58,9 @@ class TaskCommand extends Command
         foreach ($this->deployer->scenarios->get($this->getName())->getTasks() as $taskName) {
             $tasks[$taskName] = $this->deployer->tasks->get($taskName);
         }
-        
+
         $serverName = $input->getOption('server');
-        
+
         if (!empty($serverName)) {
 
             if ($this->deployer->serverGroups->has($serverName)) {
@@ -60,17 +68,21 @@ class TaskCommand extends Command
                     return $this->deployer->servers->get($name);
                 }, $this->deployer->serverGroups->get($serverName));
             } else {
-                $servers = $this->deployer->servers->get($serverName);
+                $servers = [$serverName => $this->deployer->servers->get($serverName)];
             }
         } else {
             $servers = iterator_to_array($this->deployer->servers->getIterator());
         }
-        
+
         if (empty($servers)) {
             throw new \RuntimeException('You need specify at least one server.');
         }
-
-        $executor = new SeriesExecutor();
+        
+        if ($input->getOption('parallel')) {
+            $executor = new ParallelExecutor();
+        } else {
+            $executor = new SeriesExecutor();
+        }
         
         $executor->run($tasks, $servers, $input, $output);
     }

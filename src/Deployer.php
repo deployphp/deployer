@@ -7,10 +7,12 @@
 
 namespace Deployer;
 
+use Deployer\Console\WorkerCommand;
 use Deployer\Server;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
+use Deployer\Executor\SeriesExecutor;
 use Symfony\Component\Console;
 
 /**
@@ -83,6 +85,8 @@ class Deployer
     public function run()
     {
         $this->addConsoleCommands();
+        
+        $this->console->add(new WorkerCommand(3212));
 
         $this->console->run($this->input, $this->output);
     }
@@ -125,5 +129,14 @@ class Deployer
         } else {
             throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
+    }
+
+    /**
+     * @param string $name
+     * @return Console\Helper\HelperInterface
+     */
+    public function getHelper($name)
+    {
+        return $this->console->getHelperSet()->get($name);
     }
 }

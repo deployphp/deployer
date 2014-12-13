@@ -10,9 +10,12 @@ use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
 use Deployer\Task\Task as TheTask;
+use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @param string $name
@@ -23,19 +26,19 @@ use Deployer\Task\Scenario\Scenario;
 function server($name, $domain, $port = 22)
 {
     $deployer = Deployer::get();
-    
+
     $env = new Environment();
     $config = new Configuration($name, $domain, $port);
-    
+
     if (function_exists('ssh2_exec')) {
         $server = new Remote\SshExtension($config);
     } else {
         $server = new Remote\PhpSecLib($config);
     }
-    
+
     $deployer->servers->set($name, $server);
     $deployer->environments->set($name, $env);
-    
+
     return new Builder($config, $env);
 }
 
@@ -43,10 +46,10 @@ function server($name, $domain, $port = 22)
  * @param string $name
  * @param array $servers
  */
-function serverGroup($name, $servers) 
+function serverGroup($name, $servers)
 {
     $deployer = Deployer::get();
-    
+
     $deployer->serverGroups->set($name, $servers);
 }
 
@@ -164,12 +167,13 @@ function runLocally($command)
  * Upload file or directory to current server.
  * @param string $local
  * @param string $remote
+ * @throws \RuntimeException
  */
 function upload($local, $remote)
 {
-    $server = env()->getServer();
+    $server = Context::get()->getServer();
 
-    $remote = config()->getPath() . '/' . $remote;
+    $remote = env()->get('deploy_path') . '/' . $remote;
 
     if (is_file($local)) {
 
@@ -189,8 +193,10 @@ function upload($local, $remote)
             ->ignoreDotFiles(false)
             ->in($local);
 
-        if (output()->isVerbose()) {
-            $progress = progressHelper($files->count());
+        $progress = Deployer::get()->getHelper('progress');
+
+        if (output()->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
+            $progress->start(output(), $files->count());
         }
 
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
@@ -198,10 +204,10 @@ function upload($local, $remote)
 
             $server->upload(
                 $file->getRealPath(),
-                Utils\Path::normalize($remote . '/' . $file->getRelativePathname())
+                $remote . '/' . $file->getRelativePathname()
             );
 
-            if (output()->isVerbose()) {
+            if (output()->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
                 $progress->advance();
             }
         }
@@ -212,13 +218,14 @@ function upload($local, $remote)
 }
 
 /**
- * Download ONE FILE from remote server.
+ * Download file from remote server.
+ * 
  * @param string $local
  * @param string $remote
  */
 function download($local, $remote)
 {
-    $server = env()->getServer();
+    $server = Context::get()->getServer();
     $server->download($local, $remote);
 }
 
@@ -241,31 +248,12 @@ function write($message)
 }
 
 /**
- * Prints info.
- * @param string $description
- * @deprecated Use writeln("<info>...</info>") instead of.
- */
-function info($description)
-{
-    writeln("<info>$description</info>");
-}
-
-/**
- * Prints "ok" sign.
- * @deprecated
- */
-function ok()
-{
-    writeln("<info>✔</info>");
-}
-
-/**
  * @param string $key
  * @param mixed $value
  */
 function set($key, $value)
 {
-    Deployer::get()->setParameter($key, $value);
+    // TODO
 }
 
 /**
@@ -275,7 +263,7 @@ function set($key, $value)
  */
 function get($key, $default)
 {
-    return Deployer::get()->getParameter($key, $default);
+    // TODO
 }
 
 /**
@@ -283,17 +271,19 @@ function get($key, $default)
  * @param string $default
  * @return string
  */
-function ask($message, $default)
+function ask($message, $default = null)
 {
-    if (output()->isQuiet()) {
+    if (output()->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
         return $default;
     }
 
-    $dialog = Deployer::get()->getHelperSet()->get('dialog');
+    $helper = Deployer::get()->getHelper('question');
 
-    $message = "<question>$message [$default]</question> ";
+    $message = "<question>$message" . ($default === null) ? "" : " [$default]" . "</question> ";
 
-    return $dialog->ask(output(), $message, $default);
+    $question = new \Symfony\Component\Console\Question\Question($message, $default);
+
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
@@ -303,20 +293,18 @@ function ask($message, $default)
  */
 function askConfirmation($message, $default = false)
 {
-    if (output()->isQuiet()) {
+    if (output()->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
         return $default;
     }
 
-    $dialog = Deployer::get()->getHelperSet()->get('dialog');
+    $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
     $message = "<question>$message [$yesOrNo]</question> ";
 
-    if (!$dialog->askConfirmation(output(), $message, $default)) {
-        return false;
-    }
+    $question = new \Symfony\Component\Console\Question\ConfirmationQuestion($message, $default);
 
-    return true;
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
@@ -325,46 +313,44 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
-    $dialog = Deployer::get()->getHelperSet()->get('dialog');
+    if (output()->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
+        return '';
+    }
+
+    $helper = Deployer::get()->getHelper('question');
 
     $message = "<question>$message</question> ";
 
-    return $dialog->askHiddenResponse(output(), $message);
+    $question = new \Symfony\Component\Console\Question\Question($message);
+    $question->setHidden(true);
+    $question->setHiddenFallback(false);
+
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
- * @param int $count
- * @return \Symfony\Component\Console\Helper\ProgressHelper
+ * @return InputInterface
  */
-function progressHelper($count)
+function input()
 {
-    $progress = Deployer::get()->getHelperSet()->get('progress');
-    $progress->start(output(), $count);
-    return $progress;
+    return Context::get()->getInput();
 }
 
+
 /**
- * @return \Symfony\Component\Console\Output\Output
+ * @return OutputInterface
  */
 function output()
 {
-    return Deployer::get()->getOutput();
+    return Context::get()->getOutput();
 }
 
 /**
  * Return current server env.
- * @return \Deployer\CurrentEnvironment
+ *
+ * @return Environment
  */
 function env()
 {
-    return CurrentEnvironment::getCurrent();
-}
-
-/**
- * Return current server configuration.
- * @return Server\Configuration
- */
-function config()
-{
-    return env()->getConfig();
+    return Context::get()->getEnvironment();
 }

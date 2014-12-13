@@ -25,5 +25,15 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $task->desc('Task description.');
         $this->assertEquals('Task description.', $task->getDescription());
+
+        $task->once();
+        $this->assertTrue($task->isOnce());
+
+        $task->onlyOn(['server']);
+        $this->assertEquals(['server' => 0], $task->getOnlyOn());
+        $this->assertTrue($task->runOnServer('server'));
+
+        $task->onlyOn([]);
+        $this->assertTrue($task->runOnServer('server'));
     }
 }

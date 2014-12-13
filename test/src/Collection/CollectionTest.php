@@ -52,11 +52,24 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider collections
-     * @depends testCollection
+     * @depends      testCollection
      * @expectedException \RuntimeException
      */
     public function testException($collection)
     {
         $collection->get('unexpected');
+    }
+
+    public function testArrayAccess()
+    {
+        $collection = new Collection();
+
+        $collection['key'] = 'value';
+        $this->assertEquals('value', $collection['key']);
+
+        $this->assertTrue(isset($collection['key']));
+
+        unset($collection['key']);
+        $this->assertFalse(isset($collection['key']));
     }
 }

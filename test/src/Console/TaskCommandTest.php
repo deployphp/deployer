@@ -9,12 +9,11 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Helper\DeployerHelper;
-use AspectMock\Test as test;
 
 class TaskCommandTest extends \PHPUnit_Framework_TestCase
 {
     use DeployerHelper;
-    
+
     public function testTaskCommand()
     {
         list($deployer, $tasks, $servers, $input, $output) = $this->deployer();
@@ -26,18 +25,15 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
                 ['parallel', null],
             ]));
 
-        $command = new TaskCommand('all', 'desc', $deployer);
+        $executor = $this->getMock('Deployer\Executor\ExecutorInterface');
+        $executor->expects($this->once())
+            ->method('run')
+            ->with($tasks, $servers, $input, $output);
 
-        $executor = test::double('Deployer\Executor\SeriesExecutor', ['run' => null]);
+        $command = new TaskCommand('all', 'desc', $deployer);
+        $command->executor = $executor;
 
         $command->run($input, $output);
-
-        $executor->verifyInvokedOnce('run', [$tasks, $servers, $input, $output]);
-    }
-
-    protected function tearDown()
-    {
-        test::clean();
     }
 }
  

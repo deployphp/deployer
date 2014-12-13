@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class TaskCommand extends Command
 {
+
     /**
      * @var Deployer
      */
@@ -77,13 +78,17 @@ class TaskCommand extends Command
         if (empty($servers)) {
             throw new \RuntimeException('You need specify at least one server.');
         }
-        
-        if ($input->getOption('parallel')) {
-            $executor = new ParallelExecutor();
+
+        if (isset($this->executor)) {
+            $executor = $this->executor;
         } else {
-            $executor = new SeriesExecutor();
+            if ($input->getOption('parallel')) {
+                $executor = new ParallelExecutor();
+            } else {
+                $executor = new SeriesExecutor();
+            }
         }
-        
+
         $executor->run($tasks, $servers, $input, $output);
     }
 }

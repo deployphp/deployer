@@ -7,7 +7,7 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\OutputWatcher;
+use Deployer\Console\Output\OutputWatcher;
 use Deployer\Server\Environment;
 use Deployer\Server\ServerInterface;
 use Deployer\Task\Context;
@@ -19,12 +19,10 @@ class SeriesExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $input, $output)
+    public function run($tasks, $servers, $environments, $input, $output)
     {
         $output = new OutputWatcher($output);
         $informer = new Informer($output);
-        
-        $environments = [];
 
         foreach ($tasks as $taskName => $task) {
             $informer->startTask($taskName);
@@ -32,12 +30,13 @@ class SeriesExecutor implements ExecutorInterface
             if ($task->isOnce()) {
                 $task->run(new Context(null, null, $input, $output));
             } else {
-                $env = isset($environments[$taskName]) ? $environments[$taskName] : $environments[$taskName] = new Environment();
-
                 foreach ($servers as $serverName => $server) {
                     if ($task->runOnServer($serverName)) {
+                        $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
+                        
                         $informer->onServer($serverName);
                         $task->run(new Context($server, $env, $input, $output));
+                        $informer->endOnServer($serverName);
                     }
                 }
             }

@@ -7,6 +7,7 @@
 
 namespace Deployer\Helper;
 
+use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\GroupCollection;
 use Deployer\Server\ServerCollection;
 use Deployer\Task\Scenario\ScenarioCollection;
@@ -64,9 +65,20 @@ trait DeployerHelper
             $deployer->servers[$name] = $server;
         }
 
+        $environments = [
+            'first' => $this->getMockBuilder('Deployer\Server\Environment')->disableOriginalConstructor()->getMock(),
+            'second' => $this->getMockBuilder('Deployer\Server\Environment')->disableOriginalConstructor()->getMock(),
+        ];
+
+        $deployer->environments = new EnvironmentCollection();
+
+        foreach ($environments as $name => $env) {
+            $deployer->environments[$name] = $env;
+        }
+
         $deployer->serverGroups = new GroupCollection();
         $deployer->serverGroups['all'] = ['first', 'second'];
         
-        return [$deployer, $tasks, $servers, $input, $output];
+        return [$deployer, $tasks, $servers, $environments, $input, $output];
     }
 } 

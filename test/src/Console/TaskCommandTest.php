@@ -16,7 +16,7 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testTaskCommand()
     {
-        list($deployer, $tasks, $servers, $input, $output) = $this->deployer();
+        list($deployer, $tasks, $servers, $environments, $input, $output) = $this->deployer();
 
         $input->expects($this->any())
             ->method('getOption')
@@ -28,7 +28,7 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
         $executor = $this->getMock('Deployer\Executor\ExecutorInterface');
         $executor->expects($this->once())
             ->method('run')
-            ->with($tasks, $servers, $input, $output);
+            ->with($tasks, $servers, $environments, $input, $output);
 
         $command = new TaskCommand('all', 'desc', $deployer);
         $command->executor = $executor;

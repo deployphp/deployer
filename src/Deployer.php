@@ -86,7 +86,7 @@ class Deployer
     {
         $this->addConsoleCommands();
         
-        $this->console->add(new WorkerCommand(3212));
+        $this->console->add(new WorkerCommand($this));
 
         $this->console->run($this->input, $this->output);
     }

@@ -7,18 +7,18 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\OutputWatcher;
+use Deployer\Console\Output\OutputWatcher;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
 {
     /**
-     * @var OutputWatcher
+     * @var \Deployer\Console\Output\OutputWatcher
      */
     private $output;
 
     /**
-     * @param OutputWatcher $output
+     * @param \Deployer\Console\Output\OutputWatcher $output
      */
     public function __construct(OutputWatcher $output)
     {
@@ -61,7 +61,25 @@ class Informer
     public function onServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("⤷ on server $serverName");
+            $this->output->writeln("⤷ on [$serverName]");
         }
+    }
+
+    /**
+     * @param string $serverName
+     */
+    public function endOnServer($serverName)
+    {
+        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
+            $this->output->writeln("<info>⤶</info> done on [$serverName]");
+        }
+    }
+
+    /**
+     * Print error.
+     */
+    public function taskError()
+    {
+        $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>");
     }
 }

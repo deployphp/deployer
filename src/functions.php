@@ -5,6 +5,7 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
+use Deployer\Server\Local;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
@@ -35,6 +36,25 @@ function server($name, $domain, $port = 22)
     } else {
         $server = new Remote\PhpSecLib($config);
     }
+
+    $deployer->servers->set($name, $server);
+    $deployer->environments->set($name, $env);
+
+    return new Builder($config, $env);
+}
+
+
+/**
+ * @param string $name
+ * @return Builder
+ */
+function localServer($name)
+{
+    $deployer = Deployer::get();
+
+    $env = new Environment();
+    $server = new Local();
+    $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
 
     $deployer->servers->set($name, $server);
     $deployer->environments->set($name, $env);
@@ -219,7 +239,7 @@ function upload($local, $remote)
 
 /**
  * Download file from remote server.
- * 
+ *
  * @param string $local
  * @param string $remote
  */

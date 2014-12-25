@@ -79,6 +79,8 @@ class TaskCommand extends Command
             throw new \RuntimeException('You need specify at least one server.');
         }
 
+        $environments = iterator_to_array($this->deployer->environments);
+
         if (isset($this->executor)) {
             $executor = $this->executor;
         } else {
@@ -89,6 +91,6 @@ class TaskCommand extends Command
             }
         }
 
-        $executor->run($tasks, $servers, $input, $output);
+        $executor->run($tasks, $servers, $environments,  $input, $output);
     }
 }

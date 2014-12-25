@@ -5,29 +5,39 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Console;
+namespace Deployer\Console\Output;
 
+use Pure\Client;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OutputWatcher implements OutputInterface
+class RemoteOutput implements OutputInterface
 {
     /**
      * @var OutputInterface
      */
     private $output;
-    
+
     /**
-     * @var bool
+     * @var Client
      */
-    private $wasWritten = false;
+    private $pure;
+
+    /**
+     * @var string
+     */
+    private $server;
 
     /**
      * @param OutputInterface $output
+     * @param Client $pure
+     * @param string $server
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output, Client $pure, $server)
     {
         $this->output = $output;
+        $this->pure = $pure;
+        $this->server = $server;
     }
 
     /**
@@ -35,16 +45,7 @@ class OutputWatcher implements OutputInterface
      */
     public function write($messages, $newline = false, $type = self::OUTPUT_NORMAL)
     {
-        // Next code prints arrow on task line if some output was inside task.
-        // This is ugly hack, and this part should be refactored later, but now i go segmentation fault.
-        static $isFirstTime = true;
-        if (!$this->wasWritten && !$isFirstTime) {
-            $this->output->write("\033[k\033[1A➤\n", false, $type);
-        }
-        $isFirstTime = false;
-
-        $this->wasWritten = true;
-        $this->output->write($messages, $newline, $type);
+        $this->pure->queue('output')->push([$this->server, $messages, $newline, $type]);
     }
 
     /**
@@ -60,7 +61,7 @@ class OutputWatcher implements OutputInterface
      */
     public function setVerbosity($level)
     {
-        $this->output->setVerbosity($level);
+        throw new \RuntimeException('Can not modify verbosity in parallel mode.');
     }
 
     /**
@@ -76,7 +77,7 @@ class OutputWatcher implements OutputInterface
      */
     public function setDecorated($decorated)
     {
-        $this->output->setDecorated($decorated);
+        throw new \RuntimeException('Can not modify decorated in parallel mode.');
     }
 
     /**
@@ -92,7 +93,7 @@ class OutputWatcher implements OutputInterface
      */
     public function setFormatter(OutputFormatterInterface $formatter)
     {
-        $this->output->setFormatter($formatter);
+        throw new \RuntimeException('Can not modify formatter in parallel mode.');
     }
 
     /**
@@ -101,21 +102,5 @@ class OutputWatcher implements OutputInterface
     public function getFormatter()
     {
         return $this->output->getFormatter();
-    }
-
-    /**
-     * @param boolean $wasWritten
-     */
-    public function setWasWritten($wasWritten)
-    {
-        $this->wasWritten = $wasWritten;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getWasWritten()
-    {
-        return $this->wasWritten;
     }
 } 

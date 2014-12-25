@@ -15,7 +15,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
 
     public function testSeriesExecutor()
     {
-        list($deployer, $tasks, $servers, $input, $output) = $this->deployer();
+        list($deployer, $tasks, $servers, $environments, $input, $output) = $this->deployer();
 
         foreach ($tasks as $task) {
             $task->expects($this->any())->method('runOnServer')->will($this->returnValue(true));
@@ -25,7 +25,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $tasks['one']->expects($this->any())->method('isOnce')->will($this->returnValue(true));
 
         $executor = new SeriesExecutor();
-        $executor->run($tasks, $servers, $input, $output);
+        $executor->run($tasks, $servers, $environments, $input, $output);
     }
 }
  

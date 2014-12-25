@@ -30,6 +30,9 @@ set_include_path(__DIR__ . '/../' . PATH_SEPARATOR . get_include_path());
 // Include function declarations
 require_once 'src/functions.php';
 
+// Deployer constants
+define('DEPLOYER_BIN', __FILE__);
+
 // Init Deployer
 $console = new \Deployer\Console\Application('Deployer', '3.0.0-beta');
 $input = new \Symfony\Component\Console\Input\ArgvInput();
@@ -59,7 +62,7 @@ if (is_file($deployFile) && is_readable($deployFile)) {
 // Self-update command
 $selfUpdate = new \KevinGH\Amend\Command('self-update');
 $selfUpdate->setDescription('Updates deployer.phar to the latest version');
-$selfUpdate->setManifestUri('https://raw.github.com/elfet/deployer/master/manifest.json');
+$selfUpdate->setManifestUri('https://deployer.org/manifest.json');
 $console->add($selfUpdate);
 $console->getHelperSet()->set(new \KevinGH\Amend\Helper());
 

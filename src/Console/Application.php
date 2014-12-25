@@ -19,7 +19,7 @@ class Application extends Console
         $inputDefinition = parent::getDefaultInputDefinition();
 
         $inputDefinition->addOption(
-            new InputOption('--file', '-f', InputOption::VALUE_NONE, 'Specify Deployer file.')
+            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Specify Deployer file.')
         );
 
         return $inputDefinition;

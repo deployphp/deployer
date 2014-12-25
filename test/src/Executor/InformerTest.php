@@ -14,7 +14,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
 {
     public function testInformer()
     {
-        $output = $this->getMockBuilder('Deployer\Console\OutputWatcher')
+        $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
             ->disableOriginalConstructor()
             ->setMethods(['getVerbosity', 'getWasWritten', 'write'])
             ->getMock();

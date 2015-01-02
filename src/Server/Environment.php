@@ -42,22 +42,24 @@ class Environment
     public function get($name, $default = null)
     {
         if (array_key_exists($name, $this->values)) {
-            return $this->values[$name];
+            $value = $this->values[$name];
         } else {
             if (isset(self::$defaults[$name])) {
                 if (is_callable(self::$defaults[$name])) {
-                    return $this->values[$name] = call_user_func(self::$defaults[$name]);
+                    $value = $this->values[$name] = call_user_func(self::$defaults[$name]);
                 } else {
-                    return $this->values[$name] = self::$defaults[$name];
+                    $value = $this->values[$name] = self::$defaults[$name];
+                }
+            } else {
+                if ($default === null) {
+                    throw new \RuntimeException("Environment parameter `$name` does not exists.");
+                } else {
+                    $value = $default;
                 }
             }
-
-            if ($default === null) {
-                throw new \RuntimeException("Environment parameter `$name` does not exists.");
-            } else {
-                return $default;
-            }
         }
+
+        return $this->parse($value);
     }
 
     /**
@@ -75,5 +77,24 @@ class Environment
     public static function setDefault($name, $value)
     {
         self::$defaults[$name] = $value;
+    }
+
+    /**
+     * Parse env values.
+     *
+     * @param string $value
+     * @return string
+     */
+    public function parse($value)
+    {
+        if (is_string($value)) {
+            if (preg_match_all('/\{(.+?)\}/', $value, $matches)) {
+                foreach ($matches[1] as $name) {
+                    $value = str_replace('{' . $name . '}', $this->get($name), $value);
+                }
+            }
+        }
+
+        return $value;
     }
 }

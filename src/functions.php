@@ -142,6 +142,7 @@ function after($it, $that)
 function runRaw($command)
 {
     $server = Context::get()->getServer();
+    $command = Context::get()->getEnvironment()->parse($command);
 
     if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity()) {
         writeln("<comment>Run</comment>: $command");
@@ -358,6 +359,7 @@ function output()
 
 /**
  * Return current server env or set default values or get env value.
+ * When set env value you can write over values line "{name}".
  *
  * @param string $name
  * @param mixed $value

@@ -10,7 +10,7 @@ namespace Deployer;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Application;
 
-class DeployerDependentTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var Deployer

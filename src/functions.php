@@ -249,7 +249,7 @@ function download($local, $remote)
 
 /**
  * Writes a message to the output and adds a newline at the end.
- * @param string $message
+ * @param string|array $message
  */
 function writeln($message)
 {

@@ -165,7 +165,7 @@ function run($command)
 {
     $deployPath = env(Environment::DEPLOY_PATH);
 
-    runRaw("cd {} && $command");
+    runRaw("cd {$deployPath} && $command");
 }
 
 /**

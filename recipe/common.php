@@ -5,6 +5,9 @@
  * file that was distributed with this source code.
  */
 
+set('env', 'prod');
+set('keep_releases', 3);
+
 /**
  * Rollback to previous release.
  */
@@ -31,154 +34,164 @@ task('rollback', function () {
  * Preparing server for deployment.
  */
 task('deploy:prepare', function () {
-    $basePath = config()->getPath();
-
-    // Check if base path exist.
-    run("if [ ! -d $(echo $basePath) ]; then mkdir $basePath; fi", true);
-
     // Create releases dir.
-    run("if [ ! -d \"releases\" ]; then mkdir releases; fi");
+    run("cd {deploy_path} && if [ ! -d releases ]; then mkdir releases; fi");
 
     // Create shared dir.
-    run("if [ ! -d \"shared\" ]; then mkdir shared; fi");
+    run("cd {deploy_path} && if [ ! -d shared ]; then mkdir shared; fi");
 })->desc('Preparing server for deploy');
+
+/**
+ * Return release path.
+ */
+env('release_path', function () {
+    return str_replace("\n", '', run("readlink {deploy_path}/release"));
+});
+
+/**
+ * Release
+ */
+task('deploy:release', function () {
+    $release = 1;
+
+    $releases = env('releases_list');
+    if (!empty($releases)) {
+        $release = (int)$releases[0] + 1;
+    }
+
+    $releasePath = "{deploy_path}/releases/$release";
+
+    run("mkdir $releasePath");
+
+    run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
+
+    run("ln -s $releasePath {deploy_path}/release");
+})->desc('Prepare release');
 
 
 /**
  * Update project code
  */
 task('deploy:update_code', function () {
-    $basePath = config()->getPath();
     $repository = get('repository', false);
 
     if (false === $repository) {
         throw new \RuntimeException('You have to specify repository.');
     }
 
-    $release = date('Ymd') . substr((string)time(), -5);
-    $releasePath = "$basePath/releases/$release";
-
-    env()->setReleasePath($releasePath);
-    env()->set('is_new_release', true);
-
-    run("git clone --recursive -q $repository $releasePath");
-    run("chmod -R g+w $releasePath");
+    run("git clone --recursive -q $repository {release_path}");
+    run("chmod -R g+w {release_path}");
 })->desc('Updating code');
 
 
 /**
- * Delete new release if something goes wrong
- */
-task('deploy:rollback', function () {
-    if (env()->get('is_new_release', false)) {
-        $server = config()->getName();
-        writeln("<error>Rolling back to previous release on server $server</error>");
-
-        $releasePath = env()->getReleasePath();
-        // Remove release
-        run("rm -rf $releasePath");
-    } else {
-        writeln("<comment>If you want to rollback run \"rollback\" task</comment>");
-    }
-});
-
-
-/**
- * Create symlinks for shared directories and files
+ * Create symlinks for shared directories and files.
  */
 task('deploy:shared', function () {
-    $basePath = config()->getPath();
-    $sharedPath = "$basePath/shared";
-    $releasePath = env()->getReleasePath();
+    $sharedPath = "{deploy_path}/shared";
 
-    // User specified shared directories
-    $sharedDirs = (array)get('shared_dirs', []);
-
-    foreach ($sharedDirs as $dir) {
-        // Remove dir from source
-        run("if [ -d $(echo $releasePath/$dir) ]; then rm -rf $releasePath/$dir; fi");
+    foreach (get('shared_dirs') as $file) {
+        // Remove from source
+        run("if [ -d $(echo {release_path}/$file) ]; then rm -rf {release_path}/$file; fi");
 
         // Create shared dir if does not exist
-        run("mkdir -p $sharedPath/$dir");
+        run("mkdir -p $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$dir $releasePath/$dir");
+        run("ln -nfs $sharedPath}/$file {release_path}/$file");
     }
 
-    // User specified shared files
-    $sharedFiles = (array)get('shared_files', []);
+    foreach (get('shared_files') as $file) {
+        // Remove from source
+        run("if [ -d $(echo {release_path}/$file) ]; then rm -rf {release_path}/$file; fi");
 
-    foreach ($sharedFiles as $file) {
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . dirname($file));
 
-        // Touch shared file
+        // Touch shared
         run("touch $sharedPath/$file");
 
-        // Symlink shared file to release file
-        run("ln -nfs $sharedPath/$file $releasePath/$file");
+        // Symlink shared dir to release dir
+        run("ln -nfs $sharedPath}/$file {release_path}/$file");
     }
 })->desc('Creating symlinks for shared files');
 
 
 /**
- * Make writeable dirs
+ * Make writeable dirs.
  */
-task('deploy:writeable_dirs', function () {
-    $user = config()->getUser();
-    $wwwUser = config()->getWwwUser();
-    $releasePath = env()->getReleasePath();
-
-    cd($releasePath);
-
-    // User specified writeable dirs
-    $dirs = (array)get('writeable_dirs', []);
-
-    foreach ($dirs as $dir) {
-        run("chmod -R 0777 $dir");
-        run("chmod -R g+w $dir");
+task('deploy:writeable', function () {
+    foreach (get('writeable_dirs') as $dir) {
+        run("cd {release_path} && chmod -R 0777 $dir");
+        run("cd {release_path} && chmod -R g+w $dir");
     }
 })->desc('Make writeable dirs');
 
 
 /**
- * Vendors
+ * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
-    $releasePath = env()->getReleasePath();
+    $prod = get('env');
+    $isComposer = runCheck("if [ -e {release_path}/composer.phar ]; then echo 'true'; fi");
 
-    cd($releasePath);
-    $prod = get('env', 'prod');
-    $isComposer = run("if [ -e $releasePath/composer.phar ]; then echo 'true'; fi");
-
-    if ('true' !== $isComposer) {
-        run("curl -s http://getcomposer.org/installer | php");
+    if (!$isComposer) {
+        run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
     }
 
-    run("SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress");
+    run("cd {release_path} && SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
 
 })->desc('Installing vendors');
 
 
 /**
- * Create symlink to last release
+ * Create symlink to last release.
  */
 task('deploy:symlink', function () {
-    $releasePath = env()->getReleasePath();
-    $releaseDir = get('release_dir', null);
 
-    run("rm -f current && ln -s $releasePath current");
+    run("cd {deploy_path} && mv -f release current");
 
 })->desc('Creating symlink to release');
 
 
 /**
- * Cleanup old releases
+ * Return list of releases on server.
+ */
+env('releases_list', function () {
+    $ls = run('ls {deploy_path}/releases');
+    $list = array_filter(explode("\n", $ls), function ($line) {
+        return !empty($line);
+    });
+
+    rsort($list);
+
+    return $list;
+});
+
+
+/**
+ * Return current release path.
+ */
+env('current', function () {
+    $currentRelease = str_replace("\n", '', run("readlink {deploy_path}/current"));
+    return $currentRelease;
+});
+
+/**
+ * Show current release number.
+ */
+task('current', function () {
+    writeln('Current release: ' . basename(env('current')));
+})->desc('Show current release.');
+
+
+/**
+ * Cleanup old releases.
  */
 task('cleanup', function () {
-    $releases = env()->getReleasesByTime();
+    $releases = env('releases_list');
 
-    $keep = get('keep_releases', 3);
+    $keep = get('keep_releases');
 
     while ($keep > 0) {
         array_shift($releases);
@@ -186,16 +199,7 @@ task('cleanup', function () {
     }
 
     foreach ($releases as $release) {
-        run("rm -rf releases/$release");
+        run("rm -rf {deploy_path}/releases/$release");
     }
 
 })->desc('Cleaning up old releases');
-
-
-/**
- * Helper tasks
- */
-task('deploy:start', function () {
-});
-task('deploy:end', function () {
-});

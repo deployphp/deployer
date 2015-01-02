@@ -62,7 +62,7 @@ class WorkerCommand extends Command
             $environment = isset($this->deployer->environments[$serverName]) ? $this->deployer->environments[$serverName] : new Environment();
             $output = new RemoteOutput($output, $pure, $serverName);
 
-            while (!$pure->map('shutdown')->has($serverName)) {
+            while ($pure->ping()) {
                 // Get task to do
                 $taskName = $pure->map('tasks_to_do')->get($serverName);
 

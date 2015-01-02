@@ -34,11 +34,8 @@ class ParallelExecutor implements ExecutorInterface
         $pure = new Server($port);
         $loop = $pure->getLoop();
 
-        $outputStorage = new QueueStorage();
-        $pure->setStorage('output', $outputStorage);
-
-        $exceptionStorage = new QueueStorage();
-        $pure->setStorage('exception', $exceptionStorage);
+        $outputStorage = $pure['output'] = new QueueStorage();
+        $exceptionStorage = $pure['exception'] = new QueueStorage();
 
         // Wait until all workers finish they tasks. When set this variable to true and send new tasks to workers. 
         $wait = false;

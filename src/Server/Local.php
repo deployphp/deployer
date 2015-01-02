@@ -7,6 +7,8 @@
 
 namespace Deployer\Server;
 
+use Symfony\Component\Process\Process;
+
 class Local implements ServerInterface
 {
     /**
@@ -14,7 +16,7 @@ class Local implements ServerInterface
      */
     public function connect()
     {
-        // TODO: Implement connect() method.
+        // We do not need to connect to local server.
     }
 
     /**
@@ -22,7 +24,14 @@ class Local implements ServerInterface
      */
     public function run($command)
     {
-        // TODO: Implement run() method.
+        $process = new Process($command);
+        $process->run();
+
+        if (!$process->isSuccessful()) {
+            throw new \RuntimeException($process->getErrorOutput());
+        }
+
+        return $process->getOutput();
     }
 
     /**
@@ -30,7 +39,7 @@ class Local implements ServerInterface
      */
     public function upload($local, $remote)
     {
-        // TODO: Implement upload() method.
+        copy($local, $remote);
     }
 
     /**
@@ -38,7 +47,6 @@ class Local implements ServerInterface
      */
     public function download($local, $remote)
     {
-        // TODO: Implement download() method.
+        copy($remote, $local);
     }
-
 }

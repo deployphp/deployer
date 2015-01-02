@@ -19,4 +19,4 @@ class TaskCollection extends Collection
     {
         return parent::get($name);
     }
-} 
+}

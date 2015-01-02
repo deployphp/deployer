@@ -9,10 +9,7 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Server\Environment;
-use Deployer\Server\ServerInterface;
 use Deployer\Task\Context;
-use Deployer\Task\Task;
-use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class SeriesExecutor implements ExecutorInterface
 {

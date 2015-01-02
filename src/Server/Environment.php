@@ -9,6 +9,7 @@ namespace Deployer\Server;
 
 class Environment
 {
+    const DEPLOY_PATH = 'deploy_path';
 
     /**
      * Globally defaults values.

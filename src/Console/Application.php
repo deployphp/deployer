@@ -8,8 +8,6 @@
 namespace Deployer\Console;
 
 use Symfony\Component\Console\Application as Console;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
 class Application extends Console

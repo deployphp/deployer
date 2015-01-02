@@ -134,53 +134,56 @@ function after($it, $that)
 }
 
 /**
- * Set working path for task.
- * @param string $path
- */
-function cd($path)
-{
-    env()->setWorkingPath($path);
-}
-
-/**
- * Run command on current server.
+ * Run command on server.
+ *
  * @param string $command
- * @param bool $raw If true $command will not be modified.
  * @return string
  */
-function run($command, $raw = false)
+function runRaw($command)
 {
-    $server = env()->getServer();
-    $config = config();
-    $workingPath = env()->getWorkingPath();
+    $server = Context::get()->getServer();
 
-    if (!$raw) {
-        $command = "cd {$workingPath} && $command";
-    }
-
-    if (output()->isDebug()) {
-        writeln("[{$server->getConfiguration()->getHost()}] $command");
+    if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity()) {
+        writeln("<comment>Run</comment>: $command");
     }
 
     $output = $server->run($command);
 
-    if (output()->isDebug()) {
-        array_map(function ($output) use ($config) {
-            write("[{$config->getHost()}] :: $output\n");
-        }, explode("\n", $output));
+    if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity()) {
+        write("$output");
     }
 
     return $output;
 }
 
 /**
+ * Run command on server in working path.
+ *
+ * @param string $command
+ */
+function run($command)
+{
+    $deployPath = env(Environment::DEPLOY_PATH);
+
+    runRaw("cd {} && $command");
+}
+
+/**
  * Execute commands on local machine.
  * @param string $command Command to run locally.
  * @return string Output of command.
+ * @throws \RuntimeException
  */
 function runLocally($command)
 {
-    return Utils\Local::run($command);
+    $process = new Symfony\Component\Process\Process($command);
+    $process->run();
+
+    if (!$process->isSuccessful()) {
+        throw new \RuntimeException($process->getErrorOutput());
+    }
+
+    write($process->getOutput());
 }
 
 /**
@@ -193,7 +196,7 @@ function upload($local, $remote)
 {
     $server = Context::get()->getServer();
 
-    $remote = env()->get('deploy_path') . '/' . $remote;
+    $remote = env()->get(Environment::DEPLOY_PATH) . '/' . $remote;
 
     if (is_file($local)) {
 
@@ -213,23 +216,12 @@ function upload($local, $remote)
             ->ignoreDotFiles(false)
             ->in($local);
 
-        $progress = Deployer::get()->getHelper('progress');
-
-        if (output()->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            $progress->start(output(), $files->count());
-        }
-
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
-
             $server->upload(
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()
             );
-
-            if (output()->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-                $progress->advance();
-            }
         }
 
     } else {
@@ -273,17 +265,16 @@ function write($message)
  */
 function set($key, $value)
 {
-    // TODO
+    Deployer::get()->parameters->set($key, $value);
 }
 
 /**
  * @param string $key
- * @param mixed $default Default key must always be specified.
  * @return mixed
  */
-function get($key, $default)
+function get($key)
 {
-    // TODO
+    return Deployer::get()->parameters->get($key);
 }
 
 /**
@@ -366,7 +357,7 @@ function output()
 }
 
 /**
- * Return current server env.
+ * Return current server env or set default values or get env value.
  *
  * @param string $name
  * @param mixed $value
@@ -376,8 +367,14 @@ function env($name = null, $value = null)
 {
     if (null === $name && null === $value) {
         return Context::get()->getEnvironment();
+    } else if (null !== $name && null === $value) {
+        return Context::get()->getEnvironment()->get($name);
     } else {
-        Environment::setDefault($name, $value);
+        if (false === Context::get()) {
+            Environment::setDefault($name, $value);
+        } else {
+            Context::get()->getEnvironment()->set($name, $value);
+        }
         return null;
     }
 }

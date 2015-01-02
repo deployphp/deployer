@@ -12,7 +12,6 @@ use Deployer\Server;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
-use Deployer\Executor\SeriesExecutor;
 use Symfony\Component\Console;
 
 /**
@@ -21,6 +20,7 @@ use Symfony\Component\Console;
  * @property Server\ServerCollection|Server\ServerInterface[] $servers
  * @property Server\GroupCollection|array $serverGroups
  * @property Server\EnvironmentCollection|Server\Environment[] $environments
+ * @property Collection\Collection $parameters
  */
 class Deployer
 {
@@ -67,6 +67,7 @@ class Deployer
         $this->collections['servers'] = new Server\ServerCollection();
         $this->collections['serverGroups'] = new Server\GroupCollection();
         $this->collections['environments'] = new Server\EnvironmentCollection();
+        $this->collections['parameters'] = new Collection\Collection();
 
         self::$instance = $this;
     }

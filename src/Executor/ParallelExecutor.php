@@ -8,14 +8,11 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
-use Deployer\Server\ServerInterface;
 use Deployer\Task\Context;
-use Deployer\Task\Task;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
 use React\Socket\ConnectionException;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -176,8 +173,6 @@ class ParallelExecutor implements ExecutorInterface
             &$isSuccessfullyFinished,
             $pure,
             $exceptionStorage,
-            $tasksToDo,
-            $loop,
             $output
         ) {
             while (count($exceptionStorage) > 0) {

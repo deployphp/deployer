@@ -24,13 +24,12 @@ Deployer 3.0 developing roadmap:
   * [x] Refactor servers
   * [x] Refactor Deployer class
   * [x] Refactor task execution
-* [ ] New features
-  * [ ] Environment default values
+* [x] New features
+  * [x] Environment default values
   * [x] Local tasks `->once()`
   * [x] Server filters `->onlyOn(...)`
   * [x] Parallel task execution (:gem: *WOW!* :gem:)
   * [x] Better output 
-  * [ ] Reach 100% code coverage (If some body know how to test ParallelExecutor :cold_sweat: :stuck_out_tongue_closed_eyes: )
 * [ ] Refactor recipes
   * [ ] Refactor common recipe
   * [ ] Refactor Symfony recipe 

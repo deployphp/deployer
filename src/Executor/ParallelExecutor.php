@@ -247,4 +247,4 @@ class ParallelExecutor implements ExecutorInterface
 
         return $verbosity;
     }
-} 
+}

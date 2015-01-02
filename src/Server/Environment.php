@@ -11,6 +11,13 @@ class Environment
 {
 
     /**
+     * Globally defaults values.
+     *
+     * @var array
+     */
+    static private $defaults = [];
+
+    /**
      * Array of env values.
      * @var array
      */
@@ -36,11 +43,36 @@ class Environment
         if (array_key_exists($name, $this->values)) {
             return $this->values[$name];
         } else {
+            if (isset(self::$defaults[$name])) {
+                if (is_callable(self::$defaults[$name])) {
+                    return $this->values[$name] = call_user_func(self::$defaults[$name]);
+                } else {
+                    return $this->values[$name] = self::$defaults[$name];
+                }
+            }
+
             if ($default === null) {
                 throw new \RuntimeException("Environment parameter `$name` does not exists.");
             } else {
                 return $default;
             }
         }
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function getDefault($name)
+    {
+        return self::$defaults[$name];
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public static function setDefault($name, $value)
+    {
+        self::$defaults[$name] = $value;
     }
 }

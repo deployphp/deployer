@@ -11,6 +11,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
     public function testEnvironment()
     {
+        Environment::setDefault('default', 'default');
         $env = new Environment();
         
         $env->set('int', 42);
@@ -21,7 +22,8 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('value', $env->get('string'));
         $this->assertEquals([1, 'two'], $env->get('array'));
         $this->assertEquals('default', $env->get('no', 'default'));
-        
+        $this->assertEquals('default', $env->get('default'));
+
         $this->setExpectedException('RuntimeException', 'Environment parameter `so` does not exists.');
         $env->get('so');
     }

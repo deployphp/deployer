@@ -368,9 +368,16 @@ function output()
 /**
  * Return current server env.
  *
+ * @param string $name
+ * @param mixed $value
  * @return Environment
  */
-function env()
+function env($name = null, $value = null)
 {
-    return Context::get()->getEnvironment();
+    if (null === $name && null === $value) {
+        return Context::get()->getEnvironment();
+    } else {
+        Environment::setDefault($name, $value);
+        return null;
+    }
 }

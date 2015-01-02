@@ -62,7 +62,7 @@ class Context
     }
 
     /**
-     * @return Context
+     * @return Context|false
      */
     public static function get()
     {

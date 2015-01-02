@@ -8,6 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Deployer\Task\Scenario\Scenario;
@@ -23,6 +24,11 @@ class TaskCommand extends Command
      * @var Deployer
      */
     private $deployer;
+
+    /**
+     * @var ExecutorInterface
+     */
+    public $executor;
 
     /**
      * @param string $name

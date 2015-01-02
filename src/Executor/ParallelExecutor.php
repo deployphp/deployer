@@ -78,7 +78,7 @@ class ParallelExecutor implements ExecutorInterface
         // Wait for output
         $loop->addPeriodicTimer(0, function () use ($output, $outputStorage) {
             while (count($outputStorage) > 0) {
-                list($server, $messages, $newline, $type) = $outputStorage->pop();
+                list($server, $messages, , $type) = $outputStorage->pop();
 
                 $format = function ($message) use ($server) {
                     $message = rtrim($message, "\n");

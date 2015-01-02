@@ -85,7 +85,7 @@ function task($name, $body)
 {
     $deployer = Deployer::get();
 
-    if (is_callable($body)) {
+    if ($body instanceof \Closure) {
         $task = new TheTask($body);
         $scenario = new Scenario($name);
     } else if (is_array($body)) {
@@ -139,32 +139,39 @@ function after($it, $that)
  * @param string $command
  * @return string
  */
-function runRaw($command)
+function run($command)
 {
     $server = Context::get()->getServer();
     $command = Context::get()->getEnvironment()->parse($command);
 
-    if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity()) {
+    if (OutputInterface::VERBOSITY_VERY_VERBOSE == output()->getVerbosity()) {
         writeln("<comment>Run</comment>: $command");
     }
 
     $output = $server->run($command);
 
-    if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity()) {
-        write("$output");
+    if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity() && !empty($output)) {
+        writeln(array_map(function ($line) {
+            return "<comment>#</comment> $line";
+        }, explode("\n", $output)));
     }
 
     return $output;
 }
 
 /**
- * Run command on server in working path.
- *
  * @param string $command
+ * @return bool
  */
-function run($command)
+function runCheck($command)
 {
-    runRaw("cd {deploy_path} && $command");
+    $output = run($command);
+
+    if ('true' === $output) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 /**

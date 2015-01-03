@@ -144,13 +144,13 @@ function run($command)
     $server = Context::get()->getServer();
     $command = Context::get()->getEnvironment()->parse($command);
 
-    if (OutputInterface::VERBOSITY_VERY_VERBOSE == output()->getVerbosity()) {
+    if (isVeryVerbose()) {
         writeln("<comment>Run</comment>: $command");
     }
 
     $output = $server->run($command);
 
-    if (OutputInterface::VERBOSITY_DEBUG == output()->getVerbosity() && !empty($output)) {
+    if (isDebug() && !empty($output)) {
         writeln(array_map(function ($line) {
             return "<comment>#</comment> $line";
         }, explode("\n", $output)));
@@ -163,7 +163,7 @@ function run($command)
  * @param string $command
  * @return bool
  */
-function runCheck($command)
+function runBool($command)
 {
     $output = run($command);
 
@@ -290,7 +290,7 @@ function get($key)
  */
 function ask($message, $default = null)
 {
-    if (output()->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
+    if (isQuiet()) {
         return $default;
     }
 
@@ -310,7 +310,7 @@ function ask($message, $default = null)
  */
 function askConfirmation($message, $default = false)
 {
-    if (output()->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
+    if (isQuiet()) {
         return $default;
     }
 
@@ -330,7 +330,7 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
-    if (output()->getVerbosity() === OutputInterface::VERBOSITY_QUIET) {
+    if (isQuiet()) {
         return '';
     }
 
@@ -360,6 +360,41 @@ function input()
 function output()
 {
     return Context::get()->getOutput();
+}
+
+/**
+ * @return bool
+ */
+function isQuiet()
+{
+    return OutputInterface::VERBOSITY_QUIET === output()->getVerbosity();
+}
+
+
+/**
+ * @return bool
+ */
+function isVerbose()
+{
+    return OutputInterface::VERBOSITY_VERBOSE <= output()->getVerbosity();
+}
+
+
+/**
+ * @return bool
+ */
+function isVeryVerbose()
+{
+    return OutputInterface::VERBOSITY_VERY_VERBOSE <= output()->getVerbosity();
+}
+
+
+/**
+ * @return bool
+ */
+function isDebug()
+{
+    return OutputInterface::VERBOSITY_DEBUG <= output()->getVerbosity();
 }
 
 /**

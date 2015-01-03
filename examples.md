@@ -19,7 +19,7 @@ set('repository', 'git@github.com:user/site.git');
 
 task('php-fpm:reload', function () {
 	run("sudo /usr/sbin/service php5-fpm reload");
-})->description('Reloading PHP5-FPM');
+})->desc('Reloading PHP5-FPM');
 
 after('deploy:end', 'php-fpm:reload');
 ~~~

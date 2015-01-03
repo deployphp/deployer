@@ -76,12 +76,7 @@ task('deploy:release', function () {
  * Update project code
  */
 task('deploy:update_code', function () {
-    $repository = get('repository', false);
-
-    if (false === $repository) {
-        throw new \RuntimeException('You have to specify repository.');
-    }
-
+    $repository = get('repository');
     run("git clone --recursive -q $repository {release_path}");
     run("chmod -R g+w {release_path}");
 })->desc('Updating code');

@@ -403,7 +403,7 @@ function isDebug()
  *
  * @param string $name
  * @param mixed $value
- * @return Environment
+ * @return Environment|mixed
  */
 function env($name = null, $value = null)
 {

@@ -12,18 +12,21 @@ set('keep_releases', 3);
  * Rollback to previous release.
  */
 task('rollback', function () {
-    $basePath = config()->getPath();
-    $releases = env()->getReleases();
-    $currentReleasePath = env()->getReleasePath();
+    $releases = env('releases_list');
 
     if (isset($releases[1])) {
-        $releaseDir = "{$basePath}/releases/{$releases[1]}";
+        $releaseDir = "{deploy_path}/releases/{$releases[1]}";
+
         // Symlink to old release.
-        run("rm -f current");
-        run("ln -s $releaseDir current");
+        run("cd {deploy_path} && ln -s $releaseDir rollback");
+        run("cd {deploy_path} && rm current && mv -f rollback current");
 
         // Remove release
-        run("rm -rf $currentReleasePath");
+        run("rm -rf {deploy_path}/releases/{$releases[0]}");
+
+        if (isVerbose()) {
+            writeln("Rollback to `{$releases[1]}` release was successful.");
+        }
     } else {
         writeln("<comment>No more releases you can revert to.</comment>");
     }
@@ -133,7 +136,7 @@ task('deploy:writeable', function () {
  */
 task('deploy:vendors', function () {
     $prod = get('env');
-    $isComposer = runCheck("if [ -e {release_path}/composer.phar ]; then echo 'true'; fi");
+    $isComposer = runBool("if [ -e {release_path}/composer.phar ]; then echo 'true'; fi");
 
     if (!$isComposer) {
         run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
@@ -149,7 +152,7 @@ task('deploy:vendors', function () {
  */
 task('deploy:symlink', function () {
 
-    run("cd {deploy_path} && mv -f release current");
+    run("cd {deploy_path} && rm current && mv release current");
 
 })->desc('Creating symlink to release');
 
@@ -201,5 +204,7 @@ task('cleanup', function () {
     foreach ($releases as $release) {
         run("rm -rf {deploy_path}/releases/$release");
     }
+
+    run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
 
 })->desc('Cleaning up old releases');

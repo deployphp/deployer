@@ -25,11 +25,7 @@ class Local implements ServerInterface
     public function run($command)
     {
         $process = new Process($command);
-        $process->run();
-
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
-        }
+        $process->mustRun();
 
         return $process->getOutput();
     }

@@ -29,5 +29,9 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.4"
+    },
+    "suggest": {
+        "ext-ssh2": "For better SSH implementation",
+        "ext-sockets": "For parallel deployment"
     }
 }

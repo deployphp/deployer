@@ -24,7 +24,7 @@
         "symfony/process": "~2.6",
         "elfet/php-ssh": "~1.0",
         "elfet/pure": "~1.1",
-        "phpseclib/phpseclib": "~2.0-dev",
+        "phpseclib/phpseclib": "~2.0@dev",
         "kherge/amend": "~3.0"
     },
     "require-dev": {

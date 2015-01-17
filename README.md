@@ -1,11 +1,10 @@
 Introduction
 ------------
-[![Build Status](http://img.shields.io/travis/elfet/deployer.svg?style=flat)](https://travis-ci.org/elfet/deployer)
-[![HHVM Tested](http://img.shields.io/hhvm/elfet/deployer.svg?style=flat)](http://hhvm.h4cc.de/package/elfet/deployer)
-[![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer/)
-[![Code Climate](http://img.shields.io/codeclimate/github/elfet/deployer.svg?style=flat)](https://codeclimate.com/github/elfet/deployer)
-[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer/)
-[![Version](http://img.shields.io/packagist/v/elfet/deployer.svg?style=flat)](https://packagist.org/packages/elfet/deployer)
+[![Build Status](http://img.shields.io/travis/deployphp/deployer.svg?style=flat)](https://travis-ci.org/deployphp/deployer)
+[![Code Quality](http://img.shields.io/scrutinizer/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
+[![Code Climate](http://img.shields.io/codeclimate/github/deployphp/deployer.svg?style=flat)](https://codeclimate.com/github/deployphp/deployer)
+[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
+[![Version](http://img.shields.io/packagist/v/deployphp/deployer.svg?style=flat)](https://packagist.org/packages/deployphp/deployer)
 [![Support via Gittip](http://img.shields.io/gittip/elfet.svg?style=flat)](https://www.gittip.com/elfet)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
@@ -13,7 +12,7 @@ Introduction
 
 Deployer is a deployment tool written in PHP.
 
-See [http://deployer.in](http://deployer.in) for more information and documentation.
+See [http://deployer.org](http://deployer.org) for more information and documentation.
 
 Deployer 3.0
 ============
@@ -38,6 +37,7 @@ Deployer 3.0 developing roadmap:
   * [ ] Laravel recipe
   * [ ] WordPress recipe
   * [ ] Yii recipe
+* [x] Move repository from `elfet/deployer` to `deployphp/deployer`
 * [ ] New site on deployer.org
   * [x] Separate docs and site code
   * [ ] Auto updating docs script

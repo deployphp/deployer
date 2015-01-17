@@ -55,7 +55,7 @@ You can install [ssh2 extension](http://php.net/manual/en/book.ssh2.php) to spee
 
 Installation
 ------------
-To install Deployer download [deployer.phar](http://deployer.in/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
+To install Deployer download [deployer.phar](http://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
 ~~~
 mv deployer.phar /usr/local/bin/dep
@@ -71,13 +71,13 @@ dep self-update
 Or via composer:
 
 ~~~
-composer require elfet/deployer:*
+composer require deployer/deployer:~3.0
 ~~~
 
 
 Documentation
 -------------
-Documentation can be found on site [deployer.in](http://deployer.in).
+Documentation can be found on site [deployer.org](http://deployer.org).
 
 
 Building
@@ -95,7 +95,7 @@ Fork the project, create a feature branch, and send a pull request.
 To ensure a consistent code base, you should make sure the code follows
 the [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md).
 
-If you would like to help take a look at the [list of issues](https://github.com/elfet/deployer/issues).
+If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
 To make a release update version number in `bin/dep` file. And run `./build -v=VERSION` command.
 

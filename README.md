@@ -38,7 +38,7 @@ Deployer 3.0 developing roadmap:
   * [ ] WordPress recipe
   * [ ] Yii recipe
 * [x] Move repository from `elfet/deployer` to `deployphp/deployer`
-* [ ] New site on deployer.org
+* [x] New site on deployer.org
   * [x] Separate docs and site code
   * [ ] Auto updating docs script
   * [ ] Auto phar build script

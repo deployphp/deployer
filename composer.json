@@ -24,7 +24,7 @@
         "symfony/finder": "~2.5",
         "symfony/console": "~2.5",
         "elfet/php-ssh": "~1.0",
-        "phpseclib/phpseclib": "0.3.*@dev",
+        "phpseclib/phpseclib": "~2.0@dev",
         "kherge/amend": "~3.0"
     },
     "require-dev": {

@@ -39,7 +39,13 @@ class TaskCommand extends Command
         parent::__construct($name);
         $this->setDescription($description);
         $this->deployer = $deployer;
+    }
 
+    /**
+     * Configures the command
+     */
+    protected function configure()
+    {
         $this->addOption(
             'server',
             null,

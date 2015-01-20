@@ -108,8 +108,14 @@ class Deployer
      * @param string $name
      * @param array  $config
      */
-    public function addArgument($name, $config)
+    public function addArgument($name, array $config)
     {
+        $config = array_merge(array(
+            'mode'        => null,
+            'description' => '',
+            'default'     => null
+        ), $config);
+
         $argument = new Console\Input\InputArgument(
             $name,
             $config['mode'],
@@ -126,8 +132,15 @@ class Deployer
      * @param string $name
      * @param array  $config
      */
-    public function addOption($name, $config)
+    public function addOption($name, array $config)
     {
+        $config = array_merge(array(
+            'shortcut'    => null,
+            'mode'        => null,
+            'description' => '',
+            'default'     => null
+        ), $config);
+
         $option = new Console\Input\InputOption(
             $name,
             $config['shortcut'],

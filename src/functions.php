@@ -420,3 +420,37 @@ function env($name = null, $value = null)
         return null;
     }
 }
+
+/**
+ * Adds a global argument
+ *
+ * @param string $name
+ * @param array  $argument
+ *
+ * @return mixed
+ */
+function argument($name, array $argument = null)
+{
+    if (null === $argument) {
+        return Deployer::get()->getInput()->getArgument($name);
+    } else {
+        Deployer::get()->addArgument($name, $argument);
+    }
+}
+
+/**
+ * Adds a global option
+ *
+ * @param string $name
+ * @param array  $option
+ *
+ * @return mixed
+ */
+function option($name, array $option = null)
+{
+    if (null === $option) {
+        return Deployer::get()->getInput()->getOption($name);
+    } else {
+        Deployer::get()->addOption($name, $option);
+    }
+}

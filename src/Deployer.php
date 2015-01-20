@@ -103,6 +103,43 @@ class Deployer
     }
 
     /**
+     * Adds a global argument
+     *
+     * @param string $name
+     * @param array  $config
+     */
+    public function addArgument($name, $config)
+    {
+        $argument = new Console\Input\InputArgument(
+            $name,
+            $config['mode'],
+            $config['description'],
+            $config['default']
+        );
+
+        $this->console->getDefinition()->addArgument($argument);
+    }
+
+    /**
+     * Adds a global option
+     *
+     * @param string $name
+     * @param array  $config
+     */
+    public function addOption($name, $config)
+    {
+        $option = new Console\Input\InputOption(
+            $name,
+            $config['shortcut'],
+            $config['mode'],
+            $config['description'],
+            $config['default']
+        );
+
+        $this->console->getDefinition()->addOption($option);
+    }
+
+    /**
      * @return Console\Input\InputInterface
      */
     public function getInput()

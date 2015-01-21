@@ -18,6 +18,13 @@ use Deployer\Task\Scenario\Scenario;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+// There are two types of functions: Deployer dependent and Context dependent.
+// Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
+// Context dependent function uses while task execution and must require only Context::get() method.
+// But there is also a third type of functions: mixed. Mixed function uses in definition stage and in task
+// execution stage. They are acts like two different function, but have same name. Example of such function
+// is env() func. This function determine in which stage it was called by Context::get() method.
+
 /**
  * @param string $name
  * @param string $domain
@@ -407,13 +414,13 @@ function isDebug()
  */
 function env($name = null, $value = null)
 {
-    if (null === $name && null === $value) {
-        return Context::get()->getEnvironment();
-    } else if (null !== $name && null === $value) {
-        return Context::get()->getEnvironment()->get($name);
+    if (false === Context::get()) {
+        Environment::setDefault($name, $value);
     } else {
-        if (false === Context::get()) {
-            Environment::setDefault($name, $value);
+        if (null === $name && null === $value) {
+            return Context::get()->getEnvironment();
+        } else if (null !== $name && null === $value) {
+            return Context::get()->getEnvironment()->get($name);
         } else {
             Context::get()->getEnvironment()->set($name, $value);
         }

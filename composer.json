@@ -24,16 +24,11 @@
         "symfony/finder": "~2.5",
         "symfony/console": "~2.5",
         "elfet/php-ssh": "~1.0",
-        "phpseclib/phpseclib": "~2.0@dev",
+        "phpseclib/phpseclib": "2.0.*@dev",
         "kherge/amend": "~3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~3.7"
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.1.x-dev"
-        }
     },
     "suggest": {
         "deployphp/recipes": "3rd party recipes for Deployer"

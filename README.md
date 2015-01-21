@@ -77,12 +77,12 @@ composer require deployer/deployer:~3.0
 
 Documentation
 -------------
-Documentation can be found on site [deployer.org](http://deployer.org).
+Documentation source can be found in [deployphp/docs](https://github.com/deployphp/docs) repository.
 
 
 Building
 --------
-To build deployer.phar run `bin/build` command.
+To build `deployer.phar` run `bin/build` command.
 
 
 Contributing
@@ -96,8 +96,6 @@ To ensure a consistent code base, you should make sure the code follows
 the [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md).
 
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
-
-To make a release update version number in `bin/dep` file. And run `./build -v=VERSION` command.
 
 License
 -------

@@ -11,6 +11,8 @@ use Symfony\Component\Process\Process;
 
 class Local implements ServerInterface
 {
+    const TIMEOUT      = 300;
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +27,10 @@ class Local implements ServerInterface
     public function run($command)
     {
         $process = new Process($command);
-        $process->mustRun();
+        $process
+            ->setTimeout(self::TIMEOUT)
+            ->setIdleTimeout(self::TIMEOUT)
+            ->mustRun();
 
         return $process->getOutput();
     }

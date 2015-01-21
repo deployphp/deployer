@@ -25,7 +25,7 @@ class PhpSecLib extends AbstractServer
      */
     public function connect()
     {
-        $this->sftp = new \Net_SFTP($this->config->getHost(), $this->config->getPort());
+        $this->sftp = new \phpseclib\Net\SFTP($this->config->getHost(), $this->config->getPort());
 
         switch ($this->config->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
@@ -38,7 +38,7 @@ class PhpSecLib extends AbstractServer
 
             case Configuration::AUTH_BY_PUBLIC_KEY:
 
-                $key = new \Crypt_RSA();
+                $key = new \phpseclib\Crypt\RSA();
                 $key->setPassword($this->config->getPassPhrase());
                 $key->loadKey(file_get_contents($this->config->getPrivateKey()));
 
@@ -50,7 +50,7 @@ class PhpSecLib extends AbstractServer
 
             case Configuration::AUTH_BY_PEM_FILE:
 
-                $key = new \Crypt_RSA();
+                $key = new \phpseclib\Crypt\RSA();
                 $key->loadKey(file_get_contents($this->config->getPemFile()));
                 if (!$this->sftp->login($this->config->getUser(), $key)) {
                     throw new \RuntimeException('Could not login with PhpSecLib.');

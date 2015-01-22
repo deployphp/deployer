@@ -11,7 +11,7 @@ use Symfony\Component\Process\Process;
 
 class Local implements ServerInterface
 {
-    const TIMEOUT      = 300;
+    const TIMEOUT = 300;
 
     /**
      * {@inheritdoc}

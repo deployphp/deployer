@@ -34,7 +34,7 @@ foreach ($finder as $fileInfo) {
 }
 
 // Add bin/dep file
-$depContent = file_get_contents(__DIR__ . '/bin/dep');
+$depContent = file_get_contents(__DIR__ . '/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $phar->addFromString('bin/dep', $depContent);
 

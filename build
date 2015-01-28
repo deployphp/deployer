@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 $pharName = "deployer.phar";
 $pharFile = __DIR__ . '/' . $pharName;
@@ -34,7 +34,7 @@ foreach ($finder as $fileInfo) {
 }
 
 // Add bin/dep file
-$depContent = file_get_contents(__DIR__ . '/dep');
+$depContent = file_get_contents(__DIR__ . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $phar->addFromString('bin/dep', $depContent);
 

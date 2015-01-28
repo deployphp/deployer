@@ -44,7 +44,7 @@ if (is_file($deployFile) && is_readable($deployFile)) {
 // Self-update command
 $selfUpdate = new \KevinGH\Amend\Command('self-update');
 $selfUpdate->setDescription('Updates deployer.phar to the latest version');
-$selfUpdate->setManifestUri('https://raw.github.com/elfet/deployer/master/manifest.json');
+$selfUpdate->setManifestUri('http://deployer.org/manifest.json');
 $deployer->getConsole()->add($selfUpdate);
 $deployer->getHelperSet()->set(new \KevinGH\Amend\Helper());
 

@@ -77,7 +77,7 @@ task('deploy:release', function () {
  */
 task('deploy:update_code', function () {
     $repository = get('repository');
-    run("git clone --recursive -q $repository {release_path}");
+    run("git clone --recursive -q $repository {release_path} 2>&1");
     run("chmod -R g+w {release_path}");
 })->desc('Updating code');
 

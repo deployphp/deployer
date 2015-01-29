@@ -41,7 +41,8 @@ Deployer 3.0 developing roadmap:
 * [x] New site on deployer.org
   * [x] Separate docs and site code
   * [x] Auto updating docs script
-  * [ ] Auto phar build script
+  * [x] Auto phar build script
+* [ ] Write docs for v3.
 
 
 Requirements

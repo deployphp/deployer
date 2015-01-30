@@ -7,10 +7,13 @@
 
 namespace Deployer\Server;
 
+use phpseclib\Crypt\RSA;
+use phpseclib\Net\SFTP;
+
 class PhpSecLib extends AbstractServer
 {
     /**
-     * @var \Net_SFTP
+     * @var \phpseclib\Net\SFTP
      */
     private $sftp;
 
@@ -25,7 +28,7 @@ class PhpSecLib extends AbstractServer
      */
     public function connect()
     {
-        $this->sftp = new \phpseclib\Net\SFTP($this->config->getHost(), $this->config->getPort());
+        $this->sftp = new SFTP($this->config->getHost(), $this->config->getPort());
 
         switch ($this->config->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
@@ -38,7 +41,7 @@ class PhpSecLib extends AbstractServer
 
             case Configuration::AUTH_BY_PUBLIC_KEY:
 
-                $key = new \phpseclib\Crypt\RSA();
+                $key = new RSA();
                 $key->setPassword($this->config->getPassPhrase());
                 $key->loadKey(file_get_contents($this->config->getPrivateKey()));
 
@@ -50,7 +53,7 @@ class PhpSecLib extends AbstractServer
 
             case Configuration::AUTH_BY_PEM_FILE:
 
-                $key = new \phpseclib\Crypt\RSA();
+                $key = new RSA();
                 $key->loadKey(file_get_contents($this->config->getPemFile()));
                 if (!$this->sftp->login($this->config->getUser(), $key)) {
                     throw new \RuntimeException('Could not login with PhpSecLib.');
@@ -103,7 +106,7 @@ class PhpSecLib extends AbstractServer
             $this->directories[$dir] = true;
         }
 
-        if (!$this->sftp->put($remote, $local, NET_SFTP_LOCAL_FILE)) {
+        if (!$this->sftp->put($remote, $local, SFTP::SOURCE_LOCAL_FILE)) {
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }

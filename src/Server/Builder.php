@@ -44,6 +44,28 @@ class Builder
     }
 
     /**
+     * Define server host
+     * @param int $host
+     * @return $this
+     */
+    public function host($host)
+    {
+        $this->config->setHost($host);
+        return $this;
+    }
+
+    /**
+     * Define server port
+     * @param int $port
+     * @return $this
+     */
+    public function port($port)
+    {
+        $this->config->setPort($port);
+        return $this;
+    }
+
+    /**
      * If you use an ssh config file you can user it.
      * @param string $file Config file path
      * @return $this

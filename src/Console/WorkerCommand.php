@@ -11,6 +11,7 @@ use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
+use Deployer\Task\NonFatalException;
 use Pure\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -57,7 +58,6 @@ class WorkerCommand extends Command
         $pure = new Client($port, $host);
 
         try {
-            
             $server = $this->deployer->servers->get($serverName);
             $environment = isset($this->deployer->environments[$serverName]) ? $this->deployer->environments[$serverName] : new Environment();
             $output = new RemoteOutput($output, $pure, $serverName);
@@ -69,17 +69,17 @@ class WorkerCommand extends Command
                 if (null !== $taskName) {
                     $task = $this->deployer->tasks->get($taskName);
 
-                    $task->run(new Context($server, $environment, $input, $output));
+                    try {
+                        $task->run(new Context($server, $environment, $input, $output));
+                    } catch (NonFatalException $e) {
+                        $pure->queue('exception')->push([$serverName, get_class($e), $e->getMessage()]);
+                    }
 
                     $pure->map('tasks_to_do')->delete($serverName);
                 }
-
             }
-
         } catch (\Exception $exception) {
-            
             $pure->queue('exception')->push([$serverName, get_class($exception), $exception->getMessage()]);
-            
         }
     }
 }

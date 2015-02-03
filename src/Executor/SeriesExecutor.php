@@ -10,6 +10,7 @@ namespace Deployer\Executor;
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
+use Deployer\Task\NonFatalException;
 
 class SeriesExecutor implements ExecutorInterface
 {
@@ -22,6 +23,7 @@ class SeriesExecutor implements ExecutorInterface
         $informer = new Informer($output);
 
         foreach ($tasks as $taskName => $task) {
+            $success = true;
             $informer->startTask($taskName);
 
             if ($task->isOnce()) {
@@ -30,15 +32,22 @@ class SeriesExecutor implements ExecutorInterface
                 foreach ($servers as $serverName => $server) {
                     if ($task->runOnServer($serverName)) {
                         $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
-                        
+
                         $informer->onServer($serverName);
-                        $task->run(new Context($server, $env, $input, $output));
+
+                        try {
+                            $task->run(new Context($server, $env, $input, $output));
+                        } catch (NonFatalException $e) {
+                            $informer->taskError($e);
+                            $success = false;
+                        }
+
                         $informer->endOnServer($serverName);
                     }
                 }
             }
 
-            $informer->endTask();
+            $informer->endTask($success);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Task\Context;
+use Deployer\Task\NonFatalException;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
@@ -34,14 +35,17 @@ class ParallelExecutor implements ExecutorInterface
         $outputStorage = $pure['output'] = new QueueStorage();
         $exceptionStorage = $pure['exception'] = new QueueStorage();
 
-        // Wait until all workers finish they tasks. When set this variable to true and send new tasks to workers. 
+        // Wait until all workers finish they tasks. When set this variable to true and send new tasks to workers.
         $wait = false;
 
-        // Array will contain tasks list what workers has to before moving to next task. 
+        // Array will contain tasks list what workers has to before moving to next task.
         $tasksToDo = [];
 
-        // Check if current task was successfully finished on all server (no exception was triggered).
-        $isSuccessfullyFinished = true;
+        // Check if current task triggered a fatal exception
+        $hasFatalException = false;
+
+        // Check if current task triggered a non-fatal exception
+        $hasNonFatalException = false;
 
         // Get verbosity.
         $verbosity = $this->getVerbosityString($output);
@@ -141,7 +145,8 @@ class ParallelExecutor implements ExecutorInterface
         $loop->addPeriodicTimer(0, function () use (
             &$wait,
             &$tasksToDo,
-            &$isSuccessfullyFinished,
+            &$hasFatalException,
+            &$hasNonFatalException,
             $pure,
             $informer
         ) {
@@ -156,8 +161,8 @@ class ParallelExecutor implements ExecutorInterface
                 }
 
                 if (count($taskToDoStorage) === 0) {
-                    if ($isSuccessfullyFinished) {
-                        $informer->endTask();
+                    if ($hasFatalException) {
+                        $informer->endTask($hasFatalException === false);
                     } else {
                         $informer->taskError();
                     }
@@ -170,27 +175,33 @@ class ParallelExecutor implements ExecutorInterface
         // Lookup for exception
         $loop->addPeriodicTimer(0, function () use (
             &$tasks,
-            &$isSuccessfullyFinished,
+            &$hasFatalException,
+            &$hasNonFatalException,
             $pure,
             $exceptionStorage,
-            $output
+            $output,
+            $informer
         ) {
             while (count($exceptionStorage) > 0) {
                 list($serverName, $exceptionClass, $message) = $exceptionStorage->pop();
 
-                $message = "    $message    ";
-                $output->writeln("");
-                $output->writeln("<error>Exception [$exceptionClass] on [$serverName] server</error>");
-                $output->writeln("<error>" . str_repeat(' ', strlen($message)) . "</error>");
-                $output->writeln("<error>$message</error>");
-                $output->writeln("<error>" . str_repeat(' ', strlen($message)) . "</error>");
-                $output->writeln("");
+                if ($exceptionClass !== 'Deployer\Task\NonFatalException') {
+                    $message = "    $message    ";
+                    $output->writeln("");
+                    $output->writeln("<error>Exception [$exceptionClass] on [$serverName] server</error>");
+                    $output->writeln("<error>" . str_repeat(' ', strlen($message)) . "</error>");
+                    $output->writeln("<error>$message</error>");
+                    $output->writeln("<error>" . str_repeat(' ', strlen($message)) . "</error>");
+                    $output->writeln("");
+                    $hasFatalException = true;
+                } else {
+                    $hasNonFatalException = true;
+                    $informer->taskError(new NonFatalException($message));
+                }
 
                 // Do not run other task.
                 // Finish all current worker tasks and stop loop.
                 $tasks = [];
-
-                $isSuccessfullyFinished = false;
 
                 $taskToDoStorage = $pure->getStorage('tasks_to_do');
                 $taskToDoStorage->delete($serverName);

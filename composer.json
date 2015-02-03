@@ -22,7 +22,7 @@
         "symfony/finder": "~2.6",
         "symfony/console": "~2.6",
         "symfony/process": "~2.6",
-        "elfet/php-ssh": "~1.0",
+        "herzult/php-ssh": "~1.0",
         "elfet/pure": "~1.1",
         "phpseclib/phpseclib": "2.0.*@dev",
         "kherge/amend": "~3.0"
@@ -33,5 +33,8 @@
     "suggest": {
         "ext-ssh2": "For better SSH implementation",
         "ext-sockets": "For parallel deployment"
+    },
+    "provide": {
+        "ext-ssh2": "*"
     }
 }

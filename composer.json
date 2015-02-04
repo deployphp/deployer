@@ -32,5 +32,8 @@
     },
     "suggest": {
         "deployphp/recipes": "3rd party recipes for Deployer"
+    },
+    "provide": {
+        "ext-ssh2": "*"
     }
 }

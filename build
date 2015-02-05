@@ -2,6 +2,16 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
+$opt = getopt('v::');
+
+$version = 'dev-master';
+if (array_key_exists('v', $opt)) {
+    $version = $opt['v'];
+    if (!preg_match('/^\d+\.\d+\.\d+(-[\d\w\.]+)?$/i', $version)) {
+        die("Version number must follow semantic versioning.\n");
+    }
+}
+
 $pharName = "deployer.phar";
 $pharFile = __DIR__ . '/' . $pharName;
 
@@ -36,6 +46,7 @@ foreach ($finder as $fileInfo) {
 // Add bin/dep file
 $depContent = file_get_contents(__DIR__ . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
+$depContent = str_replace("'master'", "'$version'", $depContent);
 $phar->addFromString('bin/dep', $depContent);
 
 $stub = <<<STUB

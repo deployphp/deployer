@@ -34,7 +34,7 @@ require_once 'src/functions.php';
 define('DEPLOYER_BIN', __FILE__);
 
 // Init Deployer
-$console = new \Deployer\Console\Application('Deployer', '3.0.0-beta');
+$console = new \Deployer\Console\Application('Deployer', 'master');
 $input = new \Symfony\Component\Console\Input\ArgvInput();
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $deployer = new \Deployer\Deployer($console, $input, $output);

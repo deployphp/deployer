@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @param int $port
  * @return Builder
  */
-function server($name, $domain, $port = 22)
+function server($name, $domain = null, $port = 22)
 {
     $deployer = Deployer::get();
 

@@ -88,15 +88,15 @@ task('deploy:update_code', function () {
 task('deploy:shared', function () {
     $sharedPath = "{deploy_path}/shared";
 
-    foreach (get('shared_dirs') as $file) {
+    foreach (get('shared_dirs') as $dir) {
         // Remove from source
-        run("if [ -d $(echo {release_path}/$file) ]; then rm -rf {release_path}/$file; fi");
+        run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
 
         // Create shared dir if does not exist
-        run("mkdir -p $sharedPath/$file");
+        run("mkdir -p $sharedPath/$dir");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath}/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$dir {release_path}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
@@ -110,7 +110,7 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath}/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$file {release_path}/$file");
     }
 })->desc('Creating symlinks for shared files');
 

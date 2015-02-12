@@ -9,6 +9,8 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
+use phpseclib\Crypt\RSA;
+use phpseclib\Net\SFTP;
 
 class PhpSecLib implements ServerInterface
 {
@@ -18,7 +20,7 @@ class PhpSecLib implements ServerInterface
     private $configuration;
     
     /**
-     * @var \Net_SFTP
+     * @var SFTP
      */
     private $sftp;
 
@@ -41,11 +43,8 @@ class PhpSecLib implements ServerInterface
      */
     public function connect()
     {
-        // Fix bug #434 in PhpSecLib
-        set_include_path(__DIR__ . '/../../vendor/phpseclib/phpseclib/phpseclib/');
-
         $serverConfig = $this->getConfiguration();
-        $this->sftp = new \Net_SFTP($serverConfig->getHost(), $serverConfig->getPort());
+        $this->sftp = new SFTP($serverConfig->getHost(), $serverConfig->getPort());
 
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
@@ -56,7 +55,7 @@ class PhpSecLib implements ServerInterface
 
             case Configuration::AUTH_BY_PUBLIC_KEY:
 
-                $key = new \Crypt_RSA();
+                $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
 
@@ -66,7 +65,7 @@ class PhpSecLib implements ServerInterface
 
             case Configuration::AUTH_BY_PEM_FILE:
 
-                $key = new \Crypt_RSA();
+                $key = new RSA();
                 $key->loadKey(file_get_contents($serverConfig->getPemFile()));
                 $this->sftp->login($serverConfig->getUser(), $key);
 
@@ -117,7 +116,7 @@ class PhpSecLib implements ServerInterface
             $this->directories[$dir] = true;
         }
 
-        if (!$this->sftp->put($remote, $local, NET_SFTP_LOCAL_FILE)) {
+        if (!$this->sftp->put($remote, $local, SFTP::SOURCE_LOCAL_FILE)) {
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }

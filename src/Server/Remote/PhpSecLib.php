@@ -11,6 +11,7 @@ use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
+use RuntimeException;
 
 class PhpSecLib implements ServerInterface
 {
@@ -18,7 +19,7 @@ class PhpSecLib implements ServerInterface
      * @var Configuration
      */
     private $configuration;
-    
+
     /**
      * @var SFTP
      */
@@ -49,7 +50,7 @@ class PhpSecLib implements ServerInterface
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
 
-                $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
+                $result = $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
 
                 break;
 
@@ -59,7 +60,7 @@ class PhpSecLib implements ServerInterface
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
 
-                $this->sftp->login($serverConfig->getUser(), $key);
+                $result = $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;
 
@@ -67,12 +68,16 @@ class PhpSecLib implements ServerInterface
 
                 $key = new RSA();
                 $key->loadKey(file_get_contents($serverConfig->getPemFile()));
-                $this->sftp->login($serverConfig->getUser(), $key);
+                $result = $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;
 
             default:
-                throw new \RuntimeException('You need to specify authentication method.');
+                throw new RuntimeException('You need to specify authentication method.');
+        }
+
+        if ( ! $result) {
+            throw new RuntimeException('Unable to login with the provided credentials.');
         }
     }
 

@@ -18,8 +18,7 @@ task('rollback', function () {
         $releaseDir = "{deploy_path}/releases/{$releases[1]}";
 
         // Symlink to old release.
-        run("cd {deploy_path} && ln -s $releaseDir rollback");
-        run("cd {deploy_path} && rm current && mv -f rollback current");
+        run("cd {deploy_path} && ln -nfs $releaseDir current");
 
         // Remove release
         run("rm -rf {deploy_path}/releases/{$releases[0]}");
@@ -68,7 +67,7 @@ task('deploy:release', function () {
 
     run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
 
-    run("ln -s $releasePath {deploy_path}/release");
+    run("ln -nfs $releasePath {deploy_path}/release");
 })->desc('Prepare release');
 
 
@@ -88,15 +87,18 @@ task('deploy:update_code', function () {
 task('deploy:shared', function () {
     $sharedPath = "{deploy_path}/shared";
 
-    foreach (get('shared_dirs') as $file) {
+    foreach (get('shared_dirs') as $dir) {
         // Remove from source
-        run("if [ -d $(echo {release_path}/$file) ]; then rm -rf {release_path}/$file; fi");
+        run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
 
         // Create shared dir if does not exist
-        run("mkdir -p $sharedPath/$file");
+        run("mkdir -p $sharedPath/$dir");
+
+        // Create path to shared dir in release dir
+        run("mkdir -p `dirname {release_path}/$dir`");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath}/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$dir {release_path}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
@@ -110,7 +112,7 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath}/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$file {release_path}/$file");
     }
 })->desc('Creating symlinks for shared files');
 
@@ -118,12 +120,13 @@ task('deploy:shared', function () {
 /**
  * Make writeable dirs.
  */
-task('deploy:writeable', function () {
-    foreach (get('writeable_dirs') as $dir) {
+task('deploy:writable', function () {
+    foreach (get('writable_dirs') as $dir) {
+        run("cd {release_path} && mkdir -p $dir");
         run("cd {release_path} && chmod -R 0777 $dir");
         run("cd {release_path} && chmod -R g+w $dir");
     }
-})->desc('Make writeable dirs');
+})->desc('Make writable dirs');
 
 
 /**
@@ -138,7 +141,6 @@ task('deploy:vendors', function () {
     }
 
     run("cd {release_path} && SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
-
 })->desc('Installing vendors');
 
 
@@ -146,9 +148,7 @@ task('deploy:vendors', function () {
  * Create symlink to last release.
  */
 task('deploy:symlink', function () {
-
-    run("cd {deploy_path} && rm current && mv release current");
-
+    run("cd {deploy_path} && ln -nfs {release_path} current");
 })->desc('Creating symlink to release');
 
 
@@ -201,5 +201,4 @@ task('cleanup', function () {
     }
 
     run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
-
 })->desc('Cleaning up old releases');

@@ -16,6 +16,8 @@ class Configuration
     const AUTH_BY_PUBLIC_KEY = 2;
 
     const AUTH_BY_PEM_FILE = 3;
+    
+    const AUTH_BY_AGENT = 4;
 
     /**
      * Type of authentication.

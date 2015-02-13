@@ -81,6 +81,10 @@ class SshExtension implements ServerInterface
             case Configuration::AUTH_BY_PEM_FILE:
 
                 throw new \RuntimeException('If you want to use pem file, switch to using PhpSecLib.');
+                
+            case Configuration::AUTH_BY_AGENT:
+
+                throw new \RuntimeException('If you want to use forward agent function, switch to using PhpSecLib.');
 
             default:
                 throw new \RuntimeException('You need to specify authentication method.');

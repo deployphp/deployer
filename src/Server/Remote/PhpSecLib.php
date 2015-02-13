@@ -9,6 +9,10 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
+use phpseclib\Crypt\RSA;
+use phpseclib\Net\SFTP;
+use phpseclib\System\SSH\Agent;
+use RuntimeException;
 
 class PhpSecLib implements ServerInterface
 {
@@ -16,9 +20,9 @@ class PhpSecLib implements ServerInterface
      * @var Configuration
      */
     private $configuration;
-    
+
     /**
-     * @var \Net_SFTP
+     * @var SFTP
      */
     private $sftp;
 
@@ -41,39 +45,47 @@ class PhpSecLib implements ServerInterface
      */
     public function connect()
     {
-        // Fix bug #434 in PhpSecLib
-        set_include_path(__DIR__ . '/../../vendor/phpseclib/phpseclib/phpseclib/');
-
         $serverConfig = $this->getConfiguration();
-        $this->sftp = new \Net_SFTP($serverConfig->getHost(), $serverConfig->getPort());
+        $this->sftp = new SFTP($serverConfig->getHost(), $serverConfig->getPort());
 
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
 
-                $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
+                $result = $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
 
                 break;
 
             case Configuration::AUTH_BY_PUBLIC_KEY:
 
-                $key = new \Crypt_RSA();
+                $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
 
-                $this->sftp->login($serverConfig->getUser(), $key);
+                $result = $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;
 
             case Configuration::AUTH_BY_PEM_FILE:
 
-                $key = new \Crypt_RSA();
+                $key = new RSA();
                 $key->loadKey(file_get_contents($serverConfig->getPemFile()));
-                $this->sftp->login($serverConfig->getUser(), $key);
+                $result = $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;
 
+            case Configuration::AUTH_BY_AGENT:
+                
+                $key = new Agent();
+                $result = $this->sftp->login($serverConfig->getUser(), $key);
+                
+                break;
+            
             default:
-                throw new \RuntimeException('You need to specify authentication method.');
+                throw new RuntimeException('You need to specify authentication method.');
+        }
+
+        if ( ! $result) {
+            throw new RuntimeException('Unable to login with the provided credentials.');
         }
     }
 
@@ -117,7 +129,7 @@ class PhpSecLib implements ServerInterface
             $this->directories[$dir] = true;
         }
 
-        if (!$this->sftp->put($remote, $local, NET_SFTP_LOCAL_FILE)) {
+        if (!$this->sftp->put($remote, $local, SFTP::SOURCE_LOCAL_FILE)) {
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }

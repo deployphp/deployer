@@ -8,6 +8,7 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Task\NonFatalException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
@@ -22,7 +23,7 @@ class Informer
      */
     public function __construct(OutputWatcher $output)
     {
-        $this->output = $output;        
+        $this->output = $output;
     }
 
     /**
@@ -38,7 +39,7 @@ class Informer
             }
 
             $this->output->writeln("Executing task $taskName");
-            
+
             $this->output->setWasWritten(false);
         }
     }
@@ -46,12 +47,20 @@ class Informer
     /**
      * Print task was ok.
      */
-    public function endTask()
+    public function endTask($success = true)
     {
-        if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $this->output->write("\033[k\033[1A<info>✔</info>\n");
+        if ($success) {
+            $message = "<info>✔</info>";
+            $append = 'OK';
         } else {
-            $this->output->writeln("<info>✔</info> Ok");
+            $message = "<fg=red>✘</fg=red>";
+            $append = 'Error';
+        }
+
+        if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
+            $this->output->write("\033[k\033[1A{$message}\n");
+        } else {
+            $this->output->writeln("{$message} {$append}");
         }
     }
 
@@ -77,9 +86,17 @@ class Informer
 
     /**
      * Print error.
+     *
+     * @param  \Excetion|null $exception
      */
-    public function taskError()
+    public function taskError(\Exception $exception = null)
     {
-        $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>");
+        if ($exception instanceof NonFatalException) {
+            $message = sprintf('Error: %s', $exception->getMessage());
+        } else {
+            $message = 'Some errors occurred!';
+        }
+
+        $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>{$message}</options=underscore>");
     }
 }

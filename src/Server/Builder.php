@@ -80,6 +80,17 @@ class Builder
         $this->config->setPemFile($pemFile);
         return $this;
     }
+    
+    /**
+     * Using forward agent to authentication
+     * 
+     * @return \Deployer\Server\Builder
+     */
+    public function forwardAgent()
+    {
+        $this->config->setAuthenticationMethod(Configuration::AUTH_BY_AGENT);
+        return $this;
+    }
 
     /**
      * @param string $name

@@ -101,4 +101,17 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $b = new Builder($config, $env);
         $b->env('name', 'value');
     }
+    
+    public function testForwardAgent()
+    {
+        $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
+        $config->expects($this->once())
+            ->method('setAuthenticationMethod')
+            ->with(Configuration::AUTH_BY_AGENT)
+            ->will($this->returnSelf());
+        $env = $this->getMock('Deployer\Server\Environment');
+
+        $b = new Builder($config, $env);
+        $b->forwardAgent();
+    }
 }

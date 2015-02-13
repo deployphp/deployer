@@ -11,6 +11,7 @@ use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
+use \phpseclib\System\SSH\Agent;
 
 class PhpSecLib implements ServerInterface
 {
@@ -71,6 +72,13 @@ class PhpSecLib implements ServerInterface
 
                 break;
 
+            case Configuration::AUTH_BY_AGENT:
+                
+                $key = new Agent();
+                $this->sftp->login($serverConfig->getUser(), $key);
+                
+                break;
+            
             default:
                 throw new \RuntimeException('You need to specify authentication method.');
         }

@@ -44,27 +44,20 @@ $options = getopt('f::', ['file::']);
 $userSpecifiedFile = null;
 
 if (isset($options['f'])) {
-    $userSpecifiedFile = $options['f']; 
+    $userSpecifiedFile = $options['f'];
 } else if (isset($options['file'])) {
-    $userSpecifiedFile = $options['file']; 
+    $userSpecifiedFile = $options['file'];
 }
 
 if (empty($userSpecifiedFile)) {
     $deployFile = getcwd() . '/deploy.php';
 } else {
-    $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile; 
+    $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile;
 }
 
 if (is_file($deployFile) && is_readable($deployFile)) {
     require $deployFile;
 }
-
-// Self-update command
-$selfUpdate = new \KevinGH\Amend\Command('self-update');
-$selfUpdate->setDescription('Updates deployer.phar to the latest version');
-$selfUpdate->setManifestUri('http://deployer.org/manifest.json');
-$console->add($selfUpdate);
-$console->getHelperSet()->set(new \KevinGH\Amend\Helper());
 
 // Run Deployer
 $deployer->run();

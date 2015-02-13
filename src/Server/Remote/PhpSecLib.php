@@ -11,8 +11,8 @@ use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
+use phpseclib\System\SSH\Agent;
 use RuntimeException;
-use \phpseclib\System\SSH\Agent;
 
 class PhpSecLib implements ServerInterface
 {
@@ -76,7 +76,7 @@ class PhpSecLib implements ServerInterface
             case Configuration::AUTH_BY_AGENT:
                 
                 $key = new Agent();
-                $this->sftp->login($serverConfig->getUser(), $key);
+                $result = $this->sftp->login($serverConfig->getUser(), $key);
                 
                 break;
             

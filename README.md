@@ -85,6 +85,9 @@ Building
 --------
 To build `deployer.phar` run `bin/build` command.
 
+Discussing
+-------
+Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
 
 Contributing
 ------------

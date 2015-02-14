@@ -131,13 +131,23 @@ task('deploy:writeable', function () {
  */
 task('deploy:vendors', function () {
     $prod = get('env');
-    $isComposer = runBool("if [ -e {release_path}/composer.phar ]; then echo 'true'; fi");
 
-    if (!$isComposer) {
-        run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
+    $global = run("command -v composer >/dev/null 2>&1 || { echo 'false'; }");
+
+    if(trim($global) === 'false') {
+        $isComposer = runBool("if [ -e {release_path}/composer.phar ]; then echo 'true'; fi");
+
+        if (!$isComposer) {
+            run("cd {release_path} && curl -sS https://getcomposer.org/installer | php");
+        }
+
+        $composer = 'php composer.phar';
+    } else {
+        run('sudo composer self-update');
+        $composer = 'composer';
     }
 
-    run("cd {release_path} && SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
+    run("cd {release_path} && SYMFONY_ENV=$prod {$composer} install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
 
 })->desc('Installing vendors');
 

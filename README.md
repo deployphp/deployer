@@ -83,7 +83,7 @@ Documentation source can be found in [deployphp/docs](https://github.com/deployp
 
 Building
 --------
-To build `deployer.phar` run `bin/build` command.
+To build `deployer.phar` run `build` command.
 
 Discussing
 -------

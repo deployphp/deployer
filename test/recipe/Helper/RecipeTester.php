@@ -11,7 +11,7 @@ use Deployer\Deployer;
 use Deployer\Console\Application;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-class CommonTest extends \PHPUnit_Framework_TestCase
+abstract class RecipeTester extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var ApplicationTester
@@ -21,64 +21,74 @@ class CommonTest extends \PHPUnit_Framework_TestCase
     /**
      * @var Deployer
      */
-    private $deployer;
+    protected $deployer;
 
     /**
      * @var string
      */
-    private $deployPath;
+    protected static $deployPath;
 
-    public function __construct($name = null, array $data = array(), $dataName = '')
+    public static function setUpBeforeClass()
     {
-        parent::__construct($name, $data, $dataName);
+        // Prepare FS
+        self::$deployPath = __DIR__ . '/../../localhost';
+        self::cleanUp();
+        mkdir(self::$deployPath);
+        self::$deployPath = realpath(self::$deployPath);
+    }
 
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-
+    public function setUp()
+    {
+        // Create App tester.
         $console = new Application();
         $console->setAutoExit(false);
         $console->setCatchExceptions(false);
         $this->tester = new ApplicationTester($console);
 
+        // Prepare Deployer
+        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
         $this->deployer = new Deployer($console, $input, $output);
 
-        $this->deployPath = __DIR__ . '/local';
+        // Load recipe
+        localServer('localhost')
+            ->env('deploy_path', self::$deployPath);
+        $this->loadRecipe();
 
-        if (is_dir($this->deployPath)) {
-            exec("rm -rf $this->deployPath");
-        }
-
-        mkdir($this->deployPath);
-
-        require __DIR__ . '/../../recipe/common.php';
-
-        localServer('test')
-            ->env('deploy_path', $this->deployPath);
-
+        // Init Deployer
         $this->deployer->addConsoleCommands();
     }
 
+
     public static function tearDownAfterClass()
     {
-        if (is_dir(__DIR__ . '/local')) {
-            exec("rm -rf " . __DIR__ . '/local');
+        self::cleanUp();
+    }
+
+    /**
+     *  Remove deploy directory from file system.
+     */
+    protected static function cleanUp()
+    {
+        if (is_dir(self::$deployPath)) {
+            exec('rm -rf ' . self::$deployPath);
         }
     }
 
-    public function testPrepare()
+    /**
+     * Execute command with tester.
+     *
+     * @param string $command
+     */
+    protected function exec($command)
     {
-        $this->tester->run(['command' => 'deploy:prepare']);
-
-        $this->assertFileExists($this->deployPath . '/releases');
-        $this->assertFileExists($this->deployPath . '/shared');
+        $this->tester->run(['command' => $command]);
     }
 
-    public function testRelease()
-    {
-        $this->tester->run(['command' => 'deploy:release']);
-
-        $this->assertFileExists($this->deployPath . '/release');
-        $this->assertFileExists($deployPath = readlink($this->deployPath . '/release'));
-        $this->assertEquals(1, basename($deployPath));
-    }
+    /**
+     * Load or describe recipe.
+     *
+     * @return void
+     */
+    abstract protected function loadRecipe();
 }

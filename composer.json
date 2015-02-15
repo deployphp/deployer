@@ -30,6 +30,7 @@
     "require-dev": {
         "phpunit/phpunit": "~4.5"
     },
+    "minimum-stability": "dev",
     "suggest": {
         "ext-ssh2": "For better SSH implementation",
         "ext-sockets": "For parallel deployment"

@@ -31,7 +31,7 @@ class CommonTest extends RecipeTester
 
     public function testUpdateCode()
     {
-        set('repository', 'git@github.com:deployphp/test.git');
+        set('repository', 'https://github.com/deployphp/test.git');
 
         $this->exec('deploy:update_code');
 

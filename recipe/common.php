@@ -55,12 +55,7 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $release = 1;
-
-    $releases = env('releases_list');
-    if (!empty($releases)) {
-        $release = (int)$releases[0] + 1;
-    }
+    $release = date('YmdHis');
 
     $releasePath = "{deploy_path}/releases/$release";
 

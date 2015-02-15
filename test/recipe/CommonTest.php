@@ -60,7 +60,12 @@ class CommonTest extends RecipeTester
 
     public function testWriteable()
     {
-        $this->exec('deploy:writeable');
+        set('writable_dirs', ['app/cache', 'app/logs']);
+
+        $this->exec('deploy:writable');
+
+        $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/cache'));
+        $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/logs'));
     }
 
     public function testVendor()
@@ -68,5 +73,41 @@ class CommonTest extends RecipeTester
         $this->exec('deploy:vendors');
 
         $this->assertFileExists($this->getEnv('release_path') . '/vendor/autoload.php');
+    }
+
+    public function testSymlink()
+    {
+        $this->exec('deploy:symlink');
+
+        $this->assertTrue(realpath($this->getEnv('deploy_path') . '/current') !== false);
+        $this->assertTrue(!file_exists($this->getEnv('deploy_path') . '/release'));
+    }
+
+    public function testCurrent()
+    {
+        $this->exec('current');
+
+        $this->assertEquals(
+            realpath($this->getEnv('deploy_path') . '/current'),
+            $this->getEnv('current')
+        );
+    }
+
+    /**
+     * @depends testCurrent
+     */
+    public function testCleanup()
+    {
+        $this->exec('deploy:release');
+        $this->exec('deploy:release');
+        $this->exec('deploy:release');
+        $this->exec('deploy:release');
+        $this->exec('deploy:release');
+        $this->exec('deploy:release');
+
+        $this->exec('cleanup');
+
+        $fi = new FilesystemIterator($this->getEnv('deploy_path') . '/releases', FilesystemIterator::SKIP_DOTS);
+        $this->assertEquals(3, iterator_count($fi));
     }
 }

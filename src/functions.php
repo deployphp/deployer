@@ -15,6 +15,7 @@ use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
+use Deployer\Type\Result;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -144,7 +145,7 @@ function after($it, $that)
  * Run command on server.
  *
  * @param string $command
- * @return string
+ * @return Result
  */
 function run($command)
 {
@@ -163,22 +164,7 @@ function run($command)
         }, explode("\n", $output)));
     }
 
-    return $output;
-}
-
-/**
- * @param string $command
- * @return bool
- */
-function runBool($command)
-{
-    $output = run($command);
-
-    if ('true' === $output) {
-        return true;
-    } else {
-        return false;
-    }
+    return new Result($output);
 }
 
 /**
@@ -426,4 +412,13 @@ function env($name = null, $value = null)
         }
         return null;
     }
+}
+
+/**
+ * @param string $command
+ * @return bool
+ */
+function commandExist($command)
+{
+    return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
 }

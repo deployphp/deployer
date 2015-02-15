@@ -12,7 +12,7 @@ set('env', 'prod');
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
-set('writeable_dirs', []);
+set('writable_dirs', []);
 set('env_vars', ''); // SYMFONY_ENV=prod
 
 /**
@@ -66,6 +66,11 @@ task('deploy:release', function () {
 
     $releasePath = "{deploy_path}/releases/$release";
 
+    $i = 0;
+    while (is_dir(env()->parse($releasePath)) && $i < 42) {
+        $releasePath .= '.' . ++$i;
+    }
+
     run("mkdir $releasePath");
 
     run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
@@ -118,13 +123,31 @@ task('deploy:shared', function () {
 
 
 /**
- * Make writeable dirs.
+ * Make writable dirs.
  */
-task('deploy:writeable', function () {
-    foreach (get('writeable_dirs') as $dir) {
-        run("cd {release_path} && chmod -R 0777 $dir");
-        run("cd {release_path} && chmod -R g+w $dir");
+task('deploy:writable', function () {
+    $dirs = join(' ', get('writable_dirs'));
+
+    if(!empty($dirs)) {
+
+        $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1");
+
+        if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
+
+            run("cd {release_path} && sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            run("cd {release_path} && sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+
+        } elseif (commandExist('setfacl')) {
+
+            run("cd {release_path} && sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+            run("cd {release_path} && sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+
+        } else {
+
+            run("cd {release_path} && sudo chmod 777 $dirs");
+        }
     }
+
 })->desc('Make writeable dirs');
 
 
@@ -134,10 +157,9 @@ task('deploy:writeable', function () {
 task('deploy:vendors', function () {
     $envVars = get('env_vars');
 
-    $composer = 'composer';
-    $isComposer = runBool("if [ -e composer ]; then echo 'true'; fi");
-
-    if (!$isComposer) {
+    if (commandExist('composer')) {
+        $composer = 'composer';
+    } else {
         run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
         $composer = 'php composer.phar';
     }
@@ -161,10 +183,7 @@ task('deploy:symlink', function () {
  * Return list of releases on server.
  */
 env('releases_list', function () {
-    $ls = run('ls {deploy_path}/releases');
-    $list = array_filter(explode("\n", $ls), function ($line) {
-        return !empty($line);
-    });
+    $list = run('ls {deploy_path}/releases')->toArray();
 
     rsort($list);
 
@@ -176,8 +195,7 @@ env('releases_list', function () {
  * Return current release path.
  */
 env('current', function () {
-    $currentRelease = str_replace("\n", '', run("readlink {deploy_path}/current"));
-    return $currentRelease;
+    return run("readlink {deploy_path}/current")->toString();
 });
 
 /**
@@ -206,5 +224,6 @@ task('cleanup', function () {
     }
 
     run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
+    run("cd {deploy_path} && if [ -h release ]; then rm release; fi");
 
 })->desc('Cleaning up old releases');

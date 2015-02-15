@@ -131,19 +131,21 @@ task('deploy:writable', function () {
 
         $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1");
 
+        cd(env('release_path'));
+
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
 
-            run("cd {release_path} && sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-            run("cd {release_path} && sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            run("sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            run("sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
 
         } elseif (commandExist('setfacl')) {
 
-            run("cd {release_path} && sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-            run("cd {release_path} && sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+            run("sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+            run("sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
 
         } else {
 
-            run("cd {release_path} && sudo chmod 777 $dirs");
+            run("sudo chmod 777 $dirs");
         }
     }
 

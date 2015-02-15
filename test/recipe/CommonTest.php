@@ -110,4 +110,15 @@ class CommonTest extends RecipeTester
         $fi = new FilesystemIterator($this->getEnv('deploy_path') . '/releases', FilesystemIterator::SKIP_DOTS);
         $this->assertEquals(3, iterator_count($fi));
     }
+
+    /**
+     * @depends testCleanup
+     */
+    public function testRollback()
+    {
+        $this->exec('rollback');
+
+        $fi = new FilesystemIterator($this->getEnv('deploy_path') . '/releases', FilesystemIterator::SKIP_DOTS);
+        $this->assertEquals(2, iterator_count($fi));
+    }
 }

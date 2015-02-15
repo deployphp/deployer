@@ -25,8 +25,7 @@ task('rollback', function () {
         $releaseDir = "{deploy_path}/releases/{$releases[1]}";
 
         // Symlink to old release.
-        run("cd {deploy_path} && ln -s $releaseDir rollback");
-        run("cd {deploy_path} && rm current && mv -f rollback current");
+        run("cd {deploy_path} && ln -nfs $releaseDir current");
 
         // Remove release
         run("rm -rf {deploy_path}/releases/{$releases[0]}");

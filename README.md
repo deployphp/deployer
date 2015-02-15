@@ -30,7 +30,7 @@ Deployer 3.0 developing roadmap:
   * [x] Parallel task execution (:gem: *WOW!* :gem:)
   * [x] Better output 
 * [ ] Refactor recipes
-  * [ ] Refactor common recipe
+  * [x] Refactor common recipe
   * [ ] Refactor Symfony recipe 
 * [ ] New recipes
   * [ ] Zend Framework recipe

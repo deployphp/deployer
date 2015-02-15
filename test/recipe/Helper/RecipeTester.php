@@ -91,4 +91,13 @@ abstract class RecipeTester extends \PHPUnit_Framework_TestCase
      * @return void
      */
     abstract protected function loadRecipe();
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    protected function getEnv($name)
+    {
+        return $this->deployer->environments->get('localhost')->get($name);
+    }
 }

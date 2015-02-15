@@ -5,8 +5,15 @@
  * file that was distributed with this source code.
  */
 
+/**
+ * Common parameters.
+ */
 set('env', 'prod');
 set('keep_releases', 3);
+set('shared_dirs', []);
+set('shared_files', []);
+set('writeable_dirs', []);
+set('env_vars', ''); // SYMFONY_ENV=prod
 
 /**
  * Rollback to previous release.
@@ -83,15 +90,15 @@ task('deploy:update_code', function () {
 task('deploy:shared', function () {
     $sharedPath = "{deploy_path}/shared";
 
-    foreach (get('shared_dirs') as $file) {
+    foreach (get('shared_dirs') as $dir) {
         // Remove from source
-        run("if [ -d $(echo {release_path}/$file) ]; then rm -rf {release_path}/$file; fi");
+        run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
 
         // Create shared dir if does not exist
-        run("mkdir -p $sharedPath/$file");
+        run("mkdir -p $sharedPath/$dir");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath}/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$dir {release_path}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
@@ -105,7 +112,7 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath}/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$file {release_path}/$file");
     }
 })->desc('Creating symlinks for shared files');
 
@@ -125,14 +132,17 @@ task('deploy:writeable', function () {
  * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
-    $prod = get('env');
-    $isComposer = runBool("if [ -e {release_path}/composer.phar ]; then echo 'true'; fi");
+    $envVars = get('env_vars');
+
+    $composer = 'composer';
+    $isComposer = runBool("if [ -e composer ]; then echo 'true'; fi");
 
     if (!$isComposer) {
         run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
+        $composer = 'php composer.phar';
     }
 
-    run("cd {release_path} && SYMFONY_ENV=$prod php composer.phar install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
+    run("cd {release_path} && $envVars $composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
 
 })->desc('Installing vendors');
 
@@ -142,7 +152,7 @@ task('deploy:vendors', function () {
  */
 task('deploy:symlink', function () {
 
-    run("cd {deploy_path} && rm current && mv release current");
+    run("cd {deploy_path} && mv -f release current");
 
 })->desc('Creating symlink to release');
 

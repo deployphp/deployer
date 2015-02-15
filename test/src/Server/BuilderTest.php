@@ -30,6 +30,24 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $b->user('user', 'password');
     }
 
+    public function testHostAndPort()
+    {
+        $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
+        $config->expects($this->once())
+            ->method('setHost')
+            ->with('localhost')
+            ->will($this->returnSelf());
+        $config->expects($this->once())
+            ->method('setPort')
+            ->with(22)
+            ->will($this->returnSelf());
+        $env = $this->getMock('Deployer\Server\Environment');
+
+        $b = new Builder($config, $env);
+        $b->host('localhost');
+        $b->port(22);
+    }
+
     public function testConfig()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();

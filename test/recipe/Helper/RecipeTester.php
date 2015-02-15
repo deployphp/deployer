@@ -5,8 +5,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer;
+namespace Deployer\Helper;
 
+use Deployer\Deployer;
 use Deployer\Console\Application;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
@@ -39,7 +40,7 @@ class CommonTest extends \PHPUnit_Framework_TestCase
         $console->setCatchExceptions(false);
         $this->tester = new ApplicationTester($console);
 
-        $this->deployer = new \Deployer\Deployer($console, $input, $output);
+        $this->deployer = new Deployer($console, $input, $output);
 
         $this->deployPath = __DIR__ . '/local';
 

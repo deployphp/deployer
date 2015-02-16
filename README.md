@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/deployphp/deployer.png?label=ready&title=Ready)](https://waffle.io/deployphp/deployer)
 Introduction
 ------------
 [![Build Status](http://img.shields.io/travis/deployphp/deployer.svg?style=flat)](https://travis-ci.org/deployphp/deployer)

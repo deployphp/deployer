@@ -24,13 +24,12 @@
         "symfony/process": "~2.6",
         "herzult/php-ssh": "~1.0",
         "elfet/pure": "~1.1",
-        "phpseclib/phpseclib": "2.0.*@dev",
+        "phpseclib/phpseclib": "dev-master@dev",
         "kherge/amend": "~3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5"
     },
-    "minimum-stability": "dev",
     "suggest": {
         "ext-ssh2": "For better SSH implementation",
         "ext-sockets": "For parallel deployment"

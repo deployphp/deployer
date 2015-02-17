@@ -8,6 +8,8 @@ filter:
     - src/*
     - recipe/*
     - bin/*
+  excluded_paths:
+    - src/Resources/*
 
 build:
   dependencies:

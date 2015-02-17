@@ -6,9 +6,9 @@ php:
   - 5.6
   - hhvm
 
-before_script: bash test/before_script.sh
+before_script: 
+  - composer self-update
+  - composer install --no-interaction --prefer-source --dev
 
 script:
   - phpunit
-
-after_script: bash test/after_script.sh

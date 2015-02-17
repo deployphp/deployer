@@ -36,5 +36,6 @@
     },
     "provide": {
         "ext-ssh2": "*"
-    }
+    },
+    "minimum-stability": "dev"
 }

@@ -11,7 +11,9 @@
     "autoload": {
         "psr-4": {
             "Deployer\\": "src/",
-            "phpseclib\\": "src/Resources/vendor/phpseclib/",
+            "phpseclib\\": "src/Resources/vendor/phpseclib/"
+        },
+        "psr-0": {
             "Ssh": "src/Resources/vendor/php-ssh/"
         }
     },

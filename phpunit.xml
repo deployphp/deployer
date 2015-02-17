@@ -20,6 +20,7 @@
         <blacklist>
             <directory suffix=".php">vendor/</directory>
             <directory>bin/</directory>
+            <directory>src/Resources/</directory>
         </blacklist>
     </filter>
 </phpunit>

@@ -39,7 +39,7 @@ function server($name, $domain = null, $port = 22)
     $env = new Environment();
     $config = new Configuration($name, $domain, $port);
 
-    if (function_exists('ssh2_exec')) {
+    if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
     } else {
         $server = new Remote\PhpSecLib($config);
@@ -452,6 +452,8 @@ function env($name = null, $value = null)
 }
 
 /**
+ * Check if command exist in bash.
+ *
  * @param string $command
  * @return bool
  */

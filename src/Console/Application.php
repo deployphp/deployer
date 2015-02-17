@@ -14,6 +14,9 @@ use Symfony\Component\Console\Input\InputOption;
 
 class Application extends Console
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getDefaultInputDefinition()
     {
         $inputDefinition = parent::getDefaultInputDefinition();
@@ -25,6 +28,9 @@ class Application extends Console
         return $inputDefinition;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
@@ -32,6 +38,9 @@ class Application extends Console
         return $commands;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     private function selfUpdateCommand()
     {
         $selfUpdate = new Command('self-update');
@@ -40,6 +49,9 @@ class Application extends Console
         return $selfUpdate;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getDefaultHelperSet()
     {
         $helperSet = parent::getDefaultHelperSet();

@@ -211,7 +211,7 @@ function run($command)
  * @return string Output of command.
  * @throws \RuntimeException
  */
-function runLocally($command, $timeout = 60 )
+function runLocally($command, $timeout = 60)
 {
     $process = new Symfony\Component\Process\Process($command);
     $process->setTimeout( $timeout );

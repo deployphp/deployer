@@ -207,12 +207,14 @@ function run($command)
 /**
  * Execute commands on local machine.
  * @param string $command Command to run locally.
+ * @param int $timeout (optional) Override process command timeout in seconds.
  * @return string Output of command.
  * @throws \RuntimeException
  */
-function runLocally($command)
+function runLocally($command, $timeout=60)
 {
     $process = new Symfony\Component\Process\Process($command);
+	$process->setTimeout( $timeout );
     $process->run();
 
     if (!$process->isSuccessful()) {

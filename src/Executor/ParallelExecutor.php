@@ -8,12 +8,14 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Console\Output\VerbosityString;
 use Deployer\Task\Context;
 use Deployer\Task\NonFatalException;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
 use React\Socket\ConnectionException;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -48,7 +50,7 @@ class ParallelExecutor implements ExecutorInterface
         $hasNonFatalException = false;
 
         // Get verbosity.
-        $verbosity = $this->getVerbosityString($output);
+        $verbosity = new VerbosityString($output);
 
         // Get current deploy.php file.
         $deployPhpFile = $input->getOption('file');
@@ -61,12 +63,15 @@ class ParallelExecutor implements ExecutorInterface
             $deployPhpFile
         ) {
             foreach ($servers as $serverName => $server) {
+                $workerInput = new ArrayInput([
+                    '--master' => "127.0.0.1:$port",
+                    '--server' => $serverName,
+                ]);
+
                 $process = new Process(
                     "php " . DEPLOYER_BIN .
                     (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
-                    " worker" .
-                    " --master=127.0.0.1:$port" .
-                    " --server=$serverName" .
+                    " worker $workerInput" .
                     " $verbosity" .
                     " &"
                 );
@@ -218,39 +223,5 @@ class ParallelExecutor implements ExecutorInterface
             $port++;
             goto start;
         }
-    }
-
-    /**
-     * @param OutputInterface $output
-     * @return string
-     */
-    private function getVerbosityString(OutputInterface $output)
-    {
-        switch ($output->getVerbosity()) {
-            case OutputInterface::VERBOSITY_NORMAL:
-                $verbosity = '';
-                break;
-
-            case OutputInterface::VERBOSITY_VERBOSE:
-                $verbosity = '-v';
-                break;
-
-            case OutputInterface::VERBOSITY_VERY_VERBOSE:
-                $verbosity = '-vv';
-                break;
-
-            case OutputInterface::VERBOSITY_DEBUG:
-                $verbosity = '-vvv';
-                break;
-
-            case OutputInterface::VERBOSITY_QUIET:
-                $verbosity = '-q';
-                break;
-
-            default:
-                $verbosity = '';
-        }
-
-        return $verbosity;
     }
 }

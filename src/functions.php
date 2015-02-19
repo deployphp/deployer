@@ -28,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @param string $name
- * @param string $domain
+ * @param string|null $domain
  * @param int $port
  * @return Builder
  */
@@ -317,7 +317,7 @@ function get($key)
 
 /**
  * @param string $message
- * @param string $default
+ * @param string|null $default
  * @return string
  */
 function ask($message, $default = null)
@@ -433,7 +433,7 @@ function isDebug()
  * Return current server env or set default values or get env value.
  * When set env value you can write over values line "{name}".
  *
- * @param string $name
+ * @param string|null $name
  * @param mixed $value
  * @return Environment|mixed
  */

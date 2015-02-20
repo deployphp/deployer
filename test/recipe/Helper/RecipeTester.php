@@ -79,10 +79,14 @@ abstract class RecipeTester extends \PHPUnit_Framework_TestCase
      * Execute command with tester.
      *
      * @param string $command
+     * @param array $args
+     * @param array $options
+     * @return string Display result.
      */
-    protected function exec($command)
+    protected function exec($command, $args = [], $options = [])
     {
-        $this->tester->run(['command' => $command]);
+        $this->tester->run(['command' => $command] + $args, $options);
+        return $this->tester->getDisplay();
     }
 
     /**

@@ -40,25 +40,10 @@ class InformerTest extends \PHPUnit_Framework_TestCase
 
         $output->expects($this->once())
             ->method('writeln')
-            ->with($this->equalTo('<info>✔</info> OK'));
+            ->with($this->equalTo('<info>✔</info> Ok'));
 
         $informer = new Informer($output);
         $informer->endTask();
-    }
-
-    public function testEndTaskError()
-    {
-        $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
-            ->disableOriginalConstructor()
-            ->setMethods(['writeln', 'getVerbosity'])
-            ->getMock();
-
-        $output->expects($this->once())
-            ->method('writeln')
-            ->with($this->equalTo('<fg=red>✘</fg=red> Error'));
-
-        $informer = new Informer($output);
-        $informer->endTask($success = false);
     }
 
     public function testTaskError()
@@ -73,22 +58,22 @@ class InformerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>'));
 
         $informer = new Informer($output);
-        $informer->taskError();
+        $informer->taskError(false);
     }
 
-    public function testTaskErrorWihtNonFatalException()
+    public function testTaskErrorNonFatat()
     {
         $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
             ->disableOriginalConstructor()
             ->setMethods(['writeln', 'getVerbosity'])
             ->getMock();
 
-        $output->expects($this->once())
+        $output->expects($this->once()) 
             ->method('writeln')
-            ->with($this->equalTo('<fg=red>✘</fg=red> <options=underscore>Error: exception</options=underscore>'));
+            ->with($this->equalTo('<fg=yellow>✘</fg=yellow> Some errors occurred!'));
 
         $informer = new Informer($output);
-        $informer->taskError(new NonFatalException('exception'));
+        $informer->taskError(true);
     }
 }
 

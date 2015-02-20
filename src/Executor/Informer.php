@@ -47,20 +47,12 @@ class Informer
     /**
      * Print task was ok.
      */
-    public function endTask($success = true)
+    public function endTask()
     {
-        if ($success) {
-            $message = "<info>✔</info>";
-            $append = 'OK';
-        } else {
-            $message = "<fg=red>✘</fg=red>";
-            $append = 'Error';
-        }
-
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $this->output->write("\033[k\033[1A{$message}\n");
+            $this->output->write("\033[k\033[1A<info>✔</info>\n");
         } else {
-            $this->output->writeln("{$message} {$append}");
+            $this->output->writeln("<info>✔</info> Ok");
         }
     }
 
@@ -86,17 +78,33 @@ class Informer
 
     /**
      * Print error.
-     *
-     * @param  \Excetion|null $exception
+     * 
+     * @param bool $nonFatal
      */
-    public function taskError(\Exception $exception = null)
+    public function taskError($nonFatal = true)
     {
-        if ($exception instanceof NonFatalException) {
-            $message = sprintf('Error: %s', $exception->getMessage());
+        if ($nonFatal) {
+            $this->output->writeln("<fg=yellow>✘</fg=yellow> Some errors occurred!");
         } else {
-            $message = 'Some errors occurred!';
+            $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>");
         }
+    }
 
-        $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>{$message}</options=underscore>");
+    /**
+     * @param string $serverName
+     * @param string $exceptionClass
+     * @param string $message
+     */
+    public function taskException($serverName, $exceptionClass, $message)
+    {
+        $message = "    $message    ";
+        $this->output->writeln([
+            "",
+            "<error>Exception [$exceptionClass] on [$serverName] server</error>",
+            "<error>" . str_repeat(' ', strlen($message)) . "</error>",
+            "<error>$message</error>",
+            "<error>" . str_repeat(' ', strlen($message)) . "</error>",
+            ""
+        ]);
     }
 }

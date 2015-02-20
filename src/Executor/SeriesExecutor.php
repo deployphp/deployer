@@ -36,10 +36,12 @@ class SeriesExecutor implements ExecutorInterface
                         $informer->onServer($serverName);
 
                         try {
+                            
                             $task->run(new Context($server, $env, $input, $output));
-                        } catch (NonFatalException $e) {
-                            $informer->taskError($e);
+                            
+                        } catch (NonFatalException $exception) {
                             $success = false;
+                            $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());
                         }
 
                         $informer->endOnServer($serverName);
@@ -47,7 +49,11 @@ class SeriesExecutor implements ExecutorInterface
                 }
             }
 
-            $informer->endTask($success);
+            if ($success) {
+                $informer->endTask();
+            } else {
+                $informer->taskError();
+            }
         }
     }
 }

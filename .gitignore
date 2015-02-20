@@ -1,6 +1,4 @@
 /vendor/
-/pages/
 /.idea/
 /nbproject/
 *.phar
-*.lock

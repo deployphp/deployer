@@ -13,6 +13,7 @@ set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
+set('writable_use_sudo', true); // Using sudo in writable commands?
 set('env_vars', ''); // SYMFONY_ENV=prod
 
 /**
@@ -126,30 +127,38 @@ task('deploy:shared', function () {
  */
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
+    $sudo = get('writable_use_sudo') ? 'sudo' : '';
 
     if(!empty($dirs)) {
 
-        $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1");
+        $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
 
         cd(env('release_path'));
 
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
 
-            run("sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-            run("sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            if (!empty($httpUser)) {
+                run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            }
+            
+            run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
 
         } elseif (commandExist('setfacl')) {
 
-            run("sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-            run("sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+            if (!empty($httpUser)) {
+                run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+            } else {
+                run("$sudo chmod 777 $dirs");    
+            }
+
 
         } else {
-
-            run("sudo chmod 777 $dirs");
+            run("$sudo chmod 777 $dirs");
         }
     }
 
-})->desc('Make writeable dirs');
+})->desc('Make writable dirs');
 
 
 /**

@@ -16,7 +16,6 @@ use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
 use React\Socket\ConnectionException;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 class ParallelExecutor implements ExecutorInterface

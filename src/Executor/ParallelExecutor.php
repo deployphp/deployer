@@ -83,12 +83,12 @@ class ParallelExecutor implements ExecutorInterface
     private $wait = false;
 
     /**
-     * @var ArrayStorage
+     * @var QueueStorage
      */
     private $outputStorage;
 
     /**
-     * @var ArrayStorage
+     * @var QueueStorage
      */
     private $exceptionStorage;
 

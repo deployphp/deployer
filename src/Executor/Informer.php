@@ -8,7 +8,6 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
-use Deployer\Task\NonFatalException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer

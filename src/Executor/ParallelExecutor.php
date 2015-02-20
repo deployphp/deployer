@@ -10,7 +10,6 @@ namespace Deployer\Executor;
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Task\Context;
-use Deployer\Task\NonFatalException;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
@@ -39,11 +38,6 @@ class ParallelExecutor implements ExecutorInterface
      * @var \Deployer\Server\ServerInterface[]
      */
     private $servers;
-
-    /**
-     * @var \Deployer\Server\Environment[]
-     */
-    private $environments;
 
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
@@ -120,7 +114,6 @@ class ParallelExecutor implements ExecutorInterface
     {
         $this->tasks = $tasks;
         $this->servers = $servers;
-        $this->environments = $environments;
         $this->input = $input;
         $this->output = new OutputWatcher($output);
         $this->informer = new Informer($this->output);

@@ -1,0 +1,18 @@
+{
+	"alias": "deployer.phar",
+	"compactors": ["Herrera\\Box\\Compactor\\Php"],
+	"compression": "GZ",
+	"directories": ["src", "recipe"],
+	"files": ["LICENSE", "vendor/herrera-io/phar-update/res/schema.json"],
+	"finder": [
+		{
+			"name": "*.php",
+			"exclude": ["phpunit", "test", "tests", "Tests"],
+			"in": "vendor"
+		}
+	],
+	"git-version": "package_version",
+	"main": "bin/dep",
+	"output": "deployer.phar",
+	"stub": true
+}

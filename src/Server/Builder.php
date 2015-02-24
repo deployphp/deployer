@@ -106,7 +106,7 @@ class Builder
     /**
      * Using forward agent to authentication
      * 
-     * @return \Deployer\Server\Builder
+     * @return $this
      */
     public function forwardAgent()
     {
@@ -122,6 +122,16 @@ class Builder
     public function env($name, $value)
     {
         $this->env->set($name, $value);
+        return $this;
+    }
+
+    /**
+     * @param string|array $stages  Name or array on server stages.
+     * @return $this
+     */
+    public function stage($stages)
+    {
+        $this->env->set('stages', (array)$stages);
         return $this;
     }
 } 

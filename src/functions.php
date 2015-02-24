@@ -72,16 +72,6 @@ function localServer($name)
     return new Builder($config, $env);
 }
 
-/**
- * @param string $name
- * @param array $servers
- */
-function serverGroup($name, $servers)
-{
-    $deployer = Deployer::get();
-
-    $deployer->serverGroups->set($name, $servers);
-}
 
 /**
  * Define a new task and save to tasks list.

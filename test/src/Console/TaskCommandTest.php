@@ -21,7 +21,6 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
         $input->expects($this->any())
             ->method('getOption')
             ->will($this->returnValueMap([
-                ['server', null],
                 ['parallel', null],
             ]));
 

@@ -65,18 +65,32 @@ class TaskCommand extends Command
             $tasks[$taskName] = $this->deployer->tasks->get($taskName);
         }
 
-        $serverName = $input->getArgument('stage');
+        $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
-        if (!empty($serverName)) {
+        if (!empty($stage)) {
 
-            if ($this->deployer->serverGroups->has($serverName)) {
-                $servers = array_map(function ($name) {
-                    return $this->deployer->servers->get($name);
-                }, $this->deployer->serverGroups->get($serverName));
-            } else {
-                $servers = [$serverName => $this->deployer->servers->get($serverName)];
+            $servers = [];
+            
+            // Look for servers which has in env `stages` current stage name.
+            foreach($this->deployer->environments as $name => $env) {
+                // If server does not have any stage category, skip them
+                if (in_array($stage, $env->get('stages', []), true)) {
+                    $servers[$name] = $this->deployer->servers->get($name);
+                }
             }
+            
+            // If still is empty, try to find server by name. 
+            if (empty($servers)) {
+                if ($this->deployer->servers->has($stage)) {
+                    $servers = [$stage => $this->deployer->servers->get($stage)];
+                } else {
+                    // Nothing found.
+                    throw new \RuntimeException("Stage or server `$stage` does not found.");
+                }
+            }
+            
         } else {
+            // Otherwise run on all servers. 
             $servers = iterator_to_array($this->deployer->servers->getIterator());
         }
 

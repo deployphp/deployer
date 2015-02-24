@@ -7,8 +7,8 @@
 
 namespace Deployer\Helper;
 
-use Deployer\Deployer;
 use Deployer\Console\Application;
+use Deployer\Deployer;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 abstract class RecipeTester extends \PHPUnit_Framework_TestCase
@@ -98,10 +98,11 @@ abstract class RecipeTester extends \PHPUnit_Framework_TestCase
 
     /**
      * @param string $name
+     * @param string $server
      * @return string
      */
-    protected function getEnv($name)
+    protected function getEnv($name, $server = 'localhost')
     {
-        return $this->deployer->environments->get('localhost')->get($name);
+        return $this->deployer->environments->get($server)->get($name);
     }
 }

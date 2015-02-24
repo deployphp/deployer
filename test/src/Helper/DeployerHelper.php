@@ -8,7 +8,6 @@
 namespace Deployer\Helper;
 
 use Deployer\Server\EnvironmentCollection;
-use Deployer\Server\GroupCollection;
 use Deployer\Server\ServerCollection;
 use Deployer\Task\Scenario\ScenarioCollection;
 use Deployer\Task\TaskCollection;
@@ -75,9 +74,6 @@ trait DeployerHelper
         foreach ($environments as $name => $env) {
             $deployer->environments[$name] = $env;
         }
-
-        $deployer->serverGroups = new GroupCollection();
-        $deployer->serverGroups['all'] = ['first', 'second'];
         
         return [$deployer, $tasks, $servers, $environments, $input, $output];
     }

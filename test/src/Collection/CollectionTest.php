@@ -22,7 +22,6 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
             [new TaskCollection()],
             [new ScenarioCollection()],
             [new ServerCollection()],
-            [new GroupCollection()],
             [new EnvironmentCollection()],
         ];
     }

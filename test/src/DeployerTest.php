@@ -33,7 +33,6 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
             ['tasks'],
             ['scenarios'],
             ['servers'],
-            ['serverGroups'],
             ['environments'],
         ];
     }

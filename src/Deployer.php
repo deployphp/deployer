@@ -19,7 +19,6 @@ use Symfony\Component\Console;
  * @property Task\TaskCollection|Task\Task[] $tasks
  * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] $scenarios
  * @property Server\ServerCollection|Server\ServerInterface[] $servers
- * @property Server\GroupCollection|array $serverGroups
  * @property Server\EnvironmentCollection|Server\Environment[] $environments
  * @property Collection\Collection $parameters
  */
@@ -66,7 +65,6 @@ class Deployer
         $this->collections['tasks'] = new Task\TaskCollection();
         $this->collections['scenarios'] = new Task\Scenario\ScenarioCollection();
         $this->collections['servers'] = new Server\ServerCollection();
-        $this->collections['serverGroups'] = new Server\GroupCollection();
         $this->collections['environments'] = new Server\EnvironmentCollection();
         $this->collections['parameters'] = new Collection\Collection();
 

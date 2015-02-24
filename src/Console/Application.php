@@ -84,7 +84,7 @@ class Application extends Console
      */
     public function addUserArgumentsAndOptions()
     {
-        $this->getDefinition()->addArguments($this->userDefinition->getArguments());
-        $this->getDefinition()->addOptions($this->userDefinition->getOptions());
+        $this->getDefinition()->addArguments($this->getUserDefinition()->getArguments());
+        $this->getDefinition()->addOptions($this->getUserDefinition()->getOptions());
     }
 }

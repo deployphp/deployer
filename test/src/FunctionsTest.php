@@ -7,8 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Console\Application;
 use Deployer\Task\Context;
-use Symfony\Component\Console\Application;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -50,14 +50,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         
         $this->assertInstanceOf('Deployer\Server\ServerInterface', $server);
         $this->assertInstanceOf('Deployer\Server\Environment', $env);
-    }
-
-    public function testServerGroups()
-    {
-        serverGroup('main', ['one', 'two']);
-
-        $list = $this->deployer->serverGroups->get('main');
-        $this->assertEquals(['one', 'two'], $list);
     }
 
     public function testTask()

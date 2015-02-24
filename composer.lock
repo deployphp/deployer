@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "36e4fbc6a10f0767ba2a74cb2a70be5f",
+    "hash": "3d5cb6b8c95fba8944af3cdc20720503",
     "packages": [
         {
             "name": "elfet/pure",
@@ -441,12 +441,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "3dd18dda0b4e0bc1f5b1152d3d1c616c79df4d19"
+                "reference": "2c96af214bf1b5e29b707249108504b4e0041a21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/3dd18dda0b4e0bc1f5b1152d3d1c616c79df4d19",
-                "reference": "3dd18dda0b4e0bc1f5b1152d3d1c616c79df4d19",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/2c96af214bf1b5e29b707249108504b4e0041a21",
+                "reference": "2c96af214bf1b5e29b707249108504b4e0041a21",
                 "shasum": ""
             },
             "require": {
@@ -518,7 +518,7 @@
                 "x.509",
                 "x509"
             ],
-            "time": "2015-02-08 15:59:22"
+            "time": "2015-02-22 16:23:32"
         },
         {
             "name": "psr/log",

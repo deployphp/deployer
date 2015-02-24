@@ -8,7 +8,7 @@
 /**
  * Common parameters.
  */
-set('env', 'prod');
+set('branch', null); // Branch to deploy.
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
@@ -17,9 +17,10 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
 set('env_vars', ''); // Like SYMFONY_ENV=prod
 
 /**
- * Default arguments
+ * Default arguments and options.
  */
 argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
+option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
 
 /**
  * Rollback to previous release.
@@ -89,7 +90,22 @@ task('deploy:release', function () {
  */
 task('deploy:update_code', function () {
     $repository = get('repository');
-    run("git clone --depth 1 --recursive -q $repository {release_path} 2>&1");
+    $branch = get('branch');
+    $atBranch = null === $branch ? '' : "-b $branch";
+    
+    run("git clone $atBranch --depth 1 --recursive -q $repository {release_path} 2>&1");
+    
+    cd(env('release_path'));
+    
+    if (input()->hasOption('tag')) {
+        $tag = input()->getOption('tag');
+        
+        if (!empty($tag)) {
+            run("git fetch --tags 2>&1");
+            run("git checkout tags/$tag --force 2>&1");
+        }
+    } 
+    
     run("chmod -R g+w {release_path}");
 })->desc('Updating code');
 
@@ -189,7 +205,8 @@ task('deploy:vendors', function () {
  */
 task('deploy:symlink', function () {
 
-    run("cd {deploy_path} && mv -f release current");
+    run("cd {deploy_path} && ln -sfn {release_path} current"); // `mv -f release current` does not work =(
+    run("cd {deploy_path} && rm release");
 
 })->desc('Creating symlink to release');
 

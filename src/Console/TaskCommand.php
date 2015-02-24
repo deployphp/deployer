@@ -12,6 +12,7 @@ use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -47,13 +48,6 @@ class TaskCommand extends Command
     protected function configure()
     {
         $this->addOption(
-            'server',
-            null,
-            Option::VALUE_OPTIONAL,
-            'Run tasks only on this server or group of servers.'
-        );
-
-        $this->addOption(
             'parallel',
             'p',
             Option::VALUE_NONE,
@@ -71,7 +65,7 @@ class TaskCommand extends Command
             $tasks[$taskName] = $this->deployer->tasks->get($taskName);
         }
 
-        $serverName = $input->getOption('server');
+        $serverName = $input->getArgument('stage');
 
         if (!empty($serverName)) {
 

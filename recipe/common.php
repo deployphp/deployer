@@ -14,7 +14,12 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
-set('env_vars', ''); // SYMFONY_ENV=prod
+set('env_vars', ''); // Like SYMFONY_ENV=prod
+
+/**
+ * Default arguments
+ */
+argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
 
 /**
  * Rollback to previous release.

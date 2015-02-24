@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Console\WorkerCommand;
+use Deployer\Console\Application;
 use Deployer\Server;
 use Deployer\Task;
 use Deployer\Collection;
@@ -31,7 +32,7 @@ class Deployer
     private static $instance;
 
     /**
-     * @var Console\Application
+     * @var Application
      */
     private $console;
 
@@ -51,11 +52,11 @@ class Deployer
     private $collections;
 
     /**
-     * @param Console\Application $console
+     * @param Application $console
      * @param Console\Input\InputInterface $input
      * @param Console\Output\OutputInterface $output
      */
-    public function __construct(Console\Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         $this->console = $console;
         $this->input = $input;
@@ -97,6 +98,8 @@ class Deployer
      */
     public function addConsoleCommands()
     {
+        $this->console->addUserArgumentsAndOptions();
+        
         foreach ($this->tasks as $name => $task) {
             $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
@@ -139,5 +142,13 @@ class Deployer
     public function getHelper($name)
     {
         return $this->console->getHelperSet()->get($name);
+    }
+
+    /**
+     * @return Application
+     */
+    public function getConsole()
+    {
+        return $this->console;
     }
 }

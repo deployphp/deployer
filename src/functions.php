@@ -16,7 +16,9 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 // There are two types of functions: Deployer dependent and Context dependent.
@@ -139,6 +141,39 @@ function after($it, $that)
     $scenario = $deployer->scenarios->get($that);
 
     $afterScenario->addAfter($scenario);
+}
+
+/**
+ * Add users arguments.
+ * 
+ * Note what Deployer already has one argument: "stage". 
+ * 
+ * @param string $name
+ * @param int $mode
+ * @param string $description
+ * @param mixed $default
+ */
+function argument($name, $mode = null, $description = '', $default = null)
+{
+    Deployer::get()->getConsole()->getUserDefinition()->addArgument(
+        new InputArgument($name, $mode, $description, $default)
+    );
+}
+
+/**
+ * Add users options.
+ * 
+ * @param string $name
+ * @param string $shortcut
+ * @param int $mode
+ * @param string $description
+ * @param mixed $default
+ */
+function option($name, $shortcut = null, $mode = null, $description = '', $default = null)
+{
+    Deployer::get()->getConsole()->getUserDefinition()->addOption(
+        new InputOption($name, $shortcut, $mode, $description, $default)
+    );
 }
 
 /**

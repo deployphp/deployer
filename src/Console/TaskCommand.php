@@ -96,7 +96,7 @@ class TaskCommand extends Command
             $executor = $this->executor;
         } else {
             if ($input->getOption('parallel')) {
-                $executor = new ParallelExecutor();
+                $executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
             } else {
                 $executor = new SeriesExecutor();
             }

@@ -10,10 +10,18 @@ namespace Deployer\Console;
 use KevinGH\Amend\Command;
 use KevinGH\Amend\Helper;
 use Symfony\Component\Console\Application as Console;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
 
 class Application extends Console
 {
+    /**
+     * Input definition for user specific arguments and options.
+     * 
+     * @var InputDefinition
+     */
+    private $userDefinition;
+    
     /**
      * {@inheritdoc}
      */
@@ -57,5 +65,26 @@ class Application extends Console
         $helperSet = parent::getDefaultHelperSet();
         $helperSet->set(new Helper());
         return $helperSet;
+    }
+
+    /**
+     * @return InputDefinition
+     */
+    public function getUserDefinition()
+    {
+        if (null === $this->userDefinition) {
+            $this->userDefinition = new InputDefinition();
+        }
+        
+        return $this->userDefinition;
+    }
+
+    /**
+     * Add user definition arguments and options to definition.
+     */
+    public function addUserArgumentsAndOptions()
+    {
+        $this->getDefinition()->addArguments($this->userDefinition->getArguments());
+        $this->getDefinition()->addOptions($this->userDefinition->getOptions());
     }
 }

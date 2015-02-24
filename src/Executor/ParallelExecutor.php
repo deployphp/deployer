@@ -15,6 +15,7 @@ use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
 use React\Socket\ConnectionException;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Process\Process;
 
 class ParallelExecutor implements ExecutorInterface
@@ -28,6 +29,11 @@ class ParallelExecutor implements ExecutorInterface
      * If fails on start port, try until stop port.
      */
     const STOP_PORT = 3340;
+
+    /**
+     * @var InputDefinition
+     */
+    private $userDefinition;
 
     /**
      * @var \Deployer\Task\Task[]
@@ -108,6 +114,14 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
+     * @param InputDefinition $userDefinition
+     */
+    public function __construct(InputDefinition $userDefinition)
+    {
+        $this->userDefinition = $userDefinition;
+    }
+    
+    /**
      * {@inheritdoc}
      */
     public function run($tasks, $servers, $environments, $input, $output)
@@ -160,21 +174,35 @@ class ParallelExecutor implements ExecutorInterface
      */
     public function startWorkers()
     {
+        $input = [
+            '--master' => '127.0.0.1:' . $this->port,
+            '--server' => '',
+        ];
+        
         // Get verbosity.
         $verbosity = new VerbosityString($this->output);
+
         // Get current deploy.php file.
         $deployPhpFile = $this->input->getOption('file');
 
-        foreach ($this->servers as $serverName => $server) {
-            $workerInput = new ArrayInput([
-                '--master' => '127.0.0.1:' . $this->port,
-                '--server' => $serverName,
-            ]);
+        // Get user arguments.
+        foreach ($this->userDefinition->getArguments() as $argument) {
+            $input[$argument->getName()] = $this->input->getArgument($argument->getName());
+        }
 
+        // Get user options.
+        foreach ($this->userDefinition->getOptions() as $option) {
+            $input["--" . $option->getName()] = $this->input->getOption($option->getName());
+        }
+        
+        foreach ($this->servers as $serverName => $server) {
+            $input['--server'] = $serverName;
+            
             $process = new Process(
                 "php " . DEPLOYER_BIN .
                 (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
-                " worker $workerInput" .
+                " worker " .
+                new ArrayInput($input) .
                 " $verbosity" .
                 " &"
             );

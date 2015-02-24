@@ -14,35 +14,7 @@ Deployer is a deployment tool written in PHP.
 
 See [http://deployer.org](http://deployer.org) for more information and documentation.
 
-Deployer 3.0
-============
-Deployer 3.0 developing roadmap:
-
-* [x] Refactor Source
-  * [x] Refactor tasks
-  * [x] Refactor servers
-  * [x] Refactor Deployer class
-  * [x] Refactor task execution
-* [x] New features
-  * [x] Environment default values
-  * [x] Local tasks `->once()`
-  * [x] Server filters `->onlyOn(...)`
-  * [x] Parallel task execution (:gem: *WOW!* :gem:)
-  * [x] Better output 
-* [ ] Refactor recipes
-  * [x] Refactor common recipe
-  * [ ] Refactor Symfony recipe 
-* [ ] New recipes
-  * [ ] Zend Framework recipe
-  * [ ] Laravel recipe
-  * [ ] WordPress recipe
-  * [ ] Yii recipe
-* [x] Move repository from `elfet/deployer` to `deployphp/deployer`
-* [x] New site on deployer.org
-  * [x] Separate docs and site code
-  * [x] Auto updating docs script
-  * [x] Auto phar build script
-* [ ] Write docs for v3.
+# Deployer 3.0 almost ready...
 
 
 Requirements

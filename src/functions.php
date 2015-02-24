@@ -197,7 +197,7 @@ function run($command)
 
     if (isDebug() && !empty($output)) {
         writeln(array_map(function ($line) {
-            return "<comment>#</comment> $line";
+            return "<fg=red>></fg=red> $line";
         }, explode("\n", $output)));
     }
 

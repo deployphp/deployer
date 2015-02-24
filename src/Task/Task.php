@@ -34,6 +34,12 @@ class Task
     private $onlyOn = [];
 
     /**
+     * Make task internal and not visible in CLI. 
+     * @var bool
+     */
+    private $private = false;
+
+    /**
      * @param callable $callback Task code.
      */
     public function __construct(\Closure $callback)
@@ -120,5 +126,21 @@ class Task
         } else {
             return array_key_exists($serverName, $this->onlyOn);
         }
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrivate()
+    {
+        return $this->private;
+    }
+
+    /**
+     * Mark task as private.
+     */
+    public function setPrivate()
+    {
+        $this->private = true;
     }
 }

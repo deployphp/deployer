@@ -99,6 +99,10 @@ class Deployer
         $this->console->addUserArgumentsAndOptions();
         
         foreach ($this->tasks as $name => $task) {
+            if ($task->isPrivate()) {
+                continue;
+            }
+            
             $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }

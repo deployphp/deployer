@@ -103,4 +103,4 @@ class RemoteOutput implements OutputInterface
     {
         return $this->output->getFormatter();
     }
-} 
+}

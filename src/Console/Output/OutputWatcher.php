@@ -118,4 +118,4 @@ class OutputWatcher implements OutputInterface
     {
         return $this->wasWritten;
     }
-} 
+}

@@ -123,12 +123,4 @@ task('deploy', [
     'cleanup',
 ])->desc('Deploy your project');
 
-/**
- * Success message
- */
-task('success', function () {
-    writeln("<info>Successfully deployed!</info>");
-})
-    ->once()
-    ->setPrivate();
 after('deploy', 'success');

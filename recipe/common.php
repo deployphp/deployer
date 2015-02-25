@@ -260,3 +260,13 @@ task('cleanup', function () {
     run("cd {deploy_path} && if [ -h release ]; then rm release; fi");
 
 })->desc('Cleaning up old releases');
+
+
+/**
+ * Success message
+ */
+task('success', function () {
+    writeln("<info>Successfully deployed!</info>");
+})
+    ->once()
+    ->setPrivate();

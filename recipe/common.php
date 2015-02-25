@@ -8,13 +8,17 @@
 /**
  * Common parameters.
  */
-set('branch', null); // Branch to deploy.
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
-set('env_vars', ''); // Like SYMFONY_ENV=prod
+
+/**
+ * Environment vars
+ */
+env('branch', null); // Branch to deploy.
+env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 
 /**
  * Default arguments and options.
@@ -90,7 +94,7 @@ task('deploy:release', function () {
  */
 task('deploy:update_code', function () {
     $repository = get('repository');
-    $branch = get('branch');
+    $branch = env('branch');
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
     }

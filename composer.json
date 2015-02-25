@@ -24,7 +24,6 @@
         "symfony/console": "~2.6",
         "symfony/process": "~2.6",
         "kherge/amend": "~3.0",
-        "herrera-io/version": "~1.0",
         "phpseclib/phpseclib": "dev-master"
     },
     "require-dev": {

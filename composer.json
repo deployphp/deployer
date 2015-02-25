@@ -27,7 +27,8 @@
         "phpseclib/phpseclib": "dev-master"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5"
+        "phpunit/phpunit": "~4.5",
+        "herzult/php-ssh": "~1.0"
     },
     "suggest": {
         "herzult/php-ssh": "For SSH support through native SSH2 extension",

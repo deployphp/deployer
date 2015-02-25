@@ -91,22 +91,19 @@ task('deploy:release', function () {
 task('deploy:update_code', function () {
     $repository = get('repository');
     $branch = get('branch');
-    $atBranch = null === $branch ? '' : "-b $branch";
-    
-    run("git clone $atBranch --depth 1 --recursive -q $repository {release_path} 2>&1");
-    
-    cd(env('release_path'));
-    
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
-        
-        if (!empty($tag)) {
-            run("git fetch --tags 2>&1");
-            run("git checkout tags/$tag --force 2>&1");
-        }
-    } 
+    }
+
+    $at = '';
+    if (!empty($tag)) {
+        $at = "-b $tag";
+    } else if (!empty($branch)) {
+        $at = "-b $branch";
+    }
     
-    run("chmod -R g+w {release_path}");
+    run("git clone $at --depth 1 --recursive -q $repository {release_path} 2>&1");
+    
 })->desc('Updating code');
 
 

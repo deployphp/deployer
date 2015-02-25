@@ -105,9 +105,9 @@ task('deploy:update_code', function () {
     } else if (!empty($branch)) {
         $at = "-b $branch";
     }
-    
+
     run("git clone $at --depth 1 --recursive -q $repository {release_path} 2>&1");
-    
+
 })->desc('Updating code');
 
 
@@ -155,14 +155,14 @@ task('deploy:writable', function () {
 
         $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
 
-        cd(env('release_path'));
+        cd('{release_path}');
 
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
 
             if (!empty($httpUser)) {
                 run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             }
-            
+
             run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
 
         } elseif (commandExist('setfacl')) {
@@ -171,7 +171,7 @@ task('deploy:writable', function () {
                 run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                 run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
             } else {
-                run("$sudo chmod 777 $dirs");    
+                run("$sudo chmod 777 $dirs");
             }
 
 

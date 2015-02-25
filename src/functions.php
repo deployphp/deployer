@@ -173,7 +173,7 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    env('working_path', $path);
+    env('working_path', env()->parse($path));
 }
 
 /**

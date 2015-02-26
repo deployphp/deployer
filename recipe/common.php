@@ -159,7 +159,7 @@ task('deploy:writable', function () {
 
         $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
 
-        cd(env('release_path'));
+        cd('{release_path}');
 
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
 

@@ -105,9 +105,9 @@ task('deploy:update_code', function () {
     } else if (!empty($branch)) {
         $at = "-b $branch";
     }
-    
+
     run("git clone $at --depth 1 --recursive -q $repository {release_path} 2>&1");
-    
+
 })->desc('Updating code');
 
 
@@ -121,8 +121,12 @@ task('deploy:shared', function () {
         // Remove from source
         run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
 
-        // Create shared dir if does not exist
+        // Create shared dir if it does not exist
         run("mkdir -p $sharedPath/$dir");
+
+        // Create path to shared dir in release dir if it does not exist
+        // (symlink will not create the path and will fail otherwise)
+        run("mkdir -p `dirname {release_path}/$dir`");
 
         // Symlink shared dir to release dir
         run("ln -nfs $sharedPath/$dir {release_path}/$dir");
@@ -162,7 +166,7 @@ task('deploy:writable', function () {
             if (!empty($httpUser)) {
                 run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             }
-            
+
             run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
 
         } elseif (commandExist('setfacl')) {
@@ -171,7 +175,7 @@ task('deploy:writable', function () {
                 run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                 run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
             } else {
-                run("$sudo chmod 777 $dirs");    
+                run("$sudo chmod 777 $dirs");
             }
 
 

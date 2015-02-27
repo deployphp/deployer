@@ -13,6 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
+set('release_identifier', date('YmdHis'));
 
 /**
  * Environment vars
@@ -72,13 +73,13 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $release = date('YmdHis');
-
-    $releasePath = "{deploy_path}/releases/$release";
+    $releaseIdentifier = get('release_identifier');
+    $baseReleasePath = "{deploy_path}/releases/$releaseIdentifier";
 
     $i = 0;
+    $releasePath = $baseReleasePath;
     while (is_dir(env()->parse($releasePath)) && $i < 42) {
-        $releasePath .= '.' . ++$i;
+        $releasePath = $baseReleasePath . '.' . ++$i;
     }
 
     run("mkdir $releasePath");

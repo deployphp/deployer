@@ -74,12 +74,12 @@ class PhpSecLib implements ServerInterface
                 break;
 
             case Configuration::AUTH_BY_AGENT:
-                
+
                 $key = new Agent();
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
-                
+
                 break;
-            
+
             default:
                 throw new RuntimeException('You need to specify authentication method.');
         }
@@ -109,7 +109,8 @@ class PhpSecLib implements ServerInterface
         $result = $this->sftp->exec($command);
 
         if ($this->sftp->getExitStatus() !== 0) {
-            throw new \RuntimeException($this->sftp->getStdError());
+            $output = $this->sftp->getStdError() ?: $result;
+            throw new \RuntimeException($output);
         }
 
         return $result;

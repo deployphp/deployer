@@ -36,16 +36,16 @@ env('env', 'prod');
  */
 task('deploy:create_cache_dir', function () {
     // Set cache dir
-    env('cache_dir', '{release_path}/app/cache');
+    env('cache_dir', '{{release_path}}/app/cache');
 
     // Remove cache dir if it exist
-    run('if [ -d "{cache_dir}" ]; then rm -rf {cache_dir}; fi');
+    run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
 
     // Create cache dir
-    run('mkdir -p {cache_dir}');
+    run('mkdir -p {{cache_dir}}');
 
     // Set rights
-    run("chmod -R g+w {cache_dir}");
+    run("chmod -R g+w {{cache_dir}}");
 })->desc('Create cache dir');
 
 
@@ -54,7 +54,7 @@ task('deploy:create_cache_dir', function () {
  */
 task('deploy:assets', function () {
     $assets = implode(' ', array_map(function ($asset) {
-        return "{release_path}/$asset";
+        return "{{release_path}}/$asset";
     }, get('assets')));
 
     $time = date('Ymdhi.s');
@@ -68,7 +68,7 @@ task('deploy:assets', function () {
  */
 task('deploy:assetic:dump', function () {
 
-    run("php {release_path}/app/console assetic:dump --env={env} --no-debug");
+    run("php {{release_path}}/app/console assetic:dump --env={{env}} --no-debug");
 
 })->desc('Dump assets');
 
@@ -78,7 +78,7 @@ task('deploy:assetic:dump', function () {
  */
 task('deploy:cache:warmup', function () {
 
-    run('php {release_path}/app/console cache:warmup  --env={env} --no-debug');
+    run('php {{release_path}}/app/console cache:warmup  --env={{env}} --no-debug');
 
 })->desc('Warm up cache');
 
@@ -88,7 +88,7 @@ task('deploy:cache:warmup', function () {
  */
 task('database:migrate', function () {
 
-    run("php {release_path}/app/console doctrine:migrations:migrate --env={env} --no-debug --no-interaction");
+    run("php {{release_path}}/app/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction");
 
 })->desc('Migrate database');
 
@@ -98,7 +98,7 @@ task('database:migrate', function () {
  */
 task('deploy:clear_controllers', function () {
 
-    run("rm -f {release_path}/web/app_*.php");
+    run("rm -f {{release_path}}/web/app_*.php");
 
 })->setPrivate();
 

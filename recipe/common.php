@@ -33,13 +33,13 @@ task('rollback', function () {
     $releases = env('releases_list');
 
     if (isset($releases[1])) {
-        $releaseDir = "{deploy_path}/releases/{$releases[1]}";
+        $releaseDir = "{{deploy_path}}/releases/{$releases[1]}";
 
         // Symlink to old release.
-        run("cd {deploy_path} && ln -nfs $releaseDir current");
+        run("cd {{deploy_path}} && ln -nfs $releaseDir current");
 
         // Remove release
-        run("rm -rf {deploy_path}/releases/{$releases[0]}");
+        run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
 
         if (isVerbose()) {
             writeln("Rollback to `{$releases[1]}` release was successful.");
@@ -55,17 +55,17 @@ task('rollback', function () {
  */
 task('deploy:prepare', function () {
     // Create releases dir.
-    run("cd {deploy_path} && if [ ! -d releases ]; then mkdir releases; fi");
+    run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
 
     // Create shared dir.
-    run("cd {deploy_path} && if [ ! -d shared ]; then mkdir shared; fi");
+    run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
 })->desc('Preparing server for deploy');
 
 /**
  * Return release path.
  */
 env('release_path', function () {
-    return str_replace("\n", '', run("readlink {deploy_path}/release"));
+    return str_replace("\n", '', run("readlink {{deploy_path}}/release"));
 });
 
 /**
@@ -74,7 +74,7 @@ env('release_path', function () {
 task('deploy:release', function () {
     $release = date('YmdHis');
 
-    $releasePath = "{deploy_path}/releases/$release";
+    $releasePath = "{{deploy_path}}/releases/$release";
 
     $i = 0;
     while (is_dir(env()->parse($releasePath)) && $i < 42) {
@@ -83,9 +83,9 @@ task('deploy:release', function () {
 
     run("mkdir $releasePath");
 
-    run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
+    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
 
-    run("ln -s $releasePath {deploy_path}/release");
+    run("ln -s $releasePath {{deploy_path}}/release");
 })->desc('Prepare release');
 
 
@@ -106,7 +106,7 @@ task('deploy:update_code', function () {
         $at = "-b $branch";
     }
 
-    run("git clone $at --depth 1 --recursive -q $repository {release_path} 2>&1");
+    run("git clone $at --depth 1 --recursive -q $repository {{release_path}} 2>&1");
 
 })->desc('Updating code');
 
@@ -115,26 +115,26 @@ task('deploy:update_code', function () {
  * Create symlinks for shared directories and files.
  */
 task('deploy:shared', function () {
-    $sharedPath = "{deploy_path}/shared";
+    $sharedPath = "{{deploy_path}}/shared";
 
     foreach (get('shared_dirs') as $dir) {
         // Remove from source
-        run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
+        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
         // Create shared dir if it does not exist
         run("mkdir -p $sharedPath/$dir");
 
         // Create path to shared dir in release dir if it does not exist
         // (symlink will not create the path and will fail otherwise)
-        run("mkdir -p `dirname {release_path}/$dir`");
+        run("mkdir -p `dirname {{release_path}}/$dir`");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$dir {release_path}/$dir");
+        run("ln -nfs $sharedPath/$dir {{release_path}}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
         // Remove from source
-        run("if [ -d $(echo {release_path}/$file) ]; then rm -rf {release_path}/$file; fi");
+        run("if [ -d $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . dirname($file));
@@ -143,7 +143,7 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$file {release_path}/$file");
+        run("ln -nfs $sharedPath/$file {{release_path}}/$file");
     }
 })->desc('Creating symlinks for shared files');
 
@@ -159,7 +159,7 @@ task('deploy:writable', function () {
 
         $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
 
-        cd('{release_path}');
+        cd('{{release_path}}');
 
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
 
@@ -194,11 +194,11 @@ task('deploy:vendors', function () {
     if (commandExist('composer')) {
         $composer = 'composer';
     } else {
-        run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
+        run("cd {{release_path}} && curl -s http://getcomposer.org/installer | php");
         $composer = 'php composer.phar';
     }
 
-    run("cd {release_path} && {env_vars} $composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
+    run("cd {{release_path}} && {{env_vars}} $composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts");
 
 })->desc('Installing vendors');
 
@@ -208,8 +208,8 @@ task('deploy:vendors', function () {
  */
 task('deploy:symlink', function () {
 
-    run("cd {deploy_path} && ln -sfn {release_path} current"); // `mv -f release current` does not work =(
-    run("cd {deploy_path} && rm release");
+    run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // `mv -f release current` does not work =(
+    run("cd {{deploy_path}} && rm release");
 
 })->desc('Creating symlink to release');
 
@@ -218,7 +218,7 @@ task('deploy:symlink', function () {
  * Return list of releases on server.
  */
 env('releases_list', function () {
-    $list = run('ls {deploy_path}/releases')->toArray();
+    $list = run('ls {{deploy_path}}/releases')->toArray();
 
     rsort($list);
 
@@ -230,7 +230,7 @@ env('releases_list', function () {
  * Return current release path.
  */
 env('current', function () {
-    return run("readlink {deploy_path}/current")->toString();
+    return run("readlink {{deploy_path}}/current")->toString();
 });
 
 /**
@@ -255,11 +255,11 @@ task('cleanup', function () {
     }
 
     foreach ($releases as $release) {
-        run("rm -rf {deploy_path}/releases/$release");
+        run("rm -rf {{deploy_path}}/releases/$release");
     }
 
-    run("cd {deploy_path} && if [ -e release ]; then rm release; fi");
-    run("cd {deploy_path} && if [ -h release ]; then rm release; fi");
+    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
+    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
 
 })->desc('Cleaning up old releases');
 

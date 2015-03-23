@@ -97,11 +97,11 @@ class Environment
     /**
      * Replace env values callback for parse
      *
-     * @param array $matchs
+     * @param array $matches
      * @return mixed
      */
-    private function _parse($matchs)
+    private function parseCallback($matches)
     {
-        return isset($matchs[1]) ? $this->get($matchs[1]) : null;
+        return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 }

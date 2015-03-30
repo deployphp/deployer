@@ -90,7 +90,7 @@ task('deploy:rollback', function () {
 
 
 /**
- * Create symlinks for shared directories and files
+ * Create symlinks for shared directories and files and copy existing contents
  */
 task('deploy:shared', function () {
     $basePath = config()->getPath();
@@ -101,11 +101,14 @@ task('deploy:shared', function () {
     $sharedDirs = (array)get('shared_dirs', []);
 
     foreach ($sharedDirs as $dir) {
-        // Remove dir from source
-        run("if [ -d $(echo $releasePath/$dir) ]; then rm -rf $releasePath/$dir; fi");
-
         // Create shared dir if does not exist
         run("mkdir -p $sharedPath/$dir");
+
+        // If original dir exists, copy existing contents to shared dir
+        run("if [ -d $(echo $releasePath/$dir) ]; then cp -a $releasePath/$dir/. $sharedPath/$dir; fi");
+
+        // Now remove original dir from source
+        run("if [ -d $(echo $releasePath/$dir) ]; then rm -rf $releasePath/$dir; fi");
 
         // Symlink shared dir to release dir
         run("ln -nfs $sharedPath/$dir $releasePath/$dir");
@@ -118,8 +121,12 @@ task('deploy:shared', function () {
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . dirname($file));
 
-        // Touch shared file
-        run("touch $sharedPath/$file");
+        // Touch shared file, or copy if it already exists
+        run("if [ -d $(echo $releasePath/$file) ]; then ".
+            "   cp $releasePath/$file $sharedPath/$file;".
+            "else".
+            "   touch $sharedPath/$file;".
+            "fi");
 
         // Symlink shared file to release file
         run("ln -nfs $sharedPath/$file $releasePath/$file");

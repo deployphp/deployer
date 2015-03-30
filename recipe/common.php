@@ -104,8 +104,8 @@ task('deploy:shared', function () {
         // Create shared dir if does not exist
         run("mkdir -p $sharedPath/$dir");
 
-        // If original dir exists, copy existing contents to shared dir
-        run("if [ -d $(echo $releasePath/$dir) ]; then cp -a $releasePath/$dir/. $sharedPath/$dir; fi");
+        // If original dir exists, copy existing contents to shared dir (do not overwrite)
+        run("if [ -d $(echo $releasePath/$dir) ]; then cp -anr $releasePath/$dir/. $sharedPath/$dir; fi");
 
         // Now remove original dir from source
         run("if [ -d $(echo $releasePath/$dir) ]; then rm -rf $releasePath/$dir; fi");
@@ -121,11 +121,11 @@ task('deploy:shared', function () {
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . dirname($file));
 
-        // Touch shared file, or copy if it already exists
-        run("if [ -d $(echo $releasePath/$file) ]; then ".
-            "   cp $releasePath/$file $sharedPath/$file;".
+        // Copy shared file, or create if original does not exist
+        run("if [ -f $(echo $releasePath/$file) ]; then ".
+            "   cp -n $releasePath/$file $sharedPath/$file; ".
             "else".
-            "   touch $sharedPath/$file;".
+            "   touch $sharedPath/$file; ".
             "fi");
 
         // Symlink shared file to release file

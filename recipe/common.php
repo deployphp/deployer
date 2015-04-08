@@ -208,8 +208,7 @@ task('deploy:vendors', function () {
  */
 task('deploy:symlink', function () {
 
-    run("cd {deploy_path} && ln -sfn {release_path} current"); // `mv -f release current` does not work =(
-    run("cd {deploy_path} && rm release");
+    run("cd {deploy_path} && mv -Tf release current");
 
 })->desc('Creating symlink to release');
 

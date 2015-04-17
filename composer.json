@@ -1,11 +1,15 @@
 {
-    "name": "deployer/deployer",
+    "name": "luciano-jr/deployer",
     "description": "Deployment Tool",
     "license": "MIT",
     "authors": [
         {
             "name": "Anton Medvedev",
             "email": "anton@elfet.ru"
+        },
+        {
+            "name": "Luciano Junior",
+            "email": "luciano@lucianojr.com.br"
         }
     ],
     "autoload": {

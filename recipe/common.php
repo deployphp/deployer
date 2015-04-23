@@ -11,6 +11,10 @@
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
+//Copy shared dirs/files from repo
+//true: copy shared dirs/files from repo to shared directory (won't overwrite)
+//false: create empty dirs/files if not exist
+set('copy_shared_from_repo', false);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 
@@ -112,17 +116,23 @@ task('deploy:update_code', function () {
 
 
 /**
+ * (Copy shared directories and files from repo to shared directory and)
  * Create symlinks for shared directories and files.
  */
 task('deploy:shared', function () {
     $sharedPath = "{deploy_path}/shared";
 
     foreach (get('shared_dirs') as $dir) {
-        // Remove from source
-        run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
-
         // Create shared dir if it does not exist
         run("mkdir -p $sharedPath/$dir");
+        
+        if (get('copy_shared_from_repo')) {
+            // If original dir exists, copy existing contents to shared dir (do not overwrite)
+            run("if [ -d $(echo {release_path}/$dir) ]; then cp -anr {release_path}/$dir/. $sharedPath/$dir; fi");
+        }
+
+        // Remove original dir from source
+        run("if [ -d $(echo {release_path}/$dir) ]; then rm -rf {release_path}/$dir; fi");
 
         // Create path to shared dir in release dir if it does not exist
         // (symlink will not create the path and will fail otherwise)
@@ -139,8 +149,17 @@ task('deploy:shared', function () {
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . dirname($file));
 
-        // Touch shared
-        run("touch $sharedPath/$file");
+        if (get('copy_shared_from_repo')) {
+            // Copy shared file to shared directory (won't overwrite), or create if original does not exist
+            run("if [ -f $(echo {release_path}/$file) ]; then " .
+                "   cp -n {release_path}/$file $sharedPath/$file; " .
+                "else" .
+                "   touch $sharedPath/$file; " .
+                "fi");
+        } else {
+            // Touch shared
+            run("touch $sharedPath/$file");
+        }
 
         // Symlink shared dir to release dir
         run("ln -nfs $sharedPath/$file {release_path}/$file");

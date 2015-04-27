@@ -194,7 +194,7 @@ task('deploy:vendors', function () {
     if (commandExist('composer')) {
         $composer = 'composer';
     } else {
-        run("cd {release_path} && curl -s http://getcomposer.org/installer | php");
+        run("cd {release_path} && curl -sS https://getcomposer.org/installer | php");
         $composer = 'php composer.phar';
     }
 

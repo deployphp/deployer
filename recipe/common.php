@@ -155,7 +155,7 @@ task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
 
-    if(!empty($dirs)) {
+    if (!empty($dirs)) {
 
         $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
 
@@ -207,9 +207,12 @@ task('deploy:vendors', function () {
  * Create symlink to last release.
  */
 task('deploy:symlink', function () {
-
-    run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // `mv -f release current` does not work =(
-    run("cd {{deploy_path}} && rm release");
+    if (strpos(run('man mv'), '-T, --no-target-directory') !== false) {
+        run("cd {{deploy_path}} && mv -Tf release current"); // Linux
+    } else {
+        run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // Mac OS x
+        run("cd {{deploy_path}} && rm release");
+    }
 
 })->desc('Creating symlink to release');
 

@@ -20,7 +20,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $env->set('int', 42);
         $env->set('string', 'value');
         $env->set('array', [1, 'two']);
-        $env->set('parse', 'is {int}');
+        $env->set('parse', 'is {{int}}');
         
         $this->assertEquals(42, $env->get('int'));
         $this->assertEquals('value', $env->get('string'));

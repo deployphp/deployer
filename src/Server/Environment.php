@@ -88,13 +88,21 @@ class Environment
     public function parse($value)
     {
         if (is_string($value)) {
-            if (preg_match_all('/\{(.+?)\}/', $value, $matches)) {
-                foreach ($matches[1] as $name) {
-                    $value = str_replace('{' . $name . '}', $this->get($name), $value);
-                }
-            }
+            $value = preg_replace_callback('/\{\{\s*(\w+)\s*\}\}/', [$this, 'parseCallback'], $value);
         }
 
         return $value;
     }
+
+    /**
+     * Replace env values callback for parse
+     *
+     * @param array $matches
+     * @return mixed
+     */
+    private function parseCallback($matches)
+    {
+        return isset($matches[1]) ? $this->get($matches[1]) : null;
+    }
+
 }

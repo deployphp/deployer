@@ -456,7 +456,7 @@ function isDebug()
 
 /**
  * Return current server env or set default values or get env value.
- * When set env value you can write over values line "{name}".
+ * When set env value you can write over values line "{{name}}".
  *
  * @param string|null $name
  * @param mixed $value

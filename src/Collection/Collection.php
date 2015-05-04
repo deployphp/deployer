@@ -9,7 +9,10 @@ namespace Deployer\Collection;
 
 class Collection implements CollectionInterface
 {
-    public $collection = [];
+    /**
+     * @var array
+     */
+    private $collection = [];
 
     /**
      * {@inheritdoc}

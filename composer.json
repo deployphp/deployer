@@ -24,7 +24,7 @@
         "symfony/console": "~2.6",
         "symfony/process": "~2.6",
         "kherge/amend": "~3.0",
-        "phpseclib/phpseclib": "dev-master"
+        "phpseclib/phpseclib": "dev-master#2c96af214bf1b5e29b707249108504b4e0041a21"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",

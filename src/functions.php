@@ -353,7 +353,7 @@ function ask($message, $default = null)
 
     $helper = Deployer::get()->getHelper('question');
 
-    $message = "<question>$message" . ($default === null) ? "" : " [$default]" . "</question> ";
+    $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
 
     $question = new \Symfony\Component\Console\Question\Question($message, $default);
 

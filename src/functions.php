@@ -201,18 +201,53 @@ function workingPath()
 }
 
 /**
- * Run command on server.
+ * Run command on server as default user. This function respects the run_as env
+ * variable.
  *
  * @param string $command
  * @return Result
  */
 function run($command)
 {
+    return runAs($command, env()->get('run_as', null));
+}
+
+/**
+ * Run command on server as ssh user. This ignores the run_as env variable.
+ *
+ * @param string $command
+ * @return Result
+ */
+function runAsCurrent($command)
+{
+    return runAs($command, null);
+}
+
+/**
+ * Run command on server.
+ *
+ * @param string $command
+ * @param string $username
+ * @return Result
+ */
+function runAs($command, $username)
+{
     $server = Context::get()->getServer();
     $command = env()->parse($command);
     $workingPath = workingPath();
+    $runAs = '';
 
-    $command = "cd $workingPath && $command";
+    if ($username == 'sudo') {
+        $runAs = 'sudo';
+    } elseif ($username) {
+        $userExists = runAsCurrent("getent passwd $username");
+        if (!$userExists) {
+            throw new \RuntimeException("The user $username does not exist on the server.");
+        }
+        $runAs = "sudo -u $username";
+    }
+
+    $command = "cd $workingPath && $runAs $command";
 
     if (isVeryVerbose()) {
         writeln("<comment>Run</comment>: $command");

@@ -29,6 +29,21 @@ class CommonTest extends RecipeTester
         $this->assertFileExists(self::$deployPath . '/release');
     }
 
+    public function testReleaseSymlink()
+    {
+        $directory = self::$deployPath . '/directory';
+        $releaselink = self::$deployPath . '/release';
+        $releasedir = readlink($releaselink);
+
+        mkdir($directory);
+        unlink($releaselink);
+        symlink($directory, $releaselink);
+        rmdir($directory);
+
+        $this->exec('deploy:release');
+        $this->assertFileExists($releaselink);
+    }
+
     public function testUpdateCode()
     {
         set('repository', 'https://github.com/deployphp/test.git');

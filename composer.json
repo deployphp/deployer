@@ -28,8 +28,7 @@
         "phpseclib/phpseclib": "dev-master#2c96af214bf1b5e29b707249108504b4e0041a21"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5",
-        "herzult/php-ssh": "~1.0"
+        "phpunit/phpunit": "~4.5"
     },
     "suggest": {
         "herzult/php-ssh": "For SSH support through native SSH2 extension",

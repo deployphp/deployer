@@ -219,7 +219,7 @@ task('deploy:vendors', function () {
  * Create symlink to last release.
  */
 task('deploy:symlink', function () {
-    if (strpos(run('man mv'), '-T, --no-target-directory') !== false) {
+    if (strpos(run('echo $(mv 2>&1)'), '-T') !== false) {
         run("cd {{deploy_path}} && mv -Tf release current"); // Linux
     } else {
         run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // Mac OS x

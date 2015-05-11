@@ -55,13 +55,14 @@ task('rollback', function () {
  */
 task('deploy:prepare', function () {
     // Simple IF to check if shell is POSIX-compliant
-   try {
-       run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
-   }
-   catch(\RuntimeException $e){
-       throw new \RuntimeException('Shell on your server is not POSIX-compliant. Please change to sh, bash or similar. '
-           .PHP_EOL.'Usually, you can change your shell to bash by running: chsh -s /bin/bash');
-   }
+    try {
+        run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
+    } catch (\RuntimeException $e) {
+        throw new \RuntimeException(
+            "Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.\n" .
+            "Usually, you can change your shell to bash by running: chsh -s /bin/bash"
+        );
+    }
 
     // Create releases dir.
     run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");

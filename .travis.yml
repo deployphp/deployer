@@ -5,14 +5,14 @@ php:
   - 5.5
   - 5.6
   - hhvm
-  
+
 matrix:
     allow_failures:
         - php: hhvm
 
-before_script: 
+install:
   - composer self-update
-  - composer install --no-interaction --prefer-source --dev
+  - composer install --no-interaction --prefer-source
 
 script:
   - phpunit

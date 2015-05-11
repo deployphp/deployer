@@ -12,7 +12,7 @@ matrix:
 
 install:
   - composer self-update
-  - composer install --no-interaction --prefer-source
+  - composer install
 
 script:
   - phpunit

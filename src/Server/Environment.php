@@ -7,6 +7,8 @@
 
 namespace Deployer\Server;
 
+use Deployer\Type\DotArray;
+
 class Environment
 {
     const DEPLOY_PATH = 'deploy_path';
@@ -14,15 +16,23 @@ class Environment
     /**
      * Globally defaults values.
      *
-     * @var array
+     * @var \Deployer\Type\DotArray
      */
-    static private $defaults = [];
+    static private $defaults = null;
 
     /**
      * Array of env values.
-     * @var array
+     * @var \Deployer\Type\DotArray
      */
-    private $values = [];
+    private $values = null;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->values = new DotArray();
+    }
 
     /**
      * @param string $name
@@ -41,17 +51,17 @@ class Environment
      */
     public function get($name, $default = null)
     {
-        if (array_key_exists($name, $this->values)) {
+        if ($this->values->hasKey($name)) {
             $value = $this->values[$name];
         } else {
-            if (isset(self::$defaults[$name])) {
+            if (null !== self::$defaults && isset(self::$defaults[$name])) {
                 if (is_callable(self::$defaults[$name])) {
                     $value = $this->values[$name] = call_user_func(self::$defaults[$name]);
                 } else {
                     $value = $this->values[$name] = self::$defaults[$name];
                 }
             } else {
-                if ($default === null) {
+                if (null === $default) {
                     throw new \RuntimeException("Environment parameter `$name` does not exists.");
                 } else {
                     $value = $default;
@@ -67,6 +77,9 @@ class Environment
      */
     public static function getDefault($name)
     {
+        if (null === self::$defaults) {
+            self::$defaults = new DotArray();
+        }
         return self::$defaults[$name];
     }
 
@@ -76,6 +89,9 @@ class Environment
      */
     public static function setDefault($name, $value)
     {
+        if (null === self::$defaults) {
+            self::$defaults = new DotArray();
+        }
         self::$defaults[$name] = $value;
     }
 
@@ -88,7 +104,7 @@ class Environment
     public function parse($value)
     {
         if (is_string($value)) {
-            $value = preg_replace_callback('/\{\{\s*(\w+)\s*\}\}/', [$this, 'parseCallback'], $value);
+            $value = preg_replace_callback('/\{\{\s*([\w\.]+)\s*\}\}/', [$this, 'parseCallback'], $value);
         }
 
         return $value;

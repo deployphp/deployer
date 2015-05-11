@@ -83,7 +83,7 @@ task('deploy:release', function () {
 
     run("mkdir $releasePath");
 
-    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
+    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
 
     run("ln -s $releasePath {{deploy_path}}/release");
 })->desc('Prepare release');

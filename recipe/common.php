@@ -167,6 +167,7 @@ task('deploy:writable', function () {
     if (!empty($dirs)) {
 
         $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
+        $lastWorkingPath = workingPath();
 
         cd('{{release_path}}');
 
@@ -191,6 +192,8 @@ task('deploy:writable', function () {
         } else {
             run("$sudo chmod 777 $dirs");
         }
+        // restore working path
+        cd($lastWorkingPath);
     }
 
 })->desc('Make writable dirs');

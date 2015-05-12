@@ -67,7 +67,7 @@ class SshExtension implements ServerInterface
 
                 break;
 
-            case Configuration::AUTH_BY_PUBLIC_KEY:
+            case Configuration::AUTH_BY_IDENTITY_FILE:
 
                 $authentication = new Ssh\Authentication\PublicKeyFile(
                     $serverConfig->getUser(),

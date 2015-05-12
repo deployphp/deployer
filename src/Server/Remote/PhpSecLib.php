@@ -16,6 +16,7 @@ use RuntimeException;
 
 class PhpSecLib implements ServerInterface
 {
+
     /**
      * @var Configuration
      */
@@ -55,7 +56,7 @@ class PhpSecLib implements ServerInterface
 
                 break;
 
-            case Configuration::AUTH_BY_PUBLIC_KEY:
+            case Configuration::AUTH_BY_IDENTITY_FILE:
 
                 $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
@@ -84,7 +85,7 @@ class PhpSecLib implements ServerInterface
                 throw new RuntimeException('You need to specify authentication method.');
         }
 
-        if ( ! $result) {
+        if (!$result) {
             throw new RuntimeException('Unable to login with the provided credentials.');
         }
     }

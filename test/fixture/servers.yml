@@ -1,0 +1,23 @@
+production:
+  host: domain.com
+  user: admin
+  identity_file: ~
+  forward_agent: ~
+  stage: production
+  deploy_path: /home
+
+beta:
+  host: beta.domain.com
+  user: beta
+  password: qwerty
+  stage: beta
+  deploy_path: /home
+  run_test: true
+
+test:
+  host: test.domain.com
+  user: test
+  password: qwerty
+  stage: test
+  deploy_path: /home
+  run_test: true

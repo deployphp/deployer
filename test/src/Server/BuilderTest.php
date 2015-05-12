@@ -27,7 +27,8 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $env = $this->getMock('Deployer\Server\Environment');
 
         $b = new Builder($config, $env);
-        $b->user('user', 'password');
+        $b->user('user');
+        $b->password('password');
     }
 
     public function testHostAndPort()
@@ -87,7 +88,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
-            ->with(Configuration::AUTH_BY_PUBLIC_KEY)
+            ->with(Configuration::AUTH_BY_IDENTITY_FILE)
             ->will($this->returnSelf());
         $config->expects($this->once())
             ->method('setPublicKey')
@@ -104,7 +105,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $env = $this->getMock('Deployer\Server\Environment');
 
         $b = new Builder($config, $env);
-        $b->pubKey();
+        $b->identityFile();
     }
 
     public function testEnv()

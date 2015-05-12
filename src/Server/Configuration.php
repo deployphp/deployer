@@ -13,7 +13,7 @@ class Configuration
 
     const AUTH_BY_CONFIG = 1;
 
-    const AUTH_BY_PUBLIC_KEY = 2;
+    const AUTH_BY_IDENTITY_FILE = 2;
 
     const AUTH_BY_PEM_FILE = 3;
     
@@ -21,6 +21,8 @@ class Configuration
 
     /**
      * Type of authentication.
+     *
+     * By default try to connect via config file.
      * @var int
      */
     private $authenticationMethod = self::AUTH_BY_PASSWORD;
@@ -95,6 +97,7 @@ class Configuration
         $this->setName($name);
         $this->setHost($host);
         $this->setPort($port);
+        $this->setConfigFile('~/.ssh/config');
     }
 
     /**

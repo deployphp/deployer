@@ -32,20 +32,28 @@ class Builder
     /**
      * Define user name for authentication.
      * @param string $name
-     * @param null|string $password If you did not define password it will be asked on connection.
      * @return $this
      */
-    public function user($name, $password = null)
+    public function user($name)
+    {
+        $this->config->setUser($name);
+        return $this;
+    }
+
+    /**
+     * @param string $password If you did not define password it will be asked on connection.
+     * @return $this
+     */
+    public function password($password)
     {
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_PASSWORD);
-        $this->config->setUser($name);
         $this->config->setPassword($password);
         return $this;
     }
 
     /**
      * Define server host
-     * @param int $host
+     * @param string $host
      * @return $this
      */
     public function host($host)
@@ -83,9 +91,9 @@ class Builder
      * @param string $passPhrase
      * @return $this
      */
-    public function pubKey($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
+    public function identityFile($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
     {
-        $this->config->setAuthenticationMethod(Configuration::AUTH_BY_PUBLIC_KEY);
+        $this->config->setAuthenticationMethod(Configuration::AUTH_BY_IDENTITY_FILE);
         $this->config->setPublicKey($publicKeyFile);
         $this->config->setPrivateKey($privateKeyFile);
         $this->config->setPassPhrase($passPhrase);

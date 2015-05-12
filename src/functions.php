@@ -16,6 +16,7 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
+use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -72,6 +73,71 @@ function localServer($name)
     return new Builder($config, $env);
 }
 
+
+/**
+ * Load server list file.
+ * @param string $file
+ */
+function serverList($file)
+{
+    $serverList = Yaml::parse(file_get_contents($file));
+
+    foreach ((array)$serverList as $name => $config) {
+        try {
+            if (!is_array($config)) {
+                throw new \RuntimeException();
+            }
+
+            $da = new \Deployer\Type\DotArray($config);
+
+            if ($da->hasKey('local')) {
+                $builder = localServer($name);
+            } else {
+                $builder = $da->hasKey('port') ? server($name, $da['host'], $da['port']) : server($name, $da['host']);
+            }
+
+            unset($da['local']);
+            unset($da['host']);
+            unset($da['port']);
+
+            if ($da->hasKey('identity_file')) {
+                if ($da['identity_file'] === null) {
+                    $builder->identityFile();
+                } else {
+                    $builder->identityFile(
+                        $da['identity_file.public_key'],
+                        $da['identity_file.private_key'],
+                        $da['identity_file.password']
+                    );
+                }
+
+                unset($da['identity_file']);
+            }
+
+            if ($da->hasKey('forward_agent')) {
+                $builder->forwardAgent();
+                unset($da['forward_agent']);
+            }
+
+            foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
+                if ($da->hasKey($key)) {
+                    $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
+                    $builder->$method($da[$key]);
+                    unset($da[$key]);
+                }
+            }
+
+            // Everything else are env vars.
+            foreach ($da->toArray() as $key => $value) {
+                $builder->env($key, $value);
+            }
+
+        } catch (\RuntimeException $e) {
+            throw new \RuntimeException("Error in parsing `$file` file.");
+        }
+
+    }
+}
 
 /**
  * Define a new task and save to tasks list.
@@ -135,9 +201,9 @@ function after($it, $that)
 
 /**
  * Add users arguments.
- * 
- * Note what Deployer already has one argument: "stage". 
- * 
+ *
+ * Note what Deployer already has one argument: "stage".
+ *
  * @param string $name
  * @param int $mode
  * @param string $description
@@ -152,7 +218,7 @@ function argument($name, $mode = null, $description = '', $default = null)
 
 /**
  * Add users options.
- * 
+ *
  * @param string $name
  * @param string $shortcut
  * @param int $mode

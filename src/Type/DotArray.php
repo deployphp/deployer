@@ -27,6 +27,14 @@ class DotArray implements \ArrayAccess
     protected $array = [];
 
     /**
+     * @param array $array
+     */
+    public function __construct($array = [])
+    {
+        $this->array = $array;
+    }
+
+    /**
      * Validate key
      *
      * @param string $key

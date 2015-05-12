@@ -55,7 +55,21 @@ class Task
     public function run(Context $context)
     {
         Context::push($context);
+        $env = $context->getEnvironment();
+
+        // Save cd's working_path path.
+        if ($env !== null) {
+            $workingPath = $env->get('working_path', false);
+        }
+
+        // Call tasks.
         call_user_func($this->callback);
+
+        // Restore cd's working_path path.
+        if ($env !== null && isset($workingPath)) {
+            $env->set('working_path', $workingPath);
+        }
+
         Context::pop();
     }
 

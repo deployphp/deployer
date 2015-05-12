@@ -40,7 +40,7 @@ class Task
     private $private = false;
 
     /**
-     * @param callable $callback Task code.
+     * @param \Closure $callback Task code.
      */
     public function __construct(\Closure $callback)
     {

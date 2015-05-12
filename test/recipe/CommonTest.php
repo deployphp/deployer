@@ -96,6 +96,7 @@ class CommonTest extends RecipeTester
         $this->exec('deploy:symlink');
 
         $this->assertTrue(realpath($this->getEnv('deploy_path') . '/current') !== false);
+        print_r(scandir($this->getEnv('deploy_path')));
         $this->assertFalse(file_exists($this->getEnv('deploy_path') . '/release'), 'Symlink to release directory must gone after deploy:symlink.');
     }
 

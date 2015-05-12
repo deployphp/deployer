@@ -31,17 +31,18 @@ class CommonTest extends RecipeTester
 
     public function testReleaseSymlink()
     {
-        $directory = self::$deployPath . '/directory';
-        $releaselink = self::$deployPath . '/release';
-        $releasedir = readlink($releaselink);
+        $removedDirectory = self::$deployPath . '/directory';
+        $releaseSymlink = self::$deployPath . '/release';
 
-        mkdir($directory);
-        unlink($releaselink);
-        symlink($directory, $releaselink);
-        rmdir($directory);
+        mkdir($removedDirectory);
+        unlink($releaseSymlink);
+        symlink($removedDirectory, $releaseSymlink);
+        rmdir($removedDirectory);
 
         $this->exec('deploy:release');
-        $this->assertFileExists($releaselink);
+
+        $this->assertFileExists($releaseSymlink);
+        $this->assertTrue(is_dir(readlink($releaseSymlink)));
     }
 
     public function testUpdateCode()
@@ -95,7 +96,7 @@ class CommonTest extends RecipeTester
         $this->exec('deploy:symlink');
 
         $this->assertTrue(realpath($this->getEnv('deploy_path') . '/current') !== false);
-        $this->assertTrue(!file_exists($this->getEnv('deploy_path') . '/release'));
+        $this->assertFalse(file_exists($this->getEnv('deploy_path') . '/release'), 'Symlink to release directory must gone after deploy:symlink.');
     }
 
     public function testCurrent()

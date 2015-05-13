@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Console\Application;
+use Deployer\Server\Environment;
 use Deployer\Task\Context;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
@@ -29,9 +30,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
         $server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
-        $env = $this->getMockBuilder('Deployer\Server\Environment')->disableOriginalConstructor()->getMock();
+        $env = new Environment();
 
         $this->deployer = new Deployer($this->console, $input, $output);
+        Context::push(new Context($server, $env, $input, $output));
     }
 
     protected function tearDown()

@@ -304,6 +304,12 @@ function run($command)
  */
 function runLocally($command, $timeout = 60)
 {
+    $command = env()->parse($command);
+
+    if (isVeryVerbose()) {
+        writeln("<comment>Run locally</comment>: $command");
+    }
+
     $process = new Symfony\Component\Process\Process($command);
     $process->setTimeout($timeout);
     $process->run();
@@ -312,7 +318,15 @@ function runLocally($command, $timeout = 60)
         throw new \RuntimeException($process->getErrorOutput());
     }
 
-    return new Result($process->getOutput());
+    $output = $process->getOutput();
+
+    if (isDebug() && !empty($output)) {
+        writeln(array_map(function ($line) {
+            return "<fg=red>></fg=red> $line";
+        }, explode("\n", $output)));
+    }
+
+    return new Result($output);
 }
 
 /**

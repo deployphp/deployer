@@ -19,52 +19,159 @@ use Deployer\Type\DotArray;
 class DotArrayTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testDotArray()
+    public function testValidateKey()
     {
-        $array     = [
-            'abc1'      => [
-                'xyz1' => 1,
-                'xyz2' => [1, 2, 3],
+        $this->assertTrue(DotArray::validateKey('abc123'));
+        $this->assertTrue(DotArray::validateKey('abc.xyz.null'));
+        $this->assertTrue(DotArray::validateKey('abc_XYZ'));
+        
+        $this->assertFalse(DotArray::validateKey('abc-xyz'));
+        $this->assertFalse(DotArray::validateKey('abc:xyz:123'));
+        $this->assertFalse(DotArray::validateKey('abc@xyz.123'));
+        
+        $d = new DotArray();
+        $this->setExpectedException('\RuntimeException', 'Key `abc-xyz` is invalid');
+        $d['abc-xyz'] = 1;
+    }
+
+    public function testSet()
+    {
+        // test constructor
+        $d0 = new DotArray(['one' => 1, 'two.other' => 2]);
+        $this->assertSame(['one' => 1, 'two' => ['other' => 2]], $d0->toArray());
+
+        // test set
+        $d1 = new DotArray([]);
+        $d1['one'] = 1;
+        $this->assertEquals(['one' => 1], $d1->toArray());
+
+        // test set override
+        $d2 = new DotArray(['one' => 1]);
+        $d2['one'] = 2;
+        $this->assertEquals(['one' => 2], $d2->toArray());
+
+        // test set path
+        $d3 = new DotArray(['one' => ['two' => 1]]);
+        $d3['one.two'] = 2;
+        $this->assertEquals(['one' => ['two' => 2]], $d3->toArray());
+
+        // test set path append
+        $d4 = new DotArray(['one' => ['two' => 1]]);
+        $d4['one.other'] = 1;
+        $this->assertEquals(['one' => ['two' => 1, 'other' => 1]], $d4->toArray());
+
+        // test set append
+        $d5 = new DotArray(['one' => ['two' => 1]]);
+        $d5['two'] = 2;
+        $this->assertEquals(['one' => ['two' => 1], 'two' => 2], $d5->toArray());
+
+        // test set override by array
+        $d6 = new DotArray(['one' => ['two' => 1]]);
+        $d6['one'] = ['other' => 3];
+        $this->assertEquals(['one' => ['other' => 3]], $d6->toArray());
+
+        // test set override and append
+        $d7 = new DotArray(['one' => ['two' => 1]]);
+        $d7['one'] = ['two' => 2, 'other' => 3];
+        $this->assertEquals(['one' => ['two' => 2, 'other' => 3]], $d7->toArray());
+
+        // test set override by array, this like dot array
+        $d8 = new DotArray(['one' => ['two' => ['three' => 1]]]);
+        $d8['one'] = ['two.other' => 3];
+        $this->assertEquals(['one' => ['two' => ['other' => 3]]], $d8->toArray());
+    }
+
+    public function testGet()
+    {
+        $closures = function() {
+            echo 'hello';
+        };
+        $obj = new \stdClass();
+        $obj->id = 1;
+        $obj->name = 'abc';
+        
+        $array = [
+            'one' => [
+                'two' => [
+                    'three' => 1,
+                ],
             ],
-            'abc2.xyz1' => 2,
-            'abc2.xyz2' => [4, 5, 6],
-            'callable'  => function() {
-            echo 'hello world';
-        },
-            'abc.null' => null,
+            'boolean' => true,
+            'string' => 'abc',
+            'array' => [1, 2, 3],
+            'object' => $obj,
+            'closures' => $closures,
+            'null' => null,
         ];
-
-        $dotArray = new DotArray();
+        
+        $d = new DotArray($array);
+        
+        // test toArray
+        $this->assertSame($array, $d->toArray());
+        
+        // test get path
+        $this->assertSame($array['one']['two'], $d['one.two']);
+        $this->assertSame($array['one']['two']['three'], $d['one.two.three']);
+        $this->assertSame($array['one']['two']['three'], $d['one.two']['three']);
+        
+        // test type of value
         foreach ($array as $key => $value) {
-            $dotArray[$key] = $value;
+            $this->assertSame($value, $d[$key]);
         }
-
-        foreach ($array as $key => $value) {
-            $this->assertSame($value, $dotArray[$key]);
-        }
-
-        $this->assertSame(isset($array['abc9.xyz']), isset($dotArray['abc9.xyz']));
-        $this->assertSame(isset($array['abc1']['xyz1']), isset($dotArray['abc1.xyz1']));
         
-        $this->assertSame($dotArray['abc1']['xyz1'], $dotArray['abc1.xyz1']);
-        $this->assertSame($array['abc2.xyz1'], $dotArray['abc2']['xyz1']);
+        // test get key not isset
+        $this->assertSame(null, $d['one.two.three.next']);
+    }
 
-        $this->assertSame(false, $dotArray->hasKey('abc1.null'));
-        $this->assertSame(true, $dotArray->hasKey('abc1.xyz2'));
-        $this->assertSame(true, $dotArray->hasKey('abc.null'));
+    public function testIssetUnsetAndHasKey()
+    {
+        $d = new DotArray();
+        $d['abc.xyz'] = [
+            'one' => 1, 
+            'two' => 2, 
+            'array' => [2012, '2013', 2014, '2015'],
+            'null' => null
+        ];
         
-        $this->assertSame(false, isset($dotArray['abc.null']));
-        $this->assertSame(false, isset($dotArray['abc']['null']));
+        $this->assertTrue(isset($d['abc.xyz']));
+        $this->assertTrue($d->hasKey('abc.xyz'));
+        
+        $this->assertTrue(isset($d['abc']['xyz']['one']));
+        $this->assertTrue(isset($d['abc.xyz.one']));
+        $this->assertTrue(isset($d['abc.xyz']['one']));
+        
+        $this->assertTrue($d->hasKey('abc.xyz.two'));
+        
+        $this->assertTrue(isset($d['abc']['xyz']['array'][0]));
+        $this->assertTrue(isset($d['abc']['xyz']['array'][1]));
+        $this->assertTrue(isset($d['abc.xyz.array'][0]));
+        $this->assertTrue($d->hasKey('abc.xyz.array.0'));
+        
+        $this->assertFalse(isset($d['abc']['xyz']['three']));
+        $this->assertFalse(isset($d['abc.xyz.three']));
+        $this->assertFalse(isset($d['abc.xyz']['three']));
+        
+        // Like isset(), a value of null is considered not set.
+        $this->assertFalse(isset($d['abc.xyz.null']));
+        $this->assertFalse(isset($d['abc']['xyz']['null']));
+        // But has key
+        $this->assertTrue($d->hasKey('abc.xyz.null'));
+        
+        unset($d['abc.xyz.one']);
+        $this->assertFalse(isset($d['abc']['xyz']['one']));
+        $this->assertFalse(isset($d['abc.xyz.one']));
+        $this->assertFalse($d->hasKey('abc.xyz.one'));
 
-        $this->assertSame(['xyz1' => 2, 'xyz2' => [4, 5, 6]], $dotArray['abc2']);
+        // key not set
+        unset($d['abc.xyz.three']);
+        $this->assertFalse($d->hasKey('abc.xyz.three'));
         
-        unset($dotArray['abc.null']);
-        $this->assertSame(false, isset($dotArray['abc']['null']));
-        $this->assertSame(false, $dotArray->hasKey('abc.null'));
+        unset($d['abc.xyz']);
+        $this->assertFalse(isset($d['abc.xyz']));
+        $this->assertFalse($d->hasKey('abc.xyz'));
         
-        unset($dotArray['abc2']);
-        $this->assertSame(false, isset($dotArray['abc2']['xyz1']));
-        $this->assertSame(false, $dotArray->hasKey('abc2.xyz1'));
+        unset($d['abc.xyz.null']);
+        $this->assertFalse($d->hasKey('abc.xyz.null'));
     }
 
 }

@@ -278,7 +278,9 @@ function run($command)
     $command = env()->parse($command);
     $workingPath = workingPath();
 
-    $command = "cd $workingPath && $command";
+    if (!empty($workingPath)) {
+        $command = "cd $workingPath && $command";
+    }
 
     if (isVeryVerbose()) {
         writeln("<comment>Run</comment>: $command");

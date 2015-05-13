@@ -54,6 +54,8 @@ task('rollback', function () {
  * Preparing server for deployment.
  */
 task('deploy:prepare', function () {
+    \Deployer\Task\Context::get()->getServer()->connect();
+
     // Simple IF to check if shell is POSIX-compliant
     try {
         run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');

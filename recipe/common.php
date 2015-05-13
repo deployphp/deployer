@@ -58,10 +58,15 @@ task('deploy:prepare', function () {
     try {
         run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
     } catch (\RuntimeException $e) {
-        throw new \RuntimeException(
-            "Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.\n" .
-            "Usually, you can change your shell to bash by running: chsh -s /bin/bash"
+        write(
+            "<error>" .
+            "                                                                                      \n" .
+            "  Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.  \n" .
+            "  Usually, you can change your shell to bash by running: chsh -s /bin/bash            \n" .
+            "                                                                                      \n" .
+            "</error>"
         );
+        throw $e;
     }
 
     // Create releases dir.

@@ -178,5 +178,4 @@ class DotArray implements \ArrayAccess
         }
         unset($scope[$parts[$i]]);
     }
-
 }

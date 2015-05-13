@@ -89,12 +89,16 @@ class TaskCommand extends Command
             }
             
         } else {
-            // Otherwise run on all servers. 
-            $servers = iterator_to_array($this->deployer->servers->getIterator());
+            // Otherwise run on all servers what does not specify stage.
+            foreach($this->deployer->environments as $name => $env) {
+                if (!$env->has('stages')) {
+                    $servers[$name] = $this->deployer->servers->get($name);
+                }
+            }
         }
 
         if (empty($servers)) {
-            throw new \RuntimeException('You need specify at least one server.');
+            throw new \RuntimeException('You need specify at least one server or stage.');
         }
 
         $environments = iterator_to_array($this->deployer->environments);

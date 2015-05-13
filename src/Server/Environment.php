@@ -36,7 +36,7 @@ class Environment
 
     /**
      * @param string $name
-     * @param int|string|array $value
+     * @param bool|int|string|array $value
      */
     public function set($name, $value)
     {
@@ -45,8 +45,8 @@ class Environment
 
     /**
      * @param string $name
-     * @param int|string|array $default
-     * @return int|string|array
+     * @param bool|int|string|array $default
+     * @return bool|int|string|array
      * @throws \RuntimeException
      */
     public function get($name, $default = null)
@@ -70,6 +70,17 @@ class Environment
         }
 
         return $this->parse($value);
+    }
+
+    /**
+     * Checks if env var exists.
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function has($name)
+    {
+        return $this->values->hasKey($name);
     }
 
     /**

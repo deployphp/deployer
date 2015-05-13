@@ -60,14 +60,14 @@ task('deploy:prepare', function () {
     try {
         run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
     } catch (\RuntimeException $e) {
-        write(
-            "<error>" .
-            "                                                                                      \n" .
-            "  Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.  \n" .
-            "  Usually, you can change your shell to bash by running: chsh -s /bin/bash            \n" .
-            "                                                                                      \n" .
-            "</error>"
-        );
+        $formatter = \Deployer\Deployer::get()->getHelper('formatter');
+
+        $errorMessage = [
+            "Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.",
+            "Usually, you can change your shell to bash by running: chsh -s /bin/bash",
+        ];
+        write($formatter->formatBlock($errorMessage, 'error', true));
+
         throw $e;
     }
 
@@ -174,30 +174,44 @@ task('deploy:writable', function () {
 
     if (!empty($dirs)) {
 
-        $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
+        try {
+            $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
 
-        cd('{{release_path}}');
+            cd('{{release_path}}');
 
-        if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
+            if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
 
-            if (!empty($httpUser)) {
-                run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-            }
+                if (!empty($httpUser)) {
+                    run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+                }
 
-            run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+                run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
 
-        } elseif (commandExist('setfacl')) {
+            } elseif (commandExist('setfacl')) {
 
-            if (!empty($httpUser)) {
-                run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                if (!empty($httpUser)) {
+                    run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                    run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                } else {
+                    run("$sudo chmod 777 $dirs");
+                }
+
+
             } else {
                 run("$sudo chmod 777 $dirs");
             }
 
+        } catch (\RuntimeException $e) {
+            $formatter = \Deployer\Deployer::get()->getHelper('formatter');
 
-        } else {
-            run("$sudo chmod 777 $dirs");
+            $errorMessage = [
+                "Unable to setup correct permissions for writable dirs.                  ",
+                "You need co configure sudo's sudoers files to don't prompt for password,",
+                "or setup correct permissions manually.                                  ",
+            ];
+            write($formatter->formatBlock($errorMessage, 'error', true));
+
+            throw $e;
         }
     }
 

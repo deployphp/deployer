@@ -66,9 +66,9 @@ class TaskCommand extends Command
 
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
-        if (!empty($stage)) {
+        $servers = [];
 
-            $servers = [];
+        if (!empty($stage)) {
             
             // Look for servers which has in env `stages` current stage name.
             foreach($this->deployer->environments as $name => $env) {

@@ -115,4 +115,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
         $this->assertEquals(['main', 'after'], $mainScenario->getTasks());
     }
+
+    public function testRunLocally() {
+        $output = runLocally('echo "hello"');
+
+        $this->assertInstanceOf('Deployer\Type\Result', $output);
+        $this->assertEquals('hello', (string)$output);
+    }
 }

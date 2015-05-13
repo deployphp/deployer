@@ -299,7 +299,7 @@ function run($command)
  * Execute commands on local machine.
  * @param string $command Command to run locally.
  * @param int $timeout (optional) Override process command timeout in seconds.
- * @return string Output of command.
+ * @return Result Output of command.
  * @throws \RuntimeException
  */
 function runLocally($command, $timeout = 60)
@@ -312,7 +312,7 @@ function runLocally($command, $timeout = 60)
         throw new \RuntimeException($process->getErrorOutput());
     }
 
-    write($process->getOutput());
+    return new Result($process->getOutput());
 }
 
 /**

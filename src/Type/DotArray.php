@@ -31,7 +31,9 @@ class DotArray implements \ArrayAccess
      */
     public function __construct($array = [])
     {
-        $this->array = $array;
+        foreach ($array as $key => $value) {
+            $this->offsetSet($key, $value);
+        }
     }
 
     /**
@@ -40,9 +42,25 @@ class DotArray implements \ArrayAccess
      * @param string $key
      * @return bool
      */
-    public function validateKey($key)
+    public static function validateKey($key)
     {
         return (bool) preg_match('/^(\w|\.)+$/', $key);
+    }
+
+    /**
+     * Explode key by separator character (a dot character)
+     *
+     * @param string $key
+     * @return array
+     * @throws \RuntimeException
+     */
+    protected function explodeKey($key)
+    {
+        if (!self::validateKey($key)) {
+            throw new \RuntimeException("Key `$key` is invalid");
+        }
+
+        return explode('.', $key);
     }
 
     /**
@@ -50,25 +68,21 @@ class DotArray implements \ArrayAccess
      *
      * @param string $key
      * @return bool
-     * @throws \RuntimeException
      */
     public function hasKey($key)
     {
-        if (!$this->validateKey($key)) {
-            throw new \RuntimeException("Key `$key` is invalid");
-        }
-
-        $parts = explode('.', $key);
-        $scope = &$this->array;
+        $parts = $this->explodeKey($key);
         $count = count($parts) - 1;
-        for ($i = 0; $i < $count; $i++) {
-            if (!isset($scope[$parts[$i]])) {
-                return false;
-            }
-            $scope = &$scope[$parts[$i]];
+        $cKey = array_pop($parts);
+        
+        if (0 == $count) {
+            $array = $this->array;
+        } else {
+            $pKey = implode('.', $parts);
+            $array = $this->offsetGet($pKey);
         }
         
-        return array_key_exists($parts[$i], $scope);
+        return is_array($array) && array_key_exists($cKey, $array);
     }
 
     /**
@@ -99,15 +113,10 @@ class DotArray implements \ArrayAccess
      *
      * @param string $key
      * @return mixed NULL will be returned if the key is not found.
-     * @throws \RuntimeException
      */
     public function offsetGet($key)
     {
-        if (!$this->validateKey($key)) {
-            throw new \RuntimeException("Key `$key` is invalid");
-        }
-
-        $parts = explode('.', $key);
+        $parts = $this->explodeKey($key);
         $scope = &$this->array;
         $count = count($parts) - 1;
         for ($i = 0; $i < $count; $i++) {
@@ -126,40 +135,39 @@ class DotArray implements \ArrayAccess
      *
      * @param string $key
      * @param mixed $value
-     * @throws \RuntimeException
      */
     public function offsetSet($key, $value)
     {
-        if (!$this->validateKey($key)) {
-            throw new \RuntimeException("Key `$key` is invalid");
-        }
-
-        $parts = explode('.', $key);
-        //loop through each part, create it if not present.
+        $parts = $this->explodeKey($key);
         $scope = &$this->array;
         $count = count($parts) - 1;
+        //loop through each part, create it if not present.
         for ($i = 0; $i < $count; $i++) {
             if (!isset($scope[$parts[$i]])) {
                 $scope[$parts[$i]] = [];
             }
             $scope = &$scope[$parts[$i]];
         }
-        $scope[$parts[$i]] = $value;
+        if (is_array($value)) {
+            $tmp = new static();
+            foreach ($value as $k => $v) {
+                $tmp->offsetSet($k, $v);
+            }
+            $scope[$parts[$i]] = $tmp->toArray();
+        } else {
+            $scope[$parts[$i]] = $value;
+        }
     }
 
     /**
      * Unset an array value
-     * unset($array['abc.xyz']) same unset($array['abc']['xyz'])
+     * using unset($array['abc.xyz']) to unset($array['abc']['xyz'])
      * 
      * @param string $key
      */
     public function offsetUnset($key)
     {
-        if (!$this->validateKey($key)) {
-            throw new \RuntimeException("Key `$key` is invalid");
-        }
-
-        $parts = explode('.', $key);
+        $parts = $this->explodeKey($key);
         $scope = &$this->array;
         $count = count($parts) - 1;
         for ($i = 0; $i < $count; $i++) {

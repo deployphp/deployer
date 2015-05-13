@@ -56,9 +56,9 @@ task('rollback', function () {
 task('deploy:prepare', function () {
     \Deployer\Task\Context::get()->getServer()->connect();
 
-    // Simple IF to check if shell is POSIX-compliant
+    // Check if shell is POSIX-compliant
     try {
-        run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
+        run('echo $0');
     } catch (\RuntimeException $e) {
         $formatter = \Deployer\Deployer::get()->getHelper('formatter');
 
@@ -70,6 +70,8 @@ task('deploy:prepare', function () {
 
         throw $e;
     }
+    
+    run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
 
     // Create releases dir.
     run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");

@@ -14,17 +14,13 @@ Deployer is a deployment tool written in PHP.
 
 See [http://deployer.org](http://deployer.org) for more information and documentation.
 
-# Deployer 3.0 almost ready...
-
-
 Requirements
 ------------
 * PHP 5.4.0 and up.
 
 That's all!
 
-You can install [ssh2 extension](http://php.net/manual/en/book.ssh2.php) to speedup deployment process and enable [sockets](http://php.net/manual/en/book.sockets.php) for parallel deployment.
-
+You can enable [sockets](http://php.net/manual/en/book.sockets.php) to speedup deployment process with parallel deployment.
 
 Installation
 ------------
@@ -57,9 +53,11 @@ Building
 --------
 To build `deployer.phar` run `build` command.
 
+
 Discussing
 -------
 Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
+
 
 Contributing
 ------------
@@ -72,6 +70,7 @@ To ensure a consistent code base, you should make sure the code follows
 the [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md).
 
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
+
 
 License
 -------

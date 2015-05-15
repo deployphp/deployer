@@ -84,6 +84,7 @@ class Environment
     }
 
     /**
+     * @param string $name
      * @return mixed
      */
     public static function getDefault($name)

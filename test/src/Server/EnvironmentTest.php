@@ -9,6 +9,15 @@ namespace Deployer\Server;
 
 class EnvironmentTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException
+     * @expectedExceptionMessage "Key `no_name` is invalid"
+     */
+    public function testGetDefault()
+    {
+        Environment::getDefault('no_name');
+    }
+
     public function testEnvironment()
     {
         Environment::setDefault('default', 'default');
@@ -16,7 +25,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
             return 'callback';
         });
         $env = new Environment();
-        
+
         $env->set('int', 42);
         $env->set('string', 'value');
         $env->set('array', [1, 'two']);

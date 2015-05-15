@@ -12,6 +12,11 @@ class CommonTest extends RecipeTester
     protected function loadRecipe()
     {
         require __DIR__ . '/../../recipe/common.php';
+
+        // Override update code task to use local copy.
+        task('deploy:update_code', function () {
+            runLocally('cp -R ' . __DIR__ . '/../fixture/app/. {{release_path}}');
+        });
     }
 
     public function testPrepare()

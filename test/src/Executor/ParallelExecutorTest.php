@@ -12,20 +12,25 @@ use Deployer\Helper\RecipeTester;
 class ParallelExecutorTest extends RecipeTester
 {
     /**
+     * @var string
+     */
+    private $recipeFile;
+
+    /**
      * Load or describe recipe.
      *
      * @return void
      */
     protected function loadRecipe()
     {
-        include __DIR__ . '/Fixture/recipe.php';
+        include $this->recipeFile = __DIR__ . '/../../fixture/recipe.php';
     }
 
     public function testParallel()
     {
         define('DEPLOYER_BIN', __DIR__ . '/../../../bin/dep');
         
-        $display = $this->exec('test', ['--parallel' => true, '--file' => __DIR__ . '/Fixture/recipe.php']);
+        $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile]);
 
         $this->assertContains('Ok', $display);
     }

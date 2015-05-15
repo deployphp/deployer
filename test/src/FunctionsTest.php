@@ -23,17 +23,37 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     private $console;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $_input;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $_output;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $_server;
+
+    /**
+     * @var Environment
+     */
+    private $_env;
+
     protected function setUp()
     {
         $this->console = new Application();
 
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
-        $env = new Environment();
+        $this->_input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
+        $this->_output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $this->_server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
+        $this->_env = new Environment();
 
-        $this->deployer = new Deployer($this->console, $input, $output);
-        Context::push(new Context($server, $env, $input, $output));
+        $this->deployer = new Deployer($this->console, $this->_input, $this->_output);
+        Context::push(new Context($this->_server, $this->_env, $this->_input, $this->_output));
     }
 
     protected function tearDown()
@@ -118,10 +138,31 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(['main', 'after'], $mainScenario->getTasks());
     }
 
-    public function testRunLocally() {
+    public function testRunLocally()
+    {
         $output = runLocally('echo "hello"');
 
         $this->assertInstanceOf('Deployer\Type\Result', $output);
         $this->assertEquals('hello', (string)$output);
+    }
+
+    public function testUpload()
+    {
+        $this->_server
+            ->expects($this->any())
+            ->method('upload')
+            ->with(
+                $this->callback(function ($local) {
+                    return is_file($local);
+                }),
+                $this->callback(function ($remote) {
+                    return is_file(str_replace('/home/www', __DIR__ . '/../fixture/app', $remote));
+                }));
+
+        // Directory
+        upload(__DIR__ . '/../fixture/app', '/home/www');
+
+        // File
+        upload(__DIR__ . '/../fixture/app/README.md', '/home/www/README.md');
     }
 }

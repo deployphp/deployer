@@ -341,8 +341,6 @@ function upload($local, $remote)
 {
     $server = Context::get()->getServer();
 
-    $remote = env()->get(Environment::DEPLOY_PATH) . '/' . $remote;
-
     if (is_file($local)) {
 
         writeln("Upload file <info>$local</info> to <info>$remote</info>");
@@ -426,6 +424,7 @@ function get($key)
  * @param string $message
  * @param string|null $default
  * @return string
+ * @codeCoverageIgnore
  */
 function ask($message, $default = null)
 {
@@ -446,6 +445,7 @@ function ask($message, $default = null)
  * @param string $message
  * @param bool $default
  * @return bool
+ * @codeCoverageIgnore
  */
 function askConfirmation($message, $default = false)
 {
@@ -466,6 +466,7 @@ function askConfirmation($message, $default = false)
 /**
  * @param string $message
  * @return string
+ * @codeCoverageIgnore
  */
 function askHiddenResponse($message)
 {

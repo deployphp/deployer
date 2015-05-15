@@ -120,6 +120,8 @@ class SshExtension implements ServerInterface
     {
         $this->checkConnection();
 
+        $remote = str_replace('\\', '/', $remote);
+
         $dir = dirname($remote);
 
         if (!isset($this->directories[$dir])) {

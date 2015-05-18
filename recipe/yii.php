@@ -7,10 +7,10 @@
 
 require_once __DIR__ . '/common.php';
 
-// Laravel shared dirs
+// Yii shared dirs
 set('shared_dirs', ['runtime']);
 
-// Laravel writable dirs
+// Yii writable dirs
 set('writable_dirs', ['runtime']);
 
 /**

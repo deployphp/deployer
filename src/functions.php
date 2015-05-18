@@ -243,6 +243,30 @@ function cd($path)
 }
 
 /**
+ * Execute a callback within a specific directory and revert back to the initial working directory.
+ *
+ * @param string $path
+ * @param callable $callback
+ */
+function within($path, $callback)
+{
+    $lastWorkingPath = workingPath();
+    env()->set('working_path', $path);
+    $callback();
+    env()->set('working_path', $lastWorkingPath);
+}
+
+/**
+ * Return the current working path.
+ *
+ * @return string
+ */
+function workingPath()
+{
+    return env()->get('working_path', env()->get(Environment::DEPLOY_PATH));
+}
+
+/**
  * Run command on server.
  *
  * @param string $command

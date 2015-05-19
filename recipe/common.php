@@ -58,6 +58,7 @@ task('deploy:prepare', function () {
 
     // Check if shell is POSIX-compliant
     try {
+        cd(''); // To run command as raw.
         run('echo $0');
     } catch (\RuntimeException $e) {
         $formatter = \Deployer\Deployer::get()->getHelper('formatter');

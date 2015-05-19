@@ -51,10 +51,6 @@ function server($name, $host = null, $port = 22)
     $deployer->servers->set($name, $server);
     $deployer->environments->set($name, $env);
 
-    // Setting environment variables about the server automatically
-    $env->set('name', $name);
-    $env->set('host', $host);
-
     return new Builder($config, $env);
 }
 

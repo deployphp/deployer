@@ -425,6 +425,15 @@ function get($key)
 }
 
 /**
+ * @param string $key
+ * @return boolean
+ */
+function has($key)
+{
+    return Deployer::get()->parameters->has($key);
+}
+
+/**
  * @param string $message
  * @param string|null $default
  * @return string

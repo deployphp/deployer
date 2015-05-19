@@ -64,4 +64,4 @@ $phar->setStub($stub);
 $phar->stopBuffering();
 unset($phar);
 
-echo "$pharName created successful.\n";
+echo "$pharName was created successfully.\n";

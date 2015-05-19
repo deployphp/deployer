@@ -30,13 +30,17 @@ set('auto_migrate', false);
 env('env_vars', 'SYMFONY_ENV=prod');
 env('env', 'prod');
 
+// Adding support for the Symfony3 directory structure
+set('bin_dir', 'app');
+set('var_dir', 'app');
+
 
 /**
  * Create cache dir
  */
 task('deploy:create_cache_dir', function () {
     // Set cache dir
-    env('cache_dir', '{{release_path}}/app/cache');
+    env('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
 
     // Remove cache dir if it exist
     run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
@@ -68,7 +72,7 @@ task('deploy:assets', function () {
  */
 task('deploy:assetic:dump', function () {
 
-    run("php {{release_path}}/app/console assetic:dump --env={{env}} --no-debug");
+    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
 
 })->desc('Dump assets');
 
@@ -78,7 +82,7 @@ task('deploy:assetic:dump', function () {
  */
 task('deploy:cache:warmup', function () {
 
-    run('php {{release_path}}/app/console cache:warmup  --env={{env}} --no-debug');
+    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
 
 })->desc('Warm up cache');
 
@@ -88,7 +92,7 @@ task('deploy:cache:warmup', function () {
  */
 task('database:migrate', function () {
 
-    run("php {{release_path}}/app/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction");
+    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
 
 })->desc('Migrate database');
 

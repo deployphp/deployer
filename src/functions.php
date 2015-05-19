@@ -31,7 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @param string $name
- * @param string|null $domain
+ * @param string|null $host
  * @param int $port
  * @return Builder
  */

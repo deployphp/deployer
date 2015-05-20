@@ -31,16 +31,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * @param string $name
- * @param string|null $domain
+ * @param string|null $host
  * @param int $port
  * @return Builder
  */
-function server($name, $domain = null, $port = 22)
+function server($name, $host = null, $port = 22)
 {
     $deployer = Deployer::get();
 
     $env = new Environment();
-    $config = new Configuration($name, $domain, $port);
+    $config = new Configuration($name, $host, $port);
 
     if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
@@ -418,6 +418,15 @@ function set($key, $value)
 function get($key)
 {
     return Deployer::get()->parameters->get($key);
+}
+
+/**
+ * @param string $key
+ * @return boolean
+ */
+function has($key)
+{
+    return Deployer::get()->parameters->has($key);
 }
 
 /**

@@ -6,9 +6,9 @@ Thank you for considering contributing to `Deployer`. Please make sure to read t
 
 In order for us to provide you with help as fast as possible, please make sure to include the following when reporting bugs.
 
-Deployer version
-PHP version
-Deployment target(s) OS
+* Deployer version
+* PHP version
+* Deployment target(s) OS
 
 # New features
 

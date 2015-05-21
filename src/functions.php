@@ -314,21 +314,21 @@ function runLocally($command, $timeout = 60)
 
     $process = new Symfony\Component\Process\Process($command);
     $process->setTimeout($timeout);
-    $process->run();
+    $process->run(function($type, $buffer){
+        if (isDebug()) {
+            if ('err' === $type) {
+                write("<fg=red>></fg=red> $buffer");
+            } else {
+                write("<fg=green>></fg=green> $buffer");
+            }
+        }
+    });
 
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-
-    $output = $process->getOutput();
-
-    if (isDebug() && !empty($output)) {
-        writeln(array_map(function ($line) {
-            return "<fg=red>></fg=red> $line";
-        }, explode("\n", $output)));
-    }
-
-    return new Result($output);
+    
+    return new Result($process->getOutput());
 }
 
 /**

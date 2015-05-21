@@ -25,7 +25,14 @@ class Environment
      * @var \Deployer\Type\DotArray
      */
     private $values = null;
-    
+
+    /**
+     * Values represented by their keys here are protected, and cannot be
+     * changed by calling the `set` method.
+     * @var array
+     */
+    private $protectedValueKeys = [];
+
     /**
      * Constructor
      */
@@ -37,10 +44,19 @@ class Environment
     /**
      * @param string $name
      * @param bool|int|string|array $value
+     * @param bool $isProtected
      */
-    public function set($name, $value)
+    public function set($name, $value, $isProtected = false)
     {
+        if (in_array($name, $this->protectedValueKeys)) {
+            throw new \RuntimeException("The environment parameter `$name` has already been set, and is protected from changes.");
+        }
+
         $this->values[$name] = $value;
+
+        if ($isProtected === true) {
+            $this->protectedValueKeys[] = $name;
+        }
     }
 
     /**

@@ -32,7 +32,7 @@ class Builder
             'name' => $config->getName(),
             'host' => $config->getHost(),
             'port' => $config->getPort(),
-        ]);
+        ], true);
     }
 
     /**

@@ -21,6 +21,7 @@ task('deploy', [
     'deploy:release',
     'deploy:update_code',
     'deploy:vendors',
+    'deploy:shared',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

@@ -25,7 +25,14 @@ class Environment
      * @var \Deployer\Type\DotArray
      */
     private $values = null;
-    
+
+    /**
+     * Values represented by their keys here are protected, and cannot be
+     * changed by calling the `set` method.
+     * @var array
+     */
+    private $protectedNames = [];
+
     /**
      * Constructor
      */
@@ -40,7 +47,47 @@ class Environment
      */
     public function set($name, $value)
     {
+        $this->checkIfNameIsProtected($name);
         $this->values[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @param bool|int|string|array $value
+     */
+    public function setAsProtected($name, $value)
+    {
+        $this->set($name, $value);
+        $this->protectedNames[] = $name;
+    }
+
+    /**
+     * Checks whether the given name was registered as protected, or if there is
+     * a protected parameter which would be overwritten.
+     * @param string $name
+     * @throws \RuntimeException if the value already exists and is protected.
+     * @throws \RuntimeException if there's a protected parameter which would
+     * be overwritten.
+     */
+    private function checkIfNameIsProtected($name)
+    {
+        $nameArray = strpos($name, '.') !== false ? explode('.', $name) : [$name];
+
+        // Checks every level for protection
+        foreach ($nameArray as $subName) {
+            $dotName = !isset($dotName) ? $subName : "$dotName.$subName";
+            if (in_array($dotName, $this->protectedNames)) {
+                throw new \RuntimeException("The parameter `$name` cannot be set, because " . ($name === $dotName ? "it's" : "`$dotName` is" ) . " protected.");
+            }
+        }
+
+        // Even if not one of $name's levels is protected, protected env params
+        // under it could still exist, so let's check for those too.
+        foreach ($this->protectedNames as $protectedName) {
+            if (strpos($protectedName, $name) !== false) {
+                throw new \RuntimeException("The parameter `$name` could not be set, because a protected parameter named `$protectedName` already exists.");
+            }
+        }
     }
 
     /**

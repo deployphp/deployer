@@ -31,7 +31,7 @@ class Environment
      * changed by calling the `set` method.
      * @var array
      */
-    private $protectedValueKeys = [];
+    private $protectedNames = [];
 
     /**
      * Constructor
@@ -44,18 +44,49 @@ class Environment
     /**
      * @param string $name
      * @param bool|int|string|array $value
-     * @param bool $isProtected
      */
-    public function set($name, $value, $isProtected = false)
+    public function set($name, $value)
     {
-        if (in_array($name, $this->protectedValueKeys)) {
-            throw new \RuntimeException("The environment parameter `$name` has already been set, and is protected from changes.");
+        $this->checkIfNameIsProtected($name);
+        $this->values[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @param bool|int|string|array $value
+     */
+    public function setAsProtected($name, $value)
+    {
+        $this->set($name, $value);
+        $this->protectedNames[] = $name;
+    }
+
+    /**
+     * Checks whether the given name was registered as protected, or if there is
+     * a protected parameter which would be overwritten.
+     * @param string $name
+     * @throws \RuntimeException if the value already exists and is protected.
+     * @throws \RuntimeException if there's a protected parameter which would
+     * be overwritten.
+     */
+    private function checkIfNameIsProtected($name)
+    {
+        $nameArray = strpos($name, '.') !== false ? explode('.', $name) : [$name];
+
+        // Checks every level for protection
+        foreach ($nameArray as $subName) {
+            $dotName = !isset($dotName) ? $subName : "$dotName.$subName";
+            if (in_array($dotName, $this->protectedNames)) {
+                throw new \RuntimeException("The parameter `$name` cannot be set, because " . ($name === $dotName ? "it's" : "`$dotName` is" ) . " protected.");
+            }
         }
 
-        $this->values[$name] = $value;
-
-        if ($isProtected === true) {
-            $this->protectedValueKeys[] = $name;
+        // Even if not one of $name's levels is protected, protected env params
+        // under it could still exist, so let's check for those too.
+        foreach ($this->protectedNames as $protectedName) {
+            if (strpos($protectedName, $name) !== false) {
+                throw new \RuntimeException("The parameter `$name` could not be set, because a protected parameter named `$protectedName` already exists.");
+            }
         }
     }
 

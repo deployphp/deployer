@@ -359,13 +359,21 @@ function upload($local, $remote)
             ->ignoreDotFiles(false)
             ->in($local);
 
+        $filesCount = count($files);
+        $uploadedFilesCount = 0;
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
+
             $server->upload(
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()
             );
+
+            $uploadedFilesCount++;
+            write(sprintf("<info>\033[9D[%6.2f%%]</info>", $uploadedFilesCount / ($filesCount / 100)));
         }
+
+        write(PHP_EOL);
 
     } else {
         throw new \RuntimeException("Uploading path '$local' does not exist.");

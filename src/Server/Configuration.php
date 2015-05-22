@@ -217,8 +217,9 @@ class Configuration
     {
         if (isset($_SERVER['HOME'])) {
             $path = str_replace('~', $_SERVER['HOME'], $path);
+        } elseif (isset($_SERVER['HOMEDRIVE'], $_SERVER['HOMEPATH'])) {
+            $path = str_replace('~', $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'], $path);
         }
-
         return $path;
     }
 

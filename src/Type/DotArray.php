@@ -149,10 +149,7 @@ class DotArray implements \ArrayAccess
             $scope = &$scope[$parts[$i]];
         }
         if (is_array($value)) {
-            $tmp = new static();
-            foreach ($value as $k => $v) {
-                $tmp->offsetSet($k, $v);
-            }
+            $tmp = new static($value);
             $scope[$parts[$i]] = $tmp->toArray();
         } else {
             $scope[$parts[$i]] = $value;

@@ -114,6 +114,10 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $env->set('not_protected', []);
         $env->setAsProtected('not_protected.protected', 'value');
 
+        // Ok
+        $env->setAsProtected('protected', 'value');
+        $env->setAsProtected('not', 'value');
+
         // Since `not_protected.protected` is a protected parameter, overwriting
         // the whole `not_protected` parameter is not allowed.
         $env->setAsProtected('not_protected', 'value');

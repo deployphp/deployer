@@ -71,20 +71,15 @@ class Environment
      */
     private function checkIfNameIsProtected($name)
     {
-        $nameArray = strpos($name, '.') !== false ? explode('.', $name) : [$name];
-
-        // Checks every level for protection
-        foreach ($nameArray as $subName) {
-            $dotName = !isset($dotName) ? $subName : "$dotName.$subName";
-            if (in_array($dotName, $this->protectedNames)) {
-                throw new \RuntimeException("The parameter `$name` cannot be set, because " . ($name === $dotName ? "it's" : "`$dotName` is" ) . " protected.");
-            }
-        }
-
-        // Even if not one of $name's levels is protected, protected env params
-        // under it could still exist, so let's check for those too.
+        $length = strlen($name);
+        
         foreach ($this->protectedNames as $protectedName) {
-            if (strpos($protectedName, $name) !== false) {
+            $len = strlen($protectedName);
+            if ($name === $protectedName) {
+                throw new \RuntimeException("The parameter `$name` cannot be set, because it's protected.");
+            } elseif ($len < $length && '.' === $name[$len] && 0 === strpos($name, $protectedName)) {
+                throw new \RuntimeException("The parameter `$name` cannot be set, because `$protectedName` is protected.");
+            } elseif ($len > $length && '.' === $protectedName[$length] && 0 === strpos($protectedName, $name)) {
                 throw new \RuntimeException("The parameter `$name` could not be set, because a protected parameter named `$protectedName` already exists.");
             }
         }

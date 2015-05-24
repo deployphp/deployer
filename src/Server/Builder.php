@@ -28,11 +28,11 @@ class Builder
         $this->config = $config;
         $this->env = $env;
 
-        $env->set('server', [
+        $env->setAsProtected('server', [
             'name' => $config->getName(),
             'host' => $config->getHost(),
             'port' => $config->getPort(),
-        ], true);
+        ]);
     }
 
     /**

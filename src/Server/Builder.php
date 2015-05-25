@@ -27,6 +27,12 @@ class Builder
     {
         $this->config = $config;
         $this->env = $env;
+
+        $env->setAsProtected('server', [
+            'name' => $config->getName(),
+            'host' => $config->getHost(),
+            'port' => $config->getPort(),
+        ]);
     }
 
     /**
@@ -110,10 +116,10 @@ class Builder
         $this->config->setPemFile($pemFile);
         return $this;
     }
-    
+
     /**
      * Using forward agent to authentication
-     * 
+     *
      * @return $this
      */
     public function forwardAgent()

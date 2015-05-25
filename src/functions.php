@@ -17,6 +17,7 @@ use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
 use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -327,7 +328,7 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 
@@ -359,13 +360,20 @@ function upload($local, $remote)
             ->ignoreDotFiles(false)
             ->in($local);
 
+        $progress = new ProgressBar(output(), count($files));
+
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
+            $progress->advance();
+
             $server->upload(
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()
             );
         }
+
+        $progress->finish();
+        write(PHP_EOL);
 
     } else {
         throw new \RuntimeException("Uploading path '$local' does not exist.");

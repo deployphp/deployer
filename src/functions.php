@@ -361,6 +361,7 @@ function upload($local, $remote)
             ->in($local);
 
         $progress = new ProgressBar(output(), count($files));
+        $progress->start();
 
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {

@@ -7,6 +7,12 @@
 
 namespace Deployer\Server;
 
+use Deployer\Server\Password\AskPasswordGetter;
+use Deployer\Server\Password\PasswordGetterInterface;
+
+/**
+ * Build server configuration
+ */
 class Builder
 {
     /**
@@ -20,8 +26,10 @@ class Builder
     protected $env;
 
     /**
+     * Construct
+     *
      * @param Configuration $config
-     * @param Environment $env
+     * @param Environment   $env
      */
     public function __construct(Configuration $config, Environment $env)
     {
@@ -37,65 +45,103 @@ class Builder
 
     /**
      * Define user name for authentication.
+     *
      * @param string $name
-     * @return $this
+     *
+     * @return Builder
      */
     public function user($name)
     {
         $this->config->setUser($name);
+
         return $this;
     }
 
     /**
-     * @param string $password If you did not define password it will be asked on connection.
-     * @return $this
+     * Set password for connection
+     *
+     * @param string|PasswordGetterInterface $password If you did not define password it will be asked on connection.
+     *
+     * @return Builder
      */
-    public function password($password)
+    public function password($password = null)
     {
+        if (is_null($password)) {
+            // Ask password before connection
+            $password = AskPasswordGetter::createLazyGetter();
+        } else if (is_object($password)) {
+            // Invalid password
+            if (!$password instanceof PasswordGetterInterface) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
+                    get_class($password)
+                ));
+            }
+        } else if (!is_scalar($password)) {
+            // Invalid password
+            throw new \InvalidArgumentException(sprintf(
+                'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
+                gettype($password)
+            ));
+        }
+
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_PASSWORD);
         $this->config->setPassword($password);
+
         return $this;
     }
 
     /**
      * Define server host
+     *
      * @param string $host
-     * @return $this
+     *
+     * @return Builder
      */
     public function host($host)
     {
         $this->config->setHost($host);
+
         return $this;
     }
 
     /**
      * Define server port
+     *
      * @param int $port
-     * @return $this
+     *
+     * @return Builder
      */
     public function port($port)
     {
         $this->config->setPort($port);
+
         return $this;
     }
 
     /**
      * If you use an ssh config file you can user it.
+     *
      * @param string $file Config file path
-     * @return $this
+     *
+     * @return Builder
      */
     public function configFile($file)
     {
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_CONFIG);
         $this->config->setConfigFile($file);
+
         return $this;
     }
 
     /**
+     * Authenticate with public key
+     *
      * @param string $publicKeyFile
      * @param string $privateKeyFile
      * @param string $passPhrase
-     * @return $this
+     *
+     * @return Builder
      */
     public function identityFile($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
     {
@@ -103,49 +149,63 @@ class Builder
         $this->config->setPublicKey($publicKeyFile);
         $this->config->setPrivateKey($privateKeyFile);
         $this->config->setPassPhrase($passPhrase);
+
         return $this;
     }
 
     /**
-     * @param $pemFile
-     * @return $this
+     * Authenticate with pem file
+     *
+     * @param string $pemFile
+     *
+     * @return Builder
      */
     public function pemFile($pemFile)
     {
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_PEM_FILE);
         $this->config->setPemFile($pemFile);
+
         return $this;
     }
 
     /**
      * Using forward agent to authentication
      *
-     * @return $this
+     * @return Builder
      */
     public function forwardAgent()
     {
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_AGENT);
+
         return $this;
     }
 
     /**
-     * @param string $name
+     * Set env variable
+     *
+     * @param string           $name
      * @param array|int|string $value
-     * @return $this
+     *
+     * @return Builder
      */
     public function env($name, $value)
     {
         $this->env->set($name, $value);
+
         return $this;
     }
 
     /**
+     * Indicate stage
+     *
      * @param string|array $stages  Name or array on server stages.
-     * @return $this
+     *
+     * @return Builder
      */
     public function stage($stages)
     {
-        $this->env->set('stages', (array)$stages);
+        $this->env->set('stages', (array) $stages);
+
         return $this;
     }
 }

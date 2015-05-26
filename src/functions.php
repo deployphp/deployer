@@ -365,12 +365,12 @@ function upload($local, $remote)
 
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
-            $progress->advance();
-
             $server->upload(
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()
             );
+
+            $progress->advance();
         }
 
         $progress->finish();

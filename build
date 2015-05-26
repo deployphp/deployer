@@ -34,6 +34,7 @@ $finder->files()
     ->exclude('Tests')
     ->exclude('test')
     ->exclude('tests')
+    ->exclude('phpspec')
     ->in(__DIR__);
 
 foreach ($finder as $fileInfo) {
@@ -48,6 +49,7 @@ foreach ($finder as $fileInfo) {
 $depContent = file_get_contents(__DIR__ . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace("'master'", "'$version'", $depContent);
+$depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
 $phar->addFromString('bin/dep', $depContent);
 
 $stub = <<<STUB

@@ -10,7 +10,6 @@
 namespace Deployer\Server\Password;
 
 use Deployer\Task\Context;
-use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -52,7 +51,7 @@ class AskPasswordGetter implements PasswordGetterInterface
     {
         $askMessage = sprintf('[%s@%s] Password:', $user, $host);
 
-        $questionHelper = new QuestionHelper();
+        $questionHelper = $this->createQuestionHelper();
         $question = new Question($askMessage);
         $question->setHidden(true);
 
@@ -75,5 +74,15 @@ class AskPasswordGetter implements PasswordGetterInterface
 
             return $askPasswordGetter->getPassword($host, $user);
         });
+    }
+
+    /**
+     * Create question helper
+     *
+     * @return QuestionHelper
+     */
+    protected function createQuestionHelper()
+    {
+        return new QuestionHelper();
     }
 }

@@ -1,11 +1,14 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace Deployer\Server;
+
 use Deployer\Server\Password\PasswordGetterInterface;
 
 /**
@@ -205,7 +208,7 @@ class Configuration
     /**
      * Set password for connection
      *
-     * @param string $password
+     * @param string|PasswordGetterInterface $password
      *
      * @return Configuration
      */

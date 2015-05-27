@@ -14,7 +14,7 @@ namespace Deployer\Server\Password;
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class SinglePasswordGetter implements PasswordGetterInterface
+class SimplePasswordGetter implements PasswordGetterInterface
 {
     /**
      * @var string

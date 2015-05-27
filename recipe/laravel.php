@@ -10,6 +10,9 @@ require_once __DIR__ . '/common.php';
 // Laravel shared dirs
 set('shared_dirs', ['storage']);
 
+// Laravel 5 shared file
+set('shared_files', ['.env']);
+
 // Laravel writable dirs
 set('writable_dirs', ['storage', 'vendor']);
 

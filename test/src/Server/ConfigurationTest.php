@@ -53,6 +53,25 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $configuration->setPassword($passwordGetter);
 
         $password = $configuration->getPassword();
-        $this->assertEquals('some-password', $password);
+        $this->assertEquals('some-password', $password, 'Password mismatch');
+    }
+
+    /**
+     * Test get pass phrase with use PasswordGetter system
+     */
+    public function testGetPassPhraseWithUsePasswordGetter()
+    {
+        $configuration = new Configuration('name', 'localhost', 80);
+        $configuration->setUser('user');
+
+        $passwordGetter = $this->getMockForAbstractClass('Deployer\Server\Password\PasswordGetterInterface');
+        $passwordGetter->expects($this->once())->method('getPassword')
+            ->with('localhost', 'user')
+            ->will($this->returnValue('some-pass-phrase'));
+
+        $configuration->setPassPhrase($passwordGetter);
+
+        $passPhrase = $configuration->getPassPhrase();
+        $this->assertEquals('some-pass-phrase', $passPhrase, 'Pass phrases mismatch');
     }
 }

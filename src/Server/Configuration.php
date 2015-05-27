@@ -208,7 +208,7 @@ class Configuration
     /**
      * Set password for connection
      *
-     * @param string|PasswordGetterInterface $password
+     * @param PasswordGetterInterface|string $password
      *
      * @return Configuration
      */
@@ -274,13 +274,21 @@ class Configuration
      */
     public function getPassPhrase()
     {
-        return $this->passPhrase;
+        if ($this->passPhrase instanceof PasswordGetterInterface) {
+            $host = $this->getHost();
+            $user = $this->getUser();
+            $passPhrase = $this->passPhrase->getPassword($host, $user);
+        } else {
+            $passPhrase = $this->passPhrase;
+        }
+
+        return $passPhrase;
     }
 
     /**
      * Set pass phrase
      *
-     * @param string $passPhrase
+     * @param PasswordGetterInterface|string $passPhrase
      *
      * @return Configuration
      */
@@ -383,6 +391,7 @@ class Configuration
     public function setPemFile($pemFile)
     {
         $this->pemFile = $this->parseHome($pemFile);
+
         return $this;
     }
 

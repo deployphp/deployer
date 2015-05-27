@@ -222,11 +222,43 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $config->expects($this->once())
             ->method('setPassPhrase')
-            ->with('')
+            ->with('pass-phrase')
             ->will($this->returnSelf());
 
         $b = new Builder($config, $env);
-        $b->identityFile();
+        $b->identityFile(null, null, 'pass-phrase');
+    }
+
+    /**
+     * Test set public key for connection with use password getter for pass phrase
+     */
+    public function testPublicKeyWithNullPassPhrase()
+    {
+        $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
+        $env = $this->getMock('Deployer\Server\Environment');
+
+        $config->expects($this->once())
+            ->method('setAuthenticationMethod')
+            ->with(Configuration::AUTH_BY_IDENTITY_FILE)
+            ->will($this->returnSelf());
+
+        $config->expects($this->once())
+            ->method('setPublicKey')
+            ->with('~/.ssh/id_rsa.pub')
+            ->will($this->returnSelf());
+
+        $config->expects($this->once())
+            ->method('setPrivateKey')
+            ->with('~/.ssh/id_rsa')
+            ->will($this->returnSelf());
+
+        $config->expects($this->once())
+            ->method('setPassPhrase')
+            ->with($this->isInstanceOf('Deployer\Server\Password\CallablePasswordGetter'))
+            ->will($this->returnSelf());
+
+        $b = new Builder($config, $env);
+        $b->identityFile(null, null, null);
     }
 
     /**

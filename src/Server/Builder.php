@@ -68,24 +68,7 @@ class Builder
      */
     public function password($password = null)
     {
-        if (is_null($password)) {
-            // Ask password before connection
-            $password = AskPasswordGetter::createLazyGetter();
-        } else if (is_object($password)) {
-            // Invalid password
-            if (!$password instanceof PasswordGetterInterface) {
-                throw new \InvalidArgumentException(sprintf(
-                    'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
-                    get_class($password)
-                ));
-            }
-        } else if (!is_scalar($password)) {
-            // Invalid password
-            throw new \InvalidArgumentException(sprintf(
-                'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
-                gettype($password)
-            ));
-        }
+        $password = $this->checkPassword($password);
 
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_PASSWORD);
         $this->config->setPassword($password);
@@ -147,6 +130,23 @@ class Builder
      */
     public function identityFile($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
     {
+        $passPhrase = $this->checkPassword($passPhrase);
+
+        if (is_null($publicKeyFile)) {
+            // Use default value
+            $publicKeyFile = '~/.ssh/id_rsa.pub';
+        }
+
+        if (is_null($privateKeyFile)) {
+            // Use default value
+            $privateKeyFile = '~/.ssh/id_rsa';
+        }
+
+        if (is_null($passPhrase)) {
+            // Ask pass phrase before connection
+            $passPhrase = AskPasswordGetter::createLazyGetter();
+        }
+
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_IDENTITY_FILE);
         $this->config->setPublicKey($publicKeyFile);
         $this->config->setPrivateKey($privateKeyFile);
@@ -209,5 +209,33 @@ class Builder
         $this->env->set('stages', (array) $stages);
 
         return $this;
+    }
+
+    /**
+     * Check password valid
+     *
+     * @param mixed $password
+     *
+     * @return mixed
+     */
+    private function checkPassword($password)
+    {
+        if (is_null($password)) {
+            return AskPasswordGetter::createLazyGetter();
+        }
+
+        if (is_scalar($password)) {
+            return $password;
+        }
+
+        if (is_object($password) && $password instanceof PasswordGetterInterface) {
+            return $password;
+        }
+
+        // Invalid password
+        throw new \InvalidArgumentException(sprintf(
+            'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
+            is_object($password) ? get_class($password) : gettype($password)
+        ));
     }
 }

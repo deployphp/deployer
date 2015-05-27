@@ -52,19 +52,11 @@ class AskPasswordGetter implements PasswordGetterInterface
     {
         $askMessage = sprintf('[%s@%s] Password:', $user, $host);
 
-        if (class_exists('Symfony\Component\Console\Helper\QuestionHelper')) {
-            // Use question helper (Symfony console >= 2.5)
-            $questionHelper = new QuestionHelper();
-            $question = new Question($askMessage);
-            $question->setHidden(true);
+        $questionHelper = new QuestionHelper();
+        $question = new Question($askMessage);
+        $question->setHidden(true);
 
-            return $questionHelper->ask($this->input, $this->output, $question);
-        } else {
-            // Use dialog helper (Symfony console < 2.5)
-            $dialogHelper = new DialogHelper();
-
-            return $dialogHelper->askHiddenResponse($this->output, $askMessage);
-        }
+        return $questionHelper->ask($this->input, $this->output, $question);
     }
 
     /**

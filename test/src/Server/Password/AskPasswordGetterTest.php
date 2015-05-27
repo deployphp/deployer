@@ -110,9 +110,13 @@ class AskPasswordGetterTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->any())->method('getOutput')
             ->will($this->returnValue($this->output));
 
+        // Push own context
         Context::push($context);
 
         $lazyGetter->getPassword('host', 'user');
+
+        // Pop own context
+        Context::pop();
     }
 
     /**

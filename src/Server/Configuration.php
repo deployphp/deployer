@@ -195,14 +195,10 @@ class Configuration
     public function getPassword()
     {
         if ($this->password instanceof PasswordGetterInterface) {
-            $host = $this->getHost();
-            $user = $this->getUser();
-            $password = $this->password->getPassword($host, $user);
+            return $this->password->getPassword($this->getHost(), $this->getUser());
         } else {
-            $password = $this->password;
+            return $this->password;
         }
-
-        return $password;
     }
 
     /**
@@ -275,14 +271,10 @@ class Configuration
     public function getPassPhrase()
     {
         if ($this->passPhrase instanceof PasswordGetterInterface) {
-            $host = $this->getHost();
-            $user = $this->getUser();
-            $passPhrase = $this->passPhrase->getPassword($host, $user);
+            return $this->passPhrase->getPassword($this->getHost(), $this->getUser());
         } else {
-            $passPhrase = $this->passPhrase;
+            return $this->passPhrase;
         }
-
-        return $passPhrase;
     }
 
     /**

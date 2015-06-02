@@ -194,11 +194,7 @@ class Configuration
      */
     public function getPassword()
     {
-        if ($this->password instanceof PasswordGetterInterface) {
-            return $this->password->getPassword($this->getHost(), $this->getUser());
-        } else {
-            return $this->password;
-        }
+        return $this->getRealPassword($this->password);
     }
 
     /**
@@ -270,11 +266,7 @@ class Configuration
      */
     public function getPassPhrase()
     {
-        if ($this->passPhrase instanceof PasswordGetterInterface) {
-            return $this->passPhrase->getPassword($this->getHost(), $this->getUser());
-        } else {
-            return $this->passPhrase;
-        }
+        return $this->getRealPassword($this->passPhrase);
     }
 
     /**
@@ -403,5 +395,21 @@ class Configuration
         }
 
         return $path;
+    }
+
+    /**
+     * Get real password
+     *
+     * @param mixed $password
+     *
+     * @return string
+     */
+    private function getRealPassword($password)
+    {
+        if ($password instanceof PasswordGetterInterface) {
+            return $password->getPassword($this->getHost(), $this->getUser());
+        }
+
+        return $password;
     }
 }

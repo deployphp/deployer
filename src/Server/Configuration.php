@@ -204,7 +204,7 @@ class Configuration
     /**
      * Set password for connection
      *
-     * @param PasswordGetterInterface|string $password
+     * @param string $password
      *
      * @return Configuration
      */
@@ -280,7 +280,7 @@ class Configuration
     /**
      * Set pass phrase
      *
-     * @param PasswordGetterInterface|string $passPhrase
+     * @param string $passPhrase
      *
      * @return Configuration
      */

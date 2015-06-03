@@ -9,10 +9,11 @@ Introduction
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
 
-
 Deployer is a deployment tool written in PHP.
 
 See [http://deployer.org](http://deployer.org) for more information and documentation.
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Requirements
 ------------

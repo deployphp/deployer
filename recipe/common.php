@@ -19,6 +19,7 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
  */
 env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
+env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
 
 /**
  * Default arguments and options.
@@ -232,7 +233,7 @@ task('deploy:vendors', function () {
         $composer = 'php composer.phar';
     }
 
-    run("cd {{release_path}} && {{env_vars}} $composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction");
+    run("cd {{release_path}} && {{env_vars}} $composer {{composer_options}}");
 
 })->desc('Installing vendors');
 

@@ -154,7 +154,7 @@ task('deploy:shared', function () {
 
     foreach (get('shared_files') as $file) {
         // Remove from source
-        run("if [ -d $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
+        run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . dirname($file));

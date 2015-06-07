@@ -61,12 +61,17 @@ Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You c
 
 Roadmap
 -------
+#### 3.1
 * Dependency Injection Configuration
 * Event Dispatcher
 * Default stage selector
+* Faster cloning by borrowing objects from existing clones
 * Immutable settings
 * Native SSH support
+
+#### 3.2
 * Task grouping for parallel execution
+* Web-based client
 
 Contributing
 ------------

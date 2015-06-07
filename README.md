@@ -59,6 +59,14 @@ Discussing
 -------
 Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
 
+Roadmap
+-------
+* Dependency Injection Configuration
+* Event Dispatcher
+* Default stage selector
+* Immutable settings
+* Native SSH support
+* Task grouping for parallel execution
 
 Contributing
 ------------

@@ -5,22 +5,22 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
-use Deployer\Server\Local;
-use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
-use Deployer\Task\Task as TheTask;
+use Deployer\Server\Local;
+use Deployer\Server\Remote;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
+use Deployer\Task\Task as TheTask;
 use Deployer\Type\Result;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -33,14 +33,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @param string $name
  * @param string|null $host
  * @param int $port
+ * @param int $timeout
  * @return Builder
  */
-function server($name, $host = null, $port = 22)
+function server($name, $host = null, $port = 22, $timeout = 60)
 {
     $deployer = Deployer::get();
 
     $env = new Environment();
-    $config = new Configuration($name, $host, $port);
+    $config = new Configuration($name, $host, $port, $timeout);
 
     if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
@@ -57,15 +58,16 @@ function server($name, $host = null, $port = 22)
 
 /**
  * @param string $name
+ * @param int $timeout
  * @return Builder
  */
-function localServer($name)
+function localServer($name, $timeout = 60)
 {
     $deployer = Deployer::get();
 
     $env = new Environment();
     $server = new Local();
-    $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
+    $config = new Configuration($name, 'localhost', 22, $timeout); // Builder requires server configuration.
 
     $deployer->servers->set($name, $server);
     $deployer->environments->set($name, $env);
@@ -314,7 +316,7 @@ function runLocally($command, $timeout = 60)
 
     $process = new Symfony\Component\Process\Process($command);
     $process->setTimeout($timeout);
-    $process->run(function($type, $buffer){
+    $process->run(function ($type, $buffer) {
         if (isDebug()) {
             if ('err' === $type) {
                 write("<fg=red>></fg=red> $buffer");
@@ -327,7 +329,7 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 

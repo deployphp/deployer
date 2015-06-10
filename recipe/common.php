@@ -290,7 +290,7 @@ task('cleanup', function () {
     }
 
     foreach ($releases as $release) {
-        run("rm -rf {{deploy_path}}/releases/$release");
+        run("$sudo rm -rf {{deploy_path}}/releases/$release");
     }
 
     run("cd {{deploy_path}} && if [ -e release ]; then $sudo rm release; fi");

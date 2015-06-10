@@ -120,6 +120,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:assetic:dump',
     'deploy:cache:warmup',
+    'deploy:writable',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

@@ -61,13 +61,13 @@ function server($name, $host = null, $port = 22, $timeout = 60)
  * @param int $timeout
  * @return Builder
  */
-function localServer($name, $timeout = 60)
+function localServer($name)
 {
     $deployer = Deployer::get();
 
     $env = new Environment();
     $server = new Local();
-    $config = new Configuration($name, 'localhost', 22, $timeout); // Builder requires server configuration.
+    $config = new Configuration($name, 'localhost', 22); // Builder requires server configuration.
 
     $deployer->servers->set($name, $server);
     $deployer->environments->set($name, $env);

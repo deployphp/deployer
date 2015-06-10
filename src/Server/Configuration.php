@@ -111,8 +111,9 @@ class Configuration
      * @param string $name
      * @param string $host
      * @param int $port
+     * @param int $timeout
      */
-    public function __construct($name, $host, $port = 22, $timeout = 60)
+    public function __construct($name, $host, $port = 22, $timeout = 360)
     {
         $this->setName($name);
         $this->setHost($host);

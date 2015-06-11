@@ -22,16 +22,23 @@ class SeriesExecutor implements ExecutorInterface
         $output = new OutputWatcher($output);
         $informer = new Informer($output);
 
-        foreach ($tasks as $taskName => $task) {
+        foreach ($tasks as $task) {
             $success = true;
-            $informer->startTask($taskName);
+
+            // Generate Task identifier
+            $taskId = uniqid();
+
+            $taskName = $task->getName();
+            $informer->startTask($taskName, $taskId);
 
             if ($task->isOnce()) {
                 $task->run(new Context(null, null, $input, $output));
             } else {
                 foreach ($servers as $serverName => $server) {
                     if ($task->runOnServer($serverName)) {
-                        $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
+                        $env = isset($environments[$serverName])
+                            ? $environments[$serverName]
+                            : $environments[$serverName] = new Environment();
 
                         $informer->onServer($serverName);
 
@@ -41,7 +48,13 @@ class SeriesExecutor implements ExecutorInterface
                             
                         } catch (NonFatalException $exception) {
                             $success = false;
-                            $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());
+                            $informer->taskException(
+                                $serverName,
+                                $taskName,
+                                $taskId,
+                                'Deployer\Task\NonFatalException',
+                                $exception->getMessage()
+                            );
                         }
 
                         $informer->endOnServer($serverName);
@@ -50,9 +63,9 @@ class SeriesExecutor implements ExecutorInterface
             }
 
             if ($success) {
-                $informer->endTask();
+                $informer->endTask($taskId);
             } else {
-                $informer->taskError();
+                $informer->taskError($taskId);
             }
         }
     }

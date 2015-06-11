@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -18,6 +20,10 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Process\Process;
 
+/**
+ * Parallel executor.
+ * Run task in event loop system.
+ */
 class ParallelExecutor implements ExecutorInterface
 {
     /**
@@ -105,6 +111,13 @@ class ParallelExecutor implements ExecutorInterface
      * @var bool
      */
     private $isSuccessfullyFinished = true;
+
+    /**
+     * Failed task info
+     *
+     * @var array
+     */
+    private $failedTaskInfo;
 
     /**
      * Check if current task triggered a non-fatal exception.
@@ -237,15 +250,21 @@ class ParallelExecutor implements ExecutorInterface
     public function catchExceptions()
     {
         while (count($this->exceptionStorage) > 0) {
-            list($serverName, $exceptionClass, $message) = $this->exceptionStorage->pop();
+            list($serverName, $taskName, $taskId, $exceptionClass, $message) = $this->exceptionStorage->pop();
 
             // Print exception message.
-            $this->informer->taskException($serverName, $exceptionClass, $message);
+            $this->informer->taskException($serverName, $taskName, $taskId, $exceptionClass, $message);
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
+
+            // Save failed task info
+            $this->failedTaskInfo = [
+                'name' => $taskName,
+                'id' => $taskId
+            ];
             
-            if ($exceptionClass == 'Deployer\Task\NonFatalException') {
+            if (is_a($exceptionClass, 'Deployer\Task\NonFatalException', true)) {
 
                 // If we got NonFatalException, continue other tasks. 
                 $this->hasNonFatalException = true;
@@ -275,21 +294,25 @@ class ParallelExecutor implements ExecutorInterface
 
                 // Get task name to do.
                 $task = current($this->tasks);
-                $taskName = key($this->tasks);
+                $taskName = $task->getName();
+                $taskId = uniqid();
                 array_shift($this->tasks);
 
-                $this->informer->startTask($taskName);
+                $this->informer->startTask($taskName, $taskId);
 
                 if ($task->isOnce()) {
                     $task->run(new Context(null, null, $this->input, $this->output));
-                    $this->informer->endTask();
+                    $this->informer->endTask($taskId);
                 } else {
                     $this->tasksToDo = [];
 
                     foreach ($this->servers as $serverName => $server) {
                         if ($task->runOnServer($serverName)) {
                             $this->informer->onServer($serverName);
-                            $this->tasksToDo[$serverName] = $taskName;
+                            $this->tasksToDo[$serverName] = [
+                                'name' => $taskName,
+                                'id' => $taskId
+                            ];
                         }
                     }
 
@@ -297,6 +320,14 @@ class ParallelExecutor implements ExecutorInterface
                     $taskToDoStorage = new ArrayStorage();
                     $taskToDoStorage->push($this->tasksToDo);
                     $this->pure->setStorage('tasks_to_do', $taskToDoStorage);
+
+                    // Save info about task
+                    $infoStorage = new ArrayStorage();
+                    $infoStorage->push([
+                        'name' => $taskName,
+                        'id' => $taskId
+                    ]);
+                    $this->pure->setStorage('tasks_to_do_info', $infoStorage);
 
                     $this->wait = true;
                 }
@@ -313,9 +344,15 @@ class ParallelExecutor implements ExecutorInterface
     public function idle()
     {
         if ($this->wait) {
+            /** @var ArrayStorage $taskToDoStorage */
             $taskToDoStorage = $this->pure->getStorage('tasks_to_do');
+            /** @var ArrayStorage $infoStorage */
+            $infoStorage = $this->pure->getStorage('tasks_to_do_info');
 
-            foreach ($this->tasksToDo as $serverName => $taskName) {
+            // Get task info from storage
+            $taskId = $infoStorage->get('id');
+
+            foreach ($this->tasksToDo as $serverName => $null) {
                 if (!$taskToDoStorage->has($serverName)) {
                     $this->informer->endOnServer($serverName);
                     unset($this->tasksToDo[$serverName]);
@@ -324,9 +361,10 @@ class ParallelExecutor implements ExecutorInterface
 
             if (count($taskToDoStorage) === 0) {
                 if ($this->isSuccessfullyFinished) {
-                    $this->informer->endTask();
+                    $this->informer->endTask($taskId);
                 } else {
-                    $this->informer->taskError($this->hasNonFatalException);
+                    $taskId = !empty($this->failedTaskInfo) ? $this->failedTaskInfo['id'] : null;
+                    $this->informer->taskError($taskId, $this->hasNonFatalException);
                 }
                 
                 // We waited all workers to finish their tasks.

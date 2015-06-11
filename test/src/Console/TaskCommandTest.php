@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -27,7 +29,7 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
         $executor = $this->getMock('Deployer\Executor\ExecutorInterface');
         $executor->expects($this->once())
             ->method('run')
-            ->with($tasks, $servers, $environments, $input, $output);
+            ->with(array_values($tasks), $servers, $environments, $input, $output);
 
         $command = new TaskCommand('all', 'desc', $deployer);
         $command->executor = $executor;
@@ -35,4 +37,3 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
         $command->run($input, $output);
     }
 }
- 

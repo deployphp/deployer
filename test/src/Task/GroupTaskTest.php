@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +18,9 @@ class GroupTaskTest extends \PHPUnit_Framework_TestCase
     {
         $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
-        $task = new GroupTask();
+        $task = new GroupTask('foo');
         $task->run($context);
+
+        $this->assertEquals('foo', $task->getName(), 'Invalid task name');
     }
 }

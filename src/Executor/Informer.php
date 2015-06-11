@@ -60,7 +60,7 @@ class Informer
     public function endTask($taskId)
     {
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $this->output->write("\033[k\033[1A<info>✔</info>\n");
+            $this->output->write("\033[k\033[1A\r<info>✔</info>\n");
         } else {
             $this->output->writeln("<info>✔</info> Ok <fg=black>#$taskId</fg=black>");
         }

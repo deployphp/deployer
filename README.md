@@ -9,10 +9,11 @@ Introduction
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
 
-
 Deployer is a deployment tool written in PHP.
 
 See [http://deployer.org](http://deployer.org) for more information and documentation.
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Requirements
 ------------
@@ -58,6 +59,19 @@ Discussing
 -------
 Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
 
+Roadmap
+-------
+#### 3.1
+* Dependency Injection Configuration
+* Event Dispatcher
+* Default stage selector
+* Faster cloning by borrowing objects from existing clones
+* Immutable settings
+* Native SSH support
+
+#### 3.2
+* Task grouping for parallel execution
+* Web-based client
 
 Contributing
 ------------

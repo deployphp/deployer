@@ -39,7 +39,7 @@ class OutputWatcher implements OutputInterface
         // This is ugly hack, and this part should be refactored later, but now i go segmentation fault.
         static $isFirstTime = true;
         if (!$this->wasWritten && !$isFirstTime) {
-            $this->output->write("\033[k\033[1A➤\n", false, $type);
+            $this->output->write("\033[k\033[1A\r➤\n", false, $type);
         }
         $isFirstTime = false;
 

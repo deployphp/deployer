@@ -13,7 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
-set('cleanup_use_sudo', true); // Using sudo in cleanup commands?
+set('cleanup_use_sudo', false); // Using sudo in cleanup commands?
 
 /**
  * Environment vars

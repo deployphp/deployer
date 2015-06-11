@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -25,10 +27,12 @@ class InformerTest extends \PHPUnit_Framework_TestCase
 
         $informer = new Informer($output);
 
+        $taskId = uniqid();
+
         // TODO: Check something.
-        $informer->startTask('task');
+        $informer->startTask('task', $taskId);
         $informer->onServer('server');
-        $informer->endTask();
+        $informer->endTask($taskId);
     }
 
     public function testEndTask()
@@ -38,12 +42,14 @@ class InformerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['writeln', 'getVerbosity'])
             ->getMock();
 
+        $taskId = uniqid();
+
         $output->expects($this->once())
             ->method('writeln')
-            ->with($this->equalTo('<info>✔</info> Ok'));
+            ->with($this->equalTo("<info>✔</info> Ok <fg=black>#$taskId</fg=black>"));
 
         $informer = new Informer($output);
-        $informer->endTask();
+        $informer->endTask($taskId);
     }
 
     public function testTaskError()
@@ -53,12 +59,14 @@ class InformerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['writeln', 'getVerbosity'])
             ->getMock();
 
+        $taskId = uniqid();
+
         $output->expects($this->once())
             ->method('writeln')
             ->with($this->equalTo('<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>'));
 
         $informer = new Informer($output);
-        $informer->taskError(false);
+        $informer->taskError($taskId, false);
     }
 
     public function testTaskErrorNonFatat()
@@ -68,12 +76,14 @@ class InformerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['writeln', 'getVerbosity'])
             ->getMock();
 
+        $taskId = uniqid();
+
         $output->expects($this->once()) 
             ->method('writeln')
-            ->with($this->equalTo('<fg=yellow>✘</fg=yellow> Some errors occurred!'));
+            ->with($this->equalTo("<fg=yellow>✘</fg=yellow> Some errors occurred! <fg=black>#$taskId</fg=black>"));
 
         $informer = new Informer($output);
-        $informer->taskError(true);
+        $informer->taskError($taskId, true);
     }
 }
 

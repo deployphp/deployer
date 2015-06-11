@@ -64,22 +64,36 @@ class WorkerCommand extends Command
 
             while ($pure->ping()) {
                 // Get task to do
-                $taskName = $pure->map('tasks_to_do')->get($serverName);
+                $taskInfo = $pure->map('tasks_to_do')->get($serverName);
 
-                if (null !== $taskName) {
+                if (null !== $taskInfo) {
+                    $taskName = $taskInfo['name'];
+                    $taskId = $taskInfo['id'];
                     $task = $this->deployer->tasks->get($taskName);
 
                     try {
                         $task->run(new Context($server, $environment, $input, $output));
                     } catch (NonFatalException $e) {
-                        $pure->queue('exception')->push([$serverName, get_class($e), $e->getMessage()]);
+                        $pure->queue('exception')->push([
+                            $serverName,
+                            $taskName,
+                            $taskId,
+                            get_class($e),
+                            $e->getMessage()
+                        ]);
                     }
 
                     $pure->map('tasks_to_do')->delete($serverName);
                 }
             }
         } catch (\Exception $exception) {
-            $pure->queue('exception')->push([$serverName, get_class($exception), $exception->getMessage()]);
+            $pure->queue('exception')->push([
+                $serverName,
+                null, // Task name
+                null, // Task identifier
+                get_class($exception),
+                $exception->getMessage()
+            ]);
         }
     }
 }

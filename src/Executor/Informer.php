@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,6 +12,10 @@ namespace Deployer\Executor;
 use Deployer\Console\Output\OutputWatcher;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Informer system.
+ * This informer prints status of execute tasks to Output.
+ */
 class Informer
 {
     /**
@@ -26,9 +32,12 @@ class Informer
     }
 
     /**
-     * @param string $taskName
+     * Start run task
+     *
+     * @param string $taskName  Name of task
+     * @param string $taskId    The unique identifier of task for control with many task in group
      */
-    public function startTask($taskName)
+    public function startTask($taskName, $taskId)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
             if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
@@ -37,7 +46,7 @@ class Informer
                 $this->output->write("➤ ");
             }
 
-            $this->output->writeln("Executing task $taskName");
+            $this->output->writeln("Executing task $taskName <fg=black>#$taskId</fg=black>");
 
             $this->output->setWasWritten(false);
         }
@@ -45,13 +54,15 @@ class Informer
 
     /**
      * Print task was ok.
+     *
+     * @param string $taskId
      */
-    public function endTask()
+    public function endTask($taskId)
     {
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
             $this->output->write("\033[k\033[1A\r<info>✔</info>\n");
         } else {
-            $this->output->writeln("<info>✔</info> Ok");
+            $this->output->writeln("<info>✔</info> Ok <fg=black>#$taskId</fg=black>");
         }
     }
 
@@ -77,29 +88,34 @@ class Informer
 
     /**
      * Print error.
-     * 
-     * @param bool $nonFatal
+     *
+     * @param string $taskId
+     * @param bool   $nonFatal
      */
-    public function taskError($nonFatal = true)
+    public function taskError($taskId, $nonFatal = true)
     {
         if ($nonFatal) {
-            $this->output->writeln("<fg=yellow>✘</fg=yellow> Some errors occurred!");
+            $this->output->writeln("<fg=yellow>✘</fg=yellow> Some errors occurred! <fg=black>#$taskId</fg=black>");
         } else {
             $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>");
         }
     }
 
     /**
+     * Task exception
+     *
      * @param string $serverName
+     * @param string $taskName
+     * @param string $taskId
      * @param string $exceptionClass
      * @param string $message
      */
-    public function taskException($serverName, $exceptionClass, $message)
+    public function taskException($serverName, $taskName, $taskId, $exceptionClass, $message)
     {
         $message = "    $message    ";
         $this->output->writeln([
             "",
-            "<error>Exception [$exceptionClass] on [$serverName] server</error>",
+            "<error>Exception [$exceptionClass] on [$serverName] server for task [$taskName:$taskId]</error>",
             "<error>" . str_repeat(' ', strlen($message)) . "</error>",
             "<error>$message</error>",
             "<error>" . str_repeat(' ', strlen($message)) . "</error>",

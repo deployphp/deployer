@@ -12,6 +12,7 @@ set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
+set('writable_files', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 
 /**
@@ -168,6 +169,17 @@ task('deploy:shared', function () {
     }
 })->desc('Creating symlinks for shared files');
 
+/**
+ * Make writable files.
+ */
+task('deploy:writable:files', function () {
+    $files = join(' ', get('writable_files'));
+    if (empty($files)) {
+        return;
+    }
+
+    run("$sudo chmod -R 777 $files");
+})->desc('Make writable files');
 
 /**
  * Make writable dirs.
@@ -295,7 +307,6 @@ task('cleanup', function () {
     run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
 
 })->desc('Cleaning up old releases');
-
 
 /**
  * Success message

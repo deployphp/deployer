@@ -10,6 +10,7 @@ namespace Deployer;
 use Deployer\Console\WorkerCommand;
 use Deployer\Console\Application;
 use Deployer\Server;
+use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
@@ -51,6 +52,11 @@ class Deployer
     private $collections;
 
     /**
+     * @var StageStrategy
+     */
+    private $stageStrategy;
+
+    /**
      * @param Application $console
      * @param Console\Input\InputInterface $input
      * @param Console\Output\OutputInterface $output
@@ -67,6 +73,8 @@ class Deployer
         $this->collections['servers'] = new Server\ServerCollection();
         $this->collections['environments'] = new Server\EnvironmentCollection();
         $this->collections['parameters'] = new Collection\Collection();
+
+        $this->stageStrategy = new StageStrategy($this->servers, $this->environments);
 
         self::$instance = $this;
     }
@@ -152,5 +160,13 @@ class Deployer
     public function getConsole()
     {
         return $this->console;
+    }
+
+    /**
+     * @return StageStrategy
+     */
+    public function getStageStrategy()
+    {
+        return $this->stageStrategy;
     }
 }

@@ -8,6 +8,9 @@
 namespace Deployer\Executor;
 
 use Deployer\Helper\DeployerHelper;
+use Deployer\Server\Environment;
+use Deployer\Server\Local;
+use Deployer\Task\Task;
 
 class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,17 +18,46 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
 
     public function testSeriesExecutor()
     {
-        list($deployer, $tasks, $servers, $environments, $input, $output) = $this->deployer();
+        $this->initialize();
 
-        foreach ($tasks as $task) {
-            $task->expects($this->any())->method('runOnServer')->will($this->returnValue(true));
-            $tasks[1]->expects($this->any())->method('run');
-        }
+        $mock = $this->getMockBuilder('stdClass')
+            ->setMethods(['task', 'once', 'only'])
+            ->getMock();
 
-        $tasks[0]->expects($this->any())->method('isOnce')->will($this->returnValue(true));
+        $mock->expects($this->exactly(2))
+            ->method('task');
+        $mock->expects($this->once())
+            ->method('once');
+        $mock->expects($this->once())
+            ->method('only');
+
+        $task = new Task('task', function () use($mock) {
+            $mock->task();
+        });
+
+        $taskOne = new Task('once', function () use($mock) {
+            $mock->once();
+        });
+        $taskOne->once();
+
+        $taskOnly = new Task('only', function () use($mock) {
+            $mock->only();
+        });
+        $taskOnly->onlyOn(['one']);
+
+        $tasks = [$task, $taskOne, $taskOnly];
+
+        $environments = [
+            'one' => new Environment(),
+            'two' => new Environment(),
+        ];
+        $servers = [
+            'one' => new Local(),
+            'two' => new Local(),
+        ];
 
         $executor = new SeriesExecutor();
-        $executor->run($tasks, $servers, $environments, $input, $output);
+        $executor->run($tasks, $servers, $environments, $this->input, $this->output);
     }
 }
  

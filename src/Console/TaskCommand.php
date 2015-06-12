@@ -18,7 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class TaskCommand extends Command
 {
-
     /**
      * @var Deployer
      */
@@ -66,40 +65,7 @@ class TaskCommand extends Command
 
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
-        $servers = [];
-
-        if (!empty($stage)) {
-            
-            // Look for servers which has in env `stages` current stage name.
-            foreach($this->deployer->environments as $name => $env) {
-                // If server does not have any stage category, skip them
-                if (in_array($stage, $env->get('stages', []), true)) {
-                    $servers[$name] = $this->deployer->servers->get($name);
-                }
-            }
-            
-            // If still is empty, try to find server by name. 
-            if (empty($servers)) {
-                if ($this->deployer->servers->has($stage)) {
-                    $servers = [$stage => $this->deployer->servers->get($stage)];
-                } else {
-                    // Nothing found.
-                    throw new \RuntimeException("Stage or server `$stage` does not found.");
-                }
-            }
-            
-        } else {
-            // Otherwise run on all servers what does not specify stage.
-            foreach($this->deployer->environments as $name => $env) {
-                if (!$env->has('stages')) {
-                    $servers[$name] = $this->deployer->servers->get($name);
-                }
-            }
-        }
-
-        if (empty($servers)) {
-            throw new \RuntimeException('You need specify at least one server or stage.');
-        }
+        $servers = $this->deployer->getStageStrategy()->getServers($stage);
 
         $environments = iterator_to_array($this->deployer->environments);
 
@@ -113,6 +79,6 @@ class TaskCommand extends Command
             }
         }
 
-        $executor->run($tasks, $servers, $environments,  $input, $output);
+        $executor->run($tasks, $servers, $environments, $input, $output);
     }
 }

@@ -7,7 +7,7 @@
 
 namespace Deployer\Collection;
 
-class Collection implements CollectionInterface
+class Collection implements CollectionInterface, \Countable
 {
     /**
      * @var array
@@ -82,5 +82,13 @@ class Collection implements CollectionInterface
     public function offsetUnset($offset)
     {
         unset($this->collection[$offset]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return count($this->collection);
     }
 }

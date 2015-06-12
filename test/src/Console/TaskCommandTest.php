@@ -9,6 +9,8 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Helper\DeployerHelper;
+use Deployer\Task\Scenario\Scenario;
+use Deployer\Task\Task;
 
 class TaskCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,9 +18,13 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testTaskCommand()
     {
-        list($deployer, $tasks, $servers, $environments, $input, $output) = $this->deployer();
+        $this->initialize();
 
-        $input->expects($this->any())
+        $this->deployer->tasks['task'] = new Task('task', function () {
+        });
+        $this->deployer->scenarios['task'] = new Scenario('task');
+
+        $this->input->expects($this->any())
             ->method('getOption')
             ->will($this->returnValueMap([
                 ['parallel', null],
@@ -26,13 +32,12 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
 
         $executor = $this->getMock('Deployer\Executor\ExecutorInterface');
         $executor->expects($this->once())
-            ->method('run')
-            ->with($tasks, $servers, $environments, $input, $output);
+            ->method('run');
 
-        $command = new TaskCommand('all', 'desc', $deployer);
+        $command = new TaskCommand('task', null, $this->deployer);
         $command->executor = $executor;
 
-        $command->run($input, $output);
+        $command->run($this->input, $this->output);
     }
 }
  

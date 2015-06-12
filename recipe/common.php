@@ -213,15 +213,14 @@ task('deploy:writable', function () {
                 }
 
             } else {
-                
+                if (!empty($httpUser)) {
+                    $output = run("groups www-data")->getOutput();
+                    $httpGroup = explode(' ', $output);
+                    $httpGroup = trim($httpGroup[2]);
+                    run("$sudo chown $httpUser:$httpGroup -R $dirs");
+                }
+
                 run("$sudo chmod 777 -R $dirs");
-                
-            	if (!empty($httpUser) {
-            		$output = run("groups $httpUser")->getOutput();
-					$httpGroup = explode(" ", $output);
-					$httpGroup = trim($httpGroup[2]);
-            		run("$sudo chown $httpUser:$httpGroup -R $dirs");
-            	}
             }
 
         } catch (\RuntimeException $e) {

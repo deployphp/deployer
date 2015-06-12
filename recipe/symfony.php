@@ -58,7 +58,7 @@ task('deploy:assets', function () {
         return "{{release_path}}/$asset";
     }, get('assets')));
 
-    $time = run('date +%Y%m%d%H%M.%S')
+    $time = run('date +%Y%m%d%H%M.%S');
 
     run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
 })->desc('Normalize asset timestamps');

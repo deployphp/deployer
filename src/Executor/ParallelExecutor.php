@@ -275,7 +275,7 @@ class ParallelExecutor implements ExecutorInterface
 
                 // Get task name to do.
                 $task = current($this->tasks);
-                $taskName = key($this->tasks);
+                $taskName = $task->getName();
                 array_shift($this->tasks);
 
                 $this->informer->startTask($taskName);

@@ -22,9 +22,9 @@ class SeriesExecutor implements ExecutorInterface
         $output = new OutputWatcher($output);
         $informer = new Informer($output);
 
-        foreach ($tasks as $taskName => $task) {
+        foreach ($tasks as $task) {
             $success = true;
-            $informer->startTask($taskName);
+            $informer->startTask($task->getName());
 
             if ($task->isOnce()) {
                 $task->run(new Context(null, null, $input, $output));

@@ -10,6 +10,11 @@ namespace Deployer\Task;
 class Task
 {
     /**
+     * @var string
+     */
+    private $name;
+
+    /**
      * Task code.
      * @var callable
      */
@@ -40,10 +45,12 @@ class Task
     private $private = false;
 
     /**
+     * @param string $name Tasks name
      * @param \Closure $callback Task code.
      */
-    public function __construct(\Closure $callback)
+    public function __construct($name, \Closure $callback)
     {
+        $this->name = $name;
         $this->callback = $callback;
     }
 
@@ -71,6 +78,14 @@ class Task
         }
 
         Context::pop();
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

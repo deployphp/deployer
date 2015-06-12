@@ -152,7 +152,7 @@ function task($name, $body)
     $deployer = Deployer::get();
 
     if ($body instanceof \Closure) {
-        $task = new TheTask($body);
+        $task = new TheTask($name, $body);
         $scenario = new Scenario($name);
     } else if (is_array($body)) {
         $task = new GroupTask();

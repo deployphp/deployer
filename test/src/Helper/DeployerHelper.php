@@ -25,15 +25,13 @@ trait DeployerHelper
         $deployer = $this->getMockBuilder('Deployer\Deployer')->disableOriginalConstructor()->getMock();
 
         $tasks = [
-            'one' => $this->getMockBuilder('Deployer\Task\Task')->disableOriginalConstructor()->getMock(),
-            'two' => $this->getMockBuilder('Deployer\Task\Task')->disableOriginalConstructor()->getMock(),
+            $this->getMockBuilder('Deployer\Task\Task')->disableOriginalConstructor()->getMock(),
+            $this->getMockBuilder('Deployer\Task\Task')->disableOriginalConstructor()->getMock(),
         ];
 
         $deployer->tasks = new TaskCollection();
-
-        foreach ($tasks as $name => $task) {
-            $deployer->tasks[$name] = $task;
-        }
+        $deployer->tasks['one'] = $tasks[0];
+        $deployer->tasks['two'] = $tasks[1];
 
         $scenarios = [
             'one' => ['one'],

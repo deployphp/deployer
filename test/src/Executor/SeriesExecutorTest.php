@@ -19,10 +19,10 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
 
         foreach ($tasks as $task) {
             $task->expects($this->any())->method('runOnServer')->will($this->returnValue(true));
-            $tasks['two']->expects($this->any())->method('run');
+            $tasks[1]->expects($this->any())->method('run');
         }
 
-        $tasks['one']->expects($this->any())->method('isOnce')->will($this->returnValue(true));
+        $tasks[0]->expects($this->any())->method('isOnce')->will($this->returnValue(true));
 
         $executor = new SeriesExecutor();
         $executor->run($tasks, $servers, $environments, $input, $output);

@@ -61,7 +61,7 @@ class TaskCommand extends Command
     {
         $tasks = [];
         foreach ($this->deployer->scenarios->get($this->getName())->getTasks() as $taskName) {
-            $tasks[$taskName] = $this->deployer->tasks->get($taskName);
+            $tasks[] = $this->deployer->tasks->get($taskName);
         }
 
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;

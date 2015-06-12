@@ -15,13 +15,15 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->exactly(1))
             ->method('callback');
 
-        $task = new Task(function () use ($mock) {
+        $task = new Task('task_name', function () use ($mock) {
             $mock->callback();
         });
         
         $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
         $task->run($context);
+
+        $this->assertEquals('task_name', $task->getName());
 
         $task->desc('Task description.');
         $this->assertEquals('Task description.', $task->getDescription());

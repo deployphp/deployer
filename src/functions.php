@@ -142,9 +142,11 @@ function serverList($file)
 /**
  * Define a new task and save to tasks list.
  *
- * @param string $name Name of current task.
+ * @param string $name          Name of current task.
  * @param callable|array $body Callable task or array of other tasks names.
+ *
  * @return TheTask
+ *
  * @throws InvalidArgumentException
  */
 function task($name, $body)
@@ -152,10 +154,10 @@ function task($name, $body)
     $deployer = Deployer::get();
 
     if ($body instanceof \Closure) {
-        $task = new TheTask($body);
+        $task = new TheTask($body, $name);
         $scenario = new Scenario($name);
     } else if (is_array($body)) {
-        $task = new GroupTask();
+        $task = new GroupTask($name);
         $scenario = new GroupScenario(array_map(function ($name) use ($deployer) {
             return $deployer->scenarios->get($name);
         }, $body));

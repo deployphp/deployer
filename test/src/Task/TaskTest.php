@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/*
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,11 +19,13 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $task = new Task(function () use ($mock) {
             $mock->callback();
-        });
+        }, 'foo');
         
         $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
         $task->run($context);
+
+        $this->assertEquals('foo', $task->getName(), 'Invalid task name');
 
         $task->desc('Task description.');
         $this->assertEquals('Task description.', $task->getDescription());

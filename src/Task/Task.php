@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/*
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,6 +9,9 @@
 
 namespace Deployer\Task;
 
+/**
+ * Task system
+ */
 class Task
 {
     /**
@@ -14,6 +19,12 @@ class Task
      * @var callable
      */
     private $callback;
+
+    /**
+     * The name of task
+     * @var string
+     */
+    protected $name;
 
     /**
      * Task description.
@@ -40,11 +51,15 @@ class Task
     private $private = false;
 
     /**
+     * Construct
+     *
+     * @param string   $name     The name of task
      * @param \Closure $callback Task code.
      */
-    public function __construct(\Closure $callback)
+    public function __construct(\Closure $callback, $name)
     {
         $this->callback = $callback;
+        $this->name = $name;
     }
 
     /**
@@ -74,6 +89,18 @@ class Task
     }
 
     /**
+     * Get name of task
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Get description of task
+     *
      * @return string
      */
     public function getDescription()
@@ -83,26 +110,33 @@ class Task
 
     /**
      * Set task description.
+     *
      * @param string $description
+     *
      * @return $this
      */
     public function desc($description)
     {
         $this->description = $description;
+
         return $this;
     }
 
     /**
      * Set this task local and run only once.
+     *
      * @return $this
      */
     public function once()
     {
         $this->once = true;
+
         return $this;
     }
 
     /**
+     * Is should run once
+     *
      * @return bool
      */
     public function isOnce()
@@ -111,12 +145,16 @@ class Task
     }
 
     /**
+     * Set servers for run once
+     *
      * @param array $servers
+     *
      * @return $this
      */
     public function onlyOn($servers)
     {
         $this->onlyOn = array_flip($servers);
+
         return $this;
     }
 
@@ -130,7 +168,9 @@ class Task
     
     /**
      * Decide to run or not to run on this server.
+     *
      * @param string $serverName
+     *
      * @return bool
      */
     public function runOnServer($serverName)
@@ -143,6 +183,8 @@ class Task
     }
 
     /**
+     * Is private task
+     *
      * @return boolean
      */
     public function isPrivate()

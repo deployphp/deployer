@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/*
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,18 +9,24 @@
 
 namespace Deployer\Task;
 
+/**
+ * Group task
+ */
 class GroupTask extends Task
 {
     /**
      * Yes, it is constructor.
+     *
+     * @param string $name The name of group task
      */
-    public function __construct()
+    public function __construct($name)
     {
-        // Do nothing
+        $this->name = $name;
+        // Attention: not calls parent, because this task can not runs
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritDoc}
      */
     public function run(Context $context)
     {

@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/*
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,9 +18,11 @@ use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
+/**
+ * Command for run custom tasks
+ */
 class TaskCommand extends Command
 {
-
     /**
      * @var Deployer
      */
@@ -30,8 +34,10 @@ class TaskCommand extends Command
     public $executor;
 
     /**
-     * @param string $name
-     * @param string $description
+     * Construct
+     *
+     * @param string   $name
+     * @param string   $description
      * @param Deployer $deployer
      */
     public function __construct($name, $description, Deployer $deployer)
@@ -42,7 +48,7 @@ class TaskCommand extends Command
     }
 
     /**
-     * Configures the command
+     * {@inheritDoc}
      */
     protected function configure()
     {
@@ -60,8 +66,11 @@ class TaskCommand extends Command
     protected function execute(Input $input, Output $output)
     {
         $tasks = [];
-        foreach ($this->deployer->scenarios->get($this->getName())->getTasks() as $taskName) {
-            $tasks[$taskName] = $this->deployer->tasks->get($taskName);
+
+        $scenario = $this->deployer->scenarios->get($this->getName());
+
+        foreach ($scenario->getTasks() as $taskName) {
+            $tasks[] = $this->deployer->tasks->get($taskName);
         }
 
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
@@ -69,7 +78,6 @@ class TaskCommand extends Command
         $servers = [];
 
         if (!empty($stage)) {
-            
             // Look for servers which has in env `stages` current stage name.
             foreach($this->deployer->environments as $name => $env) {
                 // If server does not have any stage category, skip them

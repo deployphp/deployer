@@ -93,7 +93,7 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $release = date('YmdHis');
+    $release = run('date +%Y%m%d%H%M%S');
 
     $releasePath = "{{deploy_path}}/releases/$release";
 

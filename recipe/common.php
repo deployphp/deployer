@@ -174,6 +174,8 @@ task('deploy:shared', function () {
  */
 task('deploy:writable:files', function () {
     $files = join(' ', get('writable_files'));
+    $sudo = get('writable_use_sudo') ? 'sudo' : '';
+    
     if (empty($files)) {
         return;
     }

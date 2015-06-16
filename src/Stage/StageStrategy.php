@@ -54,7 +54,7 @@ class StageStrategy implements StageStrategyInterface
                     $servers = [$stage => $this->servers->get($stage)];
                 } else {
                     // Nothing found.
-                    throw new \RuntimeException("Stage or server `$stage` does not found.");
+                    throw new \RuntimeException("Stage or server `$stage` was not found.");
                 }
             }
 
@@ -74,7 +74,7 @@ class StageStrategy implements StageStrategyInterface
 
                 $servers = ['localhost' => $local];
             } else {
-                throw new \RuntimeException('You need specify at least one server or stage.');
+                throw new \RuntimeException('You need to specify at least one server or stage.');
             }
         }
 

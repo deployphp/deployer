@@ -20,17 +20,15 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
 env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
-env('git_cache', function(){ //whether to use git cache - fester cloning by borrowing objects from existing clones.
+env('git_cache', function(){ //whether to use git cache - faster cloning by borrowing objects from existing clones.
   $gitVersion = run('git version');
   $regs = [];
-  echo $gitVersion;
   if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
     $version = $regs[1];
   } else {
     $version = "1.0.0";
   }
-  $compare = version_compare($version, '2.3', '>=');
-  return $compare;
+  return version_compare($version, '2.3', '>=');
 });
 
 /**
@@ -129,6 +127,8 @@ task('deploy:update_code', function () {
     $repository = get('repository');
     $branch = env('branch');
     $gitCache = env('git_cache');
+    $depth = $gitCache ? '' : '--depth 1';
+    
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
     }
@@ -150,7 +150,8 @@ task('deploy:update_code', function () {
         run("git clone $at --recursive -q $repository {{release_path}} 2>&1"); 
       }
     } else{
-      run("git clone $at --depth 1 --recursive -q $repository {{release_path}} 2>&1"); 
+      // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
+      run("git clone $at $depth --recursive -q $repository {{release_path}} 2>&1"); 
     }
 
 })->desc('Updating code');

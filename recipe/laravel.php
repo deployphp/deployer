@@ -17,6 +17,13 @@ set('shared_files', ['.env']);
 set('writable_dirs', ['storage', 'vendor']);
 
 /**
+ * Migrate database
+ */
+task('deploy:migrate', function () {
+    run("cd {{release_path}} && ./artisan migrate --force");
+})->desc('Migrate database');
+
+/**
  * Main task
  */
 task('deploy', [
@@ -25,6 +32,7 @@ task('deploy', [
     'deploy:update_code',
     'deploy:vendors',
     'deploy:shared',
+    'deploy:migrate',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

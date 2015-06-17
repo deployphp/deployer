@@ -84,10 +84,10 @@ task('deploy:prepare', function () {
         throw $e;
     }
 
-	// Set the deployment timezone
-	if (!date_default_timezone_set(env('timezone'))) {
-		date_default_timezone_set('UTC');
-	}
+    // Set the deployment timezone
+    if (!date_default_timezone_set(env('timezone'))) {
+        date_default_timezone_set('UTC');
+    }
 
     run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
 

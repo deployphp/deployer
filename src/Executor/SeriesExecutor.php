@@ -36,9 +36,7 @@ class SeriesExecutor implements ExecutorInterface
                         $informer->onServer($serverName);
 
                         try {
-                            
                             $task->run(new Context($server, $env, $input, $output));
-                            
                         } catch (NonFatalException $exception) {
                             $success = false;
                             $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());

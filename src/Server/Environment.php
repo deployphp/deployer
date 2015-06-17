@@ -18,7 +18,7 @@ class Environment
      *
      * @var \Deployer\Type\DotArray
      */
-    static private $defaults = null;
+    private static $defaults = null;
 
     /**
      * Array of env values.
@@ -174,5 +174,4 @@ class Environment
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
-
 }

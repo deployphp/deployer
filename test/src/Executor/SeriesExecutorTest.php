@@ -31,16 +31,16 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $mock->expects($this->once())
             ->method('only');
 
-        $task = new Task('task', function () use($mock) {
+        $task = new Task('task', function () use ($mock) {
             $mock->task();
         });
 
-        $taskOne = new Task('once', function () use($mock) {
+        $taskOne = new Task('once', function () use ($mock) {
             $mock->once();
         });
         $taskOne->once();
 
-        $taskOnly = new Task('only', function () use($mock) {
+        $taskOnly = new Task('only', function () use ($mock) {
             $mock->only();
         });
         $taskOnly->onlyOn(['one']);
@@ -60,4 +60,3 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $executor->run($tasks, $servers, $environments, $this->input, $this->output);
     }
 }
- 

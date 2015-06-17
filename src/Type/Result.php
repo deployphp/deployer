@@ -9,7 +9,6 @@ namespace Deployer\Type;
 
 class Result
 {
-
     /**
      * @var string
      */

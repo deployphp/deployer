@@ -12,13 +12,12 @@ use Deployer\Type\DotArray;
 
 /**
  * DotArrayTest class
- * 
+ *
  * @author OanhNN <oanhnn@rikkeisoft.com>
  * @version 1.0
  */
 class DotArrayTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testValidateKey()
     {
         $this->assertTrue(DotArray::validateKey('abc123'));
@@ -83,7 +82,7 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase
 
     public function testGet()
     {
-        $closures = function() {
+        $closures = function () {
             echo 'hello';
         };
         $obj = new \stdClass();
@@ -127,8 +126,8 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase
     {
         $d = new DotArray();
         $d['abc.xyz'] = [
-            'one' => 1, 
-            'two' => 2, 
+            'one' => 1,
+            'two' => 2,
             'array' => [2012, '2013', 2014, '2015'],
             'null' => null
         ];
@@ -173,5 +172,4 @@ class DotArrayTest extends \PHPUnit_Framework_TestCase
         unset($d['abc.xyz.null']);
         $this->assertFalse($d->hasKey('abc.xyz.null'));
     }
-
 }

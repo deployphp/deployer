@@ -18,7 +18,6 @@ namespace Deployer\Type;
  */
 class DotArray implements \ArrayAccess
 {
-
     /**
      * Storage array
      *
@@ -159,7 +158,7 @@ class DotArray implements \ArrayAccess
     /**
      * Unset an array value
      * using unset($array['abc.xyz']) to unset($array['abc']['xyz'])
-     * 
+     *
      * @param string $key
      */
     public function offsetUnset($key)

@@ -16,7 +16,6 @@ use RuntimeException;
 
 class PhpSecLib implements ServerInterface
 {
-
     /**
      * @var Configuration
      */

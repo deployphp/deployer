@@ -139,7 +139,7 @@ class SshExtension implements ServerInterface
     {
         $this->checkConnection();
 
-        if(!$this->session->getSftp()->receive($remote, $local)) {
+        if (!$this->session->getSftp()->receive($remote, $local)) {
             throw new \RuntimeException('Can not download file.');
         }
     }

@@ -7,7 +7,6 @@
 
 namespace Deployer\Console;
 
-
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     public function testApplication()
@@ -17,4 +16,3 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($app->getDefinition()->hasOption('file'));
     }
 }
- 

@@ -17,7 +17,7 @@ class Application extends Console
 {
     /**
      * Input definition for user specific arguments and options.
-     * 
+     *
      * @var InputDefinition
      */
     private $userDefinition;

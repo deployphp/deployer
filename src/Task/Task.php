@@ -39,7 +39,7 @@ class Task
     private $onlyOn = [];
 
     /**
-     * Make task internal and not visible in CLI. 
+     * Make task internal and not visible in CLI.
      * @var bool
      */
     private $private = false;
@@ -56,7 +56,7 @@ class Task
 
     /**
      * Run task.
-     * 
+     *
      * @param Context $context
      */
     public function run(Context $context)

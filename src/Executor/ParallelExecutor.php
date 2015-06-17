@@ -166,11 +166,10 @@ class ParallelExecutor implements ExecutorInterface
                 goto connect;
             }
         }
-
     }
 
     /**
-     * Start workers, put master port, server name to run on, and options stuff. 
+     * Start workers, put master port, server name to run on, and options stuff.
      */
     public function startWorkers()
     {
@@ -247,9 +246,8 @@ class ParallelExecutor implements ExecutorInterface
             
             if ($exceptionClass == 'Deployer\Task\NonFatalException') {
 
-                // If we got NonFatalException, continue other tasks. 
+                // If we got NonFatalException, continue other tasks.
                 $this->hasNonFatalException = true;
-
             } else {
 
                 // Do not run other task.
@@ -257,7 +255,7 @@ class ParallelExecutor implements ExecutorInterface
                 $this->tasks = [];
 
                 // Worker will not mark this task as done (remove self server name from `tasks_to_do` list),
-                // so to finish current task execution we need to manually remove it from that list. 
+                // so to finish current task execution we need to manually remove it from that list.
                 $taskToDoStorage = $this->pure->getStorage('tasks_to_do');
                 $taskToDoStorage->delete($serverName);
             }
@@ -266,7 +264,7 @@ class ParallelExecutor implements ExecutorInterface
 
     /**
      * Action time for master! Send tasks `to-do` for workers and go to sleep.
-     * Also decide when to stop server/loop. 
+     * Also decide when to stop server/loop.
      */
     public function sendTasks()
     {
@@ -300,7 +298,6 @@ class ParallelExecutor implements ExecutorInterface
 
                     $this->wait = true;
                 }
-
             } else {
                 $this->loop->stop();
             }
@@ -330,7 +327,7 @@ class ParallelExecutor implements ExecutorInterface
                 }
                 
                 // We waited all workers to finish their tasks.
-                // Wait no more! 
+                // Wait no more!
                 $this->wait = false;
 
                 // Reset to default for next tasks.

@@ -7,13 +7,11 @@
 
 namespace Deployer\Console;
 
-
 use Deployer\Console\Output\OutputWatcher;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class OutputWatcherTest extends \PHPUnit_Framework_TestCase
 {
-
     public function testOutputWatcher()
     {
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
@@ -66,4 +64,3 @@ class OutputWatcherTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($ow->getWasWritten());
     }
 }
- 

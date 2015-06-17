@@ -11,6 +11,7 @@
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
+set('writable_files', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 
@@ -193,6 +194,19 @@ task('deploy:shared', function () {
     }
 })->desc('Creating symlinks for shared files');
 
+/**
+ * Make writable files.
+ */
+task('deploy:writable:files', function () {
+    $files = join(' ', get('writable_files'));
+    $sudo = get('writable_use_sudo') ? 'sudo' : '';
+    
+    if (empty($files)) {
+        return;
+    }
+
+    run("$sudo chmod -R 777 $files");
+})->desc('Make writable files');
 
 /**
  * Make writable dirs.
@@ -222,12 +236,18 @@ task('deploy:writable', function () {
                     run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                     run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                 } else {
-                    run("$sudo chmod 777 $dirs");
+                    run("$sudo chmod 777 -R $dirs");
                 }
 
-
             } else {
-                run("$sudo chmod 777 $dirs");
+                if (!empty($httpUser)) {
+                    $output = run("groups $httpUser")->getOutput();
+                    $httpGroup = explode(' ', $output);
+                    $httpGroup = trim($httpGroup[2]);
+                    run("$sudo chown $httpUser:$httpGroup -R $dirs");
+                }
+
+                run("$sudo chmod 777 -R $dirs");
             }
 
         } catch (\RuntimeException $e) {

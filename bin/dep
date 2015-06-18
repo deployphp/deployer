@@ -8,7 +8,7 @@
 
 $loaded = false;
 
-foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php') as $file) {
+foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
     if (file_exists($file)) {
         require $file;
         $loaded = true;
@@ -45,7 +45,7 @@ $userSpecifiedFile = null;
 
 if (isset($options['f'])) {
     $userSpecifiedFile = $options['f'];
-} else if (isset($options['file'])) {
+} elseif (isset($options['file'])) {
     $userSpecifiedFile = $options['file'];
 }
 

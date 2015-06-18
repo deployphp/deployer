@@ -9,10 +9,12 @@
 
 namespace Deployer\Server;
 
+use PHPUnit_Framework_TestCase;
+
 /**
  * Configuration testing
  */
-class ConfigurationTest extends \PHPUnit_Framework_TestCase
+class ConfigurationTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Base test configuration

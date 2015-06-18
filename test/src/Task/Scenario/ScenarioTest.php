@@ -8,8 +8,9 @@
 namespace Deployer\Task;
 
 use Deployer\Task\Scenario\Scenario;
+use PHPUnit_Framework_TestCase;
 
-class ScenarioTest extends \PHPUnit_Framework_TestCase
+class ScenarioTest extends PHPUnit_Framework_TestCase
 {
     public function testCreation()
     {

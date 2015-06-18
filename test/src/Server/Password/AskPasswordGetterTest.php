@@ -10,6 +10,8 @@
 namespace Deployer\Server\Password;
 
 use Deployer\Task\Context;
+use PHPUnit_Framework_TestCase;
+use ReflectionObject;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -17,7 +19,7 @@ use Symfony\Component\Console\Question\Question;
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class AskPasswordGetterTest extends \PHPUnit_Framework_TestCase
+class AskPasswordGetterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
@@ -126,7 +128,7 @@ class AskPasswordGetterTest extends \PHPUnit_Framework_TestCase
     public function testCreateQuestionHelper()
     {
         $askPasswordGetter = new AskPasswordGetter($this->input, $this->output);
-        $ref = new \ReflectionObject($askPasswordGetter);
+        $ref = new ReflectionObject($askPasswordGetter);
         $method = $ref->getMethod('createQuestionHelper');
         $method->setAccessible(true);
 

@@ -12,8 +12,10 @@ use Deployer\Server\GroupCollection;
 use Deployer\Server\ServerCollection;
 use Deployer\Task\Scenario\ScenarioCollection;
 use Deployer\Task\TaskCollection;
+use PHPUnit_Framework_TestCase;
+use stdClass;
 
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends PHPUnit_Framework_TestCase
 {
     public static function collections()
     {
@@ -33,7 +35,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertInstanceOf('Deployer\Collection\CollectionInterface', $collection);
 
-        $object = new \stdClass();
+        $object = new stdClass();
         $collection->set('object', $object);
 
         $this->assertTrue($collection->has('object'));

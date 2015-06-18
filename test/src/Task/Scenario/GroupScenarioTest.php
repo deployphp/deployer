@@ -7,7 +7,9 @@
 
 namespace Deployer\Task\Scenario;
 
-class GroupScenarioTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class GroupScenarioTest extends PHPUnit_Framework_TestCase
 {
     public function testGroupScenario()
     {

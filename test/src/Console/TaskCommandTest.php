@@ -11,8 +11,9 @@ use Deployer\Deployer;
 use Deployer\Helper\DeployerHelper;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Task\Task;
+use PHPUnit_Framework_TestCase;
 
-class TaskCommandTest extends \PHPUnit_Framework_TestCase
+class TaskCommandTest extends PHPUnit_Framework_TestCase
 {
     use DeployerHelper;
 

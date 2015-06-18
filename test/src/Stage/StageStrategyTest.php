@@ -10,8 +10,10 @@ namespace Deployer\Stage;
 use Deployer\Server\Environment;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\ServerCollection;
+use PHPUnit_Framework_TestCase;
+use stdClass;
 
-class StageStrategyTest extends \PHPUnit_Framework_TestCase
+class StageStrategyTest extends PHPUnit_Framework_TestCase
 {
     public function testDefault()
     {
@@ -26,7 +28,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
     public function testWithoutStage()
     {
         $servers = new ServerCollection();
-        $servers['one'] = new \stdClass();
+        $servers['one'] = new stdClass();
 
         $environments = new EnvironmentCollection();
         $environments['one'] = new Environment();
@@ -39,7 +41,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
     public function testByStageName()
     {
         $servers = new ServerCollection();
-        $servers['one'] = new \stdClass();
+        $servers['one'] = new stdClass();
 
         $environments = new EnvironmentCollection();
         $environments['one'] = $env = new Environment();
@@ -53,7 +55,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
     public function testByServerName()
     {
         $servers = new ServerCollection();
-        $servers['one'] = new \stdClass();
+        $servers['one'] = new stdClass();
 
         $environments = new EnvironmentCollection();
         $environments['one'] = $env = new Environment();

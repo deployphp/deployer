@@ -8,11 +8,12 @@
 namespace Deployer;
 
 use Deployer\Console\Application;
+use PHPUnit_Framework_TestCase;
 
-class DeployerTest extends \PHPUnit_Framework_TestCase
+class DeployerTest extends PHPUnit_Framework_TestCase
 {
     private $deployer;
-    
+
     protected function setUp()
     {
         $console = new Application();

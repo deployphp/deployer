@@ -27,22 +27,23 @@ Installation
 ------------
 To install Deployer download [deployer.phar](http://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
-~~~
-mv deployer.phar /usr/local/bin/dep
-chmod +x /usr/local/bin/dep
-~~~
+``` sh
+$ curl -L http://deployer.org/deployer.phar -o deployer.phar
+$ mv deployer.phar /usr/local/bin/dep
+$ chmod +x /usr/local/bin/dep
+```
 
 To upgrade Deployer run command:
 
-~~~
-dep self-update
-~~~
+``` sh
+$ dep self-update
+```
 
 Or via composer:
 
-~~~
-composer require deployer/deployer:~3.0
-~~~
+``` sh
+$ composer require deployer/deployer:~3.0
+```
 
 
 Documentation

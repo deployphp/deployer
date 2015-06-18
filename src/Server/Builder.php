@@ -16,20 +16,20 @@ use Deployer\Server\Password\PasswordGetterInterface;
 class Builder
 {
     /**
-     * @var Configuration
+     * @var \Deployer\Server\Configuration
      */
     private $config;
 
     /**
-     * @var Environment
+     * @var \Deployer\Server\Environment
      */
     protected $env;
 
     /**
-     * Construct
+     * Constructor.
      *
-     * @param Configuration $config
-     * @param Environment   $env
+     * @param \Deployer\Server\Configuration $config
+     * @param \Deployer\Server\Environment   $env
      */
     public function __construct(Configuration $config, Environment $env)
     {
@@ -48,7 +48,7 @@ class Builder
      *
      * @param string $name
      *
-     * @return Builder
+     * @return $this
      */
     public function user($name)
     {
@@ -60,9 +60,9 @@ class Builder
     /**
      * Set password for connection
      *
-     * @param string|PasswordGetterInterface $password If you did not define password it will be asked on connection.
+     * @param \Deployer\Server\Password\PasswordGetterInterface|string $password If you did not define password it will be asked on connection.
      *
-     * @return Builder
+     * @return $this
      */
     public function password($password = null)
     {
@@ -79,7 +79,7 @@ class Builder
      *
      * @param string $host
      *
-     * @return Builder
+     * @return $this
      */
     public function host($host)
     {
@@ -93,7 +93,7 @@ class Builder
      *
      * @param int $port
      *
-     * @return Builder
+     * @return $this
      */
     public function port($port)
     {
@@ -107,7 +107,7 @@ class Builder
      *
      * @param string $file Config file path
      *
-     * @return Builder
+     * @return $this
      */
     public function configFile($file)
     {
@@ -124,7 +124,7 @@ class Builder
      * @param string $privateKeyFile
      * @param string $passPhrase
      *
-     * @return Builder
+     * @return $this
      */
     public function identityFile($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
     {
@@ -158,7 +158,7 @@ class Builder
      *
      * @param string $pemFile
      *
-     * @return Builder
+     * @return $this
      */
     public function pemFile($pemFile)
     {
@@ -171,7 +171,7 @@ class Builder
     /**
      * Using forward agent to authentication
      *
-     * @return Builder
+     * @return $this
      */
     public function forwardAgent()
     {
@@ -186,7 +186,7 @@ class Builder
      * @param string           $name
      * @param array|int|string $value
      *
-     * @return Builder
+     * @return $this
      */
     public function env($name, $value)
     {
@@ -200,7 +200,7 @@ class Builder
      *
      * @param string|array $stages  Name or array on server stages.
      *
-     * @return Builder
+     * @return $this
      */
     public function stage($stages)
     {

@@ -15,35 +15,35 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Context
 {
     /**
-     * @var ServerInterface|null
+     * @var \Deployer\Server\ServerInterface|null
      */
     private $server;
 
     /**
-     * @var Environment|null
+     * @var \Deployer\Server\Environment|null
      */
     private $env;
 
     /**
-     * @var InputInterface|null
+     * @var \Symfony\Component\Console\Input\InputInterface|null
      */
     private $input;
 
     /**
-     * @var OutputInterface|null
+     * @var \Symfony\Component\Console\Output\OutputInterface|null
      */
     private $output;
 
     /**
-     * @var Context[]
+     * @var $this[]
      */
     private static $contexts = [];
 
     /**
-     * @param ServerInterface|null $server
-     * @param Environment|null $env
-     * @param InputInterface|null $input
-     * @param OutputInterface|null $output
+     * @param \Deployer\Server\ServerInterface|null $server
+     * @param \Deployer\Server\Environment|null $env
+     * @param \Symfony\Component\Console\Input\InputInterface|null $input
+     * @param \Symfony\Component\Console\Output\OutputInterface|null $output
      */
     public function __construct($server, $env, $input, $output)
     {
@@ -54,7 +54,7 @@ class Context
     }
 
     /**
-     * @param Context $context
+     * @param \Deployer\Task\Context $context
      */
     public static function push(Context $context)
     {
@@ -62,15 +62,15 @@ class Context
     }
 
     /**
-     * @return Context|false
+     * @return \Deployer\Task\Context|bool
      */
     public static function get()
     {
         return end(self::$contexts);
     }
-    
+
     /**
-     * @return Context
+     * @return \Deployer\Task\Context
      */
     public static function pop()
     {
@@ -78,7 +78,7 @@ class Context
     }
 
     /**
-     * @return Environment|null
+     * @return \Deployer\Server\Environment|null
      */
     public function getEnvironment()
     {
@@ -86,7 +86,7 @@ class Context
     }
 
     /**
-     * @return InputInterface|null
+     * @return null|\Symfony\Component\Console\Input\InputInterface
      */
     public function getInput()
     {
@@ -94,7 +94,7 @@ class Context
     }
 
     /**
-     * @return OutputInterface|null
+     * @return null|\Symfony\Component\Console\Output\OutputInterface
      */
     public function getOutput()
     {
@@ -102,7 +102,7 @@ class Context
     }
 
     /**
-     * @return ServerInterface|null
+     * @return \Deployer\Server\ServerInterface|null
      */
     public function getServer()
     {

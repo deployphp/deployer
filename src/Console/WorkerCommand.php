@@ -21,12 +21,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class WorkerCommand extends Command
 {
     /**
-     * @var Deployer
+     * @var \Deployer\Deployer
      */
     private $deployer;
 
     /**
-     * @param Deployer $deployer
+     * @param \Deployer\Deployer $deployer
      */
     public function __construct(Deployer $deployer)
     {

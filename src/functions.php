@@ -30,10 +30,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 // is env() func. This function determine in which stage it was called by Context::get() method.
 
 /**
- * @param string $name
+ * @param string      $name
  * @param string|null $host
- * @param int $port
- * @return Builder
+ * @param int         $port
+ * @return \Deployer\Server\Builder
  */
 function server($name, $host = null, $port = 22)
 {
@@ -54,10 +54,9 @@ function server($name, $host = null, $port = 22)
     return new Builder($config, $env);
 }
 
-
 /**
  * @param string $name
- * @return Builder
+ * @return \Deployer\Server\Builder
  */
 function localServer($name)
 {
@@ -76,6 +75,7 @@ function localServer($name)
 
 /**
  * Load server list file.
+ *
  * @param string $file
  */
 function serverList($file)
@@ -140,9 +140,9 @@ function serverList($file)
 /**
  * Define a new task and save to tasks list.
  *
- * @param string $name Name of current task.
+ * @param string         $name Name of current task.
  * @param callable|array $body Callable task or array of other tasks names.
- * @return TheTask
+ * @return \Deployer\Task\GroupTask|\Deployer\Task\Task
  * @throws InvalidArgumentException
  */
 function task($name, $body)
@@ -199,13 +199,12 @@ function after($it, $that)
 
 /**
  * Add users arguments.
- *
  * Note what Deployer already has one argument: "stage".
  *
  * @param string $name
- * @param int $mode
+ * @param int    $mode
  * @param string $description
- * @param mixed $default
+ * @param mixed  $default
  */
 function argument($name, $mode = null, $description = '', $default = null)
 {
@@ -219,9 +218,9 @@ function argument($name, $mode = null, $description = '', $default = null)
  *
  * @param string $name
  * @param string $shortcut
- * @param int $mode
+ * @param int    $mode
  * @param string $description
- * @param mixed $default
+ * @param mixed  $default
  */
 function option($name, $shortcut = null, $mode = null, $description = '', $default = null)
 {
@@ -243,7 +242,7 @@ function cd($path)
 /**
  * Execute a callback within a specific directory and revert back to the initial working directory.
  *
- * @param string $path
+ * @param string   $path
  * @param callable $callback
  */
 function within($path, $callback)
@@ -268,7 +267,7 @@ function workingPath()
  * Run command on server.
  *
  * @param string $command
- * @return Result
+ * @return \Deployer\Type\Result
  */
 function run($command)
 {
@@ -297,9 +296,10 @@ function run($command)
 
 /**
  * Execute commands on local machine.
+ *
  * @param string $command Command to run locally.
- * @param int $timeout (optional) Override process command timeout in seconds.
- * @return Result Output of command.
+ * @param int    $timeout (optional) Override process command timeout in seconds.
+ * @return \Deployer\Type\Result Output of command.
  * @throws \RuntimeException
  */
 function runLocally($command, $timeout = 60)
@@ -325,12 +325,13 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 
 /**
  * Upload file or directory to current server.
+ *
  * @param string $local
  * @param string $remote
  * @throws \RuntimeException
@@ -380,6 +381,7 @@ function download($local, $remote)
 
 /**
  * Writes a message to the output and adds a newline at the end.
+ *
  * @param string|array $message
  */
 function writeln($message)
@@ -389,6 +391,7 @@ function writeln($message)
 
 /**
  * Writes a message to the output.
+ *
  * @param string $message
  */
 function write($message)
@@ -398,7 +401,7 @@ function write($message)
 
 /**
  * @param string $key
- * @param mixed $value
+ * @param mixed  $value
  */
 function set($key, $value)
 {
@@ -424,7 +427,7 @@ function has($key)
 }
 
 /**
- * @param string $message
+ * @param string      $message
  * @param string|null $default
  * @return string
  * @codeCoverageIgnore
@@ -446,7 +449,7 @@ function ask($message, $default = null)
 
 /**
  * @param string $message
- * @param bool $default
+ * @param bool   $default
  * @return bool
  * @codeCoverageIgnore
  */
@@ -489,16 +492,15 @@ function askHiddenResponse($message)
 }
 
 /**
- * @return InputInterface
+ * @return \Symfony\Component\Console\Input\InputInterface
  */
 function input()
 {
     return Context::get()->getInput();
 }
 
-
 /**
- * @return OutputInterface
+ * @return \Symfony\Component\Console\Output\OutputInterface
  */
 function output()
 {
@@ -545,8 +547,8 @@ function isDebug()
  * When set env value you can write over values line "{{name}}".
  *
  * @param string|null $name
- * @param mixed $value
- * @return Environment|mixed
+ * @param mixed       $value
+ * @return \Deployer\Server\Environment|mixed
  */
 function env($name = null, $value = null)
 {

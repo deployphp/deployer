@@ -12,12 +12,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 class VerbosityString
 {
     /**
-     * @var OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $output;
 
     /**
-     * @param OutputInterface $output
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     public function __construct(OutputInterface $output)
     {

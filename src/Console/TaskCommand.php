@@ -19,19 +19,19 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 class TaskCommand extends Command
 {
     /**
-     * @var Deployer
+     * @var \Deployer\Deployer
      */
     private $deployer;
 
     /**
-     * @var ExecutorInterface
+     * @var \Deployer\Executor\ExecutorInterface
      */
     public $executor;
 
     /**
-     * @param string $name
-     * @param string $description
-     * @param Deployer $deployer
+     * @param string             $name
+     * @param string             $description
+     * @param \Deployer\Deployer $deployer
      */
     public function __construct($name, $description, Deployer $deployer)
     {

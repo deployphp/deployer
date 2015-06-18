@@ -18,10 +18,10 @@ class Application extends Console
     /**
      * Input definition for user specific arguments and options.
      *
-     * @var InputDefinition
+     * @var \Symfony\Component\Console\Input\InputDefinition
      */
     private $userDefinition;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -68,14 +68,14 @@ class Application extends Console
     }
 
     /**
-     * @return InputDefinition
+     * @return \Symfony\Component\Console\Input\InputDefinition
      */
     public function getUserDefinition()
     {
         if (null === $this->userDefinition) {
             $this->userDefinition = new InputDefinition();
         }
-        
+
         return $this->userDefinition;
     }
 

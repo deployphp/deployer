@@ -21,20 +21,20 @@ use Symfony\Component\Console\Question\Question;
 class AskPasswordGetter implements PasswordGetterInterface
 {
     /**
-     * @var InputInterface
+     * @var \Symfony\Component\Console\Input\InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $output;
 
     /**
-     * Construct
+     * Constructor.
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
@@ -57,9 +57,9 @@ class AskPasswordGetter implements PasswordGetterInterface
     }
 
     /**
-     * Create a lazy ask password getter with use context output and input interfaces
+     * Create a lazy ask password getter with use context output and input interfaces.
      *
-     * @return CallablePasswordGetter
+     * @return \Deployer\Server\Password\CallablePasswordGetter
      */
     public static function createLazyGetter()
     {
@@ -75,9 +75,9 @@ class AskPasswordGetter implements PasswordGetterInterface
     }
 
     /**
-     * Create question helper
+     * Create question helper.
      *
-     * @return QuestionHelper
+     * @return \Symfony\Component\Console\Helper\QuestionHelper
      */
     protected function createQuestionHelper()
     {

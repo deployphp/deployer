@@ -13,7 +13,7 @@ class ServerCollection extends Collection
 {
     /**
      * @param string $name
-     * @return ServerInterface
+     * @return \Deployer\Server\ServerInterface
      */
     public function get($name)
     {

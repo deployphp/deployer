@@ -57,7 +57,7 @@ class Task
     /**
      * Run task.
      *
-     * @param Context $context
+     * @param \Deployer\Task\Context $context
      */
     public function run(Context $context)
     {
@@ -142,7 +142,7 @@ class Task
     {
         return $this->onlyOn;
     }
-    
+
     /**
      * Decide to run or not to run on this server.
      * @param string $serverName

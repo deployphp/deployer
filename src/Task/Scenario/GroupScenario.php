@@ -12,12 +12,12 @@ use Deployer\Task\Scenario\Scenario;
 class GroupScenario extends Scenario
 {
     /**
-     * @var Scenario[]
+     * @var \Deployer\Task\Scenario\Scenario[]
      */
     private $group;
 
     /**
-     * @param Scenario[] $group
+     * @param \Deployer\Task\Scenario\Scenario[] $group
      */
     public function __construct(array $group)
     {

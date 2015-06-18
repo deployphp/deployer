@@ -2,6 +2,12 @@
     "name": "deployer/deployer",
     "description": "Deployment Tool",
     "license": "MIT",
+    "homepage": "http://deployer.org",
+    "support": {
+        "issues": "https://github.com/deployphp/deployer/issues",
+        "source": "https://github.com/deployphp/deployer",
+        "docs": "http://deployer.org/docs"
+    },
     "authors": [
         {
             "name": "Anton Medvedev",

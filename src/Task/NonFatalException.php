@@ -7,7 +7,9 @@
 
 namespace Deployer\Task;
 
-class NonFatalException extends \RuntimeException
+use RuntimeException;
+
+class NonFatalException extends RuntimeException
 {
     /**
      * Make message mandatory.

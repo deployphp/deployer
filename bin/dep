@@ -6,6 +6,10 @@
  * file that was distributed with this source code.
  */
 
+use Deployer\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
 $loaded = false;
 
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
@@ -34,9 +38,9 @@ require_once 'src/functions.php';
 define('DEPLOYER_BIN', __FILE__);
 
 // Init Deployer
-$console = new \Deployer\Console\Application('Deployer', 'master');
-$input = new \Symfony\Component\Console\Input\ArgvInput();
-$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$console = new Application('Deployer', 'master');
+$input = new ArgvInput();
+$output = new ConsoleOutput();
 $deployer = new \Deployer\Deployer($console, $input, $output);
 
 // Require deploy.php script

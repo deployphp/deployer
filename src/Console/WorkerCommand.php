@@ -12,6 +12,7 @@ use Deployer\Deployer;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
 use Deployer\Task\NonFatalException;
+use Exception;
 use Pure\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -78,7 +79,7 @@ class WorkerCommand extends Command
                     $pure->map('tasks_to_do')->delete($serverName);
                 }
             }
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $pure->queue('exception')->push([$serverName, get_class($exception), $exception->getMessage()]);
         }
     }

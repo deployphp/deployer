@@ -7,21 +7,27 @@
 
 namespace Deployer;
 
+use Deployer\Collection\Collection as BaseCollection;
 use Deployer\Console\WorkerCommand;
 use Deployer\Console\Application;
 use Deployer\Server;
+use Deployer\Server\EnvironmentCollection;
+use Deployer\Server\ServerCollection;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
+use Deployer\Task\Scenario\ScenarioCollection;
+use Deployer\Task\TaskCollection;
+use InvalidArgumentException;
 use Symfony\Component\Console;
 
 /**
- * @property Task\TaskCollection|Task\Task[] $tasks
- * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] $scenarios
- * @property Server\ServerCollection|Server\ServerInterface[] $servers
- * @property Server\EnvironmentCollection|Server\Environment[] $environments
- * @property Collection\Collection $parameters
+ * @property TaskCollection|Task\Task[] $tasks
+ * @property ScenarioCollection|Task\Scenario\Scenario[] $scenarios
+ * @property ServerCollection|Server\ServerInterface[] $servers
+ * @property EnvironmentCollection|Server\Environment[] $environments
+ * @property BaseCollection $parameters
  */
 class Deployer
 {
@@ -47,7 +53,7 @@ class Deployer
     private $output;
 
     /**
-     * @var Collection\Collection
+     * @var BaseCollection
      */
     private $collections;
 
@@ -67,12 +73,12 @@ class Deployer
         $this->input = $input;
         $this->output = $output;
 
-        $this->collections = new Collection\Collection();
-        $this->collections['tasks'] = new Task\TaskCollection();
-        $this->collections['scenarios'] = new Task\Scenario\ScenarioCollection();
-        $this->collections['servers'] = new Server\ServerCollection();
-        $this->collections['environments'] = new Server\EnvironmentCollection();
-        $this->collections['parameters'] = new Collection\Collection();
+        $this->collections = new BaseCollection();
+        $this->collections['tasks'] = new TaskCollection();
+        $this->collections['scenarios'] = new ScenarioCollection();
+        $this->collections['servers'] = new ServerCollection();
+        $this->collections['environments'] = new EnvironmentCollection();
+        $this->collections['parameters'] = new BaseCollection();
 
         $this->stageStrategy = new StageStrategy($this->servers, $this->environments);
 
@@ -93,7 +99,7 @@ class Deployer
     public function run()
     {
         $this->addConsoleCommands();
-        
+
         $this->console->add(new WorkerCommand($this));
 
         $this->console->run($this->input, $this->output);
@@ -105,12 +111,12 @@ class Deployer
     public function addConsoleCommands()
     {
         $this->console->addUserArgumentsAndOptions();
-        
+
         foreach ($this->tasks as $name => $task) {
             if ($task->isPrivate()) {
                 continue;
             }
-            
+
             $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }
@@ -134,14 +140,14 @@ class Deployer
     /**
      * @param string $name
      * @return mixed
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __get($name)
     {
         if ($this->collections->has($name)) {
             return $this->collections[$name];
         } else {
-            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
+            throw new InvalidArgumentException("Property \"$name\" does not exist.");
         }
     }
 

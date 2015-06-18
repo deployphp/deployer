@@ -10,12 +10,20 @@ use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
+use Deployer\Server\Remote\PhpSecLib;
+use Deployer\Server\Remote\SshExtension;
 use Deployer\Task\Task as TheTask;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
+use Deployer\Type\DotArray;
 use Deployer\Type\Result;
+use RuntimeException;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,9 +51,9 @@ function server($name, $host = null, $port = 22)
     $config = new Configuration($name, $host, $port);
 
     if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
-        $server = new Remote\SshExtension($config);
+        $server = new SshExtension($config);
     } else {
-        $server = new Remote\PhpSecLib($config);
+        $server = new PhpSecLib($config);
     }
 
     $deployer->servers->set($name, $server);
@@ -85,10 +93,10 @@ function serverList($file)
     foreach ((array)$serverList as $name => $config) {
         try {
             if (!is_array($config)) {
-                throw new \RuntimeException();
+                throw new RuntimeException();
             }
 
-            $da = new \Deployer\Type\DotArray($config);
+            $da = new DotArray($config);
 
             if ($da->hasKey('local')) {
                 $builder = localServer($name);
@@ -131,8 +139,8 @@ function serverList($file)
             foreach ($da->toArray() as $key => $value) {
                 $builder->env($key, $value);
             }
-        } catch (\RuntimeException $e) {
-            throw new \RuntimeException("Error in parsing `$file` file.");
+        } catch (RuntimeException $e) {
+            throw new RuntimeException("Error in parsing `$file` file.");
         }
     }
 }
@@ -300,7 +308,7 @@ function run($command)
  * @param string $command Command to run locally.
  * @param int $timeout (optional) Override process command timeout in seconds.
  * @return Result Output of command.
- * @throws \RuntimeException
+ * @throws RuntimeException
  */
 function runLocally($command, $timeout = 60)
 {
@@ -310,7 +318,7 @@ function runLocally($command, $timeout = 60)
         writeln("<comment>Run locally</comment>: $command");
     }
 
-    $process = new Symfony\Component\Process\Process($command);
+    $process = new Process($command);
     $process->setTimeout($timeout);
     $process->run(function ($type, $buffer) {
         if (isDebug()) {
@@ -323,9 +331,9 @@ function runLocally($command, $timeout = 60)
     });
 
     if (!$process->isSuccessful()) {
-        throw new \RuntimeException($process->getErrorOutput());
+        throw new RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 
@@ -333,7 +341,7 @@ function runLocally($command, $timeout = 60)
  * Upload file or directory to current server.
  * @param string $local
  * @param string $remote
- * @throws \RuntimeException
+ * @throws RuntimeException
  */
 function upload($local, $remote)
 {
@@ -346,7 +354,7 @@ function upload($local, $remote)
     } elseif (is_dir($local)) {
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
 
-        $finder = new Symfony\Component\Finder\Finder();
+        $finder = new Finder();
         $files = $finder
             ->files()
             ->ignoreUnreadableDirs()
@@ -362,7 +370,7 @@ function upload($local, $remote)
             );
         }
     } else {
-        throw new \RuntimeException("Uploading path '$local' does not exist.");
+        throw new RuntimeException("Uploading path '$local' does not exist.");
     }
 }
 
@@ -439,7 +447,7 @@ function ask($message, $default = null)
 
     $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
 
-    $question = new \Symfony\Component\Console\Question\Question($message, $default);
+    $question = new Question($message, $default);
 
     return $helper->ask(input(), output(), $question);
 }
@@ -461,7 +469,7 @@ function askConfirmation($message, $default = false)
     $yesOrNo = $default ? 'Y/n' : 'y/N';
     $message = "<question>$message [$yesOrNo]</question> ";
 
-    $question = new \Symfony\Component\Console\Question\ConfirmationQuestion($message, $default);
+    $question = new ConfirmationQuestion($message, $default);
 
     return $helper->ask(input(), output(), $question);
 }
@@ -481,7 +489,7 @@ function askHiddenResponse($message)
 
     $message = "<question>$message</question> ";
 
-    $question = new \Symfony\Component\Console\Question\Question($message);
+    $question = new Question($message);
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 

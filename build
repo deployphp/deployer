@@ -1,5 +1,8 @@
 #!/usr/bin/env php
 <?php
+use Phar;
+use Symfony\Component\Finder\Finder;
+
 require __DIR__ . '/vendor/autoload.php';
 
 $opt = getopt('v::');
@@ -19,12 +22,12 @@ if (file_exists($pharFile)) {
     unlink($pharFile);
 }
 
-$phar = new \Phar($pharFile, 0, $pharName);
-$phar->setSignatureAlgorithm(\Phar::SHA1);
+$phar = new Phar($pharFile, 0, $pharName);
+$phar->setSignatureAlgorithm(Phar::SHA1);
 
 $phar->startBuffering();
 
-$finder = new Symfony\Component\Finder\Finder();
+$finder = new Finder();
 $finder->files()
     ->ignoreVCS(true)
     ->name('*.php')

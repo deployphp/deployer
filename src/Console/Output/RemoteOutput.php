@@ -8,6 +8,7 @@
 namespace Deployer\Console\Output;
 
 use Pure\Client;
+use RuntimeException;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -61,7 +62,7 @@ class RemoteOutput implements OutputInterface
      */
     public function setVerbosity($level)
     {
-        throw new \RuntimeException('Can not modify verbosity in parallel mode.');
+        throw new RuntimeException('Can not modify verbosity in parallel mode.');
     }
 
     /**
@@ -77,7 +78,7 @@ class RemoteOutput implements OutputInterface
      */
     public function setDecorated($decorated)
     {
-        throw new \RuntimeException('Can not modify decorated in parallel mode.');
+        throw new RuntimeException('Can not modify decorated in parallel mode.');
     }
 
     /**
@@ -93,7 +94,7 @@ class RemoteOutput implements OutputInterface
      */
     public function setFormatter(OutputFormatterInterface $formatter)
     {
-        throw new \RuntimeException('Can not modify formatter in parallel mode.');
+        throw new RuntimeException('Can not modify formatter in parallel mode.');
     }
 
     /**

@@ -9,6 +9,7 @@ namespace Deployer\Server;
 
 use Deployer\Server\Password\AskPasswordGetter;
 use Deployer\Server\Password\PasswordGetterInterface;
+use InvalidArgumentException;
 
 /**
  * Build server configuration
@@ -231,7 +232,7 @@ class Builder
         }
 
         // Invalid password
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
             is_object($password) ? get_class($password) : gettype($password)
         ));

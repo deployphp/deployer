@@ -27,39 +27,40 @@ class Deployer
 {
     /**
      * Global instance of deployer. It's can be accessed only after constructor call.
-     * @var Deployer
+     *
+     * @var \Deployer\Deployer
      */
     private static $instance;
 
     /**
-     * @var Application
+     * @var \Deployer\Console\Application
      */
     private $console;
 
     /**
-     * @var Console\Input\InputInterface
+     * @var \Symfony\Component\Console\Input\InputInterface
      */
     private $input;
 
     /**
-     * @var Console\Output\OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $output;
 
     /**
-     * @var Collection\Collection
+     * @var \Deployer\Collection\Collection
      */
     private $collections;
 
     /**
-     * @var StageStrategy
+     * @var \Deployer\Stage\StageStrategy
      */
     private $stageStrategy;
 
     /**
-     * @param Application $console
-     * @param Console\Input\InputInterface $input
-     * @param Console\Output\OutputInterface $output
+     * @param \Deployer\Console\Application                     $console
+     * @param \Symfony\Component\Console\Input\InputInterface   $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
@@ -80,7 +81,7 @@ class Deployer
     }
 
     /**
-     * @return Deployer
+     * @return \Deployer\Deployer
      */
     public static function get()
     {
@@ -93,7 +94,7 @@ class Deployer
     public function run()
     {
         $this->addConsoleCommands();
-        
+
         $this->console->add(new WorkerCommand($this));
 
         $this->console->run($this->input, $this->output);
@@ -105,18 +106,18 @@ class Deployer
     public function addConsoleCommands()
     {
         $this->console->addUserArgumentsAndOptions();
-        
+
         foreach ($this->tasks as $name => $task) {
             if ($task->isPrivate()) {
                 continue;
             }
-            
+
             $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }
 
     /**
-     * @return Console\Input\InputInterface
+     * @return \Symfony\Component\Console\Input\InputInterface
      */
     public function getInput()
     {
@@ -124,7 +125,7 @@ class Deployer
     }
 
     /**
-     * @return Console\Output\OutputInterface
+     * @return \Symfony\Component\Console\Output\OutputInterface
      */
     public function getOutput()
     {
@@ -147,7 +148,7 @@ class Deployer
 
     /**
      * @param string $name
-     * @return Console\Helper\HelperInterface
+     * @return \Symfony\Component\Console\Helper\HelperInterface
      */
     public function getHelper($name)
     {
@@ -155,7 +156,7 @@ class Deployer
     }
 
     /**
-     * @return Application
+     * @return \Deployer\Console\Application
      */
     public function getConsole()
     {
@@ -163,7 +164,7 @@ class Deployer
     }
 
     /**
-     * @return StageStrategy
+     * @return \Deployer\Stage\StageStrategy
      */
     public function getStageStrategy()
     {

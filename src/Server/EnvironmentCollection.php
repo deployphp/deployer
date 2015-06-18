@@ -13,7 +13,7 @@ class EnvironmentCollection extends Collection
 {
     /**
      * @param string $name
-     * @return Environment
+     * @return \Deployer\Collection\Collection
      */
     public function get($name)
     {

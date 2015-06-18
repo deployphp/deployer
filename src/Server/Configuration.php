@@ -130,7 +130,7 @@ class Configuration
      *
      * @param int $authenticationMethod
      *
-     * @return Configuration
+     * @return $this
      */
     public function setAuthenticationMethod($authenticationMethod)
     {
@@ -154,7 +154,7 @@ class Configuration
      *
      * @param string $configFile
      *
-     * @return Configuration
+     * @return $this
      */
     public function setConfigFile($configFile)
     {
@@ -178,7 +178,7 @@ class Configuration
      *
      * @param string $host
      *
-     * @return Configuration
+     * @return $this
      */
     public function setHost($host)
     {
@@ -202,7 +202,7 @@ class Configuration
      *
      * @param string $password
      *
-     * @return Configuration
+     * @return $this
      */
     public function setPassword($password)
     {
@@ -226,7 +226,7 @@ class Configuration
      *
      * @param int $port
      *
-     * @return Configuration
+     * @return $this
      */
     public function setPort($port)
     {
@@ -250,7 +250,7 @@ class Configuration
      *
      * @param string $path
      *
-     * @return Configuration
+     * @return $this
      */
     public function setPublicKey($path)
     {
@@ -274,7 +274,7 @@ class Configuration
      *
      * @param string $passPhrase
      *
-     * @return Configuration
+     * @return $this
      */
     public function setPassPhrase($passPhrase)
     {
@@ -298,7 +298,7 @@ class Configuration
      *
      * @param string $path
      *
-     * @return Configuration
+     * @return $this
      */
     public function setPrivateKey($path)
     {
@@ -322,7 +322,7 @@ class Configuration
      *
      * @param string $user
      *
-     * @return Configuration
+     * @return $this
      */
     public function setUser($user)
     {
@@ -346,7 +346,7 @@ class Configuration
      *
      * @param string $name
      *
-     * @return Configuration
+     * @return $this
      */
     public function setName($name)
     {
@@ -370,7 +370,7 @@ class Configuration
      *
      * @param string $pemFile
      *
-     * @return Configuration
+     * @return $this
      */
     public function setPemFile($pemFile)
     {

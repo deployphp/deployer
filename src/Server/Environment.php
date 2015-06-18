@@ -22,6 +22,7 @@ class Environment
 
     /**
      * Array of env values.
+     *
      * @var \Deployer\Type\DotArray
      */
     private $values = null;
@@ -29,6 +30,7 @@ class Environment
     /**
      * Values represented by their keys here are protected, and cannot be
      * changed by calling the `set` method.
+     *
      * @var array
      */
     private $protectedNames = [];
@@ -72,7 +74,7 @@ class Environment
     private function checkIfNameIsProtected($name)
     {
         $length = strlen($name);
-        
+
         foreach ($this->protectedNames as $protectedName) {
             $len = strlen($protectedName);
             if ($name === $protectedName) {

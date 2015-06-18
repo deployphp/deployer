@@ -14,7 +14,7 @@ class ScenarioCollection extends Collection
 {
     /**
      * @param string $name
-     * @return Scenario
+     * @return \Deployer\Task\Scenario
      */
     public function get($name)
     {

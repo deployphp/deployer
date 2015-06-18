@@ -13,17 +13,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 class OutputWatcher implements OutputInterface
 {
     /**
-     * @var OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $output;
-    
+
     /**
      * @var bool
      */
     private $wasWritten = false;
 
     /**
-     * @param OutputInterface $output
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     public function __construct(OutputInterface $output)
     {

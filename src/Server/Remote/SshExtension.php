@@ -14,13 +14,13 @@ use Ssh;
 class SshExtension implements ServerInterface
 {
     /**
-     * @var Configuration
+     * @var \Deployer\Server\Configuration
      */
     private $configuration;
-    
+
     /**
      * SSH session.
-     * @var Ssh\Session
+     * @var \Ssh\Session
      */
     private $session;
 
@@ -31,7 +31,7 @@ class SshExtension implements ServerInterface
     private $directories = [];
 
     /**
-     * @param Configuration $configuration
+     * @param \Deployer\Server\Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {
@@ -81,7 +81,7 @@ class SshExtension implements ServerInterface
             case Configuration::AUTH_BY_PEM_FILE:
 
                 throw new \RuntimeException('If you want to use pem file, switch to using PhpSecLib.');
-                
+
             case Configuration::AUTH_BY_AGENT:
 
                 throw new \RuntimeException('If you want to use forward agent function, switch to using PhpSecLib.');

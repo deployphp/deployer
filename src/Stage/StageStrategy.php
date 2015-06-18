@@ -15,15 +15,21 @@ use Deployer\Server\ServerCollection;
 class StageStrategy implements StageStrategyInterface
 {
     /**
-     * @var EnvironmentCollection
+     * @var \Deployer\Server\EnvironmentCollection
      */
     private $environments;
 
     /**
-     * @var ServerCollection
+     * @var \Deployer\Server\ServerCollection
      */
     private $servers;
 
+    /**
+     * Constructor.
+     *
+     * @param \Deployer\Server\ServerCollection      $servers
+     * @param \Deployer\Server\EnvironmentCollection $environments
+     */
     public function __construct(ServerCollection $servers, EnvironmentCollection $environments)
     {
         $this->servers = $servers;

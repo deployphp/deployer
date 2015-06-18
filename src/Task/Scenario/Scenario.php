@@ -15,12 +15,12 @@ class Scenario
     private $taskName;
 
     /**
-     * @var Scenario[]
+     * @var \Deployer\Task\Scenario\Scenario[]
      */
     private $after = [];
 
     /**
-     * @var Scenario[]
+     * @var \Deployer\Task\Scenario\Scenario[]
      */
     private $before = [];
 
@@ -45,7 +45,7 @@ class Scenario
     }
 
     /**
-     * @param Scenario $scenario
+     * @param \Deployer\Task\Scenario\Scenario $scenario
      */
     public function addBefore(Scenario $scenario)
     {
@@ -53,7 +53,7 @@ class Scenario
     }
 
     /**
-     * @param Scenario $scenario
+     * @param \Deployer\Task\Scenario\Scenario $scenario
      */
     public function addAfter(Scenario $scenario)
     {

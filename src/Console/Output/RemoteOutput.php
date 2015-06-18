@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RemoteOutput implements OutputInterface
 {
     /**
-     * @var OutputInterface
+     * @var \Symfony\Component\Console\Output\OutputInterface
      */
     private $output;
 
@@ -29,9 +29,9 @@ class RemoteOutput implements OutputInterface
     private $server;
 
     /**
-     * @param OutputInterface $output
-     * @param Client $pure
-     * @param string $server
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @param \Pure\Client                                      $pure
+     * @param string                                            $server
      */
     public function __construct(OutputInterface $output, Client $pure, $server)
     {

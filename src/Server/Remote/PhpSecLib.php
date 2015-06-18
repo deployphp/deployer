@@ -17,12 +17,12 @@ use RuntimeException;
 class PhpSecLib implements ServerInterface
 {
     /**
-     * @var Configuration
+     * @var \Deployer\Server\Configuration
      */
     private $configuration;
 
     /**
-     * @var SFTP
+     * @var \phpseclib\Net\SFTP
      */
     private $sftp;
 
@@ -33,7 +33,7 @@ class PhpSecLib implements ServerInterface
     private $directories = [];
 
     /**
-     * @param Configuration $configuration
+     * @param \Deployer\Server\Configuration $configuration
      */
     public function __construct(Configuration $configuration)
     {

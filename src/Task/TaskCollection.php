@@ -13,7 +13,7 @@ class TaskCollection extends Collection
 {
     /**
      * @param string $name
-     * @return Task
+     * @return \Deployer\Task
      */
     public function get($name)
     {

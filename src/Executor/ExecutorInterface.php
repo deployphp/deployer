@@ -16,11 +16,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface ExecutorInterface
 {
     /**
-     * @param Task[] $tasks
-     * @param ServerInterface[] $servers
-     * @param Environment[] $environments
-     * @param InputInterface $input
-     * @param OutputInterface $output
+     * @param \Deployer\Task\Task[] $tasks
+     * @param \Deployer\Server\ServerInterface[] $servers
+     * @param \Deployer\Server\Environment[] $environments
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      */
     public function run($tasks, $servers, $environments, $input, $output);
 }

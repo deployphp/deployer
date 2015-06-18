@@ -56,7 +56,7 @@ class ParallelExecutor implements ExecutorInterface
     private $output;
 
     /**
-     * @var Informer
+     * @var \Deployer\Executor\Informer
      */
     private $informer;
 
@@ -66,7 +66,7 @@ class ParallelExecutor implements ExecutorInterface
     private $port;
 
     /**
-     * @var Server
+     * @var \Pure\Server
      */
     private $pure;
 
@@ -83,12 +83,12 @@ class ParallelExecutor implements ExecutorInterface
     private $wait = false;
 
     /**
-     * @var QueueStorage
+     * @var \Pure\Storage\QueueStorage
      */
     private $outputStorage;
 
     /**
-     * @var QueueStorage
+     * @var \Pure\Storage\QueueStorage
      */
     private $exceptionStorage;
 
@@ -114,13 +114,13 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
-     * @param InputDefinition $userDefinition
+     * @param \Symfony\Component\Console\Input\InputDefinition $userDefinition
      */
     public function __construct(InputDefinition $userDefinition)
     {
         $this->userDefinition = $userDefinition;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -177,7 +177,7 @@ class ParallelExecutor implements ExecutorInterface
             '--master' => '127.0.0.1:' . $this->port,
             '--server' => '',
         ];
-        
+
         // Get verbosity.
         $verbosity = new VerbosityString($this->output);
 
@@ -193,10 +193,10 @@ class ParallelExecutor implements ExecutorInterface
         foreach ($this->userDefinition->getOptions() as $option) {
             $input["--" . $option->getName()] = $this->input->getOption($option->getName());
         }
-        
+
         foreach ($this->servers as $serverName => $server) {
             $input['--server'] = $serverName;
-            
+
             $process = new Process(
                 "php " . DEPLOYER_BIN .
                 (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
@@ -243,7 +243,7 @@ class ParallelExecutor implements ExecutorInterface
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
-            
+
             if ($exceptionClass == 'Deployer\Task\NonFatalException') {
 
                 // If we got NonFatalException, continue other tasks.
@@ -325,7 +325,7 @@ class ParallelExecutor implements ExecutorInterface
                 } else {
                     $this->informer->taskError($this->hasNonFatalException);
                 }
-                
+
                 // We waited all workers to finish their tasks.
                 // Wait no more!
                 $this->wait = false;

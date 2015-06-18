@@ -40,4 +40,3 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
         $command->run($this->input, $this->output);
     }
 }
- 

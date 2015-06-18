@@ -68,7 +68,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(['writeln', 'getVerbosity'])
             ->getMock();
 
-        $output->expects($this->once()) 
+        $output->expects($this->once())
             ->method('writeln')
             ->with($this->equalTo('<fg=yellow>✘</fg=yellow> Some errors occurred!'));
 
@@ -76,4 +76,3 @@ class InformerTest extends \PHPUnit_Framework_TestCase
         $informer->taskError(true);
     }
 }
-

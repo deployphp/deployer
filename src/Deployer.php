@@ -100,7 +100,7 @@ class Deployer
     }
 
     /**
-     * Transform tasks to console commands. 
+     * Transform tasks to console commands.
      */
     public function addConsoleCommands()
     {

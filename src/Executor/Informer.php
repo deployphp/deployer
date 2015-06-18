@@ -77,7 +77,7 @@ class Informer
 
     /**
      * Print error.
-     * 
+     *
      * @param bool $nonFatal
      */
     public function taskError($nonFatal = true)

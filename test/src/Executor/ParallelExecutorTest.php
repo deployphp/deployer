@@ -35,4 +35,3 @@ class ParallelExecutorTest extends RecipeTester
         $this->assertContains('Ok', $display);
     }
 }
- 

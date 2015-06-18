@@ -38,7 +38,7 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testInstance()
-    {  
+    {
         $this->assertEquals($this->deployer, Deployer::get());
     }
 
@@ -58,4 +58,3 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
         $this->deployer->some_collection;
     }
 }
- 

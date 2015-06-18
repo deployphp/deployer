@@ -14,7 +14,6 @@ use Deployer\Server\ServerCollection;
 
 class StageStrategy implements StageStrategyInterface
 {
-
     /**
      * @var EnvironmentCollection
      */
@@ -57,7 +56,6 @@ class StageStrategy implements StageStrategyInterface
                     throw new \RuntimeException("Stage or server `$stage` was not found.");
                 }
             }
-
         } else {
             // Otherwise run on all servers what does not specify stage.
             foreach ($this->environments as $name => $env) {

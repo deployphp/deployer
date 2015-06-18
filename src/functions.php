@@ -131,11 +131,9 @@ function serverList($file)
             foreach ($da->toArray() as $key => $value) {
                 $builder->env($key, $value);
             }
-
         } catch (\RuntimeException $e) {
             throw new \RuntimeException("Error in parsing `$file` file.");
         }
-
     }
 }
 
@@ -154,7 +152,7 @@ function task($name, $body)
     if ($body instanceof \Closure) {
         $task = new TheTask($name, $body);
         $scenario = new Scenario($name);
-    } else if (is_array($body)) {
+    } elseif (is_array($body)) {
         $task = new GroupTask();
         $scenario = new GroupScenario(array_map(function ($name) use ($deployer) {
             return $deployer->scenarios->get($name);
@@ -314,7 +312,7 @@ function runLocally($command, $timeout = 60)
 
     $process = new Symfony\Component\Process\Process($command);
     $process->setTimeout($timeout);
-    $process->run(function($type, $buffer){
+    $process->run(function ($type, $buffer) {
         if (isDebug()) {
             if ('err' === $type) {
                 write("<fg=red>></fg=red> $buffer");
@@ -342,13 +340,10 @@ function upload($local, $remote)
     $server = Context::get()->getServer();
 
     if (is_file($local)) {
-
         writeln("Upload file <info>$local</info> to <info>$remote</info>");
 
         $server->upload($local, $remote);
-
     } elseif (is_dir($local)) {
-
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
 
         $finder = new Symfony\Component\Finder\Finder();
@@ -366,7 +361,6 @@ function upload($local, $remote)
                 $remote . '/' . $file->getRelativePathname()
             );
         }
-
     } else {
         throw new \RuntimeException("Uploading path '$local' does not exist.");
     }
@@ -561,7 +555,7 @@ function env($name = null, $value = null)
     } else {
         if (null === $name && null === $value) {
             return Context::get()->getEnvironment();
-        } else if (null !== $name && null === $value) {
+        } elseif (null !== $name && null === $value) {
             return Context::get()->getEnvironment()->get($name);
         } else {
             Context::get()->getEnvironment()->set($name, $value);

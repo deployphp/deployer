@@ -81,7 +81,7 @@ This is to ensure proper review of all the code.
 Fork the project, create a feature branch, and send a pull request.
 
 To ensure a consistent code base, you should make sure the code follows
-the [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md).
+the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
 
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 

@@ -7,7 +7,6 @@
 
 namespace Deployer\Helper;
 
-
 use Deployer\Console\Application;
 use Deployer\Deployer;
 use Symfony\Component\Console\Tester\ApplicationTester;
@@ -50,4 +49,4 @@ trait DeployerHelper
         $this->output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
         $this->deployer = new Deployer($console, $this->input, $this->output);
     }
-} 
+}

@@ -140,7 +140,7 @@ class Deployer
     /**
      * @param string $name
      * @return mixed
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __get($name)
     {

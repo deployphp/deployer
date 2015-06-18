@@ -8,9 +8,10 @@
 namespace Deployer\Collection;
 
 use ArrayIterator;
+use Countable;
 use RuntimeException;
 
-class Collection implements CollectionInterface, \Countable
+class Collection implements CollectionInterface, Countable
 {
     /**
      * @var array

@@ -7,6 +7,7 @@
  */
 
 use Deployer\Console\Application;
+use Deployer\Deployer;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -41,7 +42,7 @@ define('DEPLOYER_BIN', __FILE__);
 $console = new Application('Deployer', 'master');
 $input = new ArgvInput();
 $output = new ConsoleOutput();
-$deployer = new \Deployer\Deployer($console, $input, $output);
+$deployer = new Deployer($console, $input, $output);
 
 // Require deploy.php script
 $options = getopt('f::', ['file::']);

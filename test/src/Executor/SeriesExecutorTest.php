@@ -11,8 +11,9 @@ use Deployer\Helper\DeployerHelper;
 use Deployer\Server\Environment;
 use Deployer\Server\Local;
 use Deployer\Task\Task;
+use PHPUnit_Framework_TestCase;
 
-class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
+class SeriesExecutorTest extends PHPUnit_Framework_TestCase
 {
     use DeployerHelper;
 

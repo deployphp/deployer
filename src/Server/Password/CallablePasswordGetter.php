@@ -7,6 +7,8 @@
 
 namespace Deployer\Server\Password;
 
+use InvalidArgumentException;
+
 /**
  * Get password with use another function (Closure)
  *
@@ -27,7 +29,7 @@ class CallablePasswordGetter implements PasswordGetterInterface
     public function __construct($callable)
     {
         if (!is_callable($callable)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'The first argument must be a callable, but "%s" given.',
                 is_object($callable) ? get_class($callable) : gettype($callable)
             ));

@@ -7,6 +7,9 @@
 
 namespace Deployer\Type;
 
+use RuntimeException;
+use ArrayAccess;
+
 /**
  * DotArray
  * Allow access $array['abc.xyz'] same $array['abc']['xyz']
@@ -16,7 +19,7 @@ namespace Deployer\Type;
  * @author OanhNN <oanhnn@rikkeisoft.com>
  * @version 1.0
  */
-class DotArray implements \ArrayAccess
+class DotArray implements ArrayAccess
 {
     /**
      * Storage array
@@ -51,12 +54,12 @@ class DotArray implements \ArrayAccess
      *
      * @param string $key
      * @return array
-     * @throws \RuntimeException
+     * @throws RuntimeException
      */
     protected function explodeKey($key)
     {
         if (!self::validateKey($key)) {
-            throw new \RuntimeException("Key `$key` is invalid");
+            throw new RuntimeException("Key `$key` is invalid");
         }
 
         return explode('.', $key);
@@ -73,14 +76,14 @@ class DotArray implements \ArrayAccess
         $parts = $this->explodeKey($key);
         $count = count($parts) - 1;
         $cKey = array_pop($parts);
-        
+
         if (0 == $count) {
             $array = $this->array;
         } else {
             $pKey = implode('.', $parts);
             $array = $this->offsetGet($pKey);
         }
-        
+
         return is_array($array) && array_key_exists($cKey, $array);
     }
 
@@ -124,7 +127,7 @@ class DotArray implements \ArrayAccess
             }
             $scope = &$scope[$parts[$i]];
         }
-        
+
         return isset($scope[$parts[$i]]) ? $scope[$parts[$i]] : null;
     }
 

@@ -9,12 +9,14 @@
 
 namespace Deployer\Server\Password;
 
+use PHPUnit_Framework_TestCase;
+
 /**
  * Callable password getter test case
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class CallablePasswordGetterTest extends \PHPUnit_Framework_TestCase
+class CallablePasswordGetterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Base testing with use closure

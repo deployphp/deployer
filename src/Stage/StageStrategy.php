@@ -11,6 +11,7 @@ use Deployer\Server\Environment;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\Local;
 use Deployer\Server\ServerCollection;
+use RuntimeException;
 
 class StageStrategy implements StageStrategyInterface
 {
@@ -53,7 +54,7 @@ class StageStrategy implements StageStrategyInterface
                     $servers = [$stage => $this->servers->get($stage)];
                 } else {
                     // Nothing found.
-                    throw new \RuntimeException("Stage or server `$stage` was not found.");
+                    throw new RuntimeException("Stage or server `$stage` was not found.");
                 }
             }
         } else {
@@ -72,7 +73,7 @@ class StageStrategy implements StageStrategyInterface
 
                 $servers = ['localhost' => $local];
             } else {
-                throw new \RuntimeException('You need to specify at least one server or stage.');
+                throw new RuntimeException('You need to specify at least one server or stage.');
             }
         }
 

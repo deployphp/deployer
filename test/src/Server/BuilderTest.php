@@ -9,10 +9,12 @@
 
 namespace Deployer\Server;
 
+use PHPUnit_Framework_TestCase;
+
 /**
  * Builder testing
  */
-class BuilderTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Test set user for connection

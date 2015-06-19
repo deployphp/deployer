@@ -7,6 +7,8 @@
 
 namespace Deployer\Task;
 
+use RuntimeException;
+
 class GroupTask extends Task
 {
     /**
@@ -22,6 +24,6 @@ class GroupTask extends Task
      */
     public function run(Context $context)
     {
-        throw new \RuntimeException('Group task should never be running.');
+        throw new RuntimeException('Group task should never be running.');
     }
 }

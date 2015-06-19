@@ -9,12 +9,14 @@
 
 namespace Deployer\Server\Password;
 
+use PHPUnit_Framework_TestCase;
+
 /**
  * Testing simple password getter
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class SimplePasswordGetterTest extends \PHPUnit_Framework_TestCase
+class SimplePasswordGetterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Base test

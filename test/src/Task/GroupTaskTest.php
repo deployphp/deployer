@@ -7,7 +7,9 @@
 
 namespace Deployer\Task;
 
-class GroupTaskTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class GroupTaskTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \RuntimeException

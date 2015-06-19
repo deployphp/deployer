@@ -7,7 +7,10 @@
 
 namespace Deployer\Collection;
 
-interface CollectionInterface extends \IteratorAggregate, \ArrayAccess
+use ArrayAccess;
+use IteratorAggregate;
+
+interface CollectionInterface extends IteratorAggregate, ArrayAccess
 {
     /**
      * @param string $name

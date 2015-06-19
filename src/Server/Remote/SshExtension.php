@@ -9,7 +9,12 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\ServerInterface;
 use Deployer\Server\Configuration;
+use RuntimeException;
 use Ssh;
+use Ssh\Authentication\Password;
+use Ssh\Authentication\PublicKeyFile;
+use Ssh\Configuration as SshConfiguration;
+use Ssh\SshConfigFileConfiguration;
 
 class SshExtension implements ServerInterface
 {
@@ -17,7 +22,7 @@ class SshExtension implements ServerInterface
      * @var Configuration
      */
     private $configuration;
-    
+
     /**
      * SSH session.
      * @var Ssh\Session
@@ -44,18 +49,18 @@ class SshExtension implements ServerInterface
     public function connect()
     {
         $serverConfig = $this->getConfiguration();
-        $configuration = new Ssh\Configuration($serverConfig->getHost(), $serverConfig->getPort());
+        $configuration = new SshConfiguration($serverConfig->getHost(), $serverConfig->getPort());
 
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
-                $authentication = new Ssh\Authentication\Password(
+                $authentication = new Password(
                     $serverConfig->getUser(),
                     $serverConfig->getPassword()
                 );
                 break;
 
             case Configuration::AUTH_BY_CONFIG:
-                $configuration = new Ssh\SshConfigFileConfiguration(
+                $configuration = new SshConfigFileConfiguration(
                     $serverConfig->getConfigFile(),
                     $serverConfig->getHost(),
                     $serverConfig->getPort()
@@ -69,7 +74,7 @@ class SshExtension implements ServerInterface
 
             case Configuration::AUTH_BY_IDENTITY_FILE:
 
-                $authentication = new Ssh\Authentication\PublicKeyFile(
+                $authentication = new PublicKeyFile(
                     $serverConfig->getUser(),
                     $serverConfig->getPublicKey(),
                     $serverConfig->getPrivateKey(),
@@ -80,14 +85,14 @@ class SshExtension implements ServerInterface
 
             case Configuration::AUTH_BY_PEM_FILE:
 
-                throw new \RuntimeException('If you want to use pem file, switch to using PhpSecLib.');
-                
+                throw new RuntimeException('If you want to use pem file, switch to using PhpSecLib.');
+
             case Configuration::AUTH_BY_AGENT:
 
-                throw new \RuntimeException('If you want to use forward agent function, switch to using PhpSecLib.');
+                throw new RuntimeException('If you want to use forward agent function, switch to using PhpSecLib.');
 
             default:
-                throw new \RuntimeException('You need to specify authentication method.');
+                throw new RuntimeException('You need to specify authentication method.');
         }
 
         $this->session = new Ssh\Session($configuration, $authentication);
@@ -128,7 +133,7 @@ class SshExtension implements ServerInterface
         }
 
         if (!$this->session->getSftp()->send($local, $remote)) {
-            throw new \RuntimeException('Can not upload file.');
+            throw new RuntimeException('Can not upload file.');
         }
     }
 
@@ -140,7 +145,7 @@ class SshExtension implements ServerInterface
         $this->checkConnection();
 
         if (!$this->session->getSftp()->receive($remote, $local)) {
-            throw new \RuntimeException('Can not download file.');
+            throw new RuntimeException('Can not download file.');
         }
     }
 

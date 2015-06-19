@@ -7,6 +7,8 @@
 
 namespace Deployer\Task;
 
+use Closure;
+
 class Task
 {
     /**
@@ -48,7 +50,7 @@ class Task
      * @param string $name Tasks name
      * @param \Closure $callback Task code.
      */
-    public function __construct($name, \Closure $callback)
+    public function __construct($name, Closure $callback)
     {
         $this->name = $name;
         $this->callback = $callback;
@@ -142,7 +144,7 @@ class Task
     {
         return $this->onlyOn;
     }
-    
+
     /**
      * Decide to run or not to run on this server.
      * @param string $serverName

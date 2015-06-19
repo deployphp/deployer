@@ -9,9 +9,10 @@ namespace Deployer\Helper;
 
 use Deployer\Console\Application;
 use Deployer\Deployer;
+use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-abstract class RecipeTester extends \PHPUnit_Framework_TestCase
+abstract class RecipeTester extends PHPUnit_Framework_TestCase
 {
     /**
      * @var ApplicationTester

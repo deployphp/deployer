@@ -7,7 +7,11 @@
 
 namespace Deployer\Collection;
 
-class Collection implements CollectionInterface, \Countable
+use ArrayIterator;
+use Countable;
+use RuntimeException;
+
+class Collection implements CollectionInterface, Countable
 {
     /**
      * @var array
@@ -24,7 +28,7 @@ class Collection implements CollectionInterface, \Countable
         } else {
             $class = explode('\\', get_class($this));
             $class = end($class);
-            throw new \RuntimeException("Object `$name` does not exist in $class.");
+            throw new RuntimeException("Object `$name` does not exist in $class.");
         }
     }
 
@@ -49,7 +53,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->collection);
+        return new ArrayIterator($this->collection);
     }
 
     /**

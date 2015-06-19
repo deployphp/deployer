@@ -7,7 +7,9 @@
 
 namespace Deployer\Server;
 
-class EnvironmentTest extends \PHPUnit_Framework_TestCase
+use PHPUnit_Framework_TestCase;
+
+class EnvironmentTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException

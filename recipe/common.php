@@ -8,6 +8,11 @@
 /**
  * Common parameters.
  */
+use Deployer\Deployer;
+use Deployer\Task\Context;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
@@ -34,8 +39,8 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
 /**
  * Default arguments and options.
  */
-argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
-option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
+argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
+option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
 
 /**
  * Rollback to previous release.
@@ -65,14 +70,14 @@ task('rollback', function () {
  * Preparing server for deployment.
  */
 task('deploy:prepare', function () {
-    \Deployer\Task\Context::get()->getServer()->connect();
+    Context::get()->getServer()->connect();
 
     // Check if shell is POSIX-compliant
     try {
         cd(''); // To run command as raw.
         run('echo $0');
-    } catch (\RuntimeException $e) {
-        $formatter = \Deployer\Deployer::get()->getHelper('formatter');
+    } catch (RuntimeException $e) {
+        $formatter = Deployer::get()->getHelper('formatter');
 
         $errorMessage = [
             "Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.",
@@ -82,7 +87,7 @@ task('deploy:prepare', function () {
 
         throw $e;
     }
-    
+
     run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
 
     // Create releases dir.
@@ -128,7 +133,7 @@ task('deploy:update_code', function () {
     $branch = env('branch');
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
-    
+
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
     }
@@ -141,7 +146,7 @@ task('deploy:update_code', function () {
     }
 
     $releases = env('releases_list');
-    
+
     if ($gitCache && isset($releases[1])) {
         try {
             run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
@@ -223,8 +228,8 @@ task('deploy:writable', function () {
             } else {
                 run("$sudo chmod 777 $dirs");
             }
-        } catch (\RuntimeException $e) {
-            $formatter = \Deployer\Deployer::get()->getHelper('formatter');
+        } catch (RuntimeException $e) {
+            $formatter = Deployer::get()->getHelper('formatter');
 
             $errorMessage = [
                 "Unable to setup correct permissions for writable dirs.                  ",

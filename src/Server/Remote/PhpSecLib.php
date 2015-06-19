@@ -110,7 +110,7 @@ class PhpSecLib implements ServerInterface
 
         if ($this->sftp->getExitStatus() !== 0) {
             $output = $this->sftp->getStdError() ?: $result;
-            throw new \RuntimeException($output);
+            throw new RuntimeException($output);
         }
 
         return $result;
@@ -131,7 +131,7 @@ class PhpSecLib implements ServerInterface
         }
 
         if (!$this->sftp->put($remote, $local, SFTP::SOURCE_LOCAL_FILE)) {
-            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
+            throw new RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }
 
@@ -143,7 +143,7 @@ class PhpSecLib implements ServerInterface
         $this->checkConnection();
 
         if (!$this->sftp->get($remote, $local)) {
-            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
+            throw new RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
     }
 

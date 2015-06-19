@@ -8,9 +8,10 @@
 namespace Deployer\Executor;
 
 use Deployer\Task\NonFatalException;
+use PHPUnit_Framework_TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InformerTest extends \PHPUnit_Framework_TestCase
+class InformerTest extends PHPUnit_Framework_TestCase
 {
     public function testInformer()
     {

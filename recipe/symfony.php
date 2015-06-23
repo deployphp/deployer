@@ -118,9 +118,9 @@ task('deploy', [
     'deploy:writable',
     'deploy:assets',
     'deploy:vendors',
+    'deploy:symlink',
     'deploy:assetic:dump',
     'deploy:cache:warmup',
-    'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');
 

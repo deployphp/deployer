@@ -182,14 +182,16 @@ task('deploy:shared', function () {
         // Remove from source
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 
-        // Create dir of shared file
-        run("mkdir -p $sharedPath/" . dirname($file));
+        $dirName = dirname($file);
 
-        // Touch shared
-        run("touch $sharedPath/$file");
+        // Create dir of shared file
+        run("mkdir -p $sharedPath/$dirName");
+
+        // Create destination dir
+        run("mkdir -p {{release_path}}/$dirName");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$file {{release_path}}/$file");
+        run("cd {{release_path}}/$dirName && shopt -s failglob && ln -nfs $sharedPath/$file -t . && shopt -u failglob");
     }
 })->desc('Creating symlinks for shared files');
 

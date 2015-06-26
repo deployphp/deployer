@@ -131,7 +131,6 @@ task('deploy:update_code', function () {
         $at = "$branch";
     }
 
-    $releases = env('releases_list');
     if (run("if [ ! -f {{deploy_path}}/repo/HEAD ]; then echo \"1\"; fi")->toString()) {
         run("git clone --mirror $repository {{deploy_path}}/repo");
     } else {

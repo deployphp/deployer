@@ -32,6 +32,9 @@ class Application extends Console
         $inputDefinition->addOption(
             new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Specify Deployer file.')
         );
+        $inputDefinition->addOption(
+            new InputOption('--force-color', '-c', InputOption::VALUE_NONE, 'Force colored output.')
+        );
 
         return $inputDefinition;
     }

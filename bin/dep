@@ -39,8 +39,13 @@ $input = new \Symfony\Component\Console\Input\ArgvInput();
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $deployer = new \Deployer\Deployer($console, $input, $output);
 
-// Require deploy.php script
-$options = getopt('f::', ['file::']);
+$options = getopt('f::c', ['file::', 'force-color']);
+
+if (isset($options['c']) || isset($options['force-color'])) {
+    // force colored output
+    $deployer->getOutput()->setDecorated(true);
+}
+
 $userSpecifiedFile = null;
 
 if (isset($options['f'])) {

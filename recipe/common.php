@@ -166,10 +166,10 @@ task('deploy:copy_dirs', function () {
 
     foreach ($dirs as $dir) {
         //Delete directory if exists
-        run("rm -rf {{release_path}}/$dir");
+        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
-        //Copy files
-        run("cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir");
+        //Copy directory
+        run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
     }
 
 })->desc('Copy directories');

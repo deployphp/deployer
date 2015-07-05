@@ -164,7 +164,7 @@ task('deploy:copy_dirs', function () {
 
     $dirs = get('copy_dirs');
 
-    foreach($dirs as $dir) {        
+    foreach ($dirs as $dir) {        
         //Delete directory if exists
         run("rm -rf {{release_path}}/$dir");
 

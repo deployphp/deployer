@@ -84,7 +84,10 @@ class SshExtension implements ServerInterface
                 
             case Configuration::AUTH_BY_AGENT:
 
-                throw new \RuntimeException('If you want to use forward agent function, switch to using PhpSecLib.');
+                $authentication = new \Ssh\Authentication\Agent(
+                    $serverConfig->getUser()
+                );
+                break;
 
             default:
                 throw new \RuntimeException('You need to specify authentication method.');

@@ -5,6 +5,8 @@
    * file that was distributed with this source code.
    */
 
+    use Symfony\Component\Yaml\Parser;
+    
     require_once __DIR__ . '/common.php';
 
     task('deploy', [
@@ -42,8 +44,8 @@
         $basepath = dirname(__FILE__). '/drupal7';
       
       //Import secrets
-      require_once $basepath . '/spyc.php';
-        $secrets = Spyc::YAMLLoad($basepath . '/secrets.yml');
+      $yaml = new Parser();
+      $secrets = $yaml->parse(file_get_contents($basepath . '/secrets.yml'));
       
       //Prepare replacement variables
       $iterator = new RecursiveIteratorIterator(

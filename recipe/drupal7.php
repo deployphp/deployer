@@ -6,7 +6,7 @@
    */
 
     use Symfony\Component\Yaml\Parser;
-    
+
     require_once __DIR__ . '/common.php';
 
     task('deploy', [
@@ -45,7 +45,7 @@
       
       //Import secrets
       $yaml = new Parser();
-      $secrets = $yaml->parse(file_get_contents($basepath . '/secrets.yml'));
+        $secrets = $yaml->parse(file_get_contents($basepath . '/secrets.yml'));
       
       //Prepare replacement variables
       $iterator = new RecursiveIteratorIterator(

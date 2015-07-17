@@ -44,8 +44,7 @@
         $basepath = dirname(__FILE__). '/drupal7';
       
       //Import secrets
-      $yaml = new Parser();
-        $secrets = $yaml->parse(file_get_contents($basepath . '/secrets.yml'));
+      $secrets = env('settings');
       
       //Prepare replacement variables
       $iterator = new RecursiveIteratorIterator(

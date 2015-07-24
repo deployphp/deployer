@@ -18,3 +18,5 @@ install:
 
 script:
   - phpunit
+  
+sudo: false

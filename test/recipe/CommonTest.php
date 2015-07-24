@@ -82,6 +82,7 @@ class CommonTest extends RecipeTester
     public function testWriteable()
     {
         set('writable_dirs', ['app/cache', 'app/logs']);
+        set('writable_use_sudo', false);
 
         $this->exec('deploy:writable');
 

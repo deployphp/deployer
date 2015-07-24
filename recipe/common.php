@@ -251,7 +251,8 @@ task('deploy:vendors', function () {
         $composer = 'php composer.phar';
     }
 
-    run("cd {{release_path}} && {{env_vars}} $composer {{composer_options}}");
+    $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
+    run("cd {{release_path}} && $composerEnvVars $composer {{composer_options}}");
 
 })->desc('Installing vendors');
 

@@ -83,7 +83,7 @@ task('deploy:prepare', function () {
         throw $e;
     }
     
-    run('if [ ! -d {{deploy_path}} ]; then echo ""; fi');
+    run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Create releases dir.
     run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");

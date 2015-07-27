@@ -7,6 +7,7 @@
 
 namespace Deployer\Stage;
 
+use Deployer\Collection\Collection;
 use Deployer\Server\Environment;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\ServerCollection;
@@ -17,23 +18,48 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $servers = new ServerCollection();
         $environments = new EnvironmentCollection();
+        $parameters = new Collection();
 
-        $stage = new StageStrategy($servers, $environments);
+        $stage = new StageStrategy($servers, $environments, $parameters);
 
-        $this->assertArrayHasKey('localhost', $stage->getServers(null));
+        $this->assertArrayHasKey('localhost', $stage->getServers(null), $parameters);
     }
 
-    public function testWithoutStage()
+    public function testWithoutStageAndNoDefault()
     {
         $servers = new ServerCollection();
         $servers['one'] = new \stdClass();
+        $servers['two'] = new \stdClass();
 
         $environments = new EnvironmentCollection();
         $environments['one'] = new Environment();
+        $environments['two'] = new Environment();
+        $environments['two']->set('stages', ['prod']);
 
-        $stage = new StageStrategy($servers, $environments);
+        $parameters = new Collection();
+
+        $stage = new StageStrategy($servers, $environments, $parameters);
 
         $this->assertEquals(['one' => $servers['one']], $stage->getServers(null));
+    }
+
+    public function testWithoutStageAndHasDefault()
+    {
+        $servers = new ServerCollection();
+        $servers['one'] = new \stdClass();
+        $servers['two'] = new \stdClass();
+
+        $environments = new EnvironmentCollection();
+        $environments['one'] = new Environment();
+        $environments['two'] = new Environment();
+        $environments['two']->set('stages', ['prod']);
+
+        $parameters = new Collection();
+        $parameters->set(StageStrategy::PARAM_DEFAULT_STAGE, 'prod');
+
+        $stage = new StageStrategy($servers, $environments, $parameters);
+
+        $this->assertEquals(['two' => $servers['two']], $stage->getServers(null));
     }
 
     public function testByStageName()
@@ -45,7 +71,9 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
         $environments['one'] = $env = new Environment();
         $env->set('stages', ['prod']);
 
-        $stage = new StageStrategy($servers, $environments);
+        $parameters = new Collection();
+
+        $stage = new StageStrategy($servers, $environments, $parameters);
 
         $this->assertEquals(['one' => $servers['one']], $stage->getServers('prod'));
     }
@@ -58,7 +86,9 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
         $environments = new EnvironmentCollection();
         $environments['one'] = $env = new Environment();
 
-        $stage = new StageStrategy($servers, $environments);
+        $parameters = new Collection();
+
+        $stage = new StageStrategy($servers, $environments, $parameters);
 
         $this->assertEquals(['one' => $servers['one']], $stage->getServers('one'));
     }

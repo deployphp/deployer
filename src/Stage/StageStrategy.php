@@ -7,6 +7,7 @@
 
 namespace Deployer\Stage;
 
+use Deployer\Collection\Collection;
 use Deployer\Server\Environment;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\Local;
@@ -14,6 +15,8 @@ use Deployer\Server\ServerCollection;
 
 class StageStrategy implements StageStrategyInterface
 {
+    const PARAM_DEFAULT_STAGE = 'default_stage';
+
     /**
      * @var EnvironmentCollection
      */
@@ -24,10 +27,16 @@ class StageStrategy implements StageStrategyInterface
      */
     private $servers;
 
-    public function __construct(ServerCollection $servers, EnvironmentCollection $environments)
+    /**
+     * @var Collection
+     */
+    private $parameters;
+
+    public function __construct(ServerCollection $servers, EnvironmentCollection $environments, Collection $parameters)
     {
         $this->servers = $servers;
         $this->environments = $environments;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -36,6 +45,11 @@ class StageStrategy implements StageStrategyInterface
     public function getServers($stage)
     {
         $servers = [];
+
+        // Get a default stage (if any) if no stage given
+        if (empty($stage)) {
+            $stage = $this->getDefaultStage();
+        }
 
         if (!empty($stage)) {
 
@@ -77,5 +91,19 @@ class StageStrategy implements StageStrategyInterface
         }
 
         return $servers;
+    }
+
+    /**
+     * Returns the default stage
+     *
+     * @return string|null
+     */
+    public function getDefaultStage()
+    {
+        if (! $this->parameters->has(self::PARAM_DEFAULT_STAGE)) {
+            return null;
+        }
+
+        return $this->parameters->get(self::PARAM_DEFAULT_STAGE);
     }
 }

@@ -285,6 +285,10 @@ class ParallelExecutor implements ExecutorInterface
                     $this->tasksToDo = [];
 
                     foreach ($this->servers as $serverName => $server) {
+                        if (($runnerServerName = $task->getRunAlwaysOn()) && isset($this->servers[$runnerServerName])) {
+                            $serverName = $runnerServerName;
+                        }
+
                         if ($task->runOnServer($serverName)) {
                             $this->informer->onServer($serverName);
                             $this->tasksToDo[$serverName] = $taskName;

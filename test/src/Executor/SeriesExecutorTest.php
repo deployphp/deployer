@@ -10,6 +10,7 @@ namespace Deployer\Executor;
 use Deployer\Helper\DeployerHelper;
 use Deployer\Server\Environment;
 use Deployer\Server\Local;
+use Deployer\Task\Context;
 use Deployer\Task\Task;
 
 class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
@@ -21,7 +22,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $this->initialize();
 
         $mock = $this->getMockBuilder('stdClass')
-            ->setMethods(['task', 'once', 'only'])
+            ->setMethods(['task', 'once', 'only', 'always'])
             ->getMock();
 
         $mock->expects($this->exactly(2))
@@ -30,6 +31,8 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('once');
         $mock->expects($this->once())
             ->method('only');
+        $mock->expects($this->exactly(2))
+            ->method('always');
 
         $task = new Task('task', function () use ($mock) {
             $mock->task();
@@ -45,7 +48,12 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         });
         $taskOnly->onlyOn(['one']);
 
-        $tasks = [$task, $taskOne, $taskOnly];
+        $taskAlways = new Task('always', function () use ($mock) {
+            $mock->always();
+        });
+        $taskAlways->runAlwaysOn('two');
+
+        $tasks = [$task, $taskOne, $taskOnly, $taskAlways];
 
         $environments = [
             'one' => new Environment(),

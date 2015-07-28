@@ -30,6 +30,11 @@ class SeriesExecutor implements ExecutorInterface
                 $task->run(new Context(null, null, $input, $output));
             } else {
                 foreach ($servers as $serverName => $server) {
+                    if (($runnerServerName = $task->getRunAlwaysOn()) && isset($servers[$runnerServerName])) {
+                        $serverName = $runnerServerName;
+                        $server = $servers[$runnerServerName];
+                    }
+
                     if ($task->runOnServer($serverName)) {
                         $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
 

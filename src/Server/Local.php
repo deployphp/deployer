@@ -26,10 +26,12 @@ class Local implements ServerInterface
      */
     public function run($command)
     {
+        $timeout = env()->get('process_timeout', self::TIMEOUT);
+
         $process = new Process($command);
         $process
-            ->setTimeout(self::TIMEOUT)
-            ->setIdleTimeout(self::TIMEOUT)
+            ->setTimeout($timeout)
+            ->setIdleTimeout($timeout)
             ->mustRun();
 
         return $process->getOutput();

@@ -338,6 +338,8 @@ function runLocally($command, $timeout = 60)
 function upload($local, $remote)
 {
     $server = Context::get()->getServer();
+    $local = env()->parse($local);
+    $remote = env()->parse($remote);
 
     if (is_file($local)) {
         writeln("Upload file <info>$local</info> to <info>$remote</info>");

@@ -74,7 +74,7 @@ class Deployer
         $this->collections['environments'] = new Server\EnvironmentCollection();
         $this->collections['parameters'] = new Collection\Collection();
 
-        $this->stageStrategy = new StageStrategy($this->servers, $this->environments);
+        $this->stageStrategy = new StageStrategy($this->servers, $this->environments, $this->parameters);
 
         self::$instance = $this;
     }

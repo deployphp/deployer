@@ -171,5 +171,6 @@ class Task
     public function setPrivate()
     {
         $this->private = true;
+        return $this;
     }
 }

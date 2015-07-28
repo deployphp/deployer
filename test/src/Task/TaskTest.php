@@ -37,6 +37,13 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $task->onlyOn([]);
         $this->assertTrue($task->runOnServer('server'));
+
+        $task->onlyOn('server');
+        $this->assertEquals(['server' => 0], $task->getOnlyOn());
+        $this->assertTrue($task->runOnServer('server'));
+
+        $task->onlyOn();
+        $this->assertTrue($task->runOnServer('server'));
         
         $task->setPrivate();
         $this->assertTrue($task->isPrivate());

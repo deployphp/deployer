@@ -114,6 +114,15 @@ function serverList($file)
                 unset($da['identity_file']);
             }
 
+            if ($da->hasKey('identity_config')) {
+                if ($da['identity_config'] === null) {
+                    $builder->configFile();
+                } else {
+                    $builder->configFile($da['identity_config']);
+                }
+                unset($da['identity_config']);
+            }
+
             if ($da->hasKey('forward_agent')) {
                 $builder->forwardAgent();
                 unset($da['forward_agent']);

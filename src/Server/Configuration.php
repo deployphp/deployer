@@ -24,7 +24,7 @@ class Configuration
 
     /**
      * Type of authentication.
-     * By default try to connect via config file.
+     * By default try to connect via password authentication
      *
      * @var int
      */
@@ -112,7 +112,6 @@ class Configuration
         $this->setName($name);
         $this->setHost($host);
         $this->setPort($port);
-        $this->setConfigFile('~/.ssh/config');
     }
 
     /**

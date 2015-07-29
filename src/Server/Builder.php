@@ -109,7 +109,7 @@ class Builder
      *
      * @return Builder
      */
-    public function configFile($file)
+    public function configFile($file = '~/.ssh/config')
     {
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_CONFIG);
         $this->config->setConfigFile($file);

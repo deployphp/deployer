@@ -101,18 +101,27 @@ class Configuration
     private $pemFile;
 
     /**
+     * Number seconds for waiting a command is executed on server
+     *
+     * @var int
+     */
+    private $timeout;
+
+    /**
      * Construct
      *
      * @param string $name
      * @param string $host
      * @param int    $port
+     * @param int    $timeout
      */
-    public function __construct($name, $host, $port = 22)
+    public function __construct($name, $host, $port = 22, $timeout = 300)
     {
         $this->setName($name);
         $this->setHost($host);
         $this->setPort($port);
         $this->setConfigFile('~/.ssh/config');
+        $this->setTimeout($timeout);
     }
 
     /**
@@ -375,6 +384,29 @@ class Configuration
     public function setPemFile($pemFile)
     {
         $this->pemFile = $this->parseHome($pemFile);
+
+        return $this;
+    }
+
+    /**
+     * Get server timeout
+     *
+     * @return int
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * Set server timeout
+     *
+     * @param int $timeout
+     * @return Configuration
+     */
+    public function setTimeout($timeout)
+    {
+        $this->timeout = (int) $timeout;
 
         return $this;
     }

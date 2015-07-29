@@ -33,14 +33,15 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @param string $name
  * @param string|null $host
  * @param int $port
+ * @param int $timeout  Number seconds
  * @return Builder
  */
-function server($name, $host = null, $port = 22)
+function server($name, $host = null, $port = 22, $timeout = 300)
 {
     $deployer = Deployer::get();
 
     $env = new Environment();
-    $config = new Configuration($name, $host, $port);
+    $config = new Configuration($name, $host, $port, $timeout);
 
     if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
@@ -57,14 +58,15 @@ function server($name, $host = null, $port = 22)
 
 /**
  * @param string $name
+ * @param int $timeout  Number seconds
  * @return Builder
  */
-function localServer($name)
+function localServer($name, $timeout = 300)
 {
     $deployer = Deployer::get();
 
     $env = new Environment();
-    $server = new Local();
+    $server = new Local($timeout);
     $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
 
     $deployer->servers->set($name, $server);

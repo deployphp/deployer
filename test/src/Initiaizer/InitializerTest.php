@@ -79,7 +79,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithDeployerConfigurationFileAlreadyExist()
     {
-        list ($tmpDir, $tmpFileName, $tmpFilePath) = $this->createTemporaryFile();
+        list($tmpDir, $tmpFileName, $tmpFilePath) = $this->createTemporaryFile();
 
         $this->setExpectedException(
             'Deployer\Initializer\Exception\IOException',
@@ -99,7 +99,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithDirectoryIsNotWritable()
     {
-        list ($tmpDir) = $this->createTemporaryFile();
+        list($tmpDir) = $this->createTemporaryFile();
 
         $this->setExpectedException(
             'Deployer\Initializer\Exception\IOException',
@@ -119,7 +119,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithParentDirectoryIsNotWritable()
     {
-        list ($tmpDir) = $this->createTemporaryFile();
+        list($tmpDir) = $this->createTemporaryFile();
         $tmpDir .= '/foo';
 
         $this->setExpectedException(
@@ -143,7 +143,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithPathAlreadyExist()
     {
-        list ($tmpDir) = $this->createTemporaryFile();
+        list($tmpDir) = $this->createTemporaryFile();
         $tmpDir .= '/foo';
 
         $this->setExpectedException(
@@ -164,7 +164,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSuccessfullyInitialize()
     {
-        list ($tmpDir, $tmpFileName, $tmpFilePath) = $this->createTemporaryFile();
+        list($tmpDir, $tmpFileName, $tmpFilePath) = $this->createTemporaryFile();
 
         $this->template->expects($this->once())->method('initialize')
             ->with($tmpFilePath);

@@ -76,6 +76,7 @@ class PhpSecLib implements ServerInterface
             case Configuration::AUTH_BY_AGENT:
 
                 $key = new Agent();
+                $key->startSSHForwarding(null);
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;

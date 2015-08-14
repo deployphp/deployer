@@ -30,7 +30,7 @@
         "symfony/yaml": "~2.6",
         "symfony/process": "~2.6",
         "kherge/amend": "~3.0",
-        "deployer/phpseclib": "~1.0"
+        "phpseclib/phpseclib": "~2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5"

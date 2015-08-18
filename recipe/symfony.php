@@ -100,6 +100,7 @@ task('database:migrate', function () {
 task('deploy:clear_controllers', function () {
 
     run("rm -f {{release_path}}/web/app_*.php");
+    run("rm -f {{release_path}}/web/config.php");
 
 })->setPrivate();
 

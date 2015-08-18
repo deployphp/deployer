@@ -39,6 +39,12 @@ class Task
     private $onlyOn = [];
 
     /**
+     * Name of server on which this task will always run
+     * @var string
+     */
+    private $runAlwaysOn;
+
+    /**
      * Make task internal and not visible in CLI.
      * @var bool
      */
@@ -155,6 +161,24 @@ class Task
         } else {
             return array_key_exists($serverName, $this->onlyOn);
         }
+    }
+
+    /**
+     * @param string $serverName
+     * @return $this
+     */
+    public function runAlwaysOn($serverName)
+    {
+        $this->runAlwaysOn = $serverName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRunAlwaysOn()
+    {
+        return $this->runAlwaysOn;
     }
 
     /**

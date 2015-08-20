@@ -46,7 +46,7 @@ class PhpSecLib implements ServerInterface
     public function connect()
     {
         $serverConfig = $this->getConfiguration();
-        $this->sftp = new SFTP($serverConfig->getHost(), $serverConfig->getPort(), PHP_INT_MAX);
+        $this->sftp = new SFTP($serverConfig->getHost(), $serverConfig->getPort(), 3600);
 
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:

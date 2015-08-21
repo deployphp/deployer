@@ -13,6 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
+set('cleanup_use_sudo', false); // Using sudo in cleanup commands?
 
 /**
  * Environment vars
@@ -299,6 +300,7 @@ task('current', function () {
 task('cleanup', function () {
     $releases = env('releases_list');
 
+    $sudo = get('cleanup_use_sudo') ? 'sudo' : '';
     $keep = get('keep_releases');
 
     while ($keep > 0) {
@@ -307,11 +309,11 @@ task('cleanup', function () {
     }
 
     foreach ($releases as $release) {
-        run("rm -rf {{deploy_path}}/releases/$release");
+        run("$sudo rm -rf {{deploy_path}}/releases/$release");
     }
 
-    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
+    run("cd {{deploy_path}} && if [ -e release ]; then $sudo rm release; fi");
+    run("cd {{deploy_path}} && if [ -h release ]; then $sudo rm release; fi");
 
 })->desc('Cleaning up old releases');
 

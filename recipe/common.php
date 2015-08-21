@@ -218,10 +218,10 @@ task('deploy:writable', function () {
                     run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                     run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                 } else {
-                    run("$sudo chmod 777 $dirs");
+                    run("$sudo chmod 777 -R $dirs");
                 }
             } else {
-                run("$sudo chmod 777 $dirs");
+                run("$sudo chmod 777 -R $dirs");
             }
         } catch (\RuntimeException $e) {
             $formatter = \Deployer\Deployer::get()->getHelper('formatter');

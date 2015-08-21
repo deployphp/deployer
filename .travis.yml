@@ -1,5 +1,7 @@
 language: php
 
+sudo: required
+
 php:
   - 5.4
   - 5.5
@@ -13,10 +15,10 @@ matrix:
     - php: hhvm
 
 install:
+  - eval `ssh-agent -s`
+  - test/travis/setup-secure-shell.sh
   - composer self-update
   - composer install --no-interaction --prefer-source
 
 script:
   - phpunit
-  
-sudo: false

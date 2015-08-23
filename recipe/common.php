@@ -18,6 +18,7 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
 /**
  * Environment vars
  */
+env('timezone', 'UTC');
 env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
@@ -83,6 +84,11 @@ task('deploy:prepare', function () {
 
         throw $e;
     }
+
+    // Set the deployment timezone
+    if (!date_default_timezone_set(env('timezone'))) {
+        date_default_timezone_set('UTC');
+    }
     
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
@@ -104,7 +110,7 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $release = run('date +%Y%m%d%H%M%S');
+    $release = date('YmdHis');
 
     $releasePath = "{{deploy_path}}/releases/$release";
 

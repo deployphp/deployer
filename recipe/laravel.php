@@ -14,7 +14,7 @@ set('shared_dirs', ['storage']);
 set('shared_files', ['.env']);
 
 // Laravel writable dirs
-set('writable_dirs', ['storage', 'vendor']);
+set('writable_dirs', ['storage', 'bootstrap/cache']);
 
 /**
  * Main task
@@ -25,6 +25,7 @@ task('deploy', [
     'deploy:update_code',
     'deploy:vendors',
     'deploy:shared',
+    'deploy:writable',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

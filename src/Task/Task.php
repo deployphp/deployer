@@ -126,12 +126,12 @@ class Task
     }
 
     /**
-     * @param array $servers
+     * @param array|string $servers
      * @return $this
      */
-    public function onlyOn($servers)
+    public function onlyOn($servers = [])
     {
-        $this->onlyOn = array_flip($servers);
+        $this->onlyOn = array_flip(is_array($servers) ? $servers : func_get_args());
         return $this;
     }
 

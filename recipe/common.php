@@ -8,6 +8,7 @@
 /**
  * Common parameters.
  */
+set('composer_copy_vendors', false);
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
@@ -244,6 +245,18 @@ task('deploy:writable', function () {
  * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
+    // Check if we need to copy vendors from previous release
+    if (get('composer_copy_vendors')) {
+        $releases = env('releases_list');
+
+        if (isset($releases[1])) {
+            // Existing previous release, so copy vendors folder from it
+            $vendorsDir = "{{deploy_path}}/releases/{$releases[1]}/vendor";
+
+            run("if [ -d $(echo $vendorsDir) ]; then cp -r $vendorsDir {{release_path}}; fi");
+        }
+    }
+
     if (commandExist('composer')) {
         $composer = 'composer';
     } else {

@@ -98,8 +98,10 @@ task('database:migrate', function () {
  * Remove app_dev.php files
  */
 task('deploy:clear_controllers', function () {
-
-    run("rm -f {{release_path}}/web/app_*.php");
+    if ('prod' === env('env')) {
+        run("rm -f {{release_path}}/web/app_*.php");
+    }
+    
     run("rm -f {{release_path}}/web/config.php");
 
 })->setPrivate();

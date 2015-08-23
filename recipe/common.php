@@ -11,6 +11,7 @@
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
+set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 
@@ -156,6 +157,22 @@ task('deploy:update_code', function () {
 
 })->desc('Updating code');
 
+/**
+ * Copy directories. Usefull for vendors directories
+ */
+task('deploy:copy_dirs', function () {
+
+    $dirs = get('copy_dirs');
+
+    foreach ($dirs as $dir) {
+        //Delete directory if exists
+        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
+
+        //Copy directory
+        run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
+    }
+
+})->desc('Copy directories');
 
 /**
  * Create symlinks for shared directories and files.

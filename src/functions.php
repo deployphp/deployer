@@ -5,22 +5,22 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
-use Deployer\Server\Local;
-use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
-use Deployer\Task\Task as TheTask;
+use Deployer\Server\Local;
+use Deployer\Server\Remote;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
+use Deployer\Task\Task as TheTask;
 use Deployer\Type\Result;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -334,7 +334,7 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 
@@ -584,4 +584,13 @@ function env($name = null, $value = null)
 function commandExist($command)
 {
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
+}
+
+function useSudo()
+{
+    if (get('use_sudo')) {
+        return 'sudo ';
+    }
+
+    return '';
 }

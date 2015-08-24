@@ -40,13 +40,13 @@ task('deploy:create_cache_dir', function () {
     env('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
 
     // Remove cache dir if it exist
-    run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
+    run(sprintf('if [ -d "{{cache_dir}}" ]; then %s rm -rf {{cache_dir}}; fi', useSudo()));
 
     // Create cache dir
-    run('mkdir -p {{cache_dir}}');
+    run(sprintf('%s mkdir -p {{cache_dir}}', useSudo()));
 
     // Set rights
-    run("chmod -R g+w {{cache_dir}}");
+    run(sprintf('%s chmod -R g+w {{cache_dir}}', useSudo()));
 })->desc('Create cache dir');
 
 
@@ -55,12 +55,12 @@ task('deploy:create_cache_dir', function () {
  */
 task('deploy:assets', function () {
     $assets = implode(' ', array_map(function ($asset) {
-        return "{{release_path}}/$asset";
+        return '{{release_path}}/'.$asset;
     }, get('assets')));
 
     $time = date('Ymdhi.s');
 
-    run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
+    run(sprintf('find %s -exec %s touch -t %s {} \';\' &> /dev/null || true', $assets, useSudo(), $time));
 })->desc('Normalize asset timestamps');
 
 
@@ -68,9 +68,7 @@ task('deploy:assets', function () {
  * Dump all assets to the filesystem
  */
 task('deploy:assetic:dump', function () {
-
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
-
+    run(sprintf('%s php {{release_path}}/%s/console assetic:dump --env={{env}} --no-debug', useSudo(), trim(get('bin_dir'), '/')));
 })->desc('Dump assets');
 
 
@@ -78,9 +76,7 @@ task('deploy:assetic:dump', function () {
  * Warm up cache
  */
 task('deploy:cache:warmup', function () {
-
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
-
+    run(sprintf('%s php {{release_path}}/%s/console cache:warmup  --env={{env}} --no-debug', useSudo(), trim(get('bin_dir'), '/')));
 })->desc('Warm up cache');
 
 
@@ -88,9 +84,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
-
+    run(sprintf('%s php {{release_path}}/%s/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction', useSudo(), trim(get('bin_dir'), '/')));
 })->desc('Migrate database');
 
 
@@ -98,12 +92,9 @@ task('database:migrate', function () {
  * Remove app_dev.php files
  */
 task('deploy:clear_controllers', function () {
-
-    run("rm -f {{release_path}}/web/app_*.php");
-    run("rm -f {{release_path}}/web/config.php");
-
+    run(sprintf('%s rm -f {{release_path}}/web/app_*.php', useSudo()));
+    run(sprintf('%s rm -f {{release_path}}/web/config.php', useSudo()));
 })->setPrivate();
-
 after('deploy:update_code', 'deploy:clear_controllers');
 
 
@@ -124,5 +115,4 @@ task('deploy', [
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');
-
 after('deploy', 'success');

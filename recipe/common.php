@@ -23,14 +23,14 @@ env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
 env('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
-  $gitVersion = run('git version');
-  $regs = [];
-  if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
-      $version = $regs[1];
-  } else {
-      $version = "1.0.0";
-  }
-  return version_compare($version, '2.3', '>=');
+    $gitVersion = run('git version');
+    $regs       = [];
+    if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
+        $version = $regs[1];
+    } else {
+        $version = "1.0.0";
+    }
+    return version_compare($version, '2.3', '>=');
 });
 
 /**

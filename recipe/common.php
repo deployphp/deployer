@@ -13,7 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('copy_dirs', []);
 set('writable_dirs', []);
-set('writable_use_sudo', true); // Using sudo in writable commands?
+set('use_sudo', true); // Using sudo in commands?
 
 /**
  * Environment vars
@@ -28,7 +28,7 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
         $version = $regs[1];
     } else {
-        $version = "1.0.0";
+        $version = '1.0.0';
     }
     return version_compare($version, '2.3', '>=');
 });
@@ -46,19 +46,19 @@ task('rollback', function () {
     $releases = env('releases_list');
 
     if (isset($releases[1])) {
-        $releaseDir = "{{deploy_path}}/releases/{$releases[1]}";
+        $releaseDir = sprintf('{{deploy_path}}/releases/%s', $releases[1]);
 
         // Symlink to old release.
-        run("cd {{deploy_path}} && ln -nfs $releaseDir current");
+        run(sprintf('cd {{deploy_path}} && %s ln -nfs %s current', useSudo(), $releaseDir));
 
         // Remove release
-        run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
+        run(sprintf('%s rm -rf {{deploy_path}}/releases/%s', useSudo(), $releases[0]));
 
         if (isVerbose()) {
-            writeln("Rollback to `{$releases[1]}` release was successful.");
+            writeln(sprintf('Rollback to `%s` release was successful.', $releases[1]));
         }
     } else {
-        writeln("<comment>No more releases you can revert to.</comment>");
+        writeln('<comment>No more releases you can revert to.</comment>');
     }
 })->desc('Rollback to previous release');
 
@@ -77,8 +77,8 @@ task('deploy:prepare', function () {
         $formatter = \Deployer\Deployer::get()->getHelper('formatter');
 
         $errorMessage = [
-            "Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.",
-            "Usually, you can change your shell to bash by running: chsh -s /bin/bash",
+            'Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.',
+            'Usually, you can change your shell to bash by running: chsh -s /bin/bash',
         ];
         write($formatter->formatBlock($errorMessage, 'error', true));
 
@@ -89,21 +89,21 @@ task('deploy:prepare', function () {
     if (!date_default_timezone_set(env('timezone'))) {
         date_default_timezone_set('UTC');
     }
-    
-    run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
+
+    run(sprintf('if [ ! -d {{deploy_path}} ]; then %s mkdir -p {{deploy_path}}; fi', useSudo()));
 
     // Create releases dir.
-    run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
+    run(sprintf('cd {{deploy_path}} && if [ ! -d releases ]; then %s mkdir releases; fi', useSudo()));
 
     // Create shared dir.
-    run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
+    run(sprintf('cd {{deploy_path}} && if [ ! -d shared ]; then %s mkdir shared; fi', useSudo()));
 })->desc('Preparing server for deploy');
 
 /**
  * Return release path.
  */
 env('release_path', function () {
-    return str_replace("\n", '', run("readlink {{deploy_path}}/release"));
+    return str_replace('\n', '', run('readlink {{deploy_path}}/release'));
 });
 
 /**
@@ -112,18 +112,18 @@ env('release_path', function () {
 task('deploy:release', function () {
     $release = date('YmdHis');
 
-    $releasePath = "{{deploy_path}}/releases/$release";
+    $releasePath = sprintf('{{deploy_path}}/releases/%s', $release);
 
     $i = 0;
     while (is_dir(env()->parse($releasePath)) && $i < 42) {
         $releasePath .= '.' . ++$i;
     }
 
-    run("mkdir $releasePath");
+    run(sprintf('%s mkdir %s', useSudo(), $releasePath));
 
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
+    run(sprintf('cd {{deploy_path}} && if [ -h release ]; then %s rm release; fi', useSudo()));
 
-    run("ln -s $releasePath {{deploy_path}}/release");
+    run(sprintf('%s ln -s %s {{deploy_path}}/release', useSudo(), $releasePath));
 })->desc('Prepare release');
 
 
@@ -135,84 +135,81 @@ task('deploy:update_code', function () {
     $branch = env('branch');
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
-    
+
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
     }
 
     $at = '';
     if (!empty($tag)) {
-        $at = "-b $tag";
+        $at = '-b '.$tag;
     } elseif (!empty($branch)) {
-        $at = "-b $branch";
+        $at = '-b '.$branch;
     }
 
     $releases = env('releases_list');
-    
+
     if ($gitCache && isset($releases[1])) {
         try {
-            run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
+            run(sprintf('%s git clone %s --recursive -q --reference {{deploy_path}}/releases/%s --dissociate %s {{release_path}} 2>&1', useSudo(), $at, $releases[1], $repository));
         } catch (RuntimeException $exc) {
             // If {{deploy_path}}/releases/{$releases[1]} has a failed git clone, is empty, shallow etc, git would throw error and give up. So we're forcing it to act without reference in this situation
-            run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
+            run(sprintf('%s git clone %s --recursive -q %s {{release_path}} 2>&1', useSudo(), $at, $releases));
         }
     } else {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
-        run("git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
+        run(sprintf('%s git clone %s %s --recursive -q %s {{release_path}} 2>&1', useSudo(), $at, $depth, $repository));
     }
-
 })->desc('Updating code');
 
 /**
  * Copy directories. Usefull for vendors directories
  */
 task('deploy:copy_dirs', function () {
-
     $dirs = get('copy_dirs');
 
     foreach ($dirs as $dir) {
         //Delete directory if exists
-        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
+        run(sprintf('if [ -d $(echo {{release_path}}/%s) ]; then %s rm -rf {{release_path}}/%s; fi',$dir, useSudo(), $dir));
 
         //Copy directory
-        run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
+        run(sprintf('if [ -d $(echo {{deploy_path}}/current/%s) ]; then %s cp -rpf {{deploy_path}}/current/%s {{release_path}}/%s; fi', $dir, useSudo(), $dir, $dir));
     }
-
 })->desc('Copy directories');
 
 /**
  * Create symlinks for shared directories and files.
  */
 task('deploy:shared', function () {
-    $sharedPath = "{{deploy_path}}/shared";
+    $sharedPath = '{{deploy_path}}/shared';
 
     foreach (get('shared_dirs') as $dir) {
         // Remove from source
-        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
+        run(sprintf('if [ -d $(echo {{release_path}}/%s) ]; then %s rm -rf {{release_path}}/%s; fi', $dir, useSudo(), $dir));
 
         // Create shared dir if it does not exist
-        run("mkdir -p $sharedPath/$dir");
+        run(sprintf('%s mkdir -p %s/%s', useSudo(), $sharedPath, $dir));
 
         // Create path to shared dir in release dir if it does not exist
         // (symlink will not create the path and will fail otherwise)
-        run("mkdir -p `dirname {{release_path}}/$dir`");
+        run(sprintf('%s mkdir -p `dirname {{release_path}}/%s`', useSudo(), $dir));
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$dir {{release_path}}/$dir");
+        run(sprintf('%s ln -nfs %s/%s {{release_path}}/%s ', useSudo(), $sharedPath, $dir, $dir));
     }
 
     foreach (get('shared_files') as $file) {
         // Remove from source
-        run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
+        run(sprintf('if [ -f $(echo {{release_path}}/%s) ]; then %s rm -rf {{release_path}}/%s; fi', $file, useSudo(), $file));
 
         // Create dir of shared file
-        run("mkdir -p $sharedPath/" . dirname($file));
+        run(sprintf('%s mkdir -p %s/%s', useSudo(), $sharedPath, dirname($file)));
 
         // Touch shared
-        run("touch $sharedPath/$file");
+        run(sprintf('%s touch %s/%s', useSudo(), $sharedPath, $file));
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$file {{release_path}}/$file");
+        run(sprintf('%s ln -nfs %s/%s {{release_path}}/%s', useSudo(), $sharedPath, $file, $file));
     }
 })->desc('Creating symlinks for shared files');
 
@@ -222,44 +219,41 @@ task('deploy:shared', function () {
  */
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
-    $sudo = get('writable_use_sudo') ? 'sudo' : '';
 
     if (!empty($dirs)) {
         try {
-            $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
-
+            $httpUser = run('ps aux | grep -E \'[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx\' | grep -v root | head -1 | cut -d\  -f1')->toString();
             cd('{{release_path}}');
 
-            if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
+            if (strpos(run('chmod 2>&1; true'), '+a') !== false) {
                 if (!empty($httpUser)) {
-                    run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+                    run(sprintf('%s chmod +a "%s allow delete,write,append,file_inherit,directory_inherit" %s', useSudo(), $httpUser, $dirs));
                 }
 
-                run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+                run(sprintf('%s chmod +a "`whoami` allow delete,write,append,file_inherit,directory_inherit" $dirs', useSudo(), $dirs));
             } elseif (commandExist('setfacl')) {
                 if (!empty($httpUser)) {
-                    run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                    run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                    run(sprintf('%s setfacl -R -m u:"%s":rwX -m u:`whoami`:rwX %s', useSudo(), $httpUser, $dirs));
+                    run(sprintf('%s setfacl -dR -m u:"%s":rwX -m u:`whoami`:rwX %s', useSudo(), $httpUser, $dirs));
                 } else {
-                    run("$sudo chmod 777 -R $dirs");
+                    run(sprintf('%s chmod 777 -R %s', useSudo(), $dirs));
                 }
             } else {
-                run("$sudo chmod 777 -R $dirs");
+                run(sprintf('%s chmod 777 -R %s', useSudo(), $dirs));
             }
         } catch (\RuntimeException $e) {
             $formatter = \Deployer\Deployer::get()->getHelper('formatter');
 
             $errorMessage = [
-                "Unable to setup correct permissions for writable dirs.                  ",
-                "You need co configure sudo's sudoers files to don't prompt for password,",
-                "or setup correct permissions manually.                                  ",
+                'Unable to setup correct permissions for writable dirs.                  ',
+                'You need co configure sudo\'s sudoers files to don\'t prompt for password,',
+                'or setup correct permissions manually.                                  ',
             ];
             write($formatter->formatBlock($errorMessage, 'error', true));
 
             throw $e;
         }
     }
-
 })->desc('Make writable dirs');
 
 
@@ -270,13 +264,12 @@ task('deploy:vendors', function () {
     if (commandExist('composer')) {
         $composer = 'composer';
     } else {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
+        run(sprintf('cd {{release_path}} && %s curl -sS https://getcomposer.org/installer | php', useSudo()));
         $composer = 'php composer.phar';
     }
 
     $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
-    run("cd {{release_path}} && $composerEnvVars $composer {{composer_options}}");
-
+    run(sprintf('cd {{release_path}} && %s %s %s {{composer_options}}', useSudo(), $composerEnvVars, $composer));
 })->desc('Installing vendors');
 
 
@@ -284,8 +277,8 @@ task('deploy:vendors', function () {
  * Create symlink to last release.
  */
 task('deploy:symlink', function () {
-    run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // Atomic override symlink.
-    run("cd {{deploy_path}} && rm release"); // Remove release link.
+    run(sprintf('cd {{deploy_path}} && %s ln -sfn {{release_path}} current', useSudo())); // Atomic override symlink.
+    run(sprintf('cd {{deploy_path}} && %s rm release', useSudo())); // Remove release link.
 })->desc('Creating symlink to release');
 
 
@@ -294,7 +287,6 @@ task('deploy:symlink', function () {
  */
 env('releases_list', function () {
     $list = run('ls {{deploy_path}}/releases')->toArray();
-
     rsort($list);
 
     return $list;
@@ -305,14 +297,14 @@ env('releases_list', function () {
  * Return current release path.
  */
 env('current', function () {
-    return run("readlink {{deploy_path}}/current")->toString();
+    return run('readlink {{deploy_path}}/current')->toString();
 });
 
 /**
  * Show current release number.
  */
 task('current', function () {
-    writeln('Current release: ' . basename(env('current')));
+    writeln('Current release: '.basename(env('current')));
 })->desc('Show current release.');
 
 
@@ -321,21 +313,18 @@ task('current', function () {
  */
 task('cleanup', function () {
     $releases = env('releases_list');
-
     $keep = get('keep_releases');
-
     while ($keep > 0) {
         array_shift($releases);
         --$keep;
     }
 
     foreach ($releases as $release) {
-        run("rm -rf {{deploy_path}}/releases/$release");
+        run(sprintf('%s rm -rf {{deploy_path}}/releases/%s', useSudo(), $release));
     }
 
-    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
-
+    run(sprintf('cd {{deploy_path}} && if [ -e release ]; then %s rm release; fi', useSudo()));
+    run(sprintf('cd {{deploy_path}} && if [ -h release ]; then %s rm release; fi', useSudo()));
 })->desc('Cleaning up old releases');
 
 
@@ -343,7 +332,5 @@ task('cleanup', function () {
  * Success message
  */
 task('success', function () {
-    writeln("<info>Successfully deployed!</info>");
-})
-    ->once()
-    ->setPrivate();
+    writeln('<info>Successfully deployed!</info>');
+})->once()->setPrivate();

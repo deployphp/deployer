@@ -242,12 +242,15 @@ task('deploy:writable', function () {
                         run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                         run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                     } else {
-                        // If run without sudo, check each dir
+                        // When running without sudo, exception may be thrown
+                        // if executing setfacl on files created by http user (in directory that has been setfacl before).
+                        // These directories/files should be skipped.
+                        // Now, we will check each directory for ACL and only setfacl for which has not been set before.
                         $writeableDirs = get('writable_dirs');
                         foreach ($writeableDirs as $dir) {
                             // Check if ACL has been set or not
                             $hasfacl = run("getfacl -p $dir | grep $httpUser | wc -l")->toString();
-                            // Set ACL for dir if it has not been set before
+                            // Set ACL for directory if it has not been set before
                             if (!$hasfacl) {
                                 run("setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
                                 run("setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");

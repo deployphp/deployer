@@ -5,7 +5,8 @@
  * file that was distributed with this source code.
  */
 
-use \Deployer\Helper\RecipeTester;
+use Deployer\Helper\RecipeTester;
+use Deployer\Functions;
 
 class RemoteServerTest extends RecipeTester
 {
@@ -20,19 +21,19 @@ class RemoteServerTest extends RecipeTester
     {
         $username = getenv('DEPLOYER_USERNAME') ?: 'deployer';
         $password = getenv('DEPLOYER_PASSWORD') ?: 'deployer_password';
-        server('remote_auth_by_password', 'localhost', 22)
+        Functions\server('remote_auth_by_password', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->password($password);
-        server('remote_auth_by_identity_file', 'localhost', 22)
+        Functions\server('remote_auth_by_identity_file', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->identityFile();
-        server('remote_auth_by_pem_file', 'localhost', 22)
+        Functions\server('remote_auth_by_pem_file', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->pemFile('~/.ssh/id_rsa.pem');
-        server('remote_auth_by_agent', 'localhost', 22)
+        Functions\server('remote_auth_by_agent', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->forwardAgent();
@@ -42,14 +43,14 @@ class RemoteServerTest extends RecipeTester
     {
         require __DIR__ . '/../../recipe/common.php';
 
-        task('deploy:timeout_test', function () {
-            $this->result = run('sleep 11 && echo $SSH_CLIENT');
+        Functions\task('deploy:timeout_test', function () {
+            $this->result = Functions\run('sleep 11 && echo $SSH_CLIENT');
         });
-        task('deploy:ssh_test', function () {
-            $this->result = run('echo $SSH_CLIENT');
+        Functions\ task('deploy:ssh_test', function () {
+            $this->result = Functions\run('echo $SSH_CLIENT');
         });
-        task('deploy:agent_test', function () {
-            $this->result = run('ssh -T deployer@localhost \'echo $SSH_CLIENT\'');
+        Functions\ task('deploy:agent_test', function () {
+            $this->result = Functions\run('ssh -T deployer@localhost \'echo $SSH_CLIENT\'');
         });
     }
 

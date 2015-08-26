@@ -5,11 +5,12 @@
  * file that was distributed with this source code.
  */
 
+use Deployer\Functions;
 use Symfony\Component\Yaml\Parser;
 
 require_once __DIR__ . '/common.php';
 
-task('deploy', [
+Functions\task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
@@ -19,32 +20,32 @@ task('deploy', [
 ]);
 
 //Set drupal site. Change if you use different site
-env('drupal_site', 'default');
+Functions\env('drupal_site', 'default');
 
 
 //Drupal 7 shared dirs
-set('shared_dirs', [
+Functions\set('shared_dirs', [
     'sites/{{drupal_site}}/files',
 ]);
 
 //Drupal 7 sharef files
-set('shared_files', [
+Functions\set('shared_files', [
     'sites/{{drupal_site}}/settings.php',
 ]);
 
 //Drupal 7 Writable dirs
-set('writable_dirs', [
+Functions\set('writable_dirs', [
     'sites/{{drupal_site}}/files',
 ]);
 
 
 //Create and upload Drupal 7 settings.php using values from secrets
-task('drupal:settings', function () {
-    if (askConfirmation('Are you sure to generate and upload settings.php file?')) {
+Functions\task('drupal:settings', function () {
+    if (Functions\askConfirmation('Are you sure to generate and upload settings.php file?')) {
         $basepath = dirname(__FILE__) . '/drupal7';
 
         //Import secrets
-        $secrets = env('settings');
+        $secrets = Functions\env('settings');
 
         //Prepare replacement variables
         $iterator = new RecursiveIteratorIterator(
@@ -67,12 +68,12 @@ task('drupal:settings', function () {
 
         $settings = strtr($settings, $replacements);
 
-        writeln('settings.php created succesfuly');
+        Functions\writeln('settings.php created succesfuly');
 
         $tmpFilename = tempnam($basepath, 'tmp_settings_');
         file_put_contents($tmpFilename, $settings);
 
-        upload($tmpFilename, '{{deploy_path}}/shared/sites/{{drupal_site}}/settings.php');
+        Functions\upload($tmpFilename, '{{deploy_path}}/shared/sites/{{drupal_site}}/settings.php');
 
         unlink($tmpFilename);
     }
@@ -80,8 +81,8 @@ task('drupal:settings', function () {
 });
 
 //Upload Drupal 7 files folder
-task('drupal:upload_files', function () {
-    if (askConfirmation('Are you sure?')) {
-        upload('sites/{{drupal_site}}/files', '{{deploy_path}}/shared/sites/{{drupal_site}}/files');
+Functions\task('drupal:upload_files', function () {
+    if (Functions\askConfirmation('Are you sure?')) {
+        Functions\upload('sites/{{drupal_site}}/files', '{{deploy_path}}/shared/sites/{{drupal_site}}/files');
     }
 });

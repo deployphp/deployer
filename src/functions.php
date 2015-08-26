@@ -1,4 +1,7 @@
 <?php
+
+namespace Deployer\Functions;
+
 /* (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,6 +19,9 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
+use InvalidArgumentException;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -316,10 +322,10 @@ function runLocally($command, $timeout = 60)
     $command = env()->parse($command);
 
     if (isVeryVerbose()) {
-        writeln("<comment>Run locally</comment>: $command");
+        Functions\writeln("<comment>Run locally</comment>: $command");
     }
 
-    $process = new Symfony\Component\Process\Process($command);
+    $process = new Process($command);
     $process->setTimeout($timeout);
     $process->run(function ($type, $buffer) {
         if (isDebug()) {
@@ -357,7 +363,7 @@ function upload($local, $remote)
     } elseif (is_dir($local)) {
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
 
-        $finder = new Symfony\Component\Finder\Finder();
+        $finder = new Finder();
         $files = $finder
             ->files()
             ->ignoreUnreadableDirs()

@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Console\Application;
+use Deployer\Functions;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
 
@@ -65,7 +66,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testServer()
     {
-        server('main', 'domain.com', 22);
+        Functions\server('main', 'domain.com', 22);
 
         $server = $this->deployer->servers->get('main');
         $env = $this->deployer->environments->get('main');
@@ -76,7 +77,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testLocalServer()
     {
-        localServer('main')->env('deploy_path', __DIR__ . '/localhost');
+        Functions\localServer('main')->env('deploy_path', __DIR__ . '/localhost');
 
         $server = $this->deployer->servers->get('main');
         $env = $this->deployer->environments->get('main');
@@ -88,7 +89,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testServerList()
     {
-        serverList(__DIR__ . '/../fixture/servers.yml');
+        Functions\serverList(__DIR__ . '/../fixture/servers.yml');
 
         foreach (['production', 'beta', 'test'] as $stage) {
             $server = $this->deployer->servers->get($stage);
@@ -103,24 +104,24 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testTask()
     {
-        task('task', function () {});
+        Functions\task('task', function () {});
 
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
 
-        task('group', ['task']);
+        Functions\task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         $this->assertInstanceOf('Deployer\Task\GroupTask', $task);
 
         $this->setExpectedException('InvalidArgumentException', 'Task should be an closure or array of other tasks.');
-        task('wrong', 'thing');
+        Functions\task('wrong', 'thing');
     }
 
     public function testBefore()
     {
-        task('main', function () {});
-        task('before', function () {});
-        before('main', 'before');
+        Functions\task('main', function () {});
+        Functions\task('before', function () {});
+        Functions\ before('main', 'before');
 
         $mainScenario = $this->deployer->scenarios->get('main');
         $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
@@ -129,9 +130,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testAfter()
     {
-        task('main', function () {});
-        task('after', function () {});
-        after('main', 'after');
+        Functions\task('main', function () {});
+        Functions\task('after', function () {});
+        Functions\after('main', 'after');
 
         $mainScenario = $this->deployer->scenarios->get('main');
         $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
@@ -140,7 +141,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testRunLocally()
     {
-        $output = runLocally('echo "hello"');
+        $output = Functions\runLocally('echo "hello"');
 
         $this->assertInstanceOf('Deployer\Type\Result', $output);
         $this->assertEquals('hello', (string)$output);
@@ -160,9 +161,9 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 }));
 
         // Directory
-        upload(__DIR__ . '/../fixture/app', '/home/www');
+        Functions\upload(__DIR__ . '/../fixture/app', '/home/www');
 
         // File
-        upload(__DIR__ . '/../fixture/app/README.md', '/home/www/README.md');
+        Functions\upload(__DIR__ . '/../fixture/app/README.md', '/home/www/README.md');
     }
 }

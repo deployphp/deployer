@@ -5,12 +5,14 @@
  * file that was distributed with this source code.
  */
 
+use Deployer\Functions;
+
 require_once __DIR__ . '/common.php';
 
 /**
  * Main task
  */
-task('deploy', [
+Functions\task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
@@ -19,4 +21,4 @@ task('deploy', [
     'cleanup',
 ])->desc('Deploy your project');
 
-after('deploy', 'success');
+Functions\after('deploy', 'success');

@@ -7,69 +7,71 @@
 
 require_once __DIR__ . '/common.php';
 
+use Deployer\Functions;
+
 /**
  * Symfony Configuration
  */
 
 // Symfony shared dirs
-set('shared_dirs', ['app/logs']);
+Functions\set('shared_dirs', ['app/logs']);
 
 // Symfony shared files
-set('shared_files', ['app/config/parameters.yml']);
+Functions\set('shared_files', ['app/config/parameters.yml']);
 
 // Symfony writable dirs
-set('writable_dirs', ['app/cache', 'app/logs']);
+Functions\set('writable_dirs', ['app/cache', 'app/logs']);
 
 // Assets
-set('assets', ['web/css', 'web/images', 'web/js']);
+Functions\set('assets', ['web/css', 'web/images', 'web/js']);
 
 // Environment vars
-env('env_vars', 'SYMFONY_ENV=prod');
-env('env', 'prod');
+Functions\env('env_vars', 'SYMFONY_ENV=prod');
+Functions\env('env', 'prod');
 
 // Adding support for the Symfony3 directory structure
-set('bin_dir', 'app');
-set('var_dir', 'app');
+Functions\set('bin_dir', 'app');
+Functions\set('var_dir', 'app');
 
 
 /**
  * Create cache dir
  */
-task('deploy:create_cache_dir', function () {
+Functions\task('deploy:create_cache_dir', function () {
     // Set cache dir
-    env('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
+    Functions\env('cache_dir', '{{release_path}}/' . trim(Functions\get('var_dir'), '/') . '/cache');
 
     // Remove cache dir if it exist
-    run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
+    Functions\run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
 
     // Create cache dir
-    run('mkdir -p {{cache_dir}}');
+    Functions\run('mkdir -p {{cache_dir}}');
 
     // Set rights
-    run("chmod -R g+w {{cache_dir}}");
+    Functions\run("chmod -R g+w {{cache_dir}}");
 })->desc('Create cache dir');
 
 
 /**
  * Normalize asset timestamps
  */
-task('deploy:assets', function () {
+Functions\task('deploy:assets', function () {
     $assets = implode(' ', array_map(function ($asset) {
         return "{{release_path}}/$asset";
-    }, get('assets')));
+    }, Functions\get('assets')));
 
     $time = date('Ymdhi.s');
 
-    run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
+    Functions\run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
 })->desc('Normalize asset timestamps');
 
 
 /**
  * Dump all assets to the filesystem
  */
-task('deploy:assetic:dump', function () {
+Functions\task('deploy:assetic:dump', function () {
 
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
+    Functions\run('php {{release_path}}/' . trim(Functions\get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
 
 })->desc('Dump assets');
 
@@ -77,9 +79,9 @@ task('deploy:assetic:dump', function () {
 /**
  * Warm up cache
  */
-task('deploy:cache:warmup', function () {
+Functions\task('deploy:cache:warmup', function () {
 
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
+    Functions\run('php {{release_path}}/' . trim(Functions\get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
 
 })->desc('Warm up cache');
 
@@ -87,9 +89,9 @@ task('deploy:cache:warmup', function () {
 /**
  * Migrate database
  */
-task('database:migrate', function () {
+Functions\task('database:migrate', function () {
 
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
+    Functions\run('php {{release_path}}/' . trim(Functions\get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
 
 })->desc('Migrate database');
 
@@ -97,20 +99,20 @@ task('database:migrate', function () {
 /**
  * Remove app_dev.php files
  */
-task('deploy:clear_controllers', function () {
+Functions\task('deploy:clear_controllers', function () {
 
-    run("rm -f {{release_path}}/web/app_*.php");
-    run("rm -f {{release_path}}/web/config.php");
+    Functions\run("rm -f {{release_path}}/web/app_*.php");
+    Functions\run("rm -f {{release_path}}/web/config.php");
 
 })->setPrivate();
 
-after('deploy:update_code', 'deploy:clear_controllers');
+Functions\after('deploy:update_code', 'deploy:clear_controllers');
 
 
 /**
  * Main task
  */
-task('deploy', [
+Functions\task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
@@ -125,4 +127,4 @@ task('deploy', [
     'cleanup',
 ])->desc('Deploy your project');
 
-after('deploy', 'success');
+Functions\after('deploy', 'success');

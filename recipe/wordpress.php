@@ -7,10 +7,12 @@
 
 require_once __DIR__ . '/common.php';
 
+use Deployer\Functions;
+
 /**
  * Main task
  */
-task('deploy', [
+Functions\task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
@@ -18,4 +20,4 @@ task('deploy', [
     'cleanup',
 ])->desc('Deploy your project');
 
-after('deploy', 'success');
+Functions\after('deploy', 'success');

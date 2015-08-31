@@ -14,6 +14,7 @@ set('shared_files', []);
 set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
+set('http_user', null);
 
 /**
  * Environment vars
@@ -223,10 +224,13 @@ task('deploy:shared', function () {
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
+    $httpUser = get('http_user');
 
     if (!empty($dirs)) {
         try {
-            $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
+            if (null === $httpUser) {
+                $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
+            }
 
             cd('{{release_path}}');
 

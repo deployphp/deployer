@@ -96,7 +96,7 @@ task('deploy:prepare', function () {
     if (!date_default_timezone_set(env('timezone'))) {
         date_default_timezone_set('UTC');
     }
-    
+
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Create releases dir.
@@ -142,7 +142,7 @@ task('deploy:update_code', function () {
     $branch = env('branch');
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
-    
+
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
     }
@@ -155,7 +155,7 @@ task('deploy:update_code', function () {
     }
 
     $releases = env('releases_list');
-    
+
     if ($gitCache && isset($releases[1])) {
         try {
             run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
@@ -327,6 +327,13 @@ env('releases_list', function () {
     return $list;
 });
 
+
+/**
+ * Return the current release timestamp
+ */
+env('release', function () {
+    return basename(env('current'));
+});
 
 /**
  * Return current release path.

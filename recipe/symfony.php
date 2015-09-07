@@ -31,6 +31,10 @@ env('env', 'prod');
 set('bin_dir', 'app');
 set('var_dir', 'app');
 
+// Clear controllers
+env('clear_controllers', true);
+// Clear controllers path, relative to release_path
+env('clear_controllers_path', ['web/app_*.php', 'web/config.php']);
 
 /**
  * Create cache dir
@@ -99,8 +103,13 @@ task('database:migrate', function () {
  */
 task('deploy:clear_controllers', function () {
 
-    run("rm -f {{release_path}}/web/app_*.php");
-    run("rm -f {{release_path}}/web/config.php");
+    if (env('clear_controllers') === true) {
+        if (is_array(env('clear_controllers_path'))) {
+            foreach (env('clear_controllers_path') as $path) {
+                run("rm -f {{release_path}}/$path");
+            }
+        }
+    }
 
 })->setPrivate();
 

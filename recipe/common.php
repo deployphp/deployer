@@ -15,6 +15,8 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
+set('clear_paths', []);         // Relative path from deploy_path
+set('clear_use_sudo', true);    // Using sudo in clean commands?
 
 /**
  * Environment vars
@@ -372,6 +374,18 @@ task('cleanup', function () {
 
 })->desc('Cleaning up old releases');
 
+/**
+ * Cleanup files and directories
+ */
+task('deploy:clean', function () {
+    $paths = get('clear_paths');
+    $sudo  = get('clear_use_sudo') ? 'sudo' : '';
+
+    foreach ($paths as $path) {
+        run("$sudo rm -rf {{deploy_path}}/$path");
+    }
+
+})->desc('Cleaning up files and/or directories');
 
 /**
  * Success message

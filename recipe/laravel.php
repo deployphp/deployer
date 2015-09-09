@@ -13,7 +13,7 @@ set('shared_dirs', [
     'storage/framework/cache',
     'storage/framework/sessions',
     'storage/framework/views',
-    'storage/framework/logs',
+    'storage/logs',
 ]);
 
 // Laravel 5 shared file

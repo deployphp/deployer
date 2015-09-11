@@ -5,8 +5,6 @@
  * file that was distributed with this source code.
  */
 
-use Symfony\Component\Yaml\Parser;
-
 require_once __DIR__ . '/common.php';
 
 task('deploy', [

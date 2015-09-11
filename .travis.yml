@@ -22,3 +22,12 @@ install:
 
 script:
   - phpunit
+  
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/3ffa605389816ec39774
+    on_success: change
+    on_failure: always
+    on_start: never
+  

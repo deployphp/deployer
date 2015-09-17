@@ -14,6 +14,8 @@ See [http://deployer.org](http://deployer.org) for more information and document
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+Support Deployer development on [patreon](https://www.patreon.com/deployer).
+
 Requirements
 ------------
 * PHP 5.4.0 and up.
@@ -86,6 +88,11 @@ the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-
 
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
+
+Donate
+------
+
+Support Deployer development on [patreon](https://www.patreon.com/deployer).
 
 License
 -------

@@ -18,9 +18,6 @@
     'cleanup'
     ]);
 
-  //Set drupal site. Change if you use different site
-  env('drupal_site', 'default');
-
 
   //Drupal 7 shared dirs
   set('shared_dirs', [
@@ -39,7 +36,7 @@
 
 
   //Create and upload Drupal 7 settings.php using values from secrets
-  task('drupal:settings', function () {
+  task('drupal:configure', function () {
     if (askConfirmation('Are you sure to generate and upload settings.php file?')) {
         $basepath = dirname(__FILE__). '/drupal7';
       

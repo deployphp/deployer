@@ -15,6 +15,7 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
+set('repository_subdir', '.');
 
 /**
  * Environment vars
@@ -167,6 +168,29 @@ task('deploy:update_code', function () {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
         run("git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
     }
+
+    // if no subdir, then no need to go further
+    $subdir = trim(get('repository_subdir'), '/');
+    if ($subdir == '.' || $subdir == '') {
+        return;
+    }
+
+    // create a temp subdirectory
+    $tmpdir = run('mktemp -d')->toString();
+    if (! $tmpdir) {
+        throw new RuntimeException("Could not create a temp directory.");
+    }
+
+    // Move the app in the tmp folder
+    // without 'shopt -s dotglob', all files/dirs starting with '.' will not be moved
+    run("shopt -s dotglob && mv {{release_path}}/$subdir/* $tmpdir/");
+    // Clean all in the release folder
+    run("shopt -s dotglob && rm -rf {{release_path}}/*");
+    // Move the temp folder to the release folder
+    run("shopt -s dotglob && mv $tmpdir/* {{release_path}}/");
+    // Delete the tmp folder
+    run("rm -rf $tmpdir");
+
 
 })->desc('Updating code');
 

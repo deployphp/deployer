@@ -12,13 +12,13 @@ require_once __DIR__ . '/common.php';
  * CakePHP 3 Project Template configuration
  */
 
-// Yii 2 Advanced Project Template shared dirs
+// CakePHP 3 Project Template shared dirs
 set('shared_dirs', [
     'logs',
     'tmp',
 ]);
 
-// Yii 2 Advanced Project Template shared files
+// CakePHP 3 Project Template shared files
 set('shared_files', [
     'config/app.php',
 ]);

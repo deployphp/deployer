@@ -24,11 +24,10 @@ set('shared_files', [
 ]);
 
 /**
- * Initialization
+ * Create plugins' symlinks
  */
 task('deploy:init', function () {
-    run('{{release_path}}/bin/cake orm_cache clear');
-    run('{{release_path}}/bin/cake orm_cache build');
+    run('{{release_path}}/bin/cake plugin assets symlink');
 })->desc('Initialization');
 
 /**
@@ -36,6 +35,8 @@ task('deploy:init', function () {
  */
 task('deploy:run_migrations', function () {
     run('{{release_path}}/bin/cake migrations migrate');
+    run('{{release_path}}/bin/cake orm_cache clear');
+    run('{{release_path}}/bin/cake orm_cache build');
 })->desc('Run migrations');
 
 /**

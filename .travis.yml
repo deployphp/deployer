@@ -11,7 +11,6 @@ php:
 
 matrix:
   allow_failures:
-    - php: 7.0
     - php: hhvm
 
 install:
@@ -30,4 +29,3 @@ notifications:
     on_success: change
     on_failure: always
     on_start: never
-  

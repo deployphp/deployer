@@ -278,7 +278,7 @@ task('deploy:writable', function () {
 
             $errorMessage = [
                 "Unable to setup correct permissions for writable dirs.                  ",
-                "You need co configure sudo's sudoers files to don't prompt for password,",
+                "You need to configure sudo's sudoers files to not prompt for password,",
                 "or setup correct permissions manually.                                  ",
             ];
             write($formatter->formatBlock($errorMessage, 'error', true));

@@ -9,7 +9,7 @@ use \Deployer\Helper\RecipeTester;
 
 class RemoteServerTest extends RecipeTester
 {
-    const IP_REG_EXP = '#^((::1)|(127.0.0.1))#';
+    const IP_REG_EXP = '#^(?:::1|127\.0\.0\.1)#';
 
     /**
      * @var \Deployer\Type\Result

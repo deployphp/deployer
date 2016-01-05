@@ -20,7 +20,7 @@ set('shared_dirs', [
 set('shared_files', ['.env']);
 
 // Laravel writable dirs
-set('writable_dirs', ['storage', 'vendor']);
+set('writable_dirs', ['bootstrap/cache', 'storage']);
 
 /**
  * Main task

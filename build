@@ -2,28 +2,18 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-$version = false;
-$pharName = "deployer.phar";
-$pharFile = __DIR__ . '/' . $pharName;
-
 $opt = getopt('v::');
 
+$version = 'dev-master';
 if (array_key_exists('v', $opt)) {
     $version = $opt['v'];
     if (!preg_match('/^\d+\.\d+\.\d+(-[\d\w\.]+)?$/i', $version)) {
         die("Version number must follow semantic versioning.\n");
     }
-
-    $pharName = "deployer-$version.phar";
-
-    $dir = __DIR__ . '/pages/releases';
-    if (!is_dir($dir)) {
-        die("Release directory `$dir` does not exist.\n");
-    }
-
-    $pharFile = $dir . '/' . $pharName;
 }
 
+$pharName = "deployer.phar";
+$pharFile = __DIR__ . '/' . $pharName;
 
 if (file_exists($pharFile)) {
     unlink($pharFile);
@@ -39,10 +29,12 @@ $finder->files()
     ->ignoreVCS(true)
     ->name('*.php')
     ->name('*.json')
+    ->name('*.exe')
     ->exclude('phpunit')
     ->exclude('Tests')
     ->exclude('test')
     ->exclude('tests')
+    ->exclude('phpspec')
     ->in(__DIR__);
 
 foreach ($finder as $fileInfo) {
@@ -56,6 +48,8 @@ foreach ($finder as $fileInfo) {
 // Add bin/dep file
 $depContent = file_get_contents(__DIR__ . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
+$depContent = str_replace("'master'", "'$version'", $depContent);
+$depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
 $phar->addFromString('bin/dep', $depContent);
 
 $stub = <<<STUB
@@ -67,37 +61,9 @@ __HALT_COMPILER();
 STUB;
 
 $phar->setStub($stub);
+// Bug #53467. Phar cannot compress large archives. https://bugs.php.net/bug.php?id=53467
+// $phar->compressFiles(Phar::GZ);
 $phar->stopBuffering();
 unset($phar);
 
-echo "$pharName created successful.\n";
-
-// Update manifest only in version is specified.
-if (false !== $version) {
-
-    // Generate sha1 sum and put it to manifest.json
-    $newPharManifest = [
-        'name' => $pharName,
-        'sha1' => sha1_file($pharFile),
-        'url' => "http://deployer.in/releases/$pharName",
-        'version' => $version,
-    ];
-
-    $manifest = json_decode(file_get_contents(__DIR__ . '/manifest.json'), true);
-
-    $alreadyExistVersion = null;
-    foreach ($manifest as $i => $old) {
-        if ($old['version'] === $version) {
-            $alreadyExistVersion = $i;
-        }
-    }
-
-    if (null === $alreadyExistVersion) {
-        $manifest[] = $newPharManifest;
-    } else {
-        $manifest[$alreadyExistVersion] = $newPharManifest;
-    }
-
-    file_put_contents(__DIR__ . '/manifest.json', json_encode($manifest, JSON_PRETTY_PRINT));
-
-}
+echo "$pharName was created successfully.\n";

@@ -1,0 +1,21 @@
+checks:
+  php:
+    code_rating: true
+    duplication: true
+    
+filter:
+  paths:
+    - src/*
+    - recipe/*
+    - bin/*
+  excluded_paths:
+    - src/Resources/*
+
+build:
+  tests:
+    override:
+      -
+        command: phpunit --coverage-clover=coverage
+        coverage:
+          file: coverage
+          format: php-clover

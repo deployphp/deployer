@@ -1,5 +1,7 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+
+/**
+ * (c) Anton Medvedev <anton@elfet.ru>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,99 +9,103 @@
 
 namespace Deployer\Server;
 
-use Ssh;
+use Deployer\Server\Password\PasswordGetterInterface;
 
+/**
+ * Server configuration
+ */
 class Configuration
 {
-    const AUTH_BY_PASSWORD = 0;
-
-    const AUTH_BY_CONFIG = 1;
-
-    const AUTH_BY_PUBLIC_KEY = 2;
-
-    const AUTH_BY_PEM_FILE = 3;
+    const AUTH_BY_PASSWORD      = 0;
+    const AUTH_BY_CONFIG        = 1;
+    const AUTH_BY_IDENTITY_FILE = 2;
+    const AUTH_BY_PEM_FILE      = 3;
+    const AUTH_BY_AGENT         = 4;
 
     /**
      * Type of authentication.
+     * By default try to connect via password authentication
+     *
      * @var int
      */
     private $authenticationMethod = self::AUTH_BY_PASSWORD;
 
     /**
      * Server name
+     *
      * @var string
      */
     private $name;
 
     /**
      * Server host.
+     *
      * @var string
      */
     private $host;
 
     /**
      * Server port.
+     *
      * @var int
      */
     private $port;
 
     /**
-     * Base path of server.
-     * @var string
-     */
-    private $path;
-
-    /**
      * User of remote server.
+     *
      * @var string
      */
     private $user;
 
     /**
      * Used for authentication with password.
+     *
      * @var string
      */
     private $password;
 
     /**
      * Used for authentication with config file.
+     *
      * @var string
      */
     private $configFile;
 
     /**
      * Used for authentication with public key.
+     *
      * @var string
      */
     private $publicKey;
 
     /**
      * Used for authentication with public key.
+     *
      * @var string
      */
     private $privateKey;
 
     /**
      * Used for authentication with public key.
+     *
      * @var string
      */
     private $passPhrase;
 
     /**
-     * WWW user name.
-     * @var string
-     */
-    private $wwwUser = 'www-data';
-
-    /**
      * Pem file.
+     *
      * @var string
      */
     private $pemFile;
 
     /**
+     * Construct
+     *
+     * @param string $name
      * @param string $host
-     * @param int $port
+     * @param int    $port
      */
     public function __construct($name, $host, $port = 22)
     {
@@ -109,64 +115,8 @@ class Configuration
     }
 
     /**
-     * @param string $path
-     * @return $this
-     */
-    public function path($path)
-    {
-        $this->path = $path;
-        return $this;
-    }
-
-    /**
-     * Define user name for authentication.
-     * @param string $name
-     * @param null|string $password If you did not define password it will be asked on connection.
-     * @return $this
-     */
-    public function user($name, $password = null)
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_PASSWORD);
-        $this->setUser($name);
-        $this->setPassword($password);
-        return $this;
-    }
-
-    /**
-     * If you use an ssh config file you can user it.
-     * @param string $file Config file path
-     * @return $this
-     */
-    public function configFile($file)
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_CONFIG);
-        $this->setConfigFile($file);
-        return $this;
-    }
-
-    /**
-     * @param string $publicKeyFile
-     * @param string $privateKeyFile
-     * @param null|string $passPhrase
-     * @return $this
-     */
-    public function pubKey($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_PUBLIC_KEY);
-        $this->setPublicKey($publicKeyFile);
-        $this->setPrivateKey($privateKeyFile);
-        $this->setPassPhrase($passPhrase);
-        return $this;
-    }
-
-    public function pemFile($pemFile)
-    {
-        $this->setAuthenticationMethod(self::AUTH_BY_PEM_FILE);
-        $this->setPemFile($pemFile);
-        return $this;
-    }
-
-    /**
+     * Get authentication method
+     *
      * @return int
      */
     public function getAuthenticationMethod()
@@ -175,6 +125,22 @@ class Configuration
     }
 
     /**
+     * Set authentication method
+     *
+     * @param int $authenticationMethod
+     *
+     * @return Configuration
+     */
+    public function setAuthenticationMethod($authenticationMethod)
+    {
+        $this->authenticationMethod = $authenticationMethod;
+
+        return $this;
+    }
+
+    /**
+     * Get configuration file
+     *
      * @return string
      */
     public function getConfigFile()
@@ -183,6 +149,22 @@ class Configuration
     }
 
     /**
+     * Set configuration file
+     *
+     * @param string $configFile
+     *
+     * @return Configuration
+     */
+    public function setConfigFile($configFile)
+    {
+        $this->configFile = $this->parseHome($configFile);
+
+        return $this;
+    }
+
+    /**
+     * Get host for connection
+     *
      * @return string
      */
     public function getHost()
@@ -191,26 +173,46 @@ class Configuration
     }
 
     /**
+     * Set host for connection
+     *
+     * @param string $host
+     *
+     * @return Configuration
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
+
+        return $this;
+    }
+
+    /**
+     * Get password for connection
+     *
      * @return string
      */
     public function getPassword()
     {
-        if(null === $this->password) {
-            $this->password = askHiddenResponse('Password:');
-        }
-
-        return $this->password;
+        return $this->getRealPassword($this->password);
     }
 
     /**
-     * @return string
+     * Set password for connection
+     *
+     * @param string $password
+     *
+     * @return Configuration
      */
-    public function getPath()
+    public function setPassword($password)
     {
-        return $this->path;
+        $this->password = $password;
+
+        return $this;
     }
 
     /**
+     * Get port
+     *
      * @return int
      */
     public function getPort()
@@ -219,7 +221,23 @@ class Configuration
     }
 
     /**
-     * @return array
+     * Set port for connection
+     *
+     * @param int $port
+     *
+     * @return Configuration
+     */
+    public function setPort($port)
+    {
+        $this->port = $port;
+
+        return $this;
+    }
+
+    /**
+     * Get public key
+     *
+     * @return string
      */
     public function getPublicKey()
     {
@@ -227,17 +245,46 @@ class Configuration
     }
 
     /**
+     * Set public key
+     *
+     * @param string $path
+     *
+     * @return Configuration
+     */
+    public function setPublicKey($path)
+    {
+        $this->publicKey = $this->parseHome($path);
+
+        return $this;
+    }
+
+    /**
+     * Get pass phrase
+     *
      * @return string
      */
     public function getPassPhrase()
     {
-        if(null === $this->passPhrase) {
-            $this->passPhrase = askHiddenResponse('PassPhrase:');
-        }
-        return $this->passPhrase;
+        return $this->getRealPassword($this->passPhrase);
     }
 
     /**
+     * Set pass phrase
+     *
+     * @param string $passPhrase
+     *
+     * @return Configuration
+     */
+    public function setPassPhrase($passPhrase)
+    {
+        $this->passPhrase = $passPhrase;
+
+        return $this;
+    }
+
+    /**
+     * Get private key
+     *
      * @return string
      */
     public function getPrivateKey()
@@ -246,121 +293,46 @@ class Configuration
     }
 
     /**
+     * Set private key
+     *
+     * @param string $path
+     *
+     * @return Configuration
+     */
+    public function setPrivateKey($path)
+    {
+        $this->privateKey = $this->parseHome($path);
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
      * @return string
      */
     public function getUser()
     {
-        if(null === $this->user) {
-            $this->user = ask("User:", trim(runLocally('whoami')));
-        }
         return $this->user;
     }
 
     /**
-     * @param int $authenticationMethod
-     */
-    public function setAuthenticationMethod($authenticationMethod)
-    {
-        $this->authenticationMethod = $authenticationMethod;
-    }
-
-    /**
-     * @param string $configFile
-     */
-    public function setConfigFile($configFile)
-    {
-        $this->configFile = $configFile;
-    }
-
-    /**
-     * @param string $host
-     * @return $this
-     */
-    public function setHost($host)
-    {
-        $this->host = $host;
-        return $this;
-    }
-
-    /**
-     * @param string $passPhrase
-     * @return $this
-     */
-    public function setPassPhrase($passPhrase)
-    {
-        $this->passPhrase = $passPhrase;
-        return $this;
-    }
-
-    /**
-     * @param string $password
-     * @return $this
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        return $this;
-    }
-
-    /**
-     * @param int $port
-     * @return $this
-     */
-    public function setPort($port)
-    {
-        $this->port = $port;
-        return $this;
-    }
-
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function setPrivateKey($path)
-    {
-        if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
-        }
-
-        $this->privateKey = $path;
-        return $this;
-    }
-
-    /**
-     * @param string $path
-     * @return $this
-     */
-    public function setPublicKey($path)
-    {
-        if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
-        }
-
-        $this->publicKey = $path;
-        return $this;
-    }
-
-    /**
+     * Set user
+     *
      * @param string $user
-     * @return $this
+     *
+     * @return Configuration
      */
     public function setUser($user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->name = $name;
-        return $this;
-    }
-
-    /**
+     * Get name
+     *
      * @return string
      */
     public function getName()
@@ -369,42 +341,74 @@ class Configuration
     }
 
     /**
-     * @param string $wwwUser
-     * @return $this
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Configuration
      */
-    public function setWwwUser($wwwUser)
+    public function setName($name)
     {
-        $this->wwwUser = $wwwUser;
+        $this->name = $name;
+
         return $this;
     }
 
     /**
-     * @return string
-     */
-    public function getWwwUser()
-    {
-        return $this->wwwUser;
-    }
-
-    /**
-     * To auth with pem file use pemFile() method instead of this.
-     * @param string $pemFile
-     * @return $this
-     */
-    private function setPemFile($pemFile)
-    {
-        if (isset($_SERVER['HOME'])) {
-            $pemFile = str_replace('~', $_SERVER['HOME'], $pemFile);
-        }
-        $this->pemFile = $pemFile;
-        return $this;
-    }
-
-    /**
+     * Get pem file
+     *
      * @return string
      */
     public function getPemFile()
     {
         return $this->pemFile;
+    }
+
+    /**
+     * To auth with pem file use pemFile() method instead of this.
+     *
+     * @param string $pemFile
+     *
+     * @return Configuration
+     */
+    public function setPemFile($pemFile)
+    {
+        $this->pemFile = $this->parseHome($pemFile);
+
+        return $this;
+    }
+
+    /**
+     * Parse "~" symbol from path.
+     *
+     * @param string $path
+     *
+     * @return string
+     */
+    private function parseHome($path)
+    {
+        if (isset($_SERVER['HOME'])) {
+            $path = str_replace('~', $_SERVER['HOME'], $path);
+        } elseif (isset($_SERVER['HOMEDRIVE'], $_SERVER['HOMEPATH'])) {
+            $path = str_replace('~', $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'], $path);
+        }
+
+        return $path;
+    }
+
+    /**
+     * Get real password
+     *
+     * @param mixed $password
+     *
+     * @return string
+     */
+    private function getRealPassword($password)
+    {
+        if ($password instanceof PasswordGetterInterface) {
+            return $password->getPassword($this->getHost(), $this->getUser());
+        }
+
+        return $password;
     }
 }

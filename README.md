@@ -1,60 +1,78 @@
 Introduction
 ------------
-[![Build Status](http://img.shields.io/travis/elfet/deployer.svg?style=flat)](https://travis-ci.org/elfet/deployer)
-[![Code Quality](http://img.shields.io/scrutinizer/g/elfet/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/elfet/deployer)
-[![Code Climate](http://img.shields.io/codeclimate/github/elfet/deployer.svg?style=flat)](https://codeclimate.com/github/elfet/deployer)
-[![Version](http://img.shields.io/packagist/v/elfet/deployer.svg?style=flat)](https://packagist.org/packages/elfet/deployer)
-[![Support via Gittip](http://img.shields.io/gittip/elfet.svg?style=flat)](https://www.gittip.com/elfet)
+[![Build Status](https://travis-ci.org/deployphp/deployer.svg?branch=master)](https://travis-ci.org/deployphp/deployer)
+[![Code Quality](http://img.shields.io/scrutinizer/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
+[![Code Climate](http://img.shields.io/codeclimate/github/deployphp/deployer.svg?style=flat)](https://codeclimate.com/github/deployphp/deployer)
+[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
+[![Version](http://img.shields.io/packagist/v/deployer/deployer.svg?style=flat)](https://packagist.org/packages/deployer/deployer)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
 
-
 Deployer is a deployment tool written in PHP.
 
-See [http://deployer.in](http://deployer.in) for more information and documentation.
+See [http://deployer.org](http://deployer.org) for more information and documentation.
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Requirements
 ------------
-Deployer is only supported on PHP 5.4.0 and up (yes, it's time to grow up).
-Deployer work with ssh2 pecl extension, but if you do not install it on you machine - do not worry,
-Deployer will work with [PHPSecLib](https://github.com/phpseclib/phpseclib).
+* PHP 5.4.0 and up.
 
+That's all!
+
+You can enable [sockets](http://php.net/manual/en/book.sockets.php) to speedup deployment process with parallel deployment.
 
 Installation
 ------------
-To install Deployer download [deployer.phar](http://deployer.in/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
+To install Deployer download [deployer.phar](http://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
-~~~
-mv deployer.phar /usr/local/bin/dep
-chmod +x /usr/local/bin/dep
-~~~
+``` sh
+$ curl -L http://deployer.org/deployer.phar -o deployer.phar
+$ mv deployer.phar /usr/local/bin/dep
+$ chmod +x /usr/local/bin/dep
+```
 
 To upgrade Deployer run command:
 
-~~~
-dep self-update
-~~~
+``` sh
+$ dep self-update
+```
 
 Or via composer:
 
-~~~
-composer require elfet/deployer:*
-~~~
+``` sh
+$ composer require deployer/deployer:~3.0
+```
 
 
 Documentation
 -------------
-Documentation can be found on site [deployer.in](http://deployer.in).
+Documentation source can be found in [deployphp/docs](https://github.com/deployphp/docs) repository.
 
 
 Building
 --------
-To build deployer.phar run `./build` command.
+To build `deployer.phar` run `./build` command.
 
-To create new release, clone this repository at `pages` dir, checkout `gh-pages` branch and run `./build -v=VERSION`.
-This command will create phar archive in `pages/releases` dir and automatically updates `manifest.json` file.
 
+Discussing
+-------
+Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
+
+Roadmap
+-------
+#### 4 
+* Namespace for functions
+* Dependency Injection Configuration
+* Event Dispatcher
+* Default stage selector
+* Faster cloning by borrowing objects from existing clones
+* Immutable settings
+* Native SSH support
+
+#### 4.1
+* Task grouping for parallel execution
+* Web-based client
 
 Contributing
 ------------
@@ -64,12 +82,15 @@ This is to ensure proper review of all the code.
 Fork the project, create a feature branch, and send a pull request.
 
 To ensure a consistent code base, you should make sure the code follows
-the [Coding Standards](http://symfony.com/doc/master/contributing/code/standards.html)
-which borrowed from Symfony.
+the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
 
-If you would like to help take a look at the [list of issues](https://github.com/elfet/deployer/issues).
+If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
-To make a release update version number in `bin/dep` file. And run `./build -v=VERSION` command.
+
+Donate
+------
+
+Support Deployer development on [patreon](https://www.patreon.com/deployer).
 
 License
 -------

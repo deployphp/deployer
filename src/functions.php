@@ -5,153 +5,356 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
-use Deployer\Environment;
-use Deployer\Server;
-use Deployer\Stage;
-use Deployer\Task;
-use Deployer\Utils;
+use Deployer\Server\Local;
+use Deployer\Server\Remote;
+use Deployer\Server\Builder;
+use Deployer\Server\Configuration;
+use Deployer\Server\Environment;
+use Deployer\Task\Task as TheTask;
+use Deployer\Task\Context;
+use Deployer\Task\GroupTask;
+use Deployer\Task\Scenario\GroupScenario;
+use Deployer\Task\Scenario\Scenario;
+use Deployer\Type\Result;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+
+// There are two types of functions: Deployer dependent and Context dependent.
+// Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
+// Context dependent function uses while task execution and must require only Context::get() method.
+// But there is also a third type of functions: mixed. Mixed function uses in definition stage and in task
+// execution stage. They are acts like two different function, but have same name. Example of such function
+// is env() func. This function determine in which stage it was called by Context::get() method.
 
 /**
  * @param string $name
- * @param string $domain
+ * @param string|null $host
  * @param int $port
- * @return Server\Configuration
+ * @return Builder
  */
-function server($name, $domain, $port = 22)
+function server($name, $host = null, $port = 22)
 {
-    return Server\ServerFactory::create($name, $domain, $port);
+    $deployer = Deployer::get();
+
+    $env = new Environment();
+    $config = new Configuration($name, $host, $port);
+
+    if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
+        $server = new Remote\SshExtension($config);
+    } else {
+        $server = new Remote\PhpSecLib($config);
+    }
+
+    $deployer->servers->set($name, $server);
+    $deployer->environments->set($name, $env);
+
+    return new Builder($config, $env);
 }
 
-/**
- * @param string $defaultStage
- */
-function multistage($defaultStage = 'develop')
-{
-    Deployer::get()->setMultistage(true);
-    Deployer::get()->setDefaultStage($defaultStage);
-}
 
 /**
- * Define a new stage
- * @param string $name Name of current stage
- * @param array $servers List of servers
- * @param array $options List of addition options
- * @param bool $default Set as default stage
- * @return Stage\Stage
+ * @param string $name
+ * @return Builder
  */
-function stage($name, array $servers, array $options = array(), $default = false)
+function localServer($name)
 {
-    return Stage\StageFactory::create($name, $servers, $options, $default);
+    $deployer = Deployer::get();
+
+    $env = new Environment();
+    $server = new Local();
+    $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
+
+    $deployer->servers->set($name, $server);
+    $deployer->environments->set($name, $env);
+
+    return new Builder($config, $env);
+}
+
+
+/**
+ * Load server list file.
+ * @param string $file
+ */
+function serverList($file)
+{
+    $serverList = Yaml::parse(file_get_contents($file));
+
+    foreach ((array)$serverList as $name => $config) {
+        try {
+            if (!is_array($config)) {
+                throw new \RuntimeException();
+            }
+
+            $da = new \Deployer\Type\DotArray($config);
+
+            if ($da->hasKey('local')) {
+                $builder = localServer($name);
+            } else {
+                $builder = $da->hasKey('port') ? server($name, $da['host'], $da['port']) : server($name, $da['host']);
+            }
+
+            unset($da['local']);
+            unset($da['host']);
+            unset($da['port']);
+
+            if ($da->hasKey('identity_file')) {
+                if ($da['identity_file'] === null) {
+                    $builder->identityFile();
+                } else {
+                    $builder->identityFile(
+                        $da['identity_file.public_key'],
+                        $da['identity_file.private_key'],
+                        $da['identity_file.password']
+                    );
+                }
+
+                unset($da['identity_file']);
+            }
+
+            if ($da->hasKey('identity_config')) {
+                if ($da['identity_config'] === null) {
+                    $builder->configFile();
+                } else {
+                    $builder->configFile($da['identity_config']);
+                }
+                unset($da['identity_config']);
+            }
+
+            if ($da->hasKey('forward_agent')) {
+                $builder->forwardAgent();
+                unset($da['forward_agent']);
+            }
+
+            foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
+                if ($da->hasKey($key)) {
+                    $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
+                    $builder->$method($da[$key]);
+                    unset($da[$key]);
+                }
+            }
+
+            // Everything else are env vars.
+            foreach ($da->toArray() as $key => $value) {
+                $builder->env($key, $value);
+            }
+        } catch (\RuntimeException $e) {
+            throw new \RuntimeException("Error in parsing `$file` file.");
+        }
+    }
 }
 
 /**
  * Define a new task and save to tasks list.
+ *
  * @param string $name Name of current task.
- * @param callable|array $body Callable task or array of names of other tasks.
- * @return \Deployer\Task
+ * @param callable|array $body Callable task or array of other tasks names.
+ * @return TheTask
+ * @throws InvalidArgumentException
  */
 function task($name, $body)
 {
-    return Deployer::get()->addTask($name, Task\TaskFactory::create($body, $name));
-}
+    $deployer = Deployer::get();
 
-/**
- * Add $task to call before $name task runs.
- * @param string $name Name of task before which to call $task
- * @param callable|string|array $task
- */
-function before($name, $task)
-{
-    $before = Deployer::get()->getTask($name);
-
-    if ($before instanceof Task\AbstractTask) {
-        $before->before(Task\TaskFactory::create($task));
+    if ($body instanceof \Closure) {
+        $task = new TheTask($name, $body);
+        $scenario = new Scenario($name);
+    } elseif (is_array($body)) {
+        $task = new GroupTask();
+        $scenario = new GroupScenario(array_map(function ($name) use ($deployer) {
+            return $deployer->scenarios->get($name);
+        }, $body));
+    } else {
+        throw new InvalidArgumentException('Task should be an closure or array of other tasks.');
     }
+
+    $deployer->tasks->set($name, $task);
+    $deployer->scenarios->set($name, $scenario);
+
+    return $task;
 }
 
 /**
- * Add $task to call after $name task runs.
- * @param string $name Name of task after which to call $task
- * @param callable|string|array $task
+ * Call that task before specified task runs.
+ *
+ * @param string $it
+ * @param string $that
  */
-function after($name, $task)
+function before($it, $that)
 {
-    $after = Deployer::get()->getTask($name);
+    $deployer = Deployer::get();
+    $beforeScenario = $deployer->scenarios->get($it);
+    $scenario = $deployer->scenarios->get($that);
 
-    if ($after instanceof Task\AbstractTask) {
-        $after->after(Task\TaskFactory::create($task));
-    }
+    $beforeScenario->addBefore($scenario);
 }
 
 /**
- * Set working path for task.
+ * Call that task after specified task runs.
+ *
+ * @param string $it
+ * @param string $that
+ */
+function after($it, $that)
+{
+    $deployer = Deployer::get();
+    $afterScenario = $deployer->scenarios->get($it);
+    $scenario = $deployer->scenarios->get($that);
+
+    $afterScenario->addAfter($scenario);
+}
+
+/**
+ * Add users arguments.
+ *
+ * Note what Deployer already has one argument: "stage".
+ *
+ * @param string $name
+ * @param int $mode
+ * @param string $description
+ * @param mixed $default
+ */
+function argument($name, $mode = null, $description = '', $default = null)
+{
+    Deployer::get()->getConsole()->getUserDefinition()->addArgument(
+        new InputArgument($name, $mode, $description, $default)
+    );
+}
+
+/**
+ * Add users options.
+ *
+ * @param string $name
+ * @param string $shortcut
+ * @param int $mode
+ * @param string $description
+ * @param mixed $default
+ */
+function option($name, $shortcut = null, $mode = null, $description = '', $default = null)
+{
+    Deployer::get()->getConsole()->getUserDefinition()->addOption(
+        new InputOption($name, $shortcut, $mode, $description, $default)
+    );
+}
+
+/**
+ * Change the current working directory.
+ *
  * @param string $path
  */
 function cd($path)
 {
-    env()->setWorkingPath($path);
+    env('working_path', env()->parse($path));
 }
 
 /**
- * Run command on current server.
- * @param string $command
- * @param bool $raw If true $command will not be modified.
+ * Execute a callback within a specific directory and revert back to the initial working directory.
+ *
+ * @param string $path
+ * @param callable $callback
+ */
+function within($path, $callback)
+{
+    $lastWorkingPath = workingPath();
+    env()->set('working_path', $path);
+    $callback();
+    env()->set('working_path', $lastWorkingPath);
+}
+
+/**
+ * Return the current working path.
+ *
  * @return string
  */
-function run($command, $raw = false)
+function workingPath()
 {
-    $server = env()->getServer();
-    $config = config();
-    $workingPath = env()->getWorkingPath();
+    return env()->get('working_path', env()->get(Environment::DEPLOY_PATH));
+}
 
-    if (!$raw) {
-        $command = "cd {$workingPath} && $command";
+/**
+ * Run command on server.
+ *
+ * @param string $command
+ * @return Result
+ */
+function run($command)
+{
+    $server = Context::get()->getServer();
+    $command = env()->parse($command);
+    $workingPath = workingPath();
+
+    if (!empty($workingPath)) {
+        $command = "cd $workingPath && $command";
     }
 
-    if (output()->isDebug()) {
-        writeln("[{$server->getConfiguration()->getHost()}] $command");
+    if (isVeryVerbose()) {
+        writeln("<comment>Run</comment>: $command");
     }
 
     $output = $server->run($command);
 
-    if (output()->isDebug()) {
-        array_map(function ($output) use ($config) {
-            write("[{$config->getHost()}] :: $output\n");
-        }, explode("\n", $output));
+    if (isDebug() && !empty($output)) {
+        writeln(array_map(function ($line) {
+            return "<fg=red>></fg=red> $line";
+        }, explode("\n", $output)));
     }
 
-    return $output;
+    return new Result($output);
 }
 
 /**
  * Execute commands on local machine.
  * @param string $command Command to run locally.
- * @return string Output of command.
+ * @param int $timeout (optional) Override process command timeout in seconds.
+ * @return Result Output of command.
+ * @throws \RuntimeException
  */
-function runLocally($command)
+function runLocally($command, $timeout = 60)
 {
-    return Utils\Local::run($command);
+    $command = env()->parse($command);
+
+    if (isVeryVerbose()) {
+        writeln("<comment>Run locally</comment>: $command");
+    }
+
+    $process = new Symfony\Component\Process\Process($command);
+    $process->setTimeout($timeout);
+    $process->run(function ($type, $buffer) {
+        if (isDebug()) {
+            if ('err' === $type) {
+                write("<fg=red>></fg=red> $buffer");
+            } else {
+                write("<fg=green>></fg=green> $buffer");
+            }
+        }
+    });
+
+    if (!$process->isSuccessful()) {
+        throw new \RuntimeException($process->getErrorOutput());
+    }
+    
+    return new Result($process->getOutput());
 }
 
 /**
  * Upload file or directory to current server.
  * @param string $local
  * @param string $remote
+ * @throws \RuntimeException
  */
 function upload($local, $remote)
 {
-    $server = env()->getServer();
-
-    $remote = config()->getPath() . '/' . $remote;
+    $server = Context::get()->getServer();
+    $local = env()->parse($local);
+    $remote = env()->parse($remote);
 
     if (is_file($local)) {
-
         writeln("Upload file <info>$local</info> to <info>$remote</info>");
 
         $server->upload($local, $remote);
-
     } elseif (is_dir($local)) {
-
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
 
         $finder = new Symfony\Component\Finder\Finder();
@@ -162,42 +365,33 @@ function upload($local, $remote)
             ->ignoreDotFiles(false)
             ->in($local);
 
-        if (output()->isVerbose()) {
-            $progress = progressHelper($files->count());
-        }
-
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
-
             $server->upload(
                 $file->getRealPath(),
-                Utils\Path::normalize($remote . '/' . $file->getRelativePathname())
+                $remote . '/' . $file->getRelativePathname()
             );
-
-            if (output()->isVerbose()) {
-                $progress->advance();
-            }
         }
-
     } else {
         throw new \RuntimeException("Uploading path '$local' does not exist.");
     }
 }
 
 /**
- * Download ONE FILE from remote server.
+ * Download file from remote server.
+ *
  * @param string $local
  * @param string $remote
  */
 function download($local, $remote)
 {
-    $server = env()->getServer();
+    $server = Context::get()->getServer();
     $server->download($local, $remote);
 }
 
 /**
  * Writes a message to the output and adds a newline at the end.
- * @param string $message
+ * @param string|array $message
  */
 function writeln($message)
 {
@@ -214,130 +408,180 @@ function write($message)
 }
 
 /**
- * Prints info.
- * @param string $description
- * @deprecated Use writeln("<info>...</info>") instead of.
- */
-function info($description)
-{
-    writeln("<info>$description</info>");
-}
-
-/**
- * Prints "ok" sign.
- * @deprecated
- */
-function ok()
-{
-    writeln("<info>✔</info>");
-}
-
-/**
  * @param string $key
  * @param mixed $value
  */
 function set($key, $value)
 {
-    Deployer::get()->setParameter($key, $value);
+    Deployer::get()->parameters->set($key, $value);
 }
 
 /**
  * @param string $key
- * @param mixed $default Default key must always be specified.
  * @return mixed
  */
-function get($key, $default)
+function get($key)
 {
-    return Deployer::get()->getParameter($key, $default);
+    return Deployer::get()->parameters->get($key);
+}
+
+/**
+ * @param string $key
+ * @return boolean
+ */
+function has($key)
+{
+    return Deployer::get()->parameters->has($key);
 }
 
 /**
  * @param string $message
- * @param string $default
+ * @param string|null $default
  * @return string
+ * @codeCoverageIgnore
  */
-function ask($message, $default)
+function ask($message, $default = null)
 {
-    if (output()->isQuiet()) {
+    if (isQuiet()) {
         return $default;
     }
 
-    $dialog = Deployer::get()->getHelperSet()->get('dialog');
+    $helper = Deployer::get()->getHelper('question');
 
-    $message = "<question>$message [$default]</question> ";
+    $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
 
-    return $dialog->ask(output(), $message, $default);
+    $question = new \Symfony\Component\Console\Question\Question($message, $default);
+
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
  * @param string $message
  * @param bool $default
  * @return bool
+ * @codeCoverageIgnore
  */
 function askConfirmation($message, $default = false)
 {
-    if (output()->isQuiet()) {
+    if (isQuiet()) {
         return $default;
     }
 
-    $dialog = Deployer::get()->getHelperSet()->get('dialog');
+    $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
     $message = "<question>$message [$yesOrNo]</question> ";
 
-    if (!$dialog->askConfirmation(output(), $message, $default)) {
-        return false;
-    }
+    $question = new \Symfony\Component\Console\Question\ConfirmationQuestion($message, $default);
 
-    return true;
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
  * @param string $message
  * @return string
+ * @codeCoverageIgnore
  */
 function askHiddenResponse($message)
 {
-    $dialog = Deployer::get()->getHelperSet()->get('dialog');
+    if (isQuiet()) {
+        return '';
+    }
+
+    $helper = Deployer::get()->getHelper('question');
 
     $message = "<question>$message</question> ";
 
-    return $dialog->askHiddenResponse(output(), $message);
+    $question = new \Symfony\Component\Console\Question\Question($message);
+    $question->setHidden(true);
+    $question->setHiddenFallback(false);
+
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
- * @param int $count
- * @return \Symfony\Component\Console\Helper\ProgressHelper
+ * @return InputInterface
  */
-function progressHelper($count)
+function input()
 {
-    $progress = Deployer::get()->getHelperSet()->get('progress');
-    $progress->start(output(), $count);
-    return $progress;
+    return Context::get()->getInput();
 }
 
+
 /**
- * @return \Symfony\Component\Console\Output\Output
+ * @return OutputInterface
  */
 function output()
 {
-    return Deployer::get()->getOutput();
+    return Context::get()->getOutput();
 }
 
 /**
- * Return current server env.
- * @return \Deployer\Environment
+ * @return bool
  */
-function env()
+function isQuiet()
 {
-    return Environment::getCurrent();
+    return OutputInterface::VERBOSITY_QUIET === output()->getVerbosity();
+}
+
+
+/**
+ * @return bool
+ */
+function isVerbose()
+{
+    return OutputInterface::VERBOSITY_VERBOSE <= output()->getVerbosity();
+}
+
+
+/**
+ * @return bool
+ */
+function isVeryVerbose()
+{
+    return OutputInterface::VERBOSITY_VERY_VERBOSE <= output()->getVerbosity();
+}
+
+
+/**
+ * @return bool
+ */
+function isDebug()
+{
+    return OutputInterface::VERBOSITY_DEBUG <= output()->getVerbosity();
 }
 
 /**
- * Return current server configuration.
- * @return Server\Configuration
+ * Return current server env or set default values or get env value.
+ * When set env value you can write over values line "{{name}}".
+ *
+ * @param string|null $name
+ * @param mixed $value
+ * @return Environment|mixed
  */
-function config()
+function env($name = null, $value = null)
 {
-    return env()->getConfig();
+    if (false === Context::get()) {
+        Environment::setDefault($name, $value);
+    } else {
+        if (null === $name && null === $value) {
+            return Context::get()->getEnvironment();
+        } elseif (null !== $name && null === $value) {
+            return Context::get()->getEnvironment()->get($name);
+        } else {
+            Context::get()->getEnvironment()->set($name, $value);
+        }
+        return null;
+    }
+}
+
+/**
+ * Check if command exist in bash.
+ *
+ * @param string $command
+ * @return bool
+ */
+function commandExist($command)
+{
+    return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
 }

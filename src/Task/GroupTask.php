@@ -7,35 +7,21 @@
 
 namespace Deployer\Task;
 
-class GroupTask extends AbstractTask
+class GroupTask extends Task
 {
     /**
-     * @var TaskInterface[]
+     * Yes, it is constructor.
      */
-    private $tasks;
-
-    /**
-     * @param TaskInterface[] $tasks
-     */
-    public function __construct($tasks)
+    public function __construct()
     {
-        $this->tasks = $tasks;
+        // Do nothing
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritdoc
      */
-    public function get()
+    public function run(Context $context)
     {
-        $runners = [];
-        foreach ($this->tasks as $task) {
-            $runners = array_merge($runners, $task->get());
-        }
-
-        return array_merge(
-            $this->getBefore(),
-            $runners,
-            $this->getAfter()
-        );
+        throw new \RuntimeException('Group task should never be running.');
     }
 }

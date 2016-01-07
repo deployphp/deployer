@@ -7,16 +7,22 @@
 
 namespace Deployer;
 
-use Deployer\Console\RunTaskCommand;
-use Deployer\Server\ServerInterface;
-use Deployer\Stage\Stage;
-use Deployer\Task\TaskFactory;
-use Deployer\Task\TaskInterface;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Helper\HelperSet;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Deployer\Console\WorkerCommand;
+use Deployer\Console\Application;
+use Deployer\Server;
+use Deployer\Stage\StageStrategy;
+use Deployer\Task;
+use Deployer\Collection;
+use Deployer\Console\TaskCommand;
+use Symfony\Component\Console;
 
+/**
+ * @property Task\TaskCollection|Task\Task[] $tasks
+ * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] $scenarios
+ * @property Server\ServerCollection|Server\ServerInterface[] $servers
+ * @property Server\EnvironmentCollection|Server\Environment[] $environments
+ * @property Collection\Collection $parameters
+ */
 class Deployer
 {
     /**
@@ -28,71 +34,48 @@ class Deployer
     /**
      * @var Application
      */
-    private $app;
+    private $console;
 
     /**
-     * @var InputInterface
+     * @var Console\Input\InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface
+     * @var Console\Output\OutputInterface
      */
     private $output;
 
     /**
-     * @var HelperSet
+     * @var Collection\Collection
      */
-    private $helperSet;
+    private $collections;
 
     /**
-     * List of all tasks.
-     * @var TaskInterface[]
+     * @var StageStrategy
      */
-    private $tasks = [];
+    private $stageStrategy;
 
     /**
-     * List of all servers.
-     * @var ServerInterface[]
+     * @param Application $console
+     * @param Console\Input\InputInterface $input
+     * @param Console\Output\OutputInterface $output
      */
-    private $servers = [];
-
-    /**
-     * Turn on/off multistage support.
-     * @var bool
-     */
-    private $multistage = false;
-
-    /**
-     * Default deploy stage.
-     * @var string
-     */
-    private $defaultStage = 'develop';
-
-    /**
-     * List of all stages.
-     * @var Stage[]
-     */
-    private $stages = [];
-
-    /**
-     * Array of global parameters.
-     * @var array
-     */
-    private $parameters = [];
-
-    /**
-     * @param Application $app
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param HelperSet $helperSet
-     */
-    public function __construct(Application $app, InputInterface $input, OutputInterface $output, HelperSet $helperSet = null)
+    public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
-        $this->app = $app;
+        $this->console = $console;
         $this->input = $input;
         $this->output = $output;
-        $this->helperSet = null === $helperSet ? $app->getHelperSet() : $helperSet;
+
+        $this->collections = new Collection\Collection();
+        $this->collections['tasks'] = new Task\TaskCollection();
+        $this->collections['scenarios'] = new Task\Scenario\ScenarioCollection();
+        $this->collections['servers'] = new Server\ServerCollection();
+        $this->collections['environments'] = new Server\EnvironmentCollection();
+        $this->collections['parameters'] = new Collection\Collection();
+
+        $this->stageStrategy = new StageStrategy($this->servers, $this->environments, $this->parameters);
+
         self::$instance = $this;
     }
 
@@ -109,24 +92,31 @@ class Deployer
      */
     public function run()
     {
-        $this->transformTasksToConsoleCommands();
+        $this->addConsoleCommands();
+        
+        $this->console->add(new WorkerCommand($this));
 
-        $this->app->run($this->input, $this->output);
+        $this->console->run($this->input, $this->output);
     }
 
     /**
-     * Transform tasks to console commands. Run it before run of console app.
+     * Transform tasks to console commands.
      */
-    public function transformTasksToConsoleCommands()
+    public function addConsoleCommands()
     {
+        $this->console->addUserArgumentsAndOptions();
+        
         foreach ($this->tasks as $name => $task) {
-            $command = new RunTaskCommand($name, $task, $this);
-            $this->app->add($command);
+            if ($task->isPrivate()) {
+                continue;
+            }
+            
+            $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }
 
     /**
-     * @return InputInterface
+     * @return Console\Input\InputInterface
      */
     public function getInput()
     {
@@ -134,7 +124,7 @@ class Deployer
     }
 
     /**
-     * @return OutputInterface
+     * @return Console\Output\OutputInterface
      */
     public function getOutput()
     {
@@ -142,180 +132,41 @@ class Deployer
     }
 
     /**
+     * @param string $name
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    public function __get($name)
+    {
+        if ($this->collections->has($name)) {
+            return $this->collections[$name];
+        } else {
+            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return Console\Helper\HelperInterface
+     */
+    public function getHelper($name)
+    {
+        return $this->console->getHelperSet()->get($name);
+    }
+
+    /**
      * @return Application
      */
     public function getConsole()
     {
-        return $this->app;
+        return $this->console;
     }
 
     /**
-     * @return HelperSet
+     * @return StageStrategy
      */
-    public function getHelperSet()
+    public function getStageStrategy()
     {
-        return $this->helperSet;
-    }
-
-    /**
-     * @param string $name
-     * @param ServerInterface $server
-     */
-    public function addServer($name, ServerInterface $server)
-    {
-        $this->servers[$name] = $server;
-    }
-
-    /**
-     * @return ServerInterface
-     * @throws \RuntimeException when server not found.
-     */
-    public function getServer($name)
-    {
-        if ($this->hasServer($name)) {
-            return $this->servers[$name];
-        } else {
-            throw new \RuntimeException(sprintf('Server "%s" not found', $name));
-        }
-    }
-
-    /**
-     * @return ServerInterface[]
-     */
-    public function getServers()
-    {
-        return $this->servers;
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasServer($name)
-    {
-        return array_key_exists($name, $this->servers);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $default
-     */
-    public function getParameter($key, $default)
-    {
-        return array_key_exists($key, $this->parameters) ? $this->parameters[$key] : $default;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     */
-    public function setParameter($key, $value)
-    {
-        $this->parameters[$key] = $value;
-    }
-
-    /**
-     * @param boolean $multistage
-     */
-    public function setMultistage($multistage)
-    {
-        $this->multistage = $multistage;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function getMultistage()
-    {
-        return $this->multistage;
-    }
-
-    /**
-     * @param string $defaultStage
-     */
-    public function setDefaultStage($defaultStage)
-    {
-        $this->defaultStage = $defaultStage;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDefaultStage()
-    {
-        return $this->defaultStage;
-    }
-
-    /**
-     * @param string $name
-     * @param Stage $stage
-     */
-    public function addStage($name, Stage $stage)
-    {
-        $this->stages[$name] = $stage;
-    }
-
-    /**
-     * @param $name
-     * @return Stage
-     * @throws \RuntimeException
-     */
-    public function getStage($name)
-    {
-        if ($this->hasStage($name)) {
-            return $this->stages[$name];
-        } else {
-            throw new \RuntimeException(sprintf('Stage "%s" not found', $name));
-        }
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasStage($name)
-    {
-        return array_key_exists($name, $this->stages);
-    }
-
-    /**
-     * @return Stage[]
-     */
-    public function getStages()
-    {
-        return $this->stages;
-    }
-
-    /**
-     * @param string $name
-     * @param TaskInterface $task
-     */
-    public function addTask($name, TaskInterface $task)
-    {
-        return $this->tasks[$name] = $task;
-    }
-
-    /**
-     * Return task by name.
-     * @param string $name Task name.
-     * @return TaskInterface
-     * @throws \RuntimeException if task does not defined.
-     */
-    public function getTask($name)
-    {
-        if ($this->hasTask($name)) {
-            return $this->tasks[$name];
-        } else {
-            throw new \RuntimeException("Task \"$name\" does not defined.");
-        }
-    }
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasTask($name)
-    {
-        return array_key_exists($name, $this->tasks);
+        return $this->stageStrategy;
     }
 }

@@ -8,7 +8,7 @@
 
 $loaded = false;
 
-foreach (array(__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php') as $file) {
+foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
     if (file_exists($file)) {
         require $file;
         $loaded = true;
@@ -27,26 +27,37 @@ if (!$loaded) {
 // Recipe include path
 set_include_path(__DIR__ . '/../' . PATH_SEPARATOR . get_include_path());
 
-// Init Deployer
-$deployer = new \Deployer\Deployer(
-    new \Symfony\Component\Console\Application('Deployer', '2.0.0'),
-    new \Symfony\Component\Console\Input\ArgvInput(),
-    new \Symfony\Component\Console\Output\ConsoleOutput()
-);
+// Include function declarations
+require_once 'src/functions.php';
 
-// Require current deploy.php script
-$deployFile = getcwd() . '/deploy.php';
+// Deployer constants
+define('DEPLOYER_BIN', __FILE__);
+
+// Init Deployer
+$console = new \Deployer\Console\Application('Deployer', 'master');
+$input = new \Symfony\Component\Console\Input\ArgvInput();
+$output = new \Symfony\Component\Console\Output\ConsoleOutput();
+$deployer = new \Deployer\Deployer($console, $input, $output);
+
+// Require deploy.php script
+$options = getopt('f::', ['file::']);
+$userSpecifiedFile = null;
+
+if (isset($options['f'])) {
+    $userSpecifiedFile = $options['f'];
+} elseif (isset($options['file'])) {
+    $userSpecifiedFile = $options['file'];
+}
+
+if (empty($userSpecifiedFile)) {
+    $deployFile = getcwd() . '/deploy.php';
+} else {
+    $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile;
+}
 
 if (is_file($deployFile) && is_readable($deployFile)) {
     require $deployFile;
 }
-
-// Self-update command
-$selfUpdate = new \KevinGH\Amend\Command('self-update');
-$selfUpdate->setDescription('Updates deployer.phar to the latest version');
-$selfUpdate->setManifestUri('https://raw.github.com/elfet/deployer/master/manifest.json');
-$deployer->getConsole()->add($selfUpdate);
-$deployer->getHelperSet()->set(new \KevinGH\Amend\Helper());
 
 // Run Deployer
 $deployer->run();

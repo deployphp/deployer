@@ -36,3 +36,16 @@ task('deploy', [
 ])->desc('Deploy your project');
 
 after('deploy', 'success');
+
+/**
+ * Helper tasks
+ */
+task('up', function () {
+    $output = run('php {{deploy_path}}/current/artisan up');
+    writeln('<info>'.$output.'</info>');
+})->desc('Disable maintenance mode');
+
+task('down', function () {
+    $output = run('php {{deploy_path}}/current/artisan down');
+    writeln('<error>'.$output.'</error>');
+})->desc('Enable maintenance mode');

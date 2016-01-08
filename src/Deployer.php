@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Console\InitCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Console\Application;
 use Deployer\Server;
@@ -95,6 +96,7 @@ class Deployer
         $this->addConsoleCommands();
         
         $this->console->add(new WorkerCommand($this));
+        $this->console->add(new InitCommand());
 
         $this->console->run($this->input, $this->output);
     }

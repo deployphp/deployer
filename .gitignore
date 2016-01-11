@@ -4,3 +4,4 @@
 /nbproject/
 *.phar
 /.vagrant
+deploy.php

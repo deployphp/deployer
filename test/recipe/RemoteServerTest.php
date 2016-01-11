@@ -20,19 +20,19 @@ class RemoteServerTest extends RecipeTester
     {
         $username = getenv('DEPLOYER_USERNAME') ?: 'deployer';
         $password = getenv('DEPLOYER_PASSWORD') ?: 'deployer_password';
-        server('remote_auth_by_password', 'localhost', 22)
+        \Deployer\server('remote_auth_by_password', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->password($password);
-        server('remote_auth_by_identity_file', 'localhost', 22)
+        \Deployer\server('remote_auth_by_identity_file', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->identityFile();
-        server('remote_auth_by_pem_file', 'localhost', 22)
+        \Deployer\server('remote_auth_by_pem_file', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->pemFile('~/.ssh/id_rsa.pem');
-        server('remote_auth_by_agent', 'localhost', 22)
+        \Deployer\server('remote_auth_by_agent', 'localhost', 22)
             ->env('deploy_path', self::$deployPath)
             ->user($username)
             ->forwardAgent();
@@ -42,21 +42,21 @@ class RemoteServerTest extends RecipeTester
     {
         require __DIR__ . '/../../recipe/common.php';
 
-        task('deploy:timeout_test', function () {
-            $this->result = run('sleep 11 && echo $SSH_CLIENT');
+        \Deployer\task('deploy:timeout_test', function () {
+            $this->result = \Deployer\run('sleep 11 && echo $SSH_CLIENT');
         });
-        task('deploy:ssh_test', function () {
-            $this->result = run('echo $SSH_CLIENT');
+        \Deployer\task('deploy:ssh_test', function () {
+            $this->result = \Deployer\run('echo $SSH_CLIENT');
         });
-        task('deploy:agent_test', function () {
-            $this->result = run('ssh -T deployer@localhost \'echo $SSH_CLIENT\'');
+        \Deployer\task('deploy:agent_test', function () {
+            $this->result = \Deployer\run('ssh -T deployer@localhost \'echo $SSH_CLIENT\'');
         });
     }
 
     public function testAuthByPassword()
     {
-        if (false !== getenv('SCRUTINIZER')) {
-            $this->markTestSkipped('Test skipped on scrutinizer environment');
+        if (false === getenv('TRAVIS')) {
+            $this->markTestSkipped('Test run only on travis-ci environment.');
         }
         $this->exec('deploy:ssh_test', ['stage' => 'remote_auth_by_password']);
         $this->assertRegExp(self::IP_REG_EXP, $this->result->getOutput());
@@ -64,8 +64,8 @@ class RemoteServerTest extends RecipeTester
 
     public function testAuthByIdentityFile()
     {
-        if (false !== getenv('SCRUTINIZER')) {
-            $this->markTestSkipped('Test skipped on scrutinizer environment');
+        if (false === getenv('TRAVIS')) {
+            $this->markTestSkipped('Test run only on travis-ci environment.');
         }
         $this->exec('deploy:ssh_test', ['stage' => 'remote_auth_by_identity_file']);
         $this->assertRegExp(self::IP_REG_EXP, $this->result->getOutput());
@@ -73,8 +73,8 @@ class RemoteServerTest extends RecipeTester
 
     public function testAuthByPemFile()
     {
-        if (false !== getenv('SCRUTINIZER')) {
-            $this->markTestSkipped('Test skipped on scrutinizer environment');
+        if (false === getenv('TRAVIS')) {
+            $this->markTestSkipped('Test run only on travis-ci environment.');
         }
         $this->markTestIncomplete('Will be implemented later');
         $this->exec('deploy:ssh_test', ['stage' => 'remote_auth_by_pem_file']);
@@ -83,8 +83,8 @@ class RemoteServerTest extends RecipeTester
 
     public function testAuthByAgent()
     {
-        if (false !== getenv('SCRUTINIZER')) {
-            $this->markTestSkipped('Test skipped on scrutinizer environment');
+        if (false === getenv('TRAVIS')) {
+            $this->markTestSkipped('Test run only on travis-ci environment.');
         }
         $this->exec('deploy:agent_test', ['stage' => 'remote_auth_by_agent']);
         $this->assertRegExp(self::IP_REG_EXP, $this->result->getOutput());
@@ -92,8 +92,8 @@ class RemoteServerTest extends RecipeTester
 
     public function testTimeout()
     {
-        if (false !== getenv('SCRUTINIZER')) {
-            $this->markTestSkipped('Test skipped on scrutinizer environment');
+        if (false === getenv('TRAVIS')) {
+            $this->markTestSkipped('Test run only on travis-ci environment.');
         }
         $this->exec('deploy:timeout_test', ['stage' => 'remote_auth_by_agent']);
         $this->assertRegExp(self::IP_REG_EXP, $this->result->getOutput());

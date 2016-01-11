@@ -4,7 +4,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Deployer\Deployer;
+
+namespace Deployer;
+
 use Deployer\Server\Local;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
@@ -16,6 +18,10 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -88,7 +94,7 @@ function serverList($file)
                 throw new \RuntimeException();
             }
 
-            $da = new \Deployer\Type\DotArray($config);
+            $da = new Type\DotArray($config);
 
             if ($da->hasKey('local')) {
                 $builder = localServer($name);
@@ -167,7 +173,7 @@ function task($name, $body)
             return $deployer->scenarios->get($name);
         }, $body));
     } else {
-        throw new InvalidArgumentException('Task should be an closure or array of other tasks.');
+        throw new \InvalidArgumentException('Task should be an closure or array of other tasks.');
     }
 
     $deployer->tasks->set($name, $task);
@@ -319,7 +325,7 @@ function runLocally($command, $timeout = 60)
         writeln("<comment>Run locally</comment>: $command");
     }
 
-    $process = new Symfony\Component\Process\Process($command);
+    $process = new Process($command);
     $process->setTimeout($timeout);
     $process->run(function ($type, $buffer) {
         if (isDebug()) {
@@ -357,7 +363,7 @@ function upload($local, $remote)
     } elseif (is_dir($local)) {
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
 
-        $finder = new Symfony\Component\Finder\Finder();
+        $finder = new Finder();
         $files = $finder
             ->files()
             ->ignoreUnreadableDirs()
@@ -450,7 +456,7 @@ function ask($message, $default = null)
 
     $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
 
-    $question = new \Symfony\Component\Console\Question\Question($message, $default);
+    $question = new Question($message, $default);
 
     return $helper->ask(input(), output(), $question);
 }
@@ -472,7 +478,7 @@ function askConfirmation($message, $default = false)
     $yesOrNo = $default ? 'Y/n' : 'y/N';
     $message = "<question>$message [$yesOrNo]</question> ";
 
-    $question = new \Symfony\Component\Console\Question\ConfirmationQuestion($message, $default);
+    $question = new ConfirmationQuestion($message, $default);
 
     return $helper->ask(input(), output(), $question);
 }
@@ -492,7 +498,7 @@ function askHiddenResponse($message)
 
     $message = "<question>$message</question> ";
 
-    $question = new \Symfony\Component\Console\Question\Question($message);
+    $question = new Question($message);
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 

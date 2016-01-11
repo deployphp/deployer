@@ -1,4 +1,5 @@
 <?php
+namespace Deployer;
 
 localServer('localhost');
 localServer('server1');

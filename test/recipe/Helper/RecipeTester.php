@@ -9,8 +9,6 @@ namespace Deployer\Helper;
 
 use Deployer\Console\Application;
 use Deployer\Deployer;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 abstract class RecipeTester extends \PHPUnit_Framework_TestCase
@@ -62,7 +60,7 @@ abstract class RecipeTester extends \PHPUnit_Framework_TestCase
 
     protected function setUpServer()
     {
-        localServer('localhost')
+        \Deployer\localServer('localhost')
             ->env('deploy_path', self::$deployPath);
     }
 

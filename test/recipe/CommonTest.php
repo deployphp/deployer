@@ -14,8 +14,8 @@ class CommonTest extends RecipeTester
         require __DIR__ . '/../../recipe/common.php';
 
         // Override update code task to use local copy.
-        task('deploy:update_code', function () {
-            runLocally('cp -R ' . __DIR__ . '/../fixture/app/. {{release_path}}');
+        \Deployer\task('deploy:update_code', function () {
+            \Deployer\runLocally('cp -R ' . __DIR__ . '/../fixture/app/. {{release_path}}');
         });
     }
 
@@ -52,7 +52,7 @@ class CommonTest extends RecipeTester
 
     public function testUpdateCode()
     {
-        set('repository', 'https://github.com/deployphp/test.git');
+        \Deployer\set('repository', 'https://github.com/deployphp/test.git');
 
         $this->exec('deploy:update_code');
 
@@ -61,8 +61,8 @@ class CommonTest extends RecipeTester
 
     public function testShared()
     {
-        set('shared_dirs', ['app/logs']);
-        set('shared_files', ['app/config/parameters.yml']);
+        \Deployer\set('shared_dirs', ['app/logs']);
+        \Deployer\set('shared_files', ['app/config/parameters.yml']);
 
         $this->exec('deploy:shared');
 
@@ -81,8 +81,8 @@ class CommonTest extends RecipeTester
 
     public function testWriteable()
     {
-        set('writable_dirs', ['app/cache', 'app/logs']);
-        set('writable_use_sudo', false);
+        \Deployer\set('writable_dirs', ['app/cache', 'app/logs']);
+        \Deployer\set('writable_use_sudo', false);
 
         $this->exec('deploy:writable');
 

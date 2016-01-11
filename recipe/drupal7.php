@@ -47,8 +47,8 @@ task('drupal:settings', function () {
         $secrets = env('settings');
 
         //Prepare replacement variables
-        $iterator = new RecursiveIteratorIterator(
-            new RecursiveArrayIterator($secrets)
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveArrayIterator($secrets)
         );
 
         $replacements = [];

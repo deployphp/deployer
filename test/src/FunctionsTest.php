@@ -168,4 +168,31 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         // File
         upload('{{local_path}}/README.md', '{{remote_path}}/README.md');
     }
+
+    public function testDownloadFile()
+    {
+        $this->_server
+            ->expects($this->once())
+            ->method('download')
+            ->with(
+                $this->_env->get("local_path") . "/README.md",
+                $this->_env->get("remote_path") . "/README.md"
+            );
+
+        download('{{local_path}}/README.md', '{{remote_path}}/README.md');
+    }
+
+    public function testDownloadDirectory()
+    {
+        $this->_server
+            ->expects($this->once())
+            ->method('download')
+            ->with(
+                $this->_env->get("local_path"),
+                $this->_env->get("remote_path")
+            );
+
+
+        download('{{local_path}}', '{{remote_path}}');
+    }
 }

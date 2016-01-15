@@ -386,6 +386,9 @@ function upload($local, $remote)
 function download($local, $remote)
 {
     $server = Context::get()->getServer();
+    $local = env()->parse($local);
+    $remote = env()->parse($remote);
+
     $server->download($local, $remote);
 }
 

@@ -17,9 +17,6 @@ set('shared_dirs', [
     'storage/logs',
 ]);
 
-// Laravel 5 shared file
-set('shared_files', ['.env']);
-
 // Laravel writable dirs
 set('writable_dirs', ['bootstrap/cache', 'storage']);
 

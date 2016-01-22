@@ -44,8 +44,23 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $task->onlyOn();
         $this->assertTrue($task->runOnServer('server'));
-        
+
         $task->setPrivate();
         $this->assertTrue($task->isPrivate());
+
+        $task->onlyFor(['staging', 'production']);
+        $this->assertEquals(['staging' => 0, 'production' => 1], $task->getOnlyFor());
+        $this->assertTrue($task->runForStages(['staging']));
+        $this->assertTrue($task->runForStages(['production']));
+        $this->assertTrue($task->runForStages(['staging', 'production']));
+
+        $task->onlyFor('staging', 'production');
+        $this->assertEquals(['staging' => 0, 'production' => 1], $task->getOnlyFor());
+        $this->assertTrue($task->runForStages(['staging']));
+        $this->assertTrue($task->runForStages(['production']));
+        $this->assertTrue($task->runForStages(['staging', 'production']));
+
+        $task->onlyFor();
+        $this->assertTrue($task->runForStages('anything'));
     }
 }

@@ -179,7 +179,7 @@ class Task
         if (empty($this->onlyFor)) {
             return true;
         } else {
-            return !empty(array_intersect($stages, array_keys($this->onlyFor)));
+            return count(array_intersect($stages, array_keys($this->onlyFor))) > 0;
         }
     }
 

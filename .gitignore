@@ -5,3 +5,4 @@
 *.phar
 /.vagrant
 deploy.php
+composer.lock

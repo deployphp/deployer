@@ -36,7 +36,7 @@ class Task
      * List of stages in which this task should be executed.
      * @var array  Key contains stage names.
      */
-    private $onlyFor = [];
+    private $onlyForStage = [];
 
     /**
      * List of servers names there this task should be executed.
@@ -147,9 +147,9 @@ class Task
      * @param array|string $stages
      * @return $this
      */
-    public function onlyFor($stages = [])
+    public function onlyForStage($stages = [])
     {
-        $this->onlyFor = array_flip(is_array($stages) ? $stages: func_get_args());
+        $this->onlyForStage = array_flip(is_array($stages) ? $stages: func_get_args());
         return $this;
     }
 
@@ -164,9 +164,9 @@ class Task
     /**
      * @return array
      */
-    public function getOnlyFor()
+    public function getOnlyForStage()
     {
-        return $this->onlyFor;
+        return $this->onlyForStage;
     }
 
     /**
@@ -176,10 +176,10 @@ class Task
      */
     public function runForStages($stages)
     {
-        if (empty($this->onlyFor)) {
+        if (empty($this->onlyForStage)) {
             return true;
         } else {
-            return count(array_intersect($stages, array_keys($this->onlyFor))) > 0;
+            return count(array_intersect($stages, array_keys($this->onlyForStage))) > 0;
         }
     }
 

@@ -50,7 +50,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $taskOnlyStaging = new Task('onlyStaging', function () use ($mock) {
             $mock->onlyStaging();
         });
-        $taskOnlyStaging->onlyFor('staging');
+        $taskOnlyStaging->onlyForStage('staging');
 
         $tasks = [$task, $taskOne, $taskOnly, $taskOnlyStaging];
 

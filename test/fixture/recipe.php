@@ -14,12 +14,12 @@ task('test:hello', function () {
     writeln('Hello world!');
 });
 
-task('test:onlyFor', function () {
+task('test:onlyForStage', function () {
     writeln('You should only see this for production');
 })
-    ->onlyFor('production');
+    ->onlyForStage('production');
 
 task('test', [
     'test:hello',
-    'test:onlyFor'
+    'test:onlyForStage'
 ]);

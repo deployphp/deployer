@@ -33,7 +33,7 @@ class SeriesExecutor implements ExecutorInterface
                     if ($task->runOnServer($serverName)) {
                         $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
 
-                        if (count($task->getOnlyFor()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
+                        if (count($task->getOnlyForStage()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
                             continue;
                         }
 

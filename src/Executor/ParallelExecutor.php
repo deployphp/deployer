@@ -295,7 +295,7 @@ class ParallelExecutor implements ExecutorInterface
                         if ($task->runOnServer($serverName)) {
                             $env = isset($this->environments[$serverName]) ? $this->environments[$serverName] : $this->environments[$serverName] = new Environment();
 
-                            if (count($task->getOnlyFor()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
+                            if (count($task->getOnlyForStage()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
                                 continue;
                             }
 

@@ -299,6 +299,7 @@ task('deploy:writable', function () {
 task('deploy:vendors', function () {
     if (commandExist('composer')) {
         $composer = 'composer';
+        run("$composer self-update");
     } else {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
         $composer = 'php composer.phar';

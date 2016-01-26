@@ -26,12 +26,25 @@ class ParallelExecutorTest extends RecipeTester
         include $this->recipeFile = __DIR__ . '/../../fixture/recipe.php';
     }
 
-    public function testParallel()
+    public static function setUpBeforeClass()
     {
         define('DEPLOYER_BIN', __DIR__ . '/../../../bin/dep');
-        
+    }
+
+    public function testParallel()
+    {
         $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile]);
 
         $this->assertContains('Ok', $display);
+        $this->assertNotContains('You should only see this for production', $display);
+    }
+
+    public function testParallelWithStage()
+    {
+        $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile, 'stage' => 'production']);
+
+        $this->assertContains('Ok', $display);
+        $this->assertContains('[server3] You should only see this for production', $display);
+        $this->assertContains('[server4] You should only see this for production', $display);
     }
 }

@@ -13,7 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('copy_dirs', []);
 set('writable_dirs', []);
-set('writable_use_sudo', true); // Using sudo in writable commands?
+set('use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
 
 /**
@@ -232,7 +232,7 @@ task('deploy:shared', function () {
  */
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
-    $sudo = get('writable_use_sudo') ? 'sudo' : '';
+    $sudo = get('use_sudo') ? 'sudo' : '';
     $httpUser = get('http_user');
 
     if (!empty($dirs)) {
@@ -299,6 +299,10 @@ task('deploy:writable', function () {
 task('deploy:vendors', function () {
     if (commandExist('composer')) {
         $composer = 'composer';
+        $sudo = get('use_sudo');
+        if ($sudo) {
+            run("sudo $composer self-update");
+        }
     } else {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
         $composer = 'php composer.phar';

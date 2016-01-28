@@ -41,6 +41,18 @@ after('deploy', 'success');
 /**
  * Helper tasks
  */
+task('deploy:migrate', function () {
+    cd('{{release_path}}');
+    $output = run('php artisan migrate --force');
+    writeln('<info>' . $output . '</info>');
+})->desc('Execute artisan migrate');
+
+task('deploy:migrate_rollback', function () {
+    cd('{{release_path}}');
+    $output = run('php artisan migrate:rollback --force');
+    writeln('<info>' . $output . '</info>');
+})->desc('Execute artisan migrate:rollback');
+
 task('deploy:up', function () {
     $output = run('php {{deploy_path}}/current/artisan up');
     writeln('<info>'.$output.'</info>');

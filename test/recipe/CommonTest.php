@@ -90,6 +90,21 @@ class CommonTest extends RecipeTester
         $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/logs'));
     }
 
+    public function testWriteableSetGidGroup()
+    {
+        $currentGroup = getmygid();
+
+        set('writable_dirs', ['app/setgid']);
+        set('writable_use_sudo', false);
+        set('writable_setgid_group', $currentGroup);
+
+        $this->exec('deploy:writable');
+
+        $mode = fileperms($this->getEnv('release_path') . '/app/setgid');
+        $this->assertEquals(02000, $mode & 02000);
+    }
+
+
     public function testVendor()
     {
         $this->exec('deploy:vendors');

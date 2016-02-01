@@ -16,6 +16,7 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
+use Deployer\Cluster\ClusterFactory;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -71,6 +72,27 @@ function localServer($name)
     $deployer->environments->set($name, $env);
 
     return new Builder($config, $env);
+}
+
+/**
+ * @param string $name Name of the cluster
+ * @param array $nodes An array of nodes' host/ip
+ * @param int $port Ssh port of the nodes
+ *
+ * Example:
+ * You should pass a cluster name and nodes array.
+ * Nodes array should be as following:
+ * [ '192.168.1.1', 'example.com', '192.168.1.5' ]
+ * @return \Deployer\Cluster\ClusterBuilder
+ */
+
+function cluster($name, $nodes, $port = 22)
+{
+    $deployer = Deployer::get();
+    
+    $cluster = ClusterFactory::create($deployer, $name, $nodes, $port);
+    
+    return $cluster->getBuilder();
 }
 
 

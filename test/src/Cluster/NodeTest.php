@@ -38,7 +38,7 @@ class NodeTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        unset ($this->deployer);
+        unset($this->deployer);
     }
 
     /**

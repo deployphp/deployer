@@ -1,7 +1,7 @@
 <?php
-
 /**
  * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
+ * @package Deployer
  * Cluster Factory
  * Creates and return an instance of \Deployer\Cluster\Cluster
  */

@@ -95,14 +95,13 @@ function cluster($name, $nodes, $port = 22)
 }
 
 
-
 /**
  * Load server list file.
  * @param string $file
  */
 function serverList($file)
 {
-    $bootstrap = new \Deployer\Bootstrap\BootstrapByConfigFile($file);
+    $bootstrap = new \Deployer\Bootstrap\BootstrapByConfigFile();
     $bootstrap->setConfig($file);
     $bootstrap->parseConfig();
     $bootstrap->initServers();

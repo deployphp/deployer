@@ -107,7 +107,6 @@ function serverList($file)
     $bootstrap->parseConfig();
     $bootstrap->initServers();
     $bootstrap->initClusters();
-
 }
 
 /**

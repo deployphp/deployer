@@ -145,7 +145,6 @@ class BootstrapByConfigFile
                 unset($da['port']);
 
                 $this->executeBuilderMethods($da, $builder);
-
             } catch (\RuntimeException $e) {
                 throw new \RuntimeException("Error processing servers: ".$name);
             }
@@ -173,7 +172,6 @@ class BootstrapByConfigFile
                 unset($config['port']);
 
                 $this->executeBuilderMethods($config, $clusterBuilder);
-
             } catch (\RuntimeException $e) {
                 throw new \RuntimeException("Error processing clusters: ".$name);
             }

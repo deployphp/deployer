@@ -12,6 +12,7 @@ use Deployer\Server\Configuration;
 use Deployer\Server\Builder;
 use Deployer\Server\Remote\PhpSecLib;
 use Deployer\Server\Remote\SshExtension;
+use Deployer\Cluster\NodeInterface;
 
 /**
  * @property Deployer $deployer
@@ -19,7 +20,7 @@ use Deployer\Server\Remote\SshExtension;
  * @property string $name
  * @property string $host
  */
-class Node
+class Node implements NodeInterface
 {
      
     /**
@@ -30,7 +31,7 @@ class Node
     /**
      * @var Builder $builder
      */
-    protected $builder = null;
+    public $builder = null;
     
     /**
      * @var string $name

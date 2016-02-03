@@ -7,24 +7,18 @@ use Deployer\Console\Application;
 use Deployer\Bootstrap\BootstrapByConfigFile;
 
 /**
- * @property Deployer $deployer
  * @property string $configFile
  * @property BootstrapByConfigFile $bootstrap
  */
 class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Deployer $deployer
-     */
-    protected $deployer = null;
-
-    /**
-     * @var string $configFile;
+     * @var string|null $configFile;
      */
     protected $configFile = null;
     
     /**
-     * @var BootstrapByConfigFile $bootstrap
+     * @var BootstrapByConfigFile | null $bootstrap
      */
     protected $bootstrap = null;
 
@@ -33,13 +27,6 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $app = new Application();
-
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-
-        $this->deployer = new Deployer($app, $input, $output);
-        
         $this->bootstrap = new BootstrapByConfigFile();
         $this->bootstrap->setConfig(__DIR__ . '/../../fixture/servers.yml');
     }
@@ -49,7 +36,8 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        unset($this->deployer);
+        unset($this->configFile);
+        unset($this->bootstrap);
     }
     
     /**

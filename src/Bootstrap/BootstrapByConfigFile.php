@@ -26,22 +26,32 @@ class BootstrapByConfigFile
     /**
      * @var string | null $configFile
      */
-    private $configFile = null;
+    public $configFile = null;
 
     /**
      * @var string | null $configFileContent
      */
-    private $configFileContent = null;
+    public $configFileContent = null;
 
     /**
      * @var array $clusterConfig
      */
-    private $clusterConfig = [];
+    public $clusterConfig = [];
 
     /**
      * @var array $serverConfig
      */
-    private $serverConfig = [];
+    public $serverConfig = [];
+
+    /**
+     * @var Deployer\Cluster\ClusterBuilder[] $clusterBuilders
+     */
+    public $clusterBuilders = [];
+    
+    /**
+     * @var Deployer\Server\Builder[] $serverBuilders
+     */
+    public $serverBuilders = [];
 
 
 
@@ -103,7 +113,7 @@ class BootstrapByConfigFile
         try {
             $this->configFileContent = Yaml::parse(file_get_contents($this->configFile));
         } catch (\RuntimeException $e) {
-            throw new \RuntimeException("Error in parsing `$file` file.");
+            throw new \RuntimeException("Error in parsing " . $this->configFile . " file.");
         }
 
         foreach ($this->configFileContent as $key => $cnf) {
@@ -136,8 +146,8 @@ class BootstrapByConfigFile
                     $builder = localServer($name);
                 } else {
                     $builder = $da->hasKey('port') ?
-                        server($name, $da['host'], $da['port']) :
-                        server($name, $da['host']);
+                        $this->serverBuilders[] = server($name, $da['host'], $da['port']) :
+                        $this->serverBuilders[] = server($name, $da['host']);
                 }
 
                 unset($da['local']);
@@ -164,8 +174,8 @@ class BootstrapByConfigFile
                 $config = new DotArray($config);
 
                 $clusterBuilder = $config->hasKey('port') ?
-                    cluster($name, $config['nodes'], $config['port']) :
-                    cluster($name, $config['nodes']);
+                    $this->clusterBuilders[] = cluster($name, $config['nodes'], $config['port']) :
+                    $this->clusterBuilders[] = cluster($name, $config['nodes']);
 
                 unset($config['local']);
                 unset($config['nodes']);

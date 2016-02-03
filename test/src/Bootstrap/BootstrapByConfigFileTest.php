@@ -2,8 +2,6 @@
 
 namespace Deployer\Bootstrap;
 
-use Deployer\Deployer;
-use Deployer\Console\Application;
 use Deployer\Bootstrap\BootstrapByConfigFile;
 
 /**

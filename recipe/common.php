@@ -15,6 +15,7 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
+set('composer_command', 'composer'); // Path to composer
 
 /**
  * Environment vars
@@ -297,9 +298,9 @@ task('deploy:writable', function () {
  * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
-    if (commandExist('composer')) {
-        $composer = 'composer';
-    } else {
+    $composer = get('composer_command');
+    
+    if (! commandExist($composer)) {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
         $composer = 'php composer.phar';
     }

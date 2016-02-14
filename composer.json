@@ -25,10 +25,10 @@
     "require": {
         "php": ">=5.4.0",
         "elfet/pure": "~1.1",
-        "symfony/finder": "~2.6",
-        "symfony/console": "~2.6",
-        "symfony/yaml": "~2.6",
-        "symfony/process": "~2.6",
+        "symfony/finder": "~2.6|~3.0",
+        "symfony/console": "~2.6|~3.0",
+        "symfony/yaml": "~2.6|~3.0",
+        "symfony/process": "~2.6|~3.0",
         "kherge/amend": "~3.0",
         "phpseclib/phpseclib": "~2.0"
     },

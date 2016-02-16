@@ -28,7 +28,7 @@ set('writable_dirs', ['bootstrap/cache', 'storage']);
 /**
  * Main task
  */
-task('deploy', [
+taskGroup('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

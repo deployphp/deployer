@@ -103,17 +103,30 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testTask()
     {
+        // Task with closure
         task('task', function () {});
-
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
 
-        task('group', ['task']);
+        // TODO: Task with callable
+        $this->markTestIncomplete('Task with callable');
+
+        $this->setExpectedException('InvalidArgumentException', 'Task should be a callable.');
+        task('wrong', 'thing');
+    }
+
+    public function testTaskGroup()
+    {
+        task('task', function () {});
+        $task = $this->deployer->tasks->get('task');
+        $this->assertInstanceOf('Deployer\Task\Task', $task);
+
+        taskGroup('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         $this->assertInstanceOf('Deployer\Task\GroupTask', $task);
 
-        $this->setExpectedException('InvalidArgumentException', 'Task should be an closure or array of other tasks.');
-        task('wrong', 'thing');
+        $this->setExpectedException('InvalidArgumentException', 'Task group should be an array of other tasks.');
+        taskGroup('wrong', 'thing');
     }
 
     public function testBefore()

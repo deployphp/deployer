@@ -156,7 +156,7 @@ function serverList($file)
  * Define a new task and save to tasks list.
  *
  * @param string $name Name of current task.
- * @param callable|array $body Callable task or array of other tasks names.
+ * @param callable $body Callable task
  * @return TheTask
  * @throws InvalidArgumentException
  */
@@ -164,16 +164,38 @@ function task($name, $body)
 {
     $deployer = Deployer::get();
 
-    if ($body instanceof \Closure) {
+    if (is_callable($body)) {
         $task = new TheTask($name, $body);
         $scenario = new Scenario($name);
-    } elseif (is_array($body)) {
+    } else {
+        throw new \InvalidArgumentException('Task should be a callable.');
+    }
+
+    $deployer->tasks->set($name, $task);
+    $deployer->scenarios->set($name, $scenario);
+
+    return $task;
+}
+
+/**
+ * Define a new task group and save to tasks list.
+ *
+ * @param string $name Name of current task.
+ * @param array $body An array of other tasks names.
+ * @return GroupTask
+ * @throws InvalidArgumentException
+ */
+function taskGroup($name, $body)
+{
+    $deployer = Deployer::get();
+
+    if (is_array($body)) {
         $task = new GroupTask();
         $scenario = new GroupScenario(array_map(function ($name) use ($deployer) {
             return $deployer->scenarios->get($name);
         }, $body));
     } else {
-        throw new \InvalidArgumentException('Task should be an closure or array of other tasks.');
+        throw new \InvalidArgumentException('Task group should be an array of other tasks.');
     }
 
     $deployer->tasks->set($name, $task);
@@ -265,7 +287,7 @@ function within($path, $callback)
 {
     $lastWorkingPath = workingPath();
     env()->set('working_path', $path);
-    $callback();
+    call_user_func($callback);
     env()->set('working_path', $lastWorkingPath);
 }
 

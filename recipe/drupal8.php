@@ -9,7 +9,7 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
-task('deploy', [
+taskGroup('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

@@ -46,9 +46,9 @@ class Task
 
     /**
      * @param string $name Tasks name
-     * @param \Closure $callback Task code.
+     * @param callable $callback Task code.
      */
-    public function __construct($name, \Closure $callback)
+    public function __construct($name, callable $callback)
     {
         $this->name = $name;
         $this->callback = $callback;

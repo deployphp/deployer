@@ -48,4 +48,9 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $task->setPrivate();
         $this->assertTrue($task->isPrivate());
     }
+
+    public function testInit()
+    {
+        $this->markTestIncomplete('Test initial task with callable');
+    }
 }

@@ -326,6 +326,18 @@ task('deploy:symlink', function () {
 env('releases_list', function () {
     $list = run('ls {{deploy_path}}/releases')->toArray();
 
+    // filter anything that does not look like a release
+    foreach ($list as $key => $item) {
+        // name does not match
+        if (!preg_match('/^[0-9]{14}$/', $item)) {
+            unset($list[$key]);
+        }
+        // not a directory
+        if (!is_dir(env('deploy_path') . '/releases/' . $item)) {
+            unset($list[$key]);
+        }
+    }
+
     rsort($list);
 
     return $list;

@@ -16,7 +16,7 @@ task('deploy', [
     'cleanup'
 ]);
 
-//Set drupal site. Change if you use different site
+//Set Drupal 7 site. Change if you use different site
 env('drupal_site', 'default');
 
 
@@ -25,12 +25,12 @@ set('shared_dirs', [
     'sites/{{drupal_site}}/files',
 ]);
 
-//Drupal 7 sharef files
+//Drupal 7 shared files
 set('shared_files', [
     'sites/{{drupal_site}}/settings.php',
 ]);
 
-//Drupal 7 Writable dirs
+//Drupal 7 writable dirs
 set('writable_dirs', [
     'sites/{{drupal_site}}/files',
 ]);

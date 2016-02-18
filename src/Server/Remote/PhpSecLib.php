@@ -124,7 +124,8 @@ class PhpSecLib implements ServerInterface
     {
         $this->checkConnection();
 
-        $dir = dirname($remote);
+        $remote = str_replace(DIRECTORY_SEPARATOR, '/', $remote);
+        $dir = str_replace(DIRECTORY_SEPARATOR, '/', dirname($remote));
 
         if (!isset($this->directories[$dir])) {
             $this->sftp->mkdir($dir, -1, true);

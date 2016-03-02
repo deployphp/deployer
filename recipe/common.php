@@ -324,7 +324,23 @@ task('deploy:symlink', function () {
  * Return list of releases on server.
  */
 env('releases_list', function () {
-    $list = run('ls {{deploy_path}}/releases')->toArray();
+    // find will list only dirs in releases/
+    $list = run('find {{deploy_path}}/releases -maxdepth 1 -mindepth 1 -type d')->toArray();
+
+    // filter out anything that does not look like a release
+    foreach ($list as $key => $item) {
+        $item = basename($item); // strip path returned from find
+
+        // release dir can look like this: 20160216152237 or 20160216152237.1.2.3.4 ...
+        $name_match = '[0-9]{14}'; // 20160216152237
+        $extension_match = '\.[0-9]+'; // .1 or .15 etc
+        if (!preg_match("/^$name_match($extension_match)*$/", $item)) {
+            unset($list[$key]); // dir name does not match pattern, throw it out
+            continue;
+        }
+
+        $list[$key] = $item; // $item was changed
+    }
 
     rsort($list);
 

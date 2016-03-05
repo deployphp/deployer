@@ -40,7 +40,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
 
         $output->expects($this->once())
             ->method('writeln')
-            ->with($this->equalTo('<info>✔</info> Ok'));
+            ->with($this->stringStartsWith('<info>✔</info> Ok'));
 
         $informer = new Informer($output);
         $informer->endTask();

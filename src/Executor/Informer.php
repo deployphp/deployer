@@ -18,6 +18,11 @@ class Informer
     private $output;
 
     /**
+     * @var int
+     */
+    private $startTime;
+
+    /**
      * @param \Deployer\Console\Output\OutputWatcher $output
      */
     public function __construct(OutputWatcher $output)
@@ -38,6 +43,7 @@ class Informer
             }
 
             $this->output->writeln("Executing task $taskName");
+            $this->startTime = round(microtime(true) * 1000);
 
             $this->output->setWasWritten(false);
         }
@@ -51,7 +57,12 @@ class Informer
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
             $this->output->write("\033[k\033[1A\r<info>✔</info>\n");
         } else {
-            $this->output->writeln("<info>✔</info> Ok");
+            $endTime = round(microtime(true) * 1000);
+            $millis = $endTime - $this->startTime;
+            $seconds = floor($millis / 1000);
+            $millis = $millis - $seconds * 1000;
+            $taskTime = ($seconds > 0 ? "{$seconds}s " : "")."{$millis}ms";
+            $this->output->writeln("<info>✔</info> Ok after {$taskTime}");
         }
     }
 

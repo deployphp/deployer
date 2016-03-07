@@ -26,7 +26,7 @@ task('deploy:run_migrations', function () {
 /**
  * Main task
  */
-task('deploy', [
+taskGroup('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

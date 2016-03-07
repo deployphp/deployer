@@ -18,7 +18,7 @@ set('writable_dirs', ['application/cache', 'application/logs']);
 /**
  * Main task
  */
-task('deploy', [
+taskGroup('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

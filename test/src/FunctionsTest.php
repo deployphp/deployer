@@ -108,8 +108,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
 
-        // TODO: Task with callable
-        $this->markTestIncomplete('Task with callable');
+        // Test create task with [$object, 'method']
+        $mock1 = $this->getMock('stdClass', ['callback']);
+        task('task1', [$mock1, 'callback']);
+        $task1 = $this->deployer->tasks->get('task1');
+        $this->assertInstanceOf('Deployer\Task\Task', $task1);
 
         $this->setExpectedException('InvalidArgumentException', 'Task should be a callable.');
         task('wrong', 'thing');

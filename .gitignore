@@ -1,7 +1,5 @@
 .php_cs.cache
 /vendor/
-/.idea/
-/nbproject/
 *.phar
 /.vagrant
 deploy.php

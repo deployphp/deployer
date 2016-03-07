@@ -18,7 +18,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $task = new Task('task_name', function () use ($mock) {
             $mock->callback();
         });
-        
+
         $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
         $task->run($context);
@@ -44,13 +44,45 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $task->onlyOn();
         $this->assertTrue($task->runOnServer('server'));
-        
+
         $task->setPrivate();
         $this->assertTrue($task->isPrivate());
     }
 
     public function testInit()
     {
-        $this->markTestIncomplete('Test initial task with callable');
+        $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
+
+        // Test create task with [$object, 'method']
+        $mock1 = $this->getMock('stdClass', ['callback']);
+        $mock1->expects($this->once())->method('callback');
+        $task1 = new Task('task1', [$mock1, 'callback']);
+        $task1->run($context);
+
+        // Test create task with anonymous functions
+        $mock2 = $this->getMock('stdClass', ['callback']);
+        $mock2->expects($this->once())->method('callback');
+        $task2 = new Task('task2', function () use ($mock2) {
+            $mock2->callback();
+        });
+        $task2->run($context);
+
+        $this->assertEquals(0, StubTask::$runned);
+        $task3 = new Task('task3', new StubTask());
+        $task3->run($context);
+        $this->assertEquals(1, StubTask::$runned);
+    }
+}
+
+/**
+ * Stub class for task callable by __invoke()
+ */
+class StubTask
+{
+    static $runned = 0;
+
+    public function __invoke()
+    {
+        self::$runned++;
     }
 }

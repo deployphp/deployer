@@ -90,7 +90,7 @@ task('deploy:cache:warmup', function () {
  * Make cache writable
  */
 task('deploy:cache:make_writable', function () {
-    run("chmod -R g+w {{cache_dir}}")
+    run("chmod -R g+w {{cache_dir}}");
 });
 
 

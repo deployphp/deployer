@@ -46,9 +46,6 @@ task('deploy:create_cache_dir', function () {
 
     // Create cache dir
     run('mkdir -p {{cache_dir}}');
-
-    // Set rights
-    run("chmod -R g+w {{cache_dir}}");
 })->desc('Create cache dir');
 
 
@@ -90,6 +87,14 @@ task('deploy:cache:warmup', function () {
 
 
 /**
+ * Make cache writable
+ */
+task('deploy:cache:make_writable', function () {
+    run("chmod -R g+w {{cache_dir}}")
+});
+
+
+/**
  * Migrate database
  */
 task('database:migrate', function () {
@@ -126,6 +131,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:assetic:dump',
     'deploy:cache:warmup',
+    'deploy:cache:make_writable',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

@@ -244,12 +244,14 @@ task('deploy:writable', function () {
 
             cd('{{release_path}}');
 
+            // Try OS-X specific setting of access-rights
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
                 if (!empty($httpUser)) {
                     run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 }
 
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            // Try linux ACL implementation with unsafe fail-fallback to POSIX-way
             } elseif (commandExist('setfacl')) {
                 if (!empty($httpUser)) {
                     if (!empty($sudo)) {
@@ -274,6 +276,7 @@ task('deploy:writable', function () {
                 } else {
                     run("$sudo chmod 777 -R $dirs");
                 }
+            // If we are not on OS-X and have no ACL installed use POSIX
             } else {
                 run("$sudo chmod 777 -R $dirs");
             }

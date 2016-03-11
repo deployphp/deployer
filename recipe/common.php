@@ -318,6 +318,9 @@ task('deploy:vendors', function () {
  * Create symlink to last release.
  */
 task('deploy:symlink', function () {
+    // Remove /current directory if it isn't a symlink (prevents symlinks in subdirectory)
+    run("if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then rm -rf {{deploy_path}}/current; fi");
+
     run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // Atomic override symlink.
     run("cd {{deploy_path}} && rm release"); // Remove release link.
 })->desc('Creating symlink to release');

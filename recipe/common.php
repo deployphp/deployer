@@ -34,6 +34,7 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
+env('release_name', date('YmdHis')); // name of folder in releases
 
 /**
  * Default arguments and options.
@@ -118,9 +119,7 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $release = date('YmdHis');
-
-    $releasePath = "{{deploy_path}}/releases/$release";
+    $releasePath = "{{deploy_path}}/releases/{{release_name}}";
 
     $i = 0;
     while (is_dir(env()->parse($releasePath)) && $i < 42) {

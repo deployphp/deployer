@@ -31,14 +31,7 @@ class Informer
     public function startTask($taskName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $this->output->write("  ");
-            } else {
-                $this->output->write("➤ ");
-            }
-
-            $this->output->writeln("Executing task $taskName");
-
+            $this->output->writeln("➤ Executing task $taskName");
             $this->output->setWasWritten(false);
         }
     }

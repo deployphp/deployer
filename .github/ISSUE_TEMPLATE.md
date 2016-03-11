@@ -6,11 +6,11 @@
 | Remote Machine OS | N/A
 
 ### Content
-
 *If you're reporting a bug, please include following information*
+
 ### Steps to reproduce
 
-### Content of deployer.php
+### Content of `deploy.php`
 
 ### Output log
-
+*With enabled option for verbose output `-vvv`.*

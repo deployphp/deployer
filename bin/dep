@@ -6,6 +6,8 @@
  * file that was distributed with this source code.
  */
 
+define("DEPLOYER", 1);
+
 $loaded = false;
 
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {

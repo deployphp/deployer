@@ -1,7 +1,7 @@
 | Q             | A
 | ------------- | ---
-| Bug fix?      | Yes|No
-| New feature?  | Yes|No
-| BC breaks?    | Yes|No
-| Deprecations? | Yes|No
-| Fixed tickets | N/A|#xx
+| Bug fix?      | Yes or No
+| New feature?  | Yes or No
+| BC breaks?    | Yes or No
+| Deprecations? | Yes or No
+| Fixed tickets | N/A or xx

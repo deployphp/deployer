@@ -33,6 +33,12 @@ class Task
     private $once = false;
 
     /**
+     * List of stages in which this task should be executed.
+     * @var array  Key contains stage names.
+     */
+    private $onlyForStage = [];
+
+    /**
      * List of servers names there this task should be executed.
      * @var array  Key contains server names.
      */
@@ -136,13 +142,47 @@ class Task
     }
 
     /**
+     * Indicate for which stages this task should be run.
+     *
+     * @param array|string $stages
+     * @return $this
+     */
+    public function onlyForStage($stages = [])
+    {
+        $this->onlyForStage = array_flip(is_array($stages) ? $stages: func_get_args());
+        return $this;
+    }
+
+    /**
      * @return array
      */
     public function getOnlyOn()
     {
         return $this->onlyOn;
     }
-    
+
+    /**
+     * @return array
+     */
+    public function getOnlyForStage()
+    {
+        return $this->onlyForStage;
+    }
+
+    /**
+     * Decide to run or not to run for these stages.
+     * @param $stages
+     * @return bool
+     */
+    public function runForStages($stages)
+    {
+        if (empty($this->onlyForStage)) {
+            return true;
+        } else {
+            return count(array_intersect($stages, array_keys($this->onlyForStage))) > 0;
+        }
+    }
+
     /**
      * Decide to run or not to run on this server.
      * @param string $serverName

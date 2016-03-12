@@ -21,7 +21,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $this->initialize();
 
         $mock = $this->getMockBuilder('stdClass')
-            ->setMethods(['task', 'once', 'only'])
+            ->setMethods(['task', 'once', 'only', 'onlyStaging'])
             ->getMock();
 
         $mock->expects($this->exactly(2))
@@ -30,6 +30,8 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
             ->method('once');
         $mock->expects($this->once())
             ->method('only');
+        $mock->expects($this->once())
+            ->method('onlyStaging');
 
         $task = new Task('task', function () use ($mock) {
             $mock->task();
@@ -45,12 +47,19 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         });
         $taskOnly->onlyOn(['one']);
 
-        $tasks = [$task, $taskOne, $taskOnly];
+        $taskOnlyStaging = new Task('onlyStaging', function () use ($mock) {
+            $mock->onlyStaging();
+        });
+        $taskOnlyStaging->onlyForStage('staging');
+
+        $tasks = [$task, $taskOne, $taskOnly, $taskOnlyStaging];
 
         $environments = [
             'one' => new Environment(),
             'two' => new Environment(),
         ];
+        $environments['two']->set('stages', ['staging']);
+
         $servers = [
             'one' => new Local(),
             'two' => new Local(),

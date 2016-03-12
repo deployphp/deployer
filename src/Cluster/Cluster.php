@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  * Cluster

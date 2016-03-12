@@ -15,8 +15,8 @@ use Deployer\Server\Remote\SshExtension;
 use Deployer\Cluster\NodeInterface;
 
 /**
- * @property Deployer $deployer
- * @property Builder $builder
+ * @property \Deployer\Deployer $deployer
+ * @property \Deployer\Server\Builder $builder
  * @property string $name
  * @property string $host
  */
@@ -24,12 +24,12 @@ class Node implements NodeInterface
 {
      
     /**
-     * @var Deployer $deployer
+     * @var \Deployer\Deployer
      */
     protected $deployer = null;
 
     /**
-     * @var Builder $builder
+     * @var \Deployer\Server\Builder
      */
     public $builder = null;
     
@@ -49,13 +49,13 @@ class Node implements NodeInterface
     protected $port = null;
     
     /**
-     * @var \Deployer\Server\Remote\PhpSecLib | \Deployer\Server\Remote\SshExtension
+     * @var \Deployer\Server\ServerInterface
      */
     protected $server = null;
     
     /**
      * initialize the node
-     * @return Node
+     * @return Deployer\Cluster\NodeInterface
      */
     public function initialize()
     {
@@ -69,7 +69,7 @@ class Node implements NodeInterface
         ) {
             $this->server = new SshExtension($config);
         }
-        $this->builder= new Builder($config, $env);
+        $this->builder = new Builder($config, $env);
         
         $this->deployer->servers->set($this->name, $this->server);
         $this->deployer->environments->set($this->name, $env);
@@ -79,6 +79,7 @@ class Node implements NodeInterface
 
     /**
      * @param Deployer $deployer
+     * @return Deployer\Cluster\NodeInterface
      */
     public function setDeployer(Deployer $deployer)
     {
@@ -88,7 +89,7 @@ class Node implements NodeInterface
 
     /**
      * @param string $name
-     * @return Node
+     * @return Deployer\Cluster\NodeInterface
      */
     public function setName($name)
     {
@@ -98,7 +99,7 @@ class Node implements NodeInterface
 
     /**
      * @param string $host
-     * @return Node
+     * @return Deployer\Cluster\NodeInterface
      */
     public function setHost($host)
     {
@@ -108,7 +109,7 @@ class Node implements NodeInterface
     
     /**
      * @param int $port
-     * @return Node
+     * @return Deployer\Cluster\NodeInterface
      */
     public function setPort($port)
     {
@@ -117,7 +118,7 @@ class Node implements NodeInterface
     }
 
     /**
-     * @return Builder
+     * @return \Deployer\Server\Builder
      */
     public function getBuilder()
     {
@@ -125,7 +126,7 @@ class Node implements NodeInterface
     }
 
     /**
-     * @return ServerInterface
+     * @return \Deployer\Server\ServerInterface
      */
     public function getServer()
     {

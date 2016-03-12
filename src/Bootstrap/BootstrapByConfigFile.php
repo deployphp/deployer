@@ -24,12 +24,12 @@ class BootstrapByConfigFile
 {
     
     /**
-     * @var string | null $configFile
+     * @var string|null $configFile
      */
     public $configFile = null;
 
     /**
-     * @var string | null $configFileContent
+     * @var string|null $configFileContent
      */
     public $configFileContent = null;
 
@@ -56,8 +56,8 @@ class BootstrapByConfigFile
 
 
     /**
-     * @param Deployer\Type\DotArray $config
-     * @param Builder | ClusterBuilder $builder
+     * @param \Deployer\Type\DotArray $config
+     * @param Builder|ClusterBuilder $builder
      */
     private function executeBuilderMethods(DotArray $config, $builder)
     {
@@ -104,9 +104,8 @@ class BootstrapByConfigFile
     }
 
     /**
-     * @param array $serverList
      * @throws \RuntimeException
-     * @return Deployer\Bootstrap\BootstrapByConfigFile
+     * @return \Deployer\Bootstrap\BootstrapByConfigFile
      */
     public function parseConfig()
     {
@@ -130,7 +129,7 @@ class BootstrapByConfigFile
 
     /**
      * @throws \RuntimeException
-     * @return Deployer\Bootstrap\BootstrapByConfigFile
+     * @return \Deployer\Bootstrap\BootstrapByConfigFile
      */
     public function initServers()
     {
@@ -165,7 +164,7 @@ class BootstrapByConfigFile
 
     /**
      * @throws \RuntimeException
-     * @return Deployer\Bootstrap\BootstrapByConfigFile
+     * @return \Deployer\Bootstrap\BootstrapByConfigFile
      */
     public function initClusters()
     {

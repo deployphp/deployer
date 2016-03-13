@@ -2,7 +2,7 @@ checks:
   php:
     code_rating: true
     duplication: true
-    
+
 filter:
   paths:
     - src/*
@@ -12,6 +12,8 @@ filter:
     - src/Resources/*
 
 build:
+  environment:
+    php: '5.5.25'
   tests:
     override:
       -

@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -50,7 +50,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->_input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $this->_output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
         $this->_server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
+
         $this->_env = new Environment();
+        $this->_env->set("local_path", __DIR__ . '/../fixture/app');
+        $this->_env->set("remote_path", "/home/www");
 
         $this->deployer = new Deployer($this->console, $this->_input, $this->_output);
         Context::push(new Context($this->_server, $this->_env, $this->_input, $this->_output));
@@ -149,7 +152,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     public function testUpload()
     {
         $this->_server
-            ->expects($this->any())
+            ->expects($this->atLeastOnce())
             ->method('upload')
             ->with(
                 $this->callback(function ($local) {
@@ -160,9 +163,36 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 }));
 
         // Directory
-        upload(__DIR__ . '/../fixture/app', '/home/www');
+        upload('{{local_path}}', '{{remote_path}}');
 
         // File
-        upload(__DIR__ . '/../fixture/app/README.md', '/home/www/README.md');
+        upload('{{local_path}}/README.md', '{{remote_path}}/README.md');
+    }
+
+    public function testDownloadFile()
+    {
+        $this->_server
+            ->expects($this->once())
+            ->method('download')
+            ->with(
+                $this->_env->get("local_path") . "/README.md",
+                $this->_env->get("remote_path") . "/README.md"
+            );
+
+        download('{{local_path}}/README.md', '{{remote_path}}/README.md');
+    }
+
+    public function testDownloadDirectory()
+    {
+        $this->_server
+            ->expects($this->once())
+            ->method('download')
+            ->with(
+                $this->_env->get("local_path"),
+                $this->_env->get("remote_path")
+            );
+
+
+        download('{{local_path}}', '{{remote_path}}');
     }
 }

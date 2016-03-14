@@ -1,0 +1,51 @@
+<?php
+
+/*
+ * This file has been generated automatically.
+ * Please change the configuration for correct use deploy.
+ */
+
+require 'recipe/common.php';
+
+// Set configurations
+set('repository', 'git@domain.com:username/repository.git');
+set('shared_files', []);
+set('shared_dirs', []);
+set('writable_dirs', []);
+
+// Configure servers
+server('production', 'prod.domain.com')
+    ->user('username')
+    ->password()
+    ->env('deploy_path', '/var/www/prod.domain.com');
+
+server('develop', 'dev.domain.com')
+    ->user('username')
+    ->password()
+    ->env('deploy_path', '/var/www/dev.domain.com');
+
+// Declare tasks
+task('php-fpm:restart', function () {
+    // Attention: The user must have rights for restart service
+    // Attention: the command "sudo /bin/systemctl restart php-fpm.service" used only on CentOS system
+    // /etc/sudoers: username ALL=NOPASSWD:/bin/systemctl restart php-fpm.service
+    run('sudo /bin/systemctl restart php-fpm.service');
+})->desc('Restart PHP-FPM service');
+
+// Run tasks
+after('deploy:update_code', 'deploy:shared');
+after('success', 'php-fpm:restart');
+
+/**
+ * Main task
+ */
+task('deploy', [
+    'deploy:prepare',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:symlink',
+    'cleanup',
+])->desc('Deploy your project');
+
+after('deploy', 'success');

@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -386,6 +386,9 @@ function upload($local, $remote)
 function download($local, $remote)
 {
     $server = Context::get()->getServer();
+    $local = env()->parse($local);
+    $remote = env()->parse($remote);
+
     $server->download($local, $remote);
 }
 

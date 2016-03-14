@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,6 +32,10 @@ class SeriesExecutor implements ExecutorInterface
                 foreach ($servers as $serverName => $server) {
                     if ($task->runOnServer($serverName)) {
                         $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
+
+                        if (count($task->getOnlyForStage()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
+                            continue;
+                        }
 
                         $informer->onServer($serverName);
 

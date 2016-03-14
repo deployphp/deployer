@@ -1,11 +1,10 @@
 Introduction
 ------------
-[![Build Status](http://img.shields.io/travis/deployphp/deployer.svg?style=flat)](https://travis-ci.org/deployphp/deployer)
+[![Build Status](https://travis-ci.org/deployphp/deployer.svg?branch=master)](https://travis-ci.org/deployphp/deployer)
 [![Code Quality](http://img.shields.io/scrutinizer/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
 [![Code Climate](http://img.shields.io/codeclimate/github/deployphp/deployer.svg?style=flat)](https://codeclimate.com/github/deployphp/deployer)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
 [![Version](http://img.shields.io/packagist/v/deployer/deployer.svg?style=flat)](https://packagist.org/packages/deployer/deployer)
-[![Support via Gittip](http://img.shields.io/gittip/elfet.svg?style=flat)](https://www.gittip.com/elfet)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
 
@@ -87,6 +86,11 @@ the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-
 
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
+
+Donate
+------
+
+Support Deployer development on [patreon](https://www.patreon.com/deployer).
 
 License
 -------

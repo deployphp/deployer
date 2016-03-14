@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -22,6 +22,8 @@ set('writable_dirs', ['app/cache', 'app/logs']);
 
 // Assets
 set('assets', ['web/css', 'web/images', 'web/js']);
+// Default true - BC for Symfony < 3.0
+set('dump_assets', true);
 
 // Environment vars
 env('env_vars', 'SYMFONY_ENV=prod');
@@ -68,6 +70,9 @@ task('deploy:assets', function () {
  * Dump all assets to the filesystem
  */
 task('deploy:assetic:dump', function () {
+    if (!get('dump_assets')) {
+        return;
+    }
 
     run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
 

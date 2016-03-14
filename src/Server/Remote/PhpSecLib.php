@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -124,7 +124,8 @@ class PhpSecLib implements ServerInterface
     {
         $this->checkConnection();
 
-        $dir = dirname($remote);
+        $remote = str_replace(DIRECTORY_SEPARATOR, '/', $remote);
+        $dir = str_replace(DIRECTORY_SEPARATOR, '/', dirname($remote));
 
         if (!isset($this->directories[$dir])) {
             $this->sftp->mkdir($dir, -1, true);

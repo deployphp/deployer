@@ -36,16 +36,9 @@ class Informer
     public function startTask($taskName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $this->output->write("  ");
-            } else {
-                $this->output->write("➤ ");
-            }
-
-            $this->output->writeln("Executing task $taskName");
-            $this->startTime = round(microtime(true) * 1000);
-
+            $this->output->writeln("➤ Executing task $taskName");
             $this->output->setWasWritten(false);
+            $this->startTime = round(microtime(true) * 1000);
         }
     }
 
@@ -55,7 +48,7 @@ class Informer
     public function endTask()
     {
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $this->output->write("\033[k\033[1A\r<info>✔</info>\n");
+            $this->output->writeln("\r\033[K\033[1A\r<info>✔</info>");
         } else {
             $endTime = round(microtime(true) * 1000);
             $millis = $endTime - $this->startTime;

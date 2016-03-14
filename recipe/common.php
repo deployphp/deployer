@@ -105,8 +105,7 @@ task('deploy:prepare', function () {
 
     // Check for existing /current directory (not symlink)
     $result = run('if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then echo 1; fi')->toString();
-    if ($result)
-    {
+    if ($result) {
         throw new RuntimeException('There already is a directory (not symlink) named "current" in the deploy_path. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
@@ -310,7 +309,7 @@ task('deploy:writable', function () {
  */
 task('deploy:vendors', function () {
     $composer = get('composer_command');
-    
+
     if (! commandExist($composer)) {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
         $composer = 'php composer.phar';

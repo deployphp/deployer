@@ -62,7 +62,7 @@ class Informer
             $seconds = floor($millis / 1000);
             $millis = $millis - $seconds * 1000;
             $taskTime = ($seconds > 0 ? "{$seconds}s " : "")."{$millis}ms";
-            $this->output->writeln("<info>✔</info> Ok after {$taskTime}");
+            $this->output->writeln("<info>✔</info> Ok [$taskTime]");
         }
     }
 

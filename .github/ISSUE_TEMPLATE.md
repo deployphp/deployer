@@ -5,12 +5,15 @@
 | Local Machine OS  | N/A
 | Remote Machine OS | N/A
 
-### Content
+### Description 
 *If you're reporting a bug, please include following information*
 
 ### Steps to reproduce
 
 ### Content of `deploy.php`
+```php
+CONTENT
+```
 
 ### Output log
 *With enabled option for verbose output `-vvv`.*

@@ -16,7 +16,7 @@ See [http://deployer.org](http://deployer.org) for more information and document
 
 Requirements
 ------------
-* PHP 5.4.0 and up.
+* PHP 5.5.0 and up.
 
 That's all!
 

@@ -159,13 +159,13 @@ task('deploy:update_code', function () {
         $at = "-b $branch";
     }
 
+    $releases = env('releases_list');
+
     if (!empty($revision)) {
         // To checkout specified revision we need to clone all tree.
         run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
         run("cd {{release_path}} && git checkout $revision");
     } elseif ($gitCache && isset($releases[1])) {
-        $releases = env('releases_list');
-
         try {
             run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
         } catch (RuntimeException $exc) {

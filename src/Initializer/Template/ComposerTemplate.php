@@ -60,6 +60,5 @@ after('success', 'php-fpm:restart');
 
 after('deploy:update_code', 'deploy:shared');
 PHP;
-
     }
 }

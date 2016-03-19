@@ -11,9 +11,11 @@ php:
 matrix:
   allow_failures:
     - php: hhvm
-  include:
-    - php: 5.4
-      env: COMPOSER_FLAGS="--prefer-lowest"
+
+env:
+  matrix:
+    - COMPOSER_FLAGS="--prefer-lowest"
+    - COMPOSER_FLAGS="--prefer-stable"
 
 install:
   - eval `ssh-agent -s`

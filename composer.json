@@ -24,7 +24,7 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "elfet/pure": "~1.1",
+        "elfet/pure": "~2.0",
         "symfony/finder": "~2.6|~3.0",
         "symfony/console": "~2.6|~3.0",
         "symfony/yaml": "~2.6|~3.0",

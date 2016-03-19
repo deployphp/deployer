@@ -8,7 +8,7 @@
 namespace Deployer\Initializer\Template;
 
 /**
- * All templates for initializer should implement this interface
+ * All templates for initializer should implement this interface.
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */

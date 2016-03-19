@@ -11,31 +11,11 @@ namespace Deployer\Initializer\Template;
  * Test file resource template
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
+ * @author Anton Medvedev <anton@medv.io>
+ *
  */
-class FileResourceTemplateTest extends \PHPUnit_Framework_TestCase
+class TemplateTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * Test with file resource not found
-     */
-    public function testWithFileResourceNotFound()
-    {
-        $fileResource = sys_get_temp_dir() . '/' . uniqid();
-
-        $this->setExpectedException(
-            'Deployer\Initializer\Exception\ResourceNotFoundException',
-            sprintf(
-                'Not found resource file "%s".',
-                $fileResource
-            )
-        );
-
-        $template = $this->createMockForFileResourceTemplate();
-        $template->expects($this->once())->method('getFilePathOfResource')
-            ->will($this->returnValue($fileResource));
-
-        $template->initialize(sys_get_temp_dir() . '/' . uniqid());
-    }
-
     /**
      * Test successfully initialize for template
      */
@@ -48,21 +28,17 @@ set('repository', '%repository%');
 
 RESOURCE;
 
-        $tmpDir = sys_get_temp_dir() . '/' . uniqid();
-        mkdir($tmpDir);
-
-        $fileResource = $tmpDir . '/foo.php.dist';
-        touch($fileResource);
-        file_put_contents($fileResource, $resource);
-
         $template = $this->createMockForFileResourceTemplate();
-        $template->expects($this->once())->method('getFilePathOfResource')
-            ->will($this->returnValue($fileResource));
+        $template->expects($this->once())->method('getTemplateContent')
+            ->will($this->returnValue($resource));
 
         $template->expects($this->once())->method('getParametersForReplace')
             ->will($this->returnValue([
                 'repository' => 'git://domain.com:foo/bar.git'
             ]));
+
+        $tmpDir = sys_get_temp_dir() . '/' . uniqid();
+        mkdir($tmpDir);
 
         $template->initialize($tmpDir . '/foo.php');
 
@@ -84,12 +60,12 @@ RESOURCE;
     /**
      * Create mock for file resource template
      *
-     * @return \Deployer\Initializer\Template\FileResourceTemplate|\PHPUnit_Framework_MockObject_MockObject
+     * @return \Deployer\Initializer\Template\Template|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createMockForFileResourceTemplate()
     {
         return $this->getMockForAbstractClass(
-            'Deployer\Initializer\Template\FileResourceTemplate',
+            'Deployer\Initializer\Template\Template',
             [],
             '',
             true,

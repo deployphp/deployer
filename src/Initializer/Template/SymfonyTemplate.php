@@ -8,12 +8,11 @@
 namespace Deployer\Initializer\Template;
 
 /**
- * Generate a common (base) deployer configuration
+ * Generate a Symfony deployer configuration.
  *
- * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  * @author Anton Medvedev <anton@medv.io>
  */
-class CommonTemplate extends Template
+class SymfonyTemplate extends Template
 {
     /**
      * {@inheritDoc}
@@ -27,13 +26,13 @@ class CommonTemplate extends Template
  * Please change the configuration for correct use deploy.
  */
 
-require 'recipe/common.php';
+require 'recipe/symfony.php';
 
 // Set configurations
 set('repository', 'git@domain.com:username/repository.git');
-set('shared_files', []);
-set('shared_dirs', []);
-set('writable_dirs', []);
+set('shared_files', ['app/config/parameters.yml']);
+set('shared_dirs', ['app/logs']);
+set('writable_dirs', ['app/cache', 'app/logs']);
 
 // Configure servers
 server('production', 'prod.domain.com')
@@ -58,19 +57,14 @@ task('php-fpm:restart', function () {
 
 after('success', 'php-fpm:restart');
 
-/**
- * Main task
- */
-task('deploy', [
-    'deploy:prepare',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:symlink',
-    'cleanup',
-])->desc('Deploy your project');
 
-after('deploy', 'success');
+/**
+ * Attention: This command is only for for example. Please follow your own migrate strategy.
+ * Attention: Commented by default.  
+ * Migrate database before symlink new release.
+ */
+ 
+// before('deploy:symlink', 'database:migrate');
 PHP;
     }
 }

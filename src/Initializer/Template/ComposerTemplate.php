@@ -41,10 +41,10 @@ server('production', 'prod.domain.com')
     ->password()
     ->env('deploy_path', '/var/www/prod.domain.com');
 
-server('develop', 'dev.domain.com')
+server('beta', 'beta.domain.com')
     ->user('username')
     ->password()
-    ->env('deploy_path', '/var/www/dev.domain.com');
+    ->env('deploy_path', '/var/www/beta.domain.com');
 
 /**
  * Restart php-fpm on success deploy.

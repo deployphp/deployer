@@ -10,11 +10,15 @@ namespace Deployer\Console;
 use Deployer\Initializer\Initializer;
 use Deployer\Initializer\Template\CommonTemplate;
 use Deployer\Initializer\Template\ComposerTemplate;
+use Deployer\Initializer\Template\LaravelTemplate;
+use Deployer\Initializer\Template\SymfonyTemplate;
+use Deployer\Initializer\Template\YiiTemplate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
 /**
  * The command for initialize Deployer system in your project
@@ -29,6 +33,11 @@ class InitCommand extends Command
     private $initializer;
 
     /**
+     * @var array
+     */
+    private $availableTemplates;
+
+    /**
      * Construct
      *
      * @param string $name
@@ -36,6 +45,7 @@ class InitCommand extends Command
     public function __construct($name = null)
     {
         $this->initializer = $this->createInitializer();
+        $this->availableTemplates = $this->initializer->getTemplateNames();
 
         parent::__construct($name);
     }
@@ -45,12 +55,10 @@ class InitCommand extends Command
      */
     protected function configure()
     {
-        $availableTemplates = implode(', ', $this->initializer->getTemplateNames());
-
         $this
             ->setName('init')
             ->setDescription('Initialize deployer system in your project.')
-            ->addArgument('template', InputArgument::REQUIRED, 'The template of you project. Available templates: ' . $availableTemplates)
+            ->addArgument('template', InputArgument::OPTIONAL, 'The template of you project. Available templates: ' . implode(', ', $this->availableTemplates))
             ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'The directory for create "deploy.php" file.', getcwd())
             ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The file name. Default "deploy.php"', 'deploy.php');
     }
@@ -63,6 +71,18 @@ class InitCommand extends Command
         $template = $input->getArgument('template');
         $directory = $input->getOption('directory');
         $file = $input->getOption('filename');
+
+        if ($template === null) {
+            $helper = $this->getHelper('question');
+            $question = new ChoiceQuestion(
+                'Please select your project type (defaults to common):',
+                $this->availableTemplates,
+                0
+            );
+            $question->setErrorMessage('Color %s is invalid.');
+
+            $template = $helper->ask($input, $output, $question);
+        }
 
         $filePath = $this->initializer->initialize($template, $directory, $file);
 
@@ -83,6 +103,9 @@ class InitCommand extends Command
 
         $initializer->addTemplate('common', new CommonTemplate());
         $initializer->addTemplate('composer', new ComposerTemplate());
+        $initializer->addTemplate('symfony', new SymfonyTemplate());
+        $initializer->addTemplate('laravel', new LaravelTemplate());
+        $initializer->addTemplate('yii', new YiiTemplate());
 
         return $initializer;
     }

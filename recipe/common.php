@@ -43,6 +43,7 @@ env('release_name', date('YmdHis')); // name of folder in releases
  */
 argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
 option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
+option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
 
 /**
  * Rollback to previous release.
@@ -147,6 +148,8 @@ task('deploy:update_code', function () {
 
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
+    } else if (input()->hasOption('revision')) {
+        $revision = input()->getOption('revision');
     }
 
     $at = '';
@@ -156,9 +159,15 @@ task('deploy:update_code', function () {
         $at = "-b $branch";
     }
 
-    $releases = env('releases_list');
+    if (!empty($revision)) {
 
-    if ($gitCache && isset($releases[1])) {
+        // To checkout specified revision we need to clone all tree.
+        run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
+        run("cd {{release_path}} && git checkout $revision");
+
+    } else if ($gitCache && isset($releases[1])) {
+        $releases = env('releases_list');
+
         try {
             run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
         } catch (RuntimeException $exc) {
@@ -180,10 +189,10 @@ task('deploy:copy_dirs', function () {
     $dirs = get('copy_dirs');
 
     foreach ($dirs as $dir) {
-        //Delete directory if exists
+        // Delete directory if exists.
         run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
-        //Copy directory
+        // Copy directory.
         run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
     }
 
@@ -196,13 +205,13 @@ task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";
 
     foreach (get('shared_dirs') as $dir) {
-        // Remove from source
+        // Remove from source.
         run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
-        // Create shared dir if it does not exist
+        // Create shared dir if it does not exist.
         run("mkdir -p $sharedPath/$dir");
 
-        // Create path to shared dir in release dir if it does not exist
+        // Create path to shared dir in release dir if it does not exist.
         // (symlink will not create the path and will fail otherwise)
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
@@ -212,7 +221,7 @@ task('deploy:shared', function () {
 
     foreach (get('shared_files') as $file) {
         $dirname = dirname($file);
-        // Remove from source
+        // Remove from source.
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
         // Ensure dir is available in release
         run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");

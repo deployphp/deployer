@@ -160,11 +160,9 @@ task('deploy:update_code', function () {
     }
 
     if (!empty($revision)) {
-
         // To checkout specified revision we need to clone all tree.
         run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
         run("cd {{release_path}} && git checkout $revision");
-
     } elseif ($gitCache && isset($releases[1])) {
         $releases = env('releases_list');
 

@@ -55,9 +55,9 @@ Building
 To build `deployer.phar` run `./build` command.
 
 
-Discussing
+Community
 -------
-Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
+Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss).
 
 Roadmap
 -------
@@ -87,10 +87,15 @@ the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
 
-Donate
-------
+Maintainers
+-----------
 
-Support Deployer development on [patreon](https://www.patreon.com/deployer).
+* Anton Medvedev [@elfet](https://github.com/elfet)
+* Oanh Nguyen [@oanhnn](https://github.com/oanhnn)
+* Hubert Viktor [@ZeeCoder](https://github.com/ZeeCoder)
+
+See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
+
 
 License
 -------

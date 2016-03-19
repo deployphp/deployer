@@ -2,3 +2,6 @@ preset: psr2
 
 enabled:
   - short_array_syntax
+
+disabled:
+  - no_extra_consecutive_blank_lines

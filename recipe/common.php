@@ -148,7 +148,7 @@ task('deploy:update_code', function () {
 
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
-    } else if (input()->hasOption('revision')) {
+    } elseif (input()->hasOption('revision')) {
         $revision = input()->getOption('revision');
     }
 
@@ -165,7 +165,7 @@ task('deploy:update_code', function () {
         run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
         run("cd {{release_path}} && git checkout $revision");
 
-    } else if ($gitCache && isset($releases[1])) {
+    } elseif ($gitCache && isset($releases[1])) {
         $releases = env('releases_list');
 
         try {

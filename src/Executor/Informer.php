@@ -36,7 +36,7 @@ class Informer
     public function startTask($taskName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            $this->output->writeln("➤ Executing task $taskName");
+            $this->output->writeln("➤ Executing task <info>$taskName</info>");
             $this->output->setWasWritten(false);
             $this->startTime = round(microtime(true) * 1000);
         }
@@ -69,7 +69,7 @@ class Informer
     public function onServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("⤷ on [$serverName]");
+            $this->output->writeln("↳ on [$serverName]");
         }
     }
 
@@ -79,7 +79,7 @@ class Informer
     public function endOnServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("<info>⤶</info> done on [$serverName]");
+            $this->output->writeln("<info>•</info> done on [$serverName]");
         }
     }
 

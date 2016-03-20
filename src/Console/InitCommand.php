@@ -11,6 +11,7 @@ use Deployer\Initializer\Initializer;
 use Deployer\Initializer\Template\CommonTemplate;
 use Deployer\Initializer\Template\ComposerTemplate;
 use Deployer\Initializer\Template\LaravelTemplate;
+use Deployer\Initializer\Template\NodeJsTemplate;
 use Deployer\Initializer\Template\SymfonyTemplate;
 use Deployer\Initializer\Template\YiiTemplate;
 use Symfony\Component\Console\Command\Command;
@@ -106,6 +107,7 @@ class InitCommand extends Command
         $initializer->addTemplate('symfony', new SymfonyTemplate());
         $initializer->addTemplate('laravel', new LaravelTemplate());
         $initializer->addTemplate('yii', new YiiTemplate());
+        $initializer->addTemplate('node.js', new NodeJsTemplate());
 
         return $initializer;
     }

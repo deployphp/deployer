@@ -50,12 +50,16 @@ class Informer
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
             $this->output->writeln("\r\033[K\033[1A\r<info>✔</info>");
         } else {
-            $endTime = round(microtime(true) * 1000);
-            $millis = $endTime - $this->startTime;
-            $seconds = floor($millis / 1000);
-            $millis = $millis - $seconds * 1000;
-            $taskTime = ($seconds > 0 ? "{$seconds}s " : "")."{$millis}ms";
-            $this->output->writeln("<info>✔</info> Ok [$taskTime]");
+            if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
+                $this->output->writeln("<info>✔</info> Ok");
+            } else {
+                $endTime = round(microtime(true) * 1000);
+                $millis = $endTime - $this->startTime;
+                $seconds = floor($millis / 1000);
+                $millis = $millis - $seconds * 1000;
+                $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
+                $this->output->writeln("<info>✔</info> Ok [$taskTime]");
+            }
         }
     }
 

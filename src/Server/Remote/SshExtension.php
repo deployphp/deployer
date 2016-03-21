@@ -131,7 +131,7 @@ class SshExtension implements ServerInterface
             $this->directories[$dir] = true;
         }
 
-        if (!$this->session->getSftp()->send($local, $remote)) {
+        if ($this->session->getSftp()->send($local, $remote) === false) {
             throw new \RuntimeException('Can not upload file.');
         }
     }

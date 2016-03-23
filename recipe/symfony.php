@@ -121,7 +121,6 @@ task('deploy', [
     'deploy:update_code',
     'deploy:create_cache_dir',
     'deploy:shared',
-    'deploy:writable',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assetic:dump',

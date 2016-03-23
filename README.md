@@ -41,7 +41,7 @@ $ dep self-update
 Or via composer:
 
 ``` sh
-$ composer require deployer/deployer:~3.0
+$ composer require deployer/deployer:~3.1
 ```
 
 

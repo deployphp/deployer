@@ -66,7 +66,7 @@ Roadmap
 * Dependency Injection Configuration
 * Event Dispatcher
 * Default stage selector
-* Faster cloning by borrowing objects from existing clones
+* ~~Faster cloning by borrowing objects from existing clones~~ Done in v3!
 * Immutable settings
 * Native SSH support
 

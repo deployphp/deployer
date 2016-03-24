@@ -121,11 +121,11 @@ task('deploy', [
     'deploy:update_code',
     'deploy:create_cache_dir',
     'deploy:shared',
-    'deploy:writable',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assetic:dump',
     'deploy:cache:warmup',
+    'deploy:writable',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

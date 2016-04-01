@@ -13,6 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('copy_dirs', []);
 set('writable_dirs', []);
+set('writable_setgid_group', null);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
 set('composer_command', 'composer'); // Path to composer
@@ -242,11 +243,12 @@ task('deploy:shared', function () {
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
+    $setGidHttpGroup = get('writable_setgid_group');
     $httpUser = get('http_user');
 
     if (!empty($dirs)) {
         try {
-            if (null === $httpUser) {
+            if (null === $httpUser && null === $setGidHttpGroup) {
                 $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
             }
 
@@ -257,14 +259,27 @@ task('deploy:writable', function () {
                 if (!empty($httpUser)) {
                     run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 }
+                if (!empty($setGidHttpGroup)) {
+                    run("$sudo chmod +a \"$setGidHttpGroup allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+                }
 
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             // Try linux ACL implementation with unsafe fail-fallback to POSIX-way
             } elseif (commandExist('setfacl')) {
-                if (!empty($httpUser)) {
+                if (!empty($httpUser) || !empty($setGidHttpGroup)) {
+                    $acl = [];
+                    if (!empty($httpUser)) {
+                        $acl[] = "u:$httpUser:rwX";
+                    }
+                    if (!empty($setGidHttpGroup)) {
+                        $acl[] = "g:$setGidHttpGroup:rwX";
+                    }
+                    $acl[] = "u:`whoami`:rwX";
+                    $acl = join(" ", $acl);
+
                     if (!empty($sudo)) {
-                        run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                        run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                        run("$sudo setfacl -R -m $acl $dirs");
+                        run("$sudo setfacl -dR -m $acl $dirs");
                     } else {
                         // When running without sudo, exception may be thrown
                         // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -276,8 +291,8 @@ task('deploy:writable', function () {
                             $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l")->toString();
                             // Set ACL for directory if it has not been set before
                             if (!$hasfacl) {
-                                run("setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                                run("setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                                run("setfacl -R -m $acl $dir");
+                                run("setfacl -dR -m $acl $dir");
                             }
                         }
                     }
@@ -287,6 +302,12 @@ task('deploy:writable', function () {
             // If we are not on OS-X and have no ACL installed use POSIX
             } else {
                 run("$sudo chmod 777 -R $dirs");
+            }
+
+            // We always need to set the setgid bit on directories here.
+            if (!empty($setGidHttpGroup)) {
+                run("$sudo find $dirs -type d | xargs chown :$setGidHttpGroup");
+                run("$sudo find $dirs -type d | xargs chmod g+rwxs");
             }
         } catch (\RuntimeException $e) {
             $formatter = \Deployer\Deployer::get()->getHelper('formatter');

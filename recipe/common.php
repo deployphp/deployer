@@ -37,6 +37,9 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     return version_compare($version, '2.3', '>=');
 });
 env('release_name', date('YmdHis')); // name of folder in releases
+env('php_bin', function () {
+    return run('which php');
+});
 
 /**
  * Default arguments and options.
@@ -313,7 +316,7 @@ task('deploy:vendors', function () {
     
     if (! commandExist($composer)) {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
-        $composer = 'php composer.phar';
+        $composer = '{{php_bin}} composer.phar';
     }
 
     $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';

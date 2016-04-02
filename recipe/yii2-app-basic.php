@@ -19,7 +19,7 @@ set('shared_dirs', ['runtime']);
  * Run migrations
  */
 task('deploy:run_migrations', function () {
-    run('php {{release_path}}/yii migrate up --interactive=0');
+    run('{{php_bin}} {{release_path}}/yii migrate up --interactive=0');
 })->desc('Run migrations');
 
 /**

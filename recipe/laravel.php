@@ -42,11 +42,11 @@ after('deploy', 'success');
  * Helper tasks
  */
 task('deploy:up', function () {
-    $output = run('php {{deploy_path}}/current/artisan up');
+    $output = run('{{php_bin}} {{deploy_path}}/current/artisan up');
     writeln('<info>'.$output.'</info>');
 })->desc('Disable maintenance mode');
 
 task('deploy:down', function () {
-    $output = run('php {{deploy_path}}/current/artisan down');
+    $output = run('{{php_bin}} {{deploy_path}}/current/artisan down');
     writeln('<error>'.$output.'</error>');
 })->desc('Enable maintenance mode');

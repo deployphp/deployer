@@ -26,6 +26,9 @@ env('timezone', 'UTC');
 env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
+env('composer_require_cli', function () {
+    return false;
+});
 env('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
     $gitVersion = run('git version');
     $regs       = [];
@@ -37,6 +40,9 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     return version_compare($version, '2.3', '>=');
 });
 env('release_name', date('YmdHis')); // name of folder in releases
+env('php_bin', function () {
+    return run('which php');
+});
 
 /**
  * Default arguments and options.
@@ -313,7 +319,7 @@ task('deploy:vendors', function () {
     
     if (! commandExist($composer)) {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
-        $composer = 'php composer.phar';
+        $composer = sprintf('{{php_bin}}%s composer.phar', env('composer_require_cli') ? '-cli' : '');
     }
 
     $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';

@@ -17,7 +17,7 @@ class SshExtension implements ServerInterface
      * @var Configuration
      */
     private $configuration;
-    
+
     /**
      * SSH session.
      * @var Ssh\Session
@@ -81,7 +81,7 @@ class SshExtension implements ServerInterface
             case Configuration::AUTH_BY_PEM_FILE:
 
                 throw new \RuntimeException('If you want to use pem file, switch to using PhpSecLib.');
-                
+
             case Configuration::AUTH_BY_AGENT:
 
                 $authentication = new \Ssh\Authentication\Agent(
@@ -123,14 +123,15 @@ class SshExtension implements ServerInterface
     {
         $this->checkConnection();
 
-        $dir = dirname($remote);
+        $remote = str_replace(DIRECTORY_SEPARATOR, '/', $remote);
+        $dir = str_replace(DIRECTORY_SEPARATOR, '/', dirname($remote));
 
         if (!isset($this->directories[$dir])) {
             $this->session->getSftp()->mkdir($dir, -1, true);
             $this->directories[$dir] = true;
         }
 
-        if (!$this->session->getSftp()->send($local, $remote)) {
+        if ($this->session->getSftp()->send($local, $remote) === false) {
             throw new \RuntimeException('Can not upload file.');
         }
     }

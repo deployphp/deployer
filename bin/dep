@@ -6,6 +6,10 @@
  * file that was distributed with this source code.
  */
 
+// Deployer constants
+define('DEPLOYER', true);
+define('DEPLOYER_BIN', __FILE__);
+
 $loaded = false;
 
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
@@ -29,9 +33,6 @@ set_include_path(__DIR__ . '/../' . PATH_SEPARATOR . get_include_path());
 
 // Include function declarations
 require_once 'src/functions.php';
-
-// Deployer constants
-define('DEPLOYER_BIN', __FILE__);
 
 // Init Deployer
 $console = new \Deployer\Console\Application('Deployer', 'master');

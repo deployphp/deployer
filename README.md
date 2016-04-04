@@ -16,7 +16,7 @@ See [http://deployer.org](http://deployer.org) for more information and document
 
 Requirements
 ------------
-* PHP 5.4.0 and up.
+* PHP 5.5.0 and up.
 
 That's all!
 
@@ -41,7 +41,7 @@ $ dep self-update
 Or via composer:
 
 ``` sh
-$ composer require deployer/deployer:~3.0
+$ composer require deployer/deployer:~3.1
 ```
 
 
@@ -55,9 +55,9 @@ Building
 To build `deployer.phar` run `./build` command.
 
 
-Discussing
+Community
 -------
-Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss). You can also ask question on [StackOverflow](http://stackoverflow.com/questions/tagged/deployer).
+Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss).
 
 Roadmap
 -------
@@ -66,7 +66,7 @@ Roadmap
 * Dependency Injection Configuration
 * Event Dispatcher
 * Default stage selector
-* Faster cloning by borrowing objects from existing clones
+* ~~Faster cloning by borrowing objects from existing clones~~ Done in v3!
 * Immutable settings
 * Native SSH support
 
@@ -87,10 +87,15 @@ the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
 
-Donate
-------
+Maintainers
+-----------
 
-Support Deployer development on [patreon](https://www.patreon.com/deployer).
+* Anton Medvedev [@elfet](https://github.com/elfet)
+* Oanh Nguyen [@oanhnn](https://github.com/oanhnn)
+* Hubert Viktor [@ZeeCoder](https://github.com/ZeeCoder)
+
+See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
+
 
 License
 -------

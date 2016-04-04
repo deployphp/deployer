@@ -9,6 +9,7 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
+use Deployer\Server\Environment;
 use Deployer\Task\Context;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
@@ -44,6 +45,11 @@ class ParallelExecutor implements ExecutorInterface
      * @var \Deployer\Server\ServerInterface[]
      */
     private $servers;
+
+    /**
+     * @var \Deployer\Server\Environment[]
+     */
+    private $environments;
 
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
@@ -128,6 +134,7 @@ class ParallelExecutor implements ExecutorInterface
     {
         $this->tasks = $tasks;
         $this->servers = $servers;
+        $this->environments = $environments;
         $this->input = $input;
         $this->output = new OutputWatcher($output);
         $this->informer = new Informer($this->output);
@@ -286,6 +293,12 @@ class ParallelExecutor implements ExecutorInterface
 
                     foreach ($this->servers as $serverName => $server) {
                         if ($task->runOnServer($serverName)) {
+                            $env = isset($this->environments[$serverName]) ? $this->environments[$serverName] : $this->environments[$serverName] = new Environment();
+
+                            if (count($task->getOnlyForStage()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
+                                continue;
+                            }
+
                             $this->informer->onServer($serverName);
                             $this->tasksToDo[$serverName] = $taskName;
                         }

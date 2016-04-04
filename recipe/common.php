@@ -17,6 +17,8 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
+set('clear_paths', []);         // Relative path from deploy_path
+set('clear_use_sudo', true);    // Using sudo in clean commands?
 
 /**
  * Environment vars
@@ -35,12 +37,37 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
+env('release_name', date('YmdHis')); // name of folder in releases
+
+/**
+ * Custom bins.
+ */
+env('bin/php', function () {
+    return run('which php')->toString();
+});
+env('bin/git', function () {
+    return run('which git')->toString();
+});
+env('bin/composer', function () {
+    if (commandExist('composer')) {
+        $composer = run('which composer')->toString();
+    }
+
+    if (empty($composer)) {
+        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
+        $composer = '{{bin/php}} composer.phar';
+    }
+
+    return $composer;
+});
+
 
 /**
  * Default arguments and options.
  */
 argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
 option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
+option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
 
 /**
  * Rollback to previous release.
@@ -101,6 +128,12 @@ task('deploy:prepare', function () {
 
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
+    // Check for existing /current directory (not symlink)
+    $result = run('if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then echo true; fi')->toBool();
+    if ($result) {
+        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . env('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+    }
+
     // Create releases dir.
     run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
 
@@ -119,9 +152,7 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $release = date('YmdHis');
-
-    $releasePath = "{{deploy_path}}/releases/$release";
+    $releasePath = "{{deploy_path}}/releases/{{release_name}}";
 
     $i = 0;
     while (is_dir(env()->parse($releasePath)) && $i < 42) {
@@ -142,11 +173,14 @@ task('deploy:release', function () {
 task('deploy:update_code', function () {
     $repository = get('repository');
     $branch = env('branch');
+    $git = env('bin/git');
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
 
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
+    } elseif (input()->hasOption('revision')) {
+        $revision = input()->getOption('revision');
     }
 
     $at = '';
@@ -158,16 +192,20 @@ task('deploy:update_code', function () {
 
     $releases = env('releases_list');
 
-    if ($gitCache && isset($releases[1])) {
+    if (!empty($revision)) {
+        // To checkout specified revision we need to clone all tree.
+        run("$git clone $at --recursive -q $repository {{release_path}} 2>&1");
+        run("cd {{release_path}} && $git checkout $revision");
+    } elseif ($gitCache && isset($releases[1])) {
         try {
-            run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
+            run("$git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
         } catch (\RuntimeException $exc) {
             // If {{deploy_path}}/releases/{$releases[1]} has a failed git clone, is empty, shallow etc, git would throw error and give up. So we're forcing it to act without reference in this situation
-            run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
+            run("$git clone $at --recursive -q $repository {{release_path}} 2>&1");
         }
     } else {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
-        run("git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
+        run("$git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
     }
 
 })->desc('Updating code');
@@ -180,10 +218,10 @@ task('deploy:copy_dirs', function () {
     $dirs = get('copy_dirs');
 
     foreach ($dirs as $dir) {
-        //Delete directory if exists
+        // Delete directory if exists.
         run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
-        //Copy directory
+        // Copy directory.
         run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
     }
 
@@ -196,13 +234,13 @@ task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";
 
     foreach (get('shared_dirs') as $dir) {
-        // Remove from source
+        // Remove from source.
         run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
-        // Create shared dir if it does not exist
+        // Create shared dir if it does not exist.
         run("mkdir -p $sharedPath/$dir");
 
-        // Create path to shared dir in release dir if it does not exist
+        // Create path to shared dir in release dir if it does not exist.
         // (symlink will not create the path and will fail otherwise)
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
@@ -211,11 +249,14 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_files') as $file) {
-        // Remove from source
+        $dirname = dirname($file);
+        // Remove from source.
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
+        // Ensure dir is available in release
+        run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
 
         // Create dir of shared file
-        run("mkdir -p $sharedPath/" . dirname($file));
+        run("mkdir -p $sharedPath/" . $dirname);
 
         // Touch shared
         run("touch $sharedPath/$file");
@@ -242,12 +283,14 @@ task('deploy:writable', function () {
 
             cd('{{release_path}}');
 
+            // Try OS-X specific setting of access-rights
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
                 if (!empty($httpUser)) {
                     run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 }
 
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            // Try linux ACL implementation with unsafe fail-fallback to POSIX-way
             } elseif (commandExist('setfacl')) {
                 if (!empty($httpUser)) {
                     if (!empty($sudo)) {
@@ -272,6 +315,7 @@ task('deploy:writable', function () {
                 } else {
                     run("$sudo chmod 777 -R $dirs");
                 }
+            // If we are not on OS-X and have no ACL installed use POSIX
             } else {
                 run("$sudo chmod 777 -R $dirs");
             }
@@ -296,15 +340,10 @@ task('deploy:writable', function () {
  * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
-    if (commandExist('composer')) {
-        $composer = 'composer';
-    } else {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
-        $composer = 'php composer.phar';
-    }
+    $composer = env('bin/composer');
+    $envVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
 
-    $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
-    run("cd {{release_path}} && $composerEnvVars $composer {{composer_options}}");
+    run("cd {{release_path}} && $envVars $composer {{composer_options}}");
 
 })->desc('Installing vendors');
 
@@ -322,7 +361,23 @@ task('deploy:symlink', function () {
  * Return list of releases on server.
  */
 env('releases_list', function () {
-    $list = run('ls {{deploy_path}}/releases')->toArray();
+    // find will list only dirs in releases/
+    $list = run('find {{deploy_path}}/releases -maxdepth 1 -mindepth 1 -type d')->toArray();
+
+    // filter out anything that does not look like a release
+    foreach ($list as $key => $item) {
+        $item = basename($item); // strip path returned from find
+
+        // release dir can look like this: 20160216152237 or 20160216152237.1.2.3.4 ...
+        $name_match = '[0-9]{14}'; // 20160216152237
+        $extension_match = '\.[0-9]+'; // .1 or .15 etc
+        if (!preg_match("/^$name_match($extension_match)*$/", $item)) {
+            unset($list[$key]); // dir name does not match pattern, throw it out
+            continue;
+        }
+
+        $list[$key] = $item; // $item was changed
+    }
 
     rsort($list);
 
@@ -374,6 +429,18 @@ task('cleanup', function () {
 
 })->desc('Cleaning up old releases');
 
+/**
+ * Cleanup files and directories
+ */
+task('deploy:clean', function () {
+    $paths = get('clear_paths');
+    $sudo  = get('clear_use_sudo') ? 'sudo' : '';
+
+    foreach ($paths as $path) {
+        run("$sudo rm -rf {{deploy_path}}/$path");
+    }
+
+})->desc('Cleaning up files and/or directories');
 
 /**
  * Success message

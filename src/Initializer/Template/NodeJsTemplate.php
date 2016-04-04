@@ -8,12 +8,11 @@
 namespace Deployer\Initializer\Template;
 
 /**
- * Generate a common (base) deployer configuration
+ * Generate a node.js deployer configuration.
  *
- * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  * @author Anton Medvedev <anton@medv.io>
  */
-class CommonTemplate extends Template
+class NodeJsTemplate extends Template
 {
     /**
      * {@inheritDoc}
@@ -46,17 +45,30 @@ server('beta', 'beta.domain.com')
     ->password()
     ->env('deploy_path', '/var/www/beta.domain.com');
 
-/**
- * Restart php-fpm on success deploy.
- */
-task('php-fpm:restart', function () {
-    // Attention: The user must have rights for restart service
-    // Attention: the command "sudo /bin/systemctl restart php-fpm.service" used only on CentOS system
-    // /etc/sudoers: username ALL=NOPASSWD:/bin/systemctl restart php-fpm.service
-    run('sudo /bin/systemctl restart php-fpm.service');
-})->desc('Restart PHP-FPM service');
 
-after('success', 'php-fpm:restart');
+/**
+ * Install npm packages.
+ */
+task('deploy:npm', function () {
+    \$releases = env('releases_list');
+
+    if (isset(\$releases[1])) {
+        if(run("if [ -d {{deploy_path}}/releases/{\$releases[1]}/node_modules ]; then echo 'true'; fi")->toBool()) {
+            run("cp --recursive {{deploy_path}}/releases/{\$releases[1]}/node_modules {{release_path}}");
+        }
+    }
+
+    run("cd {{release_path}} && npm install");
+});
+
+/**
+ * Restart server on success deploy.
+ */
+task('pm2:restart', function () {
+    run("pm2 restart eightd");
+})->desc('Restart pm2 service');
+
+after('success', 'pm2:restart');
 
 /**
  * Main task
@@ -67,6 +79,7 @@ task('deploy', [
     'deploy:update_code',
     'deploy:shared',
     'deploy:writable',
+    'deploy:npm',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

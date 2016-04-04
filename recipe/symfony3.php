@@ -14,10 +14,10 @@ require_once __DIR__ . '/symfony.php';
  */
 
 // Symfony shared dirs
-set('shared_dirs', ['var/logs']);
+set('shared_dirs', ['var/logs', 'var/sessions']);
 
 // Symfony writable dirs
-set('writable_dirs', ['var/cache', 'var/logs']);
+set('writable_dirs', ['var/cache', 'var/logs', 'var/sessions']);
 
 set('bin_dir', 'bin');
 set('var_dir', 'var');

@@ -8,12 +8,11 @@
 namespace Deployer\Initializer\Template;
 
 /**
- * Generate a common (base) deployer configuration
+ * Generate a Laravel deployer configuration.
  *
- * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  * @author Anton Medvedev <anton@medv.io>
  */
-class CommonTemplate extends Template
+class LaravelTemplate extends Template
 {
     /**
      * {@inheritDoc}
@@ -27,13 +26,19 @@ class CommonTemplate extends Template
  * Please change the configuration for correct use deploy.
  */
 
-require 'recipe/common.php';
+require 'recipe/laravel.php';
 
 // Set configurations
 set('repository', 'git@domain.com:username/repository.git');
-set('shared_files', []);
-set('shared_dirs', []);
-set('writable_dirs', []);
+set('shared_files', ['.env']);
+set('shared_dirs', [
+    'storage/app',
+    'storage/framework/cache',
+    'storage/framework/sessions',
+    'storage/framework/views',
+    'storage/logs',
+]);
+set('writable_dirs', ['bootstrap/cache', 'storage']);
 
 // Configure servers
 server('production', 'prod.domain.com')
@@ -57,21 +62,6 @@ task('php-fpm:restart', function () {
 })->desc('Restart PHP-FPM service');
 
 after('success', 'php-fpm:restart');
-
-/**
- * Main task
- */
-task('deploy', [
-    'deploy:prepare',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:writable',
-    'deploy:symlink',
-    'cleanup',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
 PHP;
     }
 }

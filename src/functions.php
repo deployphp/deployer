@@ -298,7 +298,7 @@ function within($path, $callback)
  */
 function workingPath()
 {
-    return env()->get('working_path', env()->get(Environment::DEPLOY_PATH));
+    return env()->get('working_path', env()->get(Environment::DEPLOY_PATH, ''));
 }
 
 /**
@@ -318,15 +318,15 @@ function run($command)
     }
 
     if (isVeryVerbose()) {
-        writeln("<comment>Run</comment>: $command");
+        writeln("<fg=red>></fg=red> $command");
     }
 
     $output = $server->run($command);
 
     if (isDebug() && !empty($output)) {
-        writeln(array_map(function ($line) {
-            return "<fg=red>></fg=red> $line";
-        }, explode("\n", $output)));
+        output()->writeln(array_map(function ($line) {
+            return "\033[1;30m< $line\033[0m";
+        }, explode("\n", $output)), OutputInterface::OUTPUT_RAW);
     }
 
     return new Result($output);
@@ -414,6 +414,9 @@ function upload($local, $remote)
 function download($local, $remote)
 {
     $server = Context::get()->getServer();
+    $local = env()->parse($local);
+    $remote = env()->parse($remote);
+
     $server->download($local, $remote);
 }
 

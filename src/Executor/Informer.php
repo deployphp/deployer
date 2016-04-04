@@ -18,6 +18,11 @@ class Informer
     private $output;
 
     /**
+     * @var int
+     */
+    private $startTime;
+
+    /**
      * @param \Deployer\Console\Output\OutputWatcher $output
      */
     public function __construct(OutputWatcher $output)
@@ -31,15 +36,9 @@ class Informer
     public function startTask($taskName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $this->output->write("  ");
-            } else {
-                $this->output->write("➤ ");
-            }
-
-            $this->output->writeln("Executing task $taskName");
-
+            $this->output->writeln("➤ Executing task <info>$taskName</info>");
             $this->output->setWasWritten(false);
+            $this->startTime = round(microtime(true) * 1000);
         }
     }
 
@@ -49,9 +48,18 @@ class Informer
     public function endTask()
     {
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $this->output->write("\033[k\033[1A\r<info>✔</info>\n");
+            $this->output->writeln("\r\033[K\033[1A\r<info>✔</info>");
         } else {
-            $this->output->writeln("<info>✔</info> Ok");
+            if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
+                $this->output->writeln("<info>✔</info> Ok");
+            } else {
+                $endTime = round(microtime(true) * 1000);
+                $millis = $endTime - $this->startTime;
+                $seconds = floor($millis / 1000);
+                $millis = $millis - $seconds * 1000;
+                $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
+                $this->output->writeln("<info>✔</info> Ok [$taskTime]");
+            }
         }
     }
 
@@ -61,7 +69,7 @@ class Informer
     public function onServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("⤷ on [$serverName]");
+            $this->output->writeln("↳ on [$serverName]");
         }
     }
 
@@ -71,7 +79,7 @@ class Informer
     public function endOnServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("<info>⤶</info> done on [$serverName]");
+            $this->output->writeln("<info>•</info> done on [$serverName]");
         }
     }
 

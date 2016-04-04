@@ -76,7 +76,7 @@ task('deploy:assetic:dump', function () {
         return;
     }
 
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
 
 })->desc('Dump assets');
 
@@ -86,7 +86,7 @@ task('deploy:assetic:dump', function () {
  */
 task('deploy:cache:warmup', function () {
 
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
 
 })->desc('Warm up cache');
 
@@ -96,7 +96,7 @@ task('deploy:cache:warmup', function () {
  */
 task('database:migrate', function () {
 
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
 
 })->desc('Migrate database');
 
@@ -123,11 +123,11 @@ taskGroup('deploy', [
     'deploy:update_code',
     'deploy:create_cache_dir',
     'deploy:shared',
-    'deploy:writable',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assetic:dump',
     'deploy:cache:warmup',
+    'deploy:writable',
     'deploy:symlink',
     'cleanup',
 ])->desc('Deploy your project');

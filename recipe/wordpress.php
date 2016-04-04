@@ -12,7 +12,7 @@ require_once __DIR__ . '/common.php';
 /**
  * Main task
  */
-taskGroup('deploy', [
+task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

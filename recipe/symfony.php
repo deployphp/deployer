@@ -117,7 +117,7 @@ after('deploy:update_code', 'deploy:clear_controllers');
 /**
  * Main task
  */
-taskGroup('deploy', [
+task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

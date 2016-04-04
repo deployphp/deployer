@@ -106,33 +106,17 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testTask()
     {
-        // Task with closure
         task('task', function () {});
+
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
 
-        // Test create task with [$object, 'method']
-        $mock1 = $this->getMock('stdClass', ['callback']);
-        task('task1', [$mock1, 'callback']);
-        $task1 = $this->deployer->tasks->get('task1');
-        $this->assertInstanceOf('Deployer\Task\Task', $task1);
-
-        $this->setExpectedException('InvalidArgumentException', 'Task should be a callable.');
-        task('wrong', 'thing');
-    }
-
-    public function testTaskGroup()
-    {
-        task('task', function () {});
-        $task = $this->deployer->tasks->get('task');
-        $this->assertInstanceOf('Deployer\Task\Task', $task);
-
-        taskGroup('group', ['task']);
+        task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         $this->assertInstanceOf('Deployer\Task\GroupTask', $task);
 
-        $this->setExpectedException('InvalidArgumentException', 'Task group should be an array of other tasks.');
-        taskGroup('wrong', 'thing');
+        $this->setExpectedException('InvalidArgumentException', 'Task should be an closure or array of other tasks.');
+        task('wrong', 'thing');
     }
 
     public function testBefore()

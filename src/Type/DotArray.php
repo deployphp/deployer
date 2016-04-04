@@ -43,7 +43,7 @@ class DotArray implements \ArrayAccess
      */
     public static function validateKey($key)
     {
-        return (bool) preg_match('/^(\w|\.)+$/', $key);
+        return (bool) preg_match('/^(\w|\.|\/)+$/', $key);
     }
 
     /**

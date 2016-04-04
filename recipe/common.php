@@ -127,6 +127,12 @@ task('deploy:prepare', function () {
 
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
+    // Check for existing /current directory (not symlink)
+    $result = run('if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then echo true; fi')->toBool();
+    if ($result) {
+        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . env('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+    }
+
     // Create releases dir.
     run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
 

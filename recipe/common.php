@@ -15,7 +15,6 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
-set('composer_command', 'composer'); // Path to composer
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', true);    // Using sudo in clean commands?
 
@@ -37,6 +36,30 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     return version_compare($version, '2.3', '>=');
 });
 env('release_name', date('YmdHis')); // name of folder in releases
+
+/**
+ * Custom bins.
+ */
+env('bin/php', function () {
+    return run('which php')->toString();
+});
+env('bin/git', function () {
+    return run('which git')->toString();
+});
+
+env('bin/composer', function () {
+    if (commandExist('composer')) {
+        $composer = run('which composer')->toString();
+    }
+
+    if(empty($composer)) {
+        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
+        $composer = 'php composer.phar';
+    }
+
+    return $composer;
+});
+
 
 /**
  * Default arguments and options.
@@ -143,6 +166,7 @@ task('deploy:release', function () {
 task('deploy:update_code', function () {
     $repository = get('repository');
     $branch = env('branch');
+    $git = env('bin/git');
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
 
@@ -163,18 +187,18 @@ task('deploy:update_code', function () {
 
     if (!empty($revision)) {
         // To checkout specified revision we need to clone all tree.
-        run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
-        run("cd {{release_path}} && git checkout $revision");
+        run("$git clone $at --recursive -q $repository {{release_path}} 2>&1");
+        run("cd {{release_path}} && $git checkout $revision");
     } elseif ($gitCache && isset($releases[1])) {
         try {
-            run("git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
+            run("$git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
         } catch (RuntimeException $exc) {
             // If {{deploy_path}}/releases/{$releases[1]} has a failed git clone, is empty, shallow etc, git would throw error and give up. So we're forcing it to act without reference in this situation
-            run("git clone $at --recursive -q $repository {{release_path}} 2>&1");
+            run("$git clone $at --recursive -q $repository {{release_path}} 2>&1");
         }
     } else {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
-        run("git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
+        run("$git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
     }
 
 })->desc('Updating code');
@@ -309,15 +333,10 @@ task('deploy:writable', function () {
  * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
-    $composer = get('composer_command');
-    
-    if (! commandExist($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
-        $composer = 'php composer.phar';
-    }
+    $composer = env('bin/composer');
+    $envVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
 
-    $composerEnvVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
-    run("cd {{release_path}} && $composerEnvVars $composer {{composer_options}}");
+    run("cd {{release_path}} && $envVars $composer {{composer_options}}");
 
 })->desc('Installing vendors');
 

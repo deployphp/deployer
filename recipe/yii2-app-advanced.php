@@ -35,14 +35,14 @@ set('shared_files', [
  * Initialization
  */
 task('deploy:init', function () {
-    run('php {{release_path}}/init --env=Production --overwrite=n');
+    run('{{bin/php}} {{release_path}}/init --env=Production --overwrite=n');
 })->desc('Initialization');
 
 /**
  * Run migrations
  */
 task('deploy:run_migrations', function () {
-    run('php {{release_path}}/yii migrate up --interactive=0');
+    run('{{bin/php}} {{release_path}}/yii migrate up --interactive=0');
 })->desc('Run migrations');
 
 /**

@@ -46,7 +46,6 @@ env('bin/php', function () {
 env('bin/git', function () {
     return run('which git')->toString();
 });
-
 env('bin/composer', function () {
     if (commandExist('composer')) {
         $composer = run('which composer')->toString();

@@ -213,7 +213,7 @@ class ParallelExecutor implements ExecutorInterface
                 " &"
             );
             $process->disableOutput();
-            $process->run();
+            $process->start();
         }
     }
 

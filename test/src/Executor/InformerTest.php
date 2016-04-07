@@ -61,7 +61,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
         $informer->taskError(false);
     }
 
-    public function testTaskErrorNonFatat()
+    public function testTaskErrorNonFatal()
     {
         $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
             ->disableOriginalConstructor()

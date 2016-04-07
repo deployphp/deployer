@@ -29,8 +29,8 @@
         "symfony/console": "~2.6|~3.0",
         "symfony/yaml": "~2.6|~3.0",
         "symfony/process": "~2.6|~3.0",
-        "kherge/amend": "~3.0",
-        "phpseclib/phpseclib": "~2.0"
+        "phpseclib/phpseclib": "~2.0",
+        "deployer/phar-update": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5"

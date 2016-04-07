@@ -7,8 +7,8 @@
 
 namespace Deployer\Console;
 
-use KevinGH\Amend\Command;
-use KevinGH\Amend\Helper;
+use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
+use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputOption;
@@ -51,7 +51,7 @@ class Application extends Console
      */
     private function selfUpdateCommand()
     {
-        $selfUpdate = new Command('self-update');
+        $selfUpdate = new PharUpdateCommand('self-update');
         $selfUpdate->setDescription('Updates deployer.phar to the latest version');
         $selfUpdate->setManifestUri('http://deployer.org/manifest.json');
         return $selfUpdate;
@@ -63,7 +63,7 @@ class Application extends Console
     protected function getDefaultHelperSet()
     {
         $helperSet = parent::getDefaultHelperSet();
-        $helperSet->set(new Helper());
+        $helperSet->set(new PharUpdateHelper());
         return $helperSet;
     }
 

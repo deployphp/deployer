@@ -276,7 +276,7 @@ task('deploy:writable', function () {
     if (!empty($dirs)) {
         try {
             if (null === $httpUser) {
-                $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
+                $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
             }
 
             cd('{{release_path}}');

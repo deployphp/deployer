@@ -52,7 +52,7 @@ env('bin/composer', function () {
     }
 
     if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
+        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
         $composer = '{{bin/php}} {{release_path}}/composer.phar';
     }
 

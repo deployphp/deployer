@@ -20,12 +20,12 @@ set('writable_dirs', ['bootstrap/cache', 'storage']);
 /**
  * Helper tasks
  */
-task('deploy:up', function () {
+task('artisan:up', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan up');
     writeln('<info>'.$output.'</info>');
 })->desc('Disable maintenance mode');
 
-task('deploy:down', function () {
+task('artisan:down', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan down');
     writeln('<error>'.$output.'</error>');
 })->desc('Enable maintenance mode');
@@ -37,8 +37,8 @@ task('deploy', [
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',
-    'deploy:vendors',
     'deploy:shared',
+    'deploy:vendors',
     'deploy:writable',
     'deploy:symlink',
     'cleanup',

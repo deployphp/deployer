@@ -23,20 +23,35 @@ set('shared_files', ['.env']);
 // Laravel writable dirs
 set('writable_dirs', ['bootstrap/cache', 'storage']);
 
-task('deploy:migrate', function () {
+task('artisan:migrate', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan migrate --force');
     writeln('<info>' . $output . '</info>');
 })->desc('Execute artisan migrate');
 
-task('deploy:migrate_rollback', function () {
+task('artisan:migrate:rollback', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan migrate:rollback --force');
     writeln('<info>' . $output . '</info>');
 })->desc('Execute artisan migrate:rollback');
 
-task('deploy:migrate_status', function () {
+task('artisan:migrate:status', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan migrate:status');
     writeln('<info>' . $output . '</info>');
-})->desc('Show status of migration');
+})->desc('Execute artisan migrate:status');
+
+task('artisan:db:seed', function () {
+    $output = run('{{bin/php}} {{deploy_path}}/current/artisan db:seed --force');
+    writeln('<info>' . $output . '</info>');
+})->desc('Execute artisan db:seed');
+
+task('artisan:cache:clear', function () {
+    $output = run('{{bin/php}} {{deploy_path}}/current/artisan cache:clear');
+    writeln('<info>' . $output . '</info>');
+})->desc('Execute artisan cache:clear');
+
+task('artisan:config:cache', function () {
+    $output = run('{{bin/php}} {{deploy_path}}/current/artisan config:cache');
+    writeln('<info>' . $output . '</info>');
+})->desc('Execute artisan config:cache');
 
 /**
  * Task deploy:public_disk support the public disk.

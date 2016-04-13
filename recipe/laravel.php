@@ -17,6 +17,19 @@ set('shared_files', ['.env']);
 // Laravel writable dirs
 set('writable_dirs', ['bootstrap/cache', 'storage']);
 
+/**
+ * Helper tasks
+ */
+task('artisan:up', function () {
+    $output = run('{{bin/php}} {{deploy_path}}/current/artisan up');
+    writeln('<info>'.$output.'</info>');
+})->desc('Disable maintenance mode');
+
+task('artisan:down', function () {
+    $output = run('{{bin/php}} {{deploy_path}}/current/artisan down');
+    writeln('<error>'.$output.'</error>');
+})->desc('Enable maintenance mode');
+
 task('artisan:migrate', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan migrate --force');
     writeln('<info>' . $output . '</info>');
@@ -65,19 +78,6 @@ task('deploy:public_disk', function () {
 })->desc('Make symlink for public disk');
 
 /**
- * Helper tasks
- */
-task('artisan:up', function () {
-    $output = run('{{bin/php}} {{deploy_path}}/current/artisan up');
-    writeln('<info>'.$output.'</info>');
-})->desc('Disable maintenance mode');
-
-task('artisan:down', function () {
-    $output = run('{{bin/php}} {{deploy_path}}/current/artisan down');
-    writeln('<error>'.$output.'</error>');
-})->desc('Enable maintenance mode');
-
-/**
  * Main task
  */
 task('deploy', [
@@ -89,6 +89,8 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'cleanup',
+    'artisan:cache:clear',
+    'artisan:config:cache',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

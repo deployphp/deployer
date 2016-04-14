@@ -6,7 +6,8 @@
  */
 
 require_once __DIR__ . '/common.php';
-// This recipe support Laravel 5.1+, with orther version, please see document https://github.com/deployphp/docs
+// This recipe support Laravel 5.1+,
+// with orther version, please see document https://github.com/deployphp/docs
 
 // Laravel shared dirs
 set('shared_dirs', ['storage']);
@@ -59,6 +60,11 @@ task('artisan:config:cache', function () {
     $output = run('{{bin/php}} {{deploy_path}}/current/artisan config:cache');
     writeln('<info>' . $output . '</info>');
 })->desc('Execute artisan config:cache');
+
+task('artisan:route:cache', function () {
+    $output = run('{{bin/php}} {{deploy_path}}/current/artisan route:cache');
+    writeln('<info>' . $output . '</info>');
+})->desc('Execute artisan route:cache');
 
 /**
  * Task deploy:public_disk support the public disk.

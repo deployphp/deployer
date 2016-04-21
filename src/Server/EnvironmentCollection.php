@@ -11,12 +11,4 @@ use Deployer\Collection\Collection;
 
 class EnvironmentCollection extends Collection
 {
-    /**
-     * @param string $name
-     * @return Environment
-     */
-    public function get($name)
-    {
-        return parent::get($name);
-    }
 }

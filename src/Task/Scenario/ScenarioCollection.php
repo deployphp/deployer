@@ -12,12 +12,4 @@ use Deployer\Task\Scenario\Scenario;
 
 class ScenarioCollection extends Collection
 {
-    /**
-     * @param string $name
-     * @return Scenario
-     */
-    public function get($name)
-    {
-        return parent::get($name);
-    }
 }

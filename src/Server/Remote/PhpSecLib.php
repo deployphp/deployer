@@ -59,7 +59,7 @@ class PhpSecLib implements ServerInterface
 
                 $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
-                $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
+                $key->load(file_get_contents($serverConfig->getPrivateKey()));
 
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
 
@@ -68,7 +68,7 @@ class PhpSecLib implements ServerInterface
             case Configuration::AUTH_BY_PEM_FILE:
 
                 $key = new RSA();
-                $key->loadKey(file_get_contents($serverConfig->getPemFile()));
+                $key->load(file_get_contents($serverConfig->getPemFile()));
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
 
                 break;

@@ -21,6 +21,7 @@ class Configuration
     const AUTH_BY_IDENTITY_FILE = 2;
     const AUTH_BY_PEM_FILE      = 3;
     const AUTH_BY_AGENT         = 4;
+    const AUTH_BY_IDENTITY_FILE_AND_PASSWORD    = 5;
 
     /**
      * Type of authentication.

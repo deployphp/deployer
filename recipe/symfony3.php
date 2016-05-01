@@ -13,7 +13,7 @@ require_once __DIR__ . '/symfony.php';
  
 /**
  * Dump all assets to the filesystem
- * 
+ *
  * This overrides the Symfony 2 assetic:dump command
  * in favor of the new assets:install command.
  */

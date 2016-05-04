@@ -27,7 +27,7 @@ class SeriesExecutor implements ExecutorInterface
             $informer->startTask($task->getName());
 
             if ($task->isOnce()) {
-                $task->run(new Context(null, null, $input, $output));
+                $task->run(new Context(null, new Environment(), $input, $output));
             } else {
                 foreach ($servers as $serverName => $server) {
                     if ($task->runOnServer($serverName)) {

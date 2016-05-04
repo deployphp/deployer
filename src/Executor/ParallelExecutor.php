@@ -286,7 +286,7 @@ class ParallelExecutor implements ExecutorInterface
                 $this->informer->startTask($taskName);
 
                 if ($task->isOnce()) {
-                    $task->run(new Context(null, null, $this->input, $this->output));
+                    $task->run(new Context(null, new Environment(), $this->input, $this->output));
                     $this->informer->endTask();
                 } else {
                     $this->tasksToDo = [];

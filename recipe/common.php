@@ -36,6 +36,7 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     return version_compare($version, '2.3', '>=');
 });
 env('release_name', date('YmdHis')); // name of folder in releases
+env('writable_users', []);
 
 /**
  * Custom bins.
@@ -273,27 +274,36 @@ task('deploy:writable', function () {
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
     $httpUser = get('http_user');
 
+    $users = env('writable_users');
+    $permissions = '';
+
     if (!empty($dirs)) {
         try {
             if (null === $httpUser) {
                 $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
             }
 
+            $users[] = $httpUser;
+            $users[] = "`whoami`";
+
             cd('{{release_path}}');
 
             // Try OS-X specific setting of access-rights
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
-                if (!empty($httpUser)) {
-                    run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+                foreach ($users as $user) {
+                    run("$sudo chmod +a \"$user allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 }
-
-                run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             // Try linux ACL implementation with unsafe fail-fallback to POSIX-way
             } elseif (commandExist('setfacl')) {
                 if (!empty($httpUser)) {
+                    $permissions = "";
+                    foreach ($users as $user) {
+                        $permissions .= "-m u:$user:rwX ";
+                    }
+
                     if (!empty($sudo)) {
-                        run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                        run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                        run("$sudo setfacl -R $permissions $dirs");
+                        run("$sudo setfacl -dR $permissions $dirs");
                     } else {
                         // When running without sudo, exception may be thrown
                         // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -305,8 +315,8 @@ task('deploy:writable', function () {
                             $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l")->toString();
                             // Set ACL for directory if it has not been set before
                             if (!$hasfacl) {
-                                run("setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                                run("setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                                run("$sudo setfacl -R $permissions $dirs");
+                                run("$sudo setfacl -dR $permissions $dirs");
                             }
                         }
                     }

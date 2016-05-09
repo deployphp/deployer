@@ -23,3 +23,8 @@ task('test', [
     'test:hello',
     'test:onlyForStage'
 ]);
+
+task('test:hello', function () {
+    runLocally('echo "hello"');
+    writeln('Hello world!');
+})->once();

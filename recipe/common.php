@@ -35,7 +35,9 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
-env('release_name', date('YmdHis')); // name of folder in releases
+env('release_name', (new DateTime())
+    ->setTimeZone(new DateTimeZone(get('timezone')))
+    ->format('YmdHis')); // name of folder in releases
 
 /**
  * Custom bins.

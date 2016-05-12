@@ -36,7 +36,7 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     return version_compare($version, '2.3', '>=');
 });
 env('release_name', (new DateTime())
-    ->setTimeZone(new DateTimeZone(get('timezone')))
+    ->setTimeZone(new DateTimeZone(env('timezone')))
     ->format('YmdHis')); // name of folder in releases
 
 /**
@@ -119,11 +119,6 @@ task('deploy:prepare', function () {
         write($formatter->formatBlock($errorMessage, 'error', true));
 
         throw $e;
-    }
-
-    // Set the deployment timezone
-    if (!date_default_timezone_set(env('timezone'))) {
-        date_default_timezone_set('UTC');
     }
 
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');

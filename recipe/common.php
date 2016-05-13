@@ -17,11 +17,11 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', true);    // Using sudo in clean commands?
-set('timezone', 'UTC'); // Timezone used in release folder name
 
 /**
  * Environment vars
  */
+env('timezone', 'UTC');
 env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
@@ -35,9 +35,13 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
-env('release_name', (new DateTime())
-    ->setTimeZone(new DateTimeZone(get('timezone')))
-    ->format('YmdHis')); // name of folder in releases
+env('release_name', function () {
+    // Use env-defined timezone, default to 'UTC' if invalid
+    if (!date_default_timezone_set(env('timezone'))) {
+        date_default_timezone_set('UTC');
+    }
+    return date('YmdHis');
+}); // name of folder in releases
 
 /**
  * Custom bins.

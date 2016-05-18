@@ -7,7 +7,7 @@
 
 require_once __DIR__ . '/common.php';
 // This recipe support Laravel 5.1+,
-// with orther version, please see document https://github.com/deployphp/docs
+// with other version, please see document https://github.com/deployphp/docs
 
 // Laravel shared dirs
 set('shared_dirs', ['storage']);

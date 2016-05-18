@@ -8,7 +8,6 @@
 namespace Deployer\Collection;
 
 use Deployer\Server\EnvironmentCollection;
-use Deployer\Server\GroupCollection;
 use Deployer\Server\ServerCollection;
 use Deployer\Task\Scenario\ScenarioCollection;
 use Deployer\Task\TaskCollection;
@@ -52,10 +51,14 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider collections
      * @depends      testCollection
-     * @expectedException \RuntimeException
      */
     public function testException($collection)
     {
+        $class = explode('\\', get_class($collection));
+        $class = end($class);
+        $name  = 'unexpected';
+
+        $this->setExpectedException(\RuntimeException::class, "Object `$name` does not exist in $class.");
         $collection->get('unexpected');
     }
 

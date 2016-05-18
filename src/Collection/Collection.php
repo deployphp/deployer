@@ -22,7 +22,7 @@ class Collection implements CollectionInterface, \Countable
         if ($this->has($name)) {
             return $this->collection[$name];
         } else {
-            $class = explode('\\', get_class($this));
+            $class = explode('\\', static::class);
             $class = end($class);
             throw new \RuntimeException("Object `$name` does not exist in $class.");
         }

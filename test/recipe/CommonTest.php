@@ -139,8 +139,8 @@ class CommonTest extends RecipeTester
      */
     public function testClean()
     {
-        set('clear_paths', ['current/app/README.md', 'current/app/tests']);
-        set('clear_use_sudo', false);
+        \Deployer\set('clear_paths', ['current/app/README.md', 'current/app/tests']);
+        \Deployer\set('clear_use_sudo', false);
 
         $this->exec('deploy:clean');
 

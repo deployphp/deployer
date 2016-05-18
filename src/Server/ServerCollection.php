@@ -11,12 +11,4 @@ use Deployer\Collection\Collection;
 
 class ServerCollection extends Collection
 {
-    /**
-     * @param string $name
-     * @return ServerInterface
-     */
-    public function get($name)
-    {
-        return parent::get($name);
-    }
 }

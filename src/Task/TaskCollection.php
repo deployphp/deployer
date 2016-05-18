@@ -11,12 +11,4 @@ use Deployer\Collection\Collection;
 
 class TaskCollection extends Collection
 {
-    /**
-     * @param string $name
-     * @return Task
-     */
-    public function get($name)
-    {
-        return parent::get($name);
-    }
 }

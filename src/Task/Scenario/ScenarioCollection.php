@@ -8,7 +8,6 @@
 namespace Deployer\Task\Scenario;
 
 use Deployer\Collection\Collection;
-use Deployer\Task\Scenario\Scenario;
 
 class ScenarioCollection extends Collection
 {

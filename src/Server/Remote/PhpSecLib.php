@@ -81,6 +81,16 @@ class PhpSecLib implements ServerInterface
 
                 break;
 
+            case Configuration::AUTH_BY_IDENTITY_FILE_AND_PASSWORD:
+
+                $key = new RSA();
+                $key->setPassword($serverConfig->getPassPhrase());
+                $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
+
+                $result = $this->sftp->login($serverConfig->getUser(), $key, $serverConfig->getPassword());
+
+                break;
+
             default:
                 throw new RuntimeException('You need to specify authentication method.');
         }

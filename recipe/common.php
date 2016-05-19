@@ -35,7 +35,14 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
-env('release_name', date('YmdHis')); // name of folder in releases
+env('release_name', function () {
+    // Set the deployment timezone
+    if (!date_default_timezone_set(env('timezone'))) {
+        date_default_timezone_set('UTC');
+    }
+
+    return date('YmdHis');
+}); // name of folder in releases
 
 /**
  * Custom bins.
@@ -119,11 +126,6 @@ task('deploy:prepare', function () {
         throw $e;
     }
 
-    // Set the deployment timezone
-    if (!date_default_timezone_set(env('timezone'))) {
-        date_default_timezone_set('UTC');
-    }
-
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Check for existing /current directory (not symlink)
@@ -150,10 +152,10 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $releasePath = "{{deploy_path}}/releases/{{release_name}}";
+    $releasePath = env()->parse("{{deploy_path}}/releases/{{release_name}}");
 
     $i = 0;
-    while (is_dir(env()->parse($releasePath)) && $i < 42) {
+    while (run("if [ -d $releasePath ]; then echo 'true'; fi")->toBool()) {
         $releasePath .= '.' . ++$i;
     }
 

@@ -58,10 +58,19 @@ env('bin/composer', function () {
         $composer = run('which composer')->toString();
     }
 
-    if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{bin/php}} {{release_path}}/composer.phar';
+    if (!empty($composer)) {
+        return $composer;
     }
+
+    // check for a locally installed version of composer
+    $localFile = env()->parse('{{release_path}}/composer.phar');
+    if (is_file($localFile)) {
+        $composer = '{{bin/php}} {{release_path}}/composer.phar';
+        return $composer;
+    }
+
+    run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
+    $composer = '{{bin/php}} {{release_path}}/composer.phar';
 
     return $composer;
 });

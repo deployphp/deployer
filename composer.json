@@ -31,7 +31,8 @@
         "symfony/process": "~2.6|~3.0",
         "phpseclib/phpseclib": "~2.0",
         "deployer/phar-update": "^1.0",
-        "swiftmailer/swiftmailer": "^5.4"
+        "monolog/monolog": "^1.19"
+
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5"

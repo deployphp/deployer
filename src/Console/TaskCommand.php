@@ -29,6 +29,11 @@ class TaskCommand extends Command
     public $executor;
 
     /**
+     * @var \Deployer\Log\LogWriter
+     */
+    private $logger = false;
+
+    /**
      * @param string $name
      * @param string $description
      * @param Deployer $deployer
@@ -38,6 +43,11 @@ class TaskCommand extends Command
         parent::__construct($name);
         $this->setDescription($description);
         $this->deployer = $deployer;
+
+        if ($deployer->logs->has("log")){
+            $this->logger = Deployer::get()->logs->get("log");
+        }
+        
     }
 
     /**
@@ -79,6 +89,6 @@ class TaskCommand extends Command
             }
         }
 
-        $executor->run($tasks, $servers, $environments, $input, $output);
+        $executor->run($tasks, $servers, $environments, $input, $output, $this->logger);
     }
 }

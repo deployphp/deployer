@@ -22,5 +22,5 @@ interface ExecutorInterface
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    public function run($tasks, $servers, $environments, $input, $output);
+    public function run($tasks, $servers, $environments, $input, $output, $logger);
 }

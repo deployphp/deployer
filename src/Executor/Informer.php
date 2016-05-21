@@ -9,7 +9,6 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Deployer;
-use Deployer\Log\LogWriter;
 use Monolog\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -36,7 +35,7 @@ class Informer
     public function __construct(OutputWatcher $output)
     {
         $this->output = $output;
-
+        
         $deployer = Deployer::get();
         if ($deployer->logs->has("email")){
             $this->sender = Deployer::get()->logs->get("email");

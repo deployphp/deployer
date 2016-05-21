@@ -92,26 +92,32 @@ class LogSender extends LogAbstract
 
     /**
      * @param $from
+     * @return $this
      */
     public function from($from)
     {
         $this->from = $from;
+        return $this;
     }
 
     /**
      * @param $subject
+     * @return $this
      */
     public function subject($subject)
     {
         $this->subject = $subject;
+        return $this;
     }
 
     /**
      * @param $level
+     * @return $this
      */
     public function level($level)
     {
         $this->level = $level;
+        return $this;
     }
 
 }

@@ -178,10 +178,10 @@ function emailer($name, $to)
     if($to == '')
         throw new InvalidArgumentException('There must be at least one recipient');
 
+    $emailer = new LogSender($name, $to);
+    $deployer->logs->set("email", $emailer);
 
-    $logger = new LogSender($name, $to);
-    $deployer->logs->set("email", $logger);
-    return $logger;
+    return $emailer;
 }
 
 /**

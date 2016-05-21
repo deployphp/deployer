@@ -44,10 +44,9 @@ class TaskCommand extends Command
         $this->setDescription($description);
         $this->deployer = $deployer;
 
-        if ($deployer->logs->has("log")){
+        if ($deployer->logs->has("log")) {
             $this->logger = Deployer::get()->logs->get("log");
         }
-        
     }
 
     /**

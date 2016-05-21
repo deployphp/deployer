@@ -13,6 +13,6 @@ class LogWriterTest extends \PHPUnit_Framework_TestCase
     {
         $app = new LogWriter('name', 'path');
 
-        $this->assertTrue(method_exists($app, 'writeLog'),'Class does not have method writeLog');
+        $this->assertTrue(method_exists($app, 'writeLog'), 'Class does not have method writeLog');
     }
 }

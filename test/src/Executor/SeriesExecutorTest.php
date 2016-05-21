@@ -20,7 +20,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->initialize();
 
-        $logger = $this->getMock('Deployer\Log\LogWriter', ["writeLog"],["test","testfile.txt"]);
+        $logger = $this->getMock('Deployer\Log\LogWriter', ["writeLog"], ["test","testfile.txt"]);
 
 
         $mock = $this->getMockBuilder('stdClass')

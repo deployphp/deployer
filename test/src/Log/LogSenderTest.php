@@ -13,8 +13,8 @@ class LogSenderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new LogSender('name', 'address');
 
-        $this->assertTrue(method_exists($app, 'writeLog'),'Class does not have method writeLog');
+        $this->assertTrue(method_exists($app, 'writeLog'), 'Class does not have method writeLog');
 
-        $this->assertTrue(method_exists($app, 'init'),'Class does not have method writeLog');
+        $this->assertTrue(method_exists($app, 'init'),' Class does not have method writeLog');
     }
 }

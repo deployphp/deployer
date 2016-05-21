@@ -45,8 +45,9 @@ class OutputWatcher implements OutputInterface
     {
         $this->wasWritten = true;
         $this->output->write($messages, $newline, $type);
-        if ($this->logger) $this->logger->writeLog($messages);
-        
+        if ($this->logger) {
+            $this->logger->writeLog($messages);
+        }
     }
 
     /**
@@ -153,7 +154,7 @@ class OutputWatcher implements OutputInterface
         return self::VERBOSITY_DEBUG <= $this->getVerbosity();
     }
     
-    public function getLogger(){
+    public function getLogger() {
         return $this->logger;
     }
 }

@@ -17,12 +17,11 @@ class LogAbstract
      */
     public function writeLog($message, $level = Logger::DEBUG)
     {
-        if (is_array($message)){
+        if (is_array($message)) {
             foreach ($message as $line) {
                 $this->log->addRecord($level, strip_tags($line));
             }
-        }
-        else {
+        } else {
             $this->log->addRecord($level, strip_tags($message));
         }
     }

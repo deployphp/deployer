@@ -65,7 +65,6 @@ class LogSender extends LogAbstract
      */
     public function init()
     {
-
         $emailHandler = new NativeMailerHandler($this->to, $this->subject, $this->from, Logger::DEBUG);
         $emailHandler->setFormatter(new HtmlFormatter());
         $emailHandler->addHeader("Content-Type: text/html;");
@@ -85,9 +84,11 @@ class LogSender extends LogAbstract
      */
     public function writeLog($message, $level = Logger::DEBUG)
     {
-        if (!$this->loaded) $this->init();
+        if (!$this->loaded) {
+            $this->init();
+        }
         
-        parent::writeLog($message, $level); 
+        parent::writeLog($message, $level);
     }
 
     /**
@@ -119,5 +120,4 @@ class LogSender extends LogAbstract
         $this->level = $level;
         return $this;
     }
-
 }

@@ -37,7 +37,7 @@ class Informer
         $this->output = $output;
         
         $deployer = Deployer::get();
-        if ($deployer->logs->has("email")){
+        if ($deployer->logs->has("email")) {
             $this->sender = Deployer::get()->logs->get("email");
         }
     }
@@ -47,9 +47,8 @@ class Informer
      */
     public function startTask($taskName)
     {
-        $toWrite = "➤ Executing task <info>$taskName</info>";
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            $this->output->writeln($toWrite);
+            $this->output->writeln("➤ Executing task <info>$taskName</info>");
             $this->output->setWasWritten(false);
             $this->startTime = round(microtime(true) * 1000);
         }
@@ -111,7 +110,9 @@ class Informer
         } else {
             $toWrite = "<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>";
             $this->output->writeln($toWrite);
-            if ($this->sender) $this->sender->writeLog($toWrite,Logger::CRITICAL);
+            if ($this->sender) {
+                $this->sender->writeLog($toWrite,Logger::CRITICAL);
+            }
         }
     }
 
@@ -132,6 +133,8 @@ class Informer
             ""
         ];
         $this->output->writeln($toWrite);
-        if ($this->sender) $this->sender->writeLog($toWrite,Logger::EMERGENCY);
+        if ($this->sender) {
+            $this->sender->writeLog($toWrite,Logger::EMERGENCY);
+        }
     }
 }

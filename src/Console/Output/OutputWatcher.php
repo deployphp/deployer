@@ -154,7 +154,8 @@ class OutputWatcher implements OutputInterface
         return self::VERBOSITY_DEBUG <= $this->getVerbosity();
     }
     
-    public function getLogger() {
+    public function getLogger()
+    {
         return $this->logger;
     }
 }

@@ -105,13 +105,15 @@ class Informer
         if ($nonFatal) {
             $toWrite = "<fg=yellow>✘</fg=yellow> Some errors occurred!";
             $this->output->writeln($toWrite);
-            if ($this->sender) $this->sender->writeLog($toWrite,Logger::ERROR);
+            if ($this->sender) {
+                $this->sender->writeLog($toWrite,Logger::ERROR);
+            }
 
         } else {
             $toWrite = "<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>";
             $this->output->writeln($toWrite);
             if ($this->sender) {
-                $this->sender->writeLog($toWrite,Logger::CRITICAL);
+                $this->sender->writeLog($toWrite, Logger::CRITICAL);
             }
         }
     }
@@ -134,7 +136,7 @@ class Informer
         ];
         $this->output->writeln($toWrite);
         if ($this->sender) {
-            $this->sender->writeLog($toWrite,Logger::EMERGENCY);
+            $this->sender->writeLog($toWrite, Logger::EMERGENCY);
         }
     }
 }

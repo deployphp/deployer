@@ -15,6 +15,6 @@ class LogSenderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(method_exists($app, 'writeLog'), 'Class does not have method writeLog');
 
-        $this->assertTrue(method_exists($app, 'init'),' Class does not have method writeLog');
+        $this->assertTrue(method_exists($app, 'init'), 'Class does not have method writeLog');
     }
 }

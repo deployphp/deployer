@@ -21,6 +21,11 @@ class Informer
     private $output;
 
     /**
+     * @var \Deployer\Log\LogSender
+     */
+    private $sender;
+
+    /**
      * @var int
      */
     private $startTime;
@@ -33,8 +38,8 @@ class Informer
         $this->output = $output;
 
         $deployer = Deployer::get();
-        if ($deployer->logs->has("Monolog")){
-            $this->logger = Deployer::get()->logs->get("Monolog");
+        if ($deployer->logs->has("email")){
+            $this->sender = Deployer::get()->logs->get("email");
         }
     }
 
@@ -49,7 +54,6 @@ class Informer
             $this->output->setWasWritten(false);
             $this->startTime = round(microtime(true) * 1000);
         }
-        if ($this->logger) $this->logger->writeLog($toWrite);
     }
 
     /**
@@ -58,23 +62,19 @@ class Informer
     public function endTask()
     {
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $toWrite = "\r\033[K\033[1A\r<info>✔</info>";
-            $this->output->writeln($toWrite);
+            $this->output->writeln("\r\033[K\033[1A\r<info>✔</info>");
         } else {
             if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $toWrite = "<info>✔</info> Ok";
-                $this->output->writeln($toWrite);
+                $this->output->writeln("<info>✔</info> Ok");
             } else {
                 $endTime = round(microtime(true) * 1000);
                 $millis = $endTime - $this->startTime;
                 $seconds = floor($millis / 1000);
                 $millis = $millis - $seconds * 1000;
                 $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
-                $toWrite = "<info>✔</info> Ok [$taskTime]";
-                $this->output->writeln($toWrite);
+                $this->output->writeln("<info>✔</info> Ok [$taskTime]");
             }
         }
-        if ($this->logger) $this->logger->writeLog($toWrite);
     }
 
     /**
@@ -83,9 +83,7 @@ class Informer
     public function onServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $toWrite = "↳ on [$serverName]";
-            $this->output->writeln($toWrite);
-            if ($this->logger) $this->logger->writeLog($toWrite);
+            $this->output->writeln("↳ on [$serverName]");
         }
     }
 
@@ -95,9 +93,7 @@ class Informer
     public function endOnServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $toWrite = "<info>•</info> done on [$serverName]";
-            $this->output->writeln($toWrite);
-            if ($this->logger) $this->logger->writeLog($toWrite);
+            $this->output->writeln("<info>•</info> done on [$serverName]");
         }
     }
 
@@ -111,12 +107,12 @@ class Informer
         if ($nonFatal) {
             $toWrite = "<fg=yellow>✘</fg=yellow> Some errors occurred!";
             $this->output->writeln($toWrite);
-            if ($this->logger) $this->logger->writeLog($toWrite,Logger::ERROR);
+            if ($this->sender) $this->sender->writeLog($toWrite,Logger::ERROR);
 
         } else {
             $toWrite = "<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>";
             $this->output->writeln($toWrite);
-            if ($this->logger) $this->logger->writeLog($toWrite,Logger::CRITICAL);
+            if ($this->sender) $this->sender->writeLog($toWrite,Logger::CRITICAL);
         }
     }
 
@@ -137,6 +133,6 @@ class Informer
             ""
         ];
         $this->output->writeln($toWrite);
-        if ($this->logger) $this->logger->writeLog($toWrite,Logger::EMERGENCY);
+        if ($this->sender) $this->sender->writeLog($toWrite,Logger::EMERGENCY);
     }
 }

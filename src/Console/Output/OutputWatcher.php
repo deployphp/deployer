@@ -7,6 +7,7 @@
 
 namespace Deployer\Console\Output;
 
+use Deployer\Deployer;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,6 +17,11 @@ class OutputWatcher implements OutputInterface
      * @var OutputInterface
      */
     private $output;
+
+    /**
+     * @var \Deployer\Log\LogWriter
+     */
+    private $logger;
     
     /**
      * @var bool
@@ -28,6 +34,12 @@ class OutputWatcher implements OutputInterface
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
+        
+        $deployer = Deployer::get();
+        if ($deployer->logs->has("log")){
+            $this->logger = Deployer::get()->logs->get("log");
+        }
+        
     }
 
     /**
@@ -37,6 +49,8 @@ class OutputWatcher implements OutputInterface
     {
         $this->wasWritten = true;
         $this->output->write($messages, $newline, $type);
+        $this->logger->writeLog($messages);
+        
     }
 
     /**

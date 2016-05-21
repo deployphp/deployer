@@ -89,4 +89,29 @@ class LogSender extends LogAbstract
         
         parent::writeLog($message, $level); 
     }
+
+    /**
+     * @param $from
+     */
+    public function from($from)
+    {
+        $this->from = $from;
+    }
+
+    /**
+     * @param $subject
+     */
+    public function subject($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @param $level
+     */
+    public function level($level)
+    {
+        $this->level = $level;
+    }
+
 }

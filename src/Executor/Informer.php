@@ -106,7 +106,7 @@ class Informer
             $toWrite = "<fg=yellow>✘</fg=yellow> Some errors occurred!";
             $this->output->writeln($toWrite);
             if ($this->sender) {
-                $this->sender->writeLog($toWrite,Logger::ERROR);
+                $this->sender->writeLog($toWrite, Logger::ERROR);
             }
 
         } else {

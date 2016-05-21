@@ -108,7 +108,6 @@ class Informer
             if ($this->sender) {
                 $this->sender->writeLog($toWrite, Logger::ERROR);
             }
-
         } else {
             $toWrite = "<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>";
             $this->output->writeln($toWrite);

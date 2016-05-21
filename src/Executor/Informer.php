@@ -8,6 +8,9 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Deployer;
+use Deployer\Log\LogWriter;
+use Monolog\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
@@ -28,6 +31,11 @@ class Informer
     public function __construct(OutputWatcher $output)
     {
         $this->output = $output;
+
+        $deployer = Deployer::get();
+        if ($deployer->logs->has("Monolog")){
+            $this->logger = Deployer::get()->logs->get("Monolog");
+        }
     }
 
     /**
@@ -35,11 +43,13 @@ class Informer
      */
     public function startTask($taskName)
     {
+        $toWrite = "➤ Executing task <info>$taskName</info>";
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            $this->output->writeln("➤ Executing task <info>$taskName</info>");
+            $this->output->writeln($toWrite);
             $this->output->setWasWritten(false);
             $this->startTime = round(microtime(true) * 1000);
         }
+        if ($this->logger) $this->logger->writeLog($toWrite);
     }
 
     /**
@@ -48,19 +58,23 @@ class Informer
     public function endTask()
     {
         if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL && !$this->output->getWasWritten()) {
-            $this->output->writeln("\r\033[K\033[1A\r<info>✔</info>");
+            $toWrite = "\r\033[K\033[1A\r<info>✔</info>";
+            $this->output->writeln($toWrite);
         } else {
             if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $this->output->writeln("<info>✔</info> Ok");
+                $toWrite = "<info>✔</info> Ok";
+                $this->output->writeln($toWrite);
             } else {
                 $endTime = round(microtime(true) * 1000);
                 $millis = $endTime - $this->startTime;
                 $seconds = floor($millis / 1000);
                 $millis = $millis - $seconds * 1000;
                 $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
-                $this->output->writeln("<info>✔</info> Ok [$taskTime]");
+                $toWrite = "<info>✔</info> Ok [$taskTime]";
+                $this->output->writeln($toWrite);
             }
         }
+        if ($this->logger) $this->logger->writeLog($toWrite);
     }
 
     /**
@@ -69,7 +83,9 @@ class Informer
     public function onServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("↳ on [$serverName]");
+            $toWrite = "↳ on [$serverName]";
+            $this->output->writeln($toWrite);
+            if ($this->logger) $this->logger->writeLog($toWrite);
         }
     }
 
@@ -79,7 +95,9 @@ class Informer
     public function endOnServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("<info>•</info> done on [$serverName]");
+            $toWrite = "<info>•</info> done on [$serverName]";
+            $this->output->writeln($toWrite);
+            if ($this->logger) $this->logger->writeLog($toWrite);
         }
     }
 
@@ -91,9 +109,14 @@ class Informer
     public function taskError($nonFatal = true)
     {
         if ($nonFatal) {
-            $this->output->writeln("<fg=yellow>✘</fg=yellow> Some errors occurred!");
+            $toWrite = "<fg=yellow>✘</fg=yellow> Some errors occurred!";
+            $this->output->writeln($toWrite);
+            if ($this->logger) $this->logger->writeLog($toWrite,Logger::ERROR);
+
         } else {
-            $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>");
+            $toWrite = "<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>";
+            $this->output->writeln($toWrite);
+            if ($this->logger) $this->logger->writeLog($toWrite,Logger::CRITICAL);
         }
     }
 
@@ -105,13 +128,15 @@ class Informer
     public function taskException($serverName, $exceptionClass, $message)
     {
         $message = "    $message    ";
-        $this->output->writeln([
+        $toWrite = [
             "",
             "<error>Exception [$exceptionClass] on [$serverName] server</error>",
             "<error>" . str_repeat(' ', strlen($message)) . "</error>",
             "<error>$message</error>",
             "<error>" . str_repeat(' ', strlen($message)) . "</error>",
             ""
-        ]);
+        ];
+        $this->output->writeln($toWrite);
+        if ($this->logger) $this->logger->writeLog($toWrite,Logger::EMERGENCY);
     }
 }

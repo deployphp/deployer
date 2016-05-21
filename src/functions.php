@@ -5,6 +5,7 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
+use Deployer\Log\LogWriter;
 use Deployer\Server\Local;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
@@ -144,6 +145,18 @@ function serverList($file)
             throw new \RuntimeException("Error in parsing `$file` file.");
         }
     }
+}
+
+function logger($name)
+{
+    $deployer = Deployer::get();
+
+    $logger = new LogWriter($name);
+    
+    $deployer->logs->set("Monolog", $logger);
+
+    return $logger;
+
 }
 
 /**

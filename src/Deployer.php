@@ -23,6 +23,7 @@ use Symfony\Component\Console;
  * @property Server\ServerCollection|Server\ServerInterface[] $servers
  * @property Server\EnvironmentCollection|Server\Environment[] $environments
  * @property Collection\Collection $parameters
+ * @property Log\LogCollection|Log\LogWriter[] $logs
  */
 class Deployer
 {
@@ -74,6 +75,7 @@ class Deployer
         $this->collections['servers'] = new Server\ServerCollection();
         $this->collections['environments'] = new Server\EnvironmentCollection();
         $this->collections['parameters'] = new Collection\Collection();
+        $this->collections['logs'] = new Log\LogCollection();
 
         $this->stageStrategy = new StageStrategy($this->servers, $this->environments, $this->parameters);
 

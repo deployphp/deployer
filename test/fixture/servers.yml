@@ -21,3 +21,12 @@ test:
   stage: test
   deploy_path: /home
   run_test: true
+
+istanbul_dc_cluster: 
+  nodes: [192.168.0.1, 192.168.0.2, 192.168.0.3]
+  user: test
+  password: qwerty
+  stage: production
+  deploy_path: /home
+  run_test: true
+  cluster: true

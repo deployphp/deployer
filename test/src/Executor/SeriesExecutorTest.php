@@ -20,6 +20,9 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
     {
         $this->initialize();
 
+        $logger = $this->getMock('Deployer\Log\LogWriter', ["writeLog"], ["test","testfile.txt"]);
+
+
         $mock = $this->getMockBuilder('stdClass')
             ->setMethods(['task', 'once', 'only', 'onlyStaging'])
             ->getMock();
@@ -66,6 +69,6 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $executor = new SeriesExecutor();
-        $executor->run($tasks, $servers, $environments, $this->input, $this->output);
+        $executor->run($tasks, $servers, $environments, $this->input, $this->output, $logger);
     }
 }

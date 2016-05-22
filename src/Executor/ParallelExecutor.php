@@ -130,13 +130,13 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output)
+    public function run($tasks, $servers, $environments, $input, $output, $logger)
     {
         $this->tasks = $tasks;
         $this->servers = $servers;
         $this->environments = $environments;
         $this->input = $input;
-        $this->output = new OutputWatcher($output);
+        $this->output = new OutputWatcher($output, $logger);
         $this->informer = new Informer($this->output);
         $this->port = self::START_PORT;
 

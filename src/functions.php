@@ -5,6 +5,8 @@
  * file that was distributed with this source code.
  */
 use Deployer\Deployer;
+use Deployer\Log\LogWriter;
+use Deployer\Log\LogSender;
 use Deployer\Server\Local;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
@@ -106,6 +108,43 @@ function serverList($file)
     $bootstrap->parseConfig();
     $bootstrap->initServers();
     $bootstrap->initClusters();
+}
+
+/**
+ * Defines logger
+ * @param $name
+ * @param $path
+ * @return LogWriter
+ */
+function logger($name, $path)
+{
+    $deployer = Deployer::get();
+
+    $logger = new LogWriter($name, $path);
+    
+    $deployer->logs->set("log", $logger);
+
+    return $logger;
+}
+
+/**
+ * Defines emailer
+ * @param $name
+ * @param $path
+ * @return LogWriter
+ */
+function emailer($name, $to)
+{
+    $deployer = Deployer::get();
+
+    if ($to == '') {
+        throw new InvalidArgumentException('There must be at least one recipient');
+    }
+    
+    $emailer = new LogSender($name, $to);
+    $deployer->logs->set("email", $emailer);
+
+    return $emailer;
 }
 
 /**

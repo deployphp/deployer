@@ -77,6 +77,24 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Deployer\Server\Environment', $env);
     }
 
+    public function testLogger()
+    {
+        logger('main', 'path');
+
+        $logger = $this->deployer->logs->get('log');
+
+        $this->assertInstanceOf('Deployer\Log\LogWriter', $logger);
+    }
+
+    public function testEmailer()
+    {
+        emailer('main', 'email');
+
+        $sender = $this->deployer->logs->get('email');
+
+        $this->assertInstanceOf('Deployer\Log\LogSender', $sender);
+    }
+
     public function testLocalServer()
     {
         localServer('main')->env('deploy_path', __DIR__ . '/localhost');

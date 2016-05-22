@@ -14,6 +14,7 @@ class OutputWatcherTest extends \PHPUnit_Framework_TestCase
 {
     public function testOutputWatcher()
     {
+        $logger = $this->getMock('Deployer\Log\LogWriter', ["writeLog"], ["test","testfile.txt"]);
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
         
         $output->expects($this->any())
@@ -38,8 +39,8 @@ class OutputWatcherTest extends \PHPUnit_Framework_TestCase
         $output->expects($this->once())
             ->method('getFormatter');
         
-        
-        $ow = new OutputWatcher($output);
+
+        $ow = new OutputWatcher($output, $logger);
         
         $ow->write('test');
         

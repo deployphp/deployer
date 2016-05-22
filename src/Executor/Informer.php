@@ -8,6 +8,8 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Deployer;
+use Monolog\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
@@ -16,6 +18,11 @@ class Informer
      * @var \Deployer\Console\Output\OutputWatcher
      */
     private $output;
+
+    /**
+     * @var \Deployer\Log\LogSender
+     */
+    private $sender;
 
     /**
      * @var int
@@ -28,6 +35,11 @@ class Informer
     public function __construct(OutputWatcher $output)
     {
         $this->output = $output;
+        
+        $deployer = Deployer::get();
+        if ($deployer->logs->has("email")) {
+            $this->sender = Deployer::get()->logs->get("email");
+        }
     }
 
     /**
@@ -91,9 +103,17 @@ class Informer
     public function taskError($nonFatal = true)
     {
         if ($nonFatal) {
-            $this->output->writeln("<fg=yellow>✘</fg=yellow> Some errors occurred!");
+            $toWrite = "<fg=yellow>✘</fg=yellow> Some errors occurred!";
+            $this->output->writeln($toWrite);
+            if ($this->sender) {
+                $this->sender->writeLog($toWrite, Logger::ERROR);
+            }
         } else {
-            $this->output->writeln("<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>");
+            $toWrite = "<fg=red>✘</fg=red> <options=underscore>Some errors occurred!</options=underscore>";
+            $this->output->writeln($toWrite);
+            if ($this->sender) {
+                $this->sender->writeLog($toWrite, Logger::CRITICAL);
+            }
         }
     }
 
@@ -105,13 +125,17 @@ class Informer
     public function taskException($serverName, $exceptionClass, $message)
     {
         $message = "    $message    ";
-        $this->output->writeln([
+        $toWrite = [
             "",
             "<error>Exception [$exceptionClass] on [$serverName] server</error>",
             "<error>" . str_repeat(' ', strlen($message)) . "</error>",
             "<error>$message</error>",
             "<error>" . str_repeat(' ', strlen($message)) . "</error>",
             ""
-        ]);
+        ];
+        $this->output->writeln($toWrite);
+        if ($this->sender) {
+            $this->sender->writeLog($toWrite, Logger::EMERGENCY);
+        }
     }
 }

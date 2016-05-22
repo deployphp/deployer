@@ -17,9 +17,9 @@ class SeriesExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output)
+    public function run($tasks, $servers, $environments, $input, $output, $logger)
     {
-        $output = new OutputWatcher($output);
+        $output = new OutputWatcher($output, $logger);
         $informer = new Informer($output);
 
         foreach ($tasks as $task) {

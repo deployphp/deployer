@@ -230,7 +230,6 @@ class ParallelExecutor implements ExecutorInterface
                 return implode("\n", array_map(function ($text) use ($server) {
                     return "[$server] $text";
                 }, explode("\n", $message)));
-
             };
 
             $this->output->writeln(array_map($format, (array)$messages), $type);

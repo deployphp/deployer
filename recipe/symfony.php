@@ -75,7 +75,6 @@ task('deploy:assetic:dump', function () {
     }
 
     run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
-
 })->desc('Dump assets');
 
 
@@ -83,9 +82,7 @@ task('deploy:assetic:dump', function () {
  * Warm up cache
  */
 task('deploy:cache:warmup', function () {
-
     run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
-
 })->desc('Warm up cache');
 
 
@@ -93,9 +90,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-
     run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
-
 })->desc('Migrate database');
 
 
@@ -103,10 +98,8 @@ task('database:migrate', function () {
  * Remove app_dev.php files
  */
 task('deploy:clear_controllers', function () {
-
     run("rm -f {{release_path}}/web/app_*.php");
     run("rm -f {{release_path}}/web/config.php");
-
 })->setPrivate();
 
 after('deploy:update_code', 'deploy:clear_controllers');

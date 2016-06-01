@@ -207,14 +207,12 @@ task('deploy:update_code', function () {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
         run("$git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
     }
-
 })->desc('Updating code');
 
 /**
  * Copy directories. Useful for vendors directories
  */
 task('deploy:copy_dirs', function () {
-
     $dirs = get('copy_dirs');
 
     foreach ($dirs as $dir) {
@@ -224,7 +222,6 @@ task('deploy:copy_dirs', function () {
         // Copy directory.
         run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
     }
-
 })->desc('Copy directories');
 
 /**
@@ -332,7 +329,6 @@ task('deploy:writable', function () {
             throw $e;
         }
     }
-
 })->desc('Make writable dirs');
 
 
@@ -344,7 +340,6 @@ task('deploy:vendors', function () {
     $envVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
 
     run("cd {{release_path}} && $envVars $composer {{composer_options}}");
-
 })->desc('Installing vendors');
 
 
@@ -426,7 +421,6 @@ task('cleanup', function () {
 
     run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
     run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
-
 })->desc('Cleaning up old releases');
 
 /**
@@ -439,7 +433,6 @@ task('deploy:clean', function () {
     foreach ($paths as $path) {
         run("$sudo rm -rf {{deploy_path}}/$path");
     }
-
 })->desc('Cleaning up files and/or directories');
 
 /**

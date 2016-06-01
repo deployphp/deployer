@@ -125,7 +125,8 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testTask()
     {
-        task('task', function () {});
+        task('task', function () {
+        });
 
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
@@ -140,8 +141,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testBefore()
     {
-        task('main', function () {});
-        task('before', function () {});
+        task('main', function () {
+        });
+        task('before', function () {
+        });
         before('main', 'before');
 
         $mainScenario = $this->deployer->scenarios->get('main');
@@ -151,8 +154,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testAfter()
     {
-        task('main', function () {});
-        task('after', function () {});
+        task('main', function () {
+        });
+        task('after', function () {
+        });
         after('main', 'after');
 
         $mainScenario = $this->deployer->scenarios->get('main');

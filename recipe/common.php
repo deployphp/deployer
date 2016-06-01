@@ -177,17 +177,22 @@ task('deploy:update_code', function () {
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
 
-    if (input()->hasOption('tag')) {
-        $tag = input()->getOption('tag');
-    } elseif (input()->hasOption('revision')) {
-        $revision = input()->getOption('revision');
+    $at = '';
+    if (!empty($branch)) {
+        $at = "-b $branch";
     }
 
-    $at = '';
-    if (!empty($tag)) {
-        $at = "-b $tag";
-    } elseif (!empty($branch)) {
-        $at = "-b $branch";
+    // If option `tag` is set
+    if (input()->hasOption('tag')) {
+        $tag = input()->getOption('tag');
+        if (!empty($tag)) {
+            $at = "-b $tag";
+        }
+    }
+
+    // If option `tag` is not set and option `revision` is set
+    if (empty($tag) && input()->hasOption('revision')) {
+        $revision = input()->getOption('revision');
     }
 
     $releases = env('releases_list');

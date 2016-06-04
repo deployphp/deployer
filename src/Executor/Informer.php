@@ -18,7 +18,7 @@ class Informer
     private $output;
 
     /**
-     * @var int
+     * @var int|double
      */
     private $startTime;
 

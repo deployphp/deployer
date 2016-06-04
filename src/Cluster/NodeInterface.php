@@ -9,7 +9,7 @@ namespace Deployer\Cluster;
 interface NodeInterface
 {
     /**
-     * @return Deployer\Cluster\NodeInterface
+     * @return \Deployer\Cluster\NodeInterface
      */
     public function initialize();
 }

@@ -29,9 +29,9 @@ class BootstrapByConfigFile
     public $configFile = null;
 
     /**
-     * @var string|null $configFileContent
+     * @var array|string|object<stdClass> $configFileContent
      */
-    public $configFileContent = null;
+    public $configFileContent = array();
 
     /**
      * @var array $clusterConfig

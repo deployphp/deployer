@@ -18,13 +18,21 @@ set('http_user', null);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', true);    // Using sudo in clean commands?
 
+
+/**
+ * Composer options
+ */
+env('composer_action', 'install');
+env('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
+
+
 /**
  * Environment vars
  */
 env('timezone', 'UTC');
 env('branch', ''); // Branch to deploy.
-env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
-env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
+env('env_vars', ''); // Variable assignment before cmds (for example, SYMFONY_ENV={{env}})
+
 env('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
     $gitVersion = run('{{bin/git}} version');
     $regs       = [];
@@ -43,6 +51,7 @@ env('release_name', function () {
 
     return date('YmdHis');
 }); // name of folder in releases
+
 
 /**
  * Custom bins.
@@ -73,6 +82,7 @@ env('bin/composer', function () {
 argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
 option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
 option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
+
 
 /**
  * Rollback to previous release.
@@ -336,10 +346,7 @@ task('deploy:writable', function () {
  * Installing vendors tasks.
  */
 task('deploy:vendors', function () {
-    $composer = env('bin/composer');
-    $envVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
-
-    run("cd {{release_path}} && $envVars $composer {{composer_options}}");
+    run('cd {{release_path}} && {{env_vars}} {{bin/composer}} {{composer_options}}');
 })->desc('Installing vendors');
 
 

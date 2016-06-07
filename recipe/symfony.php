@@ -32,7 +32,7 @@ env('env', 'prod');
 // Adding support for the Symfony3 directory structure
 set('bin_dir', 'app');
 set('var_dir', 'app');
-
+set('sf_debug', '--no-debug');
 
 /**
  * Create cache dir
@@ -74,7 +74,7 @@ task('deploy:assetic:dump', function () {
         return;
     }
 
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} '.trim(get('sf_debug')));
 })->desc('Dump assets');
 
 
@@ -82,7 +82,7 @@ task('deploy:assetic:dump', function () {
  * Warm up cache
  */
 task('deploy:cache:warmup', function () {
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} '.trim(get('sf_debug')));
 })->desc('Warm up cache');
 
 
@@ -90,7 +90,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} '.trim(get('sf_debug')).' --no-interaction');
 })->desc('Migrate database');
 
 

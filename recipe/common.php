@@ -357,7 +357,7 @@ task('deploy:symlink', function () {
  */
 env('releases_list', function () {
     // find will list only dirs in releases/
-    $list = run('find {{deploy_path}}/releases -maxdepth 1 -mindepth 1 -type d')->toArray();
+    $list = run('find {{deploy_path}}/releases/ -maxdepth 1 -mindepth 1 -type d')->toArray();
 
     // filter out anything that does not look like a release
     foreach ($list as $key => $item) {

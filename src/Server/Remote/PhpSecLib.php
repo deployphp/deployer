@@ -113,10 +113,11 @@ class PhpSecLib implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command)
+    public function run($command, $timeout)
     {
         $this->checkConnection();
 
+        $this->sftp->setTimeout($timeout);
         $result = $this->sftp->exec($command);
 
         if ($this->sftp->getExitStatus() !== 0) {

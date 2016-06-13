@@ -24,12 +24,12 @@ class Local implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command)
+    public function run($command, $timeout)
     {
         $process = new Process($command);
         $process
-            ->setTimeout(self::TIMEOUT)
-            ->setIdleTimeout(self::TIMEOUT)
+            ->setTimeout($timeout)
+            ->setIdleTimeout($timeout)
             ->mustRun();
 
         return $process->getOutput();

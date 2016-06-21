@@ -23,7 +23,7 @@ task('silverstripe:build', function () {
 
 task('silverstripe:buildflush', function () {
     return run('{{bin/php}} {{release_path}}/framework/cli-script.php /dev/build flush=all');
-})->desc('Run /dev/build?flush=al');
+})->desc('Run /dev/build?flush=all');
 
 /**
  * Main task

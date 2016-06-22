@@ -1,23 +1,22 @@
 <?php
-
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
- * Cluster Node
- * Defines a node for cluster
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Deployer\Cluster;
 
-use Deployer\Cluster\Node;
-
 /**
- * @property array | Deployer\Cluster\Node[] $nodes
+ * ClusterBuilder
+ * Defines a node for cluster
+ *
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  */
-
 class ClusterBuilder
 {
     /**
-     * @var array | Deployer\Cluster\Node[]
+     * @var array|Deployer\Cluster\Node[]
      */
     protected $nodes = null;
 
@@ -28,7 +27,7 @@ class ClusterBuilder
     {
         $this->nodes = $nodes;
     }
-    
+
     /**
      * @param string $user
      * @return ClusterBuilder
@@ -81,7 +80,7 @@ class ClusterBuilder
         }
         return $this;
     }
-    
+
     /**
      * @param string $pemFile
      * @return ClusterBuilder
@@ -118,10 +117,8 @@ class ClusterBuilder
         return $this;
     }
 
-
-
     /**
-     * @param string | array $stages
+     * @param string|array $stages
      * @return ClusterBuilder
      */
     public function stage($stages)

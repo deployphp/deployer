@@ -1,9 +1,10 @@
 <?php
-
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
- * Cluster Node
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 namespace Deployer\Cluster;
 
 use Deployer\Deployer;
@@ -15,14 +16,13 @@ use Deployer\Server\Remote\SshExtension;
 use Deployer\Cluster\NodeInterface;
 
 /**
- * @property \Deployer\Deployer $deployer
- * @property \Deployer\Server\Builder $builder
- * @property string $name
- * @property string $host
+ * Cluster Node
+ *
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  */
 class Node implements NodeInterface
 {
-     
+
     /**
      * @var \Deployer\Deployer
      */
@@ -32,27 +32,27 @@ class Node implements NodeInterface
      * @var \Deployer\Server\Builder
      */
     public $builder = null;
-    
+
     /**
      * @var string $name
      */
     protected $name = null;
-    
+
     /**
      * @var string $host
      */
     protected $host = null;
-    
+
     /**
      * @var int $port
      */
     protected $port = null;
-    
+
     /**
      * @var \Deployer\Server\ServerInterface
      */
     protected $server = null;
-    
+
     /**
      * initialize the node
      * @return \Deployer\Cluster\NodeInterface
@@ -106,7 +106,7 @@ class Node implements NodeInterface
         $this->host = $host;
         return $this;
     }
-    
+
     /**
      * @param int $port
      * @return \Deployer\Cluster\NodeInterface

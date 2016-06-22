@@ -1,8 +1,10 @@
 <?php
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
- * Cluster
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 namespace Deployer\Cluster;
 
 use Deployer\Deployer;
@@ -10,11 +12,9 @@ use Deployer\Cluster\ClusterInterface;
 use Deployer\Cluster\ClusterBuilder;
 
 /**
- * @property string $name
- * @property array $nodes
- * @property int $port
- * @property ClusterBuilder $clusterBuilder
+ * Cluster
  *
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  */
 class Cluster implements ClusterInterface
 {
@@ -30,7 +30,7 @@ class Cluster implements ClusterInterface
     protected $nodes = null;
     
     /**
-     * @var string|integer $port
+     * @var string|int $port
      */
     protected $port = null;
 

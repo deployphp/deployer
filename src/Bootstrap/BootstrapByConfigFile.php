@@ -1,13 +1,8 @@
 <?php
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
+/* (c) Anton Medvedev <anton@medv.io>
  *
- * Moved some initialization logic from src/functions.php to here, since
- * putting application logic in public functions which callable without
- * any restriction is not good.
- *
- * We do not need any inheritance or interface implementation here,
- * it's just simple POPO class.
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Deployer\Bootstrap;
@@ -18,7 +13,14 @@ use Deployer\Server\Builder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @property string $configFile
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
+ *
+ * Moved some initialization logic from src/functions.php to here, since
+ * putting application logic in public functions which callable without
+ * any restriction is not good.
+ *
+ * We do not need any inheritance or interface implementation here,
+ * it's just simple POPO class.
  */
 class BootstrapByConfigFile
 {
@@ -29,7 +31,7 @@ class BootstrapByConfigFile
     public $configFile = null;
 
     /**
-     * @var string|null $configFileContent
+     * @var array|string|\stdClass|null $configFileContent
      */
     public $configFileContent = null;
 
@@ -52,8 +54,6 @@ class BootstrapByConfigFile
      * @var Deployer\Server\Builder[] $serverBuilders
      */
     public $serverBuilders = [];
-
-
 
     /**
      * @param \Deployer\Type\DotArray $config
@@ -125,7 +125,6 @@ class BootstrapByConfigFile
 
         return $this;
     }
-    
 
     /**
      * @throws \RuntimeException
@@ -160,7 +159,6 @@ class BootstrapByConfigFile
         }
         return $this;
     }
-
 
     /**
      * @throws \RuntimeException

@@ -1,9 +1,8 @@
 <?php
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
- * @package Deployer
- * Cluster Factory
- * Creates and return an instance of \Deployer\Cluster\Cluster
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Deployer\Cluster;
@@ -11,6 +10,12 @@ namespace Deployer\Cluster;
 use Deployer\Cluster\Cluster;
 use Deployer\Deployer;
 
+/**
+ * Cluster Factory
+ * Creates and return an instance of \Deployer\Cluster\Cluster
+ *
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
+ */
 class ClusterFactory
 {
     /**

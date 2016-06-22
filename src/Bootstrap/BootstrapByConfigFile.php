@@ -8,12 +8,10 @@
 namespace Deployer\Bootstrap;
 
 use Deployer\Type\DotArray;
-use Deployer\Cluster\ClusterBuilder;
-use Deployer\Server\Builder;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
+ * BootstrapByConfigFile
  *
  * Moved some initialization logic from src/functions.php to here, since
  * putting application logic in public functions which callable without
@@ -21,10 +19,11 @@ use Symfony\Component\Yaml\Yaml;
  *
  * We do not need any inheritance or interface implementation here,
  * it's just simple POPO class.
+ *
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  */
 class BootstrapByConfigFile
 {
-    
     /**
      * @var string|null $configFile
      */
@@ -46,7 +45,7 @@ class BootstrapByConfigFile
     public $serverConfig = [];
 
     /**
-     * @var Deployer\Cluster\ClusterBuilder[] $clusterBuilders
+     * @var \Deployer\Cluster\ClusterBuilder[] $clusterBuilders
      */
     public $clusterBuilders = [];
     
@@ -57,7 +56,7 @@ class BootstrapByConfigFile
 
     /**
      * @param \Deployer\Type\DotArray $config
-     * @param Builder|ClusterBuilder $builder
+     * @param \Deployer\Server\Builder|\Deployer\Cluster\ClusterBuilder $builder
      */
     private function executeBuilderMethods(DotArray $config, $builder)
     {

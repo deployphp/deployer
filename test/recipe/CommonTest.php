@@ -22,9 +22,11 @@ class CommonTest extends RecipeTester
     public function testPrepare()
     {
         $this->exec('deploy:prepare');
+        $this->exec('deploy:acquire_lock');
 
         $this->assertFileExists(self::$deployPath . '/releases');
         $this->assertFileExists(self::$deployPath . '/shared');
+        $this->assertFileExists(self::$deployPath . '/deployer.lock');
     }
 
     public function testRelease()
@@ -100,10 +102,13 @@ class CommonTest extends RecipeTester
     public function testSymlink()
     {
         $this->exec('deploy:symlink');
+        $this->exec('deploy:release_lock');
 
         $this->assertTrue(realpath($this->getEnv('deploy_path') . '/current') !== false);
         clearstatcache($this->getEnv('deploy_path') . '/release');
         $this->assertFalse(realpath($this->getEnv('deploy_path') . '/release') !== false, 'Symlink to release directory must gone after deploy:symlink.');
+
+        $this->assertFileNotExists($this->getEnv('release_path') . '/deployer.lock');
     }
 
     public function testCurrent()

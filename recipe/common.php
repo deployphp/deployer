@@ -361,7 +361,7 @@ task('deploy:symlink', function () {
 /**
  * Lock the current deployment.
  */
-task('deploy:acquire_lock', function() {
+task('deploy:acquire_lock', function () {
     $res = run('[ -f {{lock_file}} ] && echo Locked || echo OK');
 
     if (trim($res) === "Locked") {
@@ -374,7 +374,7 @@ task('deploy:acquire_lock', function() {
 /**
  * Unlock the current deployment lock.
  */
-task('deploy:release_lock', function() {
+task('deploy:release_lock', function () {
     $res = run('[ -f {{lock_file}} ] && echo Locked || echo OK');
 
     if (trim($res) === "Locked") {

@@ -25,6 +25,7 @@ env('timezone', 'UTC');
 env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
+env('lock_file', '{{deploy_path}}/deployer.lock');
 env('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
     $gitVersion = run('{{bin/git}} version');
     $regs       = [];
@@ -356,6 +357,30 @@ task('deploy:symlink', function () {
     run("cd {{deploy_path}} && rm release"); // Remove release link.
 })->desc('Creating symlink to release');
 
+
+/**
+ * Lock the current deployment.
+ */
+task('deploy:acquire_lock', function () {
+    $res = run('[ -f {{lock_file}} ] && echo Locked || echo OK');
+
+    if (trim($res) === "Locked") {
+        throw new RuntimeException("Deployment is locked.");
+    }
+
+    run('touch {{lock_file}}');
+})->desc('Lock the current deployment on the remote server');
+
+/**
+ * Unlock the current deployment lock.
+ */
+task('deploy:release_lock', function () {
+    $res = run('[ -f {{lock_file}} ] && echo Locked || echo OK');
+
+    if (trim($res) === "Locked") {
+        run('rm {{lock_file}}');
+    }
+})->desc('Unlock the current deployment lock');
 
 /**
  * Return list of releases on server.

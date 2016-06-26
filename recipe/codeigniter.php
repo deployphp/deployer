@@ -26,4 +26,6 @@ task('deploy', [
     'cleanup',
 ])->desc('Deploy your project');
 
+after('deploy:prepare', 'deploy:acquire_lock');
+after('deploy:symlink', 'deploy:release_lock');
 after('deploy', 'success');

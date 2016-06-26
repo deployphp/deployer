@@ -33,3 +33,6 @@ set('writable_dirs', ['var/cache', 'var/logs', 'var/sessions']);
 
 set('bin_dir', 'bin');
 set('var_dir', 'var');
+
+after('deploy:prepare', 'deploy:acquire_lock');
+after('deploy:symlink', 'deploy:release_lock');

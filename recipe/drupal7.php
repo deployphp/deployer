@@ -16,6 +16,9 @@ task('deploy', [
     'cleanup'
 ]);
 
+after('deploy:prepare', 'deploy:acquire_lock');
+after('deploy:symlink', 'deploy:release_lock');
+
 //Set Drupal 7 site. Change if you use different site
 env('drupal_site', 'default');
 

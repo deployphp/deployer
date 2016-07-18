@@ -11,6 +11,9 @@ require_once __DIR__ . '/symfony.php';
  * Symfony 3 Configuration
  */
 
+// Default false - BC for Symfony >= 3.0
+set('dump_assets', false);
+
 // Symfony shared dirs
 set('shared_dirs', ['var/logs', 'var/sessions']);
 

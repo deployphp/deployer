@@ -426,7 +426,8 @@ class Configuration
      *
      * @param $ssh2Pty
      */
-    public function setSsh2Pty($ssh2Pty) {
+    public function setSsh2Pty($ssh2Pty)
+    {
         $this->ssh2Pty = $ssh2Pty;
     }
 
@@ -435,7 +436,8 @@ class Configuration
      *
      * @return mixed
      */
-    public function getSsh2Pty() {
+    public function getSsh2Pty()
+    {
         return $this->ssh2Pty;
     }
 }

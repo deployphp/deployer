@@ -262,7 +262,8 @@ class Builder
      * @param $ssh2Pty
      * @return $this
      */
-    public function ssh2Pty($ssh2Pty) {
+    public function ssh2Pty($ssh2Pty)
+    {
         $this->config->setSsh2Pty($ssh2Pty);
 
         return $this;

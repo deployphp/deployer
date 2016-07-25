@@ -113,7 +113,8 @@ class SshExtension implements ServerInterface
     {
         $this->checkConnection();
 
-        return $this->session->getExec()->run($command);
+        $pty = $this->getConfiguration()->getSsh2Pty();
+        return $this->session->getExec()->run($command, $pty);
     }
 
     /**

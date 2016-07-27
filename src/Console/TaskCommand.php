@@ -32,7 +32,7 @@ class TaskCommand extends Command
     /**
      * @var LogWriter
      */
-    private $logger = false;
+    private $logger = null;
 
     /**
      * @param string $name
@@ -53,7 +53,7 @@ class TaskCommand extends Command
      */
     protected function setupLog()
     {
-        if($this->deployer->parameters->get('log')) {
+        if($this->deployer->parameters->has('log')) {
             $this->logger = new LogWriter($this->deployer->parameters->get('log'));
         }
     }

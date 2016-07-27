@@ -31,7 +31,7 @@ class OutputWatcher implements OutputInterface
     /**
      * OutputWatcher constructor.
      * @param OutputInterface $output
-     * @param LogWriter $logger
+     * @param LogWriter $logger | null
      */
     public function __construct(OutputInterface $output, LogWriter $logger = null)
     {

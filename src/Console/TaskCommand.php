@@ -53,7 +53,7 @@ class TaskCommand extends Command
      */
     protected function setupLog()
     {
-        if($this->deployer->parameters->has('log')) {
+        if ($this->deployer->parameters->has('log')) {
             $this->logger = new LogWriter($this->deployer->parameters->get('log'));
         }
     }

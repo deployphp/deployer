@@ -2,6 +2,7 @@
 
 namespace Deployer\Log;
 
+use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 

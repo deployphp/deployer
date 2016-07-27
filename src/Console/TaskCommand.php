@@ -11,6 +11,7 @@ use Deployer\Deployer;
 use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
+use Deployer\Log\LogWriter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -29,6 +30,11 @@ class TaskCommand extends Command
     public $executor;
 
     /**
+     * @var LogWriter
+     */
+    private $logger = false;
+
+    /**
      * @param string $name
      * @param string $description
      * @param Deployer $deployer
@@ -38,6 +44,18 @@ class TaskCommand extends Command
         parent::__construct($name);
         $this->setDescription($description);
         $this->deployer = $deployer;
+
+        $this->setupLog();
+    }
+
+    /**
+     * Setup log
+     */
+    protected function setupLog()
+    {
+        if($this->deployer->parameters->get('log')) {
+            $this->logger = new LogWriter($this->deployer->parameters->get('log'));
+        }
     }
 
     /**
@@ -79,6 +97,6 @@ class TaskCommand extends Command
             }
         }
 
-        $executor->run($tasks, $servers, $environments, $input, $output);
+        $executor->run($tasks, $servers, $environments, $input, $output, $this->logger);
     }
 }

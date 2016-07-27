@@ -7,6 +7,7 @@
 
 namespace Deployer\Console\Output;
 
+use Deployer\Log\LogWriter;
 use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -16,18 +17,26 @@ class OutputWatcher implements OutputInterface
      * @var OutputInterface
      */
     private $output;
-    
+
     /**
      * @var bool
      */
     private $wasWritten = false;
 
     /**
-     * @param OutputInterface $output
+     * @var LogWriter
      */
-    public function __construct(OutputInterface $output)
+    private $logger;
+
+    /**
+     * OutputWatcher constructor.
+     * @param OutputInterface $output
+     * @param LogWriter $logger
+     */
+    public function __construct(OutputInterface $output, LogWriter $logger = null)
     {
         $this->output = $output;
+        $this->logger = $logger;
     }
 
     /**
@@ -37,6 +46,10 @@ class OutputWatcher implements OutputInterface
     {
         $this->wasWritten = true;
         $this->output->write($messages, $newline, $type);
+
+        if ($this->logger) {
+            $this->logger->writeLog($messages);
+        }
     }
 
     /**
@@ -141,5 +154,11 @@ class OutputWatcher implements OutputInterface
     public function isDebug()
     {
         return self::VERBOSITY_DEBUG <= $this->getVerbosity();
+    }
+
+
+    public function getLogger()
+    {
+        return $this->logger;
     }
 }

@@ -14,7 +14,13 @@ class LogWriter extends LogAbstract
     public function __construct($path)
     {
         $this->log = new Logger('Deployer');
-        $this->log->pushHandler(new StreamHandler($path));
+
+        $formatter = new LineFormatter(null, null, false, true);
+
+        $handler = new StreamHandler($path);
+        $handler->setFormatter($formatter);
+        $this->log->pushHandler($handler);
+
         return $this;
     }
 }

@@ -1,6 +1,6 @@
 # Deployer Recipes
 `recipe` contains officially supported Deployer recipes. 
-All of them based of `common.php` recipe which contains tasks for deployment enviroment preparation, 
+All of them based of `common.php` recipe which contains tasks for deployment environment preparation, 
 loading code, changing files permissions, and much more.
 
 

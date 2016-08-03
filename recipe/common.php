@@ -13,6 +13,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 set('copy_dirs', []);
 set('writable_dirs', []);
+set('cmod_files', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
 set('clear_paths', []);         // Relative path from deploy_path
@@ -341,7 +342,7 @@ task('deploy:writable', function () {
  */
 task('deploy:chown', function() {
     $httpUser = get('http_user');
-    $files = join(' ', get('writable_files'));
+    $files = join(' ', get('cmod_files'));
     if (!empty($files)) {
         cd('{{release_path}}');
         run("chown $httpUser $files");

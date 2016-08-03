@@ -336,6 +336,17 @@ task('deploy:writable', function () {
     }
 })->desc('Make writable dirs');
 
+/**
+ * Сhown files.
+ */
+task('deploy:chown', function() {
+    $httpUser = get('http_user');
+    $files = join(' ', get('writable_files'));
+    if (!empty($files)) {
+        cd('{{release_path}}');
+        run("chown $httpUser $files");
+    }
+})->desc('Сhown files');
 
 /**
  * Installing vendors tasks.

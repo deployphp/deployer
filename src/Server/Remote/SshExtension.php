@@ -109,8 +109,12 @@ class SshExtension implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command)
+    public function run($command, $timeout = null)
     {
+        if ($timeout !== null) {
+            throw new \RuntimeException('Timeout is not supported in ssh connection.');
+        }
+
         $this->checkConnection();
 
         return $this->session->getExec()->run($command);

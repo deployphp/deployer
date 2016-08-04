@@ -17,9 +17,10 @@ interface ServerInterface
     /**
      * Run shell command on remote server.
      * @param string $command
+     * @param int $timeout
      * @return string Output of command.
      */
-    public function run($command);
+    public function run($command, $timeout = null);
 
     /**
      * Upload file to remote server.

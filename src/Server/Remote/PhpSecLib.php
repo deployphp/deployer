@@ -16,6 +16,8 @@ use RuntimeException;
 
 class PhpSecLib implements ServerInterface
 {
+    const TIMEOUT = 10;
+
     /**
      * @var Configuration
      */
@@ -113,10 +115,15 @@ class PhpSecLib implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command)
+    public function run($command, $timeout = null)
     {
+        if ($timeout === null) {
+            $timeout = self::TIMEOUT;
+        }
+
         $this->checkConnection();
 
+        $this->sftp->setTimeout($timeout);
         $result = $this->sftp->exec($command);
 
         if ($this->sftp->getExitStatus() !== 0) {

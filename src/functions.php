@@ -239,9 +239,10 @@ function workingPath()
  * Run command on server.
  *
  * @param string $command
- * @return Result
+ * @param int $timeout
+ * @return \Deployer\Type\Result
  */
-function run($command)
+function run($command, $timeout = null)
 {
     $server = Context::get()->getServer();
     $command = env()->parse($command);
@@ -255,7 +256,7 @@ function run($command)
         writeln("<fg=red>></fg=red> $command");
     }
 
-    $output = $server->run($command);
+    $output = $server->run($command, $timeout);
 
     if (isDebug() && !empty($output)) {
         output()->writeln(array_map(function ($line) {

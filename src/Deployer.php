@@ -52,10 +52,10 @@ class Deployer
             return new EventDispatcher();
         };
         $container['console'] = function () use ($console) {
-          return $console;
+            return $console;
         };
         $container['input'] = function () use ($input) {
-          return $input;
+            return $input;
         };
         $container['output'] = function () use ($output) {
             return $output;
@@ -97,7 +97,7 @@ class Deployer
     public function run()
     {
         $this->addConsoleCommands();
-        
+
         $this->console->add(new WorkerCommand($this));
         $this->console->add(new InitCommand());
 
@@ -110,12 +110,12 @@ class Deployer
     public function addConsoleCommands()
     {
         $this->console->addUserArgumentsAndOptions();
-        
+
         foreach ($this->tasks as $name => $task) {
             if ($task->isPrivate()) {
                 continue;
             }
-            
+
             $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }

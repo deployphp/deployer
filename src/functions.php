@@ -561,6 +561,7 @@ function commandExist($command)
 /**
  * @return \Symfony\Component\EventDispatcher\EventDispatcher
  */
-function dispatcher() {
+function dispatcher()
+{
     return Deployer::get()->getDispatcher();
 }

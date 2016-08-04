@@ -108,8 +108,10 @@ class SshExtension implements ServerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * Timeout is not supported by ssh2 extension
      */
-    public function run($command)
+    public function run($command, $timeout)
     {
         $this->checkConnection();
 

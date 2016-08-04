@@ -88,9 +88,9 @@ function localServer($name)
 function cluster($name, $nodes, $port = 22)
 {
     $deployer = Deployer::get();
-    
+
     $cluster = ClusterFactory::create($deployer, $name, $nodes, $port);
-    
+
     return $cluster->getBuilder();
 }
 
@@ -239,9 +239,10 @@ function workingPath()
  * Run command on server.
  *
  * @param string $command
+ * @param int    $timeout
  * @return Result
  */
-function run($command)
+function run($command, $timeout = 300)
 {
     $server = Context::get()->getServer();
     $command = env()->parse($command);
@@ -255,7 +256,7 @@ function run($command)
         writeln("<fg=red>></fg=red> $command");
     }
 
-    $output = $server->run($command);
+    $output = $server->run($command, $timeout);
 
     if (isDebug() && !empty($output)) {
         output()->writeln(array_map(function ($line) {
@@ -296,7 +297,7 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 

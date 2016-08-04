@@ -49,7 +49,7 @@ class TaskCommand extends Command
             'parallel',
             'p',
             Option::VALUE_NONE,
-            'Run tests in parallel.'
+            'Run tasks in parallel.'
         );
     }
 

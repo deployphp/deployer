@@ -78,19 +78,26 @@ option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPT
  * Rollback to previous release.
  */
 task('rollback', function () {
-    $releases = env('releases_list');
+    $releases    = env('releases_list');
+    $currentPath = env('current');
+    $current     = basename($currentPath);
 
-    if (isset($releases[1])) {
-        $releaseDir = "{{deploy_path}}/releases/{$releases[1]}";
+    $n = 0;
+    while (isset($releases[$n]) && $releases[$n] >= $current) {
+        $n++;
+    }
+
+    if (isset($releases[$n])) {
+        $releaseDir = "{{deploy_path}}/releases/{$releases[$n]}";
 
         // Symlink to old release.
         run("cd {{deploy_path}} && ln -nfs $releaseDir current");
 
         // Remove release
-        run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
+        run("rm -rf {$currentPath}");
 
         if (isVerbose()) {
-            writeln("Rollback to `{$releases[1]}` release was successful.");
+            writeln("Rollback to `{$releases[$n]}` release was successful.");
         }
     } else {
         writeln("<comment>No more releases you can revert to.</comment>");
@@ -362,7 +369,7 @@ task('deploy:symlink', function () {
  */
 env('releases_list', function () {
     // find will list only dirs in releases/
-    $list = run('find {{deploy_path}}/releases/ -maxdepth 1 -mindepth 1 -type d')->toArray();
+    $list = run('find {{deploy_path}}/releases/ -maxdepth 1 -mindepth 1 -type d ! -empty')->toArray();
 
     // filter out anything that does not look like a release
     foreach ($list as $key => $item) {

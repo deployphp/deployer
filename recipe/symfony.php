@@ -9,9 +9,13 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+
 /**
  * Symfony Configuration
  */
+
+// Symfony build env
+env('env', 'prod');
 
 // Symfony shared dirs
 set('shared_dirs', ['app/logs']);
@@ -24,16 +28,28 @@ set('writable_dirs', ['app/cache', 'app/logs']);
 
 // Assets
 set('assets', ['web/css', 'web/images', 'web/js']);
-// Default true - BC for Symfony < 3.0
-set('dump_assets', true);
+
+// Requires non symfony-core package `kriswallsmith/assetic` to be installed
+set('dump_assets', false);
 
 // Environment vars
-env('env_vars', 'SYMFONY_ENV=prod');
-env('env', 'prod');
+env('env_vars', 'SYMFONY_ENV={{env}}');
 
 // Adding support for the Symfony3 directory structure
 set('bin_dir', 'app');
 set('var_dir', 'app');
+
+// Symfony console bin
+env('bin/console', function () {
+    return sprintf('{{release_path}}/%s/console', trim(get('bin_dir'), '/'));
+});
+
+// Symfony console opts
+env('console_options', function () {
+    $options = '--no-interaction --env={{env}}';
+
+    return env('env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
+});
 
 
 /**
@@ -62,21 +78,25 @@ task('deploy:assets', function () {
         return "{{release_path}}/$asset";
     }, get('assets')));
 
-    $time = date('YmdHi.s');
-
-    run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
+    run(sprintf('find %s -exec touch -t %s {} \';\' &> /dev/null || true', $assets, date('Ymdhi.s')));
 })->desc('Normalize asset timestamps');
+
+
+/**
+ * Install assets from public dir of bundles
+ */
+task('deploy:assets:install', function () {
+    run('{{env_vars}} {{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/web');
+})->desc('Install bundle assets');
 
 
 /**
  * Dump all assets to the filesystem
  */
 task('deploy:assetic:dump', function () {
-    if (!get('dump_assets')) {
-        return;
+    if (get('dump_assets')) {
+        run('{{env_vars}} {{bin/php}} {{bin/console}} assetic:dump {{console_options}}');
     }
-
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
 })->desc('Dump assets');
 
 
@@ -84,7 +104,7 @@ task('deploy:assetic:dump', function () {
  * Warm up cache
  */
 task('deploy:cache:warmup', function () {
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
+    run('{{env_vars}} {{bin/php}} {{bin/console}} cache:warmup {{console_options}}');
 })->desc('Warm up cache');
 
 
@@ -92,7 +112,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
+    run('{{env_vars}} {{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}}');
 })->desc('Migrate database');
 
 
@@ -100,10 +120,11 @@ task('database:migrate', function () {
  * Remove app_dev.php files
  */
 task('deploy:clear_controllers', function () {
-    run("rm -f {{release_path}}/web/app_*.php");
-    run("rm -f {{release_path}}/web/config.php");
+    run('rm -f {{release_path}}/web/app_*.php');
+    run('rm -f {{release_path}}/web/config.php');
 })->setPrivate();
 
+// Run after code is checked out
 after('deploy:update_code', 'deploy:clear_controllers');
 
 
@@ -118,6 +139,7 @@ task('deploy', [
     'deploy:shared',
     'deploy:assets',
     'deploy:vendors',
+    'deploy:assets:install',
     'deploy:assetic:dump',
     'deploy:cache:warmup',
     'deploy:writable',
@@ -125,4 +147,5 @@ task('deploy', [
     'cleanup',
 ])->desc('Deploy your project');
 
+// Display success message on completion
 after('deploy', 'success');

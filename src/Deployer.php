@@ -58,7 +58,9 @@ class Deployer
      */
     private $stageStrategy;
 
-
+    /**
+     * @var Emitter
+     */
     private $emitter;
 
     /**

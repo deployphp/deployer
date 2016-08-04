@@ -39,6 +39,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     private $_server;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $_emitter;
+
+    /**
      * @var Environment
      */
     private $_env;
@@ -49,13 +54,14 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
         $this->_input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $this->_output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $this->_emitter = $this->getMock('\League\Event\Emitter');
         $this->_server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
 
         $this->_env = new Environment();
         $this->_env->set("local_path", __DIR__ . '/../fixture/app');
         $this->_env->set("remote_path", "/home/www");
 
-        $this->deployer = new Deployer($this->console, $this->_input, $this->_output);
+        $this->deployer = new Deployer($this->console, $this->_input, $this->_output, $this->_emitter);
         Context::push(new Context($this->_server, $this->_env, $this->_input, $this->_output));
     }
 

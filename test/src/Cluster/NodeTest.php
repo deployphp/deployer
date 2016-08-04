@@ -29,8 +29,9 @@ class NodeTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $emitter = $this->getMock('\League\Event\Emitter');
 
-        $this->deployer = new Deployer($app, $input, $output);
+        $this->deployer = new Deployer($app, $input, $output, $emitter);
     }
 
     /**

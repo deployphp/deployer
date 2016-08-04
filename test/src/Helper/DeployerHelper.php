@@ -34,6 +34,11 @@ trait DeployerHelper
     protected $output;
 
     /**
+     * @var \League\Event\Emitter
+     */
+    protected $emitter;
+
+    /**
      * Init deployer
      */
     protected function initialize()
@@ -47,6 +52,7 @@ trait DeployerHelper
         // Prepare Deployer
         $this->input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $this->output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $this->deployer = new Deployer($console, $this->input, $this->output);
+        $this->emitter = $this->getMock('\League\Event\Emitter');
+        $this->deployer = new Deployer($console, $this->input, $this->output, $this->emitter);
     }
 }

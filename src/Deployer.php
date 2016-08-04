@@ -46,7 +46,7 @@ class Deployer
      */
     public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
-        $container = new Container();
+        $this->container = $container = new Container();
 
         $container['dispatcher'] = function () {
             return new EventDispatcher();
@@ -79,9 +79,8 @@ class Deployer
             return new StageStrategy($c['servers'], $c['environments'], $c['parameters']);
         };
 
-        $this->getDispatcher()->dispatch('init');
-        $this->container = $container;
         self::$instance = $this;
+        $this->getDispatcher()->dispatch('init');
     }
 
     /**

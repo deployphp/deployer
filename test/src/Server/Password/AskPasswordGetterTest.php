@@ -46,13 +46,12 @@ class AskPasswordGetterTest extends \PHPUnit_Framework_TestCase
     {
         $this->input = $this->getMockForAbstractClass('Symfony\Component\Console\Input\InputInterface');
         $this->output = $this->getMockForAbstractClass('Symfony\Component\Console\Output\OutputInterface');
-        $this->questionHelper = $this->getMock('Symfony\Component\Console\Helper\QuestionHelper');
+        $this->questionHelper = $this->createMock('Symfony\Component\Console\Helper\QuestionHelper');
 
-        $this->askPasswordGetter = $this->getMock(
-            'Deployer\Server\Password\AskPasswordGetter',
-            [ 'createQuestionHelper' ],
-            [ $this->input, $this->output ]
-        );
+        $this->askPasswordGetter = $this->getMockBuilder('Deployer\Server\Password\AskPasswordGetter')
+            ->setMethods(['createQuestionHelper'])
+            ->setConstructorArgs([$this->input, $this->output])
+            ->getMock();
     }
 
     /**
@@ -96,13 +95,11 @@ class AskPasswordGetterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Deployer\Server\Password\CallablePasswordGetter', $lazyGetter);
 
-        $context = $this->getMock(
-            'Deployer\Task\Context',
-            [ 'getInput', 'getOutput' ],
-            [],
-            '',
-            false
-        );
+        $context = $this->getMockBuilder('Deployer\Task\Context')
+            ->setMethods(['getInput', 'getOutput'])
+            ->setConstructorArgs([])
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $context->expects($this->any())->method('getInput')
             ->will($this->returnValue($this->input));

@@ -14,7 +14,7 @@ class OutputWatcherTest extends \PHPUnit_Framework_TestCase
 {
     public function testOutputWatcher()
     {
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
         
         $output->expects($this->any())
             ->method('write');
@@ -55,7 +55,7 @@ class OutputWatcherTest extends \PHPUnit_Framework_TestCase
         
         $ow->isDecorated();
         
-        $ow->setFormatter($this->getMock('Symfony\Component\Console\Formatter\OutputFormatterInterface'));
+        $ow->setFormatter($this->createMock('Symfony\Component\Console\Formatter\OutputFormatterInterface'));
         
         $ow->getFormatter();
         

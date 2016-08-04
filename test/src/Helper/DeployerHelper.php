@@ -45,8 +45,8 @@ trait DeployerHelper
         $this->tester = new ApplicationTester($console);
 
         // Prepare Deployer
-        $this->input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $this->output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $this->input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+        $this->output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
         $this->deployer = new Deployer($console, $this->input, $this->output);
     }
 }

@@ -47,8 +47,8 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     {
         $this->console = new Application();
 
-        $this->_input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $this->_output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $this->_input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
+        $this->_output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
         $this->_server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
 
         $this->_env = new Environment();

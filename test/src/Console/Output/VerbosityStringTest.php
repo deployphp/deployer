@@ -27,7 +27,7 @@ class VerbosityStringTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString($string, $value)
     {
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
         $output->expects($this->once())
             ->method('getVerbosity')
             ->will($this->returnValue($value));

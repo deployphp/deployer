@@ -30,7 +30,7 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
                 ['parallel', null],
             ]));
 
-        $executor = $this->getMock('Deployer\Executor\ExecutorInterface');
+        $executor = $this->createMock('Deployer\Executor\ExecutorInterface');
         $executor->expects($this->once())
             ->method('run');
 

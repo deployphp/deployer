@@ -11,7 +11,7 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 {
     public function testTask()
     {
-        $mock = $this->getMock('stdClass', ['callback']);
+        $mock = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $mock->expects($this->exactly(1))
             ->method('callback');
 
@@ -69,13 +69,13 @@ class TaskTest extends \PHPUnit_Framework_TestCase
         $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
         // Test create task with [$object, 'method']
-        $mock1 = $this->getMock('stdClass', ['callback']);
+        $mock1 = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $mock1->expects($this->once())->method('callback');
         $task1 = new Task('task1', [$mock1, 'callback']);
         $task1->run($context);
 
         // Test create task with anonymous functions
-        $mock2 = $this->getMock('stdClass', ['callback']);
+        $mock2 = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();
         $mock2->expects($this->once())->method('callback');
         $task2 = new Task('task2', function () use ($mock2) {
             $mock2->callback();

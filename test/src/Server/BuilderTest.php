@@ -20,7 +20,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testUser()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setUser')
@@ -37,7 +37,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPasswordSetScalar()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
@@ -59,7 +59,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPasswordSetGetter()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
         $password = $this->getMockForAbstractClass('Deployer\Server\Password\PasswordGetterInterface');
 
         $config->expects($this->once())
@@ -85,7 +85,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPasswordWithInvalidObject()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
         $password = (object)[];
 
         $b = new Builder($config, $env);
@@ -101,7 +101,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPasswordWithNonScalarValue()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
         $password = ['foo', 'bar'];
 
         $b = new Builder($config, $env);
@@ -114,7 +114,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPasswordWithNullValue()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
@@ -136,7 +136,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testHostAndPort()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setHost')
@@ -159,7 +159,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testConfig()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
@@ -181,7 +181,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPem()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
@@ -203,7 +203,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPublicKey()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
@@ -235,7 +235,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testPublicKeyWithNullPassPhrase()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $config->expects($this->once())
             ->method('setAuthenticationMethod')
@@ -267,7 +267,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testEnv()
     {
         $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         // Configuring stubs
         $config
@@ -312,7 +312,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->method('setAuthenticationMethod')
             ->with(Configuration::AUTH_BY_AGENT)
             ->will($this->returnSelf());
-        $env = $this->getMock('Deployer\Server\Environment');
+        $env = $this->createMock('Deployer\Server\Environment');
 
         $b = new Builder($config, $env);
         $b->forwardAgent();

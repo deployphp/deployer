@@ -140,11 +140,11 @@ class BootstrapByConfigFile
                 $da = new DotArray($config);
 
                 if ($da->hasKey('local')) {
-                    $builder = localServer($name);
+                    $builder = \Deployer\localServer($name);
                 } else {
                     $builder = $da->hasKey('port') ?
-                        $this->serverBuilders[] = server($name, $da['host'], $da['port']) :
-                        $this->serverBuilders[] = server($name, $da['host']);
+                        $this->serverBuilders[] = \Deployer\server($name, $da['host'], $da['port']) :
+                        $this->serverBuilders[] = \Deployer\server($name, $da['host']);
                 }
 
                 unset($da['local']);
@@ -170,8 +170,8 @@ class BootstrapByConfigFile
                 $config = new DotArray($config);
 
                 $clusterBuilder = $config->hasKey('port') ?
-                    $this->clusterBuilders[] = cluster($name, $config['nodes'], $config['port']) :
-                    $this->clusterBuilders[] = cluster($name, $config['nodes']);
+                    $this->clusterBuilders[] = \Deployer\cluster($name, $config['nodes'], $config['port']) :
+                    $this->clusterBuilders[] = \Deployer\cluster($name, $config['nodes']);
 
                 unset($config['local']);
                 unset($config['nodes']);
@@ -187,6 +187,7 @@ class BootstrapByConfigFile
 
     /**
      * @param string $file
+     * @return $this
      */
     public function setConfig($file)
     {

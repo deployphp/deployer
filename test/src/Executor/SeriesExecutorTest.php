@@ -50,7 +50,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         $output = '';
         $taskOneWithRunLocally = new Task('onceWithRunLocally', function () use ($mock, &$output) {
             $mock->onceWithRunLocally();
-            $output = runLocally('echo "hello"');
+            $output = \Deployer\runLocally('echo "hello"');
         });
         $taskOneWithRunLocally->once();
 

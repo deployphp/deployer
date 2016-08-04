@@ -102,6 +102,14 @@ class Configuration
     private $pemFile;
 
     /**
+     * Pty configuration for ssh2 connection
+     *
+     * @var mixed
+     */
+    private $ssh2Pty = null;
+
+
+    /**
      * Construct
      *
      * @param string $name
@@ -411,5 +419,25 @@ class Configuration
         }
 
         return $password;
+    }
+
+    /**
+     * Set pty for ssh2 connection
+     *
+     * @param $ssh2Pty
+     */
+    public function setSsh2Pty($ssh2Pty)
+    {
+        $this->ssh2Pty = $ssh2Pty;
+    }
+
+    /**
+     * Get pty option for ssh2 connection
+     *
+     * @return mixed
+     */
+    public function getSsh2Pty()
+    {
+        return $this->ssh2Pty;
     }
 }

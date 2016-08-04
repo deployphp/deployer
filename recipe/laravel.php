@@ -10,7 +10,7 @@ require_once __DIR__ . '/common.php';
 // for older versions, please read the documentation https://github.com/deployphp/docs
 
 // Laravel shared dirs
-set('shared_dirs', ['storage']);
+set('shared_dirs', ['storage', 'storage/framework/views']);
 
 // Laravel 5 shared file
 set('shared_files', ['.env']);

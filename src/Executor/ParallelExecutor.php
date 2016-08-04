@@ -126,17 +126,17 @@ class ParallelExecutor implements ExecutorInterface
     {
         $this->userDefinition = $userDefinition;
     }
-    
+
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output)
+    public function run($tasks, $servers, $environments, $input, $output, $logger)
     {
         $this->tasks = $tasks;
         $this->servers = $servers;
         $this->environments = $environments;
         $this->input = $input;
-        $this->output = new OutputWatcher($output);
+        $this->output = new OutputWatcher($output, $logger);
         $this->informer = new Informer($this->output);
         $this->port = self::START_PORT;
 
@@ -184,7 +184,7 @@ class ParallelExecutor implements ExecutorInterface
             '--master' => '127.0.0.1:' . $this->port,
             '--server' => '',
         ];
-        
+
         // Get verbosity.
         $verbosity = new VerbosityString($this->output);
 
@@ -200,10 +200,10 @@ class ParallelExecutor implements ExecutorInterface
         foreach ($this->userDefinition->getOptions() as $option) {
             $input["--" . $option->getName()] = $this->input->getOption($option->getName());
         }
-        
+
         foreach ($this->servers as $serverName => $server) {
             $input['--server'] = $serverName;
-            
+
             $process = new Process(
                 "php " . DEPLOYER_BIN .
                 (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
@@ -249,7 +249,7 @@ class ParallelExecutor implements ExecutorInterface
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
-            
+
             if ($exceptionClass == 'Deployer\Task\NonFatalException') {
 
                 // If we got NonFatalException, continue other tasks.
@@ -337,7 +337,7 @@ class ParallelExecutor implements ExecutorInterface
                 } else {
                     $this->informer->taskError($this->hasNonFatalException);
                 }
-                
+
                 // We waited all workers to finish their tasks.
                 // Wait no more!
                 $this->wait = false;

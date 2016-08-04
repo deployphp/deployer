@@ -9,6 +9,7 @@ namespace Deployer\Helper;
 
 use Deployer\Console\Application;
 use Deployer\Deployer;
+use Deployer\Log\LogWriter;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 trait DeployerHelper
@@ -34,6 +35,11 @@ trait DeployerHelper
     protected $output;
 
     /**
+     * @var LogWriter
+     */
+    protected $logger;
+
+    /**
      * Init deployer
      */
     protected function initialize()
@@ -47,6 +53,7 @@ trait DeployerHelper
         // Prepare Deployer
         $this->input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $this->output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $this->logger = $this->getMock('Deployer\Log\LogWriter', ["writeLog"], ["deploy.log"]);
         $this->deployer = new Deployer($console, $this->input, $this->output);
     }
 }

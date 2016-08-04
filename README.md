@@ -74,7 +74,7 @@ Roadmap
 
 Contributing
 ------------
-All code contributions must go through a pull request and approved by a core developer before being merged.
+All code contributions must go through a pull request and approved by a core maintainers before being merged.
 This is to ensure proper review of all the code.
 
 Fork the project, create a feature branch, and send a pull request.

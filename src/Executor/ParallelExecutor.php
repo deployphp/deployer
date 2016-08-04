@@ -230,7 +230,6 @@ class ParallelExecutor implements ExecutorInterface
                 return implode("\n", array_map(function ($text) use ($server) {
                     return "[$server] $text";
                 }, explode("\n", $message)));
-
             };
 
             $this->output->writeln(array_map($format, (array)$messages), $type);
@@ -286,7 +285,7 @@ class ParallelExecutor implements ExecutorInterface
                 $this->informer->startTask($taskName);
 
                 if ($task->isOnce()) {
-                    $task->run(new Context(null, null, $this->input, $this->output));
+                    $task->run(new Context(null, new Environment(), $this->input, $this->output));
                     $this->informer->endTask();
                 } else {
                     $this->tasksToDo = [];

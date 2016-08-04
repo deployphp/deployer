@@ -89,6 +89,25 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(__DIR__ . '/localhost', $env->get('deploy_path'));
     }
 
+    public function testCluster()
+    {
+        $deployer = $this->deployer;
+
+        cluster('myIstanbulDCCluster', ['192.168.0.1', '192.168.0.2'], 22);
+        
+        $server0 = $deployer->servers->get('myIstanbulDCCluster_0');
+        $env0 = $deployer->environments->get('myIstanbulDCCluster_0');
+        
+        $server1 = $deployer->servers->get('myIstanbulDCCluster_1');
+        $env1 = $deployer->environments->get('myIstanbulDCCluster_1');
+
+        $this->assertInstanceOf('Deployer\Server\ServerInterface', $server0);
+        $this->assertInstanceOf('Deployer\Server\Environment', $env0);
+        
+        $this->assertInstanceOf('Deployer\Server\ServerInterface', $server1);
+        $this->assertInstanceOf('Deployer\Server\Environment', $env1);
+    }
+
     public function testServerList()
     {
         serverList(__DIR__ . '/../fixture/servers.yml');
@@ -106,7 +125,8 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testTask()
     {
-        task('task', function () {});
+        task('task', function () {
+        });
 
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
@@ -121,8 +141,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testBefore()
     {
-        task('main', function () {});
-        task('before', function () {});
+        task('main', function () {
+        });
+        task('before', function () {
+        });
         before('main', 'before');
 
         $mainScenario = $this->deployer->scenarios->get('main');
@@ -132,8 +154,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testAfter()
     {
-        task('main', function () {});
-        task('after', function () {});
+        task('main', function () {
+        });
+        task('after', function () {
+        });
         after('main', 'after');
 
         $mainScenario = $this->deployer->scenarios->get('main');

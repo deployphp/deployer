@@ -28,7 +28,7 @@ env('branch', ''); // Branch to deploy.
 env('env_vars', ''); // For Composer installation. Like SYMFONY_ENV=prod
 env('composer_options', 'install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-interaction');
 env('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
-    $gitVersion = run('git version');
+    $gitVersion = run('{{bin/git}} version');
     $regs       = [];
     if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
         $version = $regs[1];
@@ -37,7 +37,14 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
-env('release_name', date('YmdHis')); // name of folder in releases
+env('release_name', function () {
+    // Set the deployment timezone
+    if (!date_default_timezone_set(env('timezone'))) {
+        date_default_timezone_set('UTC');
+    }
+
+    return date('YmdHis');
+}); // name of folder in releases
 
 /**
  * Custom bins.
@@ -54,8 +61,8 @@ env('bin/composer', function () {
     }
 
     if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | php");
-        $composer = '{{bin/php}} composer.phar';
+        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
+        $composer = '{{bin/php}} {{release_path}}/composer.phar';
     }
 
     return $composer;
@@ -121,11 +128,6 @@ task('deploy:prepare', function () {
         throw $e;
     }
 
-    // Set the deployment timezone
-    if (!date_default_timezone_set(env('timezone'))) {
-        date_default_timezone_set('UTC');
-    }
-
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Check for existing /current directory (not symlink)
@@ -152,10 +154,10 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $releasePath = "{{deploy_path}}/releases/{{release_name}}";
+    $releasePath = env()->parse("{{deploy_path}}/releases/{{release_name}}");
 
     $i = 0;
-    while (is_dir(env()->parse($releasePath)) && $i < 42) {
+    while (run("if [ -d $releasePath ]; then echo 'true'; fi")->toBool()) {
         $releasePath .= '.' . ++$i;
     }
 
@@ -171,7 +173,7 @@ task('deploy:release', function () {
  * Update project code
  */
 task('deploy:update_code', function () {
-    $repository = get('repository');
+    $repository = trim(get('repository'));
     $branch = env('branch');
     $git = env('bin/git');
     $gitCache = env('git_cache');
@@ -212,14 +214,12 @@ task('deploy:update_code', function () {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
         run("$git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
     }
-
 })->desc('Updating code');
 
 /**
  * Copy directories. Useful for vendors directories
  */
 task('deploy:copy_dirs', function () {
-
     $dirs = get('copy_dirs');
 
     foreach ($dirs as $dir) {
@@ -229,7 +229,6 @@ task('deploy:copy_dirs', function () {
         // Copy directory.
         run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
     }
-
 })->desc('Copy directories');
 
 /**
@@ -283,7 +282,7 @@ task('deploy:writable', function () {
     if (!empty($dirs)) {
         try {
             if (null === $httpUser) {
-                $httpUser = run("ps aux | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
+                $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
             }
 
             cd('{{release_path}}');
@@ -337,7 +336,6 @@ task('deploy:writable', function () {
             throw $e;
         }
     }
-
 })->desc('Make writable dirs');
 
 
@@ -349,7 +347,6 @@ task('deploy:vendors', function () {
     $envVars = env('env_vars') ? 'export ' . env('env_vars') . ' &&' : '';
 
     run("cd {{release_path}} && $envVars $composer {{composer_options}}");
-
 })->desc('Installing vendors');
 
 
@@ -367,7 +364,7 @@ task('deploy:symlink', function () {
  */
 env('releases_list', function () {
     // find will list only dirs in releases/
-    $list = run('find {{deploy_path}}/releases -maxdepth 1 -mindepth 1 -type d')->toArray();
+    $list = run('find {{deploy_path}}/releases/ -maxdepth 1 -mindepth 1 -type d')->toArray();
 
     // filter out anything that does not look like a release
     foreach ($list as $key => $item) {
@@ -431,7 +428,6 @@ task('cleanup', function () {
 
     run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
     run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
-
 })->desc('Cleaning up old releases');
 
 /**
@@ -444,7 +440,6 @@ task('deploy:clean', function () {
     foreach ($paths as $path) {
         run("$sudo rm -rf {{deploy_path}}/$path");
     }
-
 })->desc('Cleaning up files and/or directories');
 
 /**

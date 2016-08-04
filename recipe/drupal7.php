@@ -76,7 +76,6 @@ task('drupal:settings', function () {
 
         unlink($tmpFilename);
     }
-
 });
 
 //Upload Drupal 7 files folder

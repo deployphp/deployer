@@ -21,6 +21,7 @@ class Configuration
     const AUTH_BY_IDENTITY_FILE = 2;
     const AUTH_BY_PEM_FILE      = 3;
     const AUTH_BY_AGENT         = 4;
+    const AUTH_BY_IDENTITY_FILE_AND_PASSWORD    = 5;
 
     /**
      * Type of authentication.
@@ -99,6 +100,14 @@ class Configuration
      * @var string
      */
     private $pemFile;
+
+    /**
+     * Pty configuration for ssh2 connection
+     *
+     * @var mixed
+     */
+    private $ssh2Pty = null;
+
 
     /**
      * Construct
@@ -410,5 +419,25 @@ class Configuration
         }
 
         return $password;
+    }
+
+    /**
+     * Set pty for ssh2 connection
+     *
+     * @param $ssh2Pty
+     */
+    public function setSsh2Pty($ssh2Pty)
+    {
+        $this->ssh2Pty = $ssh2Pty;
+    }
+
+    /**
+     * Get pty option for ssh2 connection
+     *
+     * @return mixed
+     */
+    public function getSsh2Pty()
+    {
+        return $this->ssh2Pty;
     }
 }

@@ -27,7 +27,7 @@ Installation
 To install Deployer download [deployer.phar](http://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
 ``` sh
-$ curl -L http://deployer.org/deployer.phar -o deployer.phar
+$ curl -LO http://deployer.org/deployer.phar
 $ mv deployer.phar /usr/local/bin/dep
 $ chmod +x /usr/local/bin/dep
 ```
@@ -41,7 +41,7 @@ $ dep self-update
 Or via composer:
 
 ``` sh
-$ composer require deployer/deployer:~3.1
+$ composer require deployer/deployer
 ```
 
 

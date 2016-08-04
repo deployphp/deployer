@@ -154,6 +154,25 @@ class Builder
     }
 
     /**
+     * Authenticate with public key + password (2-factor)
+     *
+     * @param string $publicKeyFile
+     * @param string $privateKeyFile
+     * @param string $passPhrase
+     * @param string $password
+     *
+     * @return Builder
+     */
+    public function identityFileAndPassword($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '', $password = null)
+    {
+        $this->identityFile($publicKeyFile, $privateKeyFile, $passPhrase);
+        $this->password($password);
+        $this->config->setAuthenticationMethod(Configuration::AUTH_BY_IDENTITY_FILE_AND_PASSWORD);
+
+        return $this;
+    }
+
+    /**
      * Authenticate with pem file
      *
      * @param string $pemFile
@@ -235,5 +254,18 @@ class Builder
             'The password should be a string or PasswordGetterInterface instances, but "%s" given.',
             is_object($password) ? get_class($password) : gettype($password)
         ));
+    }
+
+    /**
+     * Use pty in ssh2 connection
+     *
+     * @param $ssh2Pty
+     * @return $this
+     */
+    public function ssh2Pty($ssh2Pty)
+    {
+        $this->config->setSsh2Pty($ssh2Pty);
+
+        return $this;
     }
 }

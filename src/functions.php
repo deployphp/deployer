@@ -550,3 +550,28 @@ function commandExist($command)
 {
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
 }
+
+/**
+ * @param $callback
+ */
+function onRunTimeException($callback)
+{
+    if (!is_callable($callback)) {
+        throw new \RuntimeException('Parameter is not callable');
+    }
+
+    if (
+        Deployer::get()->parameters->has('enable_runtime_exception_listener') &&
+        Deployer::get()->parameters->get('enable_runtime_exception_listener') == true
+    ) {
+        $emitter = Deployer::get()->getEmitter();
+        $tasks = Deployer::get()->tasks;
+        foreach ($tasks as $task) {
+            if ($task->getListenRunTimeException() === false) {
+                continue;
+            }
+
+            $emitter->addListener($task->getName(), $callback);
+        }
+    }
+}

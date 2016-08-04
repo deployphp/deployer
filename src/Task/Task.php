@@ -51,6 +51,12 @@ class Task
     private $private = false;
 
     /**
+     * Should this task listen runtime exceptions?
+     * @var bool
+     */
+    private $listenRunTimeException = true;
+
+    /**
      * @param string $name Tasks name
      * @param \Closure $callback Task code.
      */
@@ -212,5 +218,23 @@ class Task
     {
         $this->private = true;
         return $this;
+    }
+
+    /**
+     * @param bool $value
+     * @return $this
+     */
+    public function listenRunTimeException($value = true)
+    {
+        $this->listenRunTimeException = (bool) $value;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getListenRunTimeException()
+    {
+        return (bool) $this->listenRunTimeException;
     }
 }

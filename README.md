@@ -62,17 +62,15 @@ Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss).
 Roadmap
 -------
 #### 4 
-* Namespace for functions
-* Dependency Injection Configuration
-* Event Dispatcher
+* ~~Namespace for functions~~
+* ~~Dependency Injection Configuration~~
+* ~~Event Dispatcher~~
 * Default stage selector
 * ~~Faster cloning by borrowing objects from existing clones~~ Done in v3!
 * Immutable settings
 * Native SSH support
-
-#### 4.1
 * Task grouping for parallel execution
-* Web-based client
+
 
 Contributing
 ------------

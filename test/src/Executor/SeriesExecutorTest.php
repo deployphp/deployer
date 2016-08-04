@@ -16,18 +16,23 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
 {
     use DeployerHelper;
 
+    /**
+     * @group executor
+     */
     public function testSeriesExecutor()
     {
         $this->initialize();
 
         $mock = $this->getMockBuilder('stdClass')
-            ->setMethods(['task', 'once', 'only', 'onlyStaging'])
+            ->setMethods(['task', 'once', 'onceWithRunLocally', 'only', 'onlyStaging'])
             ->getMock();
 
         $mock->expects($this->exactly(2))
             ->method('task');
         $mock->expects($this->once())
             ->method('once');
+        $mock->expects($this->once())
+            ->method('onceWithRunLocally');
         $mock->expects($this->once())
             ->method('only');
         $mock->expects($this->once())
@@ -42,6 +47,13 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         });
         $taskOne->once();
 
+        $output = '';
+        $taskOneWithRunLocally = new Task('onceWithRunLocally', function () use ($mock, &$output) {
+            $mock->onceWithRunLocally();
+            $output = runLocally('echo "hello"');
+        });
+        $taskOneWithRunLocally->once();
+
         $taskOnly = new Task('only', function () use ($mock) {
             $mock->only();
         });
@@ -52,7 +64,7 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         });
         $taskOnlyStaging->onlyForStage('staging');
 
-        $tasks = [$task, $taskOne, $taskOnly, $taskOnlyStaging];
+        $tasks = [$task, $taskOne, $taskOneWithRunLocally, $taskOnly, $taskOnlyStaging];
 
         $environments = [
             'one' => new Environment(),
@@ -67,5 +79,8 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
 
         $executor = new SeriesExecutor();
         $executor->run($tasks, $servers, $environments, $this->input, $this->output);
+
+        $this->assertInstanceOf('Deployer\Type\Result', $output);
+        $this->assertEquals('hello', (string)$output);
     }
 }

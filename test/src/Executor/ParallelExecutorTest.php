@@ -31,6 +31,9 @@ class ParallelExecutorTest extends RecipeTester
         define('DEPLOYER_BIN', __DIR__ . '/../../../bin/dep');
     }
 
+    /**
+     * @group executor
+     */
     public function testParallel()
     {
         $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile]);

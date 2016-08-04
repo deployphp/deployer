@@ -15,7 +15,9 @@ use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
+use Pimple\Container;
 use Symfony\Component\Console;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @property Task\TaskCollection|Task\Task[] $tasks
@@ -33,29 +35,9 @@ class Deployer
     private static $instance;
 
     /**
-     * @var Application
+     * @var Container
      */
-    private $console;
-
-    /**
-     * @var Console\Input\InputInterface
-     */
-    private $input;
-
-    /**
-     * @var Console\Output\OutputInterface
-     */
-    private $output;
-
-    /**
-     * @var Collection\Collection
-     */
-    private $collections;
-
-    /**
-     * @var StageStrategy
-     */
-    private $stageStrategy;
+    private $container;
 
     /**
      * @param Application $console
@@ -64,19 +46,41 @@ class Deployer
      */
     public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
-        $this->console = $console;
-        $this->input = $input;
-        $this->output = $output;
+        $container = new Container();
 
-        $this->collections = new Collection\Collection();
-        $this->collections['tasks'] = new Task\TaskCollection();
-        $this->collections['scenarios'] = new Task\Scenario\ScenarioCollection();
-        $this->collections['servers'] = new Server\ServerCollection();
-        $this->collections['environments'] = new Server\EnvironmentCollection();
-        $this->collections['parameters'] = new Collection\Collection();
+        $container['dispatcher'] = function () {
+            return new EventDispatcher();
+        };
+        $container['console'] = function () use ($console) {
+          return $console;
+        };
+        $container['input'] = function () use ($input) {
+          return $input;
+        };
+        $container['output'] = function () use ($output) {
+            return $output;
+        };
+        $container['tasks'] = function () {
+            return new Task\TaskCollection();
+        };
+        $container['scenarios'] = function () {
+            return new Task\Scenario\ScenarioCollection();
+        };
+        $container['servers'] = function () {
+            return new Server\ServerCollection();
+        };
+        $container['environments'] = function () {
+            return new Server\EnvironmentCollection();
+        };
+        $container['parameters'] = function () {
+            return new Collection\Collection();
+        };
+        $container['stageStrategy'] = function ($c) {
+            return new StageStrategy($c['servers'], $c['environments'], $c['parameters']);
+        };
 
-        $this->stageStrategy = new StageStrategy($this->servers, $this->environments, $this->parameters);
-
+        $this->getDispatcher()->dispatch('init');
+        $this->container = $container;
         self::$instance = $this;
     }
 
@@ -118,11 +122,27 @@ class Deployer
     }
 
     /**
+     * @return EventDispatcher
+     */
+    public function getDispatcher()
+    {
+        return $this->container['dispatcher'];
+    }
+
+    /**
+     * @return Application
+     */
+    public function getConsole()
+    {
+        return $this->container['console'];
+    }
+
+    /**
      * @return Console\Input\InputInterface
      */
     public function getInput()
     {
-        return $this->input;
+        return $this->container['input'];
     }
 
     /**
@@ -130,7 +150,7 @@ class Deployer
      */
     public function getOutput()
     {
-        return $this->output;
+        return $this->container['output'];
     }
 
     /**
@@ -140,8 +160,8 @@ class Deployer
      */
     public function __get($name)
     {
-        if ($this->collections->has($name)) {
-            return $this->collections[$name];
+        if (isset($this->container[$name])) {
+            return $this->container[$name];
         } else {
             throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
@@ -153,15 +173,7 @@ class Deployer
      */
     public function getHelper($name)
     {
-        return $this->console->getHelperSet()->get($name);
-    }
-
-    /**
-     * @return Application
-     */
-    public function getConsole()
-    {
-        return $this->console;
+        return $this->getConsole()->getHelperSet()->get($name);
     }
 
     /**
@@ -169,6 +181,6 @@ class Deployer
      */
     public function getStageStrategy()
     {
-        return $this->stageStrategy;
+        return $this->container['stageStrategy'];
     }
 }

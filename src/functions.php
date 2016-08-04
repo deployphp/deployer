@@ -22,7 +22,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
-use Symfony\Component\Yaml\Yaml;
 use Deployer\Cluster\ClusterFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -556,4 +555,12 @@ function env($name = null, $value = null)
 function commandExist($command)
 {
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
+}
+
+
+/**
+ * @return \Symfony\Component\EventDispatcher\EventDispatcher
+ */
+function dispatcher() {
+    return Deployer::get()->getDispatcher();
 }

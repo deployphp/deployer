@@ -336,6 +336,8 @@ class ParallelExecutor implements ExecutorInterface
                     $this->informer->endTask();
                 } else {
                     $this->informer->taskError($this->hasNonFatalException);
+                    // TODO: Get rid of hard dependency. Use DI container.
+                    \Deployer\dispatcher()->dispatch('error');
                 }
                 
                 // We waited all workers to finish their tasks.

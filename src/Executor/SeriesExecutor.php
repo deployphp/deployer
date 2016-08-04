@@ -55,6 +55,8 @@ class SeriesExecutor implements ExecutorInterface
                 $informer->endTask();
             } else {
                 $informer->taskError();
+                // TODO: Get rid of hard dependency. Use DI container.
+                \Deployer\dispatcher()->dispatch('error');
             }
         }
     }

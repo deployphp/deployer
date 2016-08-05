@@ -57,6 +57,7 @@ if (empty($userSpecifiedFile)) {
 }
 
 if (is_file($deployFile) && is_readable($deployFile)) {
+    \Deployer\set('log_file', dirname($deployFile) . '/deploy.log');
     require $deployFile;
 }
 

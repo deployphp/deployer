@@ -15,6 +15,8 @@ use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Pimple\Container;
 use Symfony\Component\Console;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -48,9 +50,19 @@ class Deployer
     {
         $this->container = $container = new Container();
 
+        /******************************
+         *         Dispatcher         *
+         ******************************/
+
         $container['dispatcher'] = function () {
             return new EventDispatcher();
         };
+
+
+        /******************************
+         *           Console          *
+         ******************************/
+
         $container['console'] = function () use ($console) {
             return $console;
         };
@@ -60,6 +72,12 @@ class Deployer
         $container['output'] = function () use ($output) {
             return $output;
         };
+
+
+        /******************************
+         *            Core            *
+         ******************************/
+
         $container['tasks'] = function () {
             return new Task\TaskCollection();
         };
@@ -77,6 +95,25 @@ class Deployer
         };
         $container['stageStrategy'] = function ($c) {
             return new StageStrategy($c['servers'], $c['environments'], $c['parameters']);
+        };
+
+
+        /******************************
+         *           Logger           *
+         ******************************/
+
+        $container['log_level'] = function ($c) {
+            $parameters = $c['parameters'];
+            return isset($parameters['log_level']) ? $parameters['log_level'] : Logger::ERROR;
+        };
+        $container['log_handler'] = function ($c) {
+            $parameters = $c['parameters'];
+            return new StreamHandler($parameters['log_file'], $parameters['log_level']);
+        };
+        $container['log'] = function ($c) {
+            $parameters = $c['parameters'];
+            $name = isset($parameters['log_name']) ? $parameters['log_name'] : 'Deployer';
+            return new Logger($name);
         };
 
         self::$instance = $this;
@@ -98,10 +135,10 @@ class Deployer
     {
         $this->addConsoleCommands();
 
-        $this->console->add(new WorkerCommand($this));
-        $this->console->add(new InitCommand());
+        $this->getConsole()->add(new WorkerCommand($this));
+        $this->getConsole()->add(new InitCommand());
 
-        $this->console->run($this->input, $this->output);
+        $this->getConsole()->run($this->input, $this->output);
     }
 
     /**
@@ -109,14 +146,28 @@ class Deployer
      */
     public function addConsoleCommands()
     {
-        $this->console->addUserArgumentsAndOptions();
+        $this->getConsole()->addUserArgumentsAndOptions();
 
         foreach ($this->tasks as $name => $task) {
             if ($task->isPrivate()) {
                 continue;
             }
 
-            $this->console->add(new TaskCommand($name, $task->getDescription(), $this));
+            $this->getConsole()->add(new TaskCommand($name, $task->getDescription(), $this));
+        }
+    }
+
+    /**
+     * @param string $name
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    public function __get($name)
+    {
+        if (isset($this->container[$name])) {
+            return $this->container[$name];
+        } else {
+            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
     }
 
@@ -150,20 +201,6 @@ class Deployer
     public function getOutput()
     {
         return $this->container['output'];
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     * @throws \InvalidArgumentException
-     */
-    public function __get($name)
-    {
-        if (isset($this->container[$name])) {
-            return $this->container[$name];
-        } else {
-            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
-        }
     }
 
     /**

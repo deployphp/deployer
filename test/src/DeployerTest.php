@@ -18,8 +18,8 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
         $console = new Application();
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $emitter = $this->getMock('\League\Event\Emitter');
-        $this->deployer = new Deployer($console, $input, $output, $emitter);
+        $eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcher');
+        $this->deployer = new Deployer($console, $input, $output, $eventDispatcher);
     }
 
 

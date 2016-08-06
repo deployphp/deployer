@@ -17,6 +17,7 @@ use Deployer\Collection;
 use Deployer\Console\TaskCommand;
 use League\Event\Emitter;
 use Symfony\Component\Console;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @property Task\TaskCollection|Task\Task[] $tasks
@@ -59,9 +60,9 @@ class Deployer
     private $stageStrategy;
 
     /**
-     * @var Emitter
+     * @var EventDispatcher
      */
-    private $emitter;
+    private $eventDispatcher;
 
     /**
      * Deployer constructor.
@@ -69,18 +70,18 @@ class Deployer
      * @param Application $console
      * @param Console\Input\InputInterface $input
      * @param Console\Output\OutputInterface $output
-     * @param Emitter $emitter
+     * @param EventDispatcher $eventDispatcher
      */
     public function __construct(
         Application $console,
         Console\Input\InputInterface $input,
         Console\Output\OutputInterface $output,
-        Emitter $emitter
+        EventDispatcher $eventDispatcher
     ) {
         $this->console = $console;
         $this->input = $input;
         $this->output = $output;
-        $this->emitter = $emitter;
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->collections = new Collection\Collection();
         $this->collections['tasks'] = new Task\TaskCollection();
@@ -187,10 +188,10 @@ class Deployer
     }
 
     /**
-     * @return Emitter
+     * @return EventDispatcher
      */
-    public function getEmitter()
+    public function getEventDispatcher()
     {
-        return $this->emitter;
+        return $this->eventDispatcher;
     }
 }

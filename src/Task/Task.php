@@ -7,6 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Deployer;
+use Deployer\Event\TaskErrorEvent;
+
 class Task
 {
     /**
@@ -236,5 +239,21 @@ class Task
     public function getListenRunTimeException()
     {
         return (bool) $this->listenRunTimeException;
+    }
+
+    /**
+     * @param \Exception|null $exception
+     * @return bool
+     */
+    public function dispatchErrorEvent(\Exception $exception = null)
+    {
+        if ($this->getListenRunTimeException() === false) {
+            return true;
+        }
+
+        $deployer = Deployer::get();
+        $event = new TaskErrorEvent($this, $exception);
+        $eventDispatcher = $deployer->getEventDispatcher();
+        $eventDispatcher->dispatch($this->getName(), $event);
     }
 }

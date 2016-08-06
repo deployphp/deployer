@@ -66,6 +66,6 @@ class SeriesExecutorTest extends \PHPUnit_Framework_TestCase
         ];
 
         $executor = new SeriesExecutor();
-        $executor->run($tasks, $servers, $environments, $this->input, $this->output, $this->emitter);
+        $executor->run($tasks, $servers, $environments, $this->input, $this->output);
     }
 }

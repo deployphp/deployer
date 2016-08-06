@@ -12,6 +12,7 @@ use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
 use Deployer\Task\Task as TheTask;
 use Deployer\Task\Context;
+use Deployer\Task\ErrorDispatcherEvent;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
@@ -553,25 +554,28 @@ function commandExist($command)
 
 /**
  * @param $callback
+ * @return bool
  */
 function onRunTimeException($callback)
 {
+    if (
+        Deployer::get()->parameters->has('disable_exception_task_listener') &&
+        Deployer::get()->parameters->get('disable_exception_task_listener') == true
+    ) {
+        return true;
+    }
+
     if (!is_callable($callback)) {
         throw new \RuntimeException('Parameter is not callable');
     }
 
-    if (
-        Deployer::get()->parameters->has('enable_runtime_exception_listener') &&
-        Deployer::get()->parameters->get('enable_runtime_exception_listener') == true
-    ) {
-        $emitter = Deployer::get()->getEmitter();
-        $tasks = Deployer::get()->tasks;
-        foreach ($tasks as $task) {
-            if ($task->getListenRunTimeException() === false) {
-                continue;
-            }
-
-            $emitter->addListener($task->getName(), $callback);
+    $eventDispatcher = Deployer::get()->getEventDispatcher();
+    $tasks = Deployer::get()->tasks;
+    foreach ($tasks as $task) {
+        if ($task->getListenRunTimeException() === false) {
+            continue;
         }
+
+        $eventDispatcher->addListener($task->getName(), $callback);
     }
 }

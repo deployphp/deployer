@@ -22,7 +22,6 @@ interface ExecutorInterface
      * @param Environment[] $environments
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @param Emitter $emitter
      */
-    public function run($tasks, $servers, $environments, $input, $output, $emitter);
+    public function run($tasks, $servers, $environments, $input, $output);
 }

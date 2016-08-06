@@ -15,7 +15,6 @@ use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
-use League\Event\Emitter;
 use Symfony\Component\Console;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 

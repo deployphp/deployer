@@ -10,7 +10,6 @@ namespace Deployer\Executor;
 use Deployer\Server\ServerInterface;
 use Deployer\Server\Environment;
 use Deployer\Task\Task;
-use League\Event\Emitter;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

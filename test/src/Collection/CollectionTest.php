@@ -71,4 +71,15 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         unset($collection['key']);
         $this->assertFalse(isset($collection['key']));
     }
+
+    public function testAdd()
+    {
+        $collection = new Collection();
+
+        $collection['keys'] = ['a'];
+
+        $collection->add('keys', ['b']);
+
+        $this->assertEquals(['a', 'b'], $collection['keys']);
+    }
 }

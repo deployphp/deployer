@@ -315,11 +315,11 @@ task('deploy:writable', function () {
                         }
                     }
                 } else {
-                    run("$sudo chmod 777 -R $dirs");
+                    run("$sudo chmod -R 777 $dirs");
                 }
             // If we are not on OS-X and have no ACL installed use POSIX
             } else {
-                run("$sudo chmod 777 -R $dirs");
+                run("$sudo chmod -R 777 $dirs");
             }
         } catch (\RuntimeException $e) {
             $formatter = \Deployer\Deployer::get()->getHelper('formatter');

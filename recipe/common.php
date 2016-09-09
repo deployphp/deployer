@@ -190,7 +190,7 @@ task('deploy:update_code', function () {
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
 
-    // If option `tag` is set
+    // If option `branch` is set
     if (input()->hasOption('branch')) {
         $branch = input()->getOption('branch');
     }

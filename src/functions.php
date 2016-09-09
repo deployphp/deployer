@@ -302,7 +302,7 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 
@@ -335,6 +335,10 @@ function upload($local, $remote)
 
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
+            if (isDebug()) {
+                writeln("Uploading <info>{$file->getRealPath()}</info>");
+            }
+            
             $server->upload(
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()

@@ -84,6 +84,7 @@ env('bin/composer', function () {
 argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
 option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
 option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
+option('branch', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Branch to deploy.');
 
 
 /**
@@ -184,21 +185,23 @@ task('deploy:release', function () {
  */
 task('deploy:update_code', function () {
     $repository = trim(get('repository'));
-    $branch = env('branch');
     $git = env('bin/git');
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
-
-    $at = '';
-    if (!empty($branch)) {
-        $at = "-b $branch";
-    }
 
     // If option `tag` is set
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
         if (!empty($tag)) {
             $at = "-b $tag";
+        }
+    }
+    
+    // If option `branch` is set
+    if (input()->hasOption('branch')) {
+        $branch = input()->getOption('branch');
+        if (!empty($branch)) {
+            $at = "-b $branch";
         }
     }
 

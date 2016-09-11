@@ -32,42 +32,42 @@ task('mage:cc', function () {
 /**
  * Clear Cache Static files
  */
-task('mage:cc:static', function (){
+task('mage:cc:static', function () {
     run("cd {{deploy_path}}/current && rm -rf media/css/*.css && rm -rf media/js/*.js && rm -rf media/css_secure/*.css");
 })->desc('Clear cache images');
 
 /**
  * Enter in Maintenance Mode Magento
  */
-task('mage:disable', function (){
+task('mage:disable', function () {
     run("cd {{deploy_path}}/current && touch maintenance.flag");
 })->desc('Enable Maintenance Mode');
 
 /**
  * Disable Maintenance Mode Magento
  */
-task('mage:enable', function (){
+task('mage:enable', function () {
     run("cd {{deploy_path}}/current && rm -rf maintenance.flag");
 })->desc('Disable Maintenance Mode');
 
 /**
  * Reindex all index of Magento
  */
-task('mage:indexer',function(){
+task('mage:indexer', function () {
     run("cd {{deploy_path}}/current/shell && {{bin/php}} -f indexer.php -- reindexall");
 })->desc('Run Indexer');
 
 /**
  * Delete Locks of indexers
  */
-task('mage:unlock',function(){
+task('mage:unlock', function () {
     run("cd {{deploy_path}}/current && rm -rf var/locks/*");
 })->desc('Delete locks');
 
 /**
  * Clean Magento Logs
  */
-task('mage:clean_log',function(){
+task('mage:clean_log', function () {
     run("cd {{deploy_path}}/current/shell && {{bin/php}} -f log.php -- clean");
 })->desc('Clean Log');
 
@@ -89,7 +89,7 @@ task('deploy:clear_version', function () {
 
 after('deploy:update_code', 'deploy:clear_version');
 
-before('mage:indexer','mage:unlock');
+before('mage:indexer', 'mage:unlock');
 
 /**
  * Main task

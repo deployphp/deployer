@@ -19,6 +19,8 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', true);    // Using sudo in clean commands?
+set('maintenance_template', false); // maintenance template file path, eg: temp/maintenance.html.tpl
+env('maintenance_target', 'maintenance.html');
 
 
 /**
@@ -84,6 +86,10 @@ env('bin/composer', function () {
 argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
 option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
 option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
+// maintenance options
+option('disable-maintenance', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL|\Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Disable the maintenance.');
+option('keep-maintenance-file', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL|\Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Disable the maintenance.');
+option('maintenance-file', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Set the maintenance file. Override the `maintenance_template` parameter.');
 
 
 /**
@@ -415,6 +421,29 @@ task('current', function () {
     writeln('Current release: ' . basename(env('current')));
 })->desc('Show current release.');
 
+task('maintenance:lock', function() {
+    if (!option('disable-maintenance') && env('maintenance_template')) {
+        $basePath = env('release_path') ?: env('current');
+        if (option('maintenance-file')) {
+            env('maintenance_template', option('maintenance-file'));
+        }
+        $maintenanceTemplateExists = run("cd {$basePath} && if [[ -f {{maintenance_template}} ]] ; then echo \"1\" ; else echo \"0\" ; fi")->toString();
+        $maintenanceTargetExists = run('cd {{current}} && if [[ -f {{maintenance_target}} ]] ; then echo "1" ; else echo "0" ; fi')->toString();
+        if ($maintenanceTemplateExists == '1' && $maintenanceTargetExists == '0') {
+            run("cp {$basePath}/{{maintenance_template}} {{current}}/{{maintenance_target}}");
+        }
+    } else {
+        writeln('"Create maintenance file" is <comment>disabled</comment>.');
+    }
+})->desc('Create maintenance file (if enable)');
+
+task('maintenance:unlock', function() {
+    if (!option('keep-maintenance-file')) {
+        run('rm -f {{current}}/{{maintenance_target}}');
+    } else {
+        writeln('<comment>Keep</comment> the maintenance file!');
+    }
+})->desc('Remove maintenance file (if exists)');
 
 /**
  * Cleanup old releases.

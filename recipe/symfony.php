@@ -51,6 +51,8 @@ env('console_options', function () {
     return env('env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
 });
 
+// Ask questions?
+env('interaction', true);
 
 /**
  * Create cache dir
@@ -127,6 +129,46 @@ task('deploy:clear_controllers', function () {
 // Run after code is checked out
 after('deploy:update_code', 'deploy:clear_controllers');
 
+/**
+ * Init parameters.yml
+ *
+ * Ask parameters from all dist file (read dist files from composer.json) .
+ */
+task('deploy:init-parameters-yml', function () {
+    if (env('interaction')) {
+        $composerConfigString = run('cat {{release_path}}/composer.json');
+        if ($composerConfigString->toString()) {
+            $composerConfig = json_decode($composerConfigString, true);
+            $distFiles = isset($composerConfig['extra']['incenteev-parameters'])
+                ? $composerConfig['extra']['incenteev-parameters']
+                : []
+            ;
+
+            /** @var string|array $distFile */
+            foreach ($distFiles as $distFile) {
+                // get filename
+                $distFile = is_array($distFile) ? $distFile['file'] : $distFile;
+                env('config_yml_path', '{{release_path}}/' . $distFile);
+
+                $result = run('if [[ -f {{config_yml_path}} && ! -s {{config_yml_path}} ]] ; then echo "1" ; else echo "0" ; fi');
+                if ($result->toString() == '1') {
+                    writeln(sprintf('Set the `%s` config file parameters', $distFile));
+                    $ymlParser = new \Symfony\Component\Yaml\Parser();
+                    $parameters = $ymlParser->parse((string) run('cat {{config_yml_path}}.dist'));
+                    $newParameters = [];
+                    foreach ($parameters['parameters'] as $key => $default) {
+                        $value = ask($key, $default);
+                        $newParameters[$key] = $value;
+                    }
+                    $ymlDumper = new \Symfony\Component\Yaml\Dumper();
+                    $content = $ymlDumper->dump(['parameters' => $newParameters], 2);
+                    run("cat << EOYAML > {{config_yml_path}}\n$content\nEOYAML");
+                }
+            }
+        }
+    }
+
+})->desc('Initialize `parameters.yml`');
 
 /**
  * Main task
@@ -138,6 +180,7 @@ task('deploy', [
     'deploy:create_cache_dir',
     'deploy:shared',
     'deploy:assets',
+    'deploy:init-parameters-yml',
     'deploy:vendors',
     'deploy:assets:install',
     'deploy:assetic:dump',

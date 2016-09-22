@@ -19,20 +19,36 @@ class SymfonyTemplate extends Template
      */
     protected function getTemplateContent()
     {
+        $fullPath = realpath(implode(DIRECTORY_SEPARATOR, [
+            __DIR__,
+            '..',
+            '..',
+            '..',
+            'recipe',
+            'symfony.php'
+        ]));
         return <<<PHP
 <?php
 /*
  * This file has been generated automatically.
  * Please change the configuration for correct use deploy.
  */
+namespace Deployer;
 
-require 'recipe/symfony.php';
+// Change the full path to relative
+require '{$fullPath}';
 
 // Set configurations
 set('repository', 'git@domain.com:username/repository.git');
 set('shared_files', ['app/config/parameters.yml']);
+// Add the `web/uploads` to shared and writable dirs if you are using upload directory!
 set('shared_dirs', ['app/logs']);
 set('writable_dirs', ['app/cache', 'app/logs']);
+// Removable files after deploy
+set('removable_files', ['web/app_*.php', 'web/config.php']);
+
+env('enable_database_create', false);
+env('use_database_migration_strategy', true);
 
 // Configure servers
 server('production', 'prod.domain.com')
@@ -45,6 +61,13 @@ server('beta', 'beta.domain.com')
     ->password()
     ->env('deploy_path', '/var/www/beta.domain.com');
 
+server('jenkins', 'jenkins.domain.com')
+    ->user('username')
+    ->password()
+    ->env('deploy_path', '/var/jenkins/build/')
+    ->env('enable_database_create', true)
+    ->env('interaction', false);
+
 /**
  * Restart php-fpm on success deploy.
  */
@@ -56,15 +79,6 @@ task('php-fpm:restart', function () {
 })->desc('Restart PHP-FPM service');
 
 after('success', 'php-fpm:restart');
-
-
-/**
- * Attention: This command is only for for example. Please follow your own migrate strategy.
- * Attention: Commented by default.  
- * Migrate database before symlink new release.
- */
- 
-// before('deploy:symlink', 'database:migrate');
 PHP;
     }
 }

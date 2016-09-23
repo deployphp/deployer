@@ -54,16 +54,21 @@ env('use_database_migration_strategy', true);
 server('production', 'prod.domain.com')
     ->user('username')
     ->password()
+    // If you use keys
+    //->forwardAgent()
+    ->stage('prod')
     ->env('deploy_path', '/var/www/prod.domain.com');
 
 server('beta', 'beta.domain.com')
     ->user('username')
     ->password()
+    ->stage('dev')
     ->env('deploy_path', '/var/www/beta.domain.com');
 
 server('jenkins', 'jenkins.domain.com')
     ->user('username')
     ->password()
+    ->stage('test')
     ->env('deploy_path', '/var/jenkins/build/')
     ->env('enable_database_create', true)
     ->env('interaction', false);

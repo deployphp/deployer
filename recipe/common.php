@@ -87,8 +87,8 @@ argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run
 option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
 option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
 // maintenance options
-option('disable-maintenance', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL|\Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Disable the maintenance.');
-option('keep-maintenance-file', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL|\Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Disable the maintenance.');
+option('disable-maintenance', null, \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Disable the maintenance.');
+option('keep-maintenance-file', null, \Symfony\Component\Console\Input\InputOption::VALUE_NONE, 'Disable the maintenance.');
 option('maintenance-file', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Set the maintenance file. Override the `maintenance_template` parameter.');
 
 
@@ -422,15 +422,17 @@ task('current', function () {
 })->desc('Show current release.');
 
 task('maintenance:lock', function() {
-    if (!option('disable-maintenance') && env('maintenance_template')) {
-        $basePath = env('release_path') ?: env('current');
-        if (option('maintenance-file')) {
-            env('maintenance_template', option('maintenance-file'));
+    if (!input()->getOption('disable-maintenance') && get('maintenance_template')) {
+        $basePath = fileExists('{{deploy_path}}/release', FILE_CHECK_IS_SYMBOLIC_LINK)
+            ? env('release_path')
+            : env('current');
+        if (input()->getOption('maintenance-file')) {
+            set('maintenance_template', input()->getOption('maintenance-file'));
         }
-        $maintenanceTemplateExists = run("cd {$basePath} && if [[ -f {{maintenance_template}} ]] ; then echo \"1\" ; else echo \"0\" ; fi")->toString();
-        $maintenanceTargetExists = run('cd {{current}} && if [[ -f {{maintenance_target}} ]] ; then echo "1" ; else echo "0" ; fi')->toString();
-        if ($maintenanceTemplateExists == '1' && $maintenanceTargetExists == '0') {
-            run("cp {$basePath}/{{maintenance_template}} {{current}}/{{maintenance_target}}");
+        if (fileExists('{{deploy_path}}/current', FILE_CHECK_IS_SYMBOLIC_LINK)) {
+            if (fileExists("{$basePath}/{{maintenance_template}}") && !fileExists('{{current}}/{{maintenance_target}}')) {
+                run("cp {$basePath}/{{maintenance_template}} {{current}}/{{maintenance_target}}");
+            }
         }
     } else {
         writeln('"Create maintenance file" is <comment>disabled</comment>.');
@@ -438,7 +440,7 @@ task('maintenance:lock', function() {
 })->desc('Create maintenance file (if enable)');
 
 task('maintenance:unlock', function() {
-    if (!option('keep-maintenance-file')) {
+    if (!input()->getOption('keep-maintenance-file')) {
         run('rm -f {{current}}/{{maintenance_target}}');
     } else {
         writeln('<comment>Keep</comment> the maintenance file!');

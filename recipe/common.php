@@ -421,7 +421,7 @@ task('current', function () {
     writeln('Current release: ' . basename(env('current')));
 })->desc('Show current release.');
 
-task('maintenance:lock', function() {
+task('maintenance:lock', function () {
     if (!input()->getOption('disable-maintenance') && get('maintenance_template')) {
         $basePath = fileExists('{{deploy_path}}/release', FILE_CHECK_IS_SYMBOLIC_LINK)
             ? env('release_path')
@@ -439,7 +439,7 @@ task('maintenance:lock', function() {
     }
 })->desc('Create maintenance file (if enable)');
 
-task('maintenance:unlock', function() {
+task('maintenance:unlock', function () {
     if (!input()->getOption('keep-maintenance-file')) {
         run('rm -f {{current}}/{{maintenance_target}}');
     } else {

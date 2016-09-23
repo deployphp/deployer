@@ -581,7 +581,8 @@ const FILE_CHECK_IS_EXECUTABLE = 'x';
  * @param string $checkType
  * @return bool
  */
-function fileExists($file, $checkType = FILE_CHECK_IS_FILE) {
+function fileExists($file, $checkType = FILE_CHECK_IS_FILE)
+{
     $file = env()->parse($file);
     // The `run()` throw error on some check in local mode!
     if (Context::get()->getServer() instanceof Local) {

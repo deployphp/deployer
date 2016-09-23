@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Server\Local;
+
 require_once __DIR__ . '/common.php';
 
 
@@ -236,24 +238,33 @@ task('deploy:init-parameters-yml', function () {
                 $distFile = is_array($distFile) ? $distFile['file'] : $distFile;
                 env('config_yml_path', '{{release_path}}/' . $distFile);
 
-                $result = run('if [[ -f {{config_yml_path}} && ! -s {{config_yml_path}} ]] ; then echo "1" ; else echo "0" ; fi');
-                if ($result->toString() == '1') {
-                    writeln(sprintf('Set the `%s` config file parameters', $distFile));
+                if (\Deployer\Task\Context::get()->getServer() instanceof Local) {
+                    // The `run()` throw error with "if" command in local mode
+                    $mustAsk = file_exists(env('config_yml_path'));
+                } else {
+                    $result = run('if [[ -f {{config_yml_path}} ]] ; then echo "1" ; else echo "0" ; fi');
+                    $mustAsk = $result->toString() == '1';
+                }
+
+                if ($mustAsk) {
                     $ymlParser = new \Symfony\Component\Yaml\Parser();
-                    $parameters = $ymlParser->parse((string) run('cat {{config_yml_path}}.dist'));
-                    $newParameters = [];
-                    foreach ($parameters['parameters'] as $key => $default) {
-                        $value = ask($key, $default);
-                        $newParameters[$key] = $value;
+                    $currentContent = $ymlParser->parse(run("cat {{config_yml_path}}")->toString()) ?: ['parameters' => []];
+                    $distContent = $ymlParser->parse(run("cat {{config_yml_path}}.dist")->toString()) ?: ['parameters' => []];
+                    $diff = array_diff_key($distContent['parameters'], $currentContent['parameters']);
+
+                    if (count($diff) > 0) {
+                        foreach ($diff as $name => $default) {
+                            $value = ask($name, $default);
+                            $currentContent['parameters'][$name] = $value;
+                        }
+                        $ymlDumper = new \Symfony\Component\Yaml\Dumper();
+                        $content = $ymlDumper->dump($currentContent, 2);
+                        run("cat << EOYAML > {{config_yml_path}}\n$content\nEOYAML");
                     }
-                    $ymlDumper = new \Symfony\Component\Yaml\Dumper();
-                    $content = $ymlDumper->dump(['parameters' => $newParameters], 2);
-                    run("cat << EOYAML > {{config_yml_path}}\n$content\nEOYAML");
                 }
             }
         }
     }
-
 })->desc('Initialize `parameters.yml`');
 
 /**

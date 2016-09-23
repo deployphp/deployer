@@ -33,7 +33,7 @@ set('repository', 'git@domain.com:username/repository.git');
 set('shared_files', ['app/config/parameters.yml']);
 set('shared_dirs', ['app/logs']);
 set('writable_dirs', ['app/cache', 'app/logs']);
-set('maintenance_template', 'app/Resources/views/maintenance.html')
+set('maintenance_template', 'app/Resources/views/maintenance.html');
 
 // Configure servers
 server('production', 'prod.domain.com')

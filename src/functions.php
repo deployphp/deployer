@@ -586,7 +586,7 @@ function fileExists($file, $checkType = FILE_CHECK_IS_FILE)
     $file = env()->parse($file);
     // The `run()` throw error on some check in local mode!
     if (Context::get()->getServer() instanceof Local) {
-        switch($checkType) {
+        switch ($checkType) {
             case FILE_CHECK_EXISTS:
                 return file_exists($file);
             case FILE_CHECK_IS_FILE:

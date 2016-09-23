@@ -201,7 +201,7 @@ task('database:migrate:rollback', function () {
 })->desc('Rollback the database (only if set `use_database_migration_strategy` true)');
 
 // Run before rollback
-before('rollback', 'rollback:database');
+before('rollback', 'database:migrate:rollback');
 
 /**
  * Remove app_dev.php files

@@ -31,9 +31,6 @@ if (!$loaded) {
 // Recipe include path
 set_include_path(__DIR__ . '/../' . PATH_SEPARATOR . get_include_path());
 
-// Include function declarations
-require_once 'src/functions.php';
-
 // Init Deployer
 $console = new \Deployer\Console\Application('Deployer', 'master');
 $input = new \Symfony\Component\Console\Input\ArgvInput();

@@ -193,15 +193,14 @@ task('deploy:update_code', function () {
     // If option `tag` is not set and option `revision` is set
     if (empty($tag) && input()->hasOption('revision')) {
         $revision = input()->getOption('revision');
+        if (!empty($revision)) {
+            $depth = '';
+        }
     }
 
     $releases = env('releases_list');
 
-    if (!empty($revision)) {
-        // To checkout specified revision we need to clone all tree.
-        run("$git clone $at --recursive -q $repository {{release_path}} 2>&1");
-        run("cd {{release_path}} && $git checkout $revision");
-    } elseif ($gitCache && isset($releases[1])) {
+    if ($gitCache && isset($releases[1])) {
         try {
             run("$git clone $at --recursive -q --reference {{deploy_path}}/releases/{$releases[1]} --dissociate $repository  {{release_path}} 2>&1");
         } catch (RuntimeException $exc) {
@@ -211,6 +210,10 @@ task('deploy:update_code', function () {
     } else {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
         run("$git clone $at $depth --recursive -q $repository {{release_path}} 2>&1");
+    }
+    
+    if (!empty($revision)) {
+        run("cd {{release_path}} && $git checkout $revision");
     }
 })->desc('Updating code');
 

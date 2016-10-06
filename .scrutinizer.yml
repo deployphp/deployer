@@ -13,7 +13,7 @@ filter:
 
 build:
   environment:
-    php: '5.5.25'
+    php: '5.6.26'
   tests:
     override:
       -

@@ -22,12 +22,12 @@ set('writable_dirs', ['bootstrap/cache', 'storage']);
  * Helper tasks
  */
 task('artisan:up', function () {
-    $output = run('if [ -d {{deploy_path}}/current ]; then {{bin/php}} {{deploy_path}}/current/artisan up; fi');
+    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan up; fi');
     writeln('<info>' . $output . '</info>');
 })->desc('Disable maintenance mode');
 
 task('artisan:down', function () {
-    $output = run('if [ -d {{deploy_path}}/current ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi');
+    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi');
     writeln('<error>' . $output . '</error>');
 })->desc('Enable maintenance mode');
 

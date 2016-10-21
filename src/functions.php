@@ -50,6 +50,8 @@ function server($name, $host = null, $port = 22)
 
     if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
+    } elseif ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'native') {
+        $server = new Remote\NativeSsh($config);
     } else {
         $server = new Remote\PhpSecLib($config);
     }

@@ -47,6 +47,14 @@ class Collection implements CollectionInterface, \Countable
     /**
      * {@inheritdoc}
      */
+    public function add($name, $object)
+    {
+        $this->collection[$name] = array_merge($this->collection[$name], $object);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getIterator()
     {
         return new \ArrayIterator($this->collection);

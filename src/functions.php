@@ -88,9 +88,9 @@ function localServer($name)
 function cluster($name, $nodes, $port = 22)
 {
     $deployer = Deployer::get();
-    
+
     $cluster = ClusterFactory::create($deployer, $name, $nodes, $port);
-    
+
     return $cluster->getBuilder();
 }
 
@@ -383,6 +383,15 @@ function write($message)
 function set($key, $value)
 {
     Deployer::get()->parameters->set($key, $value);
+}
+
+/**
+ * @param string $key
+ * @param mixed $value
+ */
+function add($key, $value)
+{
+    Deployer::get()->parameters->add($key, $value);
 }
 
 /**

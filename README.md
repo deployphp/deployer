@@ -10,9 +10,11 @@ Introduction
 
 Deployer is a deployment tool written in PHP.
 
-See [https://deployer.org](https://deployer.org) for more information and documentation.
+See [deployer.org](https://deployer.org) for more information and documentation.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) 
+
+Support Deployer development by [![Becoming a patron](https://img.shields.io/badge/become-patron-brightgreen.svg)](https://www.patreon.com/deployer)
 
 Requirements
 ------------

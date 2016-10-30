@@ -105,7 +105,7 @@ class Task
     /**
      * Set task description.
      * @param string $description
-     * @return $this
+     * @return Task
      */
     public function desc($description)
     {
@@ -115,7 +115,7 @@ class Task
 
     /**
      * Set this task local and run only once.
-     * @return $this
+     * @return Task
      */
     public function once()
     {
@@ -133,7 +133,7 @@ class Task
 
     /**
      * @param array|string $servers
-     * @return $this
+     * @return Task
      */
     public function onlyOn($servers = [])
     {
@@ -145,7 +145,7 @@ class Task
      * Indicate for which stages this task should be run.
      *
      * @param array|string $stages
-     * @return $this
+     * @return Task
      */
     public function onlyForStage($stages = [])
     {
@@ -207,6 +207,7 @@ class Task
 
     /**
      * Mark task as private.
+     * @return Task
      */
     public function setPrivate()
     {

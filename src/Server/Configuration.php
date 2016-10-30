@@ -16,11 +16,11 @@ use Deployer\Server\Password\PasswordGetterInterface;
  */
 class Configuration
 {
-    const AUTH_BY_PASSWORD      = 0;
-    const AUTH_BY_CONFIG        = 1;
-    const AUTH_BY_IDENTITY_FILE = 2;
-    const AUTH_BY_PEM_FILE      = 3;
-    const AUTH_BY_AGENT         = 4;
+    const AUTH_BY_PASSWORD                      = 0;
+    const AUTH_BY_CONFIG                        = 1;
+    const AUTH_BY_IDENTITY_FILE                 = 2;
+    const AUTH_BY_PEM_FILE                      = 3;
+    const AUTH_BY_AGENT                         = 4;
     const AUTH_BY_IDENTITY_FILE_AND_PASSWORD    = 5;
 
     /**

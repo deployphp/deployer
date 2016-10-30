@@ -7,6 +7,7 @@
 
 namespace Deployer\Bootstrap;
 
+use Deployer\Builder\BuilderInterface;
 use Deployer\Type\DotArray;
 use Symfony\Component\Yaml\Yaml;
 
@@ -45,20 +46,20 @@ class BootstrapByConfigFile
     public $serverConfig = [];
 
     /**
-     * @var \Deployer\Cluster\ClusterBuilder[] $clusterBuilders
+     * @var BuilderInterface[] $clusterBuilders
      */
     public $clusterBuilders = [];
     
     /**
-     * @var Deployer\Server\Builder[] $serverBuilders
+     * @var BuilderInterface[] $serverBuilders
      */
     public $serverBuilders = [];
 
     /**
      * @param \Deployer\Type\DotArray $config
-     * @param \Deployer\Server\Builder|\Deployer\Cluster\ClusterBuilder $builder
+     * @param BuilderInterface $builder
      */
-    private function executeBuilderMethods(DotArray $config, $builder)
+    private function executeBuilderMethods(DotArray $config, BuilderInterface $builder)
     {
         if ($config->hasKey('identity_file')) {
             if ($config['identity_file'] === null) {
@@ -187,6 +188,7 @@ class BootstrapByConfigFile
 
     /**
      * @param string $file
+     * @return \Deployer\Bootstrap\BootstrapByConfigFile
      */
     public function setConfig($file)
     {

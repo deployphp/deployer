@@ -7,9 +7,8 @@
 
 namespace Deployer\Cluster;
 
+use Deployer\Builder\BuilderInterface;
 use Deployer\Deployer;
-use Deployer\Cluster\ClusterInterface;
-use Deployer\Cluster\ClusterBuilder;
 
 /**
  * Cluster
@@ -35,7 +34,7 @@ class Cluster implements ClusterInterface
     protected $port = null;
 
     /**
-     * @var ClusterBuilder $clusterBuilder
+     * @var BuilderInterface $clusterBuilder
      */
     protected $clusterBuilder = null;
 
@@ -45,7 +44,7 @@ class Cluster implements ClusterInterface
      * @param array $nodes
      * @param int $port
      *
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
      */
     public function __construct(Deployer $deployer, $name, $nodes, $port)
     {
@@ -72,7 +71,7 @@ class Cluster implements ClusterInterface
     }
 
     /**
-     * @return \Deployer\Cluster\ClusterBuilder
+     * @return BuilderInterface
      */
     public function getBuilder()
     {
@@ -80,7 +79,7 @@ class Cluster implements ClusterInterface
     }
     
     /**
-     * @return array | \Deployer\Cluster\Node[]
+     * @return array|\Deployer\Cluster\Node[]
      */
     public function getNodes()
     {

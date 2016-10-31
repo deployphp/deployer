@@ -10,9 +10,11 @@ Introduction
 
 Deployer is a deployment tool written in PHP.
 
-See [http://deployer.org](http://deployer.org) for more information and documentation.
+See [deployer.org](https://deployer.org) for more information and documentation.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) 
+
+Support Deployer development by [![Becoming a patron](https://img.shields.io/badge/become-patron-brightgreen.svg)](https://www.patreon.com/deployer)
 
 Requirements
 ------------
@@ -24,10 +26,10 @@ You can enable [sockets](http://php.net/manual/en/book.sockets.php) to speedup d
 
 Installation
 ------------
-To install Deployer download [deployer.phar](http://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
+To install Deployer download [deployer.phar](https://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
 ``` sh
-$ curl -LO http://deployer.org/deployer.phar
+$ curl -LO https://deployer.org/deployer.phar
 $ mv deployer.phar /usr/local/bin/dep
 $ chmod +x /usr/local/bin/dep
 ```
@@ -57,20 +59,22 @@ To build `deployer.phar` run `./build` command.
 
 Community
 -------
-Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss).
+Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
 
 Roadmap
 -------
 #### 4 
-* ~~Namespace for functions~~
-* ~~Dependency Injection Configuration~~
-* ~~Event Dispatcher~~
+* Namespace for functions
+* Dependency Injection Configuration
+* Event Dispatcher
 * Default stage selector
 * ~~Faster cloning by borrowing objects from existing clones~~ Done in v3!
 * Immutable settings
 * Native SSH support
-* Task grouping for parallel execution
 
+#### 5
+* Task grouping for parallel execution
+* Web-based client
 
 Contributing
 ------------
@@ -94,6 +98,11 @@ Maintainers
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 
+
+Supporting Deployer
+-------------------
+
+Deployer is an open source project. If you want to support the development of Deployer visit our [patreon page](https://www.patreon.com/deployer).
 
 License
 -------

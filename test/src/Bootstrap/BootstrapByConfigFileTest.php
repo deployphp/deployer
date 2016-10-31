@@ -84,7 +84,7 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
     {
         $bootstrap = $this->bootstrap->initServers();
         $this->assertInstanceOf('Deployer\Bootstrap\BootstrapByConfigFile', $bootstrap);
-        $this->assertContainsOnlyInstancesOf('Deployer\Server\Builder', $bootstrap->serverBuilders);
+        $this->assertContainsOnlyInstancesOf('Deployer\Builder\BuilderInterface', $bootstrap->serverBuilders);
     }
     
     /**
@@ -95,6 +95,6 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
         $bootstrap = $this->bootstrap->initClusters();
         $this->assertInstanceOf('Deployer\Bootstrap\BootstrapByConfigFile', $bootstrap);
 
-        $this->assertContainsOnlyInstancesOf('Deployer\Cluster\ClusterBuilder', $bootstrap->clusterBuilders);
+        $this->assertContainsOnlyInstancesOf('Deployer\Builder\BuilderInterface', $bootstrap->clusterBuilders);
     }
 }

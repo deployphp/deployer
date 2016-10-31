@@ -13,7 +13,6 @@ use Deployer\Server\Configuration;
 use Deployer\Server\Builder;
 use Deployer\Server\Remote\PhpSecLib;
 use Deployer\Server\Remote\SshExtension;
-use Deployer\Cluster\NodeInterface;
 
 /**
  * Cluster Node
@@ -22,14 +21,13 @@ use Deployer\Cluster\NodeInterface;
  */
 class Node implements NodeInterface
 {
-
     /**
      * @var \Deployer\Deployer
      */
     protected $deployer = null;
 
     /**
-     * @var \Deployer\Server\Builder
+     * @var \Deployer\Builder\BuilderInterface
      */
     public $builder = null;
 
@@ -118,7 +116,7 @@ class Node implements NodeInterface
     }
 
     /**
-     * @return \Deployer\Server\Builder
+     * @return \Deployer\Builder\BuilderInterface
      */
     public function getBuilder()
     {

@@ -255,7 +255,6 @@ class ParallelExecutor implements ExecutorInterface
                 // If we got NonFatalException, continue other tasks.
                 $this->hasNonFatalException = true;
             } else {
-
                 // Do not run other task.
                 // Finish all current worker tasks and stop loop.
                 $this->tasks = [];

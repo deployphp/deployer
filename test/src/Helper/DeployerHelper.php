@@ -10,6 +10,7 @@ namespace Deployer\Helper;
 use Deployer\Console\Application;
 use Deployer\Deployer;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 trait DeployerHelper
 {
@@ -34,6 +35,11 @@ trait DeployerHelper
     protected $output;
 
     /**
+     * @var EventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * Init deployer
      */
     protected function initialize()
@@ -47,6 +53,8 @@ trait DeployerHelper
         // Prepare Deployer
         $this->input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $this->output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $this->deployer = new Deployer($console, $this->input, $this->output);
+        $this->eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcher');
+
+        $this->deployer = new Deployer($console, $this->input, $this->output, $this->eventDispatcher);
     }
 }

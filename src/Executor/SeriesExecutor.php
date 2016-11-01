@@ -44,6 +44,9 @@ class SeriesExecutor implements ExecutorInterface
                         } catch (NonFatalException $exception) {
                             $success = false;
                             $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());
+                        } catch (\RuntimeException $e) {
+                            $task->dispatchErrorEvent($e);
+                            throw $e;
                         }
 
                         $informer->endOnServer($serverName);

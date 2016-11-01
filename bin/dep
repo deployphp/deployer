@@ -38,7 +38,8 @@ require_once 'src/functions.php';
 $console = new \Deployer\Console\Application('Deployer', 'master');
 $input = new \Symfony\Component\Console\Input\ArgvInput();
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-$deployer = new \Deployer\Deployer($console, $input, $output);
+$eventDispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+$deployer = new \Deployer\Deployer($console, $input, $output, $eventDispatcher);
 
 // Require deploy.php script
 $options = getopt('f::', ['file::']);

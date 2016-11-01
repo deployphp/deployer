@@ -16,6 +16,7 @@ use Deployer\Task;
 use Deployer\Collection;
 use Deployer\Console\TaskCommand;
 use Symfony\Component\Console;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @property Task\TaskCollection|Task\Task[] $tasks
@@ -58,15 +59,28 @@ class Deployer
     private $stageStrategy;
 
     /**
+     * @var EventDispatcher
+     */
+    private $eventDispatcher;
+
+    /**
+     * Deployer constructor.
+     *
      * @param Application $console
      * @param Console\Input\InputInterface $input
      * @param Console\Output\OutputInterface $output
+     * @param EventDispatcher $eventDispatcher
      */
-    public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
-    {
+    public function __construct(
+        Application $console,
+        Console\Input\InputInterface $input,
+        Console\Output\OutputInterface $output,
+        EventDispatcher $eventDispatcher
+    ) {
         $this->console = $console;
         $this->input = $input;
         $this->output = $output;
+        $this->eventDispatcher = $eventDispatcher;
 
         $this->collections = new Collection\Collection();
         $this->collections['tasks'] = new Task\TaskCollection();
@@ -170,5 +184,13 @@ class Deployer
     public function getStageStrategy()
     {
         return $this->stageStrategy;
+    }
+
+    /**
+     * @return EventDispatcher
+     */
+    public function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
     }
 }

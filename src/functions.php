@@ -13,6 +13,7 @@ use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
 use Deployer\Task\Task as TheTask;
 use Deployer\Task\Context;
+use Deployer\Task\ErrorDispatcherEvent;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
 use Deployer\Task\Scenario\Scenario;
@@ -554,4 +555,32 @@ function env($name = null, $value = null)
 function commandExist($command)
 {
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
+}
+
+/**
+ * @param $callback
+ * @return bool
+ */
+function onRunTimeException($callback)
+{
+    if (
+        Deployer::get()->parameters->has('disable_exception_task_listener') &&
+        Deployer::get()->parameters->get('disable_exception_task_listener') == true
+    ) {
+        return true;
+    }
+
+    if (!is_callable($callback)) {
+        throw new \RuntimeException('Parameter is not callable');
+    }
+
+    $eventDispatcher = Deployer::get()->getEventDispatcher();
+    $tasks = Deployer::get()->tasks;
+    foreach ($tasks as $task) {
+        if ($task->getListenRunTimeException() === false) {
+            continue;
+        }
+
+        $eventDispatcher->addListener($task->getName(), $callback);
+    }
 }

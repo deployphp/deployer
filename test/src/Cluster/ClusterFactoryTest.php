@@ -26,8 +26,9 @@ class ClusterFactoryTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
+        $eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcher');
 
-        $this->deployer = new Deployer($app, $input, $output);
+        $this->deployer = new Deployer($app, $input, $output, $eventDispatcher);
     }
     
     public function tearDown()

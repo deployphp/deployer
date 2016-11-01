@@ -50,7 +50,9 @@ abstract class RecipeTester extends \PHPUnit_Framework_TestCase
         // Prepare Deployer
         $input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
         $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $this->deployer = new Deployer($console, $input, $output);
+        $eventDispatcher = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcher');
+
+        $this->deployer = new Deployer($console, $input, $output, $eventDispatcher);
 
         // Load recipe
         $this->setUpServer();

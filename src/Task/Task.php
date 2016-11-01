@@ -7,6 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Deployer;
+use Deployer\Event\TaskErrorEvent;
+
 class Task
 {
     /**
@@ -49,6 +52,12 @@ class Task
      * @var bool
      */
     private $private = false;
+
+    /**
+     * Should this task listen runtime exceptions?
+     * @var bool
+     */
+    private $listenRunTimeException = true;
 
     /**
      * @param string $name Tasks name
@@ -213,5 +222,39 @@ class Task
     {
         $this->private = true;
         return $this;
+    }
+
+    /**
+     * @param bool $value
+     * @return $this
+     */
+    public function listenRunTimeException($value = true)
+    {
+        $this->listenRunTimeException = (bool) $value;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getListenRunTimeException()
+    {
+        return (bool) $this->listenRunTimeException;
+    }
+
+    /**
+     * @param \Exception|null $exception
+     * @return bool
+     */
+    public function dispatchErrorEvent(\Exception $exception = null)
+    {
+        if ($this->getListenRunTimeException() === false) {
+            return true;
+        }
+
+        $deployer = Deployer::get();
+        $event = new TaskErrorEvent($this, $exception);
+        $eventDispatcher = $deployer->getEventDispatcher();
+        $eventDispatcher->dispatch($this->getName(), $event);
     }
 }

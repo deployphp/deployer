@@ -12,6 +12,7 @@ use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -45,6 +46,7 @@ class TaskCommand extends Command
      */
     protected function configure()
     {
+        $this->addArgument('stage', InputArgument::OPTIONAL, null);
         $this->addOption(
             'parallel',
             'p',

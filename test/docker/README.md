@@ -6,4 +6,12 @@ If you cannot or don't want to install docker locally, you can use [docker machi
 
     eval "$(docker-machine env default)"
 
-Now you can run `test/docker/run.sh` as if docker was installed locally.
+Now you can run `test/docker/run.sh` as if docker was installed locally. Or maybe you just want to run a single test?
+
+    test/docker/run.sh --filter TaskTest::testTask
+
+Or all tests that contain the word "parallel":
+
+    test/docker/run.sh --filter parallel
+
+All parameters are directly passed to the `phpunit` command line tool as documented [here](https://phpunit.de/manual/current/en/textui.html).

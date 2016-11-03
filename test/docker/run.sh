@@ -8,4 +8,4 @@ fi
 composer install &&
     docker build -t deployer-5.6 test/docker &&
     docker run -v $(pwd):/home/deployer/deployer -i -t deployer-5.6 \
-        /home/deployer/deployer/test/docker/docker-bootstrap.sh
+        /home/deployer/deployer/test/docker/docker-bootstrap.sh $@

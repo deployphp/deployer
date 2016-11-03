@@ -173,6 +173,35 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('hello', (string)$output);
     }
 
+    public function testRunLocallyWithSecret()
+    {
+        $this->_output->expects($this->once())
+                   ->method("writeln")
+                   ->with($this->equalTo('<comment>Run locally</comment>: echo "[SECRET HIDDEN]"'));
+
+        $this->_output->method('getVerbosity')
+                      ->willReturn(\Symfony\Component\Console\Output\Output::VERBOSITY_DEBUG);
+
+        $output = runLocally('echo "<secret>asecret</secret>"');
+        $this->assertEquals('asecret', (string)$output);
+    }
+
+    public function testRunWithSecret()
+    {
+        $this->_output->expects($this->once())
+                   ->method("writeln")
+                   ->with($this->equalTo('<fg=red>></fg=red> echo "[SECRET HIDDEN]"'));
+
+        $this->_output->method('getVerbosity')
+                      ->willReturn(\Symfony\Component\Console\Output\Output::VERBOSITY_DEBUG);
+
+        $this->_server->expects($this->once())
+                      ->method("run")
+                      ->with($this->equalTo('echo "asecret"'));
+
+        $output = run('echo "<secret>asecret</secret>"');
+    }
+
     public function testUpload()
     {
         $this->_server

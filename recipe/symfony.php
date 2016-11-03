@@ -90,7 +90,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
+    run('{{bin/php}} {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction --allow-no-migration');
 })->desc('Migrate database');
 
 

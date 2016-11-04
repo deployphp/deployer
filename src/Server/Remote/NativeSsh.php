@@ -27,7 +27,7 @@ class NativeSsh implements ServerInterface
     }
 
     /**
-     * Connect to remote server.
+     * {@inheritdoc}
      */
     public function connect()
     {
@@ -35,9 +35,7 @@ class NativeSsh implements ServerInterface
     }
 
     /**
-     * Run shell command on remote server.
-     * @param string $command
-     * @return string Output of command.
+     * {@inheritdoc}
      */
     public function run($command)
     {
@@ -70,9 +68,7 @@ class NativeSsh implements ServerInterface
     }
 
     /**
-     * Upload file to remote server.
-     * @param string $local Local path to file.
-     * @param string $remote Remote path where upload.
+     * {@inheritdoc}
      */
     public function upload($local, $remote)
     {
@@ -85,9 +81,7 @@ class NativeSsh implements ServerInterface
     }
 
     /**
-     * Download file from remote server.
-     * @param string $local Where to download file on local machine.
-     * @param string $remote Which file to download from remote server.
+     * {@inheritdoc}
      */
     public function download($local, $remote)
     {

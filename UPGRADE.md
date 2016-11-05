@@ -2,7 +2,7 @@
 
 1. `env()` to `set()`/`get()`
    
-   Rename all class `env($name, $value)` to `set($name, $value)`.
+   Rename all calls `env($name, $value)` to `set($name, $value)`.
    
    Rename all rvalue `env($name)` to `get($name)`.
     

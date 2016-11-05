@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 set('keep_releases', 5);
 
-set('repository',''); // Repository to deploy.
+set('repository', ''); // Repository to deploy.
 set('branch', ''); // Branch to deploy.
 
 set('shared_dirs', []);

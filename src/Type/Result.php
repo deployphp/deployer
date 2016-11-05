@@ -47,6 +47,8 @@ class Result
     }
 
     /**
+     * Check if output of command is equal "true" string and return true, otherwise false.
+     *
      * @return bool
      */
     public function toBool()

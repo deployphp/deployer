@@ -168,17 +168,22 @@ env('release_path', function () {
  * Release
  */
 task('deploy:release', function () {
-    $releasePath = env()->parse("{{deploy_path}}/releases/{{release_name}}");
+    // Clean up if there is unfinished release.
+    $previousReleaseExist = run("cd {{deploy_path}} && if [ -h release ]; then echo 'true'; fi")->toBool();
 
+    if ($previousReleaseExist) {
+        run('cd {{deploy_path}} && rm -rf "$(readlink release)"'); // Delete release.
+        run('cd {{deploy_path}} && rm release'); // Delete symlink.
+    }
+
+    $releasePath = env()->parse("{{deploy_path}}/releases/{{release_name}}");
     $i = 0;
     while (run("if [ -d $releasePath ]; then echo 'true'; fi")->toBool()) {
         $releasePath .= '.' . ++$i;
     }
 
+    // Make new release.
     run("mkdir $releasePath");
-
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
-
     run("ln -s $releasePath {{deploy_path}}/release");
 })->desc('Prepare release');
 

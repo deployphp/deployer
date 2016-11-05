@@ -43,7 +43,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         $env->set('int', 11);
         $this->assertEquals('is 11', $env->get('parse'));
 
-        $this->setExpectedException('RuntimeException', 'Environment parameter `so` does not exists.');
+        $this->expectException('RuntimeException');
         $env->get('so');
     }
 

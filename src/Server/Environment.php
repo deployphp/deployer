@@ -104,7 +104,7 @@ class Environment
                 }
             } else {
                 if (null === $default) {
-                    throw new \RuntimeException("Environment parameter `$name` does not exists.");
+                    throw new \RuntimeException("Configuration parameter `$name` does not exists.");
                 } else {
                     $value = $default;
                 }

@@ -288,7 +288,7 @@ task('deploy:update_code', function () {
 })->desc('Updating code');
 
 /**
- * Copy directories. Useful for vendors directories
+ * Copy directories.
  */
 task('deploy:copy_dirs', function () {
     $dirs = get('copy_dirs');

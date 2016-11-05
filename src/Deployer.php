@@ -13,8 +13,8 @@ use Deployer\Console\Application;
 use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
-use Deployer\Collection;
 use Deployer\Console\TaskCommand;
+use Deployer\Type\DotArray;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
@@ -22,13 +22,13 @@ use Symfony\Component\Console;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
- * @property Task\TaskCollection|Task\Task[] $tasks
- * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] $scenarios
- * @property Server\ServerCollection|Server\ServerInterface[] $servers
- * @property Server\EnvironmentCollection|Server\Environment[] $environments
- * @property Collection\Collection $parameters
+ * @property Task\TaskCollection|Task\Task[] tasks
+ * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] scenarios
+ * @property Server\ServerCollection|Server\ServerInterface[] servers
+ * @property Server\EnvironmentCollection|Server\Environment[] environments
+ * @property DotArray config
  */
-class Deployer
+class Deployer extends Container
 {
     /**
      * Global instance of deployer. It's can be accessed only after constructor call.
@@ -37,24 +37,19 @@ class Deployer
     private static $instance;
 
     /**
-     * @var Container
-     */
-    private $container;
-
-    /**
      * @param Application $console
      * @param Console\Input\InputInterface $input
      * @param Console\Output\OutputInterface $output
      */
     public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
-        $this->container = $container = new Container();
+        parent::__construct();
 
         /******************************
          *         Dispatcher         *
          ******************************/
 
-        $container['dispatcher'] = function () {
+        $this['dispatcher'] = function () {
             return new EventDispatcher();
         };
 
@@ -63,54 +58,60 @@ class Deployer
          *           Console          *
          ******************************/
 
-        $container['console'] = function () use ($console) {
+        $this['console'] = function () use ($console) {
             return $console;
         };
-        $container['input'] = function () use ($input) {
+        $this['input'] = function () use ($input) {
             return $input;
         };
-        $container['output'] = function () use ($output) {
+        $this['output'] = function () use ($output) {
             return $output;
         };
+
+        /******************************
+         *           Config           *
+         ******************************/
+
+        $this['config'] = function () {
+            return new DotArray();
+        };
+        $this->config['ssh_type'] = 'phpseclib';
+        $this->config['default_stage'] = null;
 
 
         /******************************
          *            Core            *
          ******************************/
 
-        $container['tasks'] = function () {
+        $this['tasks'] = function () {
             return new Task\TaskCollection();
         };
-        $container['scenarios'] = function () {
+        $this['scenarios'] = function () {
             return new Task\Scenario\ScenarioCollection();
         };
-        $container['servers'] = function () {
+        $this['servers'] = function () {
             return new Server\ServerCollection();
         };
-        $container['environments'] = function () {
+        $this['environments'] = function () {
             return new Server\EnvironmentCollection();
         };
-        $container['parameters'] = function () {
-            return new Collection\Collection();
+        $this['stageStrategy'] = function ($c) {
+            return new StageStrategy($c['servers'], $c['environments'], $c['config']['default_stage']);
         };
-        $container['stageStrategy'] = function ($c) {
-            return new StageStrategy($c['servers'], $c['environments'], $c['parameters']);
-        };
-
 
         /******************************
          *           Logger           *
          ******************************/
 
-        $container['log_level'] = function ($c) {
+        $this['log_level'] = function ($c) {
             $parameters = $c['parameters'];
             return isset($parameters['log_level']) ? $parameters['log_level'] : Logger::ERROR;
         };
-        $container['log_handler'] = function ($c) {
+        $this['log_handler'] = function ($c) {
             $parameters = $c['parameters'];
             return new StreamHandler($parameters['log_file'], $parameters['log_level']);
         };
-        $container['log'] = function ($c) {
+        $this['log'] = function ($c) {
             $parameters = $c['parameters'];
             $name = isset($parameters['log_name']) ? $parameters['log_name'] : 'Deployer';
             return new Logger($name);
@@ -126,6 +127,34 @@ class Deployer
     public static function get()
     {
         return self::$instance;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public static function setDefault($name, $value)
+    {
+        Deployer::get()->config[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @param mixed $default
+     * @return mixed
+     */
+    public static function getDefault($name, $default = null)
+    {
+        return self::hasDefault($name) ? Deployer::get()->config[$name] : $default;
+    }
+
+    /**
+     * @param $name
+     * @return boolean
+     */
+    public static function hasDefault($name)
+    {
+        return isset(Deployer::get()->config[$name]);
     }
 
     /**
@@ -164,8 +193,8 @@ class Deployer
      */
     public function __get($name)
     {
-        if (isset($this->container[$name])) {
-            return $this->container[$name];
+        if (isset($this[$name])) {
+            return $this[$name];
         } else {
             throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
@@ -176,7 +205,7 @@ class Deployer
      */
     public function getDispatcher()
     {
-        return $this->container['dispatcher'];
+        return $this['dispatcher'];
     }
 
     /**
@@ -184,7 +213,7 @@ class Deployer
      */
     public function getConsole()
     {
-        return $this->container['console'];
+        return $this['console'];
     }
 
     /**
@@ -192,7 +221,7 @@ class Deployer
      */
     public function getInput()
     {
-        return $this->container['input'];
+        return $this['input'];
     }
 
     /**
@@ -200,7 +229,7 @@ class Deployer
      */
     public function getOutput()
     {
-        return $this->container['output'];
+        return $this['output'];
     }
 
     /**
@@ -217,6 +246,6 @@ class Deployer
      */
     public function getStageStrategy()
     {
-        return $this->container['stageStrategy'];
+        return $this['stageStrategy'];
     }
 }

@@ -48,7 +48,7 @@ function server($name, $host = null, $port = 22)
     $env = new Environment();
     $config = new Configuration($name, $host, $port);
 
-    if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
+    if (get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
     } else {
         $server = new Remote\PhpSecLib($config);
@@ -390,8 +390,8 @@ function write($message)
  */
 function set($name, $value)
 {
-    if (false === Context::get()) {
-        Environment::setDefault($name, $value);
+    if (Context::get() === false) {
+        Deployer::setDefault($name, $value);
     } else {
         Context::get()->getEnvironment()->set($name, $value);
     }
@@ -406,7 +406,11 @@ function set($name, $value)
  */
 function get($name, $default = null)
 {
-    return Context::get()->getEnvironment()->get($name, $default);
+    if (Context::get() === false) {
+        return Deployer::getDefault($name, $default);
+    } else {
+        return Context::get()->getEnvironment()->get($name, $default);
+    }
 }
 
 /**
@@ -417,7 +421,11 @@ function get($name, $default = null)
  */
 function has($name)
 {
-    return Context::get()->getEnvironment()->has($name);
+    if (Context::get() === false) {
+        return Deployer::hasDefault($name);
+    } else {
+        return Context::get()->getEnvironment()->has($name);
+    }
 }
 
 /**

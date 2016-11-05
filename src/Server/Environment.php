@@ -7,18 +7,12 @@
 
 namespace Deployer\Server;
 
+use Deployer\Deployer;
 use Deployer\Type\DotArray;
 
 class Environment
 {
     const DEPLOY_PATH = 'deploy_path';
-
-    /**
-     * Globally defaults values.
-     *
-     * @var \Deployer\Type\DotArray
-     */
-    private static $defaults = null;
 
     /**
      * Array of set values.
@@ -94,13 +88,19 @@ class Environment
     public function get($name, $default = null)
     {
         if ($this->values->hasKey($name)) {
-            $value = $this->values[$name];
+            if (is_callable($this->values[$name])) {
+                $value = $this->values[$name] = call_user_func($this->values[$name]);
+            } else {
+                $value = $this->values[$name];
+            }
         } else {
-            if (null !== self::$defaults && isset(self::$defaults[$name])) {
-                if (is_callable(self::$defaults[$name])) {
-                    $value = $this->values[$name] = call_user_func(self::$defaults[$name]);
+            $config = Deployer::get()->config;
+
+            if (isset($config[$name])) {
+                if (is_callable($config[$name])) {
+                    $value = $this->values[$name] = call_user_func($config[$name]);
                 } else {
-                    $value = $this->values[$name] = self::$defaults[$name];
+                    $value = $this->values[$name] = $config[$name];
                 }
             } else {
                 if (null === $default) {
@@ -123,30 +123,6 @@ class Environment
     public function has($name)
     {
         return $this->values->hasKey($name);
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    public static function getDefault($name)
-    {
-        if (null === self::$defaults) {
-            self::$defaults = new DotArray();
-        }
-        return self::$defaults[$name];
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public static function setDefault($name, $value)
-    {
-        if (null === self::$defaults) {
-            self::$defaults = new DotArray();
-        }
-        self::$defaults[$name] = $value;
     }
 
     /**

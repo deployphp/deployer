@@ -18,11 +18,10 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
     {
         $servers = new ServerCollection();
         $environments = new EnvironmentCollection();
-        $parameters = new Collection();
 
-        $stage = new StageStrategy($servers, $environments, $parameters);
+        $stage = new StageStrategy($servers, $environments);
 
-        $this->assertArrayHasKey('localhost', $stage->getServers(null), $parameters);
+        $this->assertArrayHasKey('localhost', $stage->getServers(null));
     }
 
     public function testWithoutStageAndNoDefault()
@@ -36,9 +35,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
         $environments['two'] = new Environment();
         $environments['two']->set('stages', ['prod']);
 
-        $parameters = new Collection();
-
-        $stage = new StageStrategy($servers, $environments, $parameters);
+        $stage = new StageStrategy($servers, $environments);
 
         $this->assertEquals(['one' => $servers['one']], $stage->getServers(null));
     }
@@ -54,10 +51,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
         $environments['two'] = new Environment();
         $environments['two']->set('stages', ['prod']);
 
-        $parameters = new Collection();
-        $parameters->set(StageStrategy::PARAM_DEFAULT_STAGE, 'prod');
-
-        $stage = new StageStrategy($servers, $environments, $parameters);
+        $stage = new StageStrategy($servers, $environments, 'prod');
 
         $this->assertEquals(['two' => $servers['two']], $stage->getServers(null));
     }
@@ -71,9 +65,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
         $environments['one'] = $env = new Environment();
         $env->set('stages', ['prod']);
 
-        $parameters = new Collection();
-
-        $stage = new StageStrategy($servers, $environments, $parameters);
+        $stage = new StageStrategy($servers, $environments);
 
         $this->assertEquals(['one' => $servers['one']], $stage->getServers('prod'));
     }
@@ -86,9 +78,7 @@ class StageStrategyTest extends \PHPUnit_Framework_TestCase
         $environments = new EnvironmentCollection();
         $environments['one'] = $env = new Environment();
 
-        $parameters = new Collection();
-
-        $stage = new StageStrategy($servers, $environments, $parameters);
+        $stage = new StageStrategy($servers, $environments);
 
         $this->assertEquals(['one' => $servers['one']], $stage->getServers('one'));
     }

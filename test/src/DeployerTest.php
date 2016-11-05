@@ -57,4 +57,13 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
     {
         $this->deployer->some_collection;
     }
+
+    /**
+     * @expectedException
+     * @expectedExceptionMessage "Key `no_name` is invalid"
+     */
+    public function testGetDefault()
+    {
+        Deployer::getDefault('no_name');
+    }
 }

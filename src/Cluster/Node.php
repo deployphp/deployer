@@ -62,9 +62,7 @@ class Node implements NodeInterface
         
         $this->server = new PhpSecLib($config);
         
-        if ($this->deployer->parameters->has('ssh_type') &&
-            $this->deployer->parameters->get('ssh_type') === 'ext-ssh2'
-        ) {
+        if (\Deployer\has('ssh_type') && \Deployer\get('ssh_type') === 'ext-ssh2') {
             $this->server = new SshExtension($config);
         }
         $this->builder = new Builder($config, $env);

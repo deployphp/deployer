@@ -4,9 +4,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace Deployer;
 
+use Deployer\Builder\BuilderInterface;
 use Deployer\Server\Local;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
@@ -39,7 +39,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @param string $name
  * @param string|null $host
  * @param int $port
- * @return Builder
+ * @return BuilderInterface
  */
 function server($name, $host = null, $port = 22)
 {
@@ -63,7 +63,7 @@ function server($name, $host = null, $port = 22)
 
 /**
  * @param string $name
- * @return Builder
+ * @return BuilderInterface
  */
 function localServer($name)
 {
@@ -88,7 +88,7 @@ function localServer($name)
  * You should pass a cluster name and nodes array.
  * Nodes array should be as following:
  * [ '192.168.1.1', 'example.com', '192.168.1.5' ]
- * @return \Deployer\Cluster\ClusterBuilder
+ * @return BuilderInterface
  */
 
 function cluster($name, $nodes, $port = 22)
@@ -302,7 +302,7 @@ function runLocally($command, $timeout = 60)
     if (!$process->isSuccessful()) {
         throw new \RuntimeException($process->getErrorOutput());
     }
-    
+
     return new Result($process->getOutput());
 }
 
@@ -335,6 +335,10 @@ function upload($local, $remote)
 
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
+            if (isDebug()) {
+                writeln("Uploading <info>{$file->getRealPath()}</info>");
+            }
+
             $server->upload(
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()

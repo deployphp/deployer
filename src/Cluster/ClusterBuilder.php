@@ -7,21 +7,23 @@
 
 namespace Deployer\Cluster;
 
+use Deployer\Builder\BuilderInterface;
+
 /**
  * ClusterBuilder
  * Defines a node for cluster
  *
  * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  */
-class ClusterBuilder
+class ClusterBuilder implements BuilderInterface
 {
     /**
-     * @var array|Deployer\Cluster\Node[]
+     * @var array|\Deployer\Cluster\Node[]
      */
     protected $nodes = null;
 
     /**
-     * @param array | Deployer\Cluster\Node[] $nodes
+     * @param array|\Deployer\Cluster\Node[] $nodes
      */
     public function __construct(array $nodes)
     {
@@ -29,8 +31,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string $user
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function user($user)
     {
@@ -41,8 +42,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string $password
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function password($password = null)
     {
@@ -53,8 +53,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string $file
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function configFile($file = '~/.ssh/config')
     {
@@ -65,10 +64,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string $publicKeyFile
-     * @param string $privateKeyFile
-     * @param string $passPhrase
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function identityFile(
         $publicKeyFile = '~/.ssh/id_rsa.pub',
@@ -82,8 +78,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string $pemFile
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function pemFile($pemFile)
     {
@@ -94,7 +89,7 @@ class ClusterBuilder
     }
 
     /**
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function forwardAgent()
     {
@@ -105,9 +100,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string $name
-     * @param array|string $env
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function env($name, $env)
     {
@@ -118,8 +111,7 @@ class ClusterBuilder
     }
 
     /**
-     * @param string|array $stages
-     * @return ClusterBuilder
+     * {@inheritdoc}
      */
     public function stage($stages)
     {

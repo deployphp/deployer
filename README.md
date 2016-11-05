@@ -5,14 +5,15 @@ Introduction
 [![Code Climate](http://img.shields.io/codeclimate/github/deployphp/deployer.svg?style=flat)](https://codeclimate.com/github/deployphp/deployer)
 [![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
 [![Version](http://img.shields.io/packagist/v/deployer/deployer.svg?style=flat)](https://packagist.org/packages/deployer/deployer)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) 
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
 
 Deployer is a deployment tool written in PHP.
 
-See [http://deployer.org](http://deployer.org) for more information and documentation.
+See [deployer.org](https://deployer.org) for more information and documentation.
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+Support Deployer development by [![Becoming a patron](https://img.shields.io/badge/become-patron-brightgreen.svg)](https://www.patreon.com/deployer)
 
 Requirements
 ------------
@@ -24,10 +25,10 @@ You can enable [sockets](http://php.net/manual/en/book.sockets.php) to speedup d
 
 Installation
 ------------
-To install Deployer download [deployer.phar](http://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
+To install Deployer download [deployer.phar](https://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
 ``` sh
-$ curl -LO http://deployer.org/deployer.phar
+$ curl -LO https://deployer.org/deployer.phar
 $ mv deployer.phar /usr/local/bin/dep
 $ chmod +x /usr/local/bin/dep
 ```
@@ -57,7 +58,7 @@ To build `deployer.phar` run `./build` command.
 
 Community
 -------
-Discuss Deployer here [deployer.org/discuss](http://deployer.org/discuss).
+Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
 
 Roadmap
 -------
@@ -69,12 +70,14 @@ Roadmap
 * ~~Faster cloning by borrowing objects from existing clones~~ Done in v3!
 * Immutable settings
 * Native SSH support
-* Task grouping for parallel execution
 
+#### 5
+* Task grouping for parallel execution
+* Web-based client
 
 Contributing
 ------------
-All code contributions must go through a pull request and approved by a core maintainers before being merged.
+All code contributions must go through a pull request and approved by a core developer before being merged.
 This is to ensure proper review of all the code.
 
 Fork the project, create a feature branch, and send a pull request.
@@ -94,6 +97,11 @@ Maintainers
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 
+
+Supporting Deployer
+-------------------
+
+Deployer is an open source project. If you want to support the development of Deployer visit our [patreon page](https://www.patreon.com/deployer).
 
 License
 -------

@@ -7,7 +7,6 @@
 
 namespace Deployer\Cluster;
 
-use Deployer\Cluster\Cluster;
 use Deployer\Deployer;
 
 /**

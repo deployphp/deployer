@@ -7,13 +7,14 @@
 
 namespace Deployer\Server;
 
+use Deployer\Builder\BuilderInterface;
 use Deployer\Server\Password\AskPasswordGetter;
 use Deployer\Server\Password\PasswordGetterInterface;
 
 /**
  * Build server configuration
  */
-class Builder
+class Builder implements BuilderInterface
 {
     /**
      * @var Configuration
@@ -44,11 +45,7 @@ class Builder
     }
 
     /**
-     * Define user name for authentication.
-     *
-     * @param string $name
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function user($name)
     {
@@ -58,11 +55,7 @@ class Builder
     }
 
     /**
-     * Set password for connection
-     *
-     * @param string|PasswordGetterInterface $password If you did not define password it will be asked on connection.
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function password($password = null)
     {
@@ -79,7 +72,7 @@ class Builder
      *
      * @param string $host
      *
-     * @return Builder
+     * @return BuilderInterface
      */
     public function host($host)
     {
@@ -93,7 +86,7 @@ class Builder
      *
      * @param int $port
      *
-     * @return Builder
+     * @return BuilderInterface
      */
     public function port($port)
     {
@@ -103,11 +96,7 @@ class Builder
     }
 
     /**
-     * If you use an ssh config file you can user it.
-     *
-     * @param string $file Config file path
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function configFile($file = '~/.ssh/config')
     {
@@ -118,13 +107,7 @@ class Builder
     }
 
     /**
-     * Authenticate with public key
-     *
-     * @param string $publicKeyFile
-     * @param string $privateKeyFile
-     * @param string $passPhrase
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function identityFile($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '')
     {
@@ -161,7 +144,7 @@ class Builder
      * @param string $passPhrase
      * @param string $password
      *
-     * @return Builder
+     * @return BuilderInterface
      */
     public function identityFileAndPassword($publicKeyFile = '~/.ssh/id_rsa.pub', $privateKeyFile = '~/.ssh/id_rsa', $passPhrase = '', $password = null)
     {
@@ -173,11 +156,7 @@ class Builder
     }
 
     /**
-     * Authenticate with pem file
-     *
-     * @param string $pemFile
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function pemFile($pemFile)
     {
@@ -188,9 +167,7 @@ class Builder
     }
 
     /**
-     * Using forward agent to authentication
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function forwardAgent()
     {
@@ -200,12 +177,7 @@ class Builder
     }
 
     /**
-     * Set env variable
-     *
-     * @param string           $name
-     * @param array|int|string $value
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function env($name, $value)
     {
@@ -215,11 +187,7 @@ class Builder
     }
 
     /**
-     * Indicate stage
-     *
-     * @param string|array $stages  Name or array on server stages.
-     *
-     * @return Builder
+     * {@inheritdoc}
      */
     public function stage($stages)
     {
@@ -260,7 +228,7 @@ class Builder
      * Use pty in ssh2 connection
      *
      * @param $ssh2Pty
-     * @return $this
+     * @return BuilderInterface
      */
     public function ssh2Pty($ssh2Pty)
     {

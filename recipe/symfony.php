@@ -112,7 +112,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    run('{{env_vars}} {{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}}');
+    run('{{env_vars}} {{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}} --allow-no-migration');
 })->desc('Migrate database');
 
 

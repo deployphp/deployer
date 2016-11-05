@@ -21,7 +21,7 @@ task('deploy', [
 ]);
 
 //Set drupal site. Change if you use different site
-env('drupal_site', 'default');
+set('drupal_site', 'default');
 
 
 //Drupal 8 shared dirs

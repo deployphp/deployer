@@ -14,8 +14,8 @@ require_once __DIR__ . '/common.php';
  * Symfony Configuration
  */
 
-// Symfony build env
-env('env', 'prod');
+// Symfony build set
+set('env', 'prod');
 
 // Symfony shared dirs
 set('shared_dirs', ['app/logs']);
@@ -33,22 +33,22 @@ set('assets', ['web/css', 'web/images', 'web/js']);
 set('dump_assets', false);
 
 // Environment vars
-env('env_vars', 'SYMFONY_ENV={{env}}');
+set('env_vars', 'SYMFONY_ENV={{env}}');
 
 // Adding support for the Symfony3 directory structure
 set('bin_dir', 'app');
 set('var_dir', 'app');
 
 // Symfony console bin
-env('bin/console', function () {
+set('bin/console', function () {
     return sprintf('{{release_path}}/%s/console', trim(get('bin_dir'), '/'));
 });
 
 // Symfony console opts
-env('console_options', function () {
+set('console_options', function () {
     $options = '--no-interaction --env={{env}}';
 
-    return env('env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
+    return get('env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
 });
 
 
@@ -57,7 +57,7 @@ env('console_options', function () {
  */
 task('deploy:create_cache_dir', function () {
     // Set cache dir
-    env('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
+    set('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
 
     // Remove cache dir if it exist
     run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');

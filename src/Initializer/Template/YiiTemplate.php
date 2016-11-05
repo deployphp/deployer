@@ -38,12 +38,12 @@ set('writable_dirs', ['runtime']);
 server('production', 'prod.domain.com')
     ->user('username')
     ->password()
-    ->env('deploy_path', '/var/www/prod.domain.com');
+    ->set('deploy_path', '/var/www/prod.domain.com');
 
 server('beta', 'beta.domain.com')
     ->user('username')
     ->password()
-    ->env('deploy_path', '/var/www/beta.domain.com');
+    ->set('deploy_path', '/var/www/beta.domain.com');
 
 /**
  * Restart php-fpm on success deploy.

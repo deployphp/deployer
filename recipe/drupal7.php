@@ -21,7 +21,7 @@ task('deploy', [
 ]);
 
 //Set Drupal 7 site. Change if you use different site
-env('drupal_site', 'default');
+set('drupal_site', 'default');
 
 
 //Drupal 7 shared dirs
@@ -46,7 +46,7 @@ task('drupal:settings', function () {
         $basepath = dirname(__FILE__) . '/drupal7';
 
         //Import secrets
-        $secrets = env('settings');
+        $secrets = get('settings');
 
         //Prepare replacement variables
         $iterator = new \RecursiveIteratorIterator(

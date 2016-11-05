@@ -282,7 +282,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getPort')
             ->will($this->returnValue(22));
 
-        // The Builder class should create the server env variable.
+        // The Builder class should create the server set variable.
         $env->expects($this->at(0))
             ->method('setAsProtected')
             ->with('server', [
@@ -292,14 +292,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
             ])
             ->will($this->returnSelf());
 
-        // The `env` method of the Builder class should internally call the
+        // The `set` method of the Builder class should internally call the
         // Environment's `set` method.
         $env->expects($this->at(1))
             ->method('set')
             ->with('name', 'value')
             ->will($this->returnSelf());
         $b = new Builder($config, $env);
-        $b->env('name', 'value');
+        $b->set('name', 'value');
     }
 
     /**

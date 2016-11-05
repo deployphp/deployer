@@ -33,7 +33,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 // Context dependent function uses while task execution and must require only Context::get() method.
 // But there is also a third type of functions: mixed. Mixed function uses in definition stage and in task
 // execution stage. They are acts like two different function, but have same name. Example of such function
-// is env() func. This function determine in which stage it was called by Context::get() method.
+// is set() func. This function determine in which stage it was called by Context::get() method.
 
 /**
  * @param string $name
@@ -90,7 +90,6 @@ function localServer($name)
  * [ '192.168.1.1', 'example.com', '192.168.1.5' ]
  * @return BuilderInterface
  */
-
 function cluster($name, $nodes, $port = 22)
 {
     $deployer = Deployer::get();
@@ -107,7 +106,7 @@ function cluster($name, $nodes, $port = 22)
  */
 function serverList($file)
 {
-    $bootstrap = new \Deployer\Bootstrap\BootstrapByConfigFile();
+    $bootstrap = new Bootstrap\BootstrapByConfigFile();
     $bootstrap->setConfig($file);
     $bootstrap->parseConfig();
     $bootstrap->initServers();
@@ -214,7 +213,7 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    env('working_path', env()->parse($path));
+    set('working_path', Context::get()->getEnvironment()->parse($path));
 }
 
 /**
@@ -226,9 +225,9 @@ function cd($path)
 function within($path, $callback)
 {
     $lastWorkingPath = workingPath();
-    env()->set('working_path', $path);
+    set('working_path', $path);
     $callback();
-    env()->set('working_path', $lastWorkingPath);
+    set('working_path', $lastWorkingPath);
 }
 
 /**
@@ -238,7 +237,7 @@ function within($path, $callback)
  */
 function workingPath()
 {
-    return env()->get('working_path', env()->get(Environment::DEPLOY_PATH, ''));
+    return get('working_path', get(Environment::DEPLOY_PATH, ''));
 }
 
 /**
@@ -250,7 +249,7 @@ function workingPath()
 function run($command)
 {
     $server = Context::get()->getServer();
-    $command = env()->parse($command);
+    $command = Context::get()->getEnvironment()->parse($command);
     $workingPath = workingPath();
 
     if (!empty($workingPath)) {
@@ -281,7 +280,7 @@ function run($command)
  */
 function runLocally($command, $timeout = 60)
 {
-    $command = env()->parse($command);
+    $command = Context::get()->getEnvironment()->parse($command);
 
     if (isVeryVerbose()) {
         writeln("<comment>Run locally</comment>: $command");
@@ -316,8 +315,8 @@ function runLocally($command, $timeout = 60)
 function upload($local, $remote)
 {
     $server = Context::get()->getServer();
-    $local = env()->parse($local);
-    $remote = env()->parse($remote);
+    $local = Context::get()->getEnvironment()->parse($local);
+    $remote = Context::get()->getEnvironment()->parse($remote);
 
     if (is_file($local)) {
         writeln("Upload file <info>$local</info> to <info>$remote</info>");
@@ -359,8 +358,8 @@ function upload($local, $remote)
 function download($local, $remote)
 {
     $server = Context::get()->getServer();
-    $local = env()->parse($local);
-    $remote = env()->parse($remote);
+    $local = Context::get()->getEnvironment()->parse($local);
+    $remote = Context::get()->getEnvironment()->parse($remote);
 
     $server->download($local, $remote);
 }
@@ -384,30 +383,41 @@ function write($message)
 }
 
 /**
- * @param string $key
+ * Setup configuration option.
+ *
+ * @param string $name
  * @param mixed $value
  */
-function set($key, $value)
+function set($name, $value)
 {
-    Deployer::get()->parameters->set($key, $value);
+    if (false === Context::get()) {
+        Environment::setDefault($name, $value);
+    } else {
+        Context::get()->getEnvironment()->set($name, $value);
+    }
 }
 
 /**
- * @param string $key
+ * Get configuration value.
+ *
+ * @param string $name
+ * @param mixed|null $default
  * @return mixed
  */
-function get($key)
+function get($name, $default = null)
 {
-    return Deployer::get()->parameters->get($key);
+    return Context::get()->getEnvironment()->get($name, $default);
 }
 
 /**
- * @param string $key
+ * Check if there is such configuration option.
+ *
+ * @param string $name
  * @return boolean
  */
-function has($key)
+function has($name)
 {
-    return Deployer::get()->parameters->has($key);
+    return Context::get()->getEnvironment()->has($name);
 }
 
 /**
@@ -528,27 +538,12 @@ function isDebug()
 }
 
 /**
- * Return current server env or set default values or get env value.
- * When set env value you can write over values line "{{name}}".
- *
- * @param string|null $name
- * @param mixed $value
- * @return Environment|mixed
+ * Deprecated, use set()/get().
+ * @deprecated
  */
-function env($name = null, $value = null)
+function env()
 {
-    if (false === Context::get()) {
-        Environment::setDefault($name, $value);
-    } else {
-        if (null === $name && null === $value) {
-            return Context::get()->getEnvironment();
-        } elseif (null !== $name && null === $value) {
-            return Context::get()->getEnvironment()->get($name);
-        } else {
-            Context::get()->getEnvironment()->set($name, $value);
-        }
-        return null;
-    }
+    throw new \RuntimeException('env() function deprecated. Please, use set() or get() instead of.');
 }
 
 /**

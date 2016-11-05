@@ -102,10 +102,10 @@ class ClusterBuilder implements BuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function env($name, $env)
+    public function set($name, $env)
     {
         foreach ($this->nodes as $node) {
-            $node->builder->env($name, $env);
+            $node->builder->set($name, $env);
         }
         return $this;
     }

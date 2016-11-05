@@ -97,9 +97,9 @@ class BootstrapByConfigFile
             }
         }
 
-        // Everything else are env vars.
+        // Everything else are set vars.
         foreach ($config->toArray() as $key => $value) {
-            $builder->env($key, $value);
+            $builder->set($key, $value);
         }
     }
 

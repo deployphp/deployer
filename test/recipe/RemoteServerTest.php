@@ -21,19 +21,19 @@ class RemoteServerTest extends RecipeTester
         $username = getenv('DEPLOYER_USERNAME') ?: 'deployer';
         $password = getenv('DEPLOYER_PASSWORD') ?: 'deployer_password';
         \Deployer\server('remote_auth_by_password', 'localhost', 22)
-            ->env('deploy_path', self::$deployPath)
+            ->set('deploy_path', self::$deployPath)
             ->user($username)
             ->password($password);
         \Deployer\server('remote_auth_by_identity_file', 'localhost', 22)
-            ->env('deploy_path', self::$deployPath)
+            ->set('deploy_path', self::$deployPath)
             ->user($username)
             ->identityFile();
         \Deployer\server('remote_auth_by_pem_file', 'localhost', 22)
-            ->env('deploy_path', self::$deployPath)
+            ->set('deploy_path', self::$deployPath)
             ->user($username)
             ->pemFile('~/.ssh/id_rsa.pem');
         \Deployer\server('remote_auth_by_agent', 'localhost', 22)
-            ->env('deploy_path', self::$deployPath)
+            ->set('deploy_path', self::$deployPath)
             ->user($username)
             ->forwardAgent();
     }

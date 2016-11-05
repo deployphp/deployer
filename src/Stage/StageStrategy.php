@@ -53,7 +53,7 @@ class StageStrategy implements StageStrategyInterface
 
         if (!empty($stage)) {
 
-            // Look for servers which has in env `stages` current stage name.
+            // Look for servers which has in set `stages` current stage name.
             foreach ($this->environments as $name => $env) {
                 // If server does not have any stage category, skip them
                 if (in_array($stage, $env->get('stages', []), true)) {

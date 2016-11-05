@@ -48,7 +48,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Protected env parameters cannot be changed.
+     * Protected set parameters cannot be changed.
      * @expectedException \RuntimeException
      * @expectedExceptionMessage The parameter `protected` cannot be set, because it's protected.
      */
@@ -60,7 +60,7 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Elements of a protected env array parameter cannot be changed by the dot
+     * Elements of a protected set array parameter cannot be changed by the dot
      * notation.
      * @expectedException \RuntimeException
      * @expectedExceptionMessage The parameter `protected.protected_key` cannot be set, because `protected` is protected.

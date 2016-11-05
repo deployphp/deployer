@@ -179,7 +179,7 @@ class Builder implements BuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function env($name, $value)
+    public function set($name, $value)
     {
         $this->env->set($name, $value);
 

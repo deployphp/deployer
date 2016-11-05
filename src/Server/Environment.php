@@ -21,7 +21,7 @@ class Environment
     private static $defaults = null;
 
     /**
-     * Array of env values.
+     * Array of set values.
      * @var \Deployer\Type\DotArray
      */
     private $values = null;
@@ -115,7 +115,7 @@ class Environment
     }
 
     /**
-     * Checks if env var exists.
+     * Checks if set var exists.
      *
      * @param string $name
      * @return bool
@@ -150,7 +150,7 @@ class Environment
     }
 
     /**
-     * Parse env values.
+     * Parse set values.
      *
      * @param string $value
      * @return string
@@ -165,7 +165,7 @@ class Environment
     }
 
     /**
-     * Replace env values callback for parse
+     * Replace set values callback for parse
      *
      * @param array $matches
      * @return mixed

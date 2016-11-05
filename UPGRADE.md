@@ -1,6 +1,12 @@
 # Upgrade from 3.x to 4.x
 
-1. 
+1. `env()` to `set()`/`get()`
+   
+   Rename all class `env($name, $value)` to `set($name, $value)`.
+   
+   Rename all rvalue `env($name)` to `get($name)`.
+    
+   Rename all `server(...)->env(...)` to `server(...)->set(...)`.
 
 
 # Upgrade from 2.x to 3.x

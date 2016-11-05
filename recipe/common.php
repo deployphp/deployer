@@ -7,38 +7,40 @@
 
 namespace Deployer;
 
-/**
- * Common parameters.
- */
+use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
+/**
+ * Configuration
+ */
+
 set('keep_releases', 5);
+
+set('repository',''); // Repository to deploy.
+set('branch', ''); // Branch to deploy.
+
 set('shared_dirs', []);
 set('shared_files', []);
+
 set('copy_dirs', []);
+
 set('writable_dirs', []);
 set('writable_use_sudo', true); // Using sudo in writable commands?
-set('http_user', null);
+
+set('http_user', false);
+
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', true);    // Using sudo in clean commands?
-env('use_relative_symlink', true);
 
-/**
- * Composer options
- */
-env('composer_action', 'install');
-env('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
+set('use_relative_symlink', true);
 
+set('composer_action', 'install');
+set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
 
-/**
- * Environment vars
- */
-env('timezone', 'UTC');
-env('branch', ''); // Branch to deploy.
-env('env_vars', ''); // Variable assignment before cmds (for example, SYMFONY_ENV={{env}})
+set('env_vars', ''); // Variable assignment before cmds (for example, SYMFONY_ENV={{set}})
 
-env('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
+set('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
     $gitVersion = run('{{bin/git}} version');
     $regs       = [];
     if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
@@ -48,9 +50,11 @@ env('git_cache', function () { //whether to use git cache - faster cloning by bo
     }
     return version_compare($version, '2.3', '>=');
 });
-env('release_name', function () {
+
+set('timezone', 'UTC');
+set('release_name', function () {
     // Set the deployment timezone
-    if (!date_default_timezone_set(env('timezone'))) {
+    if (!date_default_timezone_set(get('timezone'))) {
         date_default_timezone_set('UTC');
     }
 
@@ -61,13 +65,13 @@ env('release_name', function () {
 /**
  * Custom bins.
  */
-env('bin/php', function () {
+set('bin/php', function () {
     return run('which php')->toString();
 });
-env('bin/git', function () {
+set('bin/git', function () {
     return run('which git')->toString();
 });
-env('bin/composer', function () {
+set('bin/composer', function () {
     if (commandExist('composer')) {
         $composer = run('which composer')->toString();
     }
@@ -83,8 +87,8 @@ env('bin/composer', function () {
 /**
  * Check if target system supports relative symlink.
  */
-env('bin/symlink', function () {
-    if (env('use_relative_symlink')) {
+set('bin/symlink', function () {
+    if (get('use_relative_symlink')) {
         if (run('if [[ "$(man ln)" =~ "--relative" ]]; then echo "true"; fi')->toBool()) {
             return 'ln -nfs --relative';
         }
@@ -105,7 +109,7 @@ option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy.');
  * Rollback to previous release.
  */
 task('rollback', function () {
-    $releases = env('releases_list');
+    $releases = get('releases_list');
 
     if (isset($releases[1])) {
         $releaseDir = "{{deploy_path}}/releases/{$releases[1]}";
@@ -181,7 +185,7 @@ task('deploy:prepare', function () {
     // Check for existing /current directory (not symlink)
     $result = run('if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then echo true; fi')->toBool();
     if ($result) {
-        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . env('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
     // Create releases dir.
@@ -194,7 +198,7 @@ task('deploy:prepare', function () {
 /**
  * Return release path.
  */
-env('release_path', function () {
+set('release_path', function () {
     $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
     if (!$releaseExists) {
         throw new \RuntimeException(
@@ -218,7 +222,7 @@ task('deploy:release', function () {
         run('cd {{deploy_path}} && rm release'); // Delete symlink.
     }
 
-    $releasePath = env()->parse("{{deploy_path}}/releases/{{release_name}}");
+    $releasePath = Context::get()->getEnvironment()->parse("{{deploy_path}}/releases/{{release_name}}");
     $i = 0;
     while (run("if [ -d $releasePath ]; then echo 'true'; fi")->toBool()) {
         $releasePath .= '.' . ++$i;
@@ -235,9 +239,9 @@ task('deploy:release', function () {
  */
 task('deploy:update_code', function () {
     $repository = trim(get('repository'));
-    $branch = env('branch');
-    $git = env('bin/git');
-    $gitCache = env('git_cache');
+    $branch = get('branch');
+    $git = get('bin/git');
+    $gitCache = get('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
 
     // If option `branch` is set.
@@ -245,7 +249,7 @@ task('deploy:update_code', function () {
         $branch = input()->getOption('branch');
     }
 
-    // Branch may come from option or from env.
+    // Branch may come from option or from configuration.
     $at = '';
     if (!empty($branch)) {
         $at = "-b $branch";
@@ -264,7 +268,7 @@ task('deploy:update_code', function () {
         $revision = input()->getOption('revision');
     }
 
-    $releases = env('releases_list');
+    $releases = get('releases_list');
 
     if (!empty($revision)) {
         // To checkout specified revision we need to clone all tree.
@@ -344,11 +348,12 @@ task('deploy:shared', function () {
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
-    $httpUser = get('http_user');
+    $httpUser = get('http_user', false);
 
     if (!empty($dirs)) {
         try {
-            if (null === $httpUser) {
+            if ($httpUser === false) {
+                // Detect http user in process list.
                 $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
             }
 
@@ -433,7 +438,7 @@ task('deploy:symlink', function () {
 /**
  * Return list of releases on server.
  */
-env('releases_list', function () {
+set('releases_list', function () {
     // find will list only dirs in releases/
     $list = run('find {{deploy_path}}/releases/ -maxdepth 1 -mindepth 1 -type d')->toArray();
 
@@ -461,14 +466,14 @@ env('releases_list', function () {
 /**
  * Return the current release timestamp
  */
-env('release', function () {
-    return basename(env('current'));
+set('release', function () {
+    return basename(get('current'));
 });
 
 /**
  * Return current release path.
  */
-env('current', function () {
+set('current', function () {
     return run("readlink {{deploy_path}}/current")->toString();
 });
 
@@ -476,7 +481,7 @@ env('current', function () {
  * Show current release number.
  */
 task('current', function () {
-    writeln('Current release: ' . basename(env('current')));
+    writeln('Current release: ' . basename(get('current')));
 })->desc('Show current release.');
 
 
@@ -484,7 +489,7 @@ task('current', function () {
  * Cleanup old releases.
  */
 task('cleanup', function () {
-    $releases = env('releases_list');
+    $releases = get('releases_list');
 
     $keep = get('keep_releases');
 

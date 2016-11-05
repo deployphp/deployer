@@ -79,7 +79,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testLocalServer()
     {
-        localServer('main')->env('deploy_path', __DIR__ . '/localhost');
+        localServer('main')->set('deploy_path', __DIR__ . '/localhost');
 
         $server = $this->deployer->servers->get('main');
         $env = $this->deployer->environments->get('main');

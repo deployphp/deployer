@@ -64,12 +64,12 @@ interface BuilderInterface
     public function stage($stages);
 
     /**
-     * Set env variable
+     * Set server configuration.
      *
      * @param string           $name
      * @param array|int|string $value
      *
      * @return BuilderInterface
      */
-    public function env($name, $value);
+    public function set($name, $value);
 }

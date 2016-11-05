@@ -61,7 +61,7 @@ abstract class RecipeTester extends \PHPUnit_Framework_TestCase
     protected function setUpServer()
     {
         \Deployer\localServer('localhost')
-            ->env('deploy_path', self::$deployPath);
+            ->set('deploy_path', self::$deployPath);
     }
 
 

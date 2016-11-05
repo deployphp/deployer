@@ -38,19 +38,19 @@ set('writable_dirs', []);
 server('production', 'prod.domain.com')
     ->user('username')
     ->password()
-    ->env('deploy_path', '/var/www/prod.domain.com');
+    ->set('deploy_path', '/var/www/prod.domain.com');
 
 server('beta', 'beta.domain.com')
     ->user('username')
     ->password()
-    ->env('deploy_path', '/var/www/beta.domain.com');
+    ->set('deploy_path', '/var/www/beta.domain.com');
 
 
 /**
  * Install npm packages.
  */
 task('deploy:npm', function () {
-    \$releases = env('releases_list');
+    \$releases = set('releases_list');
 
     if (isset(\$releases[1])) {
         if(run("if [ -d {{deploy_path}}/releases/{\$releases[1]}/node_modules ]; then echo 'true'; fi")->toBool()) {

@@ -54,7 +54,7 @@ env('release_name', function () {
         date_default_timezone_set('UTC');
     }
 
-    return date('Y_m_d_H:i:s');
+    return date('Y_m_d_H.i.s');
 }); // name of folder in releases
 
 

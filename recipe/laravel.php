@@ -82,7 +82,7 @@ task('deploy:public_disk', function () {
     run('mkdir -p {{deploy_path}}/shared/storage/app/public');
 
     // Symlink shared dir to release dir
-    run('ln -nfs {{deploy_path}}/shared/storage/app/public {{release_path}}/public/storage');
+    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_path}}/public/storage');
 })->desc('Make symlink for public disk');
 
 /**

@@ -307,6 +307,38 @@ function runLocally($command, $timeout = 60)
 }
 
 /**
+ * Create symlink.
+ *
+ * @param string $target
+ * @param string $linkName
+ * @param null|string $basePath
+ */
+function symlink($target, $linkName, $basePath = null)
+{
+    $target = env()->parse($target);
+    $linkName = env()->parse($linkName);
+
+    if ($basePath !== null && env('support_relative_symlink')) {
+        $basePath = env()->parse($basePath);
+
+        $tripBasePath = function ($path) use ($basePath) {
+            if (substr($path, 0, strlen($basePath)) == $basePath) {
+                return substr($path, strlen($basePath));
+            } else {
+                return $path;
+            }
+        };
+
+        $target = $tripBasePath($target);
+        $linkName = $tripBasePath($linkName);
+
+        run("cd $basePath && ln -nfs --relative $target $linkName");
+    } else {
+        run("ln -nfs $target $linkName");
+    }
+}
+
+/**
  * Upload file or directory to current server.
  * @param string $local
  * @param string $remote

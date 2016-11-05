@@ -22,7 +22,7 @@ set('writable_use_sudo', true); // Using sudo in writable commands?
 set('http_user', null);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', true);    // Using sudo in clean commands?
-
+env('use_relative_symlink', true);
 
 /**
  * Composer options
@@ -80,6 +80,18 @@ env('bin/composer', function () {
     return $composer;
 });
 
+/**
+ * Check if target system supports relative symlink.
+ */
+env('bin/symlink', function () {
+    if (env('use_relative_symlink')) {
+        $man = run('man ln')->toString();
+        if (strpos($man, '--relative') !== false) {
+            return 'ln -nfs --relative';
+        }
+    }
+    return 'ln -nfs';
+});
 
 /**
  * Default arguments and options.
@@ -100,7 +112,7 @@ task('rollback', function () {
         $releaseDir = "{{deploy_path}}/releases/{$releases[1]}";
 
         // Symlink to old release.
-        run("cd {{deploy_path}} && ln -nfs $releaseDir current");
+        run("cd {{deploy_path}} && {{bin/symlink}} $releaseDir current");
 
         // Remove release
         run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
@@ -207,7 +219,7 @@ task('deploy:release', function () {
 
     // Make new release.
     run("mkdir $releasePath");
-    run("ln -s $releasePath {{deploy_path}}/release");
+    run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
 })->desc('Prepare release');
 
 
@@ -297,7 +309,7 @@ task('deploy:shared', function () {
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$dir {{release_path}}/$dir");
+        run("{{bin/symlink}} $sharedPath/$dir {{release_path}}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
@@ -314,7 +326,7 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("ln -nfs $sharedPath/$file {{release_path}}/$file");
+        run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");
     }
 })->desc('Creating symlinks for shared files');
 
@@ -399,7 +411,7 @@ task('deploy:vendors', function () {
  * Create symlink to last release.
  */
 task('deploy:symlink', function () {
-    run("cd {{deploy_path}} && ln -sfn {{release_path}} current"); // Atomic override symlink.
+    run("cd {{deploy_path}} && {{bin/symlink}} {{release_path}} current"); // Atomic override symlink.
     run("cd {{deploy_path}} && rm release"); // Remove release link.
 })->desc('Creating symlink to release');
 

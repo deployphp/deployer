@@ -196,6 +196,14 @@ task('deploy:prepare', function () {
  * Return release path.
  */
 env('release_path', function () {
+    $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
+    if (!$releaseExists) {
+        throw new \RuntimeException(
+            "Release path does not found.\n" .
+            "Run deploy:release to create new release."
+        );
+    }
+
     return str_replace("\n", '', run("readlink {{deploy_path}}/release"));
 });
 

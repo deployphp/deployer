@@ -53,7 +53,7 @@ class Application extends Console
     {
         $selfUpdate = new PharUpdateCommand('self-update');
         $selfUpdate->setDescription('Updates deployer.phar to the latest version');
-        $selfUpdate->setManifestUri('http://deployer.org/manifest.json');
+        $selfUpdate->setManifestUri('https://deployer.org/manifest.json');
         return $selfUpdate;
     }
 

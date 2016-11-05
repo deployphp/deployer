@@ -118,8 +118,6 @@ task('rollback', function () {
  * Preparing server for deployment.
  */
 task('deploy:prepare', function () {
-    Task\Context::get()->getServer()->connect();
-
     // Check if shell is POSIX-compliant
     try {
         cd(''); // To run command as raw.

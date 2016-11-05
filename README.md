@@ -62,18 +62,14 @@ Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
 
 Roadmap
 -------
-#### 4 
-* ~~Namespace for functions~~
-* ~~Dependency Injection Configuration~~
-* ~~Event Dispatcher~~
-* Default stage selector
-* ~~Faster cloning by borrowing objects from existing clones~~ Done in v3!
-* Immutable settings
-* Native SSH support
 
-#### 5
-* Task grouping for parallel execution
-* Web-based client
+* Better parallel task runner based on https://github.com/icicleio/icicle
+* Task grouping for parallel execution.
+* Task combining for less ssh calls. 
+* Implement `dep status` command with health-check of running application and deployment log. 
+* More deploy strategies.
+* More integration with third-party services.
+* Web-based client.
 
 Contributing
 ------------

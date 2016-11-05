@@ -90,12 +90,14 @@ task('deploy:public_disk', function () {
  */
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
     'artisan:cache:clear',
     'artisan:config:cache',

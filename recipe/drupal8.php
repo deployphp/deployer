@@ -11,10 +11,12 @@ require_once __DIR__ . '/common.php';
 
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup'
 ]);
 

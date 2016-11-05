@@ -19,11 +19,13 @@ set('shared_dirs', [
  */
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:vendors',
     'deploy:shared',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
 ])->desc('Deploy your project');
 

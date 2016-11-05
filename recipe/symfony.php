@@ -133,6 +133,7 @@ after('deploy:update_code', 'deploy:clear_controllers');
  */
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:create_cache_dir',
@@ -144,6 +145,7 @@ task('deploy', [
     'deploy:cache:warmup',
     'deploy:writable',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
 ])->desc('Deploy your project');
 

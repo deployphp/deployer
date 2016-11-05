@@ -47,12 +47,14 @@ after('deploy:update_code', 'deploy:clear_version');
  */
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
     'deploy:writable',
     'deploy:cache:clear',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
 ])->desc('Deploy your project');
 

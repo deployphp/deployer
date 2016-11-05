@@ -45,6 +45,7 @@ task('deploy:run_migrations', function () {
  */
 task('deploy', [
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
@@ -52,6 +53,7 @@ task('deploy', [
     'deploy:init',
     'deploy:run_migrations',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
 ])->desc('Deploy your project');
 

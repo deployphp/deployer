@@ -441,8 +441,8 @@ env('releases_list', function () {
     foreach ($list as $key => $item) {
         $item = basename($item); // strip path returned from find
 
-        // release dir can look like this: 20160216152237 or 20160216152237.1.2.3.4 ...
-        $name_match = '[0-9_\.]+'; // 20160216152237
+        // release dir can look like this: 2016_02_16_15.22.37 or 2016_02_16_15.22.37.1.2.3.4 ...
+        $name_match = '[0-9_\.]+'; // 2016_02_16_15.22.37
         $extension_match = '\.[0-9]+'; // .1 or .15 etc
         if (!preg_match("/^$name_match($extension_match)*$/", $item)) {
             unset($list[$key]); // dir name does not match pattern, throw it out

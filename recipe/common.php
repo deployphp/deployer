@@ -13,7 +13,7 @@ namespace Deployer;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
-set('keep_releases', 3);
+set('keep_releases', 5);
 set('shared_dirs', []);
 set('shared_files', []);
 set('copy_dirs', []);

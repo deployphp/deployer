@@ -10,6 +10,9 @@ namespace Deployer;
 /**
  * Common parameters.
  */
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+
 set('keep_releases', 3);
 set('shared_dirs', []);
 set('shared_files', []);
@@ -81,9 +84,10 @@ env('bin/composer', function () {
 /**
  * Default arguments and options.
  */
-argument('stage', \Symfony\Component\Console\Input\InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
-option('tag', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
-option('revision', null, \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
+argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
+option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
+option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
+option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy.');
 
 
 /**
@@ -114,7 +118,7 @@ task('rollback', function () {
  * Preparing server for deployment.
  */
 task('deploy:prepare', function () {
-    \Deployer\Task\Context::get()->getServer()->connect();
+    Task\Context::get()->getServer()->connect();
 
     // Check if shell is POSIX-compliant
     try {
@@ -127,7 +131,7 @@ task('deploy:prepare', function () {
             );
         }
     } catch (\RuntimeException $e) {
-        $formatter = \Deployer\Deployer::get()->getHelper('formatter');
+        $formatter = Deployer::get()->getHelper('formatter');
 
         $errorMessage = [
             "Shell on your server is not POSIX-compliant. Please change to sh, bash or similar.",
@@ -189,6 +193,12 @@ task('deploy:update_code', function () {
     $gitCache = env('git_cache');
     $depth = $gitCache ? '' : '--depth 1';
 
+    // If option `branch` is set.
+    if (input()->hasOption('branch')) {
+        $branch = input()->getOption('branch');
+    }
+
+    // Branch may come from option or from env.
     $at = '';
     if (!empty($branch)) {
         $at = "-b $branch";

@@ -384,7 +384,7 @@ task('deploy:writable', function () {
                 run("$sudo chmod -R 777 $dirs");
             }
         } catch (\RuntimeException $e) {
-            $formatter = \Deployer\Deployer::get()->getHelper('formatter');
+            $formatter = Deployer::get()->getHelper('formatter');
 
             $errorMessage = [
                 "Unable to setup correct permissions for writable dirs.                  ",

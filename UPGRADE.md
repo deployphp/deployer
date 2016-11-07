@@ -26,6 +26,8 @@
    
    Deployer v4 use `chgrp` instead of acl. 
    If you want to return to previous mode add `set('writable_mode', 'acl');`.
+   
+   Also sudo turn off by default. To run commands with sudo add `set('writable_use_sudo', true);`.
 
 # Upgrade from 2.x to 3.x
 

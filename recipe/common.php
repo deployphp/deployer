@@ -26,6 +26,7 @@ set('shared_files', []);
 set('copy_dirs', []);
 
 set('writable_dirs', []);
+set('writable_mode', 'chgrp'); // chgrp or acl.
 set('writable_use_sudo', true); // Using sudo in writable commands?
 
 set('http_user', false);
@@ -344,66 +345,78 @@ task('deploy:shared', function () {
  */
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
+    $mode = get('writable_mode');
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
     $httpUser = get('http_user', false);
 
-    if (!empty($dirs)) {
-        try {
-            if ($httpUser === false) {
-                // Detect http user in process list.
-                $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1")->toString();
-            }
+    if (empty($dirs)) {
+        return;
+    }
 
-            cd('{{release_path}}');
+    if ($httpUser === false) {
+        // Detect http user in process list.
+        $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1")->toString();
 
-            // Try OS-X specific setting of access-rights
+        if (empty($httpUser)) {
+            throw new \RuntimeException(
+                "Can't detect http user name.\n" .
+                "Please setup `http_user` config parameter."
+            );
+        }
+    }
+
+    try {
+        cd('{{release_path}}');
+
+        if ($mode === 'chgrp') {
+            // Change group ownership.
+            // -R   operate on files and directories recursively
+            // -H   if a command line argument is a symbolic link to a directory, traverse it
+            run("$sudo chgrp -RH $httpUser $dirs");
+        } else if ($mode === 'acl') {
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
-                if (!empty($httpUser)) {
-                    run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-                }
+                // Try OS-X specific setting of access-rights
 
+                run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-            // Try linux ACL implementation with unsafe fail-fallback to POSIX-way
-            } elseif (commandExist('setfacl')) {
-                if (!empty($httpUser)) {
-                    if (!empty($sudo)) {
-                        run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                        run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                    } else {
-                        // When running without sudo, exception may be thrown
-                        // if executing setfacl on files created by http user (in directory that has been setfacl before).
-                        // These directories/files should be skipped.
-                        // Now, we will check each directory for ACL and only setfacl for which has not been set before.
-                        $writeableDirs = get('writable_dirs');
-                        foreach ($writeableDirs as $dir) {
-                            // Check if ACL has been set or not
-                            $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l")->toString();
-                            // Set ACL for directory if it has not been set before
-                            if (!$hasfacl) {
-                                run("setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                                run("setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                            }
+
+            } else if (commandExist('setfacl')) {
+                if (!empty($sudo)) {
+                    run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                    run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                } else {
+                    // When running without sudo, exception may be thrown
+                    // if executing setfacl on files created by http user (in directory that has been setfacl before).
+                    // These directories/files should be skipped.
+                    // Now, we will check each directory for ACL and only setfacl for which has not been set before.
+                    $writeableDirs = get('writable_dirs');
+                    foreach ($writeableDirs as $dir) {
+                        // Check if ACL has been set or not
+                        $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l")->toString();
+                        // Set ACL for directory if it has not been set before
+                        if (!$hasfacl) {
+                            run("setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                            run("setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
                         }
                     }
-                } else {
-                    run("$sudo chmod -R 777 $dirs");
                 }
-            // If we are not on OS-X and have no ACL installed use POSIX
             } else {
+                // If we are not on OS-X and have no ACL installed.
+                // Maybe it's better to throw an exception.
                 run("$sudo chmod -R 777 $dirs");
             }
-        } catch (\RuntimeException $e) {
-            $formatter = Deployer::get()->getHelper('formatter');
-
-            $errorMessage = [
-                "Unable to setup correct permissions for writable dirs.                  ",
-                "You need to configure sudo's sudoers files to not prompt for password,",
-                "or setup correct permissions manually.                                  ",
-            ];
-            write($formatter->formatBlock($errorMessage, 'error', true));
-
-            throw $e;
         }
+    } catch (\RuntimeException $e) {
+        $formatter = Deployer::get()->getHelper('formatter');
+
+        $errorMessage = [
+            "Unable to setup correct permissions for writable dirs.                  ",
+            "You need to configure sudo's sudoers files to not prompt for password,",
+            "or setup correct permissions manually.                                  ",
+        ];
+        write($formatter->formatBlock($errorMessage, 'error', true));
+
+        throw $e;
     }
 })->desc('Make writable dirs');
 

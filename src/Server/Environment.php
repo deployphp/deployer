@@ -105,7 +105,7 @@ class Environment
     public function get($name, $default = null)
     {
         if ($this->values->hasKey($name)) {
-            if (is_callable($this->values[$name])) {
+            if ($this->isClosure($this->values[$name])) {
                 $value = $this->values[$name] = call_user_func($this->values[$name]);
             } else {
                 $value = $this->values[$name];
@@ -114,7 +114,7 @@ class Environment
             $config = Deployer::get()->config;
 
             if (isset($config[$name])) {
-                if (is_callable($config[$name])) {
+                if ($this->isClosure($config[$name])) {
                     $value = $this->values[$name] = call_user_func($config[$name]);
                 } else {
                     $value = $this->values[$name] = $config[$name];
@@ -166,5 +166,13 @@ class Environment
     private function parseCallback($matches)
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
+    }
+
+    /**
+     * @param mixed $t
+     * @return bool
+     */
+    private function isClosure($t) {
+        return is_object($t) && ($t instanceof \Closure);
     }
 }

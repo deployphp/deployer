@@ -1,6 +1,20 @@
 # Upgrade from 3.x to 4.x
 
-1. `env()` to `set()`/`get()`
+1. Namespace for functions
+
+   Add to beginning of *deploy.php* next line:
+    
+   ```php
+   use function Deployer\{server, task, run, set, get, add};
+   ```
+   
+   If you are using PHP version less than 5.6, you can use this:
+   
+   ```php
+   namespace Deployer;
+   ```
+
+2. `env()` to `set()`/`get()`
    
    Rename all calls `env($name, $value)` to `set($name, $value)`.
    
@@ -8,6 +22,10 @@
     
    Rename all `server(...)->env(...)` to `server(...)->set(...)`.
 
+3. Writable mode
+   
+   Deployer v4 use `chgrp` instead of acl. 
+   If you want to return to previous mode add `set('writable_mode', 'acl');`.
 
 # Upgrade from 2.x to 3.x
 

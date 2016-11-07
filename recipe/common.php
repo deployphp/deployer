@@ -373,14 +373,14 @@ task('deploy:writable', function () {
             // -R   operate on files and directories recursively
             // -H   if a command line argument is a symbolic link to a directory, traverse it
             run("$sudo chgrp -RH $httpUser $dirs");
-        } else if ($mode === 'acl') {
+        } elseif ($mode === 'acl') {
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
                 // Try OS-X specific setting of access-rights
 
                 run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
 
-            } else if (commandExist('setfacl')) {
+            } elseif (commandExist('setfacl')) {
                 if (!empty($sudo)) {
                     run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                     run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");

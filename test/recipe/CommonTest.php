@@ -81,7 +81,7 @@ class CommonTest extends RecipeTester
 
     public function testWriteable()
     {
-        \Deployer\set('http_user', get_current_user());
+        \Deployer\set('writable_mode', '777');
         \Deployer\set('writable_dirs', ['app/cache', 'app/logs']);
         \Deployer\set('writable_use_sudo', false);
 

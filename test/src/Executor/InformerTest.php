@@ -16,7 +16,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
     {
         $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
             ->disableOriginalConstructor()
-            ->setMethods(['getVerbosity', 'getWasWritten', 'write'])
+            ->setMethods(['getVerbosity', 'getWasWritten', 'write', 'isDecorated'])
             ->getMock();
 
         $output->expects($this->any())
@@ -35,7 +35,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
     {
         $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
             ->disableOriginalConstructor()
-            ->setMethods(['writeln', 'getVerbosity'])
+            ->setMethods(['writeln', 'getVerbosity', 'isDecorated'])
             ->getMock();
 
         $output->expects($this->once())
@@ -50,7 +50,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
     {
         $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
             ->disableOriginalConstructor()
-            ->setMethods(['writeln', 'getVerbosity'])
+            ->setMethods(['writeln', 'getVerbosity', 'isDecorated'])
             ->getMock();
 
         $output->expects($this->once())

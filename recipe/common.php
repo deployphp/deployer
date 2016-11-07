@@ -353,7 +353,7 @@ task('deploy:writable', function () {
         return;
     }
 
-    if ($httpUser === false) {
+    if ($httpUser === false && $mode !== '777') {
         // Detect http user in process list.
         $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1")->toString();
 
@@ -404,6 +404,10 @@ task('deploy:writable', function () {
                 // Maybe it's better to throw an exception.
                 run("$sudo chmod -R 777 $dirs");
             }
+        } elseif ($mode === '777') {
+            run("$sudo chmod -R 777 $dirs");
+        } else {
+            throw new \RuntimeException("Unknown writable_mode `$mode`.");
         }
     } catch (\RuntimeException $e) {
         $formatter = Deployer::get()->getHelper('formatter');

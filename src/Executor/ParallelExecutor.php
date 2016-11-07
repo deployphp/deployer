@@ -180,35 +180,41 @@ class ParallelExecutor implements ExecutorInterface
      */
     public function startWorkers()
     {
-        $input = [
-            '--master' => '127.0.0.1:' . $this->port,
-            '--server' => '',
-        ];
-        
         // Get verbosity.
         $verbosity = new VerbosityString($this->output);
 
         // Get current deploy.php file.
         $deployPhpFile = $this->input->getOption('file');
 
+        // User input.
+        $input = '';
+
         // Get user arguments.
         foreach ($this->userDefinition->getArguments() as $argument) {
-            $input[$argument->getName()] = $this->input->getArgument($argument->getName());
+            $value = $this->input->getArgument($argument->getName());
+
+            if ($value) {
+                $input .= " $value";
+            }
         }
 
         // Get user options.
         foreach ($this->userDefinition->getOptions() as $option) {
-            $input["--" . $option->getName()] = $this->input->getOption($option->getName());
+            $value = $this->input->getOption($option->getName());
+
+            if ($value) {
+                $input .= " --{$option->getName()} $value";
+            }
         }
         
         foreach ($this->servers as $serverName => $server) {
-            $input['--server'] = $serverName;
-            
             $process = new Process(
                 "php " . DEPLOYER_BIN .
                 (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
                 " worker " .
-                new ArrayInput($input) .
+                " --master 127.0.0.1:{$this->port}" .
+                " --server $serverName" .
+                " $input " .
                 " $verbosity" .
                 " &"
             );

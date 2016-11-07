@@ -62,8 +62,32 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
      * @expectedException
      * @expectedExceptionMessage "Key `no_name` is invalid"
      */
-    public function testGetDefault()
+    public function testGetUndefinedDefault()
     {
         Deployer::getDefault('no_name');
+    }
+
+    public function testSetDefault()
+    {
+        Deployer::setDefault('a', 'b');
+        $this->assertEquals('b', Deployer::getDefault('a'));
+    }
+
+    public function testAddDefault()
+    {
+        Deployer::setDefault('config', ['one', 'two']);
+        Deployer::addDefault('config', ['three']);
+
+        $this->assertEquals(['one', 'two', 'three'], Deployer::getDefault('config'));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Configuration parameter `config` isn't array.
+     */
+    public function testAddDefaultToNotArray()
+    {
+        Deployer::setDefault('config', 'option');
+        Deployer::addDefault('config', ['three']);
     }
 }

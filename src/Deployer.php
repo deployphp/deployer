@@ -149,12 +149,29 @@ class Deployer extends Container
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return boolean
      */
     public static function hasDefault($name)
     {
         return isset(Deployer::get()->config[$name]);
+    }
+
+    /**
+     * @param string $name
+     * @param array $array
+     */
+    public static function addDefault($name, $array)
+    {
+        if (self::hasDefault($name)) {
+            $config = self::getDefault($name);
+            if (!is_array($config)) {
+                throw new \RuntimeException("Configuration parameter `$name` isn't array.");
+            }
+            self::setDefault($name, array_merge($config, $array));
+        } else {
+            self::setDefault($name, $array);
+        }
     }
 
     /**

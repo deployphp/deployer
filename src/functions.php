@@ -398,6 +398,21 @@ function set($name, $value)
 }
 
 /**
+ * Merge new config params to existing config array.
+ *
+ * @param string $name
+ * @param array $array
+ */
+function add($name, $array)
+{
+    if (Context::get() === false) {
+        Deployer::addDefault($name, $array);
+    } else {
+        Context::get()->getEnvironment()->add($name, $array);
+    }
+}
+
+/**
  * Get configuration value.
  *
  * @param string $name

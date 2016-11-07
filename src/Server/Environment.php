@@ -81,6 +81,23 @@ class Environment
 
     /**
      * @param string $name
+     * @param array $array
+     */
+    public function add($name, $array)
+    {
+        if ($this->has($name)) {
+            $config = $this->get($name);
+            if (!is_array($config)) {
+                throw new \RuntimeException("Configuration parameter `$name` isn't array.");
+            }
+            $this->set($name, array_merge($config, $array));
+        } else {
+            $this->set($name, $array);
+        }
+    }
+
+    /**
+     * @param string $name
      * @param bool|int|string|array $default
      * @return bool|int|string|array
      * @throws \RuntimeException

@@ -112,4 +112,24 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
         // the whole `not_protected` parameter is not allowed.
         $env->setAsProtected('not_protected', 'value');
     }
+
+    public function testAddParams()
+    {
+        $env = new Environment();
+        $env->set('config', ['one', 'two']);
+        $env->add('config', ['three']);
+
+        $this->assertEquals(['one', 'two', 'three'], $env->get('config'));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Configuration parameter `config` isn't array.
+     */
+    public function testAddParamsToNotArray()
+    {
+        $env = new Environment();
+        $env->set('config', 'option');
+        $env->add('config', ['three']);
+    }
 }

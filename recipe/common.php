@@ -83,12 +83,9 @@ set('bin/composer', function () {
 
     return $composer;
 });
-
-/**
- * Check if target system supports relative symlink.
- */
 set('bin/symlink', function () {
     if (get('use_relative_symlink')) {
+        // Check if target system supports relative symlink.
         if (run('if [[ "$(man ln)" =~ "--relative" ]]; then echo "true"; fi')->toBool()) {
             return 'ln -nfs --relative';
         }

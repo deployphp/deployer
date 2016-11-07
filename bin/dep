@@ -52,11 +52,21 @@ if (isset($options['f'])) {
 
 if (empty($userSpecifiedFile)) {
     $deployFile = getcwd() . '/deploy.php';
+
+    if(!is_readable($deployFile)) {
+        $currentDir = getcwd();
+        $count = 0;
+        do {
+            $currentDir = dirname($currentDir);
+            $deployFile = $currentDir . '/deploy.php';
+            $count++;
+        } while (!is_readable($deployFile) && $count < 100);
+    }
 } else {
     $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile;
 }
 
-if (is_file($deployFile) && is_readable($deployFile)) {
+if (is_readable($deployFile)) {
     \Deployer\set('log_file', dirname($deployFile) . '/deploy.log');
     require $deployFile;
 }

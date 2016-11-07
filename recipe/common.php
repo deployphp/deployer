@@ -379,7 +379,6 @@ task('deploy:writable', function () {
 
                 run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-
             } elseif (commandExist('setfacl')) {
                 if (!empty($sudo)) {
                     run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");

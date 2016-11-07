@@ -172,7 +172,8 @@ class Environment
      * @param mixed $t
      * @return bool
      */
-    private function isClosure($t) {
+    private function isClosure($t)
+    {
         return is_object($t) && ($t instanceof \Closure);
     }
 }

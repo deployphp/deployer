@@ -63,6 +63,8 @@ Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
 Roadmap
 -------
 
+* Better documentation.
+* Better DX with intelligible errors.
 * Better parallel task runner based on https://github.com/icicleio/icicle
 * Task grouping for parallel execution.
 * Task combining for less ssh calls. 
@@ -89,7 +91,6 @@ Maintainers
 
 * Anton Medvedev [@elfet](https://github.com/elfet)
 * Oanh Nguyen [@oanhnn](https://github.com/oanhnn)
-* Hubert Viktor [@ZeeCoder](https://github.com/ZeeCoder)
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 

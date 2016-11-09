@@ -113,7 +113,7 @@ class CommonTest extends RecipeTester
 
         $this->assertEquals(
             realpath($this->getEnv('deploy_path') . '/current'),
-            $this->getEnv('current')
+            $this->getEnv('current_path')
         );
     }
 

@@ -87,7 +87,6 @@ set('releases_list', function () {
 });
 
 
-
 /**
  * Custom bins.
  */
@@ -230,15 +229,17 @@ set('release_path', function () {
         );
     }
 
-    return run("realpath {{deploy_path}}/release")->toString();
+    $link = run("readlink {{deploy_path}}/release")->toString();
+    return substr($link, 0, 1) === '/' ? $link : run('echo "$PWD"') . substr($link, 1);
 });
 
 
 /**
  * Return current release path.
  */
-set('current', function () {
-    return run("realpath {{deploy_path}}/current")->toString();
+set('current_path', function () {
+    $link = run("readlink {{deploy_path}}/current")->toString();
+    return substr($link, 0, 1) === '/' ? $link : run('echo "$PWD"') . substr($link, 1);
 });
 
 /**
@@ -249,7 +250,7 @@ task('deploy:release', function () {
     $previousReleaseExist = run("cd {{deploy_path}} && if [ -h release ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('cd {{deploy_path}} && rm -rf "$(realpath release)"'); // Delete release.
+        run('cd {{deploy_path}} && rm -rf "{{release_path}}"'); // Delete release.
         run('cd {{deploy_path}} && rm release'); // Delete symlink.
     }
 
@@ -488,7 +489,7 @@ task('deploy:symlink', function () {
  * Show current release number.
  */
 task('current', function () {
-    writeln('Current release: ' . basename(get('current')));
+    writeln('Current release: ' . basename(get('current_path')));
 })->desc('Show current release.');
 
 

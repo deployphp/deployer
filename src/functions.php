@@ -7,6 +7,8 @@
 namespace Deployer;
 
 use Deployer\Builder\BuilderInterface;
+
+use Deployer\ShellCommand;
 use Deployer\Server\Local;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
@@ -249,7 +251,11 @@ function workingPath()
 function run($command)
 {
     $server = Context::get()->getServer();
-    $command = Context::get()->getEnvironment()->parse($command);
+
+    $command = new ShellCommand(
+        Context::get()->getEnvironment()->parse($command)
+    );
+
     $workingPath = workingPath();
 
     if (!empty($workingPath)) {
@@ -257,7 +263,7 @@ function run($command)
     }
 
     if (isVeryVerbose()) {
-        writeln("<fg=red>></fg=red> $command");
+        writeln("<fg=red>></fg=red> {$command->getForPrinting()}");
     }
 
     $output = $server->run($command);
@@ -280,10 +286,12 @@ function run($command)
  */
 function runLocally($command, $timeout = 60)
 {
-    $command = Context::get()->getEnvironment()->parse($command);
+    $command = new ShellCommand(
+        Context::get()->getEnvironment()->parse($command)
+    );
 
     if (isVeryVerbose()) {
-        writeln("<comment>Run locally</comment>: $command");
+        writeln("<comment>Run locally</comment>: {$command->getForPrinting()}");
     }
 
     $process = new Process($command);

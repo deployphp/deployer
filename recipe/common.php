@@ -59,8 +59,33 @@ set('release_name', function () {
         date_default_timezone_set('UTC');
     }
 
-    return date('Y_m_d_H.i.s');
+    return date('YmdHis');
 }); // name of folder in releases
+
+/**
+ * Return list of releases on server.
+ */
+set('releases_list', function () {
+    // Will list only dirs in releases and sort them by mtime in reverse.
+    $list = run('cd {{deploy_path}}/releases && ls -t -d */')->toArray();
+
+    // filter out anything that does not look like a release
+    foreach ($list as $key => $item) {
+        $item = basename(rtrim($item, '/')); // strip path returned from find
+
+        $name_match = '[0-9_\.]+';
+        $extension_match = '\.[0-9]+';
+        if (!preg_match("/^$name_match($extension_match)*$/", $item)) {
+            unset($list[$key]); // dir name does not match pattern, throw it out
+            continue;
+        }
+
+        $list[$key] = $item; // $item was changed
+    }
+
+    return $list;
+});
+
 
 
 /**
@@ -205,7 +230,15 @@ set('release_path', function () {
         );
     }
 
-    return str_replace("\n", '', run("readlink {{deploy_path}}/release"));
+    return run("realpath {{deploy_path}}/release")->toString();
+});
+
+
+/**
+ * Return current release path.
+ */
+set('current', function () {
+    return run("realpath {{deploy_path}}/current")->toString();
 });
 
 /**
@@ -216,7 +249,7 @@ task('deploy:release', function () {
     $previousReleaseExist = run("cd {{deploy_path}} && if [ -h release ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('cd {{deploy_path}} && rm -rf "$(readlink release)"'); // Delete release.
+        run('cd {{deploy_path}} && rm -rf "$(realpath release)"'); // Delete release.
         run('cd {{deploy_path}} && rm release'); // Delete symlink.
     }
 
@@ -450,48 +483,6 @@ task('deploy:symlink', function () {
     }
 })->desc('Creating symlink to release');
 
-
-/**
- * Return list of releases on server.
- */
-set('releases_list', function () {
-    // find will list only dirs in releases/
-    $list = run('find {{deploy_path}}/releases/ -maxdepth 1 -mindepth 1 -type d')->toArray();
-
-    // filter out anything that does not look like a release
-    foreach ($list as $key => $item) {
-        $item = basename($item); // strip path returned from find
-
-        // release dir can look like this: 2016_02_16_15.22.37 or 2016_02_16_15.22.37.1.2.3.4 ...
-        $name_match = '[0-9_\.]+'; // 2016_02_16_15.22.37
-        $extension_match = '\.[0-9]+'; // .1 or .15 etc
-        if (!preg_match("/^$name_match($extension_match)*$/", $item)) {
-            unset($list[$key]); // dir name does not match pattern, throw it out
-            continue;
-        }
-
-        $list[$key] = $item; // $item was changed
-    }
-
-    rsort($list);
-
-    return $list;
-});
-
-
-/**
- * Return the current release timestamp
- */
-set('release', function () {
-    return basename(get('current'));
-});
-
-/**
- * Return current release path.
- */
-set('current', function () {
-    return run("readlink {{deploy_path}}/current")->toString();
-});
 
 /**
  * Show current release number.

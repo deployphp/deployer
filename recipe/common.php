@@ -230,7 +230,7 @@ set('release_path', function () {
     }
 
     $link = run("readlink {{deploy_path}}/release")->toString();
-    return substr($link, 0, 1) === '/' ? $link : run('echo "$PWD"') . substr($link, 1);
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
 
@@ -239,7 +239,7 @@ set('release_path', function () {
  */
 set('current_path', function () {
     $link = run("readlink {{deploy_path}}/current")->toString();
-    return substr($link, 0, 1) === '/' ? $link : run('echo "$PWD"') . substr($link, 1);
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
 /**

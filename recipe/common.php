@@ -32,7 +32,7 @@ set('writable_use_sudo', false); // Using sudo in writable commands?
 set('http_user', false);
 
 set('clear_paths', []);         // Relative path from deploy_path
-set('clear_use_sudo', true);    // Using sudo in clean commands?
+set('clear_use_sudo', false);    // Using sudo in clean commands?
 
 set('use_relative_symlink', true);
 
@@ -84,6 +84,32 @@ set('releases_list', function () {
     }
 
     return $list;
+});
+
+
+/**
+ * Return release path.
+ */
+set('release_path', function () {
+    $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
+    if (!$releaseExists) {
+        throw new \RuntimeException(
+            "Release path does not found.\n" .
+            "Run deploy:release to create new release."
+        );
+    }
+
+    $link = run("readlink {{deploy_path}}/release")->toString();
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
+});
+
+
+/**
+ * Return current release path.
+ */
+set('current_path', function () {
+    $link = run("readlink {{deploy_path}}/current")->toString();
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
 
@@ -217,30 +243,6 @@ task('deploy:prepare', function () {
     run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
 })->desc('Preparing server for deploy');
 
-/**
- * Return release path.
- */
-set('release_path', function () {
-    $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
-    if (!$releaseExists) {
-        throw new \RuntimeException(
-            "Release path does not found.\n" .
-            "Run deploy:release to create new release."
-        );
-    }
-
-    $link = run("readlink {{deploy_path}}/release")->toString();
-    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-});
-
-
-/**
- * Return current release path.
- */
-set('current_path', function () {
-    $link = run("readlink {{deploy_path}}/current")->toString();
-    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-});
 
 /**
  * Release

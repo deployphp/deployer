@@ -524,7 +524,7 @@ task('deploy:clean', function () {
     $sudo  = get('clear_use_sudo') ? 'sudo' : '';
 
     foreach ($paths as $path) {
-        run("$sudo rm -rf {{deploy_path}}/$path");
+        run("$sudo rm -rf {{release_path}}/$path");
     }
 })->desc('Cleaning up files and/or directories');
 

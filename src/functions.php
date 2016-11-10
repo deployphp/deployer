@@ -265,7 +265,7 @@ function run($command)
     if (isDebug() && !empty($output)) {
         output()->writeln(array_map(function ($line) {
             return output()->isDecorated() ? "\033[1;30m< $line\033[0m" : "< $line";
-        }, explode("\n", $output)), OutputInterface::OUTPUT_RAW);
+        }, explode("\n", rtrim($output))), OutputInterface::OUTPUT_RAW);
     }
 
     return new Result($output);

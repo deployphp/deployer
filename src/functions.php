@@ -249,6 +249,7 @@ function workingPath()
 function run($command)
 {
     $server = Context::get()->getServer();
+    $serverName = $server->getConfiguration()->getName();
     $command = Context::get()->getEnvironment()->parse($command);
     $workingPath = workingPath();
 
@@ -257,14 +258,16 @@ function run($command)
     }
 
     if (isVeryVerbose()) {
-        writeln("<fg=red>></fg=red> $command");
+        writeln("[$serverName] <fg=red>></fg=red> $command");
     }
 
     $output = $server->run($command);
 
     if (isDebug() && !empty($output)) {
-        output()->writeln(array_map(function ($line) {
-            return output()->isDecorated() ? "\033[1;30m< $line\033[0m" : "< $line";
+        output()->writeln(array_map(function ($line) use ($serverName) {
+            return output()->isDecorated()
+                ? "[$serverName] \033[1;30m< $line\033[0m"
+                : "[$serverName] < $line";
         }, explode("\n", rtrim($output))), OutputInterface::OUTPUT_RAW);
     }
 

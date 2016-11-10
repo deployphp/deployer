@@ -37,7 +37,7 @@ class SeriesExecutor implements ExecutorInterface
                             continue;
                         }
 
-                        $informer->onServer($serverName);
+                        // Start task on $serverName.
 
                         try {
                             $task->run(new Context($server, $env, $input, $output));

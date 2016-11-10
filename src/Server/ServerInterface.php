@@ -10,6 +10,11 @@ namespace Deployer\Server;
 interface ServerInterface
 {
     /**
+     * @return Configuration
+     */
+    public function getConfiguration();
+
+    /**
      * Connect to remote server.
      */
     public function connect();

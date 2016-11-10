@@ -71,16 +71,6 @@ class Informer
     /**
      * @param string $serverName
      */
-    public function onServer($serverName)
-    {
-        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("↳ on [$serverName]");
-        }
-    }
-
-    /**
-     * @param string $serverName
-     */
     public function endOnServer($serverName)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {

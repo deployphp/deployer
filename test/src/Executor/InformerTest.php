@@ -25,9 +25,7 @@ class InformerTest extends \PHPUnit_Framework_TestCase
 
         $informer = new Informer($output);
 
-        // TODO: Check something.
         $informer->startTask('task');
-        $informer->onServer('server');
         $informer->endTask();
     }
 

@@ -234,7 +234,7 @@ class ParallelExecutor implements ExecutorInterface
             $format = function ($message) use ($server) {
                 $message = rtrim($message, "\n");
                 return implode("\n", array_map(function ($text) use ($server) {
-                    return "[$server] $text";
+                    return $text;
                 }, explode("\n", $message)));
             };
 
@@ -304,7 +304,7 @@ class ParallelExecutor implements ExecutorInterface
                                 continue;
                             }
 
-                            $this->informer->onServer($serverName);
+                            // Start task on $serverName.
                             $this->tasksToDo[$serverName] = $taskName;
                         }
                     }

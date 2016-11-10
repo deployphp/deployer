@@ -56,7 +56,7 @@ set('release_name', function () {
     $releasesList = array_map(function ($release) {
         return intval($release);
     }, array_filter(get('releases_list'), function ($release) {
-        return preg_match("/[0-9]+/", $release) && !preg_match("/[0-9]{14}/", $release);
+        return preg_match("/^[0-9]+(\\/)?$/", $release) && !preg_match("/[0-9]{14}/", $release);
     }));
 
     $nextReleaseNumber = 1;

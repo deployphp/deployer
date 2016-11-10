@@ -52,14 +52,18 @@ set('git_cache', function () { //whether to use git cache - faster cloning by bo
     return version_compare($version, '2.3', '>=');
 });
 
-set('timezone', 'UTC');
 set('release_name', function () {
-    // Set the deployment timezone
-    if (!date_default_timezone_set(get('timezone'))) {
-        date_default_timezone_set('UTC');
-    }
+    $releasesList = array_map(function ($release) {
+        return intval($release);
+    }, array_filter(get('releases_list'), function ($release) {
+        return preg_match("/[0-9]+/", $release) && !preg_match("/[0-9]{14}/", $release);
+    }));
 
-    return date('YmdHis');
+    $nextReleaseNumber = 1;
+    if (count($releasesList) > 0) {
+        $nextReleaseNumber = max($releasesList) + 1;
+    }
+    return (string)$nextReleaseNumber;
 }); // name of folder in releases
 
 /**

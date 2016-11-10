@@ -503,6 +503,11 @@ task('cleanup', function () {
 
     $keep = get('keep_releases');
 
+    if ($keep === -1) {
+        // Keep unlimited releases.
+        return;
+    }
+
     while ($keep > 0) {
         array_shift($releases);
         --$keep;

@@ -14,6 +14,32 @@ class Local implements ServerInterface
     const TIMEOUT = 300;
 
     /**
+     * @var Configuration
+     */
+    private $configuration;
+
+    /**
+     * Local constructor.
+     * @param $config
+     */
+    public function __construct(Configuration $config = null)
+    {
+        if ($config === null) {
+            $config = new Configuration('localhost', 'localhost');
+        }
+
+        $this->configuration = $config;
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function connect()

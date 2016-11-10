@@ -116,47 +116,4 @@ class CommonTest extends RecipeTester
             $this->getEnv('current_path')
         );
     }
-
-    /**
-     * @depends testCurrent
-     */
-    public function testCleanup()
-    {
-        $this->exec('deploy:release');
-        $this->exec('deploy:release');
-        $this->exec('deploy:release');
-        $this->exec('deploy:release');
-        $this->exec('deploy:release');
-        $this->exec('deploy:release');
-
-        $this->exec('cleanup');
-
-        $fi = new FilesystemIterator($this->getEnv('deploy_path') . '/releases', FilesystemIterator::SKIP_DOTS);
-        $this->assertEquals(3, iterator_count($fi));
-    }
-
-    /**
-     * Test clean
-     */
-    public function testClean()
-    {
-        \Deployer\set('clear_paths', ['current/app/README.md', 'current/app/tests']);
-        \Deployer\set('clear_use_sudo', false);
-
-        $this->exec('deploy:clean');
-
-        $this->assertFileNotExists($this->getEnv('deploy_path') . '/current/app/README.md');
-        $this->assertFileNotExists($this->getEnv('deploy_path') . '/current/app/tests');
-    }
-
-    /**
-     * @depends testCleanup
-     */
-    public function testRollback()
-    {
-        $this->exec('rollback');
-
-        $fi = new FilesystemIterator($this->getEnv('deploy_path') . '/releases', FilesystemIterator::SKIP_DOTS);
-        $this->assertEquals(2, iterator_count($fi));
-    }
 }

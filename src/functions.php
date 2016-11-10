@@ -70,8 +70,8 @@ function localServer($name)
     $deployer = Deployer::get();
 
     $env = new Environment();
-    $server = new Local();
     $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
+    $server = new Local($config);
 
     $deployer->servers->set($name, $server);
     $deployer->environments->set($name, $env);

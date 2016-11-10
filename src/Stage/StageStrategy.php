@@ -7,7 +7,6 @@
 
 namespace Deployer\Stage;
 
-use Deployer\Collection\Collection;
 use Deployer\Server\Environment;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\Local;

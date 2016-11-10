@@ -70,6 +70,11 @@ set('release_name', function () {
  * Return list of releases on server.
  */
 set('releases_list', function () {
+    // If there is no releases return empty list.
+    if (!run('[ -d {{deploy_path}}/releases ] && [ "$(ls -A {{deploy_path}}/releases)" ] && echo "true" || echo "false"')->toBool()) {
+        return [];
+    }
+
     // Will list only dirs in releases and sort them by mtime in reverse.
     $list = run('cd {{deploy_path}}/releases && ls -t -d */')->toArray();
 
@@ -89,7 +94,6 @@ set('releases_list', function () {
 
     return $list;
 });
-
 
 /**
  * Return release path.

@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://deployer.org" target="_blank"><img width="150" src="https://raw.githubusercontent.com/deployphp/deployer.org/master/assets/img/big_blue.png"></a>
+<a href="https://deployer.org" target="_blank"><img src="https://raw.githubusercontent.com/deployphp/deployer.org/master/assets/img/big_blue.png"></a>
 </p>
 
 [![Build Status](https://travis-ci.org/deployphp/deployer.svg?branch=master)](https://travis-ci.org/deployphp/deployer)

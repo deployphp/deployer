@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://deployer.org" target="_blank"><img src="https://raw.githubusercontent.com/deployphp/deployer.org/master/assets/img/big_blue.png"></a>
+<a href="https://deployer.org" target="_blank"><img width="243" src="https://raw.githubusercontent.com/deployphp/deployer.org/master/public/images/deployer.png?v2"></a>
 </p>
 
 <p align="center">

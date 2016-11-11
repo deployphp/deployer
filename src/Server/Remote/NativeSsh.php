@@ -31,7 +31,7 @@ class NativeSsh implements ServerInterface
      */
     public function connect()
     {
-        /* no persistent connection is used */
+        /* No persistent connection is used */
     }
 
     /**
@@ -40,7 +40,11 @@ class NativeSsh implements ServerInterface
     public function run($command)
     {
         $serverConfig = $this->getConfiguration();
-        $sshOptions = ['-A'];
+        $sshOptions = [
+            '-A',
+            '-q',
+            '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+        ];
 
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
         if (!empty($username)) {
@@ -97,6 +101,7 @@ class NativeSsh implements ServerInterface
      * Copy file from target1 to target 2 via scp
      * @param string $target
      * @param string $target2
+     * @return string
      */
     public function scpCopy($target, $target2)
     {

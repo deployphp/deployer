@@ -12,7 +12,7 @@ use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
-use Deployer\Task\Task as TheTask;
+use Deployer\Task\Task as T;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Scenario\GroupScenario;
@@ -118,7 +118,7 @@ function serverList($file)
  *
  * @param string $name Name of current task.
  * @param callable|array $body Callable task or array of other tasks names.
- * @return TheTask
+ * @return Task\Task
  * @throws \InvalidArgumentException
  */
 function task($name, $body)
@@ -126,7 +126,7 @@ function task($name, $body)
     $deployer = Deployer::get();
 
     if ($body instanceof \Closure) {
-        $task = new TheTask($name, $body);
+        $task = new T($name, $body);
         $scenario = new Scenario($name);
     } elseif (is_array($body)) {
         $task = new GroupTask();

@@ -50,6 +50,8 @@ function server($name, $host = null, $port = 22)
 
     if (get('ssh_type') === 'ext-ssh2') {
         $server = new Remote\SshExtension($config);
+    } elseif (get('ssh_type') && get('ssh_type') === 'native') {
+        $server = new Remote\NativeSsh($config);
     } else {
         $server = new Remote\PhpSecLib($config);
     }

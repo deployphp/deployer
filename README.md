@@ -2,16 +2,18 @@
 <a href="https://deployer.org" target="_blank"><img src="https://raw.githubusercontent.com/deployphp/deployer.org/master/assets/img/big_blue.png"></a>
 </p>
 
-[![Build Status](https://travis-ci.org/deployphp/deployer.svg?branch=master)](https://travis-ci.org/deployphp/deployer)
-[![Code Quality](http://img.shields.io/scrutinizer/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
-[![Code Climate](http://img.shields.io/codeclimate/github/deployphp/deployer.svg?style=flat)](https://codeclimate.com/github/deployphp/deployer)
-[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/deployphp/deployer.svg?style=flat)](https://scrutinizer-ci.com/g/deployphp/deployer/)
-[![Version](http://img.shields.io/packagist/v/deployer/deployer.svg?style=flat)](https://packagist.org/packages/deployer/deployer)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/deployphp/deployer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) 
+<p align="center">
+<a href="https://travis-ci.org/deployphp/deployer"><img src="https://travis-ci.org/deployphp/deployer.svg?branch=master" alt="Build Status"></a>
+<a href="https://scrutinizer-ci.com/g/deployphp/deployer/"><img src="http://img.shields.io/scrutinizer/g/deployphp/deployer.svg?style=flat" alt="Code Quality"></a>
+<a href="https://packagist.org/packages/deployer/deployer"><img src="https://img.shields.io/packagist/dt/deployer/deployer.svg" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/deployer/deployer"><img src="http://img.shields.io/packagist/v/deployer/deployer.svg?style=flat" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/deployer/deployer"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License"></a>
+</p>
+
+## About Deployer
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469/big.png)](https://insight.sensiolabs.com/projects/69072898-df4a-4dee-ab05-c2ae83d6c469)
 
-## About Deployer
 Deployer is a deployment tool written in PHP.
 
 See [deployer.org](https://deployer.org) for more information and documentation.

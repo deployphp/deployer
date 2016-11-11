@@ -161,9 +161,7 @@ option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
 option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy.');
 
 
-/**
- * Rollback to previous release.
- */
+desc('Rollback to previous release');
 task('rollback', function () {
     $releases = get('releases_list');
 
@@ -182,12 +180,10 @@ task('rollback', function () {
     } else {
         writeln("<comment>No more releases you can revert to.</comment>");
     }
-})->desc('Rollback to previous release');
+});
 
 
-/**
- * Lock deploy.
- */
+desc('Lock deploy');
 task('deploy:lock', function () {
     $locked = run("if [ -f {{deploy_path}}/deploy.lock ]; then echo 'true'; fi")->toBool();
 
@@ -199,20 +195,16 @@ task('deploy:lock', function () {
     } else {
         run("touch {{deploy_path}}/deploy.lock");
     }
-})->desc('Lock deploy');
+});
 
 
-/**
- * Unlock deploy.
- */
+desc('Unlock deploy');
 task('deploy:unlock', function () {
     run("rm {{deploy_path}}/deploy.lock");
-})->desc('Unlock deploy');
+});
 
 
-/**
- * Preparing server for deployment.
- */
+desc('Preparing server for deploy');
 task('deploy:prepare', function () {
     // Check if shell is POSIX-compliant
     try {
@@ -249,12 +241,10 @@ task('deploy:prepare', function () {
 
     // Create shared dir.
     run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
-})->desc('Preparing server for deploy');
+});
 
 
-/**
- * Release
- */
+desc('Prepare release');
 task('deploy:release', function () {
     // Clean up if there is unfinished release.
     $previousReleaseExist = run("cd {{deploy_path}} && if [ -h release ]; then echo 'true'; fi")->toBool();
@@ -273,12 +263,10 @@ task('deploy:release', function () {
     // Make new release.
     run("mkdir $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
-})->desc('Prepare release');
+});
 
 
-/**
- * Update project code
- */
+desc('Update code');
 task('deploy:update_code', function () {
     $repository = trim(get('repository'));
     $branch = get('branch');
@@ -330,11 +318,10 @@ task('deploy:update_code', function () {
     if (!empty($revision)) {
         run("cd {{release_path}} && $git checkout $revision");
     }
-})->desc('Updating code');
+});
 
-/**
- * Copy directories.
- */
+
+desc('Copy directories');
 task('deploy:copy_dirs', function () {
     $dirs = get('copy_dirs');
 
@@ -345,11 +332,10 @@ task('deploy:copy_dirs', function () {
         // Copy directory.
         run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
     }
-})->desc('Copy directories');
+});
 
-/**
- * Create symlinks for shared directories and files.
- */
+
+desc('Creating symlinks for shared files and dirs');
 task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";
 
@@ -384,12 +370,10 @@ task('deploy:shared', function () {
         // Symlink shared dir to release dir
         run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");
     }
-})->desc('Creating symlinks for shared files');
+});
 
 
-/**
- * Make writable dirs.
- */
+desc('Make writable dirs');
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $mode = get('writable_mode');
@@ -468,20 +452,16 @@ task('deploy:writable', function () {
 
         throw $e;
     }
-})->desc('Make writable dirs');
+});
 
 
-/**
- * Installing vendors tasks.
- */
+desc('Installing vendors');
 task('deploy:vendors', function () {
     run('cd {{release_path}} && {{env_vars}} {{bin/composer}} {{composer_options}}');
-})->desc('Installing vendors');
+});
 
 
-/**
- * Create symlink to last release.
- */
+desc('Creating symlink to release');
 task('deploy:symlink', function () {
     if (run('if [[ "$(man mv)" =~ "--no-target-directory" ]]; then echo "true"; fi')->toBool()) {
         run("mv -T {{deploy_path}}/release {{deploy_path}}/current");
@@ -492,20 +472,16 @@ task('deploy:symlink', function () {
         run("cd {{deploy_path}} && {{bin/symlink}} {{release_path}} current"); // Atomic override symlink.
         run("cd {{deploy_path}} && rm release"); // Remove release link.
     }
-})->desc('Creating symlink to release');
+});
 
 
-/**
- * Show current release number.
- */
+desc('Show current release path');
 task('current', function () {
     writeln('Current release: ' . basename(get('current_path')));
-})->desc('Show current release.');
+});
 
 
-/**
- * Cleanup old releases.
- */
+desc('Cleaning up old releases');
 task('cleanup', function () {
     $releases = get('releases_list');
 
@@ -527,11 +503,10 @@ task('cleanup', function () {
 
     run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
     run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
-})->desc('Cleaning up old releases');
+});
 
-/**
- * Cleanup files and directories
- */
+
+desc('Cleaning up files and/or directories');
 task('deploy:clean', function () {
     $paths = get('clear_paths');
     $sudo  = get('clear_use_sudo') ? 'sudo' : '';
@@ -539,7 +514,7 @@ task('deploy:clean', function () {
     foreach ($paths as $path) {
         run("$sudo rm -rf {{release_path}}/$path");
     }
-})->desc('Cleaning up files and/or directories');
+});
 
 /**
  * Success message

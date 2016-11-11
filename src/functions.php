@@ -114,6 +114,22 @@ function serverList($file)
 }
 
 /**
+ * Set task description.
+ *
+ * @param ?string $title
+ * @return ?string
+ */
+function desc($title = null) {
+    static $store = null;
+
+    if ($title === null) {
+        return $store;
+    } else {
+        return $store = $title;
+    }
+}
+
+/**
  * Define a new task and save to tasks list.
  *
  * @param string $name Name of current task.
@@ -139,6 +155,11 @@ function task($name, $body)
 
     $deployer->tasks->set($name, $task);
     $deployer->scenarios->set($name, $scenario);
+
+    if (!empty(desc())) {
+        $task->desc(desc());
+        desc(''); // Clear title.
+    }
 
     return $task;
 }

@@ -119,7 +119,8 @@ function serverList($file)
  * @param ?string $title
  * @return ?string
  */
-function desc($title = null) {
+function desc($title = null)
+{
     static $store = null;
 
     if ($title === null) {

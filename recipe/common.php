@@ -475,7 +475,7 @@ task('deploy:symlink', function () {
 });
 
 
-desc('Show current release path');
+desc('Show current release');
 task('current', function () {
     writeln('Current release: ' . basename(get('current_path')));
 });

@@ -15,8 +15,6 @@ use Deployer\Server\Environment;
 use Deployer\Task\Task as T;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
-use Deployer\Task\Scenario\GroupScenario;
-use Deployer\Task\Scenario\Scenario;
 use Deployer\Type\Result;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;

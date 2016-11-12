@@ -7,13 +7,7 @@
 
 namespace Deployer\Initializer\Template;
 
-/**
- * Generate a common (base) deployer configuration
- *
- * @author Vitaliy Zhuk <zhuk2205@gmail.com>
- * @author Anton Medvedev <anton@medv.io>
- */
-class CommonTemplate extends Template
+abstract class FrameworkTemplate extends Template
 {
     /**
      * {@inheritDoc}
@@ -23,14 +17,14 @@ class CommonTemplate extends Template
         return <<<PHP
 <?php
 namespace Deployer;
-require 'recipe/common.php';
+require 'recipe/{$this->getRecipe()}.php';
 
 // Configuration
 
 set('repository', 'git@domain.com:username/repository.git');
-set('shared_files', []);
-set('shared_dirs', []);
-set('writable_dirs', []);
+add('shared_files', []);
+add('shared_dirs', []);
+add('writable_dirs', []);
 
 // Servers
 
@@ -49,24 +43,14 @@ task('php-fpm:restart', function () {
     run('sudo systemctl restart php-fpm.service');
 });
 after('deploy:symlink', 'php-fpm:restart');
-
-desc('Deploy your project');
-task('deploy', [
-    'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:writable',
-    'deploy:vendors',
-    'deploy:clean',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
-    'success'
-]);
-
-after('deploy', 'success');
+{$this->getExtraContent()}
 PHP;
+    }
+
+    abstract protected function getRecipe();
+
+    protected function getExtraContent()
+    {
+        return '';
     }
 }

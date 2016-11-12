@@ -7,15 +7,10 @@
 
 namespace Deployer\Initializer\Template;
 
-/**
- * Generate a Laravel deployer configuration.
- *
- * @author Anton Medvedev <anton@medv.io>
- */
-class LaravelTemplate extends FrameworkTemplate
+class CodeIgniterTemplate extends FrameworkTemplate
 {
     protected function getRecipe()
     {
-        return 'laravel';
+        return 'codeigniter';
     }
 }

@@ -31,7 +31,7 @@ class WorkerCommand extends Command
     public function __construct(Deployer $deployer)
     {
         parent::__construct('worker');
-        $this->setDescription('Deployer uses workers for parallel deployment.');
+        $this->setDescription('Deployer uses workers for parallel deployment');
 
         $this->deployer = $deployer;
 

@@ -56,7 +56,7 @@ $loaded = false;
 $includePath = false;
 
 for ($i = 0; $i < count($autoload); $i++) {
-    if (file_exists($autoload[$i])) {
+    if (file_exists($autoload[$i]) && file_exists($includes[$i])) {
         require $autoload[$i];
         $includePath = $includes[$i];
         $loaded = true;

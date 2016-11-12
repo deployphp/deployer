@@ -16,7 +16,6 @@ use Pure\Server;
 use Pure\Storage\ArrayStorage;
 use Pure\Storage\QueueStorage;
 use React\Socket\ConnectionException;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Process\Process;
 
@@ -242,11 +241,11 @@ class ParallelExecutor implements ExecutorInterface
     public function catchOutput()
     {
         while (count($this->outputStorage) > 0) {
-            list($server, $messages, , $type) = $this->outputStorage->pop();
+            list(, $messages, , $type) = $this->outputStorage->pop();
 
-            $format = function ($message) use ($server) {
+            $format = function ($message) {
                 $message = rtrim($message, "\n");
-                return implode("\n", array_map(function ($text) use ($server) {
+                return implode("\n", array_map(function ($text) {
                     return $text;
                 }, explode("\n", $message)));
             };

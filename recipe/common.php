@@ -155,10 +155,10 @@ set('bin/symlink', function () {
 /**
  * Default arguments and options.
  */
-argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers.');
-option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy.');
-option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy.');
-option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy.');
+argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers');
+option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
+option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
+option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
 
 
 desc('Rollback to previous release');

@@ -8,12 +8,14 @@
 namespace Deployer\Console;
 
 use Deployer\Initializer\Initializer;
+use Deployer\Initializer\Template\CakeTemplate;
+use Deployer\Initializer\Template\CodeIgniterTemplate;
 use Deployer\Initializer\Template\CommonTemplate;
-use Deployer\Initializer\Template\ComposerTemplate;
+use Deployer\Initializer\Template\DrupalTemplate;
 use Deployer\Initializer\Template\LaravelTemplate;
-use Deployer\Initializer\Template\NodeJsTemplate;
 use Deployer\Initializer\Template\SymfonyTemplate;
 use Deployer\Initializer\Template\YiiTemplate;
+use Deployer\Initializer\Template\ZendTemplate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -58,9 +60,9 @@ class InitCommand extends Command
     {
         $this
             ->setName('init')
-            ->setDescription('Initialize deployer system in your project.')
+            ->setDescription('Initialize deployer system in your project')
             ->addArgument('template', InputArgument::OPTIONAL, 'The template of you project. Available templates: ' . implode(', ', $this->availableTemplates))
-            ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'The directory for create "deploy.php" file.', getcwd())
+            ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'The directory for create "deploy.php" file', getcwd())
             ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The file name. Default "deploy.php"', 'deploy.php');
     }
 
@@ -80,7 +82,7 @@ class InitCommand extends Command
                 $this->availableTemplates,
                 0
             );
-            $question->setErrorMessage('Color %s is invalid.');
+            $question->setErrorMessage('Project type %s is invalid.');
 
             $template = $helper->ask($input, $output, $question);
         }
@@ -88,7 +90,7 @@ class InitCommand extends Command
         $filePath = $this->initializer->initialize($template, $directory, $file);
 
         $output->writeln(sprintf(
-            '<comment>Successfully create deployer configuration: <info>%s</info></comment>',
+            '<info>Successfully created:</info> <comment>%s</comment>',
             $filePath
         ));
     }
@@ -102,12 +104,14 @@ class InitCommand extends Command
     {
         $initializer = new Initializer();
 
-        $initializer->addTemplate('common', new CommonTemplate());
-        $initializer->addTemplate('composer', new ComposerTemplate());
-        $initializer->addTemplate('symfony', new SymfonyTemplate());
-        $initializer->addTemplate('laravel', new LaravelTemplate());
-        $initializer->addTemplate('yii', new YiiTemplate());
-        $initializer->addTemplate('node.js', new NodeJsTemplate());
+        $initializer->addTemplate('Common', new CommonTemplate());
+        $initializer->addTemplate('Laravel', new LaravelTemplate());
+        $initializer->addTemplate('Symfony', new SymfonyTemplate());
+        $initializer->addTemplate('Yii', new YiiTemplate());
+        $initializer->addTemplate('Zend Framework', new ZendTemplate());
+        $initializer->addTemplate('CakePHP', new CakeTemplate());
+        $initializer->addTemplate('CodeIgniter', new CodeIgniterTemplate());
+        $initializer->addTemplate('Drupal', new DrupalTemplate());
 
         return $initializer;
     }

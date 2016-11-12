@@ -22,13 +22,15 @@ class SeriesExecutor implements ExecutorInterface
     {
         $output = new OutputWatcher($output);
         $informer = new Informer($output);
+        $localhost = new Local();
+        $localEnv = new Environment();
 
         foreach ($tasks as $task) {
             $success = true;
             $informer->startTask($task->getName());
 
             if ($task->isOnce()) {
-                $task->run(new Context(new Local(), new Environment(), $input, $output));
+                $task->run(new Context($localhost, $localEnv, $input, $output));
             } else {
                 foreach ($servers as $serverName => $server) {
                     if ($task->isOnServer($serverName)) {

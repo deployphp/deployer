@@ -121,6 +121,16 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
+     * @var Local
+     */
+    private $localhost;
+
+    /**
+     * @var Environment
+     */
+    private $localEnv;
+
+    /**
      * @param InputDefinition $userDefinition
      */
     public function __construct(InputDefinition $userDefinition)
@@ -139,6 +149,8 @@ class ParallelExecutor implements ExecutorInterface
         $this->input = $input;
         $this->output = new OutputWatcher($output);
         $this->informer = new Informer($this->output);
+        $this->localhost = new Local();
+        $this->localEnv = new Environment();
         $this->port = self::START_PORT;
 
         connect:
@@ -292,7 +304,7 @@ class ParallelExecutor implements ExecutorInterface
                 $this->informer->startTask($taskName);
 
                 if ($task->isOnce()) {
-                    $task->run(new Context(new Local(), new Environment(), $this->input, $this->output));
+                    $task->run(new Context($this->localhost, $this->localEnv, $this->input, $this->output));
                     $this->informer->endTask();
                 } else {
                     $this->tasksToDo = [];

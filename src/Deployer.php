@@ -19,7 +19,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
 use Symfony\Component\Console;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @property Task\TaskCollection|Task\Task[] tasks
@@ -43,15 +42,6 @@ class Deployer extends Container
     public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
     {
         parent::__construct();
-
-        /******************************
-         *         Dispatcher         *
-         ******************************/
-
-        $this['dispatcher'] = function () {
-            return new EventDispatcher();
-        };
-
 
         /******************************
          *           Console          *
@@ -117,7 +107,6 @@ class Deployer extends Container
         };
 
         self::$instance = $this;
-        $this->getDispatcher()->dispatch('init');
     }
 
     /**
@@ -214,14 +203,6 @@ class Deployer extends Container
         } else {
             throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
-    }
-
-    /**
-     * @return EventDispatcher
-     */
-    public function getDispatcher()
-    {
-        return $this['dispatcher'];
     }
 
     /**

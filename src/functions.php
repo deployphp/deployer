@@ -599,12 +599,3 @@ function commandExist($command)
 {
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
 }
-
-
-/**
- * @return \Symfony\Component\EventDispatcher\EventDispatcher
- */
-function dispatcher()
-{
-    return Deployer::get()->getDispatcher();
-}

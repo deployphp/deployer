@@ -52,11 +52,21 @@ class Local implements ServerInterface
      */
     public function run($command)
     {
+        return $this->mustRun($command);
+    }
+
+    /**
+     * @param string $command
+     * @param callable $callback
+     * @return string
+     */
+    public function mustRun($command, $callback = null)
+    {
         $process = new Process($command);
         $process
             ->setTimeout(self::TIMEOUT)
             ->setIdleTimeout(self::TIMEOUT)
-            ->mustRun();
+            ->mustRun($callback);
 
         return $process->getOutput();
     }

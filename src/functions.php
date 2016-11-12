@@ -278,14 +278,25 @@ function run($command)
         writeln("[$serverName] <fg=red>></fg=red> $command");
     }
 
-    $output = $server->run($command);
-
-    if (isDebug() && !empty($output)) {
-        output()->writeln(array_map(function ($line) use ($serverName) {
-            return output()->isDecorated()
-                ? "[$serverName] \033[1;30m< $line\033[0m"
-                : "[$serverName] < $line";
-        }, explode("\n", rtrim($output))), OutputInterface::OUTPUT_RAW);
+    if ($server instanceof Local) {
+        $output = $server->mustRun($command, function ($type, $buffer) use ($serverName) {
+            if (isDebug()) {
+                output()->writeln(array_map(function ($line) use ($serverName) {
+                    return output()->isDecorated()
+                        ? "[$serverName] \033[1;30m< $line\033[0m"
+                        : "[$serverName] < $line";
+                }, explode("\n", rtrim($buffer))), OutputInterface::OUTPUT_RAW);
+            }
+        });
+    } else {
+        $output = $server->run($command);
+        if (isDebug() && !empty($output)) {
+            output()->writeln(array_map(function ($line) use ($serverName) {
+                return output()->isDecorated()
+                    ? "[$serverName] \033[1;30m< $line\033[0m"
+                    : "[$serverName] < $line";
+            }, explode("\n", rtrim($output))), OutputInterface::OUTPUT_RAW);
+        }
     }
 
     return new Result($output);

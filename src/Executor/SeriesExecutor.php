@@ -9,6 +9,7 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Server\Environment;
+use Deployer\Server\Local;
 use Deployer\Task\Context;
 use Deployer\Task\NonFatalException;
 
@@ -27,7 +28,7 @@ class SeriesExecutor implements ExecutorInterface
             $informer->startTask($task->getName());
 
             if ($task->isOnce()) {
-                $task->run(new Context(null, new Environment(), $input, $output));
+                $task->run(new Context(new Local(), new Environment(), $input, $output));
             } else {
                 foreach ($servers as $serverName => $server) {
                     if ($task->isOnServer($serverName)) {

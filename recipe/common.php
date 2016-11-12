@@ -520,7 +520,5 @@ task('deploy:clean', function () {
  * Success message
  */
 task('success', function () {
-    writeln("<info>Successfully deployed!</info>");
-})
-    ->once()
-    ->setPrivate();
+    Deployer::setDefault('terminate_message', '<info>Successfully deployed!</info>');
+})->once()->setPrivate();

@@ -75,5 +75,9 @@ class TaskCommand extends Command
         }
 
         $executor->run($tasks, $servers, $environments, $input, $output);
+
+        if(Deployer::hasDefault('terminate_message')) {
+            $output->writeln(Deployer::getDefault('terminate_message'));
+        }
     }
 }

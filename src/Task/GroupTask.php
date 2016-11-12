@@ -34,7 +34,25 @@ class GroupTask extends Task
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function once()
+    {
+        throw new \RuntimeException('Group task can not be called once.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function onlyOn($servers = [])
+    {
+        throw new \RuntimeException('Group task can not be called only on specified servers.');
+    }
+
+    /**
+     * List of tasks names.
      *
+     * @return array
      */
     public function getTasks()
     {

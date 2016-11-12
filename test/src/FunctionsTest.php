@@ -134,9 +134,6 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         $this->assertInstanceOf('Deployer\Task\GroupTask', $task);
-
-        $this->setExpectedException('InvalidArgumentException', 'Task should be an closure or array of other tasks.');
-        task('wrong', 'thing');
     }
 
     public function testBefore()

@@ -275,7 +275,7 @@ function run($command)
     $workingPath = workingPath();
 
     if (!empty($workingPath)) {
-        $command = "cd $workingPath && $command";
+        $command = "cd $workingPath && ($command)";
     }
 
     if (isVeryVerbose()) {

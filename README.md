@@ -31,21 +31,21 @@ You can enable [sockets](http://php.net/manual/en/book.sockets.php) to speedup d
 To install Deployer download [deployer.phar](https://deployer.org/deployer.phar) archive and move deployer.phar to your bin directory and make it executable.
 
 ``` sh
-$ curl -LO https://deployer.org/deployer.phar
-$ mv deployer.phar /usr/local/bin/dep
-$ chmod +x /usr/local/bin/dep
+curl -LO https://deployer.org/deployer.phar
+mv deployer.phar /usr/local/bin/dep
+chmod +x /usr/local/bin/dep
 ```
 
 To upgrade Deployer run command:
 
 ``` sh
-$ dep self-update
+dep self-update
 ```
 
 Or via composer:
 
 ``` sh
-$ composer require deployer/deployer
+composer require deployer/deployer
 ```
 
 ## Documentation

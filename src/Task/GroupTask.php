@@ -17,7 +17,7 @@ class GroupTask extends Task
 
     /**
      * @param string $name Tasks name
-     * @param string $group
+     * @param array $group
      */
     public function __construct($name, $group)
     {

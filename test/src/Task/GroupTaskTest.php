@@ -16,7 +16,7 @@ class GroupTaskTest extends \PHPUnit_Framework_TestCase
     {
         $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
 
-        $task = new GroupTask();
+        $task = new GroupTask('group', []);
         $task->run($context);
     }
 }

@@ -147,9 +147,8 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         });
         before('main', 'before');
 
-        $mainScenario = $this->deployer->scenarios->get('main');
-        $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
-        $this->assertEquals(['before', 'main'], $mainScenario->getTasks());
+        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('main'));
+        $this->assertEquals(['before', 'main'], $names);
     }
 
     public function testAfter()
@@ -160,9 +159,15 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         });
         after('main', 'after');
 
-        $mainScenario = $this->deployer->scenarios->get('main');
-        $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
-        $this->assertEquals(['main', 'after'], $mainScenario->getTasks());
+        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('main'));
+        $this->assertEquals(['main', 'after'], $names);
+    }
+
+    private function taskToNames($tasks)
+    {
+        return array_map(function ($task) {
+            return $task->getName();
+        }, $tasks);
     }
 
     public function testRunLocally()

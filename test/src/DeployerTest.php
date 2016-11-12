@@ -31,7 +31,6 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             ['tasks'],
-            ['scenarios'],
             ['servers'],
             ['environments'],
         ];

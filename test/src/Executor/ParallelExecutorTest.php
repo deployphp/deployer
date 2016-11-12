@@ -39,15 +39,12 @@ class ParallelExecutorTest extends RecipeTester
         $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile]);
 
         $this->assertContains('Ok', $display);
-        $this->assertNotContains('You should only see this for production', $display);
     }
 
     public function testParallelWithStage()
     {
-        $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile, 'stage' => 'production']);
+        $display = $this->exec('test', ['--parallel' => true, '--file' => $this->recipeFile]);
 
         $this->assertContains('Ok', $display);
-        $this->assertContains('You should only see this for production', $display);
-        $this->assertContains('You should only see this for production', $display);
     }
 }

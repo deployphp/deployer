@@ -9,6 +9,9 @@ namespace Deployer\Task;
 
 use Deployer\Collection\Collection;
 
+/**
+ * @method Task get($name)
+ */
 class TaskCollection extends Collection
 {
 }

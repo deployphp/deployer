@@ -146,18 +146,13 @@ function task($name, $body)
 
     if ($body instanceof \Closure) {
         $task = new T($name, $body);
-        $scenario = new Scenario($name);
     } elseif (is_array($body)) {
-        $task = new GroupTask();
-        $scenario = new GroupScenario(array_map(function ($name) use ($deployer) {
-            return $deployer->scenarios->get($name);
-        }, $body));
+        $task = new GroupTask($name, $body);
     } else {
         throw new \InvalidArgumentException('Task should be an closure or array of other tasks.');
     }
 
     $deployer->tasks->set($name, $task);
-    $deployer->scenarios->set($name, $scenario);
 
     if (!empty(desc())) {
         $task->desc(desc());
@@ -176,10 +171,9 @@ function task($name, $body)
 function before($it, $that)
 {
     $deployer = Deployer::get();
-    $beforeScenario = $deployer->scenarios->get($it);
-    $scenario = $deployer->scenarios->get($that);
+    $beforeTask = $deployer->tasks->get($it);
 
-    $beforeScenario->addBefore($scenario);
+    $beforeTask->addBefore($that);
 }
 
 /**
@@ -191,10 +185,9 @@ function before($it, $that)
 function after($it, $that)
 {
     $deployer = Deployer::get();
-    $afterScenario = $deployer->scenarios->get($it);
-    $scenario = $deployer->scenarios->get($that);
+    $afterTask = $deployer->tasks->get($it);
 
-    $afterScenario->addAfter($scenario);
+    $afterTask->addAfter($that);
 }
 
 /**

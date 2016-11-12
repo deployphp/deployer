@@ -33,35 +33,35 @@ class TaskTest extends \PHPUnit_Framework_TestCase
 
         $task->onlyOn(['server']);
         $this->assertEquals(['server' => 0], $task->getOnlyOn());
-        $this->assertTrue($task->runOnServer('server'));
+        $this->assertTrue($task->isOnServer('server'));
 
         $task->onlyOn([]);
-        $this->assertTrue($task->runOnServer('server'));
+        $this->assertTrue($task->isOnServer('server'));
 
         $task->onlyOn('server');
         $this->assertEquals(['server' => 0], $task->getOnlyOn());
-        $this->assertTrue($task->runOnServer('server'));
+        $this->assertTrue($task->isOnServer('server'));
 
         $task->onlyOn();
-        $this->assertTrue($task->runOnServer('server'));
+        $this->assertTrue($task->isOnServer('server'));
 
         $task->setPrivate();
         $this->assertTrue($task->isPrivate());
 
         $task->onlyForStage(['staging', 'production']);
         $this->assertEquals(['staging' => 0, 'production' => 1], $task->getOnlyForStage());
-        $this->assertTrue($task->runForStages(['staging']));
-        $this->assertTrue($task->runForStages(['production']));
-        $this->assertTrue($task->runForStages(['staging', 'production']));
+        $this->assertTrue($task->isForStages(['staging']));
+        $this->assertTrue($task->isForStages(['production']));
+        $this->assertTrue($task->isForStages(['staging', 'production']));
 
         $task->onlyForStage('staging', 'production');
         $this->assertEquals(['staging' => 0, 'production' => 1], $task->getOnlyForStage());
-        $this->assertTrue($task->runForStages(['staging']));
-        $this->assertTrue($task->runForStages(['production']));
-        $this->assertTrue($task->runForStages(['staging', 'production']));
+        $this->assertTrue($task->isForStages(['staging']));
+        $this->assertTrue($task->isForStages(['production']));
+        $this->assertTrue($task->isForStages(['staging', 'production']));
 
         $task->onlyForStage();
-        $this->assertTrue($task->runForStages('anything'));
+        $this->assertTrue($task->isForStages('anything'));
     }
 
     public function testInit()

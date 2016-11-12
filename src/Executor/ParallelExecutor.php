@@ -297,11 +297,9 @@ class ParallelExecutor implements ExecutorInterface
                     $this->tasksToDo = [];
 
                     foreach ($this->servers as $serverName => $server) {
-                        if ($task->runOnServer($serverName)) {
-                            $env = isset($this->environments[$serverName]) ? $this->environments[$serverName] : $this->environments[$serverName] = new Environment();
-
-                            if (count($task->getOnlyForStage()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
-                                continue;
+                        if ($task->isOnServer($serverName)) {
+                            if (!isset($this->environments[$serverName])) {
+                                $this->environments[$serverName] = new Environment();
                             }
 
                             // Start task on $serverName.
@@ -342,8 +340,6 @@ class ParallelExecutor implements ExecutorInterface
                     $this->informer->endTask();
                 } else {
                     $this->informer->taskError($this->hasNonFatalException);
-                    // TODO: Get rid of hard dependency. Use DI container.
-                    \Deployer\dispatcher()->dispatch('error');
                 }
                 
                 // We waited all workers to finish their tasks.

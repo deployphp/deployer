@@ -10,18 +10,34 @@ namespace Deployer\Task;
 class GroupTask extends Task
 {
     /**
-     * Yes, it is constructor.
+     * List of tasks.
+     * @var array
      */
-    public function __construct()
+    private $group;
+
+    /**
+     * @param string $name Tasks name
+     * @param string $group
+     */
+    public function __construct($name, $group)
     {
-        // Do nothing
+        parent::__construct($name);
+        $this->group = $group;
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function run(Context $context)
     {
         throw new \RuntimeException('Group task should never be running.');
+    }
+
+    /**
+     *
+     */
+    public function getTasks()
+    {
+        return array_merge($this->getBefore(), $this->group, $this->getAfter());
     }
 }

@@ -30,14 +30,8 @@ class SeriesExecutor implements ExecutorInterface
                 $task->run(new Context(null, new Environment(), $input, $output));
             } else {
                 foreach ($servers as $serverName => $server) {
-                    if ($task->runOnServer($serverName)) {
+                    if ($task->isOnServer($serverName)) {
                         $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
-
-                        if (count($task->getOnlyForStage()) > 0 && (!$env->has('stages') || !$task->runForStages($env->get('stages')))) {
-                            continue;
-                        }
-
-                        // Start task on $serverName.
 
                         try {
                             $task->run(new Context($server, $env, $input, $output));
@@ -55,8 +49,6 @@ class SeriesExecutor implements ExecutorInterface
                 $informer->endTask();
             } else {
                 $informer->taskError();
-                // TODO: Get rid of hard dependency. Use DI container.
-                \Deployer\dispatcher()->dispatch('error');
             }
         }
     }

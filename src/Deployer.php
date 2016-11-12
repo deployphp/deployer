@@ -23,7 +23,6 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @property Task\TaskCollection|Task\Task[] tasks
- * @property Task\Scenario\ScenarioCollection|Task\Scenario\Scenario[] scenarios
  * @property Server\ServerCollection|Server\ServerInterface[] servers
  * @property Server\EnvironmentCollection|Server\Environment[] environments
  * @property DotArray config
@@ -86,14 +85,14 @@ class Deployer extends Container
         $this['tasks'] = function () {
             return new Task\TaskCollection();
         };
-        $this['scenarios'] = function () {
-            return new Task\Scenario\ScenarioCollection();
-        };
         $this['servers'] = function () {
             return new Server\ServerCollection();
         };
         $this['environments'] = function () {
             return new Server\EnvironmentCollection();
+        };
+        $this['scriptManager'] = function ($c) {
+            return new Task\ScriptManager($c['tasks']);
         };
         $this['stageStrategy'] = function ($c) {
             return new StageStrategy($c['servers'], $c['environments'], $c['config']['default_stage']);
@@ -264,5 +263,13 @@ class Deployer extends Container
     public function getStageStrategy()
     {
         return $this['stageStrategy'];
+    }
+
+    /**
+     * @return Task\ScriptManager
+     */
+    public function getScriptManager()
+    {
+        return $this['scriptManager'];
     }
 }

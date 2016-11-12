@@ -22,7 +22,6 @@ class TaskCommandTest extends \PHPUnit_Framework_TestCase
 
         $this->deployer->tasks['task'] = new Task('task', function () {
         });
-        $this->deployer->scenarios['task'] = new Scenario('task');
 
         $this->input->expects($this->any())
             ->method('getOption')

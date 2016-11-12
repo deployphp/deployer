@@ -58,15 +58,10 @@ class TaskCommand extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $tasks = [];
-        foreach ($this->deployer->scenarios->get($this->getName())->getTasks() as $taskName) {
-            $tasks[] = $this->deployer->tasks->get($taskName);
-        }
-
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
+        $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
         $servers = $this->deployer->getStageStrategy()->getServers($stage);
-
         $environments = iterator_to_array($this->deployer->environments);
 
         if (isset($this->executor)) {

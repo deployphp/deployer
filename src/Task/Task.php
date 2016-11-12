@@ -45,6 +45,18 @@ class Task
     private $onlyOn = [];
 
     /**
+     * List of task names to run before.
+     * @var array
+     */
+    private $before = [];
+
+    /**
+     * List of task names to run after.
+     * @var array
+     */
+    private $after = [];
+
+    /**
      * Make task internal and not visible in CLI.
      * @var bool
      */
@@ -54,7 +66,7 @@ class Task
      * @param string $name Tasks name
      * @param callable $callback Task code.
      */
-    public function __construct($name, callable $callback)
+    public function __construct($name, callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;
@@ -174,12 +186,12 @@ class Task
      * @param $stages
      * @return bool
      */
-    public function runForStages($stages)
+    public function isForStages($stages)
     {
         if (empty($this->onlyForStage)) {
             return true;
         } else {
-            return count(array_intersect($stages, array_keys($this->onlyForStage))) > 0;
+            return count(array_intersect((array)$stages, array_keys($this->onlyForStage))) > 0;
         }
     }
 
@@ -188,7 +200,7 @@ class Task
      * @param string $serverName
      * @return bool
      */
-    public function runOnServer($serverName)
+    public function isOnServer($serverName)
     {
         if (empty($this->onlyOn)) {
             return true;
@@ -213,5 +225,39 @@ class Task
     {
         $this->private = true;
         return $this;
+    }
+
+    /**
+     * @param string $task
+     */
+    public function addBefore($task)
+    {
+        array_unshift($this->before, $task);
+    }
+
+    /**
+     * @param string $task
+     */
+    public function addAfter($task)
+    {
+        array_push($this->after, $task);
+    }
+
+    /**
+     * Get before tasks names.
+     * @return string[]
+     */
+    public function getBefore()
+    {
+        return $this->before;
+    }
+
+    /**
+     * Get after tasks names.
+     * @return string[]
+     */
+    public function getAfter()
+    {
+        return $this->after;
     }
 }

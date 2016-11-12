@@ -136,7 +136,7 @@ function desc($title = null)
  * Define a new task and save to tasks list.
  *
  * @param string $name Name of current task.
- * @param callable|array $body Callable task or array of other tasks names.
+ * @param callable|array|string $body Callable task or array of other tasks names.
  * @return Task\Task
  * @throws \InvalidArgumentException
  */
@@ -148,6 +148,10 @@ function task($name, $body)
         $task = new T($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
+    } elseif (is_string($body)) {
+        $task = new T($name, function () use ($body) {
+            run($body);
+        });
     } else {
         throw new \InvalidArgumentException('Task should be an closure or array of other tasks.');
     }

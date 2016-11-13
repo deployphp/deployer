@@ -110,6 +110,13 @@ class Configuration
 
 
     /**
+     * Used to forward composer auth
+     *
+     * @var bool
+     */
+    private $composerAuth = null;
+
+    /**
      * Construct
      *
      * @param string $name
@@ -383,6 +390,18 @@ class Configuration
     public function setPemFile($pemFile)
     {
         $this->pemFile = $this->parseHome($pemFile);
+
+        return $this;
+    }
+
+    public function getComposerAuth()
+    {
+        return $this->composerAuth;
+    }
+
+    public function setComposerAuth($composerAuth)
+    {
+        $this->composerAuth = $composerAuth;
 
         return $this;
     }

@@ -232,7 +232,7 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    set('working_path', Context::get()->getEnvironment()->parse($path));
+    set('working_path', parse($path));
 }
 
 /**
@@ -269,7 +269,7 @@ function run($command)
 {
     $server = Context::get()->getServer();
     $serverName = $server->getConfiguration()->getName();
-    $command = Context::get()->getEnvironment()->parse($command);
+    $command = parse($command);
     $workingPath = workingPath();
 
     if (!empty($workingPath)) {
@@ -313,7 +313,7 @@ function run($command)
  */
 function runLocally($command, $timeout = 60)
 {
-    $command = Context::get()->getEnvironment()->parse($command);
+    $command = parse($command);
 
     if (isVeryVerbose()) {
         writeln("<comment>Run locally</comment>: $command");
@@ -348,8 +348,8 @@ function runLocally($command, $timeout = 60)
 function upload($local, $remote)
 {
     $server = Context::get()->getServer();
-    $local = Context::get()->getEnvironment()->parse($local);
-    $remote = Context::get()->getEnvironment()->parse($remote);
+    $local = parse($local);
+    $remote = parse($remote);
 
     if (is_file($local)) {
         writeln("Upload file <info>$local</info> to <info>$remote</info>");
@@ -391,8 +391,8 @@ function upload($local, $remote)
 function download($local, $remote)
 {
     $server = Context::get()->getServer();
-    $local = Context::get()->getEnvironment()->parse($local);
-    $remote = Context::get()->getEnvironment()->parse($remote);
+    $local = parse($local);
+    $remote = parse($remote);
 
     $server->download($local, $remote);
 }
@@ -611,4 +611,15 @@ function env()
 function commandExist($command)
 {
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
+}
+
+/**
+ * Parse set values.
+ *
+ * @param string $value
+ * @return string
+ */
+function parse($value)
+{
+    return Context::get()->getEnvironment()->parse($value);
 }

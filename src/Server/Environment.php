@@ -36,6 +36,14 @@ class Environment
     }
 
     /**
+     * @return Collection
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
      * @param string $name
      * @param bool|int|string|array $value
      */

@@ -196,7 +196,7 @@ class Builder implements BuilderInterface
             $composerAuth = json_decode($environment);
         }
 
-        if (empty($composerAuth)){
+        if (empty($composerAuth)) {
             $filename = self::getComposerHomeDir() . DIRECTORY_SEPARATOR . 'auth.json';
             if (file_exists(realpath($filename))) {
                 $composerAuth = json_decode(file_get_contents($filename));

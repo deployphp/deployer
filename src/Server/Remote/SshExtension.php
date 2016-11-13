@@ -115,7 +115,7 @@ class SshExtension implements ServerInterface
 
         $composerAuth = $this->getConfiguration()->getComposerAuth();
         if (!empty($composerAuth)) {
-           $env = ['COMPOSER_AUTH' => sprintf('"%s"', str_replace('"', '\"', $composerAuth))] + $env;
+            $env = ['COMPOSER_AUTH' => sprintf('"%s"', str_replace('"', '\"', $composerAuth))] + $env;
         }
 
         $exports = '';

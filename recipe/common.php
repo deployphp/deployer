@@ -6,6 +6,7 @@
  */
 
 namespace Deployer;
+
 require __DIR__ . '/common/config.php';
 
 use Deployer\Task\Context;

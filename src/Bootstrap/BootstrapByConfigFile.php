@@ -89,6 +89,11 @@ class BootstrapByConfigFile
             unset($config['forward_agent']);
         }
 
+        if ($config->hasKey('forward_composer_auth')) {
+            $builder->forwardComposerAuth();
+            unset($config['forward_composer_auth']);
+        }
+
         foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
             if ($config->has($key)) {
                 $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));

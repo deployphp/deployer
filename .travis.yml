@@ -12,6 +12,8 @@ matrix:
     - php: 7.1
 
 env:
+  global:
+    - COMPOSER_DISABLE_XDEBUG_WARN=1
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS="--prefer-stable"

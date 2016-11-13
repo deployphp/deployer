@@ -79,6 +79,14 @@ class TaskCommand extends Command
             $executor->run($tasks, $servers, $environments, $input, $output);
         } catch (\Exception $exception) {
             \Deployer\logger($exception->getMessage(), Logger::ERROR);
+
+            // Check if we have tasks to execute on failure.
+            if ($this->deployer['onFailure']->has($this->getName())) {
+                $taskName = $this->deployer['onFailure']->get($this->getName());
+                $tasks = $this->deployer->getScriptManager()->getTasks($taskName, $stage);
+                $executor->run($tasks, $servers, $environments, $input, $output);
+            }
+
             throw $exception;
         }
 

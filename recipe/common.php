@@ -520,9 +520,18 @@ task('deploy:clean', function () {
     }
 });
 
+
 /**
  * Success message
  */
 task('success', function () {
     Deployer::setDefault('terminate_message', '<info>Successfully deployed!</info>');
 })->once()->setPrivate();
+
+
+/**
+ * Deploy failure
+ */
+task('deploy:failed', function () {
+})->setPrivate();
+onFailure('deploy', 'deploy:failed');

@@ -194,6 +194,18 @@ function after($it, $that)
 }
 
 /**
+ * Setup which task run on failure of first.
+ *
+ * @param string $it
+ * @param string $that
+ */
+function onFailure($it, $that)
+{
+    $deployer = Deployer::get();
+    $deployer['onFailure']->set($it, $that);
+}
+
+/**
  * Add users arguments.
  *
  * Note what Deployer already has one argument: "stage".

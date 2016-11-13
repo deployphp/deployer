@@ -88,6 +88,9 @@ class Deployer extends Container
         $this['stageStrategy'] = function ($c) {
             return new StageStrategy($c['servers'], $c['environments'], $c['config']['default_stage']);
         };
+        $this['onFailure'] = function () {
+            return new Collection();
+        };
 
         /******************************
          *           Logger           *

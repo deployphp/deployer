@@ -16,6 +16,7 @@ use Deployer\Task\Task as T;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Type\Result;
+use Monolog\Logger;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
@@ -280,6 +281,8 @@ function run($command)
         writeln("[$serverName] <fg=red>></fg=red> $command");
     }
 
+    logger("[$serverName] > $command");
+
     if ($server instanceof Local) {
         $output = $server->mustRun($command, function ($type, $buffer) use ($serverName) {
             if (isDebug()) {
@@ -301,6 +304,10 @@ function run($command)
         }
     }
 
+    if (!empty(rtrim($output))) {
+        logger("[$serverName] < $output");
+    }
+
     return new Result($output);
 }
 
@@ -316,8 +323,10 @@ function runLocally($command, $timeout = 60)
     $command = parse($command);
 
     if (isVeryVerbose()) {
-        writeln("<comment>Run locally</comment>: $command");
+        writeln("[localhost] <fg=red>></fg=red> : $command");
     }
+
+    logger("[localhost] > $command");
 
     $process = new Process($command);
     $process->setTimeout($timeout);
@@ -335,7 +344,11 @@ function runLocally($command, $timeout = 60)
         throw new \RuntimeException($process->getErrorOutput());
     }
 
-    return new Result($process->getOutput());
+    $output = $process->getOutput();
+
+    logger("[localhost] < $output");
+
+    return new Result($output);
 }
 
 
@@ -413,6 +426,19 @@ function writeln($message)
 function write($message)
 {
     output()->write($message);
+}
+
+/**
+ * @param string $message
+ * @param int $level
+ */
+function logger($message, $level = Logger::DEBUG)
+{
+    if (is_array($message)) {
+        $message = join("\n", $message);
+    }
+
+    Deployer::get()->getLogger()->log($level, $message);
 }
 
 /**

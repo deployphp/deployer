@@ -15,9 +15,11 @@ use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Console\TaskCommand;
+use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console;
 
 /**
@@ -67,7 +69,6 @@ class Deployer extends Container
         $this->config['ssh_type'] = 'phpseclib';
         $this->config['default_stage'] = null;
 
-
         /******************************
          *            Core            *
          ******************************/
@@ -92,18 +93,17 @@ class Deployer extends Container
          *           Logger           *
          ******************************/
 
-        $this['log_level'] = function ($c) {
-            $parameters = $c['parameters'];
-            return isset($parameters['log_level']) ? $parameters['log_level'] : Logger::ERROR;
+        $this['log_level'] = Logger::DEBUG;
+        $this['log_handler'] = function () {
+            return isset($this->config['log_file'])
+                ? new StreamHandler($this->config['log_file'], $this['log_level'])
+                : new NullHandler($this['log_level']);
         };
-        $this['log_handler'] = function ($c) {
-            $parameters = $c['parameters'];
-            return new StreamHandler($parameters['log_file'], $parameters['log_level']);
-        };
-        $this['log'] = function ($c) {
-            $parameters = $c['parameters'];
-            $name = isset($parameters['log_name']) ? $parameters['log_name'] : 'Deployer';
-            return new Logger($name);
+        $this['log'] = function () {
+            $name = isset($this->config['log_name']) ? $this->config['log_name'] : 'Deployer';
+            return new Logger($name, [
+                $this['log_handler']
+            ]);
         };
 
         self::$instance = $this;
@@ -252,5 +252,13 @@ class Deployer extends Container
     public function getScriptManager()
     {
         return $this['scriptManager'];
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger()
+    {
+        return $this['log'];
     }
 }

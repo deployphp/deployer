@@ -7,7 +7,6 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Task\NonFatalException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class InformerTest extends \PHPUnit_Framework_TestCase

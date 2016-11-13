@@ -11,7 +11,7 @@ use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
-use Deployer\Task\NonFatalException;
+use Deployer\Exception\NonFatalException;
 use Pure\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

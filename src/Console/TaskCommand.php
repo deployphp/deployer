@@ -11,6 +11,7 @@ use Deployer\Deployer;
 use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
+use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -74,7 +75,12 @@ class TaskCommand extends Command
             }
         }
 
-        $executor->run($tasks, $servers, $environments, $input, $output);
+        try {
+            $executor->run($tasks, $servers, $environments, $input, $output);
+        } catch (\Exception $exception) {
+            \Deployer\logger($exception->getMessage(), Logger::ERROR);
+            throw $exception;
+        }
 
         if (Deployer::hasDefault('terminate_message')) {
             $output->writeln(Deployer::getDefault('terminate_message'));

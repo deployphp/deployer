@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Task;
+namespace Deployer\Exception;
 
 class NonFatalException extends \RuntimeException
 {

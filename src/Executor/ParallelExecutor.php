@@ -120,6 +120,11 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
+     * @var string
+     */
+    private $lastExceptionMessage = false;
+
+    /**
      * @var Local
      */
     private $localhost;
@@ -179,11 +184,15 @@ class ParallelExecutor implements ExecutorInterface
             $this->pure->run();
         } catch (ConnectionException $exception) {
             // If port is already used, try with another one.
-            $output->writeln("<error>" . $exception->getMessage() . "</error>");
+            $output->writeln("<fg=red>✘ " . $exception->getMessage() . "</fg=red>");
 
             if (++$this->port <= self::STOP_PORT) {
                 goto connect;
             }
+        }
+
+        if (!$this->isSuccessfullyFinished) {
+            throw new \RuntimeException($this->lastExceptionMessage);
         }
     }
 
@@ -265,10 +274,13 @@ class ParallelExecutor implements ExecutorInterface
             // Print exception message.
             $this->informer->taskException($serverName, $exceptionClass, $message);
 
+            // Save message.
+            $this->lastExceptionMessage = $message;
+
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
             
-            if ($exceptionClass == 'Deployer\Task\NonFatalException') {
+            if ($exceptionClass == 'Deployer\Exception\NonFatalException') {
 
                 // If we got NonFatalException, continue other tasks.
                 $this->hasNonFatalException = true;
@@ -358,8 +370,10 @@ class ParallelExecutor implements ExecutorInterface
                 // Wait no more!
                 $this->wait = false;
 
-                // Reset to default for next tasks.
-                $this->isSuccessfullyFinished = true;
+                if ($this->isSuccessfullyFinished || $this->hasNonFatalException) {
+                    // Reset to default for next tasks.
+                    $this->isSuccessfullyFinished = true;
+                }
             }
         }
     }

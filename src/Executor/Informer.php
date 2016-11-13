@@ -8,6 +8,7 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Deployer;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
@@ -99,14 +100,10 @@ class Informer
      */
     public function taskException($serverName, $exceptionClass, $message)
     {
-        $message = "    $message    ";
-        $this->output->writeln([
-            "",
-            "<error>Exception [$exceptionClass] on [$serverName] server</error>",
-            "<error>" . str_repeat(' ', strlen($message)) . "</error>",
-            "<error>$message</error>",
-            "<error>" . str_repeat(' ', strlen($message)) . "</error>",
-            ""
-        ]);
+        $formatter = Deployer::get()->getHelper('formatter');
+        $messages = explode("\n", $message);
+        array_unshift($messages, "Exception [$exceptionClass] on [$serverName] server:");
+
+        $this->output->writeln($formatter->formatBlock($messages, 'error', true));
     }
 }

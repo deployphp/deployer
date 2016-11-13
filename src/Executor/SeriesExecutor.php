@@ -11,7 +11,7 @@ use Deployer\Console\Output\OutputWatcher;
 use Deployer\Server\Environment;
 use Deployer\Server\Local;
 use Deployer\Task\Context;
-use Deployer\Task\NonFatalException;
+use Deployer\Exception\NonFatalException;
 
 class SeriesExecutor implements ExecutorInterface
 {
@@ -40,7 +40,7 @@ class SeriesExecutor implements ExecutorInterface
                             $task->run(new Context($server, $env, $input, $output));
                         } catch (NonFatalException $exception) {
                             $success = false;
-                            $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());
+                            $informer->taskException($serverName, 'Deployer\Exception\NonFatalException', $exception->getMessage());
                         }
 
                         $informer->endOnServer($serverName);

@@ -50,9 +50,9 @@ class Local implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command)
+    public function run($command, array $env = [])
     {
-        return $this->mustRun($command);
+        return $this->mustRun($command, null, $env);
     }
 
     /**
@@ -60,9 +60,9 @@ class Local implements ServerInterface
      * @param callable $callback
      * @return string
      */
-    public function mustRun($command, $callback = null)
+    public function mustRun($command, $callback = null, array $env = [])
     {
-        $process = new Process($command);
+        $process = new Process($command, null, $env);
         $process
             ->setTimeout(self::TIMEOUT)
             ->setIdleTimeout(self::TIMEOUT)

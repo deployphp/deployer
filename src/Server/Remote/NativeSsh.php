@@ -37,14 +37,26 @@ class NativeSsh implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command)
+    public function run($command, array $env = [])
     {
         $serverConfig = $this->getConfiguration();
         $sshOptions = [
             '-A',
             '-q',
-            '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+            '-o UserKnownHostsFile=/dev/null',
+            '-o StrictHostKeyChecking=no'
         ];
+
+        $composerAuth = $this->getConfiguration()->getComposerAuth();
+        if (!empty($composerAuth)) {
+           $env = ['COMPOSER_AUTH' => sprintf('"%s"', str_replace('"', '\"', $composerAuth))] + $env;
+        }
+
+        $exports = '';
+        foreach ($env as $key => $value) {
+            $exports = sprintf('export %s=%s;', $key, $value);
+        }
+        $command = $exports . $command;
 
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
         if (!empty($username)) {

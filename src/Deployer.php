@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Collection\Collection;
 use Deployer\Console\InitCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Console\Application;
@@ -14,7 +15,6 @@ use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Console\TaskCommand;
-use Deployer\Type\DotArray;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Pimple\Container;
@@ -24,7 +24,7 @@ use Symfony\Component\Console;
  * @property Task\TaskCollection|Task\Task[] tasks
  * @property Server\ServerCollection|Server\ServerInterface[] servers
  * @property Server\EnvironmentCollection|Server\Environment[] environments
- * @property DotArray config
+ * @property Collection config
  */
 class Deployer extends Container
 {
@@ -62,7 +62,7 @@ class Deployer extends Container
          ******************************/
 
         $this['config'] = function () {
-            return new DotArray();
+            return new Collection();
         };
         $this->config['ssh_type'] = 'phpseclib';
         $this->config['default_stage'] = null;

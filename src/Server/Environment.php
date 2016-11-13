@@ -7,8 +7,8 @@
 
 namespace Deployer\Server;
 
+use Deployer\Collection\Collection;
 use Deployer\Deployer;
-use Deployer\Type\DotArray;
 
 class Environment
 {
@@ -16,7 +16,7 @@ class Environment
 
     /**
      * Array of set values.
-     * @var \Deployer\Type\DotArray
+     * @var Collection
      */
     private $values = null;
 
@@ -32,7 +32,7 @@ class Environment
      */
     public function __construct()
     {
-        $this->values = new DotArray();
+        $this->values = new Collection();
     }
 
     /**
@@ -104,7 +104,7 @@ class Environment
      */
     public function get($name, $default = null)
     {
-        if ($this->values->hasKey($name)) {
+        if ($this->values->has($name)) {
             if ($this->isClosure($this->values[$name])) {
                 $value = $this->values[$name] = call_user_func($this->values[$name]);
             } else {
@@ -139,7 +139,7 @@ class Environment
      */
     public function has($name)
     {
-        return $this->values->hasKey($name);
+        return $this->values->has($name);
     }
 
     /**

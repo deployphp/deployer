@@ -15,6 +15,15 @@ class Collection implements CollectionInterface, \Countable
     private $collection = [];
 
     /**
+     * Collection constructor.
+     * @param array $collection
+     */
+    public function __construct(array $collection = [])
+    {
+        $this->collection = $collection;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function get($name)
@@ -90,5 +99,13 @@ class Collection implements CollectionInterface, \Countable
     public function count()
     {
         return count($this->collection);
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return iterator_to_array($this);
     }
 }

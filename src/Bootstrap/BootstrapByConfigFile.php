@@ -8,7 +8,7 @@
 namespace Deployer\Bootstrap;
 
 use Deployer\Builder\BuilderInterface;
-use Deployer\Type\DotArray;
+use Deployer\Collection\Collection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -56,12 +56,12 @@ class BootstrapByConfigFile
     public $serverBuilders = [];
 
     /**
-     * @param \Deployer\Type\DotArray $config
+     * @param Collection $config
      * @param BuilderInterface $builder
      */
-    private function executeBuilderMethods(DotArray $config, BuilderInterface $builder)
+    private function executeBuilderMethods(Collection $config, BuilderInterface $builder)
     {
-        if ($config->hasKey('identity_file')) {
+        if ($config->has('identity_file')) {
             if ($config['identity_file'] === null) {
                 $builder->identityFile();
             } else {
@@ -75,7 +75,7 @@ class BootstrapByConfigFile
             unset($config['identity_file']);
         }
 
-        if ($config->hasKey('identity_config')) {
+        if ($config->has('identity_config')) {
             if ($config['identity_config'] === null) {
                 $builder->configFile();
             } else {
@@ -84,13 +84,13 @@ class BootstrapByConfigFile
             unset($config['identity_config']);
         }
 
-        if ($config->hasKey('forward_agent')) {
+        if ($config->has('forward_agent')) {
             $builder->forwardAgent();
             unset($config['forward_agent']);
         }
 
         foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
-            if ($config->hasKey($key)) {
+            if ($config->has($key)) {
                 $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
                 $builder->$method($config[$key]);
                 unset($config[$key]);
@@ -138,12 +138,12 @@ class BootstrapByConfigFile
                     throw new \RuntimeException();
                 }
 
-                $da = new DotArray($config);
+                $da = new Collection($config);
 
-                if ($da->hasKey('local')) {
+                if ($da->has('local')) {
                     $builder = \Deployer\localServer($name);
                 } else {
-                    $builder = $da->hasKey('port') ?
+                    $builder = $da->has('port') ?
                         $this->serverBuilders[] = \Deployer\server($name, $da['host'], $da['port']) :
                         $this->serverBuilders[] = \Deployer\server($name, $da['host']);
                 }
@@ -168,9 +168,9 @@ class BootstrapByConfigFile
     {
         foreach ((array) $this->clusterConfig as $name => $config) {
             try {
-                $config = new DotArray($config);
+                $config = new Collection($config);
 
-                $clusterBuilder = $config->hasKey('port') ?
+                $clusterBuilder = $config->has('port') ?
                     $this->clusterBuilders[] = \Deployer\cluster($name, $config['nodes'], $config['port']) :
                     $this->clusterBuilders[] = \Deployer\cluster($name, $config['nodes']);
 

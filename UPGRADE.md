@@ -29,6 +29,10 @@
    
    Also sudo turn off by default. To run commands with sudo add `set('writable_use_sudo', true);`.
 
+4. Moved *NonFatalException*
+   
+   Rename `Deployer\Task\NonFatalException` to `Deployer\Exception\NonFatalException`.
+
 # Upgrade from 2.x to 3.x
 
 1. ### `->path('...')`   

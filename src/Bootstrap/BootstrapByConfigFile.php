@@ -49,7 +49,7 @@ class BootstrapByConfigFile
      * @var BuilderInterface[] $clusterBuilders
      */
     public $clusterBuilders = [];
-    
+
     /**
      * @var BuilderInterface[] $serverBuilders
      */
@@ -89,7 +89,7 @@ class BootstrapByConfigFile
             unset($config['forward_agent']);
         }
 
-        if ($config->hasKey('forward_composer_auth')) {
+        if ($config->has('forward_composer_auth')) {
             $builder->forwardComposerAuth();
             unset($config['forward_composer_auth']);
         }

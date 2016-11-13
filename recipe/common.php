@@ -277,7 +277,10 @@ task('deploy:update_code', function () {
 
     // If option `branch` is set.
     if (input()->hasOption('branch')) {
-        $branch = input()->getOption('branch');
+        $inputBranch = input()->getOption('branch');
+        if (!empty($inputBranch)) {
+            $branch = $inputBranch;
+        }
     }
 
     // Branch may come from option or from configuration.

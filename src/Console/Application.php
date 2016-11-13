@@ -42,7 +42,9 @@ class Application extends Console
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = $this->selfUpdateCommand();
+        if ('phar:' === substr(__FILE__, 0, 5)) {
+            $commands[] = $this->selfUpdateCommand();
+        }
         return $commands;
     }
 

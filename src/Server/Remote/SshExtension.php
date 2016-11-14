@@ -7,17 +7,12 @@
 
 namespace Deployer\Server\Remote;
 
-use Deployer\Server\ServerInterface;
+use Deployer\Server\ServerBase;
 use Deployer\Server\Configuration;
 use Ssh;
 
-class SshExtension implements ServerInterface
+class SshExtension extends ServerBase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
     /**
      * SSH session.
      * @var Ssh\Session
@@ -29,14 +24,6 @@ class SshExtension implements ServerInterface
      * @var array
      */
     private $directories = [];
-
-    /**
-     * @param Configuration $configuration
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
 
     /**
      * {@inheritdoc}
@@ -111,6 +98,8 @@ class SshExtension implements ServerInterface
      */
     public function run($command)
     {
+        $command = $this->parseCommand($command);
+
         $this->checkConnection();
 
         $pty = $this->getConfiguration()->getSsh2Pty();
@@ -147,13 +136,5 @@ class SshExtension implements ServerInterface
         if (!$this->session->getSftp()->receive($remote, $local)) {
             throw new \RuntimeException('Can not download file.');
         }
-    }
-
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
     }
 }

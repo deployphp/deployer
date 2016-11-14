@@ -8,19 +8,14 @@
 namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
-use Deployer\Server\ServerInterface;
+use Deployer\Server\ServerBase;
 use phpseclib\Crypt\RSA;
 use phpseclib\Net\SFTP;
 use phpseclib\System\SSH\Agent;
 use RuntimeException;
 
-class PhpSecLib implements ServerInterface
+class PhpSecLib extends ServerBase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
     /**
      * @var SFTP
      */
@@ -31,14 +26,6 @@ class PhpSecLib implements ServerInterface
      * @var array
      */
     private $directories = [];
-
-    /**
-     * @param Configuration $configuration
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
 
     /**
      * {@inheritdoc}
@@ -115,6 +102,8 @@ class PhpSecLib implements ServerInterface
      */
     public function run($command)
     {
+        $command = $this->parseCommand($command);
+
         $this->checkConnection();
 
         $result = $this->sftp->exec($command);
@@ -157,13 +146,5 @@ class PhpSecLib implements ServerInterface
         if (!$this->sftp->get($remote, $local)) {
             throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
         }
-    }
-
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
     }
 }

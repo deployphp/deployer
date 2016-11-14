@@ -62,6 +62,7 @@ class Local implements ServerInterface
      */
     public function mustRun($command, $callback = null, array $env = [])
     {
+        $env = array_merge($_ENV, $env);
         $process = new Process($command, null, $env);
         $process
             ->setTimeout(self::TIMEOUT)

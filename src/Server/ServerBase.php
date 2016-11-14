@@ -56,8 +56,8 @@ abstract class ServerBase implements ServerInterface
      * @param string $command
      * @return string The parsed command
      */
-    protected function parseCommand($command) {
-
+    protected function parseCommand($command)
+    {
         $env = [];
 
         $composerAuth = $this->getConfiguration()->getComposerAuth();

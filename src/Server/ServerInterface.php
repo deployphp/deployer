@@ -24,7 +24,7 @@ interface ServerInterface
      * @param string $command
      * @return string Output of command.
      */
-    public function run($command, array $env = []);
+    public function run($command);
 
     /**
      * Upload file to remote server.

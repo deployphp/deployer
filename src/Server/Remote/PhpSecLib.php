@@ -113,20 +113,9 @@ class PhpSecLib implements ServerInterface
     /**
      * {@inheritdoc}
      */
-    public function run($command, array $env = [])
+    public function run($command)
     {
         $this->checkConnection();
-
-        $composerAuth = $this->getConfiguration()->getComposerAuth();
-        if (!empty($composerAuth)) {
-            $env = ['COMPOSER_AUTH' => sprintf('"%s"', str_replace('"', '\"', $composerAuth))] + $env;
-        }
-
-        $exports = '';
-        foreach ($env as $key => $value) {
-            $exports = sprintf('export %s=%s;', $key, $value);
-        }
-        $command = $exports . $command;
 
         $result = $this->sftp->exec($command);
 

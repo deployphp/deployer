@@ -109,6 +109,14 @@ class Deployer extends Container
             ]);
         };
 
+        /******************************
+         *        Init command        *
+         ******************************/
+
+        $this['init_command'] = function () {
+            return new InitCommand();
+        };
+
         self::$instance = $this;
     }
 
@@ -173,7 +181,7 @@ class Deployer extends Container
         $this->addConsoleCommands();
 
         $this->getConsole()->add(new WorkerCommand($this));
-        $this->getConsole()->add(new InitCommand());
+        $this->getConsole()->add($this['init_command']);
 
         $this->getConsole()->run($this->input, $this->output);
     }

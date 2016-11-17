@@ -26,6 +26,9 @@ set('shared_files', ['app/config/parameters.yml']);
 // Symfony writable dirs
 set('writable_dirs', ['app/cache', 'app/logs']);
 
+// Clear paths
+set('clear_paths', ['web/app_*.php', 'web/config.php']);
+
 // Assets
 set('assets', ['web/css', 'web/images', 'web/js']);
 
@@ -117,18 +120,6 @@ task('database:migrate', function () {
 
 
 /**
- * Remove app_dev.php files
- */
-task('deploy:clear_controllers', function () {
-    run('rm -f {{release_path}}/web/app_*.php');
-    run('rm -f {{release_path}}/web/config.php');
-})->setPrivate();
-
-// Run after code is checked out
-after('deploy:update_code', 'deploy:clear_controllers');
-
-
-/**
  * Main task
  */
 task('deploy', [
@@ -136,6 +127,7 @@ task('deploy', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
+    'deploy:clean',
     'deploy:create_cache_dir',
     'deploy:shared',
     'deploy:assets',

@@ -22,14 +22,7 @@
     
    Rename all `server(...)->env(...)` to `server(...)->set(...)`.
 
-3. Writable mode
-   
-   Deployer v4 use `chgrp` instead of acl. 
-   If you want to return to previous mode add `set('writable_mode', 'acl');`.
-   
-   Also sudo turn off by default. To run commands with sudo add `set('writable_use_sudo', true);`.
-
-4. Moved *NonFatalException*
+3. Moved *NonFatalException*
    
    Rename `Deployer\Task\NonFatalException` to `Deployer\Exception\NonFatalException`.
 

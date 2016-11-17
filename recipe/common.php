@@ -28,10 +28,12 @@ set('shared_files', []);
 set('copy_dirs', []);
 
 set('writable_dirs', []);
-set('writable_mode', 'chgrp'); // chgrp or acl.
+set('writable_mode', 'acl'); // chmod, chown, chgrp or acl.
 set('writable_use_sudo', false); // Using sudo in writable commands?
+set('writable_chmod_mode', '0755'); // For chmod mode
 
 set('http_user', false);
+set('http_group', false);
 
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', false);    // Using sudo in clean commands?
@@ -424,7 +426,7 @@ task('deploy:writable', function () {
         return;
     }
 
-    if ($httpUser === false && $mode !== '777') {
+    if ($httpUser === false && $mode !== 'chmod') {
         // Detect http user in process list.
         $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1")->toString();
 
@@ -439,11 +441,22 @@ task('deploy:writable', function () {
     try {
         cd('{{release_path}}');
 
-        if ($mode === 'chgrp') {
+        if ($mode === 'chown') {
+            // Change owner.
+            // -R   operate on files and directories recursively
+            // -L   traverse every symbolic link to a directory encountered
+            run("$sudo chown -RL $httpUser $dirs");
+        } elseif ($mode === 'chgrp') {
             // Change group ownership.
             // -R   operate on files and directories recursively
-            // -H   if a command line argument is a symbolic link to a directory, traverse it
-            run("$sudo chgrp -RH $httpUser $dirs");
+            // -L   if a command line argument is a symbolic link to a directory, traverse it
+            $httpGroup = get('http_group', false);
+            if ($httpUser === false) {
+                throw new \RuntimeException("Please setup `http_group` config parameter.");
+            }
+            run("$sudo chgrp -RH $httpGroup $dirs");
+        } elseif ($mode === 'chmod') {
+            run("$sudo chmod -R {{writable_chmod_mode}} $dirs");
         } elseif ($mode === 'acl') {
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
                 // Try OS-X specific setting of access-rights
@@ -471,12 +484,8 @@ task('deploy:writable', function () {
                     }
                 }
             } else {
-                // If we are not on OS-X and have no ACL installed.
-                // Maybe it's better to throw an exception.
-                run("$sudo chmod -R 777 $dirs");
+                throw new \RuntimeException("Cant't set writable dirs with ACL.");
             }
-        } elseif ($mode === '777') {
-            run("$sudo chmod -R 777 $dirs");
         } else {
             throw new \RuntimeException("Unknown writable_mode `$mode`.");
         }

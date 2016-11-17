@@ -29,7 +29,20 @@ class Collection implements CollectionInterface, \Countable
     public function get($name)
     {
         if ($this->has($name)) {
-            return $this->collection[$name];
+            if (strpos($name, '.') === false) {
+                return $this->collection[$name];
+            } else {
+                $parts = explode('.', $name);
+                $scope = &$this->collection;
+                $count = count($parts) - 1;
+                for ($i = 0; $i < $count; $i++) {
+                    if (!isset($scope[$parts[$i]])) {
+                        return null;
+                    }
+                    $scope = &$scope[$parts[$i]];
+                }
+                return isset($scope[$parts[$i]]) ? $scope[$parts[$i]] : null;
+            }
         } else {
             $class = explode('\\', static::class);
             $class = end($class);
@@ -42,7 +55,12 @@ class Collection implements CollectionInterface, \Countable
      */
     public function has($name)
     {
-        return array_key_exists($name, $this->collection);
+        if (strpos($name, '.') === false) {
+            return array_key_exists($name, $this->collection);
+        } else {
+            list($head,) = explode('.', $name);
+            return array_key_exists($head, $this->collection);
+        }
     }
 
     /**

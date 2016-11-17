@@ -58,7 +58,7 @@ class Collection implements CollectionInterface, \Countable
         if (strpos($name, '.') === false) {
             return array_key_exists($name, $this->collection);
         } else {
-            list($head,) = explode('.', $name);
+            list($head, ) = explode('.', $name);
             return array_key_exists($head, $this->collection);
         }
     }

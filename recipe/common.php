@@ -9,7 +9,7 @@ namespace Deployer;
 
 require __DIR__ . '/common/config.php';
 
-use Deployer\Task\Context;
+use Deployer\Type\Csv;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -55,16 +55,18 @@ set('git_cache', function () { //whether to use git cache - faster cloning by bo
 });
 
 set('release_name', function () {
-    $releasesList = array_map(function ($release) {
-        return intval($release);
-    }, array_filter(get('releases_list'), function ($release) {
-        return preg_match("/^[0-9]+(\\/)?$/", $release) && !preg_match("/[0-9]{14}/", $release);
-    }));
+    $list = get('releases_list');
+
+    // Filter out anything that does not look like a release.
+    $list = array_filter($list, function ($release) {
+        return preg_match('/^[\d\.]+$/', $release);
+    });
 
     $nextReleaseNumber = 1;
-    if (count($releasesList) > 0) {
-        $nextReleaseNumber = max($releasesList) + 1;
+    if (count($list) > 0) {
+        $nextReleaseNumber = (int)max($list) + 1;
     }
+
     return (string)$nextReleaseNumber;
 }); // name of folder in releases
 
@@ -72,29 +74,44 @@ set('release_name', function () {
  * Return list of releases on server.
  */
 set('releases_list', function () {
+    cd('{{deploy_path}}');
+
     // If there is no releases return empty list.
-    if (!run('[ -d {{deploy_path}}/releases ] && [ "$(ls -A {{deploy_path}}/releases)" ] && echo "true" || echo "false"')->toBool()) {
+    if (!run('[ -d releases ] && [ "$(ls -A releases)" ] && echo "true" || echo "false"')->toBool()) {
         return [];
     }
 
-    // Will list only dirs in releases and sort them by mtime in reverse.
-    $list = run('cd {{deploy_path}}/releases && ls -t -d */')->toArray();
+    // Will list only dirs in releases.
+    $list = run('cd releases && ls -t -d */')->toArray();
 
-    // filter out anything that does not look like a release
-    foreach ($list as $key => $item) {
-        $item = basename(rtrim($item, '/')); // strip path returned from find
+    // Prepare list.
+    $list = array_map(function ($release) {
+        return basename(rtrim($release, '/'));
+    }, $list);
 
-        $name_match = '[0-9_\.]+';
-        $extension_match = '\.[0-9]+';
-        if (!preg_match("/^$name_match($extension_match)*$/", $item)) {
-            unset($list[$key]); // dir name does not match pattern, throw it out
-            continue;
+    $releases = []; // Releases list.
+
+    if (run('if [ -f .dep/releases ]; then echo "true"; fi')->toBool()) {
+        $keepReleases = get('keep_releases');
+        if ($keepReleases === -1) {
+            $csv = run('cat .dep/releases');
+        } else {
+            $csv = run("tail -n " . ($keepReleases + 5) . " .dep/releases");
         }
 
-        $list[$key] = $item; // $item was changed
+        $metainfo = Csv::parse($csv);
+
+        for ($i = count($metainfo) - 1; $i >= 0; --$i) {
+            if (is_array($metainfo[$i]) && count($metainfo[$i]) >= 2) {
+                list($date, $release) = $metainfo[$i];
+                if (in_array($release, $list, true)) {
+                    $releases[] = $release;
+                }
+            }
+        }
     }
 
-    return $list;
+    return $releases;
 });
 
 /**
@@ -238,6 +255,9 @@ task('deploy:prepare', function () {
         throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
+    // Create metadata .dep dir.
+    run("cd {{deploy_path}} && if [ ! -d .dep ]; then mkdir .dep; fi");
+
     // Create releases dir.
     run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
 
@@ -248,19 +268,32 @@ task('deploy:prepare', function () {
 
 desc('Prepare release');
 task('deploy:release', function () {
+    cd('{{deploy_path}}');
+
     // Clean up if there is unfinished release.
-    $previousReleaseExist = run("cd {{deploy_path}} && if [ -h release ]; then echo 'true'; fi")->toBool();
+    $previousReleaseExist = run("if [ -h release ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('cd {{deploy_path}} && rm -rf "{{release_path}}"'); // Delete release.
-        run('cd {{deploy_path}} && rm release'); // Delete symlink.
+        run('rm -rf "{{release_path}}"'); // Delete release.
+        run('rm release'); // Delete symlink.
     }
 
-    $releasePath = Context::get()->getEnvironment()->parse("{{deploy_path}}/releases/{{release_name}}");
+    $releaseName = get('release_name');
+
+    // Fix collisions.
     $i = 0;
-    while (run("if [ -d $releasePath ]; then echo 'true'; fi")->toBool()) {
-        $releasePath .= '.' . ++$i;
+    while (run("if [ -d {{deploy_path}}/releases/$releaseName ]; then echo 'true'; fi")->toBool()) {
+        $releaseName .= '.' . ++$i;
+        set('release_name', $releaseName);
     }
+
+    $releasePath = parse("{{deploy_path}}/releases/{{release_name}}");
+
+    // Metainfo.
+    $date = run('date +"%Y%m%d%H%M%S"');
+
+    // Save metainfo about release.
+    run("echo '$date,{{release_name}}' >> .dep/releases");
 
     // Make new release.
     run("mkdir $releasePath");
@@ -497,7 +530,7 @@ task('cleanup', function () {
         return;
     }
 
-    while ($keep > 0) {
+    while ($keep - 1 > 0) {
         array_shift($releases);
         --$keep;
     }

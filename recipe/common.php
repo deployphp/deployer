@@ -104,8 +104,10 @@ set('releases_list', function () {
         for ($i = count($metainfo) - 1; $i >= 0; --$i) {
             if (is_array($metainfo[$i]) && count($metainfo[$i]) >= 2) {
                 list($date, $release) = $metainfo[$i];
-                if (in_array($release, $list, true)) {
+                $index = array_search($release, $list, true);
+                if ($index !== false) {
                     $releases[] = $release;
+                    unset($list[$index]);
                 }
             }
         }

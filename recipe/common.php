@@ -276,7 +276,7 @@ task('deploy:release', function () {
     $previousReleaseExist = run("if [ -h release ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('rm -rf "{{release_path}}"'); // Delete release.
+        run('rm -rf "$(readlink release)"'); // Delete release.
         run('rm release'); // Delete symlink.
     }
 

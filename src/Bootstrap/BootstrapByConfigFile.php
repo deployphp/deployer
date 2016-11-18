@@ -66,9 +66,9 @@ class BootstrapByConfigFile
                 $builder->identityFile();
             } else {
                 $builder->identityFile(
-                    $config['identity_file.public_key'],
-                    $config['identity_file.private_key'],
-                    $config['identity_file.password']
+                    $config['identity_file']['public_key'],
+                    $config['identity_file']['private_key'],
+                    $config['identity_file']['password']
                 );
             }
 

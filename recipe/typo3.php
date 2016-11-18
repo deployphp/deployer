@@ -5,12 +5,14 @@
  * file that was distributed with this source code.
  */
 
+namespace Deployer;
+
 require_once __DIR__ . '/common.php';
 
 /**
  * DocumentRoot / WebRoot for the TYPO3 installation
  */
-env('typo3_webroot', 'Web');
+set('typo3_webroot', 'Web');
 
 /**
  * Main TYPO3 task

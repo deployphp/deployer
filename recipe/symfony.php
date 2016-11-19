@@ -127,7 +127,7 @@ task('deploy', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
-    'deploy:clean',
+    'deploy:clear_paths',
     'deploy:create_cache_dir',
     'deploy:shared',
     'deploy:assets',

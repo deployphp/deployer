@@ -47,13 +47,12 @@ task('artisan:up', function () {
 desc('Enable maintenance mode');
 task('artisan:down', function () {
     $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi');
-    writeln('<error>' . $output . '</error>');
+    writeln('<info>' . $output . '</info>');
 });
 
 desc('Execute artisan migrate');
 task('artisan:migrate', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan migrate --force');
-    writeln('<info>' . $output . '</info>');
+    run('{{bin/php}} {{release_path}}/artisan migrate --force');
 });
 
 desc('Execute artisan migrate:rollback');
@@ -76,20 +75,17 @@ task('artisan:db:seed', function () {
 
 desc('Execute artisan cache:clear');
 task('artisan:cache:clear', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan cache:clear');
-    writeln('<info>' . $output . '</info>');
+    run('{{bin/php}} {{release_path}}/artisan cache:clear');
 });
 
 desc('Execute artisan config:cache');
 task('artisan:config:cache', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan config:cache');
-    writeln('<info>' . $output . '</info>');
+    run('{{bin/php}} {{release_path}}/artisan config:cache');
 });
 
 desc('Execute artisan route:cache');
 task('artisan:route:cache', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan route:cache');
-    writeln('<info>' . $output . '</info>');
+    run('{{bin/php}} {{release_path}}/artisan route:cache');
 });
 
 /**

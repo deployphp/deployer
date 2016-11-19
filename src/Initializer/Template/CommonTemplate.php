@@ -59,7 +59,7 @@ task('deploy', [
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',
-    'deploy:clean',
+    'deploy:clear_paths',
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',

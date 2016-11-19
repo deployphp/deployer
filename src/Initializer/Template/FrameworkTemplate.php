@@ -22,8 +22,10 @@ require 'recipe/{$this->getRecipe()}.php';
 // Configuration
 
 set('repository', 'git@domain.com:username/repository.git');
+
 add('shared_files', []);
 add('shared_dirs', []);
+
 add('writable_dirs', []);
 
 // Servers

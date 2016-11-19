@@ -7,19 +7,19 @@
 
 namespace Deployer;
 
-require_once __DIR__ . '/deploy/config.php';
-require_once __DIR__ . '/deploy/prepare.php';
-require_once __DIR__ . '/deploy/lock.php';
-require_once __DIR__ . '/deploy/release.php';
-require_once __DIR__ . '/deploy/update_code.php';
-require_once __DIR__ . '/deploy/clear_paths.php';
-require_once __DIR__ . '/deploy/shared.php';
-require_once __DIR__ . '/deploy/writable.php';
-require_once __DIR__ . '/deploy/vendors.php';
-require_once __DIR__ . '/deploy/symlink.php';
-require_once __DIR__ . '/deploy/cleanup.php';
-require_once __DIR__ . '/deploy/copy_dirs.php';
-require_once __DIR__ . '/deploy/rollback.php';
+require __DIR__ . '/deploy/config.php';
+require __DIR__ . '/deploy/prepare.php';
+require __DIR__ . '/deploy/lock.php';
+require __DIR__ . '/deploy/release.php';
+require __DIR__ . '/deploy/update_code.php';
+require __DIR__ . '/deploy/clear_paths.php';
+require __DIR__ . '/deploy/shared.php';
+require __DIR__ . '/deploy/writable.php';
+require __DIR__ . '/deploy/vendors.php';
+require __DIR__ . '/deploy/symlink.php';
+require __DIR__ . '/deploy/cleanup.php';
+require __DIR__ . '/deploy/copy_dirs.php';
+require __DIR__ . '/deploy/rollback.php';
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;

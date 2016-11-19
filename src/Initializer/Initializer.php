@@ -126,7 +126,7 @@ class Initializer
 
         if (file_exists($filePath)) {
             throw new IOException(sprintf(
-                'Can not initialize deployer. The file "%s" already exist.',
+                'The file "%s" already exist.',
                 $filePath
             ));
         }

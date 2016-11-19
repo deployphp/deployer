@@ -61,7 +61,7 @@ class InitCommand extends Command
         $this
             ->setName('init')
             ->setDescription('Initialize deployer system in your project')
-            ->addArgument('template', InputArgument::OPTIONAL, 'The template of you project. Available templates: ' . implode(', ', $this->availableTemplates))
+            ->addOption('template', 't', InputOption::VALUE_OPTIONAL, 'The template of you project. Available templates: ' . implode(', ', $this->availableTemplates))
             ->addOption('directory', null, InputOption::VALUE_OPTIONAL, 'The directory for create "deploy.php" file', getcwd())
             ->addOption('filename', null, InputOption::VALUE_OPTIONAL, 'The file name. Default "deploy.php"', 'deploy.php');
     }
@@ -71,7 +71,7 @@ class InitCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $template = $input->getArgument('template');
+        $template = $input->getOption('template');
         $directory = $input->getOption('directory');
         $file = $input->getOption('filename');
 

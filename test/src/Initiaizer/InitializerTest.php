@@ -84,7 +84,7 @@ class InitializerTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException(
             'Deployer\Initializer\Exception\IOException',
             sprintf(
-                'Can not initialize deployer. The file "%s" already exist.',
+                'The file "%s" already exist.',
                 $tmpFilePath
             )
         );

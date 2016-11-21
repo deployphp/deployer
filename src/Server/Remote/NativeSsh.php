@@ -14,6 +14,11 @@ use Symfony\Component\Process\Process;
 class NativeSsh implements ServerInterface
 {
     /**
+     * @var array
+     */
+    private $mkdirs = [];
+
+    /**
      * @var Configuration
      */
     private $configuration;
@@ -43,7 +48,6 @@ class NativeSsh implements ServerInterface
         $sshOptions = [
             '-A',
             '-q',
-            '-r',
             '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
         ];
 
@@ -81,6 +85,13 @@ class NativeSsh implements ServerInterface
 
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
         $hostname = $serverConfig->getHost();
+
+        $dir = dirname($remote);
+
+        if (!in_array($dir, $this->mkdirs)) {
+            $this->run('mkdir -p ' . escapeshellarg($dir));
+            $this->mkdirs[] = $dir;
+        }
 
         return $this->scpCopy($local, (!empty($username) ? $username . '@' : '') . $hostname . ':' . $remote);
     }

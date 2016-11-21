@@ -43,6 +43,7 @@ class NativeSsh implements ServerInterface
         $sshOptions = [
             '-A',
             '-q',
+            '-r',
             '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
         ];
 

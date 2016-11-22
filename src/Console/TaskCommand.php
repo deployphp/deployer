@@ -61,7 +61,15 @@ class TaskCommand extends Command
     {
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
-        $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
+        $tasks = [];
+        if ($this->deployer->tasks->has('onStart')) {
+            $tasks = array_merge($tasks, $this->deployer->getScriptManager()->getTasks('onStart', $stage));
+        }
+        $tasks = array_merge($tasks, $this->deployer->getScriptManager()->getTasks($this->getName(), $stage));
+        if ($this->deployer->tasks->has('onEnd')) {
+            $tasks = array_merge($tasks, $this->deployer->getScriptManager()->getTasks('onEnd', $stage));
+        }
+
         $servers = $this->deployer->getStageStrategy()->getServers($stage);
         $environments = iterator_to_array($this->deployer->environments);
 

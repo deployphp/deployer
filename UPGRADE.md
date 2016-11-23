@@ -26,6 +26,10 @@
    
    Rename `Deployer\Task\NonFatalException` to `Deployer\Exception\NonFatalException`.
 
+4. Prior release cleanup
+   
+   Due to changes in release management, the new cleanup task will ignore any prior releases deployed with 3.x.  These will need to be manually removed after migrating to and successfully releasing via 4.x.
+
 # Upgrade from 2.x to 3.x
 
 1. ### `->path('...')`   

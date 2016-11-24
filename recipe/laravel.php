@@ -88,6 +88,11 @@ task('artisan:route:cache', function () {
     run('{{bin/php}} {{release_path}}/artisan route:cache');
 });
 
+desc('Execute artisan optimize');
+task('artisan:optimize', function () {
+    run('{{bin/php}} {{release_path}}/artisan optimize');
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file
@@ -125,6 +130,7 @@ task('deploy', [
     'cleanup',
     'artisan:cache:clear',
     'artisan:config:cache',
+    'artisan:optimize',
 ]);
 
 after('deploy', 'success');

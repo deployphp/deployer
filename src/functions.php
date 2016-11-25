@@ -20,6 +20,7 @@ use Monolog\Logger;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 use Deployer\Cluster\ClusterFactory;
 use Symfony\Component\Console\Input\InputArgument;
@@ -353,7 +354,7 @@ function runLocally($command, $timeout = 60)
     });
 
     if (!$process->isSuccessful()) {
-        throw new \RuntimeException($process->getErrorOutput());
+        throw new ProcessFailedException($process);
     }
 
     $output = $process->getOutput();

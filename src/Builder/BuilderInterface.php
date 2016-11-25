@@ -58,6 +58,13 @@ interface BuilderInterface
     public function forwardAgent();
 
     /**
+     * Using forward composer auth to environment.
+     *
+     * @return BuilderInterface
+     */
+    public function forwardComposerAuth();
+
+    /**
      * @param string|array $stages
      * @return BuilderInterface
      */

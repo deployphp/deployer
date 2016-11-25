@@ -9,14 +9,9 @@ namespace Deployer\Server;
 
 use Symfony\Component\Process\Process;
 
-class Local implements ServerInterface
+class Local extends ServerBase
 {
     const TIMEOUT = 300;
-
-    /**
-     * @var Configuration
-     */
-    private $configuration;
 
     /**
      * Local constructor.
@@ -27,16 +22,7 @@ class Local implements ServerInterface
         if ($config === null) {
             $config = new Configuration('localhost', 'localhost');
         }
-
-        $this->configuration = $config;
-    }
-
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
+        parent::__construct($config);
     }
 
     /**
@@ -62,6 +48,8 @@ class Local implements ServerInterface
      */
     public function mustRun($command, $callback = null)
     {
+        $command = $this->parseCommand($command);
+
         $process = new Process($command);
         $process
             ->setTimeout(self::TIMEOUT)

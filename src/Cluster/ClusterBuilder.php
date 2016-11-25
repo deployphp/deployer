@@ -102,6 +102,17 @@ class ClusterBuilder implements BuilderInterface
     /**
      * {@inheritdoc}
      */
+    public function forwardComposerAuth()
+    {
+        foreach ($this->nodes as $node) {
+            $node->builder->forwardComposerAuth();
+        }
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function set($name, $env)
     {
         foreach ($this->nodes as $node) {

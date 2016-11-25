@@ -8,24 +8,11 @@
 namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
-use Deployer\Server\ServerInterface;
+use Deployer\Server\ServerBase;
 use Symfony\Component\Process\Process;
 
-class NativeSsh implements ServerInterface
+class NativeSsh extends ServerBase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
-     * @param Configuration $configuration
-     */
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -39,6 +26,8 @@ class NativeSsh implements ServerInterface
      */
     public function run($command)
     {
+        $command = $this->parseCommand($command);
+
         $serverConfig = $this->getConfiguration();
         $sshOptions = [
             '-A',
@@ -126,13 +115,5 @@ class NativeSsh implements ServerInterface
             ->mustRun();
 
         return $process->getOutput();
-    }
-
-    /**
-     * @return Configuration
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
     }
 }

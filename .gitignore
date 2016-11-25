@@ -4,3 +4,4 @@
 *.phar
 /.vagrant
 deploy.php
+/.idea

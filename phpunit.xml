@@ -10,17 +10,21 @@
 >
     <testsuites>
         <testsuite name="Source">
-            <directory>test/src/</directory>
+            <directory>test/src</directory>
         </testsuite>
         <testsuite name="Recipes">
-            <directory>test/recipe/</directory>
+            <directory>test/recipe</directory>
         </testsuite>
     </testsuites>
     <filter>
+        <whitelist processUncoveredFilesFromWhitelist="false">
+            <directory suffix=".php">src</directory>
+            <directory suffix=".php">recipe</directory>
+        </whitelist>
         <blacklist>
-            <directory suffix=".php">vendor/</directory>
-            <directory>bin/</directory>
-            <directory>src/Resources/</directory>
+            <directory suffix=".php">vendor</directory>
+            <directory>bin</directory>
+            <directory>src/Resources</directory>
         </blacklist>
     </filter>
 </phpunit>

@@ -317,4 +317,20 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $b = new Builder($config, $env);
         $b->forwardAgent();
     }
+
+    /**
+     * Test use forward composer auth
+     */
+    public function testForwardComposerAuth()
+    {
+        $config = $this->getMockBuilder('Deployer\Server\Configuration')->disableOriginalConstructor()->getMock();
+        $config->expects($this->once())
+            ->method('setComposerAuth')
+            ->with(\Deployer\Util\Composer::getComposerAuth())
+            ->will($this->returnSelf());
+        $env = $this->createMock('Deployer\Server\Environment');
+
+        $b = new Builder($config, $env);
+        $b->forwardComposerAuth();
+    }
 }

@@ -10,6 +10,7 @@ namespace Deployer\Server;
 use Deployer\Builder\BuilderInterface;
 use Deployer\Server\Password\AskPasswordGetter;
 use Deployer\Server\Password\PasswordGetterInterface;
+use Deployer\Util\Composer;
 
 /**
  * Build server configuration
@@ -172,6 +173,16 @@ class Builder implements BuilderInterface
     public function forwardAgent()
     {
         $this->config->setAuthenticationMethod(Configuration::AUTH_BY_AGENT);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function forwardComposerAuth()
+    {
+        $this->config->setComposerAuth(Composer::getComposerAuth());
 
         return $this;
     }

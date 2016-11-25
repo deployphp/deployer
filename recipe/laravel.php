@@ -93,6 +93,11 @@ task('artisan:view:clear', function () {
     run('{{bin/php}} {{release_path}}/artisan view:clear');
 });
 
+desc('Execute artisan optimize');
+task('artisan:optimize', function () {
+    run('{{bin/php}} {{release_path}}/artisan optimize');
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file
@@ -125,12 +130,13 @@ task('deploy', [
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
     'artisan:view:clear',
     'artisan:cache:clear',
     'artisan:config:cache',
+    'artisan:optimize',
+    'deploy:symlink',
+    'deploy:unlock',
+    'cleanup',
 ]);
 
 after('deploy', 'success');

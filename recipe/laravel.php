@@ -88,6 +88,11 @@ task('artisan:route:cache', function () {
     run('{{bin/php}} {{release_path}}/artisan route:cache');
 });
 
+desc('Execute artisan view:clear');
+task('artisan:view:clear', function () {
+    run('{{bin/php}} {{release_path}}/artisan view:clear');
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file
@@ -123,6 +128,7 @@ task('deploy', [
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',
+    'artisan:view:clear',
     'artisan:cache:clear',
     'artisan:config:cache',
 ]);

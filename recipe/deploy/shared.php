@@ -12,19 +12,22 @@ task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";
 
     foreach (get('shared_dirs') as $dir) {
-        $parentDir = dirname($dir);
+        // Check if shared dir does not exists.
+        if (!test("[ -d $sharedPath/$dir ]")) {
+            // Create shared dir if it does not exist.
+            run("mkdir -p $sharedPath/$dir");
 
-        // Create shared dir if it does not exist.
-        run("mkdir -p $sharedPath/$dir");
-
-        // Copy shared dir files if they does not exist.
-        run("if [ -d $(echo {{release_path}}/$dir) ]; then cp -rn {{release_path}}/$dir $sharedPath/$parentDir; fi");
+            // If release contains shared dir, copy that dir from release to shared.
+            if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
+                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname($dir));
+            }
+        }
 
         // Remove from source.
-        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
+        run("rm -rf {{release_path}}/$dir");
 
         // Create path to shared dir in release dir if it does not exist.
-        // (symlink will not create the path and will fail otherwise)
+        // Symlink will not create the path and will fail otherwise.
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
         // Symlink shared dir to release dir

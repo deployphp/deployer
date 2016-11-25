@@ -363,6 +363,19 @@ function runLocally($command, $timeout = 60)
     return new Result($output);
 }
 
+/**
+ * Run test command.
+ * Example:
+ *
+ *     test('[ -d {{release_path}} ]')
+ *
+ * @param string $command
+ * @return bool
+ */
+function test($command)
+{
+    return run("if $command; then echo 'true'; fi")->toBool();
+}
 
 /**
  * Upload file or directory to current server.

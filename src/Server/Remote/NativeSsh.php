@@ -9,6 +9,7 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
+use Deployer\Server\RecursiveUploadEnabledInterface;
 use Symfony\Component\Process\Process;
 
 class NativeSsh implements ServerInterface, RecursiveUploadEnabledInterface

@@ -11,7 +11,7 @@ use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
 use Symfony\Component\Process\Process;
 
-class NativeSsh implements ServerInterface
+class NativeSsh implements ServerInterface, RecursiveUploadEnabledInterface
 {
     const UNIX_SOCKET_MAX_LENGTH = 104;
 
@@ -119,20 +119,32 @@ class NativeSsh implements ServerInterface
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
         $hostname = $serverConfig->getHost();
 
-        return $this->scpCopy((!empty($username) ? $username . '@' : '') . $hostname . ':' . $remote, $local);
+        return $this->scpCopy((!empty($username) ? $username . '@' : '') . $hostname . ':' . $remote, $local, ['-r']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function uploadDirectory($local, $remote)
+    {
+        $serverConfig = $this->getConfiguration();
+
+        $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
+        $hostname = $serverConfig->getHost();
+
+        return $this->scpCopy($local, (!empty($username) ? $username . '@' : '') . $hostname . ':' . $remote, ['-r']);
     }
 
     /**
      * Copy file from target1 to target 2 via scp
      * @param string $target
      * @param string $target2
+     * @param array $scpOptions
      * @return string
      */
-    public function scpCopy($target, $target2)
+    public function scpCopy($target, $target2, array $scpOptions = [])
     {
         $serverConfig = $this->getConfiguration();
-
-        $scpOptions = [];
 
         if ($serverConfig->getPort()) {
             $scpOptions[] = '-P ' . escapeshellarg($serverConfig->getPort());

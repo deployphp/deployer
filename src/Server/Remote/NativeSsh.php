@@ -58,7 +58,7 @@ class NativeSsh implements ServerInterface
         $hostname = $serverConfig->getHost();
 
         if ($serverConfig->getPort()) {
-            $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
+            $sshOptions[] = '-P ' . escapeshellarg($serverConfig->getPort());
         }
 
         if ($serverConfig->getPrivateKey()) {

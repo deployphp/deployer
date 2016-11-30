@@ -12,7 +12,7 @@ class Collection implements CollectionInterface, \Countable
     /**
      * @var array
      */
-    private $collection = [];
+    protected $collection = [];
 
     /**
      * Collection constructor.

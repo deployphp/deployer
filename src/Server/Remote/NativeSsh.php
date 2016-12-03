@@ -13,6 +13,8 @@ use Symfony\Component\Process\Process;
 
 class NativeSsh implements ServerInterface
 {
+    const UNIX_SOCKET_MAX_LENGTH = 104;
+
     /**
      * @var array
      */
@@ -48,8 +50,14 @@ class NativeSsh implements ServerInterface
         $sshOptions = [
             '-A',
             '-q',
-            '-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'
+            '-o UserKnownHostsFile=/dev/null',
+            '-o StrictHostKeyChecking=no'
         ];
+
+        if (\Deployer\get('ssh_type_native_mux')) {
+            $this->initMultiplexing();
+            $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
+        }
 
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
         if (!empty($username)) {
@@ -126,7 +134,12 @@ class NativeSsh implements ServerInterface
         }
 
         if ($serverConfig->getPrivateKey()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+            $scpOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+        }
+
+        if (\Deployer\get('ssh_type_native_mux')) {
+            $this->initMultiplexing();
+            $scpOptions = array_merge($scpOptions, $this->getMultiplexingSshOptions());
         }
 
         $scpCommand = 'scp ' . implode(' ', $scpOptions) . ' ' . escapeshellarg($target) . ' ' . escapeshellarg($target2);
@@ -146,5 +159,97 @@ class NativeSsh implements ServerInterface
     public function getConfiguration()
     {
         return $this->configuration;
+    }
+
+    /**
+     * Return ssh multiplexing socket name
+     *
+     * When $connectionHash is longer than 104 chars we can get "SSH Error: unix_listener: too long for Unix domain socket".
+     * https://github.com/ansible/ansible/issues/11536
+     * So try to get as descriptive hash as possible.
+     * %C is creating hash out of connection attributes.
+     *
+     * @return string Ssh multiplexing socket name
+     */
+    protected function getConnectionHash()
+    {
+        $serverConfig = $this->getConfiguration();
+        $connectionData = "{$serverConfig->getUser()}@{$serverConfig->getHost()}:{$serverConfig->getPort()}";
+        $tryLongestPossibleSocketName = 0;
+
+        $connectionHash = '';
+        do {
+            switch ($tryLongestPossibleSocketName) {
+                case 1:
+                    $connectionHash = "~/.ssh/deployer_mux_" . $connectionData;
+                    break;
+                case 2:
+                    $connectionHash = "~/.ssh/deployer_mux_%C";
+                    break;
+                case 3:
+                    $connectionHash = "~/deployer_mux_$connectionData";
+                    break;
+                case 4:
+                    $connectionHash = "~/deployer_mux_%C";
+                    break;
+                case 5:
+                    $connectionHash = "~/mux_%C";
+                    break;
+                case 6:
+                    throw new \RuntimeException("The multiplexing socket name is too long. Socket name is:" . $connectionHash);
+                default:
+                    $connectionHash = "~/.ssh/deployer_mux_$connectionData";
+            }
+            $tryLongestPossibleSocketName++;
+        } while (strlen($connectionHash) > self::UNIX_SOCKET_MAX_LENGTH);
+
+        return $connectionHash;
+    }
+
+
+    /**
+     * Return ssh options for multiplexing
+     *
+     * @return string[]
+     */
+    protected function getMultiplexingSshOptions()
+    {
+        return [
+            '-o ControlMaster=auto',
+            '-o ControlPersist=5',
+            '-o ControlPath=\'' . $this->getConnectionHash() . '\'',
+        ];
+    }
+
+
+    /**
+     * Init multiplexing with exec() command
+     *
+     * Background: Symfony Process hangs on creating multiplex connection
+     * but after mux is created with exec() then Symfony Process
+     * can work with it.
+     */
+    public function initMultiplexing()
+    {
+        $serverConfig = $this->getConfiguration();
+        $username = $serverConfig->getUser() ? $serverConfig->getUser() . '@' : null;
+        $hostname = $serverConfig->getHost();
+
+        $sshOptions = [];
+        if ($serverConfig->getPort()) {
+            $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
+        }
+        if ($serverConfig->getPrivateKey()) {
+            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+        }
+        $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
+
+        exec('ssh ' . implode(' ', $sshOptions) . ' -O check -S ' . $this->getConnectionHash() . ' ' . escapeshellarg($username . $hostname) . ' 2>&1', $checkifMuxActive);
+        if (!preg_match('/Master running/', $checkifMuxActive[0])) {
+            if (\Deployer\isVerbose()) {
+                \Deployer\writeln('  SSH multiplexing initialization');
+            }
+            exec('ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . "  'echo \"SSH multiplexing initialization\"' ");
+        }
     }
 }

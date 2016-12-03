@@ -13,7 +13,6 @@ use Symfony\Component\Process\Process;
 
 class NativeSsh implements ServerInterface
 {
-
     const UNIX_SOCKET_MAX_LENGTH = 104;
 
     /**
@@ -181,22 +180,22 @@ class NativeSsh implements ServerInterface
         $connectionHash = '';
         do {
             switch ($tryLongestPossibleSocketName) {
-                case 1;
+                case 1:
                     $connectionHash = "~/.ssh/deployer_mux_" . $connectionData;
                     break;
-                case 2;
+                case 2:
                     $connectionHash = "~/.ssh/deployer_mux_%C";
                     break;
-                case 3;
+                case 3:
                     $connectionHash = "~/deployer_mux_$connectionData";
                     break;
-                case 4;
+                case 4:
                     $connectionHash = "~/deployer_mux_%C";
                     break;
-                case 5;
+                case 5:
                     $connectionHash = "~/mux_%C";
                     break;
-                case 6;
+                case 6:
                     throw new \RuntimeException("The multiplexing socket name is too long. Socket name is:" . $connectionHash);
                     break;
                 default:

@@ -197,7 +197,6 @@ class NativeSsh implements ServerInterface
                     break;
                 case 6:
                     throw new \RuntimeException("The multiplexing socket name is too long. Socket name is:" . $connectionHash);
-                    break;
                 default:
                     $connectionHash = "~/.ssh/deployer_mux_$connectionData";
             }
@@ -211,7 +210,7 @@ class NativeSsh implements ServerInterface
     /**
      * Return ssh options for multiplexing
      *
-     * @return array
+     * @return string[]
      */
     protected function getMultiplexingSshOptions()
     {
@@ -229,8 +228,6 @@ class NativeSsh implements ServerInterface
      * Background: Symfony Process hangs on creating multiplex connection
      * but after mux is created with exec() then Symfony Process
      * can work with it.
-     *
-     * @return array
      */
     public function initMultiplexing()
     {

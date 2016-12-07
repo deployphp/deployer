@@ -5,7 +5,7 @@
    Add to beginning of *deploy.php* next line:
 
    ```php
-   use function Deployer\{server, task, run, set, get, add};
+   use function Deployer\{server, task, run, set, get, add, before, after};
    ```
 
    If you are using PHP version less than 5.6, you can use this:

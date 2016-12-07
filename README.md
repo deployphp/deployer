@@ -59,8 +59,8 @@ Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
 * Better DX with intelligible errors.
 * Better parallel task runner based on https://github.com/icicleio/icicle
 * Task grouping for parallel execution.
-* Task combining for less ssh calls. 
-* Implement `dep status` command with health-check of running application and deployment log. 
+* Task combining for less ssh calls.
+* Implement `dep status` command with health-check of running application and deployment log.
 * More deploy strategies.
 * More integration with third-party services.
 * Web-based client.

@@ -12,7 +12,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
     public function testApplication()
     {
         $app = new Application();
-        
+
         $this->assertTrue($app->getDefinition()->hasOption('file'));
     }
 }

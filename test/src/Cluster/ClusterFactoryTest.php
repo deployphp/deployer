@@ -29,16 +29,16 @@ class ClusterFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->deployer = new Deployer($app, $input, $output);
     }
-    
+
     public function tearDown()
     {
         unset($this->deployer);
     }
-    
+
     /**
      * test create function of the factory
      */
-    
+
     public function testCreate()
     {
         $instance = ClusterFactory::create(

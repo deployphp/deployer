@@ -42,4 +42,3 @@ possible:
 
 The whole table must be included (do **not** remove lines that you think are
 not relevant).
-

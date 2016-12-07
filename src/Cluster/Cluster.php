@@ -17,17 +17,17 @@ use Deployer\Deployer;
  */
 class Cluster implements ClusterInterface
 {
-    
+
     /**
      * @var string $name
      */
     protected $name = null;
-    
+
     /**
      * @var array $nodes
      */
     protected $nodes = null;
-    
+
     /**
      * @var string|int $port
      */
@@ -54,16 +54,16 @@ class Cluster implements ClusterInterface
 
         $this->name  = $name;
         $this->port  = $port;
-        
+
         foreach ($nodes as $key => $host) {
             $nName = $name . '_' . $key;
             $node = new Node();
-            
+
             $node->setDeployer($deployer)
                 ->setName($nName)
                 ->setHost($host)
                 ->setPort($port);
-            
+
             $node->initialize();
             $this->nodes[]  = $node;
         }
@@ -77,7 +77,7 @@ class Cluster implements ClusterInterface
     {
         return $this->clusterBuilder;
     }
-    
+
     /**
      * @return array|\Deployer\Cluster\Node[]
      */

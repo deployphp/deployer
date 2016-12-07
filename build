@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
-/*  __   ___  __  
- * |  \ |__  |__) 
- * |__/ |___ |    
+/*  __   ___  __
+ * |  \ |__  |__)
+ * |__/ |___ |
  */
 
 require __DIR__ . '/vendor/autoload.php';

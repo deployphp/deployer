@@ -68,7 +68,7 @@ class Context
     {
         return end(self::$contexts);
     }
-    
+
     /**
      * @return Context
      */

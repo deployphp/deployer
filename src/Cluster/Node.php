@@ -59,14 +59,14 @@ class Node implements NodeInterface
     {
         $env    = new Environment();
         $config = new Configuration($this->name, $this->host, $this->port);
-        
+
         $this->server = new PhpSecLib($config);
-        
+
         if (\Deployer\has('ssh_type') && \Deployer\get('ssh_type') === 'ext-ssh2') {
             $this->server = new SshExtension($config);
         }
         $this->builder = new Builder($config, $env);
-        
+
         $this->deployer->servers->set($this->name, $this->server);
         $this->deployer->environments->set($this->name, $env);
 

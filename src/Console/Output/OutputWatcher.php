@@ -16,7 +16,7 @@ class OutputWatcher implements OutputInterface
      * @var OutputInterface
      */
     private $output;
-    
+
     /**
      * @var bool
      */

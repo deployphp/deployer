@@ -27,7 +27,7 @@ class SymfonyTemplate extends FrameworkTemplate
         return <<<PHP
 
 // Migrate database before symlink new release.
- 
+
 before('deploy:symlink', 'database:migrate');
 
 PHP;

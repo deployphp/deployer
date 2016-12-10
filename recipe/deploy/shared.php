@@ -9,17 +9,15 @@ namespace Deployer;
 
 desc('Creating symlinks for shared files and dirs');
 task('deploy:shared', function () {
-    $sharedPath = "{{deploy_path}}/shared";
-
     foreach (get('shared_dirs') as $dir) {
         // Check if shared dir does not exists.
-        if (!test("[ -d $sharedPath/$dir ]")) {
+        if (!test("[ -d {{shared_path}}/$dir ]")) {
             // Create shared dir if it does not exist.
-            run("mkdir -p $sharedPath/$dir");
+            run("mkdir -p {{shared_path}}/$dir");
 
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname($dir));
+                run("cp -rv {{release_path}}/$dir {{shared_path}}/" . dirname($dir));
             }
         }
 
@@ -31,7 +29,7 @@ task('deploy:shared', function () {
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
         // Symlink shared dir to release dir
-        run("{{bin/symlink}} $sharedPath/$dir {{release_path}}/$dir");
+        run("{{bin/symlink}} {{shared_path}}/$dir {{release_path}}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
@@ -43,12 +41,12 @@ task('deploy:shared', function () {
         run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
 
         // Create dir of shared file
-        run("mkdir -p $sharedPath/" . $dirname);
+        run("mkdir -p {{shared_path}}/" . $dirname);
 
         // Touch shared
-        run("touch $sharedPath/$file");
+        run("touch {{shared_path}}/$file");
 
         // Symlink shared dir to release dir
-        run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");
+        run("{{bin/symlink}} {{shared_path}}/$file {{release_path}}/$file");
     }
 });

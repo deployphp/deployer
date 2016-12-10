@@ -40,13 +40,13 @@ set('writable_dirs', [
  */
 desc('Disable maintenance mode');
 task('artisan:up', function () {
-    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan up; fi');
+    $output = run('if [ -f {{current_path}}/artisan ]; then {{bin/php}} {{current_path}}/artisan up; fi');
     writeln('<info>' . $output . '</info>');
 });
 
 desc('Enable maintenance mode');
 task('artisan:down', function () {
-    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi');
+    $output = run('if [ -f {{current_path}}/artisan ]; then {{bin/php}} {{current_path}}/artisan down; fi');
     writeln('<info>' . $output . '</info>');
 });
 
@@ -112,10 +112,10 @@ task('deploy:public_disk', function () {
     run('if [ -d $(echo {{release_path}}/public/storage) ]; then rm -rf {{release_path}}/public/storage; fi');
 
     // Create shared dir if it does not exist.
-    run('mkdir -p {{deploy_path}}/shared/storage/app/public');
+    run('mkdir -p {{shared_path}}/storage/app/public');
 
     // Symlink shared dir to release dir
-    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_path}}/public/storage');
+    run('{{bin/symlink}} {{shared_path}}/storage/app/public {{release_path}}/public/storage');
 });
 
 /**

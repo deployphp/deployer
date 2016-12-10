@@ -69,12 +69,19 @@ set('git_cache', function () { //whether to use git cache - faster cloning by bo
 
 
 /**
- * Return current release path.
+ * Custom paths.
  */
-set('current_path', function () {
-    $link = run("readlink {{deploy_path}}/current")->toString();
-    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-});
+set('current_dir', 'current');
+set('release_dir', 'release');
+set('releases_dir', 'releases');
+set('shared_dir', 'shared');
+set('dep_dir', '.dep');
+
+set('current_path', '{{deploy_path}}/{{current_dir}}');
+set('release_path', '{{deploy_path}}/{{release_dir}}');
+set('releases_path', '{{deploy_path}}/{{releases_dir}}');
+set('shared_path', '{{deploy_path}}/{{shared_dir}}');
+set('dep_path', '{{deploy_path}}/{{dep_dir}}');
 
 
 /**
@@ -124,7 +131,7 @@ option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
  */
 desc('Show current release');
 task('current', function () {
-    writeln('Current release: ' . basename(get('current_path')));
+    writeln('Current release: ' . basename(realpath(get('current_path'))));
 });
 
 

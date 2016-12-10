@@ -14,8 +14,9 @@ task('deploy:symlink', function () {
     } else {
         // Atomic symlink does not supported.
         // Will use simple≤ two steps switch.
+        $release = run("readlink {{release_path}}")->toString();
 
-        run("{{bin/symlink}} {{release_path}} {{current_path}}"); // Atomic override symlink.
+        run("{{bin/symlink}} {$release} {{current_path}}"); // Atomic override symlink.
         run("rm {{release_path}}"); // Remove release link.
     }
 });

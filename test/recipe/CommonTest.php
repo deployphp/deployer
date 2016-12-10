@@ -23,21 +23,21 @@ class CommonTest extends RecipeTester
     {
         $this->exec('deploy:prepare');
 
-        $this->assertFileExists(self::$deployPath . '/releases');
-        $this->assertFileExists(self::$deployPath . '/shared');
+        $this->assertFileExists($this->getEnv('releases_path'));
+        $this->assertFileExists($this->getEnv('shared_path'));
     }
 
     public function testRelease()
     {
         $this->exec('deploy:release');
 
-        $this->assertFileExists(self::$deployPath . '/release');
+        $this->assertFileExists($this->getEnv('release_path'));
     }
 
     public function testReleaseSymlink()
     {
-        $removedDirectory = self::$deployPath . '/directory';
-        $releaseSymlink = self::$deployPath . '/release';
+        $removedDirectory = $this->getEnv('deploy_path') . '/directory';
+        $releaseSymlink = $this->getEnv('release_path');
 
         mkdir($removedDirectory);
         unlink($releaseSymlink);
@@ -68,15 +68,15 @@ class CommonTest extends RecipeTester
 
         $this->assertEquals(
             realpath($this->getEnv('release_path') . '/app/logs'),
-            $this->getEnv('deploy_path') . '/shared/app/logs'
+            $this->getEnv('shared_path') . '/app/logs'
         );
         $this->assertEquals(
             realpath($this->getEnv('release_path') . '/app/config/parameters.yml'),
-            $this->getEnv('deploy_path') . '/shared/app/config/parameters.yml'
+            $this->getEnv('shared_path') . '/app/config/parameters.yml'
         );
 
-        $this->assertTrue(is_dir($this->getEnv('deploy_path') . '/shared/app/logs'));
-        $this->assertFileExists($this->getEnv('deploy_path') . '/shared/app/config/parameters.yml');
+        $this->assertTrue(is_dir($this->getEnv('shared_path') . '/app/logs'));
+        $this->assertFileExists($this->getEnv('shared_path') . '/app/config/parameters.yml');
     }
 
     public function testWriteable()
@@ -103,18 +103,15 @@ class CommonTest extends RecipeTester
     {
         $this->exec('deploy:symlink');
 
-        $this->assertTrue(realpath($this->getEnv('deploy_path') . '/current') !== false);
-        clearstatcache($this->getEnv('deploy_path') . '/release');
-        $this->assertFalse(realpath($this->getEnv('deploy_path') . '/release') !== false, 'Symlink to release directory must gone after deploy:symlink.');
+        $this->assertTrue(realpath($this->getEnv('current_path')) !== false);
+        clearstatcache($this->getEnv('release_path'));
+        $this->assertFalse(realpath($this->getEnv('release_path')) !== false, 'Symlink to release directory must gone after deploy:symlink.');
     }
 
     public function testCurrent()
     {
-        $this->exec('current');
+        $result = $this->exec('current');
 
-        $this->assertEquals(
-            realpath($this->getEnv('deploy_path') . '/current'),
-            $this->getEnv('current_path')
-        );
+        $this->assertContains('2', $result);
     }
 }

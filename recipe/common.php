@@ -131,7 +131,9 @@ option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
  */
 desc('Show current release');
 task('current', function () {
-    writeln('Current release: ' . basename(realpath(get('current_path'))));
+    $current = run("readlink {{current_path}}")->toString();
+
+    writeln('Current release: ' . basename($current));
 });
 
 

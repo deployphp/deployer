@@ -69,10 +69,14 @@ Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
 All code contributions must go through a pull request and approved by a core developer before being merged.
 This is to ensure proper review of all the code.
 
-Fork the project, create a feature branch, and send a pull request.
+Fork the project, create a feature branch, and send a pull request (one pull request per feature).
 
 To ensure a consistent code base, you should make sure the code follows
 the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
+
+Make sure each individual commit in your pull request is meaningful. 
+If you had to make multiple intermediate commits while developing, please [squash them](http://www.git-scm.com/book/en/v2/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages) 
+before submitting.
 
 If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 

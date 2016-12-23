@@ -126,7 +126,7 @@ class NativeSsh implements ServerInterface
         }
 
         if ($serverConfig->getPrivateKey()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+            $scpOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
         }
 
         $scpCommand = 'scp ' . implode(' ', $scpOptions) . ' ' . escapeshellarg($target) . ' ' . escapeshellarg($target2);

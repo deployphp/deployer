@@ -63,7 +63,7 @@ class TaskCommand extends Command
 
         $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
 
-        if (!$input->getOption('hooks') || $input->getOption('hooks') == 'false') {
+        if (!$input->getOption('hooks') || $input->getOption('hooks') === 'false') {
             $tasks = array_filter($tasks, function ($task) {
                 return $this->getName() == $task->getName();
             });

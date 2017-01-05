@@ -16,7 +16,6 @@ use Deployer\Type\Result;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
-
 /**
  * @param string $name
  * @return BuilderInterface
@@ -43,7 +42,8 @@ function server($name)
  * @return Result Output of command.
  * @throws \RuntimeException
  */
-function run($command, $timeout = 60) {
+function run($command, $timeout = 60)
+{
     $command = \Deployer\parse($command);
 
     if (\Deployer\isVeryVerbose()) {

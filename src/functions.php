@@ -379,6 +379,20 @@ function test($command)
 }
 
 /**
+ * Run test command locally.
+ * Example:
+ *
+ *     testLocally('[ -d {{local_release_path}} ]')
+ *
+ * @param string $command
+ * @return bool
+ */
+function testLocally($command)
+{
+    return runLocally("if $command; then echo 'true'; fi")->toBool();
+}
+
+/**
  * Upload file or directory to current server.
  * @param string $local
  * @param string $remote

@@ -20,13 +20,13 @@ use Monolog\Logger;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 use Deployer\Cluster\ClusterFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+
+require_once __DIR__ . '/local.php';
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -66,19 +66,11 @@ function server($name, $host = null, $port = 22)
 /**
  * @param string $name
  * @return BuilderInterface
+ * @deprecated Use local/server() instead of.
  */
 function localServer($name)
 {
-    $deployer = Deployer::get();
-
-    $env = new Environment();
-    $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
-    $server = new Local($config);
-
-    $deployer->servers->set($name, $server);
-    $deployer->environments->set($name, $env);
-
-    return new Builder($config, $env);
+    return local\server($name);
 }
 
 /**
@@ -330,38 +322,11 @@ function run($command)
  * @param int $timeout (optional) Override process command timeout in seconds.
  * @return Result Output of command.
  * @throws \RuntimeException
+ * @deprecated Use local\run() instead of.
  */
 function runLocally($command, $timeout = 60)
 {
-    $command = parse($command);
-
-    if (isVeryVerbose()) {
-        writeln("[localhost] <fg=red>></fg=red> : $command");
-    }
-
-    logger("[localhost] > $command");
-
-    $process = new Process($command);
-    $process->setTimeout($timeout);
-    $process->run(function ($type, $buffer) {
-        if (isDebug()) {
-            if ('err' === $type) {
-                write("<fg=red>></fg=red> $buffer");
-            } else {
-                write("<fg=green>></fg=green> $buffer");
-            }
-        }
-    });
-
-    if (!$process->isSuccessful()) {
-        throw new ProcessFailedException($process);
-    }
-
-    $output = $process->getOutput();
-
-    logger("[localhost] < $output");
-
-    return new Result($output);
+    return local\run($command, $timeout);
 }
 
 /**

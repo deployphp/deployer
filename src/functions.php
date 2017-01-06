@@ -7,7 +7,7 @@
 namespace Deployer;
 
 use Deployer\Builder\BuilderInterface;
-use Deployer\Server\Local;
+use Deployer\Server\Local as Localhost;
 use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
@@ -16,6 +16,7 @@ use Deployer\Task\Task as T;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Type\Result;
+use Deployer\local;
 use Monolog\Logger;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
@@ -26,7 +27,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-require_once __DIR__ . '/local.php';
+require_once __DIR__ . '/Local/local.php';
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -288,7 +289,7 @@ function run($command)
 
     logger("[$serverName] > $command");
 
-    if ($server instanceof Local) {
+    if ($server instanceof Localhost) {
         $output = $server->mustRun($command, function ($type, $buffer) use ($serverName) {
             if (isDebug()) {
                 output()->writeln(array_map(function ($line) use ($serverName) {

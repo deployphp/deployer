@@ -3,9 +3,9 @@ namespace Deployer;
 
 require __DIR__ . '/../../recipe/common.php';
 
-localServer('localhost');
-localServer('server1');
-localServer('server2');
+local\server('localhost');
+local\server('server1');
+local\server('server2');
 
 task('test:hello', function () {
     writeln('Hello world!');
@@ -16,6 +16,6 @@ task('test', [
 ]);
 
 task('test:hello', function () {
-    runLocally('echo "hello"');
+    local\run('echo "hello"');
     writeln('Hello world!');
 })->once();

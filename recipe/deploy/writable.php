@@ -43,7 +43,7 @@ task('deploy:writable', function () {
             // -R   operate on files and directories recursively
             // -L   if a command line argument is a symbolic link to a directory, traverse it
             $httpGroup = get('http_group', false);
-            if ($httpUser === false) {
+            if ($httpGroup === false) {
                 throw new \RuntimeException("Please setup `http_group` config parameter.");
             }
             run("$sudo chgrp -RH $httpGroup $dirs");

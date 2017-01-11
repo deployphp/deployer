@@ -104,7 +104,10 @@ $deployer = new \Deployer\Deployer($console, $input, $output);
 
 // Require deploy.php file
 if (is_readable($deployFile)) {
-    require $deployFile;
+    // Prevent variable leak into deploy.php file
+    call_user_func(function() {
+        require $deployFile;
+    });
 }
 
 // Run Deployer

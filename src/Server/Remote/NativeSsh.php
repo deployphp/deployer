@@ -65,10 +65,15 @@ class NativeSsh implements ServerInterface
             $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
         }
 
+        if ($serverConfig->getPty()) {
+            $sshOptions[] = '-t';
+        }
+
         $sshCommand = 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . ' ' . escapeshellarg($command);
 
         $process = new Process($sshCommand);
         $process
+            ->setPty($serverConfig->getPty())
             ->setTimeout(null)
             ->setIdleTimeout(null)
             ->mustRun();

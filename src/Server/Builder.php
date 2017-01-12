@@ -225,9 +225,23 @@ class Builder implements BuilderInterface
     }
 
     /**
+     * Use pty connection
+     *
+     * @param $pty
+     * @return BuilderInterface
+     */
+    public function pty($pty)
+    {
+        $this->config->setPty($pty);
+
+        return $this;
+    }
+
+    /**
      * Use pty in ssh2 connection
      *
      * @param $ssh2Pty
+     * @deprecated
      * @return BuilderInterface
      */
     public function ssh2Pty($ssh2Pty)

@@ -120,4 +120,15 @@ class ClusterBuilder implements BuilderInterface
         }
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pty($stages)
+    {
+        foreach ($this->nodes as $node) {
+            $node->builder->pty($stages);
+        }
+        return $this;
+    }
 }

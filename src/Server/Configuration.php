@@ -102,11 +102,11 @@ class Configuration
     private $pemFile;
 
     /**
-     * Pty configuration for ssh2 connection
+     * Pty configuration
      *
      * @var mixed
      */
-    private $ssh2Pty = null;
+    private $pty = null;
 
 
     /**
@@ -422,22 +422,44 @@ class Configuration
     }
 
     /**
-     * Set pty for ssh2 connection
+     * Set pty
      *
-     * @param $ssh2Pty
+     * @param $pty
      */
-    public function setSsh2Pty($ssh2Pty)
+    public function setPty($pty)
     {
-        $this->ssh2Pty = $ssh2Pty;
+        $this->pty = $pty;
     }
 
     /**
-     * Get pty option for ssh2 connection
+     * Get pty option
      *
+     * @return mixed
+     */
+    public function getPty()
+    {
+        return $this->pty;
+    }
+
+    /**
+     * Set pty for ssh2 connection. For retro compatibility
+     *
+     * @param $ssh2Pty
+     * @deprecated
+     */
+    public function setSsh2Pty($ssh2Pty)
+    {
+        $this->setPty($ssh2Pty);
+    }
+
+    /**
+     * Get pty option for ssh2 connection. For retro compatibility
+     *
+     * @deprecated
      * @return mixed
      */
     public function getSsh2Pty()
     {
-        return $this->ssh2Pty;
+        return $this->getPty();
     }
 }

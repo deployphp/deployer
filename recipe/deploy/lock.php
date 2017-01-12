@@ -23,8 +23,5 @@ task('deploy:lock', function () {
 
 desc('Unlock deploy');
 task('deploy:unlock', function () {
-    try {
-        run("rm {{deploy_path}}/.dep/deploy.lock");//always success
-    } catch (\Exception $e) {
-    }
+    run("rm -f {{deploy_path}}/.dep/deploy.lock");//always success
 });

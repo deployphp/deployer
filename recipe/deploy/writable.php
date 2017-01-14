@@ -57,8 +57,8 @@ task('deploy:writable', function () {
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             } elseif (commandExist('setfacl')) {
                 if (!empty($sudo)) {
-                    run("$sudo setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                    run("$sudo setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                    run("$sudo setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                    run("$sudo setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
                 } else {
                     // When running without sudo, exception may be thrown
                     // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -70,8 +70,8 @@ task('deploy:writable', function () {
                         $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l")->toString();
                         // Set ACL for directory if it has not been set before
                         if (!$hasfacl) {
-                            run("setfacl -R -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                            run("setfacl -dR -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                            run("setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                            run("setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
                         }
                     }
                 }

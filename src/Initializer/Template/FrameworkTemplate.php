@@ -33,7 +33,8 @@ add('writable_dirs', []);
 server('production', 'domain.com')
     ->user('username')
     ->identityFile()
-    ->set('deploy_path', '/var/www/domain.com');
+    ->set('deploy_path', '/var/www/domain.com')
+    ->pty(true);
 
 
 // Tasks

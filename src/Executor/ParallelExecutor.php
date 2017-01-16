@@ -120,6 +120,11 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
+     * @var string|bool
+     */
+    private $lastExceptionMessage = false;
+
+    /**
      * @param InputDefinition $userDefinition
      */
     public function __construct(InputDefinition $userDefinition)
@@ -172,6 +177,10 @@ class ParallelExecutor implements ExecutorInterface
             if (++$this->port <= self::STOP_PORT) {
                 goto connect;
             }
+        }
+
+        if (!$this->isSuccessfullyFinished) {
+            throw new \RuntimeException($this->lastExceptionMessage);
         }
     }
 
@@ -246,6 +255,9 @@ class ParallelExecutor implements ExecutorInterface
 
             // Print exception message.
             $this->informer->taskException($serverName, $exceptionClass, $message);
+
+            // Save message.
+            $this->lastExceptionMessage = $message;
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
@@ -342,8 +354,10 @@ class ParallelExecutor implements ExecutorInterface
                 // Wait no more!
                 $this->wait = false;
 
-                // Reset to default for next tasks.
-                $this->isSuccessfullyFinished = true;
+                if ($this->isSuccessfullyFinished || $this->hasNonFatalException) {
+                    // Reset to default for next tasks.
+                    $this->isSuccessfullyFinished = true;
+                }
             }
         }
     }

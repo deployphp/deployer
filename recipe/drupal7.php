@@ -74,7 +74,7 @@ task('drupal:settings', function () {
         $tmpFilename = tempnam($basepath, 'tmp_settings_');
         file_put_contents($tmpFilename, $settings);
 
-        upload($tmpFilename, '{{deploy_path}}/shared/sites/{{drupal_site}}/settings.php');
+        upload($tmpFilename, '{{shared_path}}/sites/{{drupal_site}}/settings.php');
 
         unlink($tmpFilename);
     }
@@ -83,6 +83,6 @@ task('drupal:settings', function () {
 //Upload Drupal 7 files folder
 task('drupal:upload_files', function () {
     if (askConfirmation('Are you sure?')) {
-        upload('sites/{{drupal_site}}/files', '{{deploy_path}}/shared/sites/{{drupal_site}}/files');
+        upload('sites/{{drupal_site}}/files', '{{shared_path}}/sites/{{drupal_site}}/files');
     }
 });

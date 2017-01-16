@@ -34,17 +34,17 @@ task('deploy:prepare', function () {
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Check for existing /current directory (not symlink)
-    $result = run('if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then echo true; fi')->toBool();
+    $result = run('if [ ! -L {{current_path}} ] && [ -d {{current_path}} ]; then echo true; fi')->toBool();
     if ($result) {
-        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+        throw new \RuntimeException('There already is a directory (not symlink) named "' . get('current_dir') . '" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
     // Create metadata .dep dir.
-    run("cd {{deploy_path}} && if [ ! -d .dep ]; then mkdir .dep; fi");
+    run("if [ ! -d {{dep_path}} ]; then mkdir {{dep_path}}; fi");
 
     // Create releases dir.
-    run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
+    run("if [ ! -d {{releases_path}} ]; then mkdir {{releases_path}}; fi");
 
     // Create shared dir.
-    run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
+    run("if [ ! -d {{shared_path}} ]; then mkdir {{shared_path}}; fi");
 });

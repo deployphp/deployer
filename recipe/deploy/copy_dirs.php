@@ -16,6 +16,6 @@ task('deploy:copy_dirs', function () {
         run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
 
         // Copy directory.
-        run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
+        run("if [ -d $(echo {{current_path}}/$dir) ]; then cp -rpf {{current_path}}/$dir {{release_path}}/$dir; fi");
     }
 });

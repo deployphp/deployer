@@ -10,12 +10,13 @@ namespace Deployer;
 desc('Creating symlink to release');
 task('deploy:symlink', function () {
     if (run('if [[ "$(man mv)" =~ "--no-target-directory" ]]; then echo "true"; fi')->toBool()) {
-        run("mv -T {{deploy_path}}/release {{deploy_path}}/current");
+        run("mv -T {{release_path}} {{current_path}}");
     } else {
         // Atomic symlink does not supported.
         // Will use simple≤ two steps switch.
+        $release = run("readlink {{release_path}}")->toString();
 
-        run("cd {{deploy_path}} && {{bin/symlink}} {{release_path}} current"); // Atomic override symlink.
-        run("cd {{deploy_path}} && rm release"); // Remove release link.
+        run("{{bin/symlink}} {$release} {{current_path}}"); // Atomic override symlink.
+        run("rm {{release_path}}"); // Remove release link.
     }
 });

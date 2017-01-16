@@ -24,9 +24,9 @@ task('cleanup', function () {
     }
 
     foreach ($releases as $release) {
-        run("rm -rf {{deploy_path}}/releases/$release");
+        run("rm -rf {{releases_path}}/$release");
     }
 
-    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
+    run("if [ -e {{release_path}} ]; then rm {{release_path}}; fi");
+    run("if [ -h {{release_path}} ]; then rm {{release_path}}; fi");
 });

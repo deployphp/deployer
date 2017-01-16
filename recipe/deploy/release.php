@@ -29,15 +29,13 @@ set('release_name', function () {
  * Return list of releases on server.
  */
 set('releases_list', function () {
-    cd('{{deploy_path}}');
-
     // If there is no releases return empty list.
-    if (!run('[ -d releases ] && [ "$(ls -A releases)" ] && echo "true" || echo "false"')->toBool()) {
+    if (!run('[ -d {{releases_path}} ] && [ "$(ls -A {{releases_path}})" ] && echo "true" || echo "false"')->toBool()) {
         return [];
     }
 
     // Will list only dirs in releases.
-    $list = run('cd releases && ls -t -d */')->toArray();
+    $list = run('cd {{releases_path}} && ls -t -d */')->toArray();
 
     // Prepare list.
     $list = array_map(function ($release) {
@@ -49,12 +47,12 @@ set('releases_list', function () {
     // Collect releases based on .dep/releases info.
     // Other will be ignored.
 
-    if (run('if [ -f .dep/releases ]; then echo "true"; fi')->toBool()) {
+    if (run('if [ -f {{dep_path}}/releases ]; then echo "true"; fi')->toBool()) {
         $keepReleases = get('keep_releases');
         if ($keepReleases === -1) {
-            $csv = run('cat .dep/releases');
+            $csv = run('cat {{dep_path}}/releases');
         } else {
-            $csv = run("tail -n " . ($keepReleases + 5) . " .dep/releases");
+            $csv = run("tail -n " . ($keepReleases + 5) . " {{dep_path}}/releases");
         }
 
         $metainfo = Csv::parse($csv);
@@ -74,53 +72,34 @@ set('releases_list', function () {
     return $releases;
 });
 
-/**
- * Return release path.
- */
-set('release_path', function () {
-    $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
-    if (!$releaseExists) {
-        throw new \RuntimeException(
-            "Release path does not found.\n" .
-            "Run deploy:release to create new release."
-        );
-    }
-
-    $link = run("readlink {{deploy_path}}/release")->toString();
-    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-});
-
-
 desc('Prepare release');
 task('deploy:release', function () {
-    cd('{{deploy_path}}');
-
     // Clean up if there is unfinished release.
-    $previousReleaseExist = run("if [ -h release ]; then echo 'true'; fi")->toBool();
+    $previousReleaseExist = run("if [ -h {{release_path}} ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('rm -rf "$(readlink release)"'); // Delete release.
-        run('rm release'); // Delete symlink.
+        run('rm -rf "$(readlink {{release_path}})"'); // Delete release.
+        run('rm {{release_path}}'); // Delete symlink.
     }
 
     $releaseName = get('release_name');
 
     // Fix collisions.
     $i = 0;
-    while (run("if [ -d {{deploy_path}}/releases/$releaseName ]; then echo 'true'; fi")->toBool()) {
+    while (run("if [ -d {{releases_path}}/$releaseName ]; then echo 'true'; fi")->toBool()) {
         $releaseName .= '.' . ++$i;
         set('release_name', $releaseName);
     }
 
-    $releasePath = parse("{{deploy_path}}/releases/{{release_name}}");
+    $releasePath = parse("{{releases_path}}/{{release_name}}");
 
     // Metainfo.
     $date = run('date +"%Y%m%d%H%M%S"');
 
     // Save metainfo about release.
-    run("echo '$date,{{release_name}}' >> .dep/releases");
+    run("echo '$date,{{release_name}}' >> {{dep_path}}/releases");
 
     // Make new release.
     run("mkdir $releasePath");
-    run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
+    run("{{bin/symlink}} $releasePath {{release_path}}");
 });

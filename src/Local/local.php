@@ -74,3 +74,17 @@ function run($command, $timeout = 60)
 
     return new Result($output);
 }
+
+/**
+ * Run test command locally.
+ * Example:
+ *
+ *     local\test('[ -d {{local_release_path}} ]')
+ *
+ * @param string $command
+ * @return bool
+ */
+function test($command)
+{
+    return run("if $command; then echo 'true'; fi")->toBool();
+}

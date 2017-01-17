@@ -5,3 +5,5 @@
 | BC breaks?    | Yes or No
 | Deprecations? | Yes or No
 | Fixed tickets | N/A or xx
+
+> Do not forget to add notes about your changes to [CHANGELOG.md](/CHANGELOG.md)

@@ -42,3 +42,5 @@ possible:
 
 The whole table must be included (do **not** remove lines that you think are
 not relevant).
+
+Add notes about your changes to [CHANGELOG.md](https://github.com/deployphp/deployer/blob/master/CHANGELOG.md).

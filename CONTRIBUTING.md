@@ -1,6 +1,6 @@
 # Contributing to Deployer
 
-Thank you for considering contributing to `Deployer`. Please make sure to read the following sections if you plan on submitting new issues or pull requests.
+Thank you for considering contributing to Deployer. Please make sure to read the following sections if you plan on submitting new issues or pull requests.
 
 # Bug
 

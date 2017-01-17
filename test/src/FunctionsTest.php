@@ -10,6 +10,7 @@ namespace Deployer;
 use Deployer\Console\Application;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
+use Deployer\local;
 
 class FunctionsTest extends \PHPUnit_Framework_TestCase
 {
@@ -169,7 +170,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     public function testRunLocally()
     {
-        $output = runLocally('echo "hello"');
+        $output = local\run('echo "hello"');
 
         $this->assertInstanceOf('Deployer\Type\Result', $output);
         $this->assertEquals('hello', (string)$output);

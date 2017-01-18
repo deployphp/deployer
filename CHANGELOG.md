@@ -6,6 +6,7 @@
 ### Added
 - Added `testLocally` function (analog `test` fn)
 - Added `ConfigurationException`
+- Show message on file download
 
 ### Changed
 - Server config `setPty` renamed to `pty` [#953](https://github.com/deployphp/deployer/pull/953)

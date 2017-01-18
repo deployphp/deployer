@@ -447,6 +447,7 @@ function download($local, $remote)
     $local = parse($local);
     $remote = parse($remote);
 
+    writeln("Download file <info>$remote</info> to <info>$local</info>");
     $server->download($local, $remote);
 }
 

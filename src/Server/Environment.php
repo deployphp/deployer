@@ -98,7 +98,7 @@ class Environment
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            $this->set($name, array_merge($config, $array));
+            $this->set($name, array_merge_recursive($config, $array));
         } else {
             $this->set($name, $array);
         }

@@ -74,10 +74,34 @@ class DeployerTest extends \PHPUnit_Framework_TestCase
 
     public function testAddDefault()
     {
-        Deployer::setDefault('config', ['one', 'two']);
-        Deployer::addDefault('config', ['three']);
+        Deployer::setDefault('config', [
+            'one',
+            'two',
+            'nested' => [],
+        ]);
+        Deployer::addDefault('config', [
+            'three',
+            'nested' => [
+                'first',
+            ],
+        ]);
+        Deployer::addDefault('config', [
+            'nested' => [
+                'second',
+            ],
+        ]);
 
-        $this->assertEquals(['one', 'two', 'three'], Deployer::getDefault('config'));
+        $expected = [
+            'one',
+            'two',
+            'three',
+            'nested' => [
+                'first',
+                'second',
+            ],
+        ];
+
+        $this->assertEquals($expected, Deployer::getDefault('config'));
     }
 
     /**

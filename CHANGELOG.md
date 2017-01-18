@@ -5,6 +5,7 @@
 
 ### Added
 - Added `testLocally` function (analog `test` fn)
+- Added `ConfigurationException`
 
 ### Changed
 - Server config `setPty` renamed to `pty` [#953](https://github.com/deployphp/deployer/pull/953)
@@ -12,6 +13,7 @@
 - `deploy:unlock` now always successful [#950](https://github.com/deployphp/deployer/pull/950)
 - Added option `-L` to `setfacl` [#956](https://github.com/deployphp/deployer/pull/956)
 - Run `deploy:unlock` when deploy is fail [#958](https://github.com/deployphp/deployer/pull/958)
+- Now throw exception on duplicates in `shared_dirs`
 
 ### Fixed
 - Fixed native ssh scp option

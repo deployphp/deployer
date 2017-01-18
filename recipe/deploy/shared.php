@@ -7,9 +7,20 @@
 
 namespace Deployer;
 
+use Deployer\Exception\ConfigurationException;
+
 desc('Creating symlinks for shared files and dirs');
 task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";
+
+    // Validate shared_dir, find duplicates
+    foreach (get('shared_dirs') as $a) {
+        foreach (get('shared_dirs') as $b) {
+            if ($a !== $b && strpos($a, $b) === 0) {
+                throw new ConfigurationException("Can not share same dirs `$a` and `$b`.");
+            }
+        }
+    }
 
     foreach (get('shared_dirs') as $dir) {
         // Check if shared dir does not exists.

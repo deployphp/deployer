@@ -46,6 +46,9 @@ task('php-fpm:restart', function () {
     run('sudo systemctl restart php-fpm.service');
 });
 after('deploy:symlink', 'php-fpm:restart');
+
+// [Optional] if deploy fails automatically unlock.
+after('deploy:failed', 'deploy:unlock');
 {$this->getExtraContent()}
 PHP;
     }

@@ -14,7 +14,6 @@
 - Raised timeout for runLocally to 300 seconds [#955](https://github.com/deployphp/deployer/pull/955)
 - `deploy:unlock` now always successful [#950](https://github.com/deployphp/deployer/pull/950)
 - Added option `-L` to `setfacl` [#956](https://github.com/deployphp/deployer/pull/956)
-- Run `deploy:unlock` when deploy is fail [#958](https://github.com/deployphp/deployer/pull/958)
 - Now throw exception on duplicates in `shared_dirs`
 
 ### Fixed

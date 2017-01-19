@@ -143,4 +143,3 @@ task('deploy:failed', function () {
 })->setPrivate();
 
 onFailure('deploy', 'deploy:failed');
-before('deploy:failed', 'deploy:unlock');

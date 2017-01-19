@@ -63,10 +63,10 @@ task('deploy', [
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',
-    'success'
 ]);
 
-after('deploy', 'success');
+// [Optional] if deploy fails automatically unlock.
+after('deploy:failed', 'deploy:unlock');
 PHP;
     }
 }

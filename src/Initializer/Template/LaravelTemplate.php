@@ -18,4 +18,16 @@ class LaravelTemplate extends FrameworkTemplate
     {
         return 'laravel';
     }
+
+    protected function getExtraContent()
+    {
+        return <<<PHP
+
+// Migrate database before symlink new release.
+
+before('deploy:symlink', 'artisan:migrate');
+
+PHP;
+
+    }
 }

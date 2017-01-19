@@ -63,6 +63,7 @@ task('deploy', [
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',
+    'success'
 ]);
 
 // [Optional] if deploy fails automatically unlock.

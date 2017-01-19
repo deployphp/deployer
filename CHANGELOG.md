@@ -1,7 +1,12 @@
 # Changelog
 
 ## master
-[v4.0.2...master](https://github.com/deployphp/deployer/compare/v4.0.2...master)
+[v4.1.0...master](https://github.com/deployphp/deployer/compare/v4.1.0...master)
+
+—
+
+## v4.1.0
+[v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)
 
 ### Added
 - Added `testLocally` function (analog `test` fn)

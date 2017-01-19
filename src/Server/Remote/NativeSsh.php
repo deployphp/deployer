@@ -54,7 +54,7 @@ class NativeSsh implements ServerInterface
             '-o StrictHostKeyChecking=no'
         ];
 
-        if (\Deployer\get('ssh_type_native_mux')) {
+        if (\Deployer\get('ssh_multiplexing')) {
             $this->initMultiplexing();
             $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
         }

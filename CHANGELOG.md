@@ -9,6 +9,7 @@
 - Show message on file download
 - Added support for multiplexing for NativeSsh [#918](https://github.com/deployphp/deployer/pull/918)
 - Added GracefulShutdownException
+- Added Magento2 recipe [#911](https://github.com/deployphp/deployer/pull/911)
 
 ### Changed
 - Server config `setPty` renamed to `pty` [#953](https://github.com/deployphp/deployer/pull/953)

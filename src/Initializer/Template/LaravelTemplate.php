@@ -28,6 +28,5 @@ class LaravelTemplate extends FrameworkTemplate
 before('deploy:symlink', 'artisan:migrate');
 
 PHP;
-
     }
 }

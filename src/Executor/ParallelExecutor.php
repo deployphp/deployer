@@ -9,6 +9,7 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
+use Deployer\Exception\Exception;
 use Deployer\Server\Environment;
 use Deployer\Server\Local;
 use Deployer\Task\Context;
@@ -120,9 +121,9 @@ class ParallelExecutor implements ExecutorInterface
     private $hasNonFatalException = false;
 
     /**
-     * @var string
+     * @var Exception
      */
-    private $lastExceptionMessage = false;
+    private $lastException;
 
     /**
      * @var Local
@@ -192,7 +193,7 @@ class ParallelExecutor implements ExecutorInterface
         }
 
         if (!$this->isSuccessfullyFinished) {
-            throw new \RuntimeException($this->lastExceptionMessage);
+            throw $this->lastException;
         }
     }
 
@@ -274,8 +275,8 @@ class ParallelExecutor implements ExecutorInterface
             // Print exception message.
             $this->informer->taskException($serverName, $exceptionClass, $message);
 
-            // Save message.
-            $this->lastExceptionMessage = $message;
+            // Save exception.
+            $this->lastException = new $exceptionClass($message);
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;

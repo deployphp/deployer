@@ -8,6 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
@@ -80,11 +81,13 @@ class TaskCommand extends Command
         } catch (\Exception $exception) {
             \Deployer\logger($exception->getMessage(), Logger::ERROR);
 
-            // Check if we have tasks to execute on failure.
-            if ($this->deployer['onFailure']->has($this->getName())) {
-                $taskName = $this->deployer['onFailure']->get($this->getName());
-                $tasks = $this->deployer->getScriptManager()->getTasks($taskName, $stage);
-                $executor->run($tasks, $servers, $environments, $input, $output);
+            if (!($exception instanceof GracefulShutdownException)) {
+                // Check if we have tasks to execute on failure.
+                if ($this->deployer['onFailure']->has($this->getName())) {
+                    $taskName = $this->deployer['onFailure']->get($this->getName());
+                    $tasks = $this->deployer->getScriptManager()->getTasks($taskName, $stage);
+                    $executor->run($tasks, $servers, $environments, $input, $output);
+                }
             }
 
             throw $exception;

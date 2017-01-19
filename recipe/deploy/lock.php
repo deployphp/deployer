@@ -7,12 +7,14 @@
 
 namespace Deployer;
 
+use Deployer\Exception\GracefulShutdownException;
+
 desc('Lock deploy');
 task('deploy:lock', function () {
     $locked = run("if [ -f {{deploy_path}}/.dep/deploy.lock ]; then echo 'true'; fi")->toBool();
 
     if ($locked) {
-        throw new \RuntimeException(
+        throw new GracefulShutdownException(
             "Deploy locked.\n" .
             "Run deploy:unlock command to unlock."
         );

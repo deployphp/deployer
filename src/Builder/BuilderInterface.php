@@ -72,4 +72,12 @@ interface BuilderInterface
      * @return BuilderInterface
      */
     public function set($name, $value);
+
+    /**
+     * Use pty connection
+     *
+     * @param $pty
+     * @return BuilderInterface
+     */
+    public function pty($pty);
 }

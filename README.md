@@ -51,30 +51,16 @@ composer require deployer/deployer
 ## Documentation
 Documentation source can be found in [deployphp/docs](https://github.com/deployphp/docs) repository.
 
-## Community
-Discuss Deployer here [deployer.org/discuss](https://deployer.org/discuss).
-
 ## Roadmap
 * Better documentation.
 * Better DX with intelligible errors.
 * Better parallel task runner based on https://github.com/icicleio/icicle
 * Task grouping for parallel execution.
-* Task combining for less ssh calls. 
-* Implement `dep status` command with health-check of running application and deployment log. 
+* Task combining for less ssh calls.
+* Implement `dep status` command with health-check of running application and deployment log.
 * More deploy strategies.
 * More integration with third-party services.
 * Web-based client.
-
-## Contributing
-All code contributions must go through a pull request and approved by a core developer before being merged.
-This is to ensure proper review of all the code.
-
-Fork the project, create a feature branch, and send a pull request.
-
-To ensure a consistent code base, you should make sure the code follows
-the [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md).
-
-If you would like to help take a look at the [list of issues](https://github.com/deployphp/deployer/issues).
 
 ## Maintainers
 * Anton Medvedev [@elfet](https://github.com/elfet)

@@ -49,7 +49,7 @@ class BootstrapByConfigFile
      * @var BuilderInterface[] $clusterBuilders
      */
     public $clusterBuilders = [];
-    
+
     /**
      * @var BuilderInterface[] $serverBuilders
      */

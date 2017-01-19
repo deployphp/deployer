@@ -141,7 +141,7 @@ class ParallelExecutor implements ExecutorInterface
     {
         $this->userDefinition = $userDefinition;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -227,7 +227,7 @@ class ParallelExecutor implements ExecutorInterface
                 $input .= " --{$option->getName()} $value";
             }
         }
-        
+
         foreach ($this->servers as $serverName => $server) {
             $process = new Process(
                 "php " . DEPLOYER_BIN .
@@ -279,7 +279,7 @@ class ParallelExecutor implements ExecutorInterface
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
-            
+
             if ($exceptionClass == 'Deployer\Exception\NonFatalException') {
 
                 // If we got NonFatalException, continue other tasks.
@@ -365,7 +365,7 @@ class ParallelExecutor implements ExecutorInterface
                 } else {
                     $this->informer->taskError($this->hasNonFatalException);
                 }
-                
+
                 // We waited all workers to finish their tasks.
                 // Wait no more!
                 $this->wait = false;

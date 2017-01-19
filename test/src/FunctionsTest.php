@@ -94,16 +94,16 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $deployer = $this->deployer;
 
         cluster('myIstanbulDCCluster', ['192.168.0.1', '192.168.0.2'], 22);
-        
+
         $server0 = $deployer->servers->get('myIstanbulDCCluster_0');
         $env0 = $deployer->environments->get('myIstanbulDCCluster_0');
-        
+
         $server1 = $deployer->servers->get('myIstanbulDCCluster_1');
         $env1 = $deployer->environments->get('myIstanbulDCCluster_1');
 
         $this->assertInstanceOf('Deployer\Server\ServerInterface', $server0);
         $this->assertInstanceOf('Deployer\Server\Environment', $env0);
-        
+
         $this->assertInstanceOf('Deployer\Server\ServerInterface', $server1);
         $this->assertInstanceOf('Deployer\Server\Environment', $env1);
     }

@@ -74,7 +74,7 @@ class Environment
     private function checkIfNameIsProtected($name)
     {
         $length = strlen($name);
-        
+
         foreach ($this->protectedNames as $protectedName) {
             $len = strlen($protectedName);
             if ($name === $protectedName) {

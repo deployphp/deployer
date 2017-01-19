@@ -17,14 +17,14 @@ class ContextTest extends \PHPUnit_Framework_TestCase
         $output = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')->disableOriginalConstructor()->getMock();
 
         $context = new Context($server, $env, $input, $output);
-        
+
         $this->assertInstanceOf('Deployer\Server\ServerInterface', $context->getServer());
         $this->assertInstanceOf('Deployer\Server\Environment', $context->getEnvironment());
         $this->assertInstanceOf('Symfony\Component\Console\Input\InputInterface', $context->getInput());
         $this->assertInstanceOf('Symfony\Component\Console\Output\OutputInterface', $context->getOutput());
-        
+
         Context::push($context);
-        
+
         $this->assertEquals($context, Context::get());
         $this->assertEquals($context, Context::pop());
     }

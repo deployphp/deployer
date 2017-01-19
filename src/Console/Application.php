@@ -21,7 +21,7 @@ class Application extends Console
      * @var InputDefinition
      */
     private $userDefinition;
-    
+
     /**
      * {@inheritdoc}
      */
@@ -77,7 +77,7 @@ class Application extends Console
         if (null === $this->userDefinition) {
             $this->userDefinition = new InputDefinition();
         }
-        
+
         return $this->userDefinition;
     }
 

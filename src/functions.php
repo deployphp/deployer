@@ -331,7 +331,7 @@ function run($command)
  * @return Result Output of command.
  * @throws \RuntimeException
  */
-function runLocally($command, $timeout = 60)
+function runLocally($command, $timeout = 300)
 {
     $command = parse($command);
 
@@ -376,6 +376,20 @@ function runLocally($command, $timeout = 60)
 function test($command)
 {
     return run("if $command; then echo 'true'; fi")->toBool();
+}
+
+/**
+ * Run test command locally.
+ * Example:
+ *
+ *     testLocally('[ -d {{local_release_path}} ]')
+ *
+ * @param string $command
+ * @return bool
+ */
+function testLocally($command)
+{
+    return runLocally("if $command; then echo 'true'; fi")->toBool();
 }
 
 /**
@@ -433,6 +447,7 @@ function download($local, $remote)
     $local = parse($local);
     $remote = parse($remote);
 
+    writeln("Download file <info>$remote</info> to <info>$local</info>");
     $server->download($local, $remote);
 }
 

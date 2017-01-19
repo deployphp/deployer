@@ -14,7 +14,7 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
      * @var string|null $configFile;
      */
     protected $configFile = null;
-    
+
     /**
      * @var BootstrapByConfigFile | null $bootstrap
      */
@@ -37,7 +37,7 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
         unset($this->configFile);
         unset($this->bootstrap);
     }
-    
+
     /**
      * tests BootstrapByConfigfile::setConfig()
      */
@@ -86,7 +86,7 @@ class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Deployer\Bootstrap\BootstrapByConfigFile', $bootstrap);
         $this->assertContainsOnlyInstancesOf('Deployer\Builder\BuilderInterface', $bootstrap->serverBuilders);
     }
-    
+
     /**
      * tests BootstrapByConfigFile::initServers()
      */

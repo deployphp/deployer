@@ -1,6 +1,6 @@
 # Contributing to Deployer
 
-Thank you for considering contributing to `Deployer`. Please make sure to read the following sections if you plan on submitting new issues or pull requests.
+Thank you for considering contributing to Deployer. Please make sure to read the following sections if you plan on submitting new issues or pull requests.
 
 # Bug
 
@@ -43,3 +43,4 @@ possible:
 The whole table must be included (do **not** remove lines that you think are
 not relevant).
 
+Add notes about your changes to [CHANGELOG.md](https://github.com/deployphp/deployer/blob/master/CHANGELOG.md).

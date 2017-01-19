@@ -23,5 +23,5 @@ task('deploy:lock', function () {
 
 desc('Unlock deploy');
 task('deploy:unlock', function () {
-    run("rm {{deploy_path}}/.dep/deploy.lock");
+    run("rm -f {{deploy_path}}/.dep/deploy.lock");//always success
 });

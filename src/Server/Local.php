@@ -11,8 +11,6 @@ use Symfony\Component\Process\Process;
 
 class Local implements ServerInterface
 {
-    const TIMEOUT = 300;
-
     /**
      * @var Configuration
      */
@@ -64,8 +62,8 @@ class Local implements ServerInterface
     {
         $process = new Process($command);
         $process
-            ->setTimeout(self::TIMEOUT)
-            ->setIdleTimeout(self::TIMEOUT)
+            ->setTimeout(null)
+            ->setIdleTimeout(null)
             ->mustRun($callback);
 
         return $process->getOutput();

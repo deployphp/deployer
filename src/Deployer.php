@@ -167,7 +167,7 @@ class Deployer extends Container
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            self::setDefault($name, array_merge($config, $array));
+            self::setDefault($name, array_merge_recursive($config, $array));
         } else {
             self::setDefault($name, $array);
         }

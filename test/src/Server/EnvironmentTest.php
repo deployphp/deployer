@@ -116,10 +116,34 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
     public function testAddParams()
     {
         $env = new Environment();
-        $env->set('config', ['one', 'two']);
-        $env->add('config', ['three']);
+        $env->set('config', [
+            'one',
+            'two',
+            'nested' => [],
+        ]);
+        $env->add('config', [
+            'three',
+            'nested' => [
+                'first',
+            ],
+        ]);
+        $env->add('config', [
+            'nested' => [
+                'second',
+            ],
+        ]);
 
-        $this->assertEquals(['one', 'two', 'three'], $env->get('config'));
+        $expected = [
+            'one',
+            'two',
+            'three',
+            'nested' => [
+                'first',
+                'second',
+            ],
+        ];
+
+        $this->assertEquals($expected, $env->get('config'));
     }
 
     /**

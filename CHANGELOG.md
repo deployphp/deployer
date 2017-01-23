@@ -3,7 +3,8 @@
 ## master
 [v4.1.0...master](https://github.com/deployphp/deployer/compare/v4.1.0...master)
 
-—
+### Changed
+- `add()` now merges configuration options recursively [#962](https://github.com/deployphp/deployer/pull/962)
 
 ## v4.1.0
 [v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)
@@ -22,7 +23,6 @@
 - `deploy:unlock` now always successful [#950](https://github.com/deployphp/deployer/pull/950)
 - Added option `-L` to `setfacl` [#956](https://github.com/deployphp/deployer/pull/956)
 - Now throw exception on duplicates in `shared_dirs`
-- `add()` now merges configuration options recursively [#962](https://github.com/deployphp/deployer/pull/962)
 
 ### Fixed
 - Fixed native ssh scp option

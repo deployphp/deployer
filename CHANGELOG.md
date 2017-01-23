@@ -3,7 +3,8 @@
 ## master
 [v4.1.0...master](https://github.com/deployphp/deployer/compare/v4.1.0...master)
 
-—
+### Changed
+- Set infinite timeout for `runLocally()` and `Local::run()` [#974](https://github.com/deployphp/deployer/pull/974)
 
 ## v4.1.0
 [v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)

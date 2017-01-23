@@ -331,7 +331,7 @@ function run($command)
  * @return Result Output of command.
  * @throws \RuntimeException
  */
-function runLocally($command, $timeout = 300)
+function runLocally($command, $timeout = null)
 {
     $command = parse($command);
 

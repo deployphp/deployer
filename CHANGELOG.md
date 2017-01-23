@@ -15,7 +15,7 @@
 - Added option `-L` to `setfacl` [#956](https://github.com/deployphp/deployer/pull/956)
 - Run `deploy:unlock` when deploy is fail [#958](https://github.com/deployphp/deployer/pull/958)
 - Now throw exception on duplicates in `shared_dirs`
-- `add()` now merges configuration options recursively
+- `add()` now merges configuration options recursively [#962](https://github.com/deployphp/deployer/pull/962)
 
 ### Fixed
 - Fixed native ssh scp option

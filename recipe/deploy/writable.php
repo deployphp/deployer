@@ -48,7 +48,8 @@ task('deploy:writable', function () {
             }
             run("$sudo chgrp -RH $httpGroup $dirs");
         } elseif ($mode === 'chmod') {
-            run("$sudo chmod -R {{writable_chmod_mode}} $dirs");
+            $recursive = get('writable_chmod_recursive') ? '-R' : '';
+            run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
         } elseif ($mode === 'acl') {
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
                 // Try OS-X specific setting of access-rights

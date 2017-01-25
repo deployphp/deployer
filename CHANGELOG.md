@@ -6,6 +6,7 @@
 ### Changed
 - `add()` now merges configuration options recursively [#962](https://github.com/deployphp/deployer/pull/962)
 - Added `writable_chmod_recursive` boolean option to enable non-recursive `chmod`
+- `ask()` now supports autocomplete [#978](https://github.com/deployphp/deployer/pull/978)
 
 ## v4.1.0
 [v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)

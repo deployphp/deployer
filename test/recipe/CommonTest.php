@@ -6,6 +6,7 @@
  */
 
 use Deployer\Helper\RecipeTester;
+use Deployer\local;
 
 class CommonTest extends RecipeTester
 {
@@ -15,7 +16,7 @@ class CommonTest extends RecipeTester
 
         // Override update code task to use local copy.
         \Deployer\task('deploy:update_code', function () {
-            \Deployer\runLocally('cp -R ' . __DIR__ . '/../fixture/app/. {{release_path}}');
+            local\run('cp -R ' . __DIR__ . '/../fixture/app/. {{release_path}}');
         });
     }
 

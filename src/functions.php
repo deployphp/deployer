@@ -546,11 +546,16 @@ function has($name)
 /**
  * @param string $message
  * @param string|null $default
+ * @param string[]|null $suggestedChoices
  * @return string
  * @codeCoverageIgnore
  */
-function ask($message, $default = null)
+function ask($message, $default = null, $suggestedChoices = null)
 {
+    if (($suggestedChoices !== null) && (empty($suggestedChoices))) {
+        throw new \InvalidArgumentException('Suggested choices should not be empty');
+    }
+
     if (isQuiet()) {
         return $default;
     }
@@ -560,6 +565,10 @@ function ask($message, $default = null)
     $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
 
     $question = new Question($message, $default);
+
+    if (empty($suggestedChoices) === false) {
+        $question->setAutocompleterValues($suggestedChoices);
+    }
 
     return $helper->ask(input(), output(), $question);
 }

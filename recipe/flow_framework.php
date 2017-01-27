@@ -5,13 +5,15 @@
  * file that was distributed with this source code.
  */
 
+namespace Deployer;
+
 require_once __DIR__ . '/common.php';
 
 // Flow-Framework application-context
-env('flow_context', 'Production');
+set('flow_context', 'Production');
 
 // Flow-Framework cli-command
-env('flow_command', 'flow');
+set('flow_command', 'flow');
 
 // Flow-Framework shared directories
 set('shared_dirs', [

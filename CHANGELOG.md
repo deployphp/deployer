@@ -15,6 +15,9 @@
 ### Fixed
 - Fixed Flow recipe [#986](https://github.com/deployphp/deployer/pull/986)
 - Fixed `deploy:copy_dirs` task [#914](https://github.com/deployphp/deployer/pull/914)
+- Fixed default behavior for `working_path` [#381](https://github.com/deployphp/deployer/pull/381)
+
+
 
 ## v4.1.0
 [v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)
@@ -37,7 +40,7 @@
 ### Fixed
 - Fixed native ssh scp option
 - Fixed bug with `$httpGroup` guard clause [#948](https://github.com/deployphp/deployer/pull/948)
-- Fixed default behavior for `working_path` [#381](https://github.com/deployphp/deployer/pull/381)
+
 
 
 ## v4.0.2
@@ -48,6 +51,7 @@
 - Fixed recursive upload in native ssh
 - Improved Laravel recipe
 - Improved exceptions in runLocally
+
 
 
 ## v4.0.1
@@ -68,6 +72,7 @@
 - Fixed `DotArray` syntax in `Collection`
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
+
 
 
 ## v4.0.0

@@ -1,20 +1,21 @@
 <?php
-
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
- * @package Deployer
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Deployer\Cluster;
 
 use Deployer\Console\Application;
 use Deployer\Deployer;
-use Deployer\Cluster\Node;
+use PHPUnit\Framework\TestCase;
 
 /**
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
  * @property Deployer $deployer
  */
-class NodeTest extends \PHPUnit_Framework_TestCase
+class NodeTest extends TestCase
 {
     /**
      * @var Deployer $deployer

@@ -10,8 +10,9 @@ namespace Deployer;
 use Deployer\Console\Application;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
+use PHPUnit\Framework\TestCase;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends TestCase
 {
     /**
      * @var Deployer

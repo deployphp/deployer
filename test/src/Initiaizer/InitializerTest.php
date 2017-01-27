@@ -7,12 +7,14 @@
 
 namespace Deployer\Initializer;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Initializer testing
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class InitializerTest extends \PHPUnit_Framework_TestCase
+class InitializerTest extends TestCase
 {
     /**
      * @var Initializer

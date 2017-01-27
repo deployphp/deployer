@@ -7,9 +7,9 @@
 
 namespace Deployer\Server;
 
-use Deployer\Deployer;
+use PHPUnit\Framework\TestCase;
 
-class EnvironmentTest extends \PHPUnit_Framework_TestCase
+class EnvironmentTest extends TestCase
 {
     public function testEnvironment()
     {

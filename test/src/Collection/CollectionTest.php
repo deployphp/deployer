@@ -10,8 +10,9 @@ namespace Deployer\Collection;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\ServerCollection;
 use Deployer\Task\TaskCollection;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends TestCase
 {
     public static function collections()
     {

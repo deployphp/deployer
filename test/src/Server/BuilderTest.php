@@ -1,7 +1,5 @@
 <?php
-
-/**
- * (c) Anton Medvedev <anton@medv.io>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -9,10 +7,12 @@
 
 namespace Deployer\Server;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Builder testing
  */
-class BuilderTest extends \PHPUnit_Framework_TestCase
+class BuilderTest extends TestCase
 {
     /**
      * Test set user for connection

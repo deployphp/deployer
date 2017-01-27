@@ -2,13 +2,13 @@
 
 namespace Deployer\Bootstrap;
 
-use Deployer\Bootstrap\BootstrapByConfigFile;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @property string $configFile
  * @property BootstrapByConfigFile $bootstrap
  */
-class BootstrapByConfigFileTest extends \PHPUnit_Framework_TestCase
+class BootstrapByConfigFileTest extends TestCase
 {
     /**
      * @var string|null $configFile;

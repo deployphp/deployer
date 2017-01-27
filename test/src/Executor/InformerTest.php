@@ -7,9 +7,10 @@
 
 namespace Deployer\Executor;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InformerTest extends \PHPUnit_Framework_TestCase
+class InformerTest extends TestCase
 {
     public function testInformer()
     {

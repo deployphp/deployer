@@ -1,17 +1,21 @@
 <?php
-
-/**
- * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
- * Cluster
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Deployer\Cluster;
 
 use Deployer\Console\Application;
 use Deployer\Deployer;
-use Deployer\Cluster\ClusterFactory;
+use PHPUnit\Framework\TestCase;
 
-class ClusterFactoryTest extends \PHPUnit_Framework_TestCase
+/**
+ * @author Irfan Durmus (http://github.com/irfan) <irfandurmus@gmail.com>
+ * Cluster
+ */
+class ClusterFactoryTest extends TestCase
 {
     /**
      * @var Deployer $deployer

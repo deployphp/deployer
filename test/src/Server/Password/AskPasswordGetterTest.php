@@ -1,7 +1,5 @@
 <?php
-
-/**
- * (c) Anton Medvedev <anton@medv.io>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,6 +8,7 @@
 namespace Deployer\Server\Password;
 
 use Deployer\Task\Context;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Question\Question;
 
 /**
@@ -17,7 +16,7 @@ use Symfony\Component\Console\Question\Question;
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class AskPasswordGetterTest extends \PHPUnit_Framework_TestCase
+class AskPasswordGetterTest extends TestCase
 {
     /**
      * @var \Symfony\Component\Console\Input\InputInterface

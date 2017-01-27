@@ -7,7 +7,9 @@
 
 namespace Deployer\Task;
 
-class ContextTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ContextTest extends TestCase
 {
     public function testContext()
     {

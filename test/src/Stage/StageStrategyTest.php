@@ -7,12 +7,12 @@
 
 namespace Deployer\Stage;
 
-use Deployer\Collection\Collection;
 use Deployer\Server\Environment;
 use Deployer\Server\EnvironmentCollection;
 use Deployer\Server\ServerCollection;
+use PHPUnit\Framework\TestCase;
 
-class StageStrategyTest extends \PHPUnit_Framework_TestCase
+class StageStrategyTest extends TestCase
 {
     public function testDefault()
     {

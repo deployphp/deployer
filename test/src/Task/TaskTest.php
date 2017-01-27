@@ -7,7 +7,9 @@
 
 namespace Deployer\Task;
 
-class TaskTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TaskTest extends TestCase
 {
     public function testTask()
     {

@@ -1,20 +1,19 @@
 <?php
-
-/**
- * (c) Anton Medvedev <anton@medv.io>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 namespace Deployer\Server\Password;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Callable password getter test case
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  */
-class CallablePasswordGetterTest extends \PHPUnit_Framework_TestCase
+class CallablePasswordGetterTest extends TestCase
 {
     /**
      * Base testing with use closure

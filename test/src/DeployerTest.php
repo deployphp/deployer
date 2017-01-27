@@ -8,8 +8,9 @@
 namespace Deployer;
 
 use Deployer\Console\Application;
+use PHPUnit\Framework\TestCase;
 
-class DeployerTest extends \PHPUnit_Framework_TestCase
+class DeployerTest extends TestCase
 {
     private $deployer;
 

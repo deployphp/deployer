@@ -7,6 +7,8 @@
 
 namespace Deployer\Initializer\Template;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Test file resource template
  *
@@ -14,7 +16,7 @@ namespace Deployer\Initializer\Template;
  * @author Anton Medvedev <anton@medv.io>
  *
  */
-class TemplateTest extends \PHPUnit_Framework_TestCase
+class TemplateTest extends TestCase
 {
     /**
      * Test successfully initialize for template

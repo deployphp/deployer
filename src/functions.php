@@ -270,7 +270,7 @@ function within($path, $callback)
  */
 function workingPath()
 {
-    return get('working_path', get(Environment::DEPLOY_PATH, ''));
+    return get('working_path', false);
 }
 
 /**

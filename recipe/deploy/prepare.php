@@ -11,7 +11,6 @@ desc('Preparing server for deploy');
 task('deploy:prepare', function () {
     // Check if shell is POSIX-compliant
     try {
-        cd(''); // To run command as raw.
         $result = run('echo $0')->toString();
         if ($result == 'stdin: is not a tty') {
             throw new \RuntimeException(

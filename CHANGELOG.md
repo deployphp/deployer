@@ -37,6 +37,7 @@
 ### Fixed
 - Fixed native ssh scp option
 - Fixed bug with `$httpGroup` guard clause [#948](https://github.com/deployphp/deployer/pull/948)
+- Fixed default behavior for `working_path` [#381](https://github.com/deployphp/deployer/pull/381)
 
 
 ## v4.0.2

@@ -10,12 +10,16 @@ namespace Deployer;
 desc('Copy directories');
 task('deploy:copy_dirs', function () {
     $dirs = get('copy_dirs');
+    $releases = get('releases_list');
 
-    foreach ($dirs as $dir) {
-        // Delete directory if exists.
-        run("if [ -d $(echo {{release_path}}/$dir) ]; then rm -rf {{release_path}}/$dir; fi");
+    if (isset($releases[0])) {
+        foreach ($dirs as $dir) {
+            $path = "{{deploy_path}}/releases/{$releases[0]}/$dir";
 
-        // Copy directory.
-        run("if [ -d $(echo {{deploy_path}}/current/$dir) ]; then cp -rpf {{deploy_path}}/current/$dir {{release_path}}/$dir; fi");
+            // Copy if dir exists.
+            if (test("[ -d $path ]")) {
+                run("cp -rpf $path {{release_path}}");
+            }
+        }
     }
 });

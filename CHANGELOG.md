@@ -14,6 +14,7 @@
 
 ### Fixed
 - Fixed Flow recipe [#986](https://github.com/deployphp/deployer/pull/986)
+- Fixed `deploy:copy_dirs` task [#914](https://github.com/deployphp/deployer/pull/914)
 
 ## v4.1.0
 [v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)

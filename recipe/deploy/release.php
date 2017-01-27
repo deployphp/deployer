@@ -79,15 +79,12 @@ set('releases_list', function () {
  */
 set('release_path', function () {
     $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
-    if (!$releaseExists) {
-        throw new \RuntimeException(
-            "Release path does not found.\n" .
-            "Run deploy:release to create new release."
-        );
+    if ($releaseExists) {
+        $link = run("readlink {{deploy_path}}/release")->toString();
+        return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
+    } else {
+        return get('current_path');
     }
-
-    $link = run("readlink {{deploy_path}}/release")->toString();
-    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
 

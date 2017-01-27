@@ -30,15 +30,14 @@
         "symfony/yaml": "~2.6|~3.0",
         "symfony/process": "~2.6|~3.0",
         "phpseclib/phpseclib": "~2.0",
-        "deployer/phar-update": "^1.0",
         "pimple/pimple": "~3.0",
         "monolog/monolog": "^1.21"
     },
     "require-dev": {
-        "phpunit/phpunit": "~5.7"
+        "phpunit/phpunit": "~5.7",
+        "deployer/phar-update": "~2.0"
     },
     "suggest": {
-        "herzult/php-ssh": "For SSH support through native SSH2 extension",
         "ext-sockets": "For parallel deployment"
     }
 }

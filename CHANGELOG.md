@@ -12,6 +12,9 @@
 - `ask()` now supports autocomplete [#978](https://github.com/deployphp/deployer/pull/978)
 - `release_path` returns `current_path` in non-deploy context [#922](https://github.com/deployphp/deployer/pull/922)
 
+### Fixed
+- Fixed Flow recipe [#986](https://github.com/deployphp/deployer/pull/986)
+
 ## v4.1.0
 [v4.0.2...v4.1.0](https://github.com/deployphp/deployer/compare/v4.0.2...v4.1.0)
 

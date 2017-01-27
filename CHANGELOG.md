@@ -3,6 +3,9 @@
 ## master
 [v4.1.0...master](https://github.com/deployphp/deployer/compare/v4.1.0...master)
 
+### Added
+- Added pretty print to config:dump command
+
 ### Changed
 - `add()` now merges configuration options recursively [#962](https://github.com/deployphp/deployer/pull/962)
 - Added `writable_chmod_recursive` boolean option to enable non-recursive `chmod`

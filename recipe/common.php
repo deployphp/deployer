@@ -91,7 +91,7 @@ set('bin/git', function () {
 
 set('bin/composer', function () {
     if (commandExist('composer')) {
-        $composer = run('which composer')->toString();
+        $composer = '{{bin/php}} ' . run('which composer')->toString();
     }
 
     if (empty($composer)) {

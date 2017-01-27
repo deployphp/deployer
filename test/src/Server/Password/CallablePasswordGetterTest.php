@@ -6,6 +6,7 @@
  */
 
 namespace Deployer\Server\Password;
+
 use PHPUnit\Framework\TestCase;
 
 /**

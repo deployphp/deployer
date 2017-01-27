@@ -23,7 +23,7 @@ if (isset($options['f'])) {
 if (empty($userSpecifiedFile)) {
     $deployFile = getcwd() . '/deploy.php';
 
-    if(!is_readable($deployFile)) {
+    if (!is_readable($deployFile)) {
         $currentDir = getcwd();
         $count = 0;
         do {
@@ -105,7 +105,7 @@ $deployer = new \Deployer\Deployer($console, $input, $output);
 // Require deploy.php file
 if (is_readable($deployFile)) {
     // Prevent variable leak into deploy.php file
-    call_user_func(function() use ($deployFile) {
+    call_user_func(function () use ($deployFile) {
         require $deployFile;
     });
 }

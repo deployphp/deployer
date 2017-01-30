@@ -11,16 +11,11 @@ matrix:
   allow_failures:
     - php: 7.1
 
-env:
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS="--prefer-stable"
-
 install:
   - eval `ssh-agent -s`
   - test/travis/setup-secure-shell.sh
   - composer self-update
-  - composer update --no-interaction --prefer-source $COMPOSER_FLAGS
+  - composer install --no-interaction --prefer-source
 
 script:
   - phpunit

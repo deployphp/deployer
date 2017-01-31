@@ -54,7 +54,12 @@ set('releases_list', function () {
         if ($keepReleases === -1) {
             $csv = run('cat .dep/releases');
         } else {
-            $csv = run("tail -n " . ($keepReleases + 5) . " .dep/releases");
+            // Instead of `tail -n` call here can be `cat` call,
+            // but on servers with a lot of deploys (more 1k) it
+            // will output a really big list of previous releases.
+            // It spoils appearance of output log, to make it pretty,
+            // we limit it to `n*2 + 5` lines from end of file (15 lines).
+            $csv = run("tail -n " . ($keepReleases * 2 + 5) . " .dep/releases");
         }
 
         $metainfo = Csv::parse($csv);

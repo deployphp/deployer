@@ -27,6 +27,9 @@ require 'recipe/common.php';
 
 // Configuration
 
+set('ssh_type', 'native');
+set('ssh_multiplexing', true);
+
 set('repository', 'git@domain.com:username/repository.git');
 set('shared_files', []);
 set('shared_dirs', []);

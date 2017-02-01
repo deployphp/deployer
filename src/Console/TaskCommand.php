@@ -66,6 +66,21 @@ class TaskCommand extends Command
         $servers = $this->deployer->getStageStrategy()->getServers($stage);
         $environments = iterator_to_array($this->deployer->environments);
 
+        // Validation
+        $sshType = \Deployer\get('ssh_type');
+        if ($sshType !== 'native') {
+            $output->write(
+                "<comment>Warning: ssh type `$sshType` will be deprecated in Deployer 5.\n" .
+                "Add this lines to your deploy.php file:\n" .
+                "\n" .
+                "    <fg=white>set(<fg=cyan>'ssh_type'</fg=cyan>, <fg=cyan>'native'</fg=cyan>);\n" .
+                "    set(<fg=cyan>'ssh_multiplexing'</fg=cyan>, <fg=magenta;options=bold>true</fg=magenta;options=bold>);</fg=white>\n" .
+                "\n" .
+                "More info here: https://goo.gl/ya8rKW" .
+                "</comment>\n"
+            );
+        }
+
         if (isset($this->executor)) {
             $executor = $this->executor;
         } else {

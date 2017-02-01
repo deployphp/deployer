@@ -12,8 +12,6 @@ use Deployer\Deployer;
 
 class Environment
 {
-    const DEPLOY_PATH = 'deploy_path';
-
     /**
      * Array of set values.
      * @var Collection

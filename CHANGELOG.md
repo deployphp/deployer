@@ -17,6 +17,8 @@
 - Fixed `deploy:copy_dirs` task [#914](https://github.com/deployphp/deployer/pull/914)
 - Fixed default behavior for `working_path` [#381](https://github.com/deployphp/deployer/pull/381)
 
+### Removed
+- Removed const `Environment::DEPLOY_PATH`
 
 
 ## v4.1.0

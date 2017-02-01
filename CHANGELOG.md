@@ -1,7 +1,12 @@
 # Changelog
 
 ## master
-[v4.1.0...master](https://github.com/deployphp/deployer/compare/v4.1.0...master)
+[v4.2.0...master](https://github.com/deployphp/deployer/compare/v4.2.0...master)
+
+...
+
+## v4.2.0
+[v4.1.0...v4.2.0](https://github.com/deployphp/deployer/compare/v4.1.0...v4.2.0)
 
 ### Added
 - Added pretty print to config:dump command

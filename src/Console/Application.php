@@ -42,9 +42,11 @@ class Application extends Console
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        if ('phar:' === substr(__FILE__, 0, 5)) {
+
+        if ($this->isPharArchive()) {
             $commands[] = $this->selfUpdateCommand();
         }
+
         return $commands;
     }
 
@@ -65,7 +67,10 @@ class Application extends Console
     protected function getDefaultHelperSet()
     {
         $helperSet = parent::getDefaultHelperSet();
-        $helperSet->set(new PharUpdateHelper());
+
+        if ($this->isPharArchive()) {
+            $helperSet->set(new PharUpdateHelper());
+        }
         return $helperSet;
     }
 
@@ -88,5 +93,10 @@ class Application extends Console
     {
         $this->getDefinition()->addArguments($this->getUserDefinition()->getArguments());
         $this->getDefinition()->addOptions($this->getUserDefinition()->getOptions());
+    }
+
+    public function isPharArchive()
+    {
+        return 'phar:' === substr(__FILE__, 0, 5);
     }
 }

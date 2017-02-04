@@ -3,7 +3,7 @@
 ## master
 [v4.2.1...master](https://github.com/deployphp/deployer/compare/v4.2.1...master)
 
--
+- Fixed `parse` not replacing variables containing a `-` like `{{webserver-user}}`
 
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)

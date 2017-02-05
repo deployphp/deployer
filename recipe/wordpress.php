@@ -17,7 +17,7 @@ set('shared_dirs', ['wp-content/uploads']);
  * for your OS, so uploads work.
  */
 task('deploy:chown', function () {
-  run('chown -R www-data:www-data ' . env('deploy_path'));
+    run('chown -R www-data:www-data ' . env('deploy_path'));
 });
 
 task('deploy', [

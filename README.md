@@ -51,6 +51,12 @@ composer require deployer/deployer
 ## Documentation
 Documentation source can be found in [deployphp/docs](https://github.com/deployphp/docs) repository.
 
+## Who is using Deployer?
+
+* [Aviasales](https://www.aviasales.ru)
+
+If you are also using it, please let us know. [Edit this file](https://github.com/deployphp/deployer/edit/master/README.md).
+
 ## Roadmap
 * Better documentation.
 * Better DX with intelligible errors.

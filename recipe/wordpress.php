@@ -26,7 +26,7 @@ task('deploy', [
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
-    'deploy:vendors', 
+    'deploy:vendors',
     'deploy:writable',
     'deploy:symlink',
     'deploy:chown',

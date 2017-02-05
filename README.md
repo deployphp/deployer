@@ -55,7 +55,7 @@ Documentation source can be found in [deployphp/docs](https://github.com/deployp
 
 * [Aviasales](https://www.aviasales.ru)
 
-If you are also using it, please let us know. [Edit this file](https://github.com/deployphp/deployer/edit/master/README.md).
+If you are also using it, please let us know ([Edit this file](https://github.com/deployphp/deployer/edit/master/README.md))
 
 ## Roadmap
 * Better documentation.

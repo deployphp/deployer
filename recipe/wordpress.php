@@ -11,14 +11,7 @@ require_once __DIR__ . '/common.php';
 
 set('shared_files', ['wp-config.php']);
 set('shared_dirs', ['wp-content/uploads']);
-
-/**
- * Chown files to correct web server user
- * for your OS, so uploads work.
- */
-task('deploy:chown', function () {
-    run('chown -R www-data:www-data ' . env('deploy_path'));
-});
+set('writable_dirs', ['wp-content/uploads']);
 
 task('deploy', [
     'deploy:prepare',

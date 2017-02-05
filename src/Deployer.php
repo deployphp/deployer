@@ -295,7 +295,6 @@ class Deployer extends Container
 
             if ($commandEvent->getException() !== null) {
                 $stats['status'] = 'error';
-
             }
 
             // $this->getOutput()->writeln(var_dump($stats, true));

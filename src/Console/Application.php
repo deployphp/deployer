@@ -10,8 +10,11 @@ namespace Deployer\Console;
 use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
 use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Symfony\Component\Console\Application as Console;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends Console
 {
@@ -21,6 +24,11 @@ class Application extends Console
      * @var InputDefinition
      */
     private $userDefinition;
+
+    /**
+     * @var callable
+     */
+    private $callback;
 
     /**
      * {@inheritdoc}
@@ -95,8 +103,46 @@ class Application extends Console
         $this->getDefinition()->addOptions($this->getUserDefinition()->getOptions());
     }
 
+    /**
+     * @return bool
+     */
     public function isPharArchive()
     {
         return 'phar:' === substr(__FILE__, 0, 5);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
+    {
+        $exception = null;
+        $exitCode = 0;
+
+        try {
+            $exitCode = parent::doRunCommand($command, $input, $output);
+        } catch (\Exception $x) {
+            $exception = $x;
+        } catch (\Throwable $x) {
+            $exception = $x;
+        }
+
+        if (!empty($this->callback)) {
+            call_user_func($this->callback, new CommandEvent($command, $input, $output, $exception, $exitCode));
+        }
+
+        if ($exception !== null) {
+            throw $exception;
+        }
+
+        return $exitCode;
+    }
+
+    /**
+     * @param $callable
+     */
+    public function addCallback($callable)
+    {
+        $this->callback = $callable;
     }
 }

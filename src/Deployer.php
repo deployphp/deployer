@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Collection\Collection;
+use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Console\Application;
@@ -183,6 +184,7 @@ class Deployer extends Container
 
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add($this['init_command']);
+        $this->getConsole()->addCallback([$this, 'collectAnonymousStats']);
 
         $this->getConsole()->run($this->input, $this->output);
     }
@@ -272,5 +274,31 @@ class Deployer extends Container
     public function getLogger()
     {
         return $this['log'];
+    }
+
+    /**
+     * Collect anonymous stats about Deployer usage for improving developer experience.
+     * If you are not comfortable with this, you will always be able to disable this
+     * by setting `allow_anonymous_stats` to false in your deploy.php file.
+     *
+     * @param CommandEvent $commandEvent
+     */
+    public function collectAnonymousStats(CommandEvent $commandEvent)
+    {
+        if ($this->config['allow_anonymous_stats']) {
+            $stats = [
+                'status' => 'success',
+                'command_name' => $commandEvent->getCommand()->getName(),
+                'exit_code' => $commandEvent->getExitCode(),
+                'exception' => null,
+            ];
+
+            if ($commandEvent->getException() !== null) {
+                $stats['status'] = 'error';
+
+            }
+
+            // $this->getOutput()->writeln(var_dump($stats, true));
+        }
     }
 }

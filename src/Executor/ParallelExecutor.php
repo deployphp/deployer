@@ -10,6 +10,7 @@ namespace Deployer\Executor;
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Exception\Exception;
+use Deployer\Exception\ForwardException;
 use Deployer\Server\Environment;
 use Deployer\Server\Local;
 use Deployer\Task\Context;
@@ -276,7 +277,7 @@ class ParallelExecutor implements ExecutorInterface
             $this->informer->taskException($serverName, $exceptionClass, $message);
 
             // Save exception.
-            $this->lastException = new $exceptionClass($message);
+            $this->lastException = new ForwardException($serverName, $exceptionClass, $message);
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;

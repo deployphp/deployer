@@ -68,6 +68,7 @@ class Deployer extends Container
         };
         $this->config['ssh_type'] = 'phpseclib';
         $this->config['default_stage'] = null;
+        $this->config['allow_anonymous_stats'] = true; // Send anonymous stats to deployer.org
 
         /******************************
          *            Core            *

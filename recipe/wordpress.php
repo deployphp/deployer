@@ -22,7 +22,6 @@ task('deploy', [
     'deploy:vendors',
     'deploy:writable',
     'deploy:symlink',
-    'deploy:chown',
     'deploy:unlock',
     'cleanup',
 ])->desc('Deploy your project');

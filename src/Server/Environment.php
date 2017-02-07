@@ -9,7 +9,7 @@ namespace Deployer\Server;
 
 use Deployer\Collection\Collection;
 use Deployer\Deployer;
-use Deployer\Type\ArrayType;
+use Deployer\Type\Config;
 
 class Environment
 {
@@ -97,7 +97,7 @@ class Environment
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            $this->set($name, ArrayType::merge($config, $array));
+            $this->set($name, Config::merge($config, $array));
         } else {
             $this->set($name, $array);
         }

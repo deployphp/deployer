@@ -8,13 +8,13 @@
 namespace Deployer\Type;
 
 /**
- * Class Array
+ * Class Config
  * @package Deployer\Type
  */
-class ArrayType
+class Config
 {
     /**
-     * Recursively merge two arrays with a specific behavior:
+     * Recursively merge two config arrays with a specific behavior:
      *
      * 1. scalar values are overridden
      * 2. array values are extended uniquely if all keys are numeric
@@ -37,7 +37,7 @@ class ArrayType
                     $original[$key] = array_unique(array_merge($original[$key], $value));
                 } else {
                     // Merge all other arrays
-                    $original[$key] = ArrayType::merge($original[$key], $value);
+                    $original[$key] = Config::merge($original[$key], $value);
                 }
             } else {
                 // Simply add new key/value

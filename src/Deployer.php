@@ -16,7 +16,7 @@ use Deployer\Console\WorkerCommand;
 use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
-use Deployer\Type\ArrayType;
+use Deployer\Type\Config;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -170,7 +170,7 @@ class Deployer extends Container
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            self::setDefault($name, ArrayType::merge($config, $array));
+            self::setDefault($name, Config::merge($config, $array));
         } else {
             self::setDefault($name, $array);
         }

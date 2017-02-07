@@ -82,7 +82,6 @@ class DeployerTest extends TestCase
         ]);
         Deployer::addDefault('config', [
             'two' => 20,
-            'three',
             'nested' => [
                 'first',
             ],
@@ -96,7 +95,6 @@ class DeployerTest extends TestCase
         $expected = [
             'one',
             'two' => 20,
-            'three',
             'nested' => [
                 'first',
                 'second',

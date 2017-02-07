@@ -118,11 +118,11 @@ class EnvironmentTest extends TestCase
         $env = new Environment();
         $env->set('config', [
             'one',
-            'two',
+            'two' => 2,
             'nested' => [],
         ]);
         $env->add('config', [
-            'three',
+            'two' => 20,
             'nested' => [
                 'first',
             ],
@@ -135,8 +135,7 @@ class EnvironmentTest extends TestCase
 
         $expected = [
             'one',
-            'two',
-            'three',
+            'two' => 20,
             'nested' => [
                 'first',
                 'second',

@@ -8,14 +8,15 @@
 namespace Deployer;
 
 use Deployer\Collection\Collection;
+use Deployer\Console\Application;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
+use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
-use Deployer\Console\Application;
 use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
-use Deployer\Console\TaskCommand;
+use Deployer\Type\Config;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -169,7 +170,7 @@ class Deployer extends Container
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            self::setDefault($name, array_merge_recursive($config, $array));
+            self::setDefault($name, Config::merge($config, $array));
         } else {
             self::setDefault($name, $array);
         }

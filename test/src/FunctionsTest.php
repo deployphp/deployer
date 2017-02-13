@@ -132,6 +132,9 @@ class FunctionsTest extends TestCase
         $task = $this->deployer->tasks->get('task');
         $this->assertInstanceOf('Deployer\Task\Task', $task);
 
+        $task = task('task');
+        $this->assertInstanceOf('Deployer\Task\Task', $task);
+
         task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         $this->assertInstanceOf('Deployer\Task\GroupTask', $task);

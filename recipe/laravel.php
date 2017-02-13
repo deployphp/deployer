@@ -98,6 +98,11 @@ task('artisan:optimize', function () {
     run('{{bin/php}} {{release_path}}/artisan optimize');
 });
 
+desc('Execute artisan queue:restart');
+task('artisan:queue:restart', function () {
+    run('{{bin/php}} {{release_path}}/artisan queue:restart');
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file
@@ -133,6 +138,7 @@ task('deploy', [
     'artisan:view:clear',
     'artisan:cache:clear',
     'artisan:config:cache',
+    'artisan:queue:restart',
     'artisan:optimize',
     'deploy:symlink',
     'deploy:unlock',

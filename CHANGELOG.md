@@ -3,6 +3,9 @@
 ## master
 [v4.2.1...master](https://github.com/deployphp/deployer/compare/v4.2.1...master)
 
+### Added
+- Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+
 ### Fixed
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 

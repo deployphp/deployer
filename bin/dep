@@ -75,9 +75,6 @@ if (!$loaded) {
 // Setup include path
 set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 
-// Include function declarations
-require_once 'src/functions.php';
-
 // Detect version
 $version = 'master';
 

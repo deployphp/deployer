@@ -9,6 +9,9 @@
 ### Fixed
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 
+### Changed
+- Set `PHP 7.0` as the minimum required version. [#1019](https://github.com/deployphp/deployer/pull/1019)
+
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)
 

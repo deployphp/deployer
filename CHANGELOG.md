@@ -5,6 +5,7 @@
 
 ### Added
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+- Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
 
 ### Fixed
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)

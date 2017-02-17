@@ -337,9 +337,9 @@ class ParallelExecutor implements ExecutorInterface
                     $taskToDoStorage = new ArrayStorage();
                     $taskToDoStorage->push($this->tasksToDo);
                     $this->pure->setStorage('tasks_to_do', $taskToDoStorage);
-
-                    $this->wait = true;
                 }
+
+                $this->wait = true;
             } else {
                 $this->loop->stop();
             }

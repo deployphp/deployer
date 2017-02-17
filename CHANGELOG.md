@@ -5,6 +5,7 @@
 
 ### Added
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+- Enable TTY for local commands [#1028](https://github.com/deployphp/deployer/pull/1028)
 
 ### Fixed
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)

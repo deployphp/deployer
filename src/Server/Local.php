@@ -66,6 +66,7 @@ class Local implements ServerInterface
         $process
             ->setTimeout(self::TIMEOUT)
             ->setIdleTimeout(self::TIMEOUT)
+            ->setTty(true)
             ->mustRun($callback);
 
         return $process->getOutput();

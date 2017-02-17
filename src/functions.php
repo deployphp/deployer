@@ -350,6 +350,7 @@ function runLocally($command, $timeout = 300)
 
     $process = new Process($command);
     $process->setTimeout($timeout);
+    $process->setTty(true);
     $process->run(function ($type, $buffer) {
         if (isDebug()) {
             if ('err' === $type) {

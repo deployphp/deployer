@@ -75,8 +75,18 @@ class CommonTest extends RecipeTester
             $this->getEnv('deploy_path') . '/shared/app/config/parameters.yml'
         );
 
-        $this->assertTrue(is_dir($this->getEnv('deploy_path') . '/shared/app/logs'));
+        $this->assertDirectoryExists($this->getEnv('deploy_path') . '/shared/app/logs');
         $this->assertFileExists($this->getEnv('deploy_path') . '/shared/app/config/parameters.yml');
+    }
+
+    public function testSharedFoldersWithSameNames()
+    {
+        \Deployer\set('shared_dirs', ['news', 'newsletter']);
+
+        $this->exec('deploy:shared');
+
+        $this->assertDirectoryExists($this->getEnv('deploy_path') . '/shared/news');
+        $this->assertDirectoryExists($this->getEnv('deploy_path') . '/shared/newsletter');
     }
 
     public function testWriteable()

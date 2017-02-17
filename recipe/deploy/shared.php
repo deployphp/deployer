@@ -16,7 +16,7 @@ task('deploy:shared', function () {
     // Validate shared_dir, find duplicates
     foreach (get('shared_dirs') as $a) {
         foreach (get('shared_dirs') as $b) {
-            if ($a !== $b && strpos($a, $b) === 0) {
+            if ($a !== $b && strpos(rtrim($a, '/') . '/', rtrim($b, '/') . '/') === 0) {
                 throw new ConfigurationException("Can not share same dirs `$a` and `$b`.");
             }
         }

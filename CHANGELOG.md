@@ -10,7 +10,7 @@
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 - Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)
-
+- Fixed parallel executor would not wait for once() tasks while they can have impact on future tasks.
 
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)

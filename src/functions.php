@@ -135,14 +135,21 @@ function desc($title = null)
 /**
  * Define a new task and save to tasks list.
  *
+ * Alternatively get a defined task.
+ *
  * @param string $name Name of current task.
- * @param callable|array|string $body Callable task or array of other tasks names.
+ * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
  * @return Task\Task
  * @throws \InvalidArgumentException
  */
-function task($name, $body)
+function task($name, $body = null)
 {
     $deployer = Deployer::get();
+
+    if (empty($body)) {
+        $task = $deployer->tasks->get($name);
+        return $task;
+    }
 
     if ($body instanceof \Closure) {
         $task = new T($name, $body);

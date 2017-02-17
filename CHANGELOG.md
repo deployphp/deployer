@@ -3,8 +3,13 @@
 ## master
 [v4.2.1...master](https://github.com/deployphp/deployer/compare/v4.2.1...master)
 
+### Added
+- Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+
 ### Fixed
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
+- Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
+- Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)
 
 
 ## v4.2.1

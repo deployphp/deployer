@@ -5,6 +5,7 @@
 
 ### Added
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+- Enable TTY for local commands [#1028](https://github.com/deployphp/deployer/pull/1028)
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)

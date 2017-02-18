@@ -65,6 +65,10 @@ class NativeSsh implements ServerInterface
         }
         $hostname = $serverConfig->getHost();
 
+        if ($serverConfig->getConfigFile()) {
+            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
+        }
+
         if ($serverConfig->getPort()) {
             $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
         }
@@ -133,6 +137,10 @@ class NativeSsh implements ServerInterface
         $serverConfig = $this->getConfiguration();
 
         $scpOptions = [];
+
+        if ($serverConfig->getConfigFile()) {
+            $scpOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
+        }
 
         if ($serverConfig->getPort()) {
             $scpOptions[] = '-P ' . escapeshellarg($serverConfig->getPort());
@@ -241,6 +249,9 @@ class NativeSsh implements ServerInterface
         $hostname = $serverConfig->getHost();
 
         $sshOptions = [];
+        if ($serverConfig->getConfigFile()) {
+            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
+        }
         if ($serverConfig->getPort()) {
             $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
         }

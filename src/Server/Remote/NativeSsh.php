@@ -139,7 +139,7 @@ class NativeSsh implements ServerInterface
         $scpOptions = [];
 
         if ($serverConfig->getConfigFile()) {
-            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
+            $scpOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
         }
 
         if ($serverConfig->getPort()) {

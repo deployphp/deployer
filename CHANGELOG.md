@@ -15,6 +15,9 @@
 - Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)
 
 
+### Changed
+- Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
+
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)
 

@@ -14,12 +14,12 @@ require_once __DIR__ . '/common.php';
 
 // Laravel shared dirs
 set('shared_dirs', [
-    'storage'
+    'storage',
 ]);
 
 // Laravel shared file
 set('shared_files', [
-    '.env'
+    '.env',
 ]);
 
 // Laravel writable dirs
@@ -96,6 +96,11 @@ task('artisan:view:clear', function () {
 desc('Execute artisan optimize');
 task('artisan:optimize', function () {
     run('{{bin/php}} {{release_path}}/artisan optimize');
+});
+
+desc('Execute artisan queue:restart');
+task('artisan:queue:restart', function () {
+    run('{{bin/php}} {{release_path}}/artisan queue:restart');
 });
 
 /**

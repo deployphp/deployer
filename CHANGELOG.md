@@ -6,6 +6,9 @@
 ### Added
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 
+### Changed
+- Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)
+
 ### Fixed
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)

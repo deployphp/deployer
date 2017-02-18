@@ -91,15 +91,15 @@ set('bin/git', function () {
 
 set('bin/composer', function () {
     if (commandExist('composer')) {
-        $composer = '{{bin/php}} ' . run('which composer')->toString();
+        $composer = run('which composer')->toString();
     }
 
     if (empty($composer)) {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{bin/php}} {{release_path}}/composer.phar';
+        $composer = '{{release_path}}/composer.phar';
     }
 
-    return $composer;
+    return '{{bin/php}} ' . $composer;
 });
 
 set('bin/symlink', function () {

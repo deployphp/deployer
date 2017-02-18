@@ -12,6 +12,7 @@ use Deployer\Server\Remote;
 use Deployer\Server\Builder;
 use Deployer\Server\Configuration;
 use Deployer\Server\Environment;
+use Deployer\Server\RecursiveUploadEnabledInterface;
 use Deployer\Task\Task as T;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
@@ -417,6 +418,11 @@ function upload($local, $remote)
         $server->upload($local, $remote);
     } elseif (is_dir($local)) {
         writeln("Upload from <info>$local</info> to <info>$remote</info>");
+
+        if ($server instanceof RecursiveUploadEnabledInterface) {
+            $server->uploadDirectory($local, $remote);
+            return;
+        }
 
         $finder = new Finder();
         $files = $finder

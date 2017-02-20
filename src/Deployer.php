@@ -311,9 +311,9 @@ class Deployer extends Container
             if (extension_loaded('curl')) {
                 $body = json_encode($stats, JSON_PRETTY_PRINT);
                 $ch = curl_init('https://deployer.org/api/stats');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                curl_setopt($ch, CURLOPT_HTTPHEADER, [
                         'Content-Type: application/json',
-                        'Content-Length: ' . strlen($body))
+                        'Content-Length: ' . strlen($body)]
                 );
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);

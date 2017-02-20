@@ -70,7 +70,6 @@ class Deployer extends Container
         };
         $this->config['ssh_type'] = 'phpseclib';
         $this->config['default_stage'] = null;
-        $this->config['allow_anonymous_stats'] = true; // Send anonymous stats to deployer.org
 
         /******************************
          *            Core            *
@@ -286,19 +285,60 @@ class Deployer extends Container
      */
     public function collectAnonymousStats(CommandEvent $commandEvent)
     {
-        if ($this->config['allow_anonymous_stats']) {
-            $stats = [
-                'status' => 'success',
-                'command_name' => $commandEvent->getCommand()->getName(),
-                'exit_code' => $commandEvent->getExitCode(),
-                'exception' => null,
-            ];
+        if ($this->config->has('allow_anonymous_stats') && $this->config['allow_anonymous_stats'] === false) {
+            return;
+        }
 
-            if ($commandEvent->getException() !== null) {
-                $stats['status'] = 'error';
+        $stats = [
+            'status' => 'success',
+            'command_name' => $commandEvent->getCommand()->getName(),
+            'servers_count' => $this->servers->count(),
+            'deployer_version' => $this->getConsole()->getVersion(),
+            'deployer_phar' => $this->getConsole()->isPharArchive(),
+            'php_version' => phpversion(),
+            'extension_pcntl' => extension_loaded('pcntl'),
+            'extension_curl' => extension_loaded('curl'),
+            'os' => defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
+            'exception' => null,
+        ];
+
+        if ($commandEvent->getException() !== null) {
+            $stats['status'] = 'error';
+            $stats['exception'] = get_class($commandEvent->getException());
+        }
+
+        $send = function () use ($stats) {
+            if (extension_loaded('curl')) {
+                $body = json_encode($stats, JSON_PRETTY_PRINT);
+                $ch = curl_init('https://deployer.org/api/stats');
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/json',
+                        'Content-Length: ' . strlen($body))
+                );
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+                curl_exec($ch);
+            } else {
+                file_get_contents('https://deployer.org/api/stats?' . http_build_query($stats));
             }
+        };
 
-            // $this->getOutput()->writeln(var_dump($stats, true));
+
+        if (extension_loaded('pcntl')) {
+            declare(ticks = 1);
+            $pid = pcntl_fork();
+            if ($pid === 0) {
+                posix_setsid();
+                $send();
+                exit(0);
+            }
+        } else {
+            $send();
         }
     }
 }

@@ -75,6 +75,8 @@ class NativeSsh implements ServerInterface
 
         if ($serverConfig->getPrivateKey()) {
             $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+        } else if ($serverConfig->getPemFile()) {
+            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPemFile());
         }
 
         if ($serverConfig->getPty()) {
@@ -257,6 +259,8 @@ class NativeSsh implements ServerInterface
         }
         if ($serverConfig->getPrivateKey()) {
             $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+        } else if ($serverConfig->getPemFile()) {
+            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPemFile());
         }
         $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
 

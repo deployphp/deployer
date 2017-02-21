@@ -21,6 +21,8 @@ require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
 
+use Deployer\Server\SSHPipeInterface;
+use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
@@ -126,6 +128,22 @@ option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
 desc('Show current release');
 task('current', function () {
     writeln('Current release: ' . basename(get('current_path')));
+});
+
+desc('Connect to ssh and `cd` to release path');
+task('ssh', function () {
+    $server = Context::get()->getServer();
+
+    if (!$server instanceof SSHPipeInterface) {
+        throw new \RuntimeException('The ssh type `' . get('ssh_type') . '` doesn\'t support `ssh` task.');
+    }
+
+    $initialCommand = null;
+    if (get('current_path')) {
+        $initialCommand = 'cd ' . escapeshellarg(get('current_path')) . '; exec \$SHELL';
+    }
+
+    $server->createSshPipe($initialCommand);
 });
 
 

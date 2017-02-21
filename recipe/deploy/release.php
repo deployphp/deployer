@@ -37,11 +37,11 @@ set('releases_list', function () {
     }
 
     // Will list only dirs in releases.
-    $list = run('cd releases && ls -t -d */')->toArray();
+    $list = run('cd releases && ls -t -1 -d */')->toArray();
 
     // Prepare list.
     $list = array_map(function ($release) {
-        return basename(rtrim($release, '/'));
+        return basename(rtrim(trim($release), '/'));
     }, $list);
 
     $releases = []; // Releases list.

@@ -14,6 +14,7 @@
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 - Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)
+- Fixed possibility to use PEM files with Native SSH
 
 
 ### Changed

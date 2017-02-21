@@ -4,8 +4,9 @@
 [v4.2.1...master](https://github.com/deployphp/deployer/compare/v4.2.1...master)
 
 ### Added
-- Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
-- Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
+- Added a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+- Added support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
+- Added `ssh` task for opening ssh connection and going to a release path [#1013](https://github.com/deployphp/deployer/issues/1013)
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)

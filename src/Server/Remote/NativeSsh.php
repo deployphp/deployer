@@ -9,9 +9,10 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
+use Deployer\Server\SSHPipeInterface;
 use Symfony\Component\Process\Process;
 
-class NativeSsh implements ServerInterface
+class NativeSsh implements ServerInterface, SSHPipeInterface
 {
     const UNIX_SOCKET_MAX_LENGTH = 104;
 
@@ -46,46 +47,11 @@ class NativeSsh implements ServerInterface
      */
     public function run($command)
     {
-        $serverConfig = $this->getConfiguration();
-        $sshOptions = [
-            '-A',
-            '-q',
-            '-o UserKnownHostsFile=/dev/null',
-            '-o StrictHostKeyChecking=no'
-        ];
-
-        if (\Deployer\get('ssh_multiplexing', false)) {
-            $this->initMultiplexing();
-            $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
-        }
-
-        $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
-        if (!empty($username)) {
-            $username = $username . '@';
-        }
-        $hostname = $serverConfig->getHost();
-
-        if ($serverConfig->getConfigFile()) {
-            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
-        }
-
-        if ($serverConfig->getPort()) {
-            $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
-        }
-
-        if ($serverConfig->getPrivateKey()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
-        }
-
-        if ($serverConfig->getPty()) {
-            $sshOptions[] = '-t';
-        }
-
-        $sshCommand = 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . ' ' . escapeshellarg($command);
+        $sshCommand = $this->buildSshConnectionCommand() . ' ' . escapeshellarg($command);
 
         $process = new Process($sshCommand);
         $process
-            ->setPty($serverConfig->getPty())
+            ->setPty($this->getConfiguration()->getPty())
             ->setTimeout(null)
             ->setIdleTimeout(null)
             ->mustRun();
@@ -175,6 +141,40 @@ class NativeSsh implements ServerInterface
     }
 
     /**
+     * Create if it isn't created before an ssh connection to a server and
+     * pipe it to shell including standard I/O streams.
+     *
+     * @var string|null $initialCommand Command which will be run right after ssh connection.
+     */
+    public function createSshPipe($initialCommand = null)
+    {
+        $this->getConfiguration()->setPty(true);
+
+        $cmd = $this->buildSshConnectionCommand();
+        if ($initialCommand) {
+            $cmd .= ' "' . $initialCommand . '"';
+        }
+
+        $descriptors = [
+            0 => STDIN,
+            1 => STDOUT,
+            2 => STDERR
+        ];
+
+        $process = proc_open($cmd, $descriptors, $pipes);
+
+        if (is_resource($process)) {
+            \Deployer\writeln(stream_get_contents($pipes[1]));
+
+            fclose($pipes[0]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+
+            proc_close($process);
+        }
+    }
+
+    /**
      * Return ssh multiplexing socket name
      *
      * When $connectionHash is longer than 104 chars we can get "SSH Error: unix_listener: too long for Unix domain socket".
@@ -219,7 +219,6 @@ class NativeSsh implements ServerInterface
         return $connectionHash;
     }
 
-
     /**
      * Return ssh options for multiplexing
      *
@@ -234,6 +233,50 @@ class NativeSsh implements ServerInterface
         ];
     }
 
+    /**
+     * Returns final ssh connection command with configs, username and host.
+     *
+     * @return string
+     */
+    private function buildSshConnectionCommand()
+    {
+        $serverConfig = $this->getConfiguration();
+        $sshOptions = [
+            '-A',
+            '-q',
+            '-o UserKnownHostsFile=/dev/null',
+            '-o StrictHostKeyChecking=no'
+        ];
+
+        if (\Deployer\get('ssh_multiplexing', false)) {
+            $this->initMultiplexing();
+            $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
+        }
+
+        $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
+        if (!empty($username)) {
+            $username = $username . '@';
+        }
+        $hostname = $serverConfig->getHost();
+
+        if ($serverConfig->getConfigFile()) {
+            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
+        }
+
+        if ($serverConfig->getPort()) {
+            $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
+        }
+
+        if ($serverConfig->getPrivateKey()) {
+            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+        }
+
+        if ($serverConfig->getPty()) {
+            $sshOptions[] = '-t';
+        }
+
+        return 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname);
+    }
 
     /**
      * Init multiplexing with exec() command
@@ -242,7 +285,7 @@ class NativeSsh implements ServerInterface
      * but after mux is created with exec() then Symfony Process
      * can work with it.
      */
-    public function initMultiplexing()
+    private function initMultiplexing()
     {
         $serverConfig = $this->getConfiguration();
         $username = $serverConfig->getUser() ? $serverConfig->getUser() . '@' : null;

@@ -14,7 +14,7 @@
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 - Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)
-- Fixed an issue with the output of ls in releases_list that was breaking cleanup. 
+- Fixed an issue with the output of ls in releases_list [#1004](https://github.com/deployphp/deployer/issues/1004) [#1036](https://github.com/deployphp/deployer/pull/1036/)
 - Fixed possibility to use PEM files with Native SSH
 - Fixed old releases not being cleaned up when keep_releases reduced by more than half.
 

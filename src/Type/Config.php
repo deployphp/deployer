@@ -20,8 +20,8 @@ class Config
      * 2. array values are extended uniquely if all keys are numeric
      * 3. all other array values are merged
      *
-     * @param array $a
-     * @param array $b
+     * @param array $original
+     * @param array $override
      * @return array
      * @see http://stackoverflow.com/a/36366886/6812729
      */

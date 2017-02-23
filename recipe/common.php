@@ -21,11 +21,6 @@ require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
 
-use Deployer\Server\SSHPipeInterface;
-use Deployer\Task\Context;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-
 /**
  * Configuration
  */

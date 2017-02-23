@@ -115,35 +115,11 @@ set('bin/symlink', function () {
 });
 
 /**
- * Default arguments and options.
- */
-argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers');
-option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
-option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
-option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
-
-/**
  * Tasks
  */
 desc('Show current release');
 task('current', function () {
     writeln('Current release: ' . basename(get('current_path')));
-});
-
-desc('Connect to ssh and `cd` to release path');
-task('ssh', function () {
-    $server = Context::get()->getServer();
-
-    if (!$server instanceof SSHPipeInterface) {
-        throw new \RuntimeException('The ssh type `' . get('ssh_type') . '` doesn\'t support `ssh` task.');
-    }
-
-    $initialCommand = null;
-    if (get('current_path')) {
-        $initialCommand = 'cd ' . escapeshellarg(get('current_path')) . '; exec \$SHELL';
-    }
-
-    $server->createSshPipe($initialCommand);
 });
 
 

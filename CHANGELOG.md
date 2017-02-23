@@ -6,7 +6,7 @@
 ### Added
 - Added a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 - Added support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
-- Added `ssh` task for opening ssh connection and going to a release path [#1013](https://github.com/deployphp/deployer/issues/1013)
+- Added `ssh` console command for opening ssh connection and going to a release path [#1013](https://github.com/deployphp/deployer/issues/1013)
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)
@@ -15,7 +15,9 @@
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 - Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)
-
+- Fixed an issue with the output of ls in releases_list [#1004](https://github.com/deployphp/deployer/issues/1004) [#1036](https://github.com/deployphp/deployer/pull/1036/)
+- Fixed possibility to use PEM files with Native SSH
+- Fixed old releases not being cleaned up when keep_releases reduced by more than half.
 
 ### Changed
 - Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)

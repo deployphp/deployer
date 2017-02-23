@@ -108,6 +108,8 @@ class NativeSsh implements ServerInterface, SSHPipeInterface
 
         if ($serverConfig->getPrivateKey()) {
             $scpOptions = array_merge_recursive($scpOptions, ['-i' => $serverConfig->getPrivateKey()]);
+        } elseif ($serverConfig->getPemFile()) {
+            $scpOptions = array_merge_recursive($scpOptions, ['-i' => $serverConfig->getPemFile()]);
         }
 
         if (\Deployer\get('ssh_multiplexing', false)) {
@@ -241,6 +243,8 @@ class NativeSsh implements ServerInterface, SSHPipeInterface
 
         if ($serverConfig->getPrivateKey()) {
             $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPrivateKey()]);
+        } elseif ($serverConfig->getPemFile()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPemFile()]);
         }
 
         if ($serverConfig->getPty()) {
@@ -275,6 +279,8 @@ class NativeSsh implements ServerInterface, SSHPipeInterface
 
         if ($serverConfig->getPrivateKey()) {
             $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPrivateKey()]);
+        } elseif ($serverConfig->getPemFile()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPemFile()]);
         }
 
         $sshOptions = array_merge_recursive($sshOptions, $this->getMultiplexingSshOptions());

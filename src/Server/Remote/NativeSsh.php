@@ -100,6 +100,9 @@ class NativeSsh implements ServerInterface
      */
     public function upload($local, $remote)
     {
+        $local = str_replace(' ', '\ ', $local);
+        $remote = str_replace(' ', '\ ', $remote);
+
         $serverConfig = $this->getConfiguration();
 
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;

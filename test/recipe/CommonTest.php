@@ -89,7 +89,7 @@ class CommonTest extends RecipeTester
         $this->assertDirectoryExists($this->getEnv('deploy_path') . '/shared/newsletter');
     }
 
-    public function testWriteable()
+    public function testWritable()
     {
         \Deployer\set('writable_mode', 'chmod');
         \Deployer\set('writable_chmod_mod', '0777');

@@ -93,7 +93,7 @@ class StageStrategy implements StageStrategyInterface
     /**
      * Returns the default stage
      *
-     * @return ?string
+     * @return string
      */
     public function getDefaultStage()
     {

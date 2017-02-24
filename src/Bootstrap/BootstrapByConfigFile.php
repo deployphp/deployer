@@ -31,7 +31,7 @@ class BootstrapByConfigFile
     public $configFile = null;
 
     /**
-     * @var array|string|\stdClass|null $configFileContent
+     * @var array $configFileContent
      */
     public $configFileContent = null;
 
@@ -109,9 +109,9 @@ class BootstrapByConfigFile
      */
     public function parseConfig()
     {
-        try {
-            $this->configFileContent = Yaml::parse(file_get_contents($this->configFile));
-        } catch (\RuntimeException $e) {
+        $this->configFileContent = Yaml::parse(file_get_contents($this->configFile));
+
+        if (!is_array($this->configFileContent)) {
             throw new \RuntimeException("Error in parsing " . $this->configFile . " file.");
         }
 
@@ -132,7 +132,7 @@ class BootstrapByConfigFile
      */
     public function initServers()
     {
-        foreach ((array) $this->serverConfig as $name => $config) {
+        foreach ((array)$this->serverConfig as $name => $config) {
             try {
                 if (!is_array($config)) {
                     throw new \RuntimeException();
@@ -154,7 +154,7 @@ class BootstrapByConfigFile
 
                 $this->executeBuilderMethods($da, $builder);
             } catch (\RuntimeException $e) {
-                throw new \RuntimeException("Error processing servers: ".$name);
+                throw new \RuntimeException("Error processing servers: " . $name);
             }
         }
         return $this;
@@ -166,7 +166,7 @@ class BootstrapByConfigFile
      */
     public function initClusters()
     {
-        foreach ((array) $this->clusterConfig as $name => $config) {
+        foreach ((array)$this->clusterConfig as $name => $config) {
             try {
                 $config = new Collection($config);
 
@@ -180,7 +180,7 @@ class BootstrapByConfigFile
 
                 $this->executeBuilderMethods($config, $clusterBuilder);
             } catch (\RuntimeException $e) {
-                throw new \RuntimeException("Error processing clusters: ".$name);
+                throw new \RuntimeException("Error processing clusters: " . $name);
             }
         }
         return $this;

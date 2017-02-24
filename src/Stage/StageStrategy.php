@@ -25,7 +25,7 @@ class StageStrategy implements StageStrategyInterface
     private $servers;
 
     /**
-     * @var ?string
+     * @var string
      */
     private $defaultStage;
 

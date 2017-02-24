@@ -187,7 +187,7 @@ class Deployer extends Container
         $this->getConsole()->add($this['init_command']);
         $this->getConsole()->addCallback([$this, 'collectAnonymousStats']);
 
-        $this->getConsole()->run($this->input, $this->output);
+        $this->getConsole()->run($this['input'], $this['output']);
     }
 
     /**

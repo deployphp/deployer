@@ -22,5 +22,9 @@
             <directory>bin/</directory>
             <directory>src/Resources/</directory>
         </blacklist>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory>src/</directory>
+            <directory>recipe/</directory>
+        </whitelist>
     </filter>
 </phpunit>

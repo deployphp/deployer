@@ -9,6 +9,7 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class NativeSsh implements ServerInterface
@@ -49,7 +50,6 @@ class NativeSsh implements ServerInterface
         $serverConfig = $this->getConfiguration();
         $sshOptions = [
             '-A',
-            '-q',
             '-o UserKnownHostsFile=/dev/null',
             '-o StrictHostKeyChecking=no'
         ];
@@ -85,12 +85,17 @@ class NativeSsh implements ServerInterface
 
         $sshCommand = 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . ' ' . escapeshellarg($command);
 
-        $process = new Process($sshCommand);
-        $process
-            ->setPty($serverConfig->getPty())
-            ->setTimeout(null)
-            ->setIdleTimeout(null)
-            ->mustRun();
+        try {
+            $process = new Process($sshCommand);
+            $process
+                ->setPty($serverConfig->getPty())
+                ->setTimeout(null)
+                ->setIdleTimeout(null)
+                ->mustRun();
+        } catch (ProcessFailedException $exception) {
+            $errorMessage = \Deployer\isVerbose() ? $exception->getMessage() : $process->getErrorOutput();
+            throw new \RuntimeException($errorMessage);
+        }
 
         return $process->getOutput();
     }
@@ -162,11 +167,16 @@ class NativeSsh implements ServerInterface
 
         $scpCommand = 'scp ' . implode(' ', $scpOptions) . ' ' . escapeshellarg($target) . ' ' . escapeshellarg($target2);
 
-        $process = new Process($scpCommand);
-        $process
-            ->setTimeout(null)
-            ->setIdleTimeout(null)
-            ->mustRun();
+        try {
+            $process = new Process($scpCommand);
+            $process
+                ->setTimeout(null)
+                ->setIdleTimeout(null)
+                ->mustRun();
+        } catch (ProcessFailedException $exception) {
+            $errorMessage = \Deployer\isVerbose() ? $exception->getMessage() : $process->getErrorOutput();
+            throw new \RuntimeException($errorMessage);
+        }
 
         return $process->getOutput();
     }
@@ -272,7 +282,7 @@ class NativeSsh implements ServerInterface
             if (\Deployer\isVerbose()) {
                 \Deployer\writeln('  SSH multiplexing initialization');
             }
-            exec('ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . "  'echo \"SSH multiplexing initialization\"' ");
+            exec('ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . "  'echo \"SSH multiplexing initialization\"' 2>&1", $output, $returnStatus);
         }
     }
 }

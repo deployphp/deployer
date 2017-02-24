@@ -17,6 +17,7 @@ use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Type\Config;
+use Deployer\Util\Reporter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -307,38 +308,6 @@ class Deployer extends Container
             $stats['exception'] = get_class($commandEvent->getException());
         }
 
-        $send = function () use ($stats) {
-            if (extension_loaded('curl')) {
-                $body = json_encode($stats, JSON_PRETTY_PRINT);
-                $ch = curl_init('https://deployer.org/api/stats');
-                curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($body)
-                ]);
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                curl_exec($ch);
-            } else {
-                file_get_contents('https://deployer.org/api/stats?' . http_build_query($stats));
-            }
-        };
-
-
-        if (extension_loaded('pcntl')) {
-            declare(ticks = 1);
-            $pid = pcntl_fork();
-            if ($pid === 0) {
-                posix_setsid();
-                $send();
-                exit(0);
-            }
-        } else {
-            $send();
-        }
+        Reporter::report($stats);
     }
 }

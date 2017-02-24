@@ -18,6 +18,7 @@
 - Fixed possibility to use PEM files with Native SSH
 - Fixed old releases not being cleaned up when keep_releases reduced by more than half.
 - Fixed creating non-existed `writable_dirs` [#1000](https://github.com/deployphp/deployer/pull/1000)
+- Fixed uploading files with spaces in a path via Native SSH [#1010](https://github.com/deployphp/deployer/issues/1010)
 
 ### Changed
 - Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)

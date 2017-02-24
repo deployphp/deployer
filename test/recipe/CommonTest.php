@@ -93,13 +93,14 @@ class CommonTest extends RecipeTester
     {
         \Deployer\set('writable_mode', 'chmod');
         \Deployer\set('writable_chmod_mod', '0777');
-        \Deployer\set('writable_dirs', ['app/cache', 'app/logs']);
+        \Deployer\set('writable_dirs', ['app/cache', 'app/logs', 'app/path/to/non-existed/folder']);
         \Deployer\set('writable_use_sudo', false);
 
         $this->exec('deploy:writable');
 
         $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/cache'));
         $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/logs'));
+        $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/path/to/non-existed/folder'));
     }
 
     public function testVendor()

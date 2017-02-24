@@ -33,6 +33,9 @@ task('deploy:writable', function () {
     try {
         cd('{{release_path}}');
 
+        // Create directories if they don't exist
+        run("mkdir -p $dirs");
+
         if ($mode === 'chown') {
             // Change owner.
             // -R   operate on files and directories recursively

@@ -14,8 +14,10 @@ use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class TaskCommand extends Command
@@ -47,6 +49,10 @@ class TaskCommand extends Command
      */
     protected function configure()
     {
+        $this->addArgument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers');
+        $this->addOption('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
+        $this->addOption('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
+        $this->addOption('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
         $this->addOption(
             'parallel',
             'p',

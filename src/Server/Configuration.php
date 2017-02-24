@@ -340,6 +340,16 @@ class Configuration
     }
 
     /**
+     * Get user and host
+     *
+     * @return string
+     */
+    public function getUserAndHost()
+    {
+        return (!empty($this->getUser()) ? $this->getUser() . '@' : '') . $this->getHost();
+    }
+
+    /**
      * Get name
      *
      * @return string

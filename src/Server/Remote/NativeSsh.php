@@ -9,9 +9,10 @@ namespace Deployer\Server\Remote;
 
 use Deployer\Server\Configuration;
 use Deployer\Server\ServerInterface;
+use Deployer\Server\SSHPipeInterface;
 use Symfony\Component\Process\Process;
 
-class NativeSsh implements ServerInterface
+class NativeSsh implements ServerInterface, SSHPipeInterface
 {
     const UNIX_SOCKET_MAX_LENGTH = 104;
 
@@ -46,48 +47,11 @@ class NativeSsh implements ServerInterface
      */
     public function run($command)
     {
-        $serverConfig = $this->getConfiguration();
-        $sshOptions = [
-            '-A',
-            '-q',
-            '-o UserKnownHostsFile=/dev/null',
-            '-o StrictHostKeyChecking=no'
-        ];
-
-        if (\Deployer\get('ssh_multiplexing', false)) {
-            $this->initMultiplexing();
-            $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
-        }
-
-        $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
-        if (!empty($username)) {
-            $username = $username . '@';
-        }
-        $hostname = $serverConfig->getHost();
-
-        if ($serverConfig->getConfigFile()) {
-            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
-        }
-
-        if ($serverConfig->getPort()) {
-            $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
-        }
-
-        if ($serverConfig->getPrivateKey()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
-        } elseif ($serverConfig->getPemFile()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPemFile());
-        }
-
-        if ($serverConfig->getPty()) {
-            $sshOptions[] = '-t';
-        }
-
-        $sshCommand = 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . ' ' . escapeshellarg($command);
+        $sshCommand = 'ssh ' . $this->buildCommandLineOptions($this->getSshConnectionOptions(), true) . ' ' . escapeshellarg($command);
 
         $process = new Process($sshCommand);
         $process
-            ->setPty($serverConfig->getPty())
+            ->setPty($this->getConfiguration()->getPty())
             ->setTimeout(null)
             ->setIdleTimeout(null)
             ->mustRun();
@@ -105,9 +69,6 @@ class NativeSsh implements ServerInterface
 
         $serverConfig = $this->getConfiguration();
 
-        $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
-        $hostname = $serverConfig->getHost();
-
         $dir = dirname($remote);
 
         if (!in_array($dir, $this->mkdirs)) {
@@ -115,7 +76,7 @@ class NativeSsh implements ServerInterface
             $this->mkdirs[] = $dir;
         }
 
-        return $this->scpCopy($local, (!empty($username) ? $username . '@' : '') . $hostname . ':' . $remote);
+        return $this->scpCopy($local, $serverConfig->getUserAndHost() . ':' . $remote);
     }
 
     /**
@@ -125,10 +86,7 @@ class NativeSsh implements ServerInterface
     {
         $serverConfig = $this->getConfiguration();
 
-        $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;
-        $hostname = $serverConfig->getHost();
-
-        return $this->scpCopy((!empty($username) ? $username . '@' : '') . $hostname . ':' . $remote, $local);
+        return $this->scpCopy($serverConfig->getUserAndHost() . ':' . $remote, $local);
     }
 
     /**
@@ -144,23 +102,25 @@ class NativeSsh implements ServerInterface
         $scpOptions = [];
 
         if ($serverConfig->getConfigFile()) {
-            $scpOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
+            $scpOptions = array_merge_recursive($scpOptions, ['-F' => $serverConfig->getConfigFile()]);
         }
 
         if ($serverConfig->getPort()) {
-            $scpOptions[] = '-P ' . escapeshellarg($serverConfig->getPort());
+            $scpOptions = array_merge_recursive($scpOptions, ['-P' => $serverConfig->getPort()]);
         }
 
         if ($serverConfig->getPrivateKey()) {
-            $scpOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
+            $scpOptions = array_merge_recursive($scpOptions, ['-i' => $serverConfig->getPrivateKey()]);
+        } elseif ($serverConfig->getPemFile()) {
+            $scpOptions = array_merge_recursive($scpOptions, ['-i' => $serverConfig->getPemFile()]);
         }
 
         if (\Deployer\get('ssh_multiplexing', false)) {
             $this->initMultiplexing();
-            $scpOptions = array_merge($scpOptions, $this->getMultiplexingSshOptions());
+            $scpOptions = array_merge_recursive($scpOptions, $this->getMultiplexingSshOptions());
         }
 
-        $scpCommand = 'scp ' . implode(' ', $scpOptions) . ' ' . escapeshellarg($target) . ' ' . escapeshellarg($target2);
+        $scpCommand = 'scp ' . $this->buildCommandLineOptions($scpOptions, true) . ' ' . escapeshellarg($target) . ' ' . escapeshellarg($target2);
 
         $process = new Process($scpCommand);
         $process
@@ -180,6 +140,23 @@ class NativeSsh implements ServerInterface
     }
 
     /**
+     * Create if it isn't created before an ssh connection to a server and
+     * pipe it to shell including standard I/O streams.
+     *
+     * @var string|null $initialCommand Command which will be run right after ssh connection.
+     */
+    public function createSshPipe($initialCommand = null)
+    {
+        $this->getConfiguration()->setPty(true);
+
+        if (extension_loaded('pcntl')) {
+            $this->createPcntlSshPipe($initialCommand);
+        } else {
+            $this->createProcOpenSshPipe($initialCommand);
+        }
+    }
+
+    /**
      * Return ssh multiplexing socket name
      *
      * When $connectionHash is longer than 104 chars we can get "SSH Error: unix_listener: too long for Unix domain socket".
@@ -192,7 +169,7 @@ class NativeSsh implements ServerInterface
     protected function getConnectionHash()
     {
         $serverConfig = $this->getConfiguration();
-        $connectionData = "{$serverConfig->getUser()}@{$serverConfig->getHost()}:{$serverConfig->getPort()}";
+        $connectionData = $serverConfig->getUserAndHost() . ':' . $serverConfig->getPort();
         $tryLongestPossibleSocketName = 0;
 
         $connectionHash = '';
@@ -224,7 +201,6 @@ class NativeSsh implements ServerInterface
         return $connectionHash;
     }
 
-
     /**
      * Return ssh options for multiplexing
      *
@@ -233,12 +209,55 @@ class NativeSsh implements ServerInterface
     protected function getMultiplexingSshOptions()
     {
         return [
-            '-o ControlMaster=auto',
-            '-o ControlPersist=5',
-            '-o ControlPath=\'' . $this->getConnectionHash() . '\'',
+            '-o' => [
+                'ControlMaster=auto',
+                'ControlPersist=5',
+                'ControlPath=' . $this->getConnectionHash(),
+            ],
         ];
     }
 
+    /**
+     * Returns final ssh connection command with configs, username and host.
+     *
+     * @return array
+     */
+    private function getSshConnectionOptions()
+    {
+        $sshOptions = [
+            '-A' => null,
+            '-q' => null,
+            '-o' => ['UserKnownHostsFile=/dev/null', 'StrictHostKeyChecking=no'],
+        ];
+
+        if (\Deployer\get('ssh_multiplexing', false)) {
+            $this->initMultiplexing();
+            $sshOptions = array_merge_recursive($sshOptions, $this->getMultiplexingSshOptions());
+        }
+
+        $serverConfig = $this->getConfiguration();
+        if ($serverConfig->getConfigFile()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-F' => $serverConfig->getConfigFile()]);
+        }
+
+        if (trim($serverConfig->getPort())) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-p' => $serverConfig->getPort()]);
+        }
+
+        if ($serverConfig->getPrivateKey()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPrivateKey()]);
+        } elseif ($serverConfig->getPemFile()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPemFile()]);
+        }
+
+        if ($serverConfig->getPty()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-t' => null]);
+        }
+
+        $sshOptions = array_merge_recursive($sshOptions, [$serverConfig->getUserAndHost() => null]);
+
+        return $sshOptions;
+    }
 
     /**
      * Init multiplexing with exec() command
@@ -247,32 +266,118 @@ class NativeSsh implements ServerInterface
      * but after mux is created with exec() then Symfony Process
      * can work with it.
      */
-    public function initMultiplexing()
+    private function initMultiplexing()
     {
         $serverConfig = $this->getConfiguration();
-        $username = $serverConfig->getUser() ? $serverConfig->getUser() . '@' : null;
-        $hostname = $serverConfig->getHost();
 
         $sshOptions = [];
-        if ($serverConfig->getConfigFile()) {
-            $sshOptions[] = '-F ' . escapeshellarg($serverConfig->getConfigFile());
-        }
-        if ($serverConfig->getPort()) {
-            $sshOptions[] = '-p ' . escapeshellarg($serverConfig->getPort());
-        }
-        if ($serverConfig->getPrivateKey()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPrivateKey());
-        } elseif ($serverConfig->getPemFile()) {
-            $sshOptions[] = '-i ' . escapeshellarg($serverConfig->getPemFile());
-        }
-        $sshOptions = array_merge($sshOptions, $this->getMultiplexingSshOptions());
 
-        exec('ssh ' . implode(' ', $sshOptions) . ' -O check -S ' . $this->getConnectionHash() . ' ' . escapeshellarg($username . $hostname) . ' 2>&1', $checkifMuxActive);
-        if (!preg_match('/Master running/', $checkifMuxActive[0])) {
+        if ($serverConfig->getConfigFile()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-F' => $serverConfig->getConfigFile()]);
+        }
+
+        if ($serverConfig->getPort()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-p' => $serverConfig->getPort()]);
+        }
+
+        if ($serverConfig->getPrivateKey()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPrivateKey()]);
+        } elseif ($serverConfig->getPemFile()) {
+            $sshOptions = array_merge_recursive($sshOptions, ['-i' => $serverConfig->getPemFile()]);
+        }
+
+        $sshOptions = array_merge_recursive($sshOptions, $this->getMultiplexingSshOptions());
+
+        $sshOptions = array_merge_recursive($sshOptions, [
+            $serverConfig->getUserAndHost() => null,
+        ]);
+
+        exec('ssh -O check -S ' . $this->getConnectionHash() . ' ' . $this->buildCommandLineOptions($sshOptions, true) . ' 2>&1', $checkIfMuxActive);
+        if (!preg_match('/Master running/', $checkIfMuxActive[0])) {
             if (\Deployer\isVerbose()) {
                 \Deployer\writeln('  SSH multiplexing initialization');
             }
-            exec('ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . "  'echo \"SSH multiplexing initialization\"' ");
+            exec('ssh ' . $this->buildCommandLineOptions($sshOptions, true) . "  'echo \"SSH multiplexing initialization\"' ");
         }
+    }
+
+    /**
+     * @param string|null $initialCommand
+     * @throws \RuntimeException if command is invalid
+     */
+    private function createPcntlSshPipe($initialCommand = null)
+    {
+        /**
+         * [HACK] PCNTL works only on Unix and `pcntl_exec` requires full path of running command.
+         * So it defines path of `ssh` using `which` utility.
+         */
+        $sshPath = trim(shell_exec('which ssh'));
+        $sshArguments = explode(' ', $this->buildCommandLineOptions($this->getSshConnectionOptions(), false));
+
+        if ($initialCommand !== null) {
+            $sshArguments = array_merge($sshArguments, explode(' ', $initialCommand));
+        }
+
+        if (pcntl_exec($sshPath, $sshArguments) === false) {
+            throw new \RuntimeException('Invalid command in `pcntl_exec`: ' . $sshPath . ' ' . implode(' ', $sshArguments));
+        }
+    }
+
+    /**
+     * @param string|null $initialCommand
+     * @throws \RuntimeException if command is invalid
+     */
+    private function createProcOpenSshPipe($initialCommand = null)
+    {
+        $cmd = 'ssh ' . $this->buildCommandLineOptions($this->getSshConnectionOptions(), true);
+        if ($initialCommand !== null) {
+            $cmd .= ' ' . escapeshellarg($initialCommand);
+        }
+
+        $descriptors = [
+            0 => STDIN,
+            1 => STDOUT,
+            2 => STDERR
+        ];
+
+        $process = proc_open($cmd, $descriptors, $pipes);
+
+        if (!is_resource($process)) {
+            throw new \RuntimeException('Invalid command in `proc_open`: ' . $cmd);
+        }
+
+        \Deployer\writeln(stream_get_contents($pipes[1]));
+
+        fclose($pipes[0]);
+        fclose($pipes[1]);
+        fclose($pipes[2]);
+
+        proc_close($process);
+    }
+
+    /**
+     * @param array $getSshConnectionOptions
+     * @param bool $needToEscape
+     *
+     * @return string
+     */
+    private function buildCommandLineOptions($getSshConnectionOptions, $needToEscape)
+    {
+        $optionsParts = [];
+        foreach ($getSshConnectionOptions as $key => $value) {
+            if (is_array($value)) {
+                foreach ($value as $singleValue) {
+                    $optionsParts[] = $key;
+                    $optionsParts[] = $needToEscape ? escapeshellarg($singleValue) : $singleValue;
+                }
+            } else {
+                $optionsParts[] = $key;
+                if ($value !== null) {
+                    $optionsParts[] = $needToEscape ? escapeshellarg($value) : $value;
+                }
+            }
+        }
+
+        return implode(' ', $optionsParts);
     }
 }

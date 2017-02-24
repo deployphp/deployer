@@ -21,9 +21,6 @@ require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
 
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-
 /**
  * Configuration
  */
@@ -111,14 +108,6 @@ set('bin/symlink', function () {
     }
     return 'ln -nfs';
 });
-
-/**
- * Default arguments and options.
- */
-argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers');
-option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
-option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
-option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
 
 /**
  * Tasks

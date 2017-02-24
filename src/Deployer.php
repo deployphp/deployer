@@ -11,6 +11,7 @@ use Deployer\Collection\Collection;
 use Deployer\Console\Application;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
+use Deployer\Console\SSHCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Server;
@@ -184,6 +185,7 @@ class Deployer extends Container
         $this->addConsoleCommands();
 
         $this->getConsole()->add(new WorkerCommand($this));
+        $this->getConsole()->add(new SSHCommand($this));
         $this->getConsole()->add($this['init_command']);
         $this->getConsole()->addCallback([$this, 'collectAnonymousStats']);
 

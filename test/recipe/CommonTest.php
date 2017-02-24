@@ -103,13 +103,6 @@ class CommonTest extends RecipeTester
         $this->assertTrue(is_writable($this->getEnv('release_path') . '/app/path/to/non-existed/folder'));
     }
 
-    public function testVendor()
-    {
-        $this->exec('deploy:vendors');
-
-        $this->assertFileExists($this->getEnv('release_path') . '/vendor/autoload.php');
-    }
-
     public function testSymlink()
     {
         $this->exec('deploy:symlink');

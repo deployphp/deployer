@@ -50,7 +50,6 @@ class NativeSsh implements ServerInterface
         $serverConfig = $this->getConfiguration();
         $sshOptions = [
             '-A',
-            '-q',
             '-o UserKnownHostsFile=/dev/null',
             '-o StrictHostKeyChecking=no'
         ];
@@ -281,9 +280,6 @@ class NativeSsh implements ServerInterface
                 \Deployer\writeln('  SSH multiplexing initialization');
             }
             exec('ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . "  'echo \"SSH multiplexing initialization\"' 2>&1", $output, $returnStatus);
-            if ($returnStatus !== 0) {
-                throw new \RuntimeException(implode("\n", $output));
-            }
         }
     }
 }

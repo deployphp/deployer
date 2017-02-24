@@ -9,6 +9,8 @@
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)
+- Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
+- Changed output of errors for native ssh [#1012](https://github.com/deployphp/deployer/issues/1012)
 
 ### Fixed
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
@@ -18,8 +20,6 @@
 - Fixed possibility to use PEM files with Native SSH
 - Fixed old releases not being cleaned up when keep_releases reduced by more than half.
 
-### Changed
-- Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
 
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)

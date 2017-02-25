@@ -14,40 +14,47 @@ class Reporter
     /**
      * @param array $stats
      */
-    public static function report($stats)
+    public static function report(array $stats)
     {
-        $send = function () use ($stats) {
-            if (extension_loaded('curl')) {
-                $body = json_encode($stats, JSON_PRETTY_PRINT);
-                $ch = curl_init(self::ENDPOINT);
-                curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($body)
-                ]);
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-                curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-                curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-                curl_exec($ch);
-            } else {
-                file_get_contents(self::ENDPOINT . '?' . http_build_query($stats));
-            }
-        };
-
-
+        $pid = null;
         if (extension_loaded('pcntl')) {
             declare(ticks = 1);
             $pid = pcntl_fork();
-            if ($pid === 0) {
-                posix_setsid();
-                $send();
-                exit(0);
-            }
+        }
+
+        if (is_null($pid) || $pid === -1) {
+            // Fork fails or there is no `pcntl` extension.
+            self::send($stats);
+        } elseif ($pid === 0) {
+            // Child process.
+            self::send($stats);
+            // Close child process after doing job.
+            exit(0);
+        }
+    }
+
+    /**
+     * @param array $stats
+     */
+    private static function send(array $stats)
+    {
+        if (extension_loaded('curl')) {
+            $body = json_encode($stats, JSON_PRETTY_PRINT);
+            $ch = curl_init(self::ENDPOINT);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen($body)
+            ]);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+            curl_exec($ch);
         } else {
-            $send();
+            file_get_contents(self::ENDPOINT . '?' . http_build_query($stats));
         }
     }
 }

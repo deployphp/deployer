@@ -93,7 +93,7 @@ class NativeSsh implements ServerInterface
                 ->setIdleTimeout(null)
                 ->mustRun();
         } catch (ProcessFailedException $exception) {
-            $errorMessage = \Deployer\isVerbose() ? $exception->getMessage() : $process->getErrorOutput();
+            $errorMessage = \Deployer\isDebug() ? $exception->getMessage() : $process->getErrorOutput();
             throw new \RuntimeException($errorMessage);
         }
 
@@ -171,7 +171,7 @@ class NativeSsh implements ServerInterface
                 ->setIdleTimeout(null)
                 ->mustRun();
         } catch (ProcessFailedException $exception) {
-            $errorMessage = \Deployer\isVerbose() ? $exception->getMessage() : $process->getErrorOutput();
+            $errorMessage = \Deployer\isDebug() ? $exception->getMessage() : $process->getErrorOutput();
             throw new \RuntimeException($errorMessage);
         }
 

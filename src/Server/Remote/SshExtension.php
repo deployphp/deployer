@@ -68,7 +68,6 @@ class SshExtension implements ServerInterface
                 break;
 
             case Configuration::AUTH_BY_IDENTITY_FILE:
-
                 $authentication = new Ssh\Authentication\PublicKeyFile(
                     $serverConfig->getUser(),
                     $serverConfig->getPublicKey(),
@@ -79,11 +78,9 @@ class SshExtension implements ServerInterface
                 break;
 
             case Configuration::AUTH_BY_PEM_FILE:
-
                 throw new \RuntimeException('If you want to use pem file, switch to using PhpSecLib.');
 
             case Configuration::AUTH_BY_AGENT:
-
                 $authentication = new \Ssh\Authentication\Agent(
                     $serverConfig->getUser()
                 );

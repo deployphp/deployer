@@ -236,18 +236,4 @@ class Builder implements BuilderInterface
 
         return $this;
     }
-
-    /**
-     * Use pty in ssh2 connection
-     *
-     * @param $ssh2Pty
-     * @deprecated
-     * @return BuilderInterface
-     */
-    public function ssh2Pty($ssh2Pty)
-    {
-        $this->config->setSsh2Pty($ssh2Pty);
-
-        return $this;
-    }
 }

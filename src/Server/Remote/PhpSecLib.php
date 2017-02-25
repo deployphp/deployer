@@ -50,45 +50,33 @@ class PhpSecLib implements ServerInterface
 
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
-
                 $result = $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
-
                 break;
 
             case Configuration::AUTH_BY_IDENTITY_FILE:
-
                 $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
-
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
-
                 break;
 
             case Configuration::AUTH_BY_PEM_FILE:
-
                 $key = new RSA();
                 $key->loadKey(file_get_contents($serverConfig->getPemFile()));
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
-
                 break;
 
             case Configuration::AUTH_BY_AGENT:
-
                 $key = new Agent();
                 $key->startSSHForwarding(null);
                 $result = $this->sftp->login($serverConfig->getUser(), $key);
-
                 break;
 
             case Configuration::AUTH_BY_IDENTITY_FILE_AND_PASSWORD:
-
                 $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
-
                 $result = $this->sftp->login($serverConfig->getUser(), $key, $serverConfig->getPassword());
-
                 break;
 
             default:

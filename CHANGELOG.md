@@ -9,6 +9,8 @@
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)
+- Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
+- Changed output of errors for native ssh [#1012](https://github.com/deployphp/deployer/issues/1012)
 
 ### Fixed
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
@@ -20,8 +22,6 @@
 - Fixed creating non-existed `writable_dirs` [#1000](https://github.com/deployphp/deployer/pull/1000)
 - Fixed uploading files with spaces in a path via Native SSH [#1010](https://github.com/deployphp/deployer/issues/1010)
 
-### Changed
-- Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
 
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)

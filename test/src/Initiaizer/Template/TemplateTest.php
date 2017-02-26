@@ -8,6 +8,7 @@
 namespace Deployer\Initializer\Template;
 
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Test file resource template
@@ -59,6 +60,16 @@ RESOURCE;
         $this->assertEquals($expectedResource, $generatedResource, 'Invalid resource');
     }
 
+    public function testParametersForReplace()
+    {
+        $class = new ReflectionClass(Template::class);
+        $targetMethod = $class->getMethod('getParametersForReplace');
+        $targetMethod->setAccessible(true);
+
+        $replacements = $targetMethod->invoke($this->getMockForAbstractClass(Template::class));
+        $this->assertEquals([], $replacements);
+    }
+
     /**
      * Create mock for file resource template
      *
@@ -67,7 +78,7 @@ RESOURCE;
     private function createMockForFileResourceTemplate()
     {
         return $this->getMockForAbstractClass(
-            'Deployer\Initializer\Template\Template',
+            Template::class,
             [],
             '',
             true,
@@ -75,5 +86,43 @@ RESOURCE;
             true,
             ['getParametersForReplace']
         );
+    }
+
+    public function recipes()
+    {
+        return [
+            [CakeTemplate::class, 'cakephp'],
+            [CodeIgniterTemplate::class, 'codeigniter'],
+            [DrupalTemplate::class, 'drupal8'],
+            [LaravelTemplate::class, 'laravel'],
+            [SymfonyTemplate::class, 'symfony'],
+            [YiiTemplate::class, 'yii'],
+            [ZendTemplate::class, 'zend_framework'],
+        ];
+    }
+
+    /**
+     * @dataProvider recipes
+     * @param string $class
+     * @param string $recipeName
+     */
+    public function testGetRecipe($class, $recipeName)
+    {
+        $templateClass = new ReflectionClass($class);
+        $targetMethod = $templateClass->getMethod('getRecipe');
+        $targetMethod->setAccessible(true);
+
+        $getRecipeResult = $targetMethod->invoke(new $class);
+        $this->assertEquals($recipeName, $getRecipeResult);
+    }
+
+    public function testCommonRecipe()
+    {
+        $templateClass = new ReflectionClass(CommonTemplate::class);
+        $targetMethod = $templateClass->getMethod('getTemplateContent');
+        $targetMethod->setAccessible(true);
+
+        $getRecipeContent = $targetMethod->invoke(new CommonTemplate());
+        $this->assertStringStartsWith('<?php', $getRecipeContent);
     }
 }

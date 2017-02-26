@@ -17,7 +17,7 @@ class MagentoTest extends RecipeTester
         \Deployer\task('deploy:update_code', function () {
             // Just for setting up this task.
         });
-        
+
         require __DIR__ . '/../../recipe/magento.php';
     }
 

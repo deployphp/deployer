@@ -22,6 +22,11 @@
             "src/functions.php"
         ]
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Deployer\\": ["test/src/", "test/recipe/"]
+        }
+    },
     "bin": [
         "bin/dep"
     ],

@@ -9,6 +9,8 @@ namespace Deployer\Cluster;
 
 use Deployer\Console\Application;
 use Deployer\Deployer;
+use Deployer\Server\Remote\PhpSecLib;
+use Deployer\Server\Remote\SshExtension;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -42,11 +44,23 @@ class NodeTest extends TestCase
         unset($this->deployer);
     }
 
-    /**
-     * test the initialize method
-     */
-    public function testInitialize()
+    public function getDataForDifferentSshType()
     {
+        return [
+            ['phpseclib', PhpSecLib::class],
+            ['ext-ssh2', SshExtension::class],
+        ];
+    }
+
+    /**
+     * @dataProvider getDataForDifferentSshType
+     * @param string $sshType
+     * @param string $serverClass
+     */
+    public function testInitialize($sshType, $serverClass)
+    {
+        $this->deployer->config->set('ssh_type', $sshType);
+
         $node = new Node();
         $node->setDeployer($this->deployer)
             ->setName('myClusterNode')
@@ -54,7 +68,7 @@ class NodeTest extends TestCase
             ->setPort(22)
             ->initialize();
 
-        $this->assertInstanceOf('Deployer\Server\ServerInterface', $node->getServer());
+        $this->assertInstanceOf($serverClass, $node->getServer());
         $this->assertInstanceOf('Deployer\Server\Builder', $node->getBuilder());
     }
 }

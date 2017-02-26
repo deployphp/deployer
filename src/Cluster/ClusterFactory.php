@@ -21,9 +21,7 @@ class ClusterFactory
      * This class should not be initialized,
      * so set the __construct as private
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * @param \Deployer\Deployer $deployer

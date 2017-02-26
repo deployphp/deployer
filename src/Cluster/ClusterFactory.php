@@ -20,8 +20,12 @@ class ClusterFactory
     /**
      * This class should not be initialized,
      * so set the __construct as private
+     *
+     * @codeCoverageIgnore
      */
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 
     /**
      * @param \Deployer\Deployer $deployer

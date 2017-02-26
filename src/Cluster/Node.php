@@ -75,7 +75,7 @@ class Node implements NodeInterface
 
     /**
      * @param Deployer $deployer
-     * @return \Deployer\Cluster\NodeInterface
+     * @return self
      */
     public function setDeployer(Deployer $deployer)
     {
@@ -85,7 +85,7 @@ class Node implements NodeInterface
 
     /**
      * @param string $name
-     * @return \Deployer\Cluster\NodeInterface
+     * @return self
      */
     public function setName($name)
     {
@@ -95,7 +95,7 @@ class Node implements NodeInterface
 
     /**
      * @param string $host
-     * @return \Deployer\Cluster\NodeInterface
+     * @return self
      */
     public function setHost($host)
     {
@@ -105,7 +105,7 @@ class Node implements NodeInterface
 
     /**
      * @param int $port
-     * @return \Deployer\Cluster\NodeInterface
+     * @return self
      */
     public function setPort($port)
     {

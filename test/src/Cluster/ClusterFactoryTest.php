@@ -39,18 +39,30 @@ class ClusterFactoryTest extends TestCase
         unset($this->deployer);
     }
 
-    /**
-     * test create function of the factory
-     */
-
     public function testCreate()
     {
+        $hosts = ['192.168.0.1', '192.168.0.2'];
         $instance = ClusterFactory::create(
             $this->deployer,
             'myClusterNode',
-            ['192.168.0.1', '192.168.0.2']
+            $hosts,
+            22
         );
 
         $this->assertInstanceOf('Deployer\Cluster\Cluster', $instance);
+        $this->assertCount(2, $instance->getNodes());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testClusterExceptionIfThereIsNoOneNode()
+    {
+        ClusterFactory::create(
+            $this->deployer,
+            'myClusterNode',
+            [],
+            22
+        );
     }
 }

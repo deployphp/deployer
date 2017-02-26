@@ -5,6 +5,8 @@
  * file that was distributed with this source code.
  */
 
+namespace Deployer;
+
 use Deployer\Helper\RecipeTester;
 
 class CommonTest extends RecipeTester

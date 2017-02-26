@@ -157,39 +157,35 @@ class ParallelExecutor implements ExecutorInterface
         $this->informer = new Informer($this->output);
         $this->localhost = new Local();
         $this->localEnv = new Environment();
-        $this->port = self::START_PORT;
 
-        connect:
+        for ($this->port = self::START_PORT; $this->port <= self::STOP_PORT; ++$this->port) {
+            $this->pure = new Server($this->port);
+            $this->loop = $this->pure->getLoop();
 
-        $this->pure = new Server($this->port);
-        $this->loop = $this->pure->getLoop();
+            // Start workers for each server.
+            $this->loop->addTimer(0, [$this, 'startWorkers']);
 
-        // Start workers for each server.
-        $this->loop->addTimer(0, [$this, 'startWorkers']);
+            // Wait for output
+            $this->outputStorage = $this->pure['output'] = new QueueStorage();
+            $this->loop->addPeriodicTimer(0, [$this, 'catchOutput']);
 
-        // Wait for output
-        $this->outputStorage = $this->pure['output'] = new QueueStorage();
-        $this->loop->addPeriodicTimer(0, [$this, 'catchOutput']);
+            // Lookup for exception
+            $this->exceptionStorage = $this->pure['exception'] = new QueueStorage();
+            $this->loop->addPeriodicTimer(0, [$this, 'catchExceptions']);
 
-        // Lookup for exception
-        $this->exceptionStorage = $this->pure['exception'] = new QueueStorage();
-        $this->loop->addPeriodicTimer(0, [$this, 'catchExceptions']);
+            // Send workers tasks to do.
+            $this->loop->addPeriodicTimer(0, [$this, 'sendTasks']);
 
-        // Send workers tasks to do.
-        $this->loop->addPeriodicTimer(0, [$this, 'sendTasks']);
+            // Wait all workers finish they tasks.
+            $this->loop->addPeriodicTimer(0, [$this, 'idle']);
 
-        // Wait all workers finish they tasks.
-        $this->loop->addPeriodicTimer(0, [$this, 'idle']);
-
-        // Start loop
-        try {
-            $this->pure->run();
-        } catch (ConnectionException $exception) {
-            // If port is already used, try with another one.
-            $output->writeln("<fg=red>✘ " . $exception->getMessage() . "</fg=red>");
-
-            if (++$this->port <= self::STOP_PORT) {
-                goto connect;
+            // Start loop
+            try {
+                $this->pure->run();
+                break;
+            } catch (ConnectionException $exception) {
+                // If port is already used, try with another one.
+                $output->writeln("<fg=red>✘ " . $exception->getMessage() . "</fg=red>");
             }
         }
 

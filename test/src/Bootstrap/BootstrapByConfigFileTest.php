@@ -1,8 +1,12 @@
 <?php
 
-namespace Deployer\Bootstrap;
+namespace Deployer;
 
+use Deployer\Bootstrap\BootstrapByConfigFile;
+use Deployer\Collection\Collection;
+use Deployer\Server\Builder;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * @property string $configFile
@@ -73,8 +77,18 @@ class BootstrapByConfigFileTest extends TestCase
         $this->assertArrayHasKey('production', $this->bootstrap->serverConfig);
         $this->assertArrayHasKey('beta', $this->bootstrap->serverConfig);
         $this->assertArrayHasKey('test', $this->bootstrap->serverConfig);
-
+        $this->assertArrayHasKey('localhost', $this->bootstrap->serverConfig);
         $this->assertArrayHasKey('istanbul_dc_cluster', $this->bootstrap->clusterConfig);
+    }
+
+    /**
+     * tests whether parseConfig throws exception if  correctly
+     * @expectedException \RuntimeException
+     */
+    public function testParseConfigThrowsExceptionIfConfigFileFails()
+    {
+        $this->bootstrap->setConfig(__DIR__ . '/../../fixture/servers-empty.yml');
+        $this->bootstrap->parseConfig();
     }
 
     /**
@@ -89,6 +103,18 @@ class BootstrapByConfigFileTest extends TestCase
 
     /**
      * tests BootstrapByConfigFile::initServers()
+     * @expectedException \RuntimeException
+     */
+    public function testInitServersThrowsExceptionIfConfigFileIsNotFullConfigured()
+    {
+        $this->bootstrap->serverConfig = ['production' => null];
+        $bootstrap = $this->bootstrap->initServers();
+
+        $this->assertInstanceOf('Deployer\Bootstrap\BootstrapByConfigFile', $bootstrap);
+    }
+
+    /**
+     * tests BootstrapByConfigFile::initClusters()
      */
     public function testInitClusters()
     {
@@ -96,5 +122,82 @@ class BootstrapByConfigFileTest extends TestCase
         $this->assertInstanceOf('Deployer\Bootstrap\BootstrapByConfigFile', $bootstrap);
 
         $this->assertContainsOnlyInstancesOf('Deployer\Builder\BuilderInterface', $bootstrap->clusterBuilders);
+    }
+
+    /**
+     * tests BootstrapByConfigFile::initClusters()
+     * @expectedException \RuntimeException
+     */
+    public function testInitClustersThrowsExceptionIfConfigFileIsNotFullConfigured()
+    {
+        $this->bootstrap->clusterConfig = ['production' => null];
+        $bootstrap = $this->bootstrap->initClusters();
+        $this->assertInstanceOf('Deployer\Bootstrap\BootstrapByConfigFile', $bootstrap);
+    }
+
+    public function testExecuteBuilderMethodsWithAllConfigs()
+    {
+        $class = new ReflectionClass(get_class($this->bootstrap));
+        $targetMethod = $class->getMethod('executeBuilderMethods');
+        $targetMethod->setAccessible(true);
+
+        $configs = new Collection([
+            'identity_file' => [
+                'public_key' => 'public_key',
+                'private_key' => 'private_key',
+                'password' => 'password',
+            ],
+            'identity_config' => 'identity_config',
+            'forward_agent' => 'forward_agent',
+            'user' => 'user',
+            'password' => 'password',
+            'stage' => 'stage',
+            'pem_file' => 'pem_file',
+        ]);
+
+        $builderStub = $this->getMockBuilder(Builder::class)
+            ->setMethods(['identityFile', 'configFile', 'forwardAgent', 'user', 'password', 'stage', 'pemFile', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $builderStub->expects($this->once())->method('identityFile');
+        $builderStub->expects($this->once())->method('configFile');
+        $builderStub->expects($this->once())->method('forwardAgent');
+        $builderStub->expects($this->once())->method('user');
+        $builderStub->expects($this->once())->method('password');
+        $builderStub->expects($this->once())->method('stage');
+        $builderStub->expects($this->once())->method('pemFile');
+        $builderStub->expects($this->never())->method('set');
+
+        $targetMethod->invoke($this->bootstrap, $configs, $builderStub);
+    }
+
+    public function testExecuteBuilderMethodsWithDefaultConfigs()
+    {
+        $class = new ReflectionClass(get_class($this->bootstrap));
+        $targetMethod = $class->getMethod('executeBuilderMethods');
+        $targetMethod->setAccessible(true);
+
+        $configs = new Collection([
+            'identity_file' => null,
+            'identity_config' => null,
+            'custom' => 'custom',
+        ]);
+
+        $builderStub = $this->getMockBuilder(Builder::class)
+            ->setMethods(['identityFile', 'configFile', 'forwardAgent', 'user', 'password', 'stage', 'pemFile', 'set'])
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $builderStub->expects($this->once())->method('identityFile');
+        $builderStub->expects($this->once())->method('configFile');
+        $builderStub->expects($this->never())->method('forwardAgent');
+        $builderStub->expects($this->never())->method('user');
+        $builderStub->expects($this->never())->method('password');
+        $builderStub->expects($this->never())->method('stage');
+        $builderStub->expects($this->never())->method('pemFile');
+        $builderStub->expects($this->once())->method('set');
+
+        $targetMethod->invoke($this->bootstrap, $configs, $builderStub);
     }
 }

@@ -168,6 +168,9 @@ class BootstrapByConfigFile
     {
         foreach ((array)$this->clusterConfig as $name => $config) {
             try {
+                if (!is_array($config)) {
+                    throw new \RuntimeException();
+                }
                 $config = new Collection($config);
 
                 $clusterBuilder = $config->has('port') ?

@@ -25,19 +25,15 @@ test:
 
 istanbul_dc_cluster:
   nodes: [192.168.0.1, 192.168.0.2, 192.168.0.3]
-  user: test
-  password: qwerty
-  stage: production
-  deploy_path: /home
-  run_test: true
-  cluster: true
-
-istanbul_dc_cluster_with_port:
-  nodes: [192.168.0.1, 192.168.0.2, 192.168.0.3]
   port: 27
   user: test
   password: qwerty
+  identity_config: ~
+  identity_file: ~
+  pem_file: ~
+  forward_agent: ~
   stage: production
+  pty: false
   deploy_path: /home
   run_test: true
   cluster: true

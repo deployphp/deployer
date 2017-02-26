@@ -153,10 +153,11 @@ class BootstrapByConfigFileTest extends TestCase
             'password' => 'password',
             'stage' => 'stage',
             'pem_file' => 'pem_file',
+            'pty' => true,
         ]);
 
         $builderStub = $this->getMockBuilder(Builder::class)
-            ->setMethods(['identityFile', 'configFile', 'forwardAgent', 'user', 'password', 'stage', 'pemFile', 'set'])
+            ->setMethods(['identityFile', 'configFile', 'forwardAgent', 'user', 'password', 'stage', 'pemFile', 'pty', 'set'])
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -167,6 +168,7 @@ class BootstrapByConfigFileTest extends TestCase
         $builderStub->expects($this->once())->method('password');
         $builderStub->expects($this->once())->method('stage');
         $builderStub->expects($this->once())->method('pemFile');
+        $builderStub->expects($this->once())->method('pty');
         $builderStub->expects($this->never())->method('set');
 
         $targetMethod->invoke($this->bootstrap, $configs, $builderStub);

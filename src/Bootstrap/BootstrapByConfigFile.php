@@ -89,7 +89,7 @@ class BootstrapByConfigFile
             unset($config['forward_agent']);
         }
 
-        foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
+        foreach (['user', 'password', 'stage', 'pem_file', 'pty'] as $key) {
             if ($config->has($key)) {
                 $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
                 $builder->$method($config[$key]);

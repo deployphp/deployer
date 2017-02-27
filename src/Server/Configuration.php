@@ -462,5 +462,4 @@ class Configuration
     {
         return $this->getPty();
     }
-
 }

@@ -27,6 +27,7 @@ class Reporter
             self::send($stats);
         } elseif ($pid === 0) {
             // Child process.
+            posix_setsid();
             self::send($stats);
             // Close child process after doing job.
             exit(0);

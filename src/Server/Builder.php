@@ -241,7 +241,7 @@ class Builder implements BuilderInterface
      * Use pty in ssh2 connection
      *
      * @param $ssh2Pty
-     * @deprecated
+     * @deprecated v5.0
      * @return BuilderInterface
      */
     public function ssh2Pty($ssh2Pty)

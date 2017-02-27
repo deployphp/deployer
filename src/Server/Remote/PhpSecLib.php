@@ -50,50 +50,40 @@ class PhpSecLib implements ServerInterface
 
         switch ($serverConfig->getAuthenticationMethod()) {
             case Configuration::AUTH_BY_PASSWORD:
-
-                $result = $this->sftp->login($serverConfig->getUser(), $serverConfig->getPassword());
-
+                $authParams = [$serverConfig->getUser(), $serverConfig->getPassword()];
                 break;
 
             case Configuration::AUTH_BY_IDENTITY_FILE:
-
                 $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
-
-                $result = $this->sftp->login($serverConfig->getUser(), $key);
-
+                $authParams = [$serverConfig->getUser(), $key];
                 break;
 
             case Configuration::AUTH_BY_PEM_FILE:
-
                 $key = new RSA();
                 $key->loadKey(file_get_contents($serverConfig->getPemFile()));
-                $result = $this->sftp->login($serverConfig->getUser(), $key);
-
+                $authParams = [$serverConfig->getUser(), $key];
                 break;
 
             case Configuration::AUTH_BY_AGENT:
-
                 $key = new Agent();
                 $key->startSSHForwarding(null);
-                $result = $this->sftp->login($serverConfig->getUser(), $key);
-
+                $authParams = [$serverConfig->getUser(), $key];
                 break;
 
             case Configuration::AUTH_BY_IDENTITY_FILE_AND_PASSWORD:
-
                 $key = new RSA();
                 $key->setPassword($serverConfig->getPassPhrase());
                 $key->loadKey(file_get_contents($serverConfig->getPrivateKey()));
-
-                $result = $this->sftp->login($serverConfig->getUser(), $key, $serverConfig->getPassword());
-
+                $authParams = [$serverConfig->getUser(), $key, $serverConfig->getPassword()];
                 break;
 
             default:
                 throw new RuntimeException('You need to specify authentication method.');
         }
+
+        $result = call_user_func_array([$this->sftp, 'login'], $authParams);
 
         if (!$result) {
             throw new RuntimeException('Unable to login with the provided credentials.');
@@ -143,7 +133,7 @@ class PhpSecLib implements ServerInterface
         }
 
         if (!$this->sftp->put($remote, $local, SFTP::SOURCE_LOCAL_FILE)) {
-            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
+            throw new \RuntimeException(implode(PHP_EOL, $this->sftp->getSFTPErrors()));
         }
     }
 
@@ -155,7 +145,7 @@ class PhpSecLib implements ServerInterface
         $this->checkConnection();
 
         if (!$this->sftp->get($remote, $local)) {
-            throw new \RuntimeException(implode($this->sftp->getSFTPErrors(), "\n"));
+            throw new \RuntimeException(implode(PHP_EOL, $this->sftp->getSFTPErrors()));
         }
     }
 

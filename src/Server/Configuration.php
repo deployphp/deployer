@@ -445,7 +445,7 @@ class Configuration
      * Set pty for ssh2 connection. For retro compatibility
      *
      * @param $ssh2Pty
-     * @deprecated
+     * @deprecated v5.0
      */
     public function setSsh2Pty($ssh2Pty)
     {
@@ -455,7 +455,7 @@ class Configuration
     /**
      * Get pty option for ssh2 connection. For retro compatibility
      *
-     * @deprecated
+     * @deprecated v5.0
      * @return mixed
      */
     public function getSsh2Pty()

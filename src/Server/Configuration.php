@@ -440,4 +440,27 @@ class Configuration
     {
         return $this->pty;
     }
+
+    /**
+     * Set pty for ssh2 connection. For retro compatibility
+     *
+     * @param $ssh2Pty
+     * @deprecated v5.0
+     */
+    public function setSsh2Pty($ssh2Pty)
+    {
+        $this->setPty($ssh2Pty);
+    }
+
+    /**
+     * Get pty option for ssh2 connection. For retro compatibility
+     *
+     * @deprecated v5.0
+     * @return mixed
+     */
+    public function getSsh2Pty()
+    {
+        return $this->getPty();
+    }
+
 }

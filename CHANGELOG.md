@@ -6,6 +6,7 @@
 ### Added
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 - Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
+- Add use_atomic_symlink variable instead of depending on the man package [#1043](https://github.com/deployphp/deployer/pull/1043)
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)

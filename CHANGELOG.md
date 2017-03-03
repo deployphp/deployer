@@ -6,7 +6,7 @@
 ### Added
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 - Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
-- Add `--no-hooks` option for running commands without `before()` and `after()` [#934](https://github.com/deployphp/deployer/pull/934)
+- Add `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)
 
 ### Changed
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)

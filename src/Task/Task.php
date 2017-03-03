@@ -228,7 +228,7 @@ class Task
     public function addBefore($task)
     {
         if (!is_string($task)) {
-            throw new \RuntimeException('Invalid argument to `before` hook of "' . $this->getName() . '" task.');
+            throw new \InvalidArgumentException('Invalid argument to `before` hook of "' . $this->getName() . '" task.');
         }
 
         array_unshift($this->before, $task);
@@ -240,7 +240,7 @@ class Task
     public function addAfter($task)
     {
         if (!is_string($task)) {
-            throw new \RuntimeException('Invalid argument to `after` hook of "' . $this->getName() . '" task.');
+            throw new \InvalidArgumentException('Invalid argument to `after` hook of "' . $this->getName() . '" task.');
         }
 
         array_push($this->after, $task);

@@ -52,6 +52,12 @@ class TaskCommand extends Command
             'p',
             Option::VALUE_NONE,
             'Run tasks in parallel.'
+        )
+        ->addOption(
+            'no-hooks',
+            null,
+            Option::VALUE_NONE,
+            'Run task without after/before hooks'
         );
     }
 

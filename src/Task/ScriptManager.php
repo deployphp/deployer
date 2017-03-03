@@ -62,11 +62,11 @@ class ScriptManager
             return $relatedTasks;
         };
 
-        $taskHierarchy = $collect($name);
+        $script = $collect($name);
 
         // Flatten
         $tasks = [];
-        array_walk_recursive($taskHierarchy, function ($a) use (&$tasks) {
+        array_walk_recursive($script, function ($a) use (&$tasks) {
             $tasks[] = $a;
         });
 

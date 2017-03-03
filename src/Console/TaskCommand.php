@@ -62,6 +62,8 @@ class TaskCommand extends Command
     {
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
+        $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));
+
         $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
         $servers = $this->deployer->getStageStrategy()->getServers($stage);
         $environments = iterator_to_array($this->deployer->environments);

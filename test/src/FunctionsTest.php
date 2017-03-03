@@ -164,6 +164,32 @@ class FunctionsTest extends TestCase
         $this->assertEquals(['main', 'after'], $names);
     }
 
+    public function testTaskWithoutHooks()
+    {
+        task('main', function () {});
+        task('groupTask', ['main']);
+        task('before', function () {});
+        task('after', function () {});
+
+        before('main', 'before');
+        after('main', 'after');
+
+        before('groupTask', 'before');
+        after('groupTask', 'after');
+
+        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('main'));
+        $this->assertEquals(['before', 'main', 'after'], $names);
+        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('groupTask'));
+        $this->assertEquals(['before', 'before', 'main', 'after', 'after'], $names);
+
+        $this->deployer->getScriptManager()->setHooksEnabled(false);
+
+        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('main'));
+        $this->assertEquals(['main'], $names);
+        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('groupTask'));
+        $this->assertEquals(['main'], $names);
+    }
+
     private function taskToNames($tasks)
     {
         return array_map(function ($task) {

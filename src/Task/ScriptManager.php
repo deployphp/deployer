@@ -15,6 +15,11 @@ class ScriptManager
     private $tasks;
 
     /**
+     * @var bool
+     */
+    private $hooksEnabled = true;
+
+    /**
      * ScriptManager constructor.
      * @param TaskCollection $tasks
      */
@@ -34,26 +39,34 @@ class ScriptManager
     {
         $collect = function ($name) use (&$collect, $stage) {
             $task = $this->tasks->get($name);
-            if ($stage === null || $task->isForStages($stage)) {
-                if ($task instanceof GroupTask) {
-                    return array_map($collect, $task->getTasks());
-                } else {
-                    return array_merge(
-                        array_map($collect, $task->getBefore()),
-                        [$name],
-                        array_map($collect, $task->getAfter())
-                    );
-                }
-            } else {
+            if ($stage !== null && !$task->isForStages($stage)) {
                 return [];
             }
+
+            $relatedTasks = [];
+
+            if ($this->isHooksEnabled()) {
+                $relatedTasks = array_merge(array_map($collect, $task->getBefore()), $relatedTasks);
+            }
+
+            if ($task instanceof GroupTask) {
+                $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getGroup()));
+            } else {
+                $relatedTasks = array_merge($relatedTasks, [$task->getName()]);
+            }
+
+            if ($this->isHooksEnabled()) {
+                $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getAfter()));
+            }
+
+            return $relatedTasks;
         };
 
-        $script = $collect($name);
+        $taskHierarchy = $collect($name);
 
         // Flatten
         $tasks = [];
-        array_walk_recursive($script, function ($a) use (&$tasks) {
+        array_walk_recursive($taskHierarchy, function ($a) use (&$tasks) {
             $tasks[] = $a;
         });
 
@@ -63,5 +76,21 @@ class ScriptManager
         }, $tasks);
 
         return $tasks;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHooksEnabled()
+    {
+        return $this->hooksEnabled;
+    }
+
+    /**
+     * @param bool $hooksEnabled
+     */
+    public function setHooksEnabled($hooksEnabled)
+    {
+        $this->hooksEnabled = $hooksEnabled;
     }
 }

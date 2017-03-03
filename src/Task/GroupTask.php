@@ -50,12 +50,24 @@ class GroupTask extends Task
     }
 
     /**
-     * List of tasks names.
+     * List of tasks names with before and after hooks.
+     *
+     * @deprecated v5.0
      *
      * @return array
      */
     public function getTasks()
     {
         return array_merge($this->getBefore(), $this->group, $this->getAfter());
+    }
+
+    /**
+     * List of dependent tasks names.
+     *
+     * @return array
+     */
+    public function getGroup()
+    {
+        return $this->group;
     }
 }

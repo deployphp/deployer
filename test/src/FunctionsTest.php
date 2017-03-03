@@ -166,10 +166,13 @@ class FunctionsTest extends TestCase
 
     public function testTaskWithoutHooks()
     {
-        task('main', function () {});
+        $emptyCallback = function () {
+        };
+
+        task('main', $emptyCallback);
         task('groupTask', ['main']);
-        task('before', function () {});
-        task('after', function () {});
+        task('before', $emptyCallback);
+        task('after', $emptyCallback);
 
         before('main', 'before');
         after('main', 'after');

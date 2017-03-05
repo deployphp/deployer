@@ -52,6 +52,12 @@ class TaskCommand extends Command
             'p',
             Option::VALUE_NONE,
             'Run tasks in parallel.'
+        )
+        ->addOption(
+            'no-hooks',
+            null,
+            Option::VALUE_NONE,
+            'Run task without after/before hooks'
         );
     }
 
@@ -61,6 +67,8 @@ class TaskCommand extends Command
     protected function execute(Input $input, Output $output)
     {
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
+
+        $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));
 
         $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
         $servers = $this->deployer->getStageStrategy()->getServers($stage);

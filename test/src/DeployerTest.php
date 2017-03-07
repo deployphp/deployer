@@ -91,6 +91,9 @@ class DeployerTest extends TestCase
                 'second',
             ],
         ]);
+        Deployer::addDefault('config', [
+            'extra',
+        ]);
 
         $expected = [
             'one',
@@ -99,6 +102,7 @@ class DeployerTest extends TestCase
                 'first',
                 'second',
             ],
+            'extra',
         ];
 
         $this->assertEquals($expected, Deployer::getDefault('config'));

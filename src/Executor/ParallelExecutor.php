@@ -206,9 +206,6 @@ class ParallelExecutor implements ExecutorInterface
         // Get verbosity.
         $verbosity = new VerbosityString($this->output);
 
-        // Get current deploy.php file.
-        $deployPhpFile = $this->input->getOption('file');
-
         // User input.
         $input = '';
 
@@ -233,7 +230,6 @@ class ParallelExecutor implements ExecutorInterface
         foreach ($this->servers as $serverName => $server) {
             $process = new Process(
                 "php " . DEPLOYER_BIN .
-                (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
                 " worker " .
                 " --master 127.0.0.1:{$this->port}" .
                 " --server $serverName" .

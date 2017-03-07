@@ -26,8 +26,13 @@ class Config
         foreach ($override as $key => $value) {
             if (isset($original[$key])) {
                 if (!is_array($original[$key])) {
-                    // Override scalar value
-                    $original[$key] = $value;
+                    if (is_numeric($key)) {
+                        // Append scalar value
+                        $original[] = $value;
+                    } else {
+                        // Override scalar value
+                        $original[$key] = $value;
+                    }
                 } elseif (array_keys($original[$key]) === range(0, count($original[$key]) - 1)) {
                     // Uniquely append to array with numeric keys
                     $original[$key] = array_unique(array_merge($original[$key], $value));

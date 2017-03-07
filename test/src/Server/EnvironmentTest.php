@@ -132,6 +132,9 @@ class EnvironmentTest extends TestCase
                 'second',
             ],
         ]);
+        $env->add('config', [
+            'extra',
+        ]);
 
         $expected = [
             'one',
@@ -140,6 +143,7 @@ class EnvironmentTest extends TestCase
                 'first',
                 'second',
             ],
+            'extra',
         ];
 
         $this->assertEquals($expected, $env->get('config'));

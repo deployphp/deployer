@@ -9,7 +9,7 @@
 - Add `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)
 
 ### Changed
-- Parse hyphens in environment setting names [#1073]
+- Parse hyphens in environment setting names [#1073](https://github.com/deployphp/deployer/pull/1074)
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)
 - Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
 - Changed output of errors for native ssh [#1012](https://github.com/deployphp/deployer/issues/1012)

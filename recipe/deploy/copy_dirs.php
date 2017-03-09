@@ -16,11 +16,12 @@ task('deploy:copy_dirs', function () {
         foreach ($dirs as $dir) {
             $path = "{{deploy_path}}/releases/{$releases[0]}/$dir";
 
-            // Create destination dir(needed for nested dirs)
-            run("mkdir -p {{release_path}}/$dir");
-
             // Copy if dir exists.
             if (test("[ -d $path ]")) {
+
+                // Create destination dir(needed for nested dirs)
+                run("mkdir -p {{release_path}}/$dir");
+
                 run("rsync -av $path/ {{release_path}}/$dir");
             }
         }

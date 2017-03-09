@@ -21,7 +21,7 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 Support Deployer development by [![Becoming a patron](https://img.shields.io/badge/become-patron-brightgreen.svg)](https://www.patreon.com/deployer)
 
 ## Requirements
-* PHP 5.5.0 and up.
+* PHP 5.6.0 and up.
 
 That's all!
 

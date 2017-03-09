@@ -22,8 +22,7 @@ install:
   - composer self-update
   - composer update --no-interaction --prefer-source $COMPOSER_FLAGS
 
-script:
-  - phpunit
+script: vendor/bin/phpunit
 
 notifications:
   webhooks:

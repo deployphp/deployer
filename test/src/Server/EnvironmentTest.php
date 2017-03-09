@@ -18,7 +18,9 @@ class EnvironmentTest extends TestCase
         $env->set('int', 42);
         $env->set('string', 'value');
         $env->set('array', [1, 'two']);
+        $env->set('hyphen-ated', 'hyphen');
         $env->set('parse', 'is {{int}}');
+        $env->set('parse-hyphen', 'has {{hyphen-ated}}');
         $env->set('callback', function () {
             return 'callback';
         });
@@ -29,6 +31,7 @@ class EnvironmentTest extends TestCase
         $this->assertEquals('default', $env->get('no', 'default'));
         $this->assertEquals('callback', $env->get('callback'));
         $this->assertEquals('is 42', $env->get('parse'));
+        $this->assertEquals('has hyphen', $env->get('parse-hyphen'));
 
         $env->set('int', 11);
         $this->assertEquals('is 11', $env->get('parse'));

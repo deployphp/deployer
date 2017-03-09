@@ -17,6 +17,7 @@ use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Type\Result;
 use Monolog\Logger;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
@@ -576,6 +577,41 @@ function ask($message, $default = null, $suggestedChoices = null)
     if (empty($suggestedChoices) === false) {
         $question->setAutocompleterValues($suggestedChoices);
     }
+
+    return $helper->ask(input(), output(), $question);
+}
+
+/**
+ * @param string $message
+ * @param string[] $availableChoices
+ * @param string|null $default
+ * @param bool|false $multiselect
+ * @return array
+ * @codeCoverageIgnore
+ */
+function askChoice($message, array $availableChoices, $default = null, $multiselect = false)
+{
+    if (empty($availableChoices)) {
+        throw new \InvalidArgumentException('Available choices should not be empty');
+    }
+
+    if ($default !== null && !array_key_exists($default, $availableChoices)) {
+        throw new \InvalidArgumentException('Default choice is not available');
+    }
+
+    if (isQuiet()) {
+        if ($default === null) {
+            $default = key($availableChoices);
+        }
+        return [ $default => $availableChoices[$default] ];
+    }
+
+    $helper = Deployer::get()->getHelper('question');
+
+    $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
+
+    $question = new ChoiceQuestion($message, $availableChoices, $default);
+    $question->setMultiselect($multiselect);
 
     return $helper->ask(input(), output(), $question);
 }

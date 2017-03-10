@@ -17,7 +17,6 @@ use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Type\Result;
 use Deployer\Cluster\ClusterFactory;
-use Deployer\Exception\Exception;
 use Monolog\Logger;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -561,7 +560,7 @@ function has($name)
  */
 function ask($message, $default = null, $suggestedChoices = null)
 {
-    requiresTaskContext(__FUNCTION__);
+    Context::required(__FUNCTION__);
 
     if (($suggestedChoices !== null) && (empty($suggestedChoices))) {
         throw new \InvalidArgumentException('Suggested choices should not be empty');
@@ -594,7 +593,7 @@ function ask($message, $default = null, $suggestedChoices = null)
  */
 function askChoice($message, array $availableChoices, $default = null, $multiselect = false)
 {
-    requiresTaskContext(__FUNCTION__);
+    Context::required(__FUNCTION__);
 
     if (empty($availableChoices)) {
         throw new \InvalidArgumentException('Available choices should not be empty');
@@ -629,7 +628,7 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
  */
 function askConfirmation($message, $default = false)
 {
-    requiresTaskContext(__FUNCTION__);
+    Context::required(__FUNCTION__);
 
     if (isQuiet()) {
         return $default;
@@ -652,7 +651,7 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
-    requiresTaskContext(__FUNCTION__);
+    Context::required(__FUNCTION__);
 
     if (isQuiet()) {
         return '';
@@ -750,17 +749,4 @@ function commandExist($command)
 function parse($value)
 {
     return Context::get()->getEnvironment()->parse($value);
-}
-
-/**
- * Throws a Exception when not called within a task-context.
- *
- * This method provides a usefull error to the end-user to make him/her aware
- * to use a function in the required task-context.
- */
-function requiresTaskContext($callerName)
-{
-    if (!Context::get()) {
-        throw new Exception("'$callerName' can only be used within a 'task()'-function!");
-    }
 }

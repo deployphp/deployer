@@ -8,6 +8,7 @@
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 - Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
 - Add `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)
+- Added a usefull error when ask*() is not used wihtin a task() [#1083](https://github.com/deployphp/deployer/pull/1083)
 
 ### Changed
 - Parse hyphens in environment setting names [#1073](https://github.com/deployphp/deployer/pull/1074)

@@ -18,7 +18,11 @@ task('deploy:copy_dirs', function () {
 
             // Copy if dir exists.
             if (test("[ -d $path ]")) {
-                run("cp -rpf $path {{release_path}}");
+
+                // Create destination dir(needed for nested dirs)
+                run("mkdir -p {{release_path}}/$dir");
+
+                run("rsync -av $path/ {{release_path}}/$dir");
             }
         }
     }

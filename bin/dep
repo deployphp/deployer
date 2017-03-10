@@ -99,6 +99,15 @@ $input = new \Symfony\Component\Console\Input\ArgvInput();
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $deployer = new \Deployer\Deployer($console, $input, $output);
 
+// Pretty-print uncaught exceptions in symfony-console
+// SymfonyStyle was added in sf-console 2.7, therefore we feature detect first
+if (class_exists('\Symfony\Component\Console\Style\SymfonyStyle')) {
+    set_exception_handler(function($e) use ($input, $output) {
+        $io = new \Symfony\Component\Console\Style\SymfonyStyle($input, $output);
+        $io->error($e);
+    });
+}
+
 // Require deploy.php file
 if (is_readable($deployFile)) {
     // Prevent variable leak into deploy.php file

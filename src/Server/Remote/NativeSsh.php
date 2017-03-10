@@ -127,6 +127,8 @@ class NativeSsh implements ServerInterface
      */
     public function download($local, $remote)
     {
+        $remote = str_replace(' ', '\ ', $remote);
+
         $serverConfig = $this->getConfiguration();
 
         $username = $serverConfig->getUser() ? $serverConfig->getUser() : null;

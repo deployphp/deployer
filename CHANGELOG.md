@@ -26,6 +26,7 @@
 - Fixed uploading files with spaces in a path via Native SSH [#1010](https://github.com/deployphp/deployer/issues/1010)
 - Fix merge of string array config options [#1067](https://github.com/deployphp/deployer/pull/1067)
 - Fixed uploading of files containing spaces [#1077](https://github.com/deployphp/deployer/issues/1077)
+- Fixed download of files when filename remote contains spaces [#1082](https://github.com/deployphp/deployer/pull/1082)
 
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)

@@ -11,6 +11,7 @@ use Deployer\Console\Application;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Formatter\OutputFormatter;
 
 class FunctionsTest extends TestCase
 {
@@ -50,6 +51,7 @@ class FunctionsTest extends TestCase
 
         $this->_input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $this->_output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+        $this->_output->method('getFormatter')->willReturn(new OutputFormatter());
         $this->_server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
 
         $this->_env = new Environment();

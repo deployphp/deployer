@@ -4,7 +4,7 @@
 [v4.2.1...master](https://github.com/deployphp/deployer/compare/v4.2.1...master)
 
 ### Added
-- Add support for multiple choice questions [#1075]
+- Add support for multiple choice questions [#1076](https://github.com/deployphp/deployer/pull/1076)
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 - Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
 - Add `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)

@@ -8,6 +8,7 @@
 - Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
 - Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
 - Add `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)
+- Add a progressbar while ssh upload [1085](https://github.com/deployphp/deployer/pull/1085)
 
 ### Changed
 - Parse hyphens in environment setting names [#1073](https://github.com/deployphp/deployer/pull/1074)

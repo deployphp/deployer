@@ -28,6 +28,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -427,6 +428,11 @@ function upload($local, $remote)
             ->ignoreDotFiles(false)
             ->in($local);
 
+        $progress = null;
+        if (!isDebug()) {
+            $progress = new ProgressBar(output(), count($files));
+        }
+
         /** @var $file \Symfony\Component\Finder\SplFileInfo */
         foreach ($files as $file) {
             if (isDebug()) {
@@ -437,6 +443,16 @@ function upload($local, $remote)
                 $file->getRealPath(),
                 $remote . '/' . $file->getRelativePathname()
             );
+
+            if ($progress) {
+                $progress->advance();
+            }
+        }
+
+        if ($progress) {
+            $progress->finish();
+            // make sure the "Ok" text will be rendered on a newline
+            output()->writeln('');
         }
     } else {
         throw new \RuntimeException("Uploading path '$local' does not exist.");

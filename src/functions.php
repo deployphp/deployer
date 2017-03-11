@@ -16,6 +16,7 @@ use Deployer\Task\Task as T;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Type\Result;
+use Deployer\Cluster\ClusterFactory;
 use Monolog\Logger;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -23,7 +24,6 @@ use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-use Deployer\Cluster\ClusterFactory;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -560,6 +560,8 @@ function has($name)
  */
 function ask($message, $default = null, $suggestedChoices = null)
 {
+    Context::required(__FUNCTION__);
+
     if (($suggestedChoices !== null) && (empty($suggestedChoices))) {
         throw new \InvalidArgumentException('Suggested choices should not be empty');
     }
@@ -591,6 +593,8 @@ function ask($message, $default = null, $suggestedChoices = null)
  */
 function askChoice($message, array $availableChoices, $default = null, $multiselect = false)
 {
+    Context::required(__FUNCTION__);
+
     if (empty($availableChoices)) {
         throw new \InvalidArgumentException('Available choices should not be empty');
     }
@@ -624,6 +628,8 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
  */
 function askConfirmation($message, $default = false)
 {
+    Context::required(__FUNCTION__);
+
     if (isQuiet()) {
         return $default;
     }
@@ -645,6 +651,8 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
+    Context::required(__FUNCTION__);
+
     if (isQuiet()) {
         return '';
     }

@@ -9,6 +9,7 @@ namespace Deployer\Task;
 
 use Deployer\Server\Environment;
 use Deployer\Server\ServerInterface;
+use Deployer\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -67,6 +68,23 @@ class Context
     public static function get()
     {
         return end(self::$contexts);
+    }
+
+    /**
+     * Returns the current context when available.
+     *
+     * Throws a Exception when not called within a task-context and therefore no Context is available.
+     *
+     * This method provides a usefull error to the end-user to make him/her aware
+     * to use a function in the required task-context.
+     *
+     * @throws Exception
+     */
+    public static function required($callerName)
+    {
+        if (!self::get()) {
+            throw new Exception("'$callerName' can only be used within a 'task()'-function!");
+        }
     }
 
     /**

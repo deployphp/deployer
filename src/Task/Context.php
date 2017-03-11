@@ -71,19 +71,18 @@ class Context
     }
 
     /**
-     * Returns the current context when available.
-     *
      * Throws a Exception when not called within a task-context and therefore no Context is available.
      *
-     * This method provides a usefull error to the end-user to make him/her aware
+     * This method provides a useful error to the end-user to make him/her aware
      * to use a function in the required task-context.
      *
+     * @param string $callerName
      * @throws Exception
      */
     public static function required($callerName)
     {
         if (!self::get()) {
-            throw new Exception("'$callerName' can only be used within a 'task()'-function!");
+            throw new Exception("'$callerName' can only be used within a task.");
         }
     }
 

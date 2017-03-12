@@ -21,8 +21,6 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -231,6 +229,7 @@ function workingPath()
 function run($command, $options = [])
 {
     $client = Deployer::get()->getSshClient();
+    $output = Context::get()->getOutput();
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
 
@@ -245,47 +244,39 @@ function run($command, $options = [])
         writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
     }
 
-    $output = $client->run($host, $command, $options);
+    if ($host instanceof Localhost) {
+        $output = $host->exec($output, $command, $options);
+    } else {
+        $output = $client->run($host, $command, $options);
+    }
 
     return new Result($output);
 }
 
 /**
- * Execute commands on local machine.
+ * Execute commands on local machine
+ *
  * @param string $command Command to run locally.
- * @param int $timeout (optional) Override process command timeout in seconds.
+ * @param array $options
  * @return Result Output of command.
- * @throws \RuntimeException
  */
-function runLocally($command, $timeout = 300)
+function runLocally($command, $options = [])
 {
-    $command = parse($command);
+    $output = Context::get()->getOutput();
+    $host = new Localhost();
+    $hostname = $host->getHostname();
+
+    $workingPath = workingPath();
+
+    if (!empty($workingPath)) {
+        $command = "cd $workingPath && ($command)";
+    }
 
     if (isVeryVerbose()) {
-        writeln("[localhost] <fg=red>></fg=red> : $command");
+        writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
     }
 
-    logger("[localhost] > $command");
-
-    $process = new Process($command);
-    $process->setTimeout($timeout);
-    $process->run(function ($type, $buffer) {
-        if (isDebug()) {
-            if ('err' === $type) {
-                write("<fg=red>></fg=red> $buffer");
-            } else {
-                write("<fg=green>></fg=green> $buffer");
-            }
-        }
-    });
-
-    if (!$process->isSuccessful()) {
-        throw new ProcessFailedException($process);
-    }
-
-    $output = $process->getOutput();
-
-    logger("[localhost] < $output");
+    $output = $host->exec($output, $command, $options);
 
     return new Result($output);
 }

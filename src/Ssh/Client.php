@@ -99,9 +99,9 @@ class Client
 
         if ($this->output->isDecorated()) {
             if ($type === Process::ERR) {
-                $output = "[$hostname] \033[0;31m< $output\033[0m";
+                $output = "[$hostname] \033[0;31m<\e[0;90m $output\033[0m";
             } else {
-                $output = "[$hostname] \033[1;30m< $output\033[0m";
+                $output = "[$hostname] \033[0;90m< $output\033[0m";
             }
         } else {
             $output = "[$hostname] < $output";

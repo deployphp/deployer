@@ -12,8 +12,6 @@ use Deployer\Exception\Exception;
 use Deployer\Host\Configuration;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
-use Deployer\Server\Environment;
-use Deployer\Server\ServerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

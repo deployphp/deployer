@@ -47,12 +47,24 @@ class Client
 
         $options = $host->sshOptions();
 
-        if ($host->isMultiplexing()) {
-            $options = $this->initMultiplexing($host);
-        }
-
+        // When tty need to be allocated, don't use multiplexing,
+        // and pass command without bash allocation on remote host.
         if ($config['tty']) {
             $options .= ' -tt';
+            $command = escapeshellarg($command);
+
+            $ssh = "ssh $options $host $command";
+            $process = new Process($ssh);
+            $process
+                ->setTimeout($config['timeout'])
+                ->setTty(true)
+                ->mustRun();
+
+            return $process->getOutput();
+        }
+
+        if ($host->isMultiplexing()) {
+            $options = $this->initMultiplexing($host);
         }
 
         $ssh = "ssh $options $host 'bash -s; printf \"[exit_code:%s]\" $?;'";
@@ -112,13 +124,17 @@ class Client
 
     private function filterOutput($output)
     {
-        return preg_replace('/\[exit_code:(.*?)\]$/', '', $output);
+        return preg_replace('/\[exit_code:(.*?)\]/', '', $output);
     }
 
     private function parseExitStatus(Process $process)
     {
         $output = $process->getOutput();
-        preg_match('/\[exit_code:(.*?)\]$/', $output, $match);
+        preg_match('/\[exit_code:(.*?)\]/', $output, $match);
+
+        if (!isset($match[1])) {
+            return -1;
+        }
 
         $exitCode = (int)$match[1];
         return $exitCode;

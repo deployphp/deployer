@@ -17,7 +17,7 @@ use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Type\Config;
-use Deployer\Util\Reporter;
+use Deployer\Utility\Reporter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

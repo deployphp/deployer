@@ -97,7 +97,6 @@ class NativeSsh implements ServerInterface
             if (0 !== $process->wait()) {
                 throw new ProcessFailedException($process);
             }
-
         } catch (ProcessFailedException $exception) {
             $errorMessage = \Deployer\isDebug() ? $exception->getMessage() : $process->getErrorOutput();
             throw new \RuntimeException($errorMessage);

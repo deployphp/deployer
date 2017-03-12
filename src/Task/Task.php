@@ -85,9 +85,9 @@ class Task
         call_user_func($this->callback);
 
         // Clear working_path
-        $env = $context->getEnvironment();
-        if ($env !== null) {
-            $env->set('working_path', false);
+        $config = $context->getConfiguration();
+        if ($config !== null) {
+            $config->set('working_path', false);
         }
 
         Context::pop();

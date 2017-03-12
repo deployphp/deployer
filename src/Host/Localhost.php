@@ -5,10 +5,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Server;
+namespace Deployer\Host;
 
-use Deployer\Collection\Collection;
-
-class EnvironmentCollection extends Collection
+class Localhost
 {
+    use ConfigurationAccessor;
+
+    public function __construct()
+    {
+        $this->configuration = new Configuration();
+    }
 }

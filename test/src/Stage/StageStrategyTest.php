@@ -21,7 +21,7 @@ class StageStrategyTest extends TestCase
 
         $stage = new StageStrategy($servers, $environments);
 
-        $this->assertArrayHasKey('localhost', $stage->getServers(null));
+        $this->assertArrayHasKey('localhost', $stage->getHosts(null));
     }
 
     public function testWithoutStageAndNoDefault()
@@ -37,7 +37,7 @@ class StageStrategyTest extends TestCase
 
         $stage = new StageStrategy($servers, $environments);
 
-        $this->assertEquals(['one' => $servers['one']], $stage->getServers(null));
+        $this->assertEquals(['one' => $servers['one']], $stage->getHosts(null));
     }
 
     public function testWithoutStageAndHasDefault()
@@ -53,7 +53,7 @@ class StageStrategyTest extends TestCase
 
         $stage = new StageStrategy($servers, $environments, 'prod');
 
-        $this->assertEquals(['two' => $servers['two']], $stage->getServers(null));
+        $this->assertEquals(['two' => $servers['two']], $stage->getHosts(null));
     }
 
     public function testByStageName()
@@ -67,7 +67,7 @@ class StageStrategyTest extends TestCase
 
         $stage = new StageStrategy($servers, $environments);
 
-        $this->assertEquals(['one' => $servers['one']], $stage->getServers('prod'));
+        $this->assertEquals(['one' => $servers['one']], $stage->getHosts('prod'));
     }
 
     public function testByServerName()
@@ -80,6 +80,6 @@ class StageStrategyTest extends TestCase
 
         $stage = new StageStrategy($servers, $environments);
 
-        $this->assertEquals(['one' => $servers['one']], $stage->getServers('one'));
+        $this->assertEquals(['one' => $servers['one']], $stage->getHosts('one'));
     }
 }

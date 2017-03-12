@@ -20,8 +20,8 @@ class ContextTest extends TestCase
 
         $context = new Context($server, $env, $input, $output);
 
-        $this->assertInstanceOf('Deployer\Server\ServerInterface', $context->getServer());
-        $this->assertInstanceOf('Deployer\Server\Environment', $context->getEnvironment());
+        $this->assertInstanceOf('Deployer\Server\ServerInterface', $context->getHost());
+        $this->assertInstanceOf('Deployer\Server\Environment', $context->getConfiguration());
         $this->assertInstanceOf('Symfony\Component\Console\Input\InputInterface', $context->getInput());
         $this->assertInstanceOf('Symfony\Component\Console\Output\OutputInterface', $context->getOutput());
 

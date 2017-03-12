@@ -12,7 +12,6 @@ use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
-use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -71,23 +70,7 @@ class TaskCommand extends Command
         $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));
 
         $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
-        $servers = $this->deployer->getStageStrategy()->getServers($stage);
-        $environments = iterator_to_array($this->deployer->environments);
-
-        // Validation
-        $sshType = \Deployer\get('ssh_type');
-        if ($sshType !== 'native') {
-            $output->write(
-                "<comment>Warning: ssh type `$sshType` will be deprecated in Deployer 5.\n" .
-                "Add this lines to your deploy.php file:\n" .
-                "\n" .
-                "    <fg=white>set(<fg=cyan>'ssh_type'</fg=cyan>, <fg=cyan>'native'</fg=cyan>);\n" .
-                "    set(<fg=cyan>'ssh_multiplexing'</fg=cyan>, <fg=magenta;options=bold>true</fg=magenta;options=bold>);</fg=white>\n" .
-                "\n" .
-                "More info here: https://goo.gl/ya8rKW" .
-                "</comment>\n"
-            );
-        }
+        $hosts = $this->deployer->getStageStrategy()->getHosts($stage);
 
         if (isset($this->executor)) {
             $executor = $this->executor;
@@ -100,16 +83,14 @@ class TaskCommand extends Command
         }
 
         try {
-            $executor->run($tasks, $servers, $environments, $input, $output);
+            $executor->run($tasks, $hosts, $input, $output);
         } catch (\Exception $exception) {
-            \Deployer\logger($exception->getMessage(), Logger::ERROR);
-
             if (!($exception instanceof GracefulShutdownException)) {
                 // Check if we have tasks to execute on failure.
                 if ($this->deployer['onFailure']->has($this->getName())) {
                     $taskName = $this->deployer['onFailure']->get($this->getName());
                     $tasks = $this->deployer->getScriptManager()->getTasks($taskName, $stage);
-                    $executor->run($tasks, $servers, $environments, $input, $output);
+                    $executor->run($tasks, $hosts, $input, $output);
                 }
             }
 

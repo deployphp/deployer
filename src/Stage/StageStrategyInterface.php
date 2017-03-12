@@ -11,7 +11,7 @@ interface StageStrategyInterface
 {
     /**
      * @param string $stage
-     * @return \Deployer\Server\ServerInterface[]
+     * @return \Deployer\Host\Host
      */
-    public function getServers($stage);
+    public function getHosts($stage);
 }

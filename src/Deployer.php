@@ -13,10 +13,9 @@ use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
-use Deployer\Server;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
-use Deployer\Type\Config;
+use Deployer\Utility\Config;
 use Deployer\Utility\Reporter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
@@ -27,8 +26,7 @@ use Symfony\Component\Console;
 
 /**
  * @property Task\TaskCollection|Task\Task[] tasks
- * @property Server\ServerCollection|Server\ServerInterface[] servers
- * @property Server\EnvironmentCollection|Server\Environment[] environments
+ * @property Collection|Host\Host[] hosts
  * @property Collection config
  */
 class Deployer extends Container
@@ -69,27 +67,26 @@ class Deployer extends Container
         $this['config'] = function () {
             return new Collection();
         };
-        $this->config['ssh_type'] = 'phpseclib';
         $this->config['default_stage'] = null;
 
         /******************************
          *            Core            *
          ******************************/
 
+        $this['sshClient'] = function ($c) {
+            return new Ssh\Client($c['output']);
+        };
         $this['tasks'] = function () {
             return new Task\TaskCollection();
         };
-        $this['servers'] = function () {
-            return new Server\ServerCollection();
-        };
-        $this['environments'] = function () {
-            return new Server\EnvironmentCollection();
+        $this['hosts'] = function () {
+            return new Collection();
         };
         $this['scriptManager'] = function ($c) {
             return new Task\ScriptManager($c['tasks']);
         };
         $this['stageStrategy'] = function ($c) {
-            return new StageStrategy($c['servers'], $c['environments'], $c['config']['default_stage']);
+            return new StageStrategy($c['hosts'], $c['config']['default_stage']);
         };
         $this['onFailure'] = function () {
             return new Collection();
@@ -254,6 +251,14 @@ class Deployer extends Container
     }
 
     /**
+     * @return Ssh\Client
+     */
+    public function getSshClient()
+    {
+        return $this['sshClient'];
+    }
+
+    /**
      * @return StageStrategy
      */
     public function getStageStrategy()
@@ -294,7 +299,7 @@ class Deployer extends Container
             'status' => 'success',
             'command_name' => $commandEvent->getCommand()->getName(),
             'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
-            'servers_count' => $this->servers->count(),
+            'servers_count' => $this->hosts->count(),
             'deployer_version' => $this->getConsole()->getVersion(),
             'deployer_phar' => $this->getConsole()->isPharArchive(),
             'php_version' => phpversion(),

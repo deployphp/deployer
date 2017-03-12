@@ -5,13 +5,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Server;
+namespace Deployer\Host;
 
 use Deployer\Collection\Collection;
 use Deployer\Deployer;
-use Deployer\Type\Config;
+use Deployer\Exception\ConfigurationException;
+use Deployer\Utility\Config;
 
-class Environment
+class Configuration
 {
     /**
      * Array of set values.
@@ -20,8 +21,7 @@ class Environment
     private $values = null;
 
     /**
-     * Values represented by their keys here are protected, and cannot be
-     * changed by calling the `set` method.
+     * Values represented by their keys here are protected, and cannot be changed by calling the `set` method.
      * @var array
      */
     private $protectedNames = [];
@@ -63,12 +63,11 @@ class Environment
     }
 
     /**
-     * Checks whether the given name was registered as protected, or if there is
-     * a protected parameter which would be overwritten.
+     * Checks whether the given name was registered as protected, or if there is a protected parameter which would be overwritten.
+     *
      * @param string $name
-     * @throws \RuntimeException if the value already exists and is protected.
-     * @throws \RuntimeException if there's a protected parameter which would
-     * be overwritten.
+     * @throws ConfigurationException if the value already exists and is protected.
+     * @throws ConfigurationException if there's a protected parameter which would be overwritten.
      */
     private function checkIfNameIsProtected($name)
     {
@@ -77,11 +76,11 @@ class Environment
         foreach ($this->protectedNames as $protectedName) {
             $len = strlen($protectedName);
             if ($name === $protectedName) {
-                throw new \RuntimeException("The parameter `$name` cannot be set, because it's protected.");
+                throw new ConfigurationException("The parameter `$name` cannot be set, because it's protected.");
             } elseif ($len < $length && '.' === $name[$len] && 0 === strpos($name, $protectedName)) {
-                throw new \RuntimeException("The parameter `$name` cannot be set, because `$protectedName` is protected.");
+                throw new ConfigurationException("The parameter `$name` cannot be set, because `$protectedName` is protected.");
             } elseif ($len > $length && '.' === $protectedName[$length] && 0 === strpos($protectedName, $name)) {
-                throw new \RuntimeException("The parameter `$name` could not be set, because a protected parameter named `$protectedName` already exists.");
+                throw new ConfigurationException("The parameter `$name` could not be set, because a protected parameter named `$protectedName` already exists.");
             }
         }
     }
@@ -107,7 +106,6 @@ class Environment
      * @param string $name
      * @param bool|int|string|array $default
      * @return bool|int|string|array
-     * @throws \RuntimeException
      */
     public function get($name, $default = null)
     {
@@ -128,7 +126,7 @@ class Environment
                 }
             } else {
                 if (null === $default) {
-                    throw new \RuntimeException("Configuration parameter `$name` does not exists.");
+                    throw new ConfigurationException("Configuration parameter `$name` does not exists.");
                 } else {
                     $value = $default;
                 }

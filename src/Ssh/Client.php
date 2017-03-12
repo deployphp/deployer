@@ -45,7 +45,7 @@ class Client
         ];
         $config = array_merge($defaults, $config);
 
-        $options = $host->generateOptionsString();
+        $options = $host->sshOptions();
 
         if ($host->isMultiplexing()) {
             $options = $this->initMultiplexing($host);
@@ -132,7 +132,7 @@ class Client
      */
     private function initMultiplexing(Host $host)
     {
-        $options = $host->generateOptionsString();
+        $options = $host->sshOptions();
         $controlPath = $this->generateControlPath($host);
 
         $options .= " -o ControlMaster=auto";

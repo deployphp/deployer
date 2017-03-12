@@ -13,9 +13,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 desc('Print server configuration');
 task('config:dump', function () {
-    $server = Context::get()->getServer();
+    $server = Context::get()->getHost();
     $config = Deployer::get()->config;
-    $env = Context::get()->getEnvironment();
+    $env = Context::get()->getConfiguration();
     $dump = [];
 
     foreach ($config as $name => $value) {

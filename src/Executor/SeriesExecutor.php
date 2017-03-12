@@ -8,42 +8,37 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Output\OutputWatcher;
-use Deployer\Server\Environment;
-use Deployer\Server\Local;
-use Deployer\Task\Context;
 use Deployer\Exception\NonFatalException;
+use Deployer\Host\Localhost;
+use Deployer\Task\Context;
 
 class SeriesExecutor implements ExecutorInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output)
+    public function run($tasks, $hosts, $input, $output)
     {
         $output = new OutputWatcher($output);
         $informer = new Informer($output);
-        $localhost = new Local();
-        $localEnv = new Environment();
+        $localhost = new Localhost();
 
         foreach ($tasks as $task) {
             $success = true;
             $informer->startTask($task->getName());
 
             if ($task->isOnce()) {
-                $task->run(new Context($localhost, $localEnv, $input, $output));
+                $task->run(new Context($localhost, $input, $output));
             } else {
-                foreach ($servers as $serverName => $server) {
-                    if ($task->isOnServer($serverName)) {
-                        $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
-
+                foreach ($hosts as $hostname => $host) {
+                    if ($task->isOnServer($hostname)) {
                         try {
-                            $task->run(new Context($server, $env, $input, $output));
+                            $task->run(new Context($host, $input, $output));
                         } catch (NonFatalException $exception) {
                             $success = false;
-                            $informer->taskException($serverName, 'Deployer\Exception\NonFatalException', $exception->getMessage());
+                            $informer->taskException($hostname, 'Deployer\Exception\NonFatalException', $exception->getMessage());
                         }
-
-                        $informer->endOnServer($serverName);
+                        $informer->endOnServer($hostname);
                     }
                 }
             }

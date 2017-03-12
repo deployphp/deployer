@@ -7,31 +7,30 @@
 
 namespace Deployer\Task;
 
+use Deployer\Exception\ConfigurationException;
+use Deployer\Exception\Exception;
+use Deployer\Host\Configuration;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
 use Deployer\Server\Environment;
 use Deployer\Server\ServerInterface;
-use Deployer\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Context
 {
     /**
-     * @var ServerInterface|null
+     * @var Host|Localhost
      */
-    private $server;
+    private $host;
 
     /**
-     * @var Environment|null
-     */
-    private $env;
-
-    /**
-     * @var InputInterface|null
+     * @var InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface|null
+     * @var OutputInterface
      */
     private $output;
 
@@ -41,15 +40,13 @@ class Context
     private static $contexts = [];
 
     /**
-     * @param ServerInterface|null $server
-     * @param Environment|null $env
-     * @param InputInterface|null $input
-     * @param OutputInterface|null $output
+     * @param Host|Localhost $host
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    public function __construct($server, $env, $input, $output)
+    public function __construct($host, InputInterface $input, OutputInterface $output)
     {
-        $this->server = $server;
-        $this->env = $env;
+        $this->host = $host;
         $this->input = $input;
         $this->output = $output;
     }
@@ -82,7 +79,7 @@ class Context
     public static function required($callerName)
     {
         if (!self::get()) {
-            throw new Exception("'$callerName' can only be used within a task.");
+            throw new ConfigurationException("'$callerName' can only be used within a task.");
         }
     }
 
@@ -95,15 +92,15 @@ class Context
     }
 
     /**
-     * @return Environment|null
+     * @return Configuration
      */
-    public function getEnvironment()
+    public function getConfiguration()
     {
-        return $this->env;
+        return $this->host->getConfiguration();
     }
 
     /**
-     * @return InputInterface|null
+     * @return InputInterface
      */
     public function getInput()
     {
@@ -111,7 +108,7 @@ class Context
     }
 
     /**
-     * @return OutputInterface|null
+     * @return OutputInterface
      */
     public function getOutput()
     {
@@ -119,10 +116,10 @@ class Context
     }
 
     /**
-     * @return ServerInterface|null
+     * @return Host|Localhost
      */
-    public function getServer()
+    public function getHost()
     {
-        return $this->server;
+        return $this->host;
     }
 }

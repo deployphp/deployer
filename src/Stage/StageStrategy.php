@@ -7,41 +7,35 @@
 
 namespace Deployer\Stage;
 
-use Deployer\Server\Environment;
-use Deployer\Server\EnvironmentCollection;
-use Deployer\Server\Local;
-use Deployer\Server\ServerCollection;
+use Deployer\Collection\Collection;
+use Deployer\Exception\ConfigurationException;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
 
 class StageStrategy implements StageStrategyInterface
 {
     /**
-     * @var EnvironmentCollection
+     * @var Collection|Host[]
      */
-    private $environments;
-
-    /**
-     * @var ServerCollection
-     */
-    private $servers;
+    private $hosts;
 
     /**
      * @var string
      */
     private $defaultStage;
 
-    public function __construct(ServerCollection $servers, EnvironmentCollection $environments, $defaultStage = null)
+    public function __construct(Collection $hosts, $defaultStage = null)
     {
-        $this->servers = $servers;
-        $this->environments = $environments;
+        $this->hosts = $hosts;
         $this->defaultStage = $defaultStage;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getServers($stage)
+    public function getHosts($stage)
     {
-        $servers = [];
+        $hosts = [];
 
         // Get a default stage (if any) if no stage given
         if (empty($stage)) {
@@ -50,44 +44,43 @@ class StageStrategy implements StageStrategyInterface
 
         if (!empty($stage)) {
 
-            // Look for servers which has in set `stages` current stage name.
-            foreach ($this->environments as $name => $env) {
+            // Look for hosts which has in set `stages` current stage name.
+            foreach ($this->hosts as $name => $host) {
                 // If server does not have any stage category, skip them
-                if (in_array($stage, $env->get('stages', []), true)) {
-                    $servers[$name] = $this->servers->get($name);
+                if (in_array($stage, $host->get('stages', []), true)) {
+                    $hosts[$name] = $this->hosts->get($name);
                 }
             }
 
             // If still is empty, try to find server by name.
-            if (empty($servers)) {
-                if ($this->servers->has($stage)) {
-                    $servers = [$stage => $this->servers->get($stage)];
+            if (empty($hosts)) {
+                if ($this->hosts->has($stage)) {
+                    $hosts = [$stage => $this->hosts->get($stage)];
                 } else {
                     // Nothing found.
-                    throw new \RuntimeException("Stage or server `$stage` was not found.");
+                    throw new ConfigurationException("Stage or host `$stage` was not found.");
                 }
             }
         } else {
             // Otherwise run on all servers what does not specify stage.
-            foreach ($this->environments as $name => $env) {
-                if (!$env->has('stages')) {
-                    $servers[$name] = $this->servers->get($name);
+            foreach ($this->hosts as $name => $host) {
+                if (!$host->has('stages')) {
+                    $hosts[$name] = $this->hosts->get($name);
                 }
             }
         }
 
-        if (empty($servers)) {
-            if (count($this->servers) === 0) {
-                $local = new Local();
-                $this->environments['localhost'] = new Environment();
+        if (empty($hosts)) {
+            if (count($this->hosts) === 0) {
+                $localhost = new Localhost();
 
-                $servers = ['localhost' => $local];
+                $hosts = ['localhost' => $localhost];
             } else {
-                throw new \RuntimeException('You need to specify at least one server or stage.');
+                throw new \RuntimeException('You need to specify at least one host or stage.');
             }
         }
 
-        return $servers;
+        return $hosts;
     }
 
     /**

@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Type;
+namespace Deployer\Utility;
 
 class Config
 {

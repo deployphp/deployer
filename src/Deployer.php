@@ -67,6 +67,7 @@ class Deployer extends Container
         $this['config'] = function () {
             return new Collection();
         };
+        $this->config['ssh_multiplexing'] = true;
         $this->config['default_stage'] = null;
 
         /******************************
@@ -74,7 +75,7 @@ class Deployer extends Container
          ******************************/
 
         $this['sshClient'] = function ($c) {
-            return new Ssh\Client($c['output']);
+            return new Ssh\Client($c['output'], $c['config']['ssh_multiplexing']);
         };
         $this['tasks'] = function () {
             return new Task\TaskCollection();

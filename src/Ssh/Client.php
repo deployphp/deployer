@@ -21,12 +21,19 @@ class Client
     private $output;
 
     /**
+     * @var bool
+     */
+    private $multiplexing;
+
+    /**
      * Client constructor.
      * @param OutputInterface $output
+     * @param bool $multiplexing
      */
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output, bool $multiplexing)
     {
         $this->output = $output;
+        $this->multiplexing = $multiplexing;
     }
 
     /**
@@ -63,7 +70,7 @@ class Client
             return $process->getOutput();
         }
 
-        if ($host->isMultiplexing()) {
+        if ($host->isMultiplexing() === null ? $this->multiplexing : $host->isMultiplexing()) {
             $options = $this->initMultiplexing($host);
         }
 

@@ -17,7 +17,7 @@ class Host
     private $configFile;
     private $identityFile;
     private $forwardAgent = true;
-    private $multiplexing = true;
+    private $multiplexing = null;
     private $options = [];
 
     /**

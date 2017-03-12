@@ -53,7 +53,6 @@ function localhost()
  */
 function hostList($file)
 {
-
 }
 
 /**

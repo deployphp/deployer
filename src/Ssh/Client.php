@@ -79,8 +79,7 @@ class Client
         $process = new Process($ssh);
         $process
             ->setInput($command)
-            ->setTimeout($config['timeout'])
-            ->setTty($config['tty']);
+            ->setTimeout($config['timeout']);
 
         $callback = function ($type, $buffer) use ($hostname) {
             if ($this->output->isDebug()) {

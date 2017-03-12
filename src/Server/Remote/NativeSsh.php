@@ -83,15 +83,21 @@ class NativeSsh implements ServerInterface
             $sshOptions[] = '-t';
         }
 
-        $sshCommand = 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . ' ' . escapeshellarg($command);
+        $sshCommand = 'ssh ' . implode(' ', $sshOptions) . ' ' . escapeshellarg($username . $hostname) . ' bash -s';
 
         try {
             $process = new Process($sshCommand);
             $process
+                ->setInput($command)
                 ->setPty($serverConfig->getPty())
                 ->setTimeout(null)
                 ->setIdleTimeout(null)
-                ->mustRun();
+                ->start();
+
+            if (0 !== $process->wait()) {
+                throw new ProcessFailedException($process);
+            }
+
         } catch (ProcessFailedException $exception) {
             $errorMessage = \Deployer\isDebug() ? $exception->getMessage() : $process->getErrorOutput();
             throw new \RuntimeException($errorMessage);

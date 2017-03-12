@@ -6,6 +6,7 @@
  */
 namespace Deployer;
 
+use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
@@ -46,12 +47,19 @@ function localhost()
 }
 
 /**
- * Load host list from file.
+ * Load list of hosts from file
+ *
  * @param string $file
  */
-function hostList($file)
+function hostsList($file)
 {
+    $deployer = Deployer::get();
+    $fileLoader = new FileLoader();
+    $fileLoader->load($file);
 
+    foreach ($fileLoader->getHosts() as $hostname => $host) {
+        $deployer->hosts->set($hostname, $host);
+    }
 }
 
 /**

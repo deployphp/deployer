@@ -16,6 +16,9 @@ class FileLoader
      */
     private $hosts = [];
 
+    /**
+     * @param string $file
+     */
     public function load($file)
     {
         $data = Yaml::parse(file_get_contents($file));

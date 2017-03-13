@@ -10,7 +10,6 @@ namespace Deployer\Console;
 use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
 use Deployer\Exception\NonFatalException;
-use Deployer\Server\Environment;
 use Deployer\Task\Context;
 use Pure\Client;
 use Symfony\Component\Console\Command\Command;

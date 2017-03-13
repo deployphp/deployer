@@ -37,11 +37,11 @@
         "symfony/yaml": "~2.6|~3.0"
     },
     "require-dev": {
-        "deployer/phar-update": "~2.0",
         "phpunit/phpunit": "~5.7"
     },
     "suggest": {
-        "ext-sockets": "For parallel deployment"
+        "ext-sockets": "For parallel deployment",
+        "deployer/phar-update": "~2.0"
     },
     "config": {
         "sort-packages": true

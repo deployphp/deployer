@@ -50,7 +50,12 @@ set('http_group', false);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', false);    // Using sudo in clean commands?
 
-set('use_relative_symlink', true);
+set('use_relative_symlink', function () {
+    return test('[[ "$(man ln)" =~ "--relative" ]]');
+});
+set('use_atomic_symlink', function () {
+    return test('[[ "$(man mv)" =~ "--no-target-directory" ]]');
+});
 
 set('composer_action', 'install');
 set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
@@ -103,13 +108,7 @@ set('bin/composer', function () {
 });
 
 set('bin/symlink', function () {
-    if (get('use_relative_symlink')) {
-        // Check if target system supports relative symlink.
-        if (run('if [[ "$(man ln)" =~ "--relative" ]]; then echo "true"; fi')->toBool()) {
-            return 'ln -nfs --relative';
-        }
-    }
-    return 'ln -nfs';
+    return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
 
 /**

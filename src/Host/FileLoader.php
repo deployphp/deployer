@@ -7,6 +7,7 @@
 
 namespace Deployer\Host;
 
+use Deployer\Exception\ConfigurationException;
 use Symfony\Component\Yaml\Yaml;
 
 class FileLoader
@@ -22,6 +23,10 @@ class FileLoader
     public function load($file)
     {
         $data = Yaml::parse(file_get_contents($file));
+
+        if (!is_array($data)) {
+            throw new ConfigurationException("Hosts file `$file` should contains array of hosts.");
+        }
 
         foreach ($data as $hostname => $config) {
             if (isset($config['local'])) {

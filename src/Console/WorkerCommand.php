@@ -9,9 +9,9 @@ namespace Deployer\Console;
 
 use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
+use Deployer\Exception\NonFatalException;
 use Deployer\Server\Environment;
 use Deployer\Task\Context;
-use Deployer\Exception\NonFatalException;
 use Pure\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +45,7 @@ class WorkerCommand extends Command
         );
 
         $this->addOption(
-            'server',
+            'hostname',
             null,
             InputOption::VALUE_REQUIRED
         );
@@ -56,33 +56,32 @@ class WorkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $serverName = $input->getOption('server');
+        $hostname = $input->getOption('hostname');
         list($host, $port) = explode(':', $input->getOption('master'));
         $pure = new Client($port, $host);
 
         try {
-            $server = $this->deployer->servers->get($serverName);
-            $environment = isset($this->deployer->environments[$serverName]) ? $this->deployer->environments[$serverName] : new Environment();
-            $output = new RemoteOutput($output, $pure, $serverName);
+            $host = $this->deployer->hosts->get($hostname);
+            $output = new RemoteOutput($output, $pure, $hostname);
 
             while ($pure->ping()) {
                 // Get task to do
-                $taskName = $pure->map('tasks_to_do')->get($serverName);
+                $taskName = $pure->map('tasks_to_do')->get($hostname);
 
                 if (null !== $taskName) {
                     $task = $this->deployer->tasks->get($taskName);
 
                     try {
-                        $task->run(new Context($server, $environment, $input, $output));
+                        $task->run(new Context($host, $input, $output));
                     } catch (NonFatalException $e) {
-                        $pure->queue('exception')->push([$serverName, get_class($e), $e->getMessage()]);
+                        $pure->queue('exception')->push([$hostname, get_class($e), $e->getMessage()]);
                     }
 
-                    $pure->map('tasks_to_do')->delete($serverName);
+                    $pure->map('tasks_to_do')->delete($hostname);
                 }
             }
         } catch (\Exception $exception) {
-            $pure->queue('exception')->push([$serverName, get_class($exception), $exception->getMessage()]);
+            $pure->queue('exception')->push([$hostname, get_class($exception), $exception->getMessage()]);
         }
     }
 }

@@ -11,8 +11,8 @@ use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Exception\Exception;
 use Deployer\Exception\ForwardException;
-use Deployer\Server\Environment;
-use Deployer\Server\Local;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Pure\Server;
 use Pure\Storage\ArrayStorage;
@@ -44,14 +44,9 @@ class ParallelExecutor implements ExecutorInterface
     private $tasks;
 
     /**
-     * @var \Deployer\Server\ServerInterface[]
+     * @var Host[]
      */
-    private $servers;
-
-    /**
-     * @var \Deployer\Server\Environment[]
-     */
-    private $environments;
+    private $hosts;
 
     /**
      * @var \Symfony\Component\Console\Input\InputInterface
@@ -108,7 +103,7 @@ class ParallelExecutor implements ExecutorInterface
     private $tasksToDo = [];
 
     /**
-     * Check if current task was successfully finished on all server (no exception was triggered).
+     * Check if current task was successfully finished on all hosts (no exception was triggered).
      *
      * @var bool
      */
@@ -127,14 +122,9 @@ class ParallelExecutor implements ExecutorInterface
     private $lastException;
 
     /**
-     * @var Local
+     * @var Localhost
      */
     private $localhost;
-
-    /**
-     * @var Environment
-     */
-    private $localEnv;
 
     /**
      * @param InputDefinition $userDefinition
@@ -147,16 +137,14 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output)
+    public function run($tasks, $hosts, $input, $output)
     {
         $this->tasks = $tasks;
-        $this->servers = $servers;
-        $this->environments = $environments;
+        $this->hosts = $hosts;
         $this->input = $input;
         $this->output = new OutputWatcher($output);
         $this->informer = new Informer($this->output);
-        $this->localhost = new Local();
-        $this->localEnv = new Environment();
+        $this->localhost = new Localhost();
         $this->port = self::START_PORT;
 
         connect:
@@ -164,7 +152,7 @@ class ParallelExecutor implements ExecutorInterface
         $this->pure = new Server($this->port);
         $this->loop = $this->pure->getLoop();
 
-        // Start workers for each server.
+        // Start workers for each host.
         $this->loop->addTimer(0, [$this, 'startWorkers']);
 
         // Wait for output
@@ -199,7 +187,7 @@ class ParallelExecutor implements ExecutorInterface
     }
 
     /**
-     * Start workers, put master port, server name to run on, and options stuff.
+     * Start workers, put master port, hostname to run on, and options stuff
      */
     public function startWorkers()
     {
@@ -230,13 +218,13 @@ class ParallelExecutor implements ExecutorInterface
             }
         }
 
-        foreach ($this->servers as $serverName => $server) {
+        foreach ($this->hosts as $hostname => $host) {
             $process = new Process(
                 "php " . DEPLOYER_BIN .
                 (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
                 " worker " .
                 " --master 127.0.0.1:{$this->port}" .
-                " --server $serverName" .
+                " --hostname $hostname" .
                 " $input " .
                 " $verbosity" .
                 " &"
@@ -271,13 +259,13 @@ class ParallelExecutor implements ExecutorInterface
     public function catchExceptions()
     {
         while (count($this->exceptionStorage) > 0) {
-            list($serverName, $exceptionClass, $message) = $this->exceptionStorage->pop();
+            list($hostname, $exceptionClass, $message) = $this->exceptionStorage->pop();
 
             // Print exception message.
-            $this->informer->taskException($serverName, $exceptionClass, $message);
+            $this->informer->taskException($hostname, $exceptionClass, $message);
 
             // Save exception.
-            $this->lastException = new ForwardException($serverName, $exceptionClass, $message);
+            $this->lastException = new ForwardException($hostname, $exceptionClass, $message);
 
             // We got some exception, so not.
             $this->isSuccessfullyFinished = false;
@@ -292,10 +280,10 @@ class ParallelExecutor implements ExecutorInterface
                 // Finish all current worker tasks and stop loop.
                 $this->tasks = [];
 
-                // Worker will not mark this task as done (remove self server name from `tasks_to_do` list),
+                // Worker will not mark this task as done (remove self hostname from `tasks_to_do` list),
                 // so to finish current task execution we need to manually remove it from that list.
                 $taskToDoStorage = $this->pure->getStorage('tasks_to_do');
-                $taskToDoStorage->delete($serverName);
+                $taskToDoStorage->delete($hostname);
             }
         }
     }
@@ -317,19 +305,15 @@ class ParallelExecutor implements ExecutorInterface
                 $this->informer->startTask($taskName);
 
                 if ($task->isOnce()) {
-                    $task->run(new Context($this->localhost, $this->localEnv, $this->input, $this->output));
+                    $task->run(new Context($this->localhost, $this->input, $this->output));
                     $this->informer->endTask();
                 } else {
                     $this->tasksToDo = [];
 
-                    foreach ($this->servers as $serverName => $server) {
-                        if ($task->isOnServer($serverName)) {
-                            if (!isset($this->environments[$serverName])) {
-                                $this->environments[$serverName] = new Environment();
-                            }
-
-                            // Start task on $serverName.
-                            $this->tasksToDo[$serverName] = $taskName;
+                    foreach ($this->hosts as $hostname => $host) {
+                        if ($task->isOnServer($hostname)) {
+                            // Start task on host
+                            $this->tasksToDo[$hostname] = $taskName;
                         }
                     }
 
@@ -354,10 +338,10 @@ class ParallelExecutor implements ExecutorInterface
         if ($this->wait) {
             $taskToDoStorage = $this->pure->getStorage('tasks_to_do');
 
-            foreach ($this->tasksToDo as $serverName => $taskName) {
-                if (!$taskToDoStorage->has($serverName)) {
-                    $this->informer->endOnServer($serverName);
-                    unset($this->tasksToDo[$serverName]);
+            foreach ($this->tasksToDo as $hostname => $taskName) {
+                if (!$taskToDoStorage->has($hostname)) {
+                    $this->informer->endOnServer($hostname);
+                    unset($this->tasksToDo[$hostname]);
                 }
             }
 

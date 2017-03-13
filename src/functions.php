@@ -30,19 +30,19 @@ use Symfony\Component\Finder\Finder;
 // execution stage. They are acts like two different function, but have same name. Example of such function
 // is set() func. This function determine in which stage it was called by Context::get() method.
 
-function host($hostname)
+function host($hostname, $alias = null)
 {
     $deployer = Deployer::get();
     $host = new Host($hostname);
-    $deployer->hosts->set($hostname, $host);
+    $deployer->hosts->set($alias ?: $hostname, $host);
     return $host;
 }
 
-function localhost()
+function localhost($alias = 'localhost')
 {
     $deployer = Deployer::get();
     $host = new Localhost();
-    $deployer->hosts->set('localhost', $host);
+    $deployer->hosts->set($alias, $host);
     return $host;
 }
 

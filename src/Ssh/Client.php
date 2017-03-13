@@ -106,6 +106,17 @@ class Client
         return $output;
     }
 
+    public function upload(Host $host, $source, $destination)
+    {
+
+    }
+
+    public function download(Host $host, $source, $destination)
+    {
+
+    }
+
+
     private function writeln($type, $hostname, $output)
     {
         $output = $this->filterOutput($output);

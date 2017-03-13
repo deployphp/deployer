@@ -44,11 +44,11 @@ class StageStrategy implements StageStrategyInterface
 
         if (!empty($stage)) {
 
-            // Look for hosts which has in set `stages` current stage name.
-            foreach ($this->hosts as $name => $host) {
+            // Look for hosts which has stage with current stage name.
+            foreach ($this->hosts as $hostname => $host) {
                 // If server does not have any stage category, skip them
-                if (in_array($stage, $host->get('stages', []), true)) {
-                    $hosts[$name] = $this->hosts->get($name);
+                if ($stage === $host->get('stage', false)) {
+                    $hosts[$hostname] = $this->hosts->get($hostname);
                 }
             }
 
@@ -63,9 +63,9 @@ class StageStrategy implements StageStrategyInterface
             }
         } else {
             // Otherwise run on all servers what does not specify stage.
-            foreach ($this->hosts as $name => $host) {
-                if (!$host->has('stages')) {
-                    $hosts[$name] = $this->hosts->get($name);
+            foreach ($this->hosts as $hostname => $host) {
+                if (!$host->has('stage')) {
+                    $hosts[$hostname] = $this->hosts->get($hostname);
                 }
             }
         }

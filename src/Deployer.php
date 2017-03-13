@@ -25,9 +25,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console;
 
 /**
- * @property Task\TaskCollection|Task\Task[] tasks
- * @property Collection|Host\Host[] hosts
- * @property Collection config
+ * @property Task\TaskCollection|Task\Task[] $task
+ * @property Collection|Host\Host[] $hosts
+ * @property Collection $config
  */
 class Deployer extends Container
 {

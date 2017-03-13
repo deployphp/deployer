@@ -108,12 +108,10 @@ class Client
 
     public function upload(Host $host, $source, $destination)
     {
-
     }
 
     public function download(Host $host, $source, $destination)
     {
-
     }
 
 
@@ -171,7 +169,7 @@ class Client
         $options .= " -o ControlMaster=auto";
         $options .= " -o ControlPersist=60";
         $options .= " -o ControlPath=$controlPath";
-        
+
         $process = new Process("ssh $options -O check -S $controlPath $host 2>&1");
         $process->run();
 

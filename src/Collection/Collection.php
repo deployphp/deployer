@@ -29,24 +29,9 @@ class Collection implements CollectionInterface, \Countable
     public function get($name)
     {
         if ($this->has($name)) {
-            if (strpos($name, '.') === false) {
-                return $this->collection[$name];
-            } else {
-                $parts = explode('.', $name);
-                $scope = &$this->collection;
-                $count = count($parts) - 1;
-                for ($i = 0; $i < $count; $i++) {
-                    if (!isset($scope[$parts[$i]])) {
-                        return null;
-                    }
-                    $scope = &$scope[$parts[$i]];
-                }
-                return isset($scope[$parts[$i]]) ? $scope[$parts[$i]] : null;
-            }
+            return $this->collection[$name];
         } else {
-            $class = explode('\\', static::class);
-            $class = end($class);
-            throw new \RuntimeException("Object `$name` does not exist in $class.");
+            return $this->throwNotFound($name);
         }
     }
 
@@ -55,12 +40,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function has($name)
     {
-        if (strpos($name, '.') === false) {
-            return array_key_exists($name, $this->collection);
-        } else {
-            list($head, ) = explode('.', $name);
-            return array_key_exists($head, $this->collection);
-        }
+        return array_key_exists($name, $this->collection);
     }
 
     /**
@@ -125,5 +105,13 @@ class Collection implements CollectionInterface, \Countable
     public function toArray()
     {
         return iterator_to_array($this);
+    }
+
+    /**
+     * @param string $name
+     */
+    protected function throwNotFound($name)
+    {
+        throw new \InvalidArgumentException("`$name` not found in collection.");
     }
 }

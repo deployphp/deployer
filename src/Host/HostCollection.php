@@ -5,17 +5,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Task;
+namespace Deployer\Host;
 
 use Deployer\Collection\Collection;
 
 /**
- * @method Task get($name)
+ * @method Host get($name)
  */
-class TaskCollection extends Collection
+class HostCollection extends Collection
 {
     protected function throwNotFound($name)
     {
-        throw new \InvalidArgumentException("Task `$name` not found");
+        throw new \InvalidArgumentException("Host `$name` not found");
     }
 }

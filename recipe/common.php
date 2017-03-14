@@ -7,7 +7,7 @@
 
 namespace Deployer;
 
-require __DIR__ . '/deploy/config.php';
+require __DIR__ . '/config/dump.php';
 require __DIR__ . '/deploy/prepare.php';
 require __DIR__ . '/deploy/lock.php';
 require __DIR__ . '/deploy/release.php';
@@ -21,8 +21,18 @@ require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
 
+use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+
+/**
+ * Facts
+ */
+
+set('hostname', function () {
+    return Context::get()->getHost()->getHostname();
+});
+
 
 /**
  * Configuration
@@ -110,6 +120,7 @@ set('bin/composer', function () {
 set('bin/symlink', function () {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
+
 
 /**
  * Default arguments and options.

@@ -11,24 +11,24 @@ use Deployer\Task\Context;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-desc('Print server configuration');
+desc('Print host configuration');
 task('config:dump', function () {
-    $server = Context::get()->getHost();
-    $config = Deployer::get()->config;
-    $env = Context::get()->getConfiguration();
+    $host = Context::get()->getHost();
+    $common = Deployer::get()->config;
+    $config = Context::get()->getConfiguration();
     $dump = [];
 
-    foreach ($config as $name => $value) {
+    foreach ($common as $name => $value) {
         try {
-            $env->get($name);
+            $config->get($name);
         } catch (\RuntimeException $exception) {
             // Ignore fails.
             $message = 'Failed to dump';
-            $env->set($name, output()->isDecorated() ? "\033[1;30m$message\033[0m" : $message);
+            $config->set($name, output()->isDecorated() ? "\033[1;30m$message\033[0m" : $message);
         }
     }
 
-    foreach ($env->getValues() as $name => $value) {
+    foreach ($config->getValues() as $name => $value) {
         if (is_array($value)) {
             $value = json_encode($value, JSON_PRETTY_PRINT);
         } elseif (is_bool($value)) {
@@ -39,7 +39,7 @@ task('config:dump', function () {
     }
 
     $io = new SymfonyStyle(input(), output());
-    $io->section("[{$server->getConfiguration()->getName()}] {$server->getConfiguration()->getHost()}");
+    $io->section("[{$host->getHostname()}]");
 
     $table = new Table(output());
     $table

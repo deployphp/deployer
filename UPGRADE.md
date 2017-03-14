@@ -1,3 +1,40 @@
+# Upgrade from 4.x to 5.x
+
+1. Servers to Hosts
+   
+   * Refactor `server($name, $hostname)` to `host($hostname)`
+   * Refactor `localServer($name)` to `localhost()`
+   * Rename `serverList($file)` to `inventory($file)`
+  
+2. Configuration options
+
+   * Rename `{{server.name}}` to `{{hostname}}`
+   
+3. DotArray syntax
+
+   In v5 access to nested arrays in config via dot notation was removed. 
+   If you was using it, consider to move to plain config options.
+   
+   Refactor this:
+   
+   ```php
+   set('a', ['b' => 1]);
+   
+   // ...
+   
+   get('a.b');
+   ```
+   
+   To:
+   
+   ```php
+   set('a_b', 1);
+   
+   // ...
+   
+   get('a_b');
+   ```
+
 # Upgrade from 3.x to 4.x
 
 1. Namespace for functions

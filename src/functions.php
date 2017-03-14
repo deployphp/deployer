@@ -13,6 +13,7 @@ use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
 use Deployer\Type\Result;
+use Deployer\Utility\Proxy;
 use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,12 +31,22 @@ use Symfony\Component\Finder\Finder;
 // execution stage. They are acts like two different function, but have same name. Example of such function
 // is set() func. This function determine in which stage it was called by Context::get() method.
 
-function host($hostname, $alias = null)
+function host(...$hostnames)
 {
     $deployer = Deployer::get();
-    $host = new Host($hostname);
-    $deployer->hosts->set($alias ?: $hostname, $host);
-    return $host;
+
+    if (count($hostnames) === 1) {
+        $host = new Host($hostnames[0]);
+        $deployer->hosts->set($hostnames[0], $host);
+        return $host;
+    } else {
+        $hosts = array_map(function ($hostname) use ($deployer) {
+            $host = new Host($hostname);
+            $deployer->hosts->set($hostname, $host);
+            return $host;
+        }, $hostnames);
+        return new Proxy($hosts);
+    }
 }
 
 function localhost($alias = 'localhost')
@@ -51,7 +62,7 @@ function localhost($alias = 'localhost')
  *
  * @param string $file
  */
-function hostsList($file)
+function inventory($file)
 {
     $deployer = Deployer::get();
     $fileLoader = new FileLoader();

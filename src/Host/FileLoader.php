@@ -22,6 +22,10 @@ class FileLoader
      */
     public function load($file)
     {
+        if (!file_exists($file) || !is_readable($file)) {
+            throw new ConfigurationException("File `$file` doesn't exists or doesn't readable.");
+        }
+
         $data = Yaml::parse(file_get_contents($file));
 
         if (!is_array($data)) {

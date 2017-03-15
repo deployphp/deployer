@@ -59,7 +59,7 @@ trait ConfigurationAccessor
     }
 
     /**
-     * Add Configuration option
+     * Add configuration option
      *
      * @param string $name
      * @param array|bool|int|string $value
@@ -68,6 +68,35 @@ trait ConfigurationAccessor
     public function add(string $name, $value)
     {
         $this->configuration->add($name, $value);
+        return $this;
+    }
+
+    /**
+     * Set stage
+     *
+     * @param string $stage
+     * @return $this
+     */
+    public function stage(string $stage)
+    {
+        $this->configuration->set('stage', $stage);
+        return $this;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array ...$roles
+     * @return $this
+     */
+    public function roles(...$roles)
+    {
+        $this->configuration->set('roles', []);
+
+        foreach ($roles as $role) {
+            $this->configuration->add('roles', $role);
+        }
+
         return $this;
     }
 }

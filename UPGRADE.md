@@ -2,9 +2,10 @@
 
 1. Servers to Hosts
    
-   * Refactor `server($name, $hostname)` to `host($hostname)`
-   * Refactor `localServer($name)` to `localhost()`
-   * Rename `serverList($file)` to `inventory($file)`
+   * `server($name, $hostname)` to `host($hostname)`
+   * `localServer($name)` to `localhost()`
+   * `cluster($name, $nodes, $port)` to `hosts(...$hodes)`
+   * `serverList($file)` to `inventory($file)`
   
 2. Configuration options
 
@@ -34,6 +35,14 @@
    
    get('a_b');
    ```
+   
+4. Credentials 
+
+   Best practice in new v5 is to omit credentials for connection in `deploy.php` and write them in `~/.ssh/config` instead.
+ 
+   * `identityFile($publicKeyFile,, $privateKeyFile, $passPhrase)` to `identityFile($privateKeyFile)`
+   * `pemFile($pemFile)` to `identityFile($pemFile)`
+   * `forwardAgent()` to `forwardAgent(true)`
 
 # Upgrade from 3.x to 4.x
 

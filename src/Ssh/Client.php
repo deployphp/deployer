@@ -99,16 +99,34 @@ class Client
         return $output;
     }
 
+    /**
+     * @param Host $host
+     * @param $source
+     * @param $destination
+     * @param array $config
+     */
     public function upload(Host $host, $source, $destination, array $config = [])
     {
         $this->rsync($host->getHostname(), "$source", "$host:$destination", $config);
     }
 
+    /**
+     * @param Host $host
+     * @param $source
+     * @param $destination
+     * @param array $config
+     */
     public function download(Host $host, $source, $destination, array $config = [])
     {
         $this->rsync($host->getHostname(), "$host:$source", "$destination", $config);
     }
 
+    /**
+     * @param $hostname
+     * @param $source
+     * @param $destination
+     * @param array $config
+     */
     public function rsync($hostname, $source, $destination, array $config = [])
     {
         $defaults = [
@@ -125,7 +143,6 @@ class Client
             ->setTimeout($config['timeout'])
             ->mustRun($this->callback($hostname));
     }
-
 
     private function callback($hostname)
     {

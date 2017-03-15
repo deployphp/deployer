@@ -81,18 +81,11 @@ class Client
             ->setInput($command)
             ->setTimeout($config['timeout']);
 
-        $callback = function ($type, $buffer) use ($hostname) {
-            if ($this->output->isDebug()) {
-                foreach (explode("\n", rtrim($buffer)) as $line) {
-                    $this->writeln($type, $hostname, $line);
-                }
-            }
-        };
+        $process->run($this->callback($hostname));
 
-        $process->run($callback);
         $output = $this->filterOutput($process->getOutput());
-
         $exitCode = $this->parseExitStatus($process);
+
         if ($exitCode !== 0) {
             throw new RuntimeException(
                 $hostname,
@@ -106,14 +99,44 @@ class Client
         return $output;
     }
 
-    public function upload(Host $host, $source, $destination)
+    public function upload(Host $host, $source, $destination, array $config = [])
     {
+        $this->rsync($host->getHostname(), "$source", "$host:$destination", $config);
     }
 
-    public function download(Host $host, $source, $destination)
+    public function download(Host $host, $source, $destination, array $config = [])
     {
+        $this->rsync($host->getHostname(), "$host:$source", "$destination", $config);
     }
 
+    public function rsync($hostname, $source, $destination, array $config = [])
+    {
+        $defaults = [
+            'timeout' => null,
+        ];
+        $config = array_merge($defaults, $config);
+
+        if ($this->output->isVeryVerbose()) {
+            $this->output->writeln("[$hostname] <fg=cyan>></fg=cyan> rsync -azP $source $destination");
+        }
+
+        $process = new Process("rsync -azP $source $destination");
+        $process
+            ->setTimeout($config['timeout'])
+            ->mustRun($this->callback($hostname));
+    }
+
+
+    private function callback($hostname)
+    {
+        return function ($type, $buffer) use ($hostname) {
+            if ($this->output->isDebug()) {
+                foreach (explode("\n", rtrim($buffer)) as $line) {
+                    $this->writeln($type, $hostname, $line);
+                }
+            }
+        };
+    }
 
     private function writeln($type, $hostname, $output)
     {

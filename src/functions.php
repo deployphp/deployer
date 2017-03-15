@@ -22,7 +22,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Finder\Finder;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -329,62 +328,45 @@ function testLocally($command)
 }
 
 /**
- * Upload file or directory to current server.
- * @param string $local
- * @param string $remote
- * @throws \RuntimeException
+ * Upload file or directory to host
+ *
+ * @param string $source
+ * @param string $destination
+ * @param array $config
  */
-function upload($local, $remote)
+function upload($source, $destination, array $config = [])
 {
-    $server = Context::get()->getHost();
-    $local = parse($local);
-    $remote = parse($remote);
+    $client = Deployer::get()->getSshClient();
+    $host = Context::get()->getHost();
+    $source = parse($source);
+    $destination = parse($destination);
 
-    if (is_file($local)) {
-        writeln("Upload file <info>$local</info> to <info>$remote</info>");
-
-        $server->upload($local, $remote);
-    } elseif (is_dir($local)) {
-        writeln("Upload from <info>$local</info> to <info>$remote</info>");
-
-        $finder = new Finder();
-        $files = $finder
-            ->files()
-            ->ignoreUnreadableDirs()
-            ->ignoreVCS(true)
-            ->ignoreDotFiles(false)
-            ->in($local);
-
-        /** @var $file \Symfony\Component\Finder\SplFileInfo */
-        foreach ($files as $file) {
-            if (isDebug()) {
-                writeln("Uploading <info>{$file->getRealPath()}</info>");
-            }
-
-            $server->upload(
-                $file->getRealPath(),
-                $remote . '/' . $file->getRelativePathname()
-            );
-        }
+    if ($host instanceof Localhost) {
+        $client->rsync($host->getHostname(), $source, $destination, $config);
     } else {
-        throw new \RuntimeException("Uploading path '$local' does not exist.");
+        $client->upload($host, $source, $destination, $config);
     }
 }
 
 /**
- * Download file from remote server.
+ * Download file or directory from host
  *
- * @param string $local
- * @param string $remote
+ * @param string $destination
+ * @param string $source
+ * @param array $config
  */
-function download($local, $remote)
+function download($source, $destination, array $config = [])
 {
-    $server = Context::get()->getHost();
-    $local = parse($local);
-    $remote = parse($remote);
+    $client = Deployer::get()->getSshClient();
+    $host = Context::get()->getHost();
+    $destination = parse($destination);
+    $source = parse($source);
 
-    writeln("Download file <info>$remote</info> to <info>$local</info>");
-    $server->download($local, $remote);
+    if ($host instanceof Localhost) {
+        $client->rsync($host->getHostname(), $source, $destination, $config);
+    } else {
+        $client->download($host, $source, $destination, $config);
+    }
 }
 
 /**

@@ -51,6 +51,12 @@ abstract class TestCase extends BaseTestCase
         self::cleanUp();
         mkdir(self::$deployPath);
         self::$deployPath = realpath(self::$deployPath);
+
+        // Init repository
+        $repository = __DIR__ . '/../fixture/repository';
+        \exec("cd $repository && git init");
+        \exec("cd $repository && git add .");
+        \exec("cd $repository && git commit -m 'init commit'");
     }
 
     public static function tearDownAfterClass()

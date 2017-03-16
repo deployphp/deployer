@@ -1,7 +1,5 @@
 language: php
 
-sudo: required
-
 php:
   - 7.0
   - 7.1
@@ -16,8 +14,6 @@ env:
     - COMPOSER_FLAGS="--prefer-stable"
 
 install:
-  - eval `ssh-agent -s`
-  - test/travis/setup-secure-shell.sh
   - composer self-update
   - composer update --no-interaction --prefer-source $COMPOSER_FLAGS
 

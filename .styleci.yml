@@ -5,5 +5,5 @@ enabled:
   - no_whitespace_in_blank_line
 
 finder:
-  exclude:
+  not-name:
     - "helpers.php"

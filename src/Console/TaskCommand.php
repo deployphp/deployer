@@ -69,7 +69,7 @@ class TaskCommand extends Command
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
 
         if (!isset($stage)) {
-          $stage = $this->deployer->getStageStrategy()->getDefaultStage();
+            $stage = $this->deployer->getStageStrategy()->getDefaultStage();
         }
 
         $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));

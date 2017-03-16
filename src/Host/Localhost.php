@@ -7,14 +7,9 @@
 
 namespace Deployer\Host;
 
-use Deployer\Utility\ProcessOutputPrinter;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
-
 class Localhost
 {
     use ConfigurationAccessor;
-    use ProcessOutputPrinter;
 
     public function __construct()
     {
@@ -27,24 +22,5 @@ class Localhost
     public function getHostname()
     {
         return 'localhost';
-    }
-
-    public function exec(OutputInterface $output, string $command, array $config = [])
-    {
-        $hostname = $this->getHostname();
-        $defaults = [
-            'timeout' => 300,
-            'tty' => false,
-        ];
-        $config = array_merge($defaults, $config);
-
-
-        $process = new Process($command);
-        $process
-            ->setTimeout($config['timeout'])
-            ->setTty($config['tty'])
-            ->mustRun($this->callback($output, $hostname));
-
-        return $process->getOutput();
     }
 }

@@ -16,6 +16,7 @@ use Deployer\Console\WorkerCommand;
 use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Utility\Config;
+use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Monolog\Handler\NullHandler;
@@ -32,6 +33,7 @@ use Symfony\Component\Console;
  * @property Host\HostCollection|Collection|Host\Host[] hosts
  * @property Collection config
  * @property Rsync rsync
+ * @property ProcessRunner processRunner
  */
 class Deployer extends Container
 {
@@ -83,6 +85,9 @@ class Deployer extends Container
         };
         $this['rsync'] = function ($c) {
             return new Rsync($c['output']);
+        };
+        $this['processRunner'] = function () {
+            return new ProcessRunner();
         };
         $this['tasks'] = function () {
             return new Task\TaskCollection();

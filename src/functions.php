@@ -246,6 +246,7 @@ function workingPath()
 function run($command, $options = [])
 {
     $client = Deployer::get()->getSshClient();
+    $process = Deployer::get()->processRunner;
     $output = Context::get()->getOutput();
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
@@ -257,12 +258,8 @@ function run($command, $options = [])
         $command = "cd $workingPath && ($command)";
     }
 
-    if (isVeryVerbose()) {
-        writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
-    }
-
     if ($host instanceof Localhost) {
-        $output = $host->exec($output, $command, $options);
+        $output = $process->run($output, $hostname, $command, $options);
     } else {
         $output = $client->run($host, $command, $options);
     }
@@ -279,9 +276,9 @@ function run($command, $options = [])
  */
 function runLocally($command, $options = [])
 {
-    $output = Context::get()->getOutput();
-    $host = new Localhost();
-    $hostname = $host->getHostname();
+    $process = Deployer::get()->processRunner;
+    $output = output();
+    $hostname = 'localhost';
 
     $workingPath = workingPath();
 
@@ -289,11 +286,7 @@ function runLocally($command, $options = [])
         $command = "cd $workingPath && ($command)";
     }
 
-    if (isVeryVerbose()) {
-        writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
-    }
-
-    $output = $host->exec($output, $command, $options);
+    $output = $process->run($output, $hostname, $command, $options);
 
     return new Result($output);
 }

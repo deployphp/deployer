@@ -55,6 +55,10 @@ class Client
         ];
         $config = array_merge($defaults, $config);
 
+        if ($this->output->isVeryVerbose()) {
+            $this->output->writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
+        }
+
         $options = $host->sshOptions();
 
         // When tty need to be allocated, don't use multiplexing,

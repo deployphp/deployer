@@ -13,12 +13,16 @@ require 'recipe/common.php';
 // Configuration
 
 set('repository', __DIR__ . '/../fixture/repository');
+set('http_user', getenv('USER'));
+
 set('shared_files', [
     'app/config/parameters.yml',
 ]);
+
 set('shared_dirs', [
     'app/logs',
 ]);
+
 set('writable_dirs', [
     'app/cache',
 ]);

@@ -56,6 +56,8 @@ abstract class DepCase extends BaseTestCase
         $repository = __DIR__ . '/../fixture/repository';
         \exec("cd $repository && git init");
         \exec("cd $repository && git add .");
+        \exec("cd $repository && git config user.name 'John Smith'");
+        \exec("cd $repository && git config user.email 'john.smith@example.com'");
         \exec("cd $repository && git commit -m 'init commit'");
     }
 

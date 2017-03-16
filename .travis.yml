@@ -13,6 +13,10 @@ env:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS="--prefer-stable"
 
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y acl
+
 install:
   - composer self-update
   - composer update --no-interaction --prefer-source $COMPOSER_FLAGS

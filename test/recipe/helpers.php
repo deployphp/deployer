@@ -16,8 +16,8 @@ use Symfony\Component\Process\Process;
 
 function exec($command)
 {
-    if (!empty(TestCase::$deployPath)) {
-        $command = 'cd ' . TestCase::$deployPath . ' && ' . $command;
+    if (!empty(DepCase::$deployPath)) {
+        $command = 'cd ' . DepCase::$deployPath . ' && ' . $command;
     }
 
     $process = new Process($command);
@@ -27,7 +27,7 @@ function exec($command)
     return trim($process->getOutput());
 }
 
-abstract class TestCase extends BaseTestCase
+abstract class DepCase extends BaseTestCase
 {
     /**
      * @var ApplicationTester

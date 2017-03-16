@@ -7,7 +7,7 @@
 
 namespace Deployer;
 
-class DeployTest extends TestCase
+class DeployTest extends DepCase
 {
     protected function load()
     {

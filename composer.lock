@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1f233f5ac3b1dc786be83cd6d8d590a",
+    "content-hash": "f25f0795084db5fdf86e5b62dd1ed184",
     "packages": [
         {
             "name": "elfet/pure",
@@ -2765,7 +2765,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.6.0"
+        "php": "~7.0"
     },
     "platform-dev": []
 }

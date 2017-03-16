@@ -1,5 +1,4 @@
 <?php
-// Search and include "autoload" file
 $loaded = false;
 
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
@@ -17,8 +16,3 @@ if (!$loaded) {
         'php composer.phar install' . PHP_EOL
     );
 }
-
-// Include common files
-require_once __DIR__ . '/../src/functions.php';
-require_once __DIR__ . '/src/Helper/DeployerHelper.php';
-require_once __DIR__ . '/recipe/Helper/RecipeTester.php';

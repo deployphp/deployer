@@ -28,8 +28,8 @@ use Symfony\Component\Console;
 /**
  * Deployer class represents DI container for configuring
  *
- * @property Task\TaskCollection|Task\Task[] task
- * @property Collection|Host\Host[] hosts
+ * @property Task\TaskCollection|Task\Task[] tasks
+ * @property Host\HostCollection|Collection|Host\Host[] hosts
  * @property Collection config
  * @property Rsync rsync
  */
@@ -88,7 +88,7 @@ class Deployer extends Container
             return new Task\TaskCollection();
         };
         $this['hosts'] = function () {
-            return new Collection();
+            return new Host\HostCollection();
         };
         $this['scriptManager'] = function ($c) {
             return new Task\ScriptManager($c['tasks']);

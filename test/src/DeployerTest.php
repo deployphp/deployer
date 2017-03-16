@@ -7,8 +7,11 @@
 
 namespace Deployer;
 
+use Deployer\Collection\CollectionInterface;
 use Deployer\Console\Application;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class DeployerTest extends TestCase
 {
@@ -17,8 +20,8 @@ class DeployerTest extends TestCase
     protected function setUp()
     {
         $console = new Application();
-        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
-        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+        $input = $this->createMock(InputInterface::class);
+        $output = $this->createMock(OutputInterface::class);
         $this->deployer = new Deployer($console, $input, $output);
     }
 
@@ -28,18 +31,17 @@ class DeployerTest extends TestCase
         unset($this->deployer);
     }
 
+    public function testInstance()
+    {
+        $this->assertEquals($this->deployer, Deployer::get());
+    }
+
     public function collections()
     {
         return [
             ['tasks'],
-            ['servers'],
-            ['environments'],
+            ['hosts'],
         ];
-    }
-
-    public function testInstance()
-    {
-        $this->assertEquals($this->deployer, Deployer::get());
     }
 
     /**
@@ -47,7 +49,7 @@ class DeployerTest extends TestCase
      */
     public function testCollections($collection)
     {
-        $this->assertInstanceOf('Deployer\Collection\CollectionInterface', $this->deployer->{$collection});
+        $this->assertInstanceOf(CollectionInterface::class, $this->deployer->{$collection});
     }
 
     /**
@@ -58,13 +60,9 @@ class DeployerTest extends TestCase
         $this->deployer->some_collection;
     }
 
-    /**
-     * @expectedException
-     * @expectedExceptionMessage "Key `no_name` is invalid"
-     */
     public function testGetUndefinedDefault()
     {
-        Deployer::getDefault('no_name');
+        $this->assertNull(Deployer::getDefault('no_name'));
     }
 
     public function testSetDefault()

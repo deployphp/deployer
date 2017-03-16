@@ -16,3 +16,5 @@ if (!$loaded) {
         'php composer.phar install' . PHP_EOL
     );
 }
+
+require_once __DIR__ . '/recipe/helpers.php';

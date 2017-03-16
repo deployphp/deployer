@@ -1,3 +1,4 @@
 /vendor/
+/test/recipe/.localhost/
 .php_cs.cache
 *.phar

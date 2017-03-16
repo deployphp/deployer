@@ -27,7 +27,7 @@ function exec($command)
     return trim($process->getOutput());
 }
 
-abstract class TestCase extends BaseTestCase
+abstract class helpers extends BaseTestCase
 {
     /**
      * @var ApplicationTester

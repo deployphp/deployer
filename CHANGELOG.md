@@ -2,6 +2,7 @@
 
 ## master
 [v4.3.0...master](https://github.com/deployphp/deployer/compare/v4.3.0...master)
+- Fixed using the default_stage when no stage has been provided
 
 --
 

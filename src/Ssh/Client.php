@@ -10,11 +10,14 @@ namespace Deployer\Ssh;
 use Deployer\Exception\Exception;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
+use Deployer\Utility\ProcessOutputPrinter;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 class Client
 {
+    use ProcessOutputPrinter;
+
     /**
      * @var OutputInterface
      */
@@ -81,7 +84,7 @@ class Client
             ->setInput($command)
             ->setTimeout($config['timeout']);
 
-        $process->run($this->callback($hostname));
+        $process->run($this->callback($this->output, $hostname));
 
         $output = $this->filterOutput($process->getOutput());
         $exitCode = $this->parseExitStatus($process);
@@ -97,89 +100,6 @@ class Client
         }
 
         return $output;
-    }
-
-    /**
-     * @param Host $host
-     * @param $source
-     * @param $destination
-     * @param array $config
-     */
-    public function upload(Host $host, $source, $destination, array $config = [])
-    {
-        $this->rsync($host->getHostname(), "$source", "$host:$destination", $config);
-    }
-
-    /**
-     * @param Host $host
-     * @param $source
-     * @param $destination
-     * @param array $config
-     */
-    public function download(Host $host, $source, $destination, array $config = [])
-    {
-        $this->rsync($host->getHostname(), "$host:$source", "$destination", $config);
-    }
-
-    /**
-     * @param $hostname
-     * @param $source
-     * @param $destination
-     * @param array $config
-     */
-    public function rsync($hostname, $source, $destination, array $config = [])
-    {
-        $defaults = [
-            'timeout' => null,
-        ];
-        $config = array_merge($defaults, $config);
-
-        if ($this->output->isVeryVerbose()) {
-            $this->output->writeln("[$hostname] <fg=cyan>></fg=cyan> rsync -azP $source $destination");
-        }
-
-        $process = new Process("rsync -azP $source $destination");
-        $process
-            ->setTimeout($config['timeout'])
-            ->mustRun($this->callback($hostname));
-    }
-
-    private function callback($hostname)
-    {
-        return function ($type, $buffer) use ($hostname) {
-            if ($this->output->isDebug()) {
-                foreach (explode("\n", rtrim($buffer)) as $line) {
-                    $this->writeln($type, $hostname, $line);
-                }
-            }
-        };
-    }
-
-    private function writeln($type, $hostname, $output)
-    {
-        $output = $this->filterOutput($output);
-
-        // Omit empty lines
-        if (empty($output)) {
-            return;
-        }
-
-        if ($this->output->isDecorated()) {
-            if ($type === Process::ERR) {
-                $output = "[$hostname] \033[0;31m<\e[0;90m $output\033[0m";
-            } else {
-                $output = "[$hostname] \033[0;90m< $output\033[0m";
-            }
-        } else {
-            $output = "[$hostname] < $output";
-        }
-
-        $this->output->writeln($output, OutputInterface::OUTPUT_RAW);
-    }
-
-    private function filterOutput($output)
-    {
-        return preg_replace('/\[exit_code:(.*?)\]/', '', $output);
     }
 
     private function parseExitStatus(Process $process)
@@ -214,7 +134,7 @@ class Client
         $process->run();
 
         if (!preg_match('/Master running/', $process->getOutput())) {
-            $this->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+            $this->writeln($this->output, Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
         }
 
         return $options;

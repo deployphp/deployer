@@ -17,6 +17,7 @@ use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Utility\Config;
 use Deployer\Utility\Reporter;
+use Deployer\Utility\Rsync;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -25,9 +26,12 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Console;
 
 /**
- * @property Task\TaskCollection|Task\Task[] $task
- * @property Collection|Host\Host[] $hosts
- * @property Collection $config
+ * Deployer class represents DI container for configuring
+ *
+ * @property Task\TaskCollection|Task\Task[] task
+ * @property Collection|Host\Host[] hosts
+ * @property Collection config
+ * @property Rsync rsync
  */
 class Deployer extends Container
 {
@@ -76,6 +80,9 @@ class Deployer extends Container
 
         $this['sshClient'] = function ($c) {
             return new Ssh\Client($c['output'], $c['config']['ssh_multiplexing']);
+        };
+        $this['rsync'] = function ($c) {
+            return new Rsync($c['output']);
         };
         $this['tasks'] = function () {
             return new Task\TaskCollection();

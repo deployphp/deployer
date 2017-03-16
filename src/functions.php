@@ -336,15 +336,15 @@ function testLocally($command)
  */
 function upload($source, $destination, array $config = [])
 {
-    $client = Deployer::get()->getSshClient();
+    $rsync = Deployer::get()->rsync;
     $host = Context::get()->getHost();
     $source = parse($source);
     $destination = parse($destination);
 
     if ($host instanceof Localhost) {
-        $client->rsync($host->getHostname(), $source, $destination, $config);
+        $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
-        $client->upload($host, $source, $destination, $config);
+        $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
     }
 }
 
@@ -357,15 +357,15 @@ function upload($source, $destination, array $config = [])
  */
 function download($source, $destination, array $config = [])
 {
-    $client = Deployer::get()->getSshClient();
+    $rsync = Deployer::get()->rsync;
     $host = Context::get()->getHost();
-    $destination = parse($destination);
     $source = parse($source);
+    $destination = parse($destination);
 
     if ($host instanceof Localhost) {
-        $client->rsync($host->getHostname(), $source, $destination, $config);
+        $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
-        $client->download($host, $source, $destination, $config);
+        $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
     }
 }
 

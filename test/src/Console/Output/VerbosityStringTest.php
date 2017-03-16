@@ -7,9 +7,10 @@
 
 namespace Deployer\Console\Output;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class VerbosityStringTest extends \PHPUnit_Framework_TestCase
+class VerbosityStringTest extends TestCase
 {
     public function verbosity()
     {

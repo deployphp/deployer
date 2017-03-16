@@ -1,6 +1,3 @@
-.php_cs.cache
 /vendor/
-/test/localhost
+.php_cs.cache
 *.phar
-/.vagrant
-deploy.php

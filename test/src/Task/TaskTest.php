@@ -21,7 +21,7 @@ class TaskTest extends TestCase
             $mock->callback();
         });
 
-        $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
+        $context = $this->getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
 
         $task->run($context);
 
@@ -68,7 +68,7 @@ class TaskTest extends TestCase
 
     public function testInit()
     {
-        $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
+        $context = $this->getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
 
         // Test create task with [$object, 'method']
         $mock1 = $this->getMockBuilder('stdClass')->setMethods(['callback'])->getMock();

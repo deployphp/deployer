@@ -7,8 +7,7 @@
 
 namespace Deployer\Collection;
 
-use Deployer\Server\EnvironmentCollection;
-use Deployer\Server\ServerCollection;
+use Deployer\Host\HostCollection;
 use Deployer\Task\TaskCollection;
 use PHPUnit\Framework\TestCase;
 
@@ -19,8 +18,7 @@ class CollectionTest extends TestCase
         return [
             [new Collection()],
             [new TaskCollection()],
-            [new ServerCollection()],
-            [new EnvironmentCollection()],
+            [new HostCollection()],
         ];
     }
 
@@ -29,7 +27,7 @@ class CollectionTest extends TestCase
      */
     public function testCollection($collection)
     {
-        $this->assertInstanceOf('Deployer\Collection\CollectionInterface', $collection);
+        $this->assertInstanceOf(CollectionInterface::class, $collection);
 
         $object = new \stdClass();
         $collection->set('object', $object);
@@ -53,11 +51,7 @@ class CollectionTest extends TestCase
      */
     public function testException($collection)
     {
-        $class = explode('\\', get_class($collection));
-        $class = end($class);
-        $name  = 'unexpected';
-
-        $this->setExpectedException(\RuntimeException::class, "Object `$name` does not exist in $class.");
+        $this->expectException(\InvalidArgumentException::class);
         $collection->get('unexpected');
     }
 

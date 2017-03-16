@@ -67,7 +67,7 @@ RESOURCE;
     private function createMockForFileResourceTemplate()
     {
         return $this->getMockForAbstractClass(
-            'Deployer\Initializer\Template\Template',
+            Template::class,
             [],
             '',
             true,

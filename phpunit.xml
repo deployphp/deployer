@@ -12,9 +12,9 @@
         <testsuite name="Source">
             <directory>test/src/</directory>
         </testsuite>
-        <testsuite name="Recipes">
-            <directory>test/recipe/</directory>
-        </testsuite>
+        <!--<testsuite name="Recipes">-->
+            <!--<directory>test/recipe/</directory>-->
+        <!--</testsuite>-->
     </testsuites>
     <filter>
         <blacklist>

@@ -7,23 +7,31 @@
 
 namespace Deployer\Task;
 
+use Deployer\Host\Configuration;
+use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class ContextTest extends TestCase
 {
     public function testContext()
     {
-        $server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
-        $env = $this->getMockBuilder('Deployer\Server\Environment')->disableOriginalConstructor()->getMock();
-        $input = $this->getMockBuilder('Symfony\Component\Console\Input\InputInterface')->disableOriginalConstructor()->getMock();
-        $output = $this->getMockBuilder('Symfony\Component\Console\Output\OutputInterface')->disableOriginalConstructor()->getMock();
+        $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
+        $host
+            ->expects($this->once())
+            ->method('getConfiguration')
+            ->willReturn($this->createMock(Configuration::class));
 
-        $context = new Context($server, $env, $input, $output);
+        $input = $this->getMockBuilder(InputInterface::class)->disableOriginalConstructor()->getMock();
+        $output = $this->getMockBuilder(OutputInterface::class)->disableOriginalConstructor()->getMock();
 
-        $this->assertInstanceOf('Deployer\Server\ServerInterface', $context->getHost());
-        $this->assertInstanceOf('Deployer\Server\Environment', $context->getConfiguration());
-        $this->assertInstanceOf('Symfony\Component\Console\Input\InputInterface', $context->getInput());
-        $this->assertInstanceOf('Symfony\Component\Console\Output\OutputInterface', $context->getOutput());
+        $context = new Context($host, $input, $output);
+
+        $this->assertInstanceOf(Host::class, $context->getHost());
+        $this->assertInstanceOf(Configuration::class, $context->getConfiguration());
+        $this->assertInstanceOf(InputInterface::class, $context->getInput());
+        $this->assertInstanceOf(OutputInterface::class, $context->getOutput());
 
         Context::push($context);
 

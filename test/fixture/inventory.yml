@@ -1,0 +1,19 @@
+app.deployer.org:
+  stage: production
+  roles: app
+  deploy_path: ~/app
+
+db1.deployer.org:
+  stage: production
+  roles: db
+
+db2.deployer.org:
+  stage: production
+  roles: db
+
+beta.deployer.org:
+  stage: beta
+  roles:
+    - app
+    - db
+  deploy_path: ~/app

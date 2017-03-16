@@ -14,7 +14,7 @@ trait ProcessOutputPrinter
 {
     /**
      * @param OutputInterface $output
-     * @param string $hostname for ddbugging
+     * @param string $hostname for debugging
      * @return \Closure
      */
     protected function callback(OutputInterface $output, string $hostname)

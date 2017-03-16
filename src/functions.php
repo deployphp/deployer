@@ -14,7 +14,6 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
 use Deployer\Type\Result;
 use Deployer\Utility\Proxy;
-use Monolog\Logger;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -385,19 +384,6 @@ function writeln($message)
 function write($message)
 {
     output()->write($message);
-}
-
-/**
- * @param string $message
- * @param int $level
- */
-function logger($message, $level = Logger::DEBUG)
-{
-    if (is_array($message)) {
-        $message = join("\n", $message);
-    }
-
-    Deployer::get()->getLogger()->log($level, $message);
 }
 
 /**

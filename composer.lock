@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f25f0795084db5fdf86e5b62dd1ed184",
+    "content-hash": "c3673909b1690db92ec28f732f4bbf4f",
     "packages": [
         {
             "name": "elfet/pure",

@@ -16,7 +16,9 @@ use Deployer\Task\GroupTask;
 use Deployer\Task\Task;
 use Deployer\Type\Result;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class FunctionsTest extends TestCase
@@ -50,8 +52,8 @@ class FunctionsTest extends TestCase
     {
         $this->console = new Application();
 
-        $this->input = $this->createMock(InputInterface::class);
-        $this->output = $this->createMock(OutputInterface::class);
+        $this->input = $this->createMock(Input::class);
+        $this->output = $this->createMock(Output::class);
         $this->host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
         $this->host
             ->expects($this->any())

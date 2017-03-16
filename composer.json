@@ -30,16 +30,15 @@
         "elfet/pure": "~2.0",
         "monolog/monolog": "^1.21",
         "pimple/pimple": "~3.0",
-        "symfony/console": "~2.6|~3.0",
-        "symfony/finder": "~2.6|~3.0",
-        "symfony/process": "~2.6|~3.0",
-        "symfony/yaml": "~2.6|~3.0"
+        "symfony/console": "~2.7|~3.0",
+        "symfony/finder": "~2.7|~3.0",
+        "symfony/process": "~2.7|~3.0",
+        "symfony/yaml": "~2.7|~3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~6.0"
     },
     "suggest": {
-        "ext-sockets": "For parallel deployment",
         "deployer/phar-update": "~2.0"
     },
     "config": {

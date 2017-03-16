@@ -72,8 +72,11 @@ class FunctionsTest extends TestCase
     public function testHost()
     {
         host('domain.com');
-
         $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
+
+        host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
+        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
+        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('a2.domain.com'));
     }
 
     public function testLocalhost()

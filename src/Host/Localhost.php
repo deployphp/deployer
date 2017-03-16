@@ -7,12 +7,14 @@
 
 namespace Deployer\Host;
 
+use Deployer\Utility\ProcessOutputPrinter;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 class Localhost
 {
     use ConfigurationAccessor;
+    use ProcessOutputPrinter;
 
     public function __construct()
     {
@@ -40,27 +42,8 @@ class Localhost
         $process = new Process($command);
         $process
             ->setTimeout($config['timeout'])
-            ->setTty($config['tty']);
-
-        $callback = function ($type, $buffer) use ($output, $hostname) {
-            if ($output->isDebug()) {
-                foreach (explode("\n", rtrim($buffer)) as $line) {
-                    if ($output->isDecorated()) {
-                        if ($type === Process::ERR) {
-                            $line = "[$hostname] \033[0;31m< $line\033[0m";
-                        } else {
-                            $line = "[$hostname] \033[1;30m< $line\033[0m";
-                        }
-                    } else {
-                        $line = "[$hostname] < $line";
-                    }
-
-                    $output->writeln($line, OutputInterface::OUTPUT_RAW);
-                }
-            }
-        };
-
-        $process->mustRun($callback);
+            ->setTty($config['tty'])
+            ->mustRun($this->callback($output, $hostname));
 
         return $process->getOutput();
     }

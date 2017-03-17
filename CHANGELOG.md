@@ -4,11 +4,15 @@
 [v4.3.0...master](https://github.com/deployphp/deployer/compare/v4.3.0...master)
 
 ### Added
-- Added `use_atomic_symlink` option [14a8f8](https://github.com/deployphp/deployer/pull/1092/commits/14a8f8f9c4ebbc7da45c2b6b7c3c00a51b563ccf)
+- Added `use_atomic_symlink` and `use_relative_symlink` option [14a8f8](https://github.com/deployphp/deployer/pull/1092/commits/14a8f8f9c4ebbc7da45c2b6b7c3c00a51b563ccf)
+- Added `Ssh\Client`
+- Added host ranges
 
 ### Changed
 - `server` refactored to `host`
 - `Enviroment` refactored to `Configuration`
+- phpunit test refactored
+- `upload` and `download` now uses rsync
 
 ## v4.3.0
 [v4.2.1...v4.3.0](https://github.com/deployphp/deployer/compare/v4.2.1...v4.3.0)

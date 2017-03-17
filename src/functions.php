@@ -9,6 +9,7 @@ namespace Deployer;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
+use Deployer\Host\Range;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
@@ -29,9 +30,14 @@ use Symfony\Component\Console\Question\Question;
 // execution stage. They are acts like two different function, but have same name. Example of such function
 // is set() func. This function determine in which stage it was called by Context::get() method.
 
+/**
+ * @param array ...$hostnames
+ * @return Host|Proxy
+ */
 function host(...$hostnames)
 {
     $deployer = Deployer::get();
+    $hostnames = Range::expand($hostnames);
 
     if (count($hostnames) === 1) {
         $host = new Host($hostnames[0]);
@@ -47,6 +53,10 @@ function host(...$hostnames)
     }
 }
 
+/**
+ * @param string $alias
+ * @return Localhost
+ */
 function localhost($alias = 'localhost')
 {
     $deployer = Deployer::get();

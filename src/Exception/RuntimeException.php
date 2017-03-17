@@ -9,6 +9,9 @@ namespace Deployer\Exception;
 
 use Symfony\Component\Process\Process;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RuntimeException extends Exception
 {
     private $hostname;

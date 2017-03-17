@@ -7,6 +7,9 @@
 
 namespace Deployer\Initializer\Template;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class FrameworkTemplate extends Template
 {
     /**

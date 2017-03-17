@@ -7,6 +7,9 @@
 
 namespace Deployer\Initializer\Template;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ZendTemplate extends FrameworkTemplate
 {
     protected function getRecipe()

@@ -15,20 +15,10 @@ use Deployer\Utility\Config;
 class Configuration
 {
     /**
-     * Array of set values.
      * @var Collection
      */
     private $values = null;
 
-    /**
-     * Values represented by their keys here are protected, and cannot be changed by calling the `set` method.
-     * @var array
-     */
-    private $protectedNames = [];
-
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->values = new Collection();
@@ -48,53 +38,19 @@ class Configuration
      */
     public function set($name, $value)
     {
-        $this->checkIfNameIsProtected($name);
         $this->values[$name] = $value;
-    }
-
-    /**
-     * @param string $name
-     * @param bool|int|string|array $value
-     */
-    public function setAsProtected($name, $value)
-    {
-        $this->set($name, $value);
-        $this->protectedNames[] = $name;
-    }
-
-    /**
-     * Checks whether the given name was registered as protected, or if there is a protected parameter which would be overwritten.
-     *
-     * @param string $name
-     * @throws ConfigurationException if the value already exists and is protected.
-     * @throws ConfigurationException if there's a protected parameter which would be overwritten.
-     */
-    private function checkIfNameIsProtected($name)
-    {
-        $length = strlen($name);
-
-        foreach ($this->protectedNames as $protectedName) {
-            $len = strlen($protectedName);
-            if ($name === $protectedName) {
-                throw new ConfigurationException("The parameter `$name` cannot be set, because it's protected.");
-            } elseif ($len < $length && '.' === $name[$len] && 0 === strpos($name, $protectedName)) {
-                throw new ConfigurationException("The parameter `$name` cannot be set, because `$protectedName` is protected.");
-            } elseif ($len > $length && '.' === $protectedName[$length] && 0 === strpos($protectedName, $name)) {
-                throw new ConfigurationException("The parameter `$name` could not be set, because a protected parameter named `$protectedName` already exists.");
-            }
-        }
     }
 
     /**
      * @param string $name
      * @param array $array
      */
-    public function add($name, $array)
+    public function add($name, array $array)
     {
         if ($this->has($name)) {
             $config = $this->get($name);
             if (!is_array($config)) {
-                throw new \RuntimeException("Configuration parameter `$name` isn't array.");
+                throw new ConfigurationException("Configuration parameter `$name` isn't array.");
             }
             $this->set($name, Config::merge($config, $array));
         } else {
@@ -137,7 +93,7 @@ class Configuration
     }
 
     /**
-     * Checks if set var exists.
+     * Checks if set var exists
      *
      * @param string $name
      * @return bool
@@ -148,7 +104,7 @@ class Configuration
     }
 
     /**
-     * Parse set values.
+     * Parse set values
      *
      * @param string $value
      * @return string

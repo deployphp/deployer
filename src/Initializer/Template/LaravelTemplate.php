@@ -11,6 +11,7 @@ namespace Deployer\Initializer\Template;
  * Generate a Laravel deployer configuration.
  *
  * @author Anton Medvedev <anton@medv.io>
+ * @codeCoverageIgnore
  */
 class LaravelTemplate extends FrameworkTemplate
 {

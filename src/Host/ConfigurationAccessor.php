@@ -62,10 +62,10 @@ trait ConfigurationAccessor
      * Add configuration option
      *
      * @param string $name
-     * @param array|bool|int|string $value
+     * @param array $value
      * @return $this
      */
-    public function add(string $name, $value)
+    public function add(string $name, array $value)
     {
         $this->configuration->add($name, $value);
         return $this;
@@ -94,7 +94,7 @@ trait ConfigurationAccessor
         $this->configuration->set('roles', []);
 
         foreach ($roles as $role) {
-            $this->configuration->add('roles', $role);
+            $this->configuration->add('roles', [$role]);
         }
 
         return $this;

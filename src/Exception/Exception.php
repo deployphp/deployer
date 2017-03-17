@@ -15,6 +15,7 @@ class Exception extends \Exception
      * @param string $message
      * @param integer $code defaults to 0
      * @param \Exception|null $previous
+     * @codeCoverageIgnore
      */
     public function __construct($message, $code = 0, \Exception $previous = null)
     {

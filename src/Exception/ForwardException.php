@@ -7,6 +7,9 @@
 
 namespace Deployer\Exception;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ForwardException extends Exception
 {
     protected $serverName;

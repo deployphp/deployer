@@ -23,7 +23,8 @@
         </blacklist>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>src/</directory>
-            <directory>recipe/</directory>
+            <directory>recipe/common.php</directory>
+            <directory>recipe/deploy/</directory>
         </whitelist>
     </filter>
 </phpunit>

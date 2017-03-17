@@ -12,6 +12,7 @@ namespace Deployer\Initializer\Template;
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  * @author Anton Medvedev <anton@medv.io>
+ * @codeCoverageIgnore
  */
 class CommonTemplate extends Template
 {

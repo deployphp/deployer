@@ -71,6 +71,13 @@ class TaskCommand extends Command
         $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));
 
         $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
+
+        if (!$input->getOption('hooks') || $input->getOption('hooks') === 'false') {
+            $tasks = array_filter($tasks, function ($task) {
+                return $this->getName() == $task->getName();
+            });
+        }
+
         $servers = $this->deployer->getStageStrategy()->getServers($stage);
         $environments = iterator_to_array($this->deployer->environments);
 

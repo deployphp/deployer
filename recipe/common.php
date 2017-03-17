@@ -119,6 +119,7 @@ argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or gro
 option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
 option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
 option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
+option('hooks', null, InputOption::VALUE_OPTIONAL, 'Set to false to skip after/before hooks', true);
 
 /**
  * Tasks

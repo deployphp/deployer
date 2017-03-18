@@ -35,8 +35,24 @@ class FileLoaderTest extends TestCase
         $local = $this->getHost('local');
         self::assertInstanceOf(Localhost::class, $local);
         self::assertEquals('/var/local', $local->get('deploy_to'));
+
+        // bar configured properly
+        $bar = $this->getHost('bar.com');
+        self::assertEquals('bar.com', $bar->getHostname());
+        self::assertEquals('user', $bar->getUser());
+        self::assertEquals(22, $bar->getPort());
+        self::assertEquals('configFile', $bar->getConfigFile());
+        self::assertEquals('identityFile', $bar->getIdentityFile());
+        self::assertTrue($bar->isForwardAgent());
+        self::assertFalse($bar->isMultiplexing());
+        self::assertEquals(['options'], $bar->getOptions());
+        self::assertEquals('param', $bar->get('param'));
     }
 
+    /**
+     * @param $name
+     * @return Host|Localhost|null
+     */
     private function getHost($name)
     {
         foreach ($this->hosts as $host) {

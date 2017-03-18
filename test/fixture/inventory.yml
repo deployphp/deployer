@@ -10,6 +10,18 @@ foo:
   <<: *base
   extra: extra
 
+bar:
+  hostname: bar.com
+  user: user
+  port: 22
+  configFile: configFile
+  identityFile: identityFile
+  forwardAgent: true
+  multiplexing: false
+  options:
+    - options
+  param: param
+
 local:
   local: -
   deploy_to: /var/local

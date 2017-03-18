@@ -51,7 +51,7 @@ function array_merge_alternate(array $original, array $override)
                 $original[$key] = array_unique(array_merge($original[$key], $value));
             } else {
                 // Merge all other arrays
-                $original[$key] = Config::merge($original[$key], $value);
+                $original[$key] = array_merge_alternate($original[$key], $value);
             }
         } else {
             // Simply add new key/value

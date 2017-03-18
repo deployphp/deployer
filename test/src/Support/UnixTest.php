@@ -5,9 +5,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Utility;
+namespace Deployer\Support;
 
-use Deployer\Support\Unix;
 use PHPUnit\Framework\TestCase;
 
 class UnixTest extends TestCase

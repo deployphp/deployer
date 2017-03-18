@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Utility;
+namespace Deployer\Support;
 
 class Unix
 {

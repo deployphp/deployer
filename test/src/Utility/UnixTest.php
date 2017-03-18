@@ -7,6 +7,7 @@
 
 namespace Deployer\Utility;
 
+use Deployer\Support\Unix;
 use PHPUnit\Framework\TestCase;
 
 class UnixTest extends TestCase

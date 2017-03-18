@@ -14,7 +14,6 @@ use Deployer\Console\InitCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Task;
-use Deployer\Utility\Config;
 use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
@@ -24,6 +23,7 @@ use Monolog\Logger;
 use Pimple\Container;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console;
+use function Deployer\Support\array_merge_alternate;
 
 /**
  * Deployer class represents DI container for configuring
@@ -182,7 +182,7 @@ class Deployer extends Container
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            self::setDefault($name, Config::merge($config, $array));
+            self::setDefault($name, array_merge_alternate($config, $array));
         } else {
             self::setDefault($name, $array);
         }

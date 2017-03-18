@@ -10,7 +10,7 @@ namespace Deployer\Host;
 use Deployer\Collection\Collection;
 use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
-use Deployer\Utility\Config;
+use function Deployer\Support\array_merge_alternate;
 
 class Configuration
 {
@@ -52,7 +52,7 @@ class Configuration
             if (!is_array($config)) {
                 throw new ConfigurationException("Configuration parameter `$name` isn't array.");
             }
-            $this->set($name, Config::merge($config, $array));
+            $this->set($name, array_merge_alternate($config, $array));
         } else {
             $this->set($name, $array);
         }

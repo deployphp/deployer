@@ -19,6 +19,7 @@
             "Deployer\\": "src/"
         },
         "files": [
+            "src/Support/helpers.php",
             "src/functions.php"
         ]
     },

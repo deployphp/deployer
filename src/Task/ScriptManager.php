@@ -9,6 +9,7 @@ namespace Deployer\Task;
 
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
+use function Deployer\Support\array_flatten;
 
 class ScriptManager
 {
@@ -75,19 +76,10 @@ class ScriptManager
         };
 
         $script = $collect($name);
-
-        // Flatten
-        $tasks = [];
-        array_walk_recursive($script, function ($a) use (&$tasks) {
-            $tasks[] = $a;
-        });
+        $tasks = array_flatten($script);
 
         // Convert names to real tasks
-        $tasks = array_map(function ($name) {
-            return $this->tasks->get($name);
-        }, $tasks);
-
-        return $tasks;
+        return array_map([$this->tasks, 'get'], $tasks);
     }
 
     private function isOn(array $list, Task $task)

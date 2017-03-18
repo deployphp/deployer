@@ -5,9 +5,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Executor;
+namespace Deployer\Console\Output;
 
-use Deployer\Console\Output\OutputWatcher;
 use Deployer\Deployer;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -70,12 +69,12 @@ class Informer
     }
 
     /**
-     * @param string $serverName
+     * @param string $hostname
      */
-    public function endOnServer($serverName)
+    public function endOnHost($hostname)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("<info>•</info> done on [$serverName]");
+            $this->output->writeln("<info>•</info> done on [$hostname]");
         }
     }
 
@@ -94,15 +93,15 @@ class Informer
     }
 
     /**
-     * @param string $serverName
+     * @param string $hostname
      * @param string $exceptionClass
      * @param string $message
      */
-    public function taskException($serverName, $exceptionClass, $message)
+    public function taskException($hostname, $exceptionClass, $message)
     {
         $formatter = Deployer::get()->getHelper('formatter');
         $messages = explode("\n", $message);
-        array_unshift($messages, "Exception [$exceptionClass] on [$serverName] server:");
+        array_unshift($messages, "Exception [$exceptionClass] on [$hostname] host:");
 
         $this->output->writeln($formatter->formatBlock($messages, 'error', true));
     }

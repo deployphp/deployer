@@ -22,7 +22,6 @@ require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
 
 use Deployer\Task\Context;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -123,9 +122,8 @@ set('bin/symlink', function () {
 
 
 /**
- * Default arguments and options.
+ * Default options
  */
-argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers');
 option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
 option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
 option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
@@ -144,7 +142,7 @@ task('current', function () {
  */
 task('success', function () {
     Deployer::setDefault('terminate_message', '<info>Successfully deployed!</info>');
-})->once()->setPrivate();
+})->local()->setPrivate();
 
 
 /**

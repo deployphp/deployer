@@ -7,6 +7,7 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Exception\NonFatalException;
 use Deployer\Host\Localhost;
@@ -27,18 +28,22 @@ class SeriesExecutor implements ExecutorInterface
             $success = true;
             $informer->startTask($task->getName());
 
-            if ($task->isOnce()) {
+            if ($task->isLocal()) {
                 $task->run(new Context($localhost, $input, $output));
             } else {
                 foreach ($hosts as $hostname => $host) {
-                    if ($task->isOnServer($hostname)) {
+                    if ($task->isOn($hostname)) {
                         try {
                             $task->run(new Context($host, $input, $output));
                         } catch (NonFatalException $exception) {
                             $success = false;
-                            $informer->taskException($hostname, 'Deployer\Exception\NonFatalException', $exception->getMessage());
+                            $informer->taskException(
+                                $hostname,
+                                NonFatalException::class,
+                                $exception->getMessage()
+                            );
                         }
-                        $informer->endOnServer($hostname);
+                        $informer->endOnHost($hostname);
                     }
                 }
             }

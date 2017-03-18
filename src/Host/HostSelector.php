@@ -5,17 +5,14 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Stage;
+namespace Deployer\Host;
 
-use Deployer\Collection\Collection;
 use Deployer\Exception\ConfigurationException;
-use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 
-class StageStrategy implements StageStrategyInterface
+class HostSelector
 {
     /**
-     * @var Collection|Host[]
+     * @var HostCollection|Host[]|Localhost[]
      */
     private $hosts;
 
@@ -24,48 +21,48 @@ class StageStrategy implements StageStrategyInterface
      */
     private $defaultStage;
 
-    public function __construct(Collection $hosts, $defaultStage = null)
+    public function __construct(HostCollection $hosts, $defaultStage = null)
     {
         $this->hosts = $hosts;
         $this->defaultStage = $defaultStage;
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $stage
+     * @return array
      */
     public function getHosts($stage)
     {
         $hosts = [];
 
-        // Get a default stage (if any) if no stage given
+        // Get a default stage if no stage given
         if (empty($stage)) {
-            $stage = $this->getDefaultStage();
+            $stage = $this->defaultStage;
         }
 
         if (!empty($stage)) {
-
-            // Look for hosts which has stage with current stage name.
+            // Look for hosts which has stage with current stage name
             foreach ($this->hosts as $hostname => $host) {
                 // If server does not have any stage category, skip them
                 if ($stage === $host->get('stage', false)) {
-                    $hosts[$hostname] = $this->hosts->get($hostname);
+                    $hosts[$hostname] = $host;
                 }
             }
 
-            // If still is empty, try to find server by name.
+            // If still is empty, try to find server by name
             if (empty($hosts)) {
                 if ($this->hosts->has($stage)) {
                     $hosts = [$stage => $this->hosts->get($stage)];
                 } else {
                     // Nothing found.
-                    throw new ConfigurationException("Stage or host `$stage` was not found.");
+                    throw new ConfigurationException("Hostname or stage `$stage` was not found.");
                 }
             }
         } else {
-            // Otherwise run on all servers what does not specify stage.
+            // Otherwise run on all servers what does not specify stage
             foreach ($this->hosts as $hostname => $host) {
                 if (!$host->has('stage')) {
-                    $hosts[$hostname] = $this->hosts->get($hostname);
+                    $hosts[$hostname] = $host;
                 }
             }
         }
@@ -73,23 +70,12 @@ class StageStrategy implements StageStrategyInterface
         if (empty($hosts)) {
             if (count($this->hosts) === 0) {
                 $localhost = new Localhost();
-
                 $hosts = ['localhost' => $localhost];
             } else {
-                throw new \RuntimeException('You need to specify at least one host or stage.');
+                throw new ConfigurationException('You need to specify at least one host or stage.');
             }
         }
 
         return $hosts;
-    }
-
-    /**
-     * Returns the default stage
-     *
-     * @return string
-     */
-    public function getDefaultStage()
-    {
-        return $this->defaultStage;
     }
 }

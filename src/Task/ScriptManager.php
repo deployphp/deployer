@@ -7,6 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
+
 class ScriptManager
 {
     /**
@@ -15,12 +18,6 @@ class ScriptManager
     private $tasks;
 
     /**
-     * @var bool
-     */
-    private $hooksEnabled = true;
-
-    /**
-     * ScriptManager constructor.
      * @param TaskCollection $tasks
      */
     public function __construct(TaskCollection $tasks)
@@ -29,23 +26,38 @@ class ScriptManager
     }
 
     /**
-     * Return tasks to run.
+     * Return tasks to run
      *
      * @param string $name
-     * @param string $stage
+     * @param Host[]|Localhost[] $hosts
+     * @param bool $hooksEnabled
      * @return Task[]
      */
-    public function getTasks($name, $stage = null)
+    public function getTasks($name, $hosts, $hooksEnabled = true)
     {
-        $collect = function ($name) use (&$collect, $stage) {
+        $stages = [];
+        $roles = [];
+        $hostnames = [];
+
+        foreach ($hosts as $hostname => $host) {
+            $stages[] = $host->get('stage');
+            $roles = array_merge($roles, $host->get('roles'));
+            $hostnames[] = $hostname;
+        }
+
+        $collect = function ($name) use (&$collect, $stages, $roles, $hostnames, $hooksEnabled) {
             $task = $this->tasks->get($name);
-            if ($stage !== null && !$task->isForStages($stage)) {
+
+            $onStage = $this->isOn($stages, $task);
+            $onRoles = $this->isOn($roles, $task);
+            $onHosts = $this->isOn($hostnames, $task);
+            if (!$onStage || !$onRoles || !$onHosts) {
                 return [];
             }
 
             $relatedTasks = [];
 
-            if ($this->isHooksEnabled()) {
+            if ($hooksEnabled) {
                 $relatedTasks = array_merge(array_map($collect, $task->getBefore()), $relatedTasks);
             }
 
@@ -55,7 +67,7 @@ class ScriptManager
                 $relatedTasks = array_merge($relatedTasks, [$task->getName()]);
             }
 
-            if ($this->isHooksEnabled()) {
+            if ($hooksEnabled) {
                 $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getAfter()));
             }
 
@@ -70,7 +82,7 @@ class ScriptManager
             $tasks[] = $a;
         });
 
-        // Convert names to real strings.
+        // Convert names to real tasks
         $tasks = array_map(function ($name) {
             return $this->tasks->get($name);
         }, $tasks);
@@ -78,19 +90,13 @@ class ScriptManager
         return $tasks;
     }
 
-    /**
-     * @return bool
-     */
-    public function isHooksEnabled()
+    private function isOn(array $list, Task $task)
     {
-        return $this->hooksEnabled;
-    }
-
-    /**
-     * @param bool $hooksEnabled
-     */
-    public function setHooksEnabled($hooksEnabled)
-    {
-        $this->hooksEnabled = $hooksEnabled;
+        foreach ($list as $name) {
+            if (!$task->isOn($name)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

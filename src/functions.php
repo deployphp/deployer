@@ -255,7 +255,7 @@ function workingPath()
  */
 function run($command, $options = [])
 {
-    $client = Deployer::get()->getSshClient();
+    $client = Deployer::get()->sshClient;
     $process = Deployer::get()->processRunner;
     $output = Context::get()->getOutput();
     $host = Context::get()->getHost();

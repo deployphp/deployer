@@ -7,6 +7,7 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Exception\Exception;
@@ -340,7 +341,7 @@ class ParallelExecutor implements ExecutorInterface
 
             foreach ($this->tasksToDo as $hostname => $taskName) {
                 if (!$taskToDoStorage->has($hostname)) {
-                    $this->informer->endOnServer($hostname);
+                    $this->informer->endOnHost($hostname);
                     unset($this->tasksToDo[$hostname]);
                 }
             }

@@ -7,6 +7,7 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\OutputWatcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;

@@ -13,6 +13,7 @@ use Deployer\Executor\ExecutorInterface;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -46,13 +47,18 @@ class TaskCommand extends Command
      */
     protected function configure()
     {
+        $this->addArgument(
+            'hostname',
+            InputArgument::OPTIONAL,
+            'Hostname or stage'
+        );
         $this->addOption(
             'parallel',
             'p',
             Option::VALUE_NONE,
-            'Run tasks in parallel.'
-        )
-        ->addOption(
+            'Run tasks in parallel'
+        );
+        $this->addOption(
             'no-hooks',
             null,
             Option::VALUE_NONE,
@@ -65,35 +71,33 @@ class TaskCommand extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
+        $stage = $input->hasArgument('hostname') ? $input->getArgument('hostname') : null;
+        $hooksEnabled = !$input->getOption('no-hooks');
 
-        $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));
+        $hosts = $this->deployer->hostSelector->getHosts($stage);
+        $tasks = $this->deployer->scriptManager->getTasks(
+            $this->getName(),
+            $hosts,
+            $hooksEnabled
+        );
 
-        $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
-        $hosts = $this->deployer->getStageStrategy()->getHosts($stage);
-
-        if (isset($this->executor)) {
-            $executor = $this->executor;
+        if ($input->getOption('parallel')) {
+            $executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
         } else {
-            if ($input->getOption('parallel')) {
-                $executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
-            } else {
-                $executor = new SeriesExecutor();
-            }
+            $executor = new SeriesExecutor();
         }
 
         try {
             $executor->run($tasks, $hosts, $input, $output);
-        } catch (\Exception $exception) {
+        } catch (\Throwable $exception) {
             if (!($exception instanceof GracefulShutdownException)) {
-                // Check if we have tasks to execute on failure.
+                // Check if we have tasks to execute on failure
                 if ($this->deployer['onFailure']->has($this->getName())) {
                     $taskName = $this->deployer['onFailure']->get($this->getName());
-                    $tasks = $this->deployer->getScriptManager()->getTasks($taskName, $stage);
+                    $tasks = $this->deployer->scriptManager->getTasks($taskName, $stage);
                     $executor->run($tasks, $hosts, $input, $output);
                 }
             }
-
             throw $exception;
         }
 

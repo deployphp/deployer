@@ -13,7 +13,6 @@ use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
-use Deployer\Stage\StageStrategy;
 use Deployer\Task;
 use Deployer\Utility\Config;
 use Deployer\Utility\ProcessRunner;
@@ -33,7 +32,10 @@ use Symfony\Component\Console;
  * @property Host\HostCollection|Collection|Host\Host[] hosts
  * @property Collection config
  * @property Rsync rsync
+ * @property Ssh\Client sshClient
  * @property ProcessRunner processRunner
+ * @property Task\ScriptManager scriptManager
+ * @property Host\HostSelector hostSelector
  */
 class Deployer extends Container
 {
@@ -98,8 +100,8 @@ class Deployer extends Container
         $this['scriptManager'] = function ($c) {
             return new Task\ScriptManager($c['tasks']);
         };
-        $this['stageStrategy'] = function ($c) {
-            return new StageStrategy($c['hosts'], $c['config']['default_stage']);
+        $this['hostSelector'] = function ($c) {
+            return new Host\HostSelector($c['hosts'], $c['config']['default_stage']);
         };
         $this['onFailure'] = function () {
             return new Collection();
@@ -261,30 +263,6 @@ class Deployer extends Container
     public function getHelper($name)
     {
         return $this->getConsole()->getHelperSet()->get($name);
-    }
-
-    /**
-     * @return Ssh\Client
-     */
-    public function getSshClient()
-    {
-        return $this['sshClient'];
-    }
-
-    /**
-     * @return StageStrategy
-     */
-    public function getStageStrategy()
-    {
-        return $this['stageStrategy'];
-    }
-
-    /**
-     * @return Task\ScriptManager
-     */
-    public function getScriptManager()
-    {
-        return $this['scriptManager'];
     }
 
     /**

@@ -7,16 +7,19 @@
 
 namespace Deployer\Task;
 
+use Deployer\Exception\ConfigurationException;
+
 class GroupTask extends Task
 {
     /**
-     * List of tasks.
+     * List of tasks
+     *
      * @var array
      */
     private $group;
 
     /**
-     * @param string $name Tasks name
+     * @param string $name
      * @param array $group
      */
     public function __construct($name, $group)
@@ -36,33 +39,22 @@ class GroupTask extends Task
     /**
      * {@inheritdoc}
      */
-    public function once()
+    public function local()
     {
-        throw new \RuntimeException('Group task can not be called once.');
+        // TODO: Make it possible to create local group of tasks
+        throw new \RuntimeException('Group task can not be local.');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function onlyOn($servers = [])
+    public function on(...$list)
     {
-        throw new \RuntimeException('Group task can not be called only on specified servers.');
+        throw new ConfigurationException('Group task can not be called only on specified hosts');
     }
 
     /**
-     * List of tasks names with before and after hooks.
-     *
-     * @deprecated v5.0
-     *
-     * @return array
-     */
-    public function getTasks()
-    {
-        return array_merge($this->getBefore(), $this->group, $this->getAfter());
-    }
-
-    /**
-     * List of dependent tasks names.
+     * List of dependent tasks names
      *
      * @return array
      */

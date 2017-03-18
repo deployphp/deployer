@@ -1,3 +1,20 @@
+.base: &base
+  deploy_path: path
+  roles:
+    - a
+    - b
+    - c
+  param: param
+
+foo:
+  <<: *base
+  extra: extra
+
+local:
+  local: -
+  deploy_to: /var/local
+  param: local
+
 app.deployer.org:
   stage: production
   roles: app

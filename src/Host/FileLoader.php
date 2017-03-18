@@ -19,6 +19,7 @@ class FileLoader
 
     /**
      * @param string $file
+     * @return $this
      */
     public function load($file)
     {
@@ -33,8 +34,12 @@ class FileLoader
         }
 
         foreach ($data as $hostname => $config) {
+            if (preg_match('/^\./', $hostname)) {
+                continue;
+            }
+
             if (isset($config['local'])) {
-                $host = new Localhost();
+                $host = new Localhost($hostname);
             } else {
                 $host = new Host($hostname);
                 $methods = [
@@ -61,6 +66,8 @@ class FileLoader
 
             $this->hosts[$hostname] = $host;
         }
+
+        return $this;
     }
 
     /**

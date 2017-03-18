@@ -21,7 +21,6 @@ class Host
     private $options = [];
 
     /**
-     * Host constructor.
      * @param string $hostname
      */
     public function __construct(string $hostname)

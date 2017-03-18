@@ -11,8 +11,14 @@ class Localhost
 {
     use ConfigurationAccessor;
 
-    public function __construct()
+    private $hostname;
+
+    /**
+     * @param string $hostname
+     */
+    public function __construct(string $hostname = 'localhost')
     {
+        $this->hostname = $hostname;
         $this->configuration = new Configuration();
     }
 
@@ -21,6 +27,6 @@ class Localhost
      */
     public function getHostname()
     {
-        return 'localhost';
+        return $this->hostname;
     }
 }

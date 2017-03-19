@@ -13,6 +13,7 @@ use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
 use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Console\SshCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\SeriesExecutor;
@@ -203,6 +204,7 @@ class Deployer extends Container
         $this->addConsoleCommands();
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add($this['init_command']);
+        $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 

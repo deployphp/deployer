@@ -72,7 +72,7 @@ If you are also using it, please let us know ([Edit this file](https://github.co
 * Web-based client.
 
 ## Maintainers
-* Anton Medvedev [@antonmedv](https://github.com/elfet)
+* Anton Medvedev [@antonmedv](https://github.com/antonmedv)
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 

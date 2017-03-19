@@ -1,12 +1,14 @@
 #!/usr/bin/env php
 <?php
-/*  __   ___  __
- * |  \ |__  |__)
- * |__/ |___ |
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
+define('ROOT', realpath(__DIR__ . '/..'));
 $opt = getopt('v::');
 
 $version = 'dev-master';
@@ -17,8 +19,13 @@ if (array_key_exists('v', $opt)) {
     }
 }
 
+chdir(ROOT);
+exec('composer require deployer/phar-update:~2.0 --no-update');
+exec('composer install --no-dev');
+exec('git checkout -- composer.json composer.lock');
+
 $pharName = "deployer.phar";
-$pharFile = __DIR__ . '/' . $pharName;
+$pharFile = ROOT . '/' . $pharName;
 
 if (file_exists($pharFile)) {
     unlink($pharFile);
@@ -40,10 +47,10 @@ $finder->files()
     ->exclude('test')
     ->exclude('tests')
     ->exclude('phpspec')
-    ->in(__DIR__);
+    ->in(ROOT);
 
 foreach ($finder as $fileInfo) {
-    $file = str_replace(__DIR__, '', $fileInfo->getRealPath());
+    $file = str_replace(ROOT, '', $fileInfo->getRealPath());
 
     echo "Add file: " . $file . "\n";
 
@@ -51,7 +58,7 @@ foreach ($finder as $fileInfo) {
 }
 
 // Add bin/dep file
-$depContent = file_get_contents(__DIR__ . '/bin/dep');
+$depContent = file_get_contents(ROOT . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace("'master'", "'$version'", $depContent);
 $depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);

@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 class DeployTest extends DepCase
 {
     protected function load()
@@ -16,8 +18,7 @@ class DeployTest extends DepCase
 
     public function testDeploy()
     {
-        $output = $this->start('deploy', ['localhost', '-vvv']);
-
+        $output = $this->start('deploy', ['localhost'], ['verbosity' => OutputInterface::VERBOSITY_DEBUG]);
         self::assertContains('Successfully deployed!', $output);
         self::assertDirectoryExists(self::$deployPath . '/.dep');
         self::assertDirectoryExists(self::$deployPath . '/releases');

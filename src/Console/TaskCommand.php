@@ -86,7 +86,7 @@ class TaskCommand extends Command
         }
 
         try {
-            $executor->run($tasks, $hosts, $input, $output);
+            $executor->run($tasks, $hosts);
         } catch (\Throwable $exception) {
             if (!($exception instanceof GracefulShutdownException)) {
                 // Check if we have tasks to execute on failure

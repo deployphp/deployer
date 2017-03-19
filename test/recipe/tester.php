@@ -90,7 +90,8 @@ abstract class DepCase extends BaseTestCase
         $this->load();
 
         // Init Deployer
-        $this->deployer->addConsoleCommands();
+        $this->deployer->init();
+        $this->deployer->getConsole()->afterRun(null);
     }
 
     /**

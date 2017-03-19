@@ -97,7 +97,7 @@ if (is_readable($composerLockFile)) {
 $console = new \Deployer\Console\Application('Deployer', $version);
 $input = new \Symfony\Component\Console\Input\ArgvInput();
 $output = new \Symfony\Component\Console\Output\ConsoleOutput();
-$deployer = new \Deployer\Deployer($console, $input, $output);
+$deployer = new \Deployer\Deployer($console);
 
 // Pretty-print uncaught exceptions in symfony-console
 if (class_exists('\Symfony\Component\Console\Style\SymfonyStyle')) {
@@ -117,4 +117,5 @@ if (is_readable($deployFile)) {
 }
 
 // Run Deployer
-$deployer->run();
+$deployer->init();
+$console->run($input, $output);

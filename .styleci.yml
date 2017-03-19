@@ -6,4 +6,4 @@ enabled:
 
 finder:
   not-name:
-    - "helpers.php"
+    - "tester.php"

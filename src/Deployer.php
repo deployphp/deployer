@@ -51,10 +51,8 @@ class Deployer extends Container
 
     /**
      * @param Application $console
-     * @param Console\Input\InputInterface $input
-     * @param Console\Output\OutputInterface $output
      */
-    public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    public function __construct(Application $console)
     {
         parent::__construct();
 
@@ -63,13 +61,12 @@ class Deployer extends Container
          ******************************/
 
         $this['console'] = function () use ($console) {
+            $console->catchIO(function ($input, $output) {
+                $this['input'] = $input;
+                $this['output'] =  new OutputWatcher($output);
+                return [$this['input'], $this['output']];
+            });
             return $console;
-        };
-        $this['input'] = function () use ($input) {
-            return $input;
-        };
-        $this['output'] = function () use ($output) {
-            return new OutputWatcher($output);
         };
 
         /******************************
@@ -199,17 +196,14 @@ class Deployer extends Container
     }
 
     /**
-     * Run console application.
+     * Init console application
      */
-    public function run()
+    public function init()
     {
         $this->addConsoleCommands();
-
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add($this['init_command']);
-        $this->getConsole()->addCallback([$this, 'collectAnonymousStats']);
-
-        $this->getConsole()->run($this['input'], $this['output']);
+        $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 
     /**

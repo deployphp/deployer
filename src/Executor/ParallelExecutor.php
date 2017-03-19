@@ -120,17 +120,24 @@ class ParallelExecutor implements ExecutorInterface
      */
     protected function getProcess($host, Task $task)
     {
-        $dep = getenv('_');
+        $dep = DEPLOYER_BIN;
         $options = $this->generateOptions();
         $hostname = $host->getHostname();
         $taskName = $task->getName();
+
+        $value = $this->input->getOption('file');
+        $file = $value ? "--file='$value'" : '';
 
         if ($this->output->isDecorated()) {
             $options .= ' --ansi';
         }
 
-        $process = new Process("$dep worker $options --hostname $hostname --task $taskName");
-        $process->setTty(true);
+        $process = new Process("$dep $file worker $options --hostname $hostname --task $taskName");
+
+        if (!defined('DEPLOYER_PARALLEL_TTY')) {
+            $process->setTty(true);
+        }
+
         return $process;
     }
 
@@ -206,16 +213,8 @@ class ParallelExecutor implements ExecutorInterface
      */
     private function generateOptions()
     {
-        $input = '';
-
         $verbosity = new VerbosityString($this->output);
-        $input .= $verbosity;
-
-        // Deploy file
-        $value = $this->input->getOption('file');
-        if ($value) {
-            $input .= " --file $value";
-        }
+        $input = $verbosity;
 
         // Console options
         foreach (['quiet', 'ansi', 'no-ansi', 'no-interaction'] as $option) {

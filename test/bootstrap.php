@@ -17,4 +17,8 @@ if (!$loaded) {
     );
 }
 
+define('DEPLOYER', true);
+define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
+define('DEPLOYER_PARALLEL_TTY', false);
+
 require_once __DIR__ . '/recipe/tester.php';

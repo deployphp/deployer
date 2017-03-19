@@ -7,6 +7,7 @@
 
 namespace Deployer\Task;
 
+use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
 
 class TaskTest extends TestCase
@@ -37,14 +38,61 @@ class TaskTest extends TestCase
         $task->local();
         self::assertTrue($task->isLocal());
 
-        $task->on('a', 'b');
-        self::assertEquals(['a', 'b'], $task->getOn());
-
-        $task->on();
-        self::assertEquals([], $task->getOn());
-
         $task->setPrivate();
         self::assertTrue($task->isPrivate());
+    }
+
+    public function testShouldBePerformed()
+    {
+        $a = (new Host('a'))->stage('prod')->roles('app');
+        $b = (new Host('b'))->stage('prod')->roles('db');
+        $c = (new Host('c'))->stage('beta')->roles('app', 'db');
+
+        $task = new Task('task');
+        $task
+            ->onStage('prod')
+            ->onRoles('app');
+        self::assertEquals([true, false, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onStage('prod')
+            ->onRoles('db');
+        self::assertEquals([false, true, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onStage('beta')
+            ->onRoles('app', 'db');
+        self::assertEquals([false, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onStage('beta');
+        self::assertEquals([false, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onRoles('db');
+        self::assertEquals([false, true, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onRoles('app');
+        self::assertEquals([true, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onHosts('a', 'b');
+        self::assertEquals([true, true, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        $task = new Task('task');
+        $task
+            ->onRoles('app')
+            ->onHosts('a', 'b');
+        self::assertEquals([true, false, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+
+        self::assertTrue($task->shouldBePerformed());
     }
 
     public function testInit()

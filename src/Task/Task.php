@@ -35,11 +35,11 @@ class Task
     private $local = false;
 
     /**
-     * List of hostnames, roles, stages there task should be executed.
+     * Lists of hosts, roles, stages there task should be executed.
      *
      * @var array
      */
-    private $on = [];
+    private $on = ['hosts' => [], 'roles' => [], 'stages' => []];
 
     /**
      * List of task names to run before.
@@ -137,54 +137,66 @@ class Task
     }
 
     /**
-     * @param array $list
+     * @param array $hosts
      * @return $this
      */
-    public function on(...$list)
+    public function onHosts(...$hosts)
     {
-        $this->on = $list;
+        $this->on['hosts'] = $hosts;
         return $this;
     }
 
     /**
-     * @return array
+     * @param array $roles
+     * @return $this
      */
-    public function getOn()
+    public function onRoles(...$roles)
     {
-        return $this->on;
+        $this->on['roles'] = $roles;
+        return $this;
     }
 
     /**
+     * @param array $stages
+     * @return $this
+     */
+    public function onStage(...$stages)
+    {
+        $this->on['stages'] = $stages;
+        return $this;
+    }
+
+    /**
+     * Checks what task should be performed on one of hosts.
+     *
      * @param Host[]|Localhost[] $hosts
      * @return bool
      */
     public function shouldBePerformed(...$hosts)
     {
-        if (empty($this->on)) {
-            return true;
-        }
-
         foreach ($hosts as $host) {
-            if (in_array($host->getHostname(), $this->on, true)) {
+            $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
+
+            $onRole = empty($this->on['roles']);
+            foreach ($host->get('roles', []) as $role) {
+                if (in_array($role, $this->on['roles'], true)) {
+                    $onRole = true;
+                }
+            }
+
+            $onStage = empty($this->on['stages']);
+            if ($host->has('stage')) {
+                if (in_array($host->get('stage'), $this->on['stages'], true)) {
+                    $onStage = true;
+                }
+            }
+
+            if ($onHost && $onRole && $onStage) {
                 return true;
             }
-
-            foreach ($host->get('roles', []) as $role) {
-                if (in_array($role, $this->on, true)) {
-                    return true;
-                }
-            }
-
-            if ($host->has('stage')) {
-                foreach ($host->get('stage') as $role) {
-                    if (in_array($role, $this->on, true)) {
-                        return true;
-                    }
-                }
-            }
         }
 
-        return false;
+        return empty($hosts);
     }
 
     /**

@@ -171,7 +171,7 @@ class Host
      * @param bool $forwardAgent
      * @return $this
      */
-    public function forwardAgent(bool $forwardAgent)
+    public function forwardAgent(bool $forwardAgent = true)
     {
         $this->forwardAgent = $forwardAgent;
         return $this;
@@ -189,7 +189,7 @@ class Host
      * @param bool $multiplexing
      * @return $this
      */
-    public function multiplexing(bool $multiplexing)
+    public function multiplexing(bool $multiplexing = true)
     {
         $this->multiplexing = $multiplexing;
         return $this;

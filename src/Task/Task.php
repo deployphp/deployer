@@ -7,6 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
+
 class Task
 {
     /**
@@ -152,18 +155,36 @@ class Task
     }
 
     /**
-     * Decide to run or not to run on this task
-     *
-     * @param string $name
+     * @param Host[]|Localhost[] $hosts
      * @return bool
      */
-    public function isOn(string $name)
+    public function shouldBePerformed(...$hosts)
     {
         if (empty($this->on)) {
             return true;
-        } else {
-            return in_array($name, $this->on, true);
         }
+
+        foreach ($hosts as $host) {
+            if (in_array($host->getHostname(), $this->on, true)) {
+                return true;
+            }
+
+            foreach ($host->get('roles', []) as $role) {
+                if (in_array($role, $this->on, true)) {
+                    return true;
+                }
+            }
+
+            if ($host->has('stage')) {
+                foreach ($host->get('stage') as $role) {
+                    if (in_array($role, $this->on, true)) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

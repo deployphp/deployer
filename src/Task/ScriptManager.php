@@ -34,25 +34,12 @@ class ScriptManager
      * @param bool $hooksEnabled
      * @return Task[]
      */
-    public function getTasks($name, $hosts, $hooksEnabled = true)
+    public function getTasks($name, array $hosts = [], $hooksEnabled = true)
     {
-        $stages = [];
-        $roles = [];
-        $hostnames = [];
-
-        foreach ($hosts as $hostname => $host) {
-            $stages[] = $host->get('stage');
-            $roles = array_merge($roles, $host->get('roles'));
-            $hostnames[] = $hostname;
-        }
-
-        $collect = function ($name) use (&$collect, $stages, $roles, $hostnames, $hooksEnabled) {
+        $collect = function ($name) use (&$collect, $hosts, $hooksEnabled) {
             $task = $this->tasks->get($name);
 
-            $onStage = $this->isOn($stages, $task);
-            $onRoles = $this->isOn($roles, $task);
-            $onHosts = $this->isOn($hostnames, $task);
-            if (!$onStage || !$onRoles || !$onHosts) {
+            if (!$task->shouldBePerformed(...array_values($hosts))) {
                 return [];
             }
 
@@ -80,15 +67,5 @@ class ScriptManager
 
         // Convert names to real tasks
         return array_map([$this->tasks, 'get'], $tasks);
-    }
-
-    private function isOn(array $list, Task $task)
-    {
-        foreach ($list as $name) {
-            if (!$task->isOn($name)) {
-                return false;
-            }
-        }
-        return true;
     }
 }

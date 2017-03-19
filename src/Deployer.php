@@ -11,8 +11,11 @@ use Deployer\Collection\Collection;
 use Deployer\Console\Application;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
+use Deployer\Console\Output\Informer;
+use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
+use Deployer\Executor\SeriesExecutor;
 use Deployer\Task;
 use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
@@ -36,6 +39,7 @@ use function Deployer\Support\array_merge_alternate;
  * @property ProcessRunner processRunner
  * @property Task\ScriptManager scriptManager
  * @property Host\HostSelector hostSelector
+ * @property SeriesExecutor seriesExecutor
  */
 class Deployer extends Container
 {
@@ -65,7 +69,7 @@ class Deployer extends Container
             return $input;
         };
         $this['output'] = function () use ($output) {
-            return $output;
+            return new OutputWatcher($output);
         };
 
         /******************************
@@ -105,6 +109,12 @@ class Deployer extends Container
         };
         $this['onFailure'] = function () {
             return new Collection();
+        };
+        $this['informer'] = function ($c) {
+            return new Informer($c['output']);
+        };
+        $this['seriesExecutor'] = function ($c) {
+            return new SeriesExecutor($c['input'], $c['output'], $c['informer']);
         };
 
         /******************************

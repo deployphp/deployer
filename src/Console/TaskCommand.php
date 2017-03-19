@@ -10,8 +10,6 @@ namespace Deployer\Console;
 use Deployer\Deployer;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\ExecutorInterface;
-use Deployer\Executor\ParallelExecutor;
-use Deployer\Executor\SeriesExecutor;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
@@ -82,9 +80,9 @@ class TaskCommand extends Command
         );
 
         if ($input->getOption('parallel')) {
-            $executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
+            //$executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
         } else {
-            $executor = new SeriesExecutor();
+            $executor = $this->deployer->seriesExecutor;
         }
 
         try {
@@ -94,7 +92,7 @@ class TaskCommand extends Command
                 // Check if we have tasks to execute on failure
                 if ($this->deployer['onFailure']->has($this->getName())) {
                     $taskName = $this->deployer['onFailure']->get($this->getName());
-                    $tasks = $this->deployer->scriptManager->getTasks($taskName, $stage);
+                    $tasks = $this->deployer->scriptManager->getTasks($taskName, $hosts, $hooksEnabled);
                     $executor->run($tasks, $hosts, $input, $output);
                 }
             }

@@ -9,16 +9,12 @@ namespace Deployer\Executor;
 
 use Deployer\Host\Host;
 use Deployer\Task\Task;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 interface ExecutorInterface
 {
     /**
      * @param Task[] $tasks
      * @param Host[] $hosts
-     * @param InputInterface $input
-     * @param OutputInterface $output
      */
-    public function run($tasks, $hosts, $input, $output);
+    public function run($tasks, $hosts);
 }

@@ -64,6 +64,7 @@ class Client
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.
         if ($config['tty']) {
+            $this->output->write(''); // Notify OutputWatcher
             $options .= ' -tt';
             $command = escapeshellarg($command);
 
@@ -137,7 +138,7 @@ class Client
         $process = new Process("ssh $options -O check -S $controlPath $host 2>&1");
         $process->run();
 
-        if (!preg_match('/Master running/', $process->getOutput())) {
+        if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {
             $this->writeln($this->output, Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
         }
 

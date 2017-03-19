@@ -122,7 +122,7 @@ class FunctionsTest extends TestCase
         task('before', 'ls');
         before('main', 'before');
 
-        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('main'));
+        $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
         $this->assertEquals(['before', 'main'], $names);
     }
 
@@ -132,7 +132,7 @@ class FunctionsTest extends TestCase
         task('after', 'ls');
         after('main', 'after');
 
-        $names = $this->taskToNames($this->deployer->getScriptManager()->getTasks('main'));
+        $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
         $this->assertEquals(['main', 'after'], $names);
     }
 

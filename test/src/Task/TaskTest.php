@@ -39,12 +39,9 @@ class TaskTest extends TestCase
 
         $task->on('a', 'b');
         self::assertEquals(['a', 'b'], $task->getOn());
-        self::assertTrue($task->isOn('a'));
-        self::assertTrue($task->isOn('b'));
-        self::assertFalse($task->isOn('c'));
 
         $task->on();
-        self::assertTrue($task->isOn('host'));
+        self::assertEquals([], $task->getOn());
 
         $task->setPrivate();
         self::assertTrue($task->isPrivate());

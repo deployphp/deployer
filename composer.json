@@ -28,7 +28,6 @@
     ],
     "require": {
         "php": "~7.0",
-        "elfet/pure": "~2.0",
         "monolog/monolog": "^1.21",
         "pimple/pimple": "~3.0",
         "symfony/console": "~2.7|~3.0",

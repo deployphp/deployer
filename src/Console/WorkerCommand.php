@@ -30,7 +30,9 @@ class WorkerCommand extends Command
     {
         parent::__construct('worker');
         $this->setDescription('Deployer uses workers for parallel deployment');
-        $this->setHidden(true);
+        if (method_exists($this, 'setHidden')) {
+            $this->setHidden(true);
+        }
         $this->deployer = $deployer;
         $this->addOption(
             'hostname',

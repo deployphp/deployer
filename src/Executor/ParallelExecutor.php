@@ -60,6 +60,7 @@ class ParallelExecutor implements ExecutorInterface
     public function run($tasks, $hosts)
     {
         $localhost = new Localhost();
+        $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
             $success = true;
@@ -68,7 +69,9 @@ class ParallelExecutor implements ExecutorInterface
             if ($task->isLocal()) {
                 $task->run(new Context($localhost, $this->input, $this->output));
             } else {
-                $this->runTask($hosts, $task);
+                foreach (array_chunk($hosts, $limit) as $chunk) {
+                    $this->runTask($chunk, $task);
+                }
             }
 
             if ($success) {

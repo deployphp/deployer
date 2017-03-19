@@ -57,6 +57,12 @@ class TaskCommand extends Command
             'Run tasks in parallel'
         );
         $this->addOption(
+            'limit',
+            'l',
+            Option::VALUE_OPTIONAL,
+            'How many host to run in parallel?'
+        );
+        $this->addOption(
             'no-hooks',
             null,
             Option::VALUE_NONE,

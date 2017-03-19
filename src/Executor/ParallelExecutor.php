@@ -7,55 +7,26 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Console\Application;
 use Deployer\Console\Output\Informer;
-use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\Output\VerbosityString;
-use Deployer\Exception\Exception;
-use Deployer\Exception\ForwardException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
-use Pure\Server;
-use Pure\Storage\ArrayStorage;
-use Pure\Storage\QueueStorage;
-use React\Socket\ConnectionException;
-use Symfony\Component\Console\Input\InputDefinition;
+use Deployer\Task\Task;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 class ParallelExecutor implements ExecutorInterface
 {
     /**
-     * Try to start server on this port.
-     */
-    const START_PORT = 3333;
-
-    /**
-     * If fails on start port, try until stop port.
-     */
-    const STOP_PORT = 3340;
-
-    /**
-     * @var InputDefinition
-     */
-    private $userDefinition;
-
-    /**
-     * @var \Deployer\Task\Task[]
-     */
-    private $tasks;
-
-    /**
-     * @var Host[]
-     */
-    private $hosts;
-
-    /**
-     * @var \Symfony\Component\Console\Input\InputInterface
+     * @var InputInterface
      */
     private $input;
 
     /**
-     * @var \Symfony\Component\Console\Output\OutputInterface
+     * @var OutputInterface
      */
     private $output;
 
@@ -65,303 +36,208 @@ class ParallelExecutor implements ExecutorInterface
     private $informer;
 
     /**
-     * @var int
+     * @var Application
      */
-    private $port;
+    private $console;
 
     /**
-     * @var Server
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param Informer $informer
+     * @param Application $console
      */
-    private $pure;
-
-    /**
-     * @var \React\EventLoop\LoopInterface
-     */
-    private $loop;
-
-    /**
-     * Wait until all workers finish they tasks. When set this variable to true and send new tasks to workers.
-     *
-     * @var bool
-     */
-    private $wait = false;
-
-    /**
-     * @var QueueStorage
-     */
-    private $outputStorage;
-
-    /**
-     * @var QueueStorage
-     */
-    private $exceptionStorage;
-
-    /**
-     * Array will contain tasks list what workers has to before moving to next task.
-     *
-     * @var array
-     */
-    private $tasksToDo = [];
-
-    /**
-     * Check if current task was successfully finished on all hosts (no exception was triggered).
-     *
-     * @var bool
-     */
-    private $isSuccessfullyFinished = true;
-
-    /**
-     * Check if current task triggered a non-fatal exception.
-     *
-     * @var bool
-     */
-    private $hasNonFatalException = false;
-
-    /**
-     * @var Exception
-     */
-    private $lastException;
-
-    /**
-     * @var Localhost
-     */
-    private $localhost;
-
-    /**
-     * @param InputDefinition $userDefinition
-     */
-    public function __construct(InputDefinition $userDefinition)
+    public function __construct(InputInterface $input, OutputInterface $output, Informer $informer, Application $console)
     {
-        $this->userDefinition = $userDefinition;
+        $this->input = $input;
+        $this->output = $output;
+        $this->informer = $informer;
+        $this->console = $console;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $hosts, $input, $output)
+    public function run($tasks, $hosts)
     {
-        $this->tasks = $tasks;
-        $this->hosts = $hosts;
-        $this->input = $input;
-        $this->output = new OutputWatcher($output);
-        $this->informer = new Informer($this->output);
-        $this->localhost = new Localhost();
-        $this->port = self::START_PORT;
+        $localhost = new Localhost();
 
-        connect:
+        foreach ($tasks as $task) {
+            $success = true;
+            $this->informer->startTask($task->getName());
 
-        $this->pure = new Server($this->port);
-        $this->loop = $this->pure->getLoop();
-
-        // Start workers for each host.
-        $this->loop->addTimer(0, [$this, 'startWorkers']);
-
-        // Wait for output
-        $this->outputStorage = $this->pure['output'] = new QueueStorage();
-        $this->loop->addPeriodicTimer(0, [$this, 'catchOutput']);
-
-        // Lookup for exception
-        $this->exceptionStorage = $this->pure['exception'] = new QueueStorage();
-        $this->loop->addPeriodicTimer(0, [$this, 'catchExceptions']);
-
-        // Send workers tasks to do.
-        $this->loop->addPeriodicTimer(0, [$this, 'sendTasks']);
-
-        // Wait all workers finish they tasks.
-        $this->loop->addPeriodicTimer(0, [$this, 'idle']);
-
-        // Start loop
-        try {
-            $this->pure->run();
-        } catch (ConnectionException $exception) {
-            // If port is already used, try with another one.
-            $output->writeln("<fg=red>✘ " . $exception->getMessage() . "</fg=red>");
-
-            if (++$this->port <= self::STOP_PORT) {
-                goto connect;
+            if ($task->isLocal()) {
+                $task->run(new Context($localhost, $this->input, $this->output));
+            } else {
+                $this->runTask($hosts, $task);
             }
-        }
 
-        if (!$this->isSuccessfullyFinished) {
-            throw $this->lastException;
+            if ($success) {
+                $this->informer->endTask();
+            } else {
+                $this->informer->taskError();
+            }
         }
     }
 
     /**
-     * Start workers, put master port, hostname to run on, and options stuff
+     * Run task on hosts.
+     *
+     * @param array $hosts
+     * @param Task $task
+     * @return int
      */
-    public function startWorkers()
+    private function runTask(array $hosts, Task $task)
     {
-        // Get verbosity.
-        $verbosity = new VerbosityString($this->output);
+        $processes = [];
 
-        // Get current deploy.php file.
-        $deployPhpFile = $this->input->getOption('file');
-
-        // User input.
-        $input = '';
-
-        // Get user arguments.
-        foreach ($this->userDefinition->getArguments() as $argument) {
-            $value = $this->input->getArgument($argument->getName());
-
-            if ($value) {
-                $input .= " $value";
-            }
+        foreach ($hosts as $hostname => $host) {
+            $processes[$hostname] = $this->getProcess($host, $task);
         }
 
-        // Get user options.
-        foreach ($this->userDefinition->getOptions() as $option) {
-            $value = $this->input->getOption($option->getName());
+        $callback = function ($type, $host, $output) {
+            $this->output->write($output);
+        };
 
-            if ($value) {
-                $input .= " --{$option->getName()} $value";
-            }
+        $this->startProcesses($processes);
+
+        while ($this->areRunning($processes)) {
+            $this->gatherOutput($processes, $callback);
+        }
+        $this->gatherOutput($processes, $callback);
+
+        return $this->gatherExitCodes($processes);
+    }
+
+    /**
+     * Get process for task on host.
+     *
+     * @param Host|Localhost $host
+     * @param Task $task
+     * @return Process
+     */
+    protected function getProcess($host, Task $task)
+    {
+        $dep = getenv('_');
+        $options = $this->generateOptions();
+        $hostname = $host->getHostname();
+        $taskName = $task->getName();
+
+        if ($this->output->isDecorated()) {
+            $options .= ' --ansi';
         }
 
-        foreach ($this->hosts as $hostname => $host) {
-            $process = new Process(
-                "php " . DEPLOYER_BIN .
-                (null === $deployPhpFile ? "" : " --file=$deployPhpFile") .
-                " worker " .
-                " --master 127.0.0.1:{$this->port}" .
-                " --hostname $hostname" .
-                " $input " .
-                " $verbosity" .
-                " &"
-            );
-            $process->disableOutput();
+        $process = new Process("$dep worker $options --hostname $hostname --task $taskName");
+        $process->setTty(true);
+        return $process;
+    }
+
+    /**
+     * Start all of the processes.
+     *
+     * @param Process[] $processes
+     * @return void
+     */
+    protected function startProcesses(array $processes)
+    {
+        foreach ($processes as $process) {
             $process->start();
         }
     }
 
     /**
-     * Wait for output from workers.
+     * Determine if any of the processes are running.
+     *
+     * @param Process[] $processes
+     * @return bool
      */
-    public function catchOutput()
+    protected function areRunning(array $processes)
     {
-        while (count($this->outputStorage) > 0) {
-            list(, $messages, , $type) = $this->outputStorage->pop();
-
-            $format = function ($message) {
-                $message = rtrim($message, "\n");
-                return implode("\n", array_map(function ($text) {
-                    return $text;
-                }, explode("\n", $message)));
-            };
-
-            $this->output->writeln(array_map($format, (array)$messages), $type);
+        foreach ($processes as $process) {
+            if ($process->isRunning()) {
+                return true;
+            }
         }
+        return false;
     }
 
     /**
-     * Wait for exceptions from workers.
+     * Gather the output from all of the processes.
+     *
+     * @param Process[] $processes
+     * @param callable $callback
      */
-    public function catchExceptions()
+    protected function gatherOutput(array $processes, callable $callback)
     {
-        while (count($this->exceptionStorage) > 0) {
-            list($hostname, $exceptionClass, $message) = $this->exceptionStorage->pop();
-
-            // Print exception message.
-            $this->informer->taskException($hostname, $exceptionClass, $message);
-
-            // Save exception.
-            $this->lastException = new ForwardException($hostname, $exceptionClass, $message);
-
-            // We got some exception, so not.
-            $this->isSuccessfullyFinished = false;
-
-            if ($exceptionClass == 'Deployer\Exception\NonFatalException') {
-
-                // If we got NonFatalException, continue other tasks.
-                $this->hasNonFatalException = true;
-            } else {
-
-                // Do not run other task.
-                // Finish all current worker tasks and stop loop.
-                $this->tasks = [];
-
-                // Worker will not mark this task as done (remove self hostname from `tasks_to_do` list),
-                // so to finish current task execution we need to manually remove it from that list.
-                $taskToDoStorage = $this->pure->getStorage('tasks_to_do');
-                $taskToDoStorage->delete($hostname);
+        foreach ($processes as $host => $process) {
+            $methods = [
+                Process::OUT => 'getIncrementalOutput',
+                Process::ERR => 'getIncrementalErrorOutput',
+            ];
+            foreach ($methods as $type => $method) {
+                $output = $process->{$method}();
+                if (!empty($output)) {
+                    $callback($type, $host, $output);
+                }
             }
         }
     }
 
     /**
-     * Action time for master! Send tasks `to-do` for workers and go to sleep.
-     * Also decide when to stop server/loop.
+     * Gather the cumulative exit code for the processes.
+     *
+     * @param Process[] $processes
+     * @return int
      */
-    public function sendTasks()
+    protected function gatherExitCodes(array $processes)
     {
-        if (!$this->wait) {
-            if (count($this->tasks) > 0) {
-
-                // Get task name to do.
-                $task = current($this->tasks);
-                $taskName = $task->getName();
-                array_shift($this->tasks);
-
-                $this->informer->startTask($taskName);
-
-                if ($task->isOnce()) {
-                    $task->run(new Context($this->localhost, $this->input, $this->output));
-                    $this->informer->endTask();
-                } else {
-                    $this->tasksToDo = [];
-
-                    foreach ($this->hosts as $hostname => $host) {
-                        if ($task->isOnServer($hostname)) {
-                            // Start task on host
-                            $this->tasksToDo[$hostname] = $taskName;
-                        }
-                    }
-
-                    // Inform all workers what tasks they need to do.
-                    $taskToDoStorage = new ArrayStorage();
-                    $taskToDoStorage->push($this->tasksToDo);
-                    $this->pure->setStorage('tasks_to_do', $taskToDoStorage);
-
-                    $this->wait = true;
-                }
-            } else {
-                $this->loop->stop();
-            }
+        $code = 0;
+        foreach ($processes as $process) {
+            $code = $code + $process->getExitCode();
         }
+        return $code;
     }
 
     /**
-     * While idle master, print information about finished tasks.
+     * Generate options and arguments string.
+     * @return string
      */
-    public function idle()
+    private function generateOptions()
     {
-        if ($this->wait) {
-            $taskToDoStorage = $this->pure->getStorage('tasks_to_do');
+        $input = '';
 
-            foreach ($this->tasksToDo as $hostname => $taskName) {
-                if (!$taskToDoStorage->has($hostname)) {
-                    $this->informer->endOnHost($hostname);
-                    unset($this->tasksToDo[$hostname]);
-                }
-            }
+        $verbosity = new VerbosityString($this->output);
+        $input .= $verbosity;
 
-            if (count($taskToDoStorage) === 0) {
-                if ($this->isSuccessfullyFinished) {
-                    $this->informer->endTask();
-                } else {
-                    $this->informer->taskError($this->hasNonFatalException);
-                }
+        // Deploy file
+        $value = $this->input->getOption('file');
+        if ($value) {
+            $input .= " --file $value";
+        }
 
-                // We waited all workers to finish their tasks.
-                // Wait no more!
-                $this->wait = false;
-
-                if ($this->isSuccessfullyFinished || $this->hasNonFatalException) {
-                    // Reset to default for next tasks.
-                    $this->isSuccessfullyFinished = true;
-                }
+        // Console options
+        foreach (['quiet', 'ansi', 'no-ansi', 'no-interaction'] as $option) {
+            $value = $this->input->getOption($option);
+            if ($value) {
+                $input .= " --$option";
             }
         }
+
+        // Get user arguments
+        foreach ($this->console->getUserDefinition()->getArguments() as $argument) {
+            $value = $this->input->getArgument($argument->getName());
+            if ($value) {
+                $input .= " $value";
+            }
+        }
+
+        // Get user options
+        foreach ($this->console->getUserDefinition()->getOptions() as $option) {
+            $value = $this->input->getOption($option->getName());
+            if ($value) {
+                $input .= " --{$option->getName()} $value";
+            }
+        }
+
+        return $input;
     }
 }

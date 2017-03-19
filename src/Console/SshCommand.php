@@ -27,7 +27,7 @@ class SshCommand extends Command
     public function __construct(Deployer $deployer)
     {
         parent::__construct('ssh');
-        $this->setDescription('Connect to server through ssh');
+        $this->setDescription('Connect to host through ssh');
         $this->deployer = $deployer;
     }
 

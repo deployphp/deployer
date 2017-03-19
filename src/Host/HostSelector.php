@@ -43,13 +43,13 @@ class HostSelector
         if (!empty($stage)) {
             // Look for hosts which has stage with current stage name
             foreach ($this->hosts as $hostname => $host) {
-                // If server does not have any stage category, skip them
+                // If host does not have any stage, skip them
                 if ($stage === $host->get('stage', false)) {
                     $hosts[$hostname] = $host;
                 }
             }
 
-            // If still is empty, try to find server by name
+            // If still is empty, try to find host by name
             if (empty($hosts)) {
                 if ($this->hosts->has($stage)) {
                     $hosts = [$stage => $this->hosts->get($stage)];
@@ -59,7 +59,7 @@ class HostSelector
                 }
             }
         } else {
-            // Otherwise run on all servers what does not specify stage
+            // Otherwise run on all hosts what does not specify stage
             foreach ($this->hosts as $hostname => $host) {
                 if (!$host->has('stage')) {
                     $hosts[$hostname] = $host;

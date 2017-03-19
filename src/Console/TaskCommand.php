@@ -80,7 +80,7 @@ class TaskCommand extends Command
         );
 
         if ($input->getOption('parallel')) {
-            //$executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
+            $executor = $this->deployer->parallelExecutor;
         } else {
             $executor = $this->deployer->seriesExecutor;
         }

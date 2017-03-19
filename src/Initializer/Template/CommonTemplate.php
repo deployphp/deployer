@@ -24,24 +24,26 @@ class CommonTemplate extends Template
         return <<<PHP
 <?php
 namespace Deployer;
+
 require 'recipe/common.php';
 
 // Configuration
 
-set('ssh_type', 'native');
-set('ssh_multiplexing', true);
-
 set('repository', 'git@domain.com:username/repository.git');
+set('git_tty', true); // [Optional] Allocate tty for git on first deployment
 set('shared_files', []);
 set('shared_dirs', []);
 set('writable_dirs', []);
 
-// Servers
+// Hosts
 
-server('production', 'domain.com')
-    ->user('username')
-    ->identityFile()
-    ->set('deploy_path', '/var/www/domain.com');
+host('project.com')
+    ->stage('production')
+    ->set('deploy_path', '/var/www/project.com');
+    
+host('beta.project.com')
+    ->stage('beta')
+    ->set('deploy_path', '/var/www/project.com');    
 
 
 // Tasks

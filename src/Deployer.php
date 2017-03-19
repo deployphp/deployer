@@ -16,6 +16,7 @@ use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\SshCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
+use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
 use Deployer\Task;
 use Deployer\Utility\ProcessRunner;
@@ -41,6 +42,8 @@ use function Deployer\Support\array_merge_alternate;
  * @property Task\ScriptManager scriptManager
  * @property Host\HostSelector hostSelector
  * @property SeriesExecutor seriesExecutor
+ * @property ParallelExecutor parallelExecutor
+ * @property Informer informer
  */
 class Deployer extends Container
 {
@@ -113,6 +116,9 @@ class Deployer extends Container
         };
         $this['seriesExecutor'] = function ($c) {
             return new SeriesExecutor($c['input'], $c['output'], $c['informer']);
+        };
+        $this['parallelExecutor'] = function ($c) {
+            return new ParallelExecutor($c['input'], $c['output'], $c['informer'], $c['console']);
         };
 
         /******************************
@@ -296,7 +302,7 @@ class Deployer extends Container
             'status' => 'success',
             'command_name' => $commandEvent->getCommand()->getName(),
             'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
-            'servers_count' => $this->hosts->count(),
+            'hosts_count' => $this->hosts->count(),
             'deployer_version' => $this->getConsole()->getVersion(),
             'deployer_phar' => $this->getConsole()->isPharArchive(),
             'php_version' => phpversion(),

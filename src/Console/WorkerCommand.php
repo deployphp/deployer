@@ -11,7 +11,6 @@ use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
 use Deployer\Exception\NonFatalException;
 use Deployer\Task\Context;
-use Pure\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -30,21 +29,16 @@ class WorkerCommand extends Command
     public function __construct(Deployer $deployer)
     {
         parent::__construct('worker');
-        if (method_exists($this, 'setHidden')) {
-            $this->setHidden(true);
-        }
         $this->setDescription('Deployer uses workers for parallel deployment');
-
+        $this->setHidden(true);
         $this->deployer = $deployer;
-
         $this->addOption(
-            'master',
+            'hostname',
             null,
             InputOption::VALUE_REQUIRED
         );
-
         $this->addOption(
-            'hostname',
+            'task',
             null,
             InputOption::VALUE_REQUIRED
         );
@@ -56,31 +50,24 @@ class WorkerCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $hostname = $input->getOption('hostname');
-        list($host, $port) = explode(':', $input->getOption('master'));
-        $pure = new Client($port, $host);
+        $host = $this->deployer->hosts->get($hostname);
 
-        try {
-            $host = $this->deployer->hosts->get($hostname);
-            $output = new RemoteOutput($output, $pure, $hostname);
+        $task = $input->getOption('task');
+        $task = $this->deployer->tasks->get($task);
 
-            while ($pure->ping()) {
-                // Get task to do
-                $taskName = $pure->map('tasks_to_do')->get($hostname);
+        $informer = $this->deployer->informer;
 
-                if (null !== $taskName) {
-                    $task = $this->deployer->tasks->get($taskName);
-
-                    try {
-                        $task->run(new Context($host, $input, $output));
-                    } catch (NonFatalException $e) {
-                        $pure->queue('exception')->push([$hostname, get_class($e), $e->getMessage()]);
-                    }
-
-                    $pure->map('tasks_to_do')->delete($hostname);
-                }
+        if ($task->shouldBePerformed($host)) {
+            try {
+                $task->run(new Context($host, $input, $output));
+            } catch (NonFatalException $exception) {
+                $informer->taskException(
+                    $hostname,
+                    NonFatalException::class,
+                    $exception->getMessage()
+                );
             }
-        } catch (\Exception $exception) {
-            $pure->queue('exception')->push([$hostname, get_class($exception), $exception->getMessage()]);
+            $informer->endOnHost($hostname);
         }
     }
 }

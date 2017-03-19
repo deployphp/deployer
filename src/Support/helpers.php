@@ -61,3 +61,15 @@ function array_merge_alternate(array $original, array $override)
 
     return $original;
 }
+
+/**
+ * Determines if the given string contains the given value.
+ *
+ * @param string $haystack
+ * @param string $needle
+ * @return bool
+ */
+function str_contains(string $haystack, string $needle)
+{
+    return strpos($haystack, $needle) !== false;
+}

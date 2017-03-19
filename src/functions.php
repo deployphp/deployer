@@ -247,7 +247,7 @@ function workingPath()
 }
 
 /**
- * Run command on server.
+ * Run command.
  *
  * @param string $command
  * @param array $options

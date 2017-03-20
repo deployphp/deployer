@@ -99,7 +99,8 @@ class TaskCommand extends Command
                 if ($this->deployer['onFailure']->has($this->getName())) {
                     $taskName = $this->deployer['onFailure']->get($this->getName());
                     $tasks = $this->deployer->scriptManager->getTasks($taskName, $hosts, $hooksEnabled);
-                    $executor->run($tasks, $hosts, $input, $output);
+
+                    $executor->run($tasks, $hosts);
                 }
             }
             throw $exception;

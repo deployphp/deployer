@@ -65,7 +65,7 @@ class Host
     public function __toString()
     {
         $user = empty($this->user) ? '' : "{$this->user}@";
-        $hostname = $this->hostname;
+        $hostname = preg_replace('/\/.+$/', '', $this->hostname);
         return "$user$hostname";
     }
 

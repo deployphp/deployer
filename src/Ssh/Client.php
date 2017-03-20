@@ -161,7 +161,7 @@ class Client
      */
     private function generateControlPath(Host $host)
     {
-        $connectionData = "{$host->getUser()}_{$host->getHostname()}_{$host->getPort()}";
+        $connectionData = "$host{$host->getPort()}";
         $tryLongestPossible = 0;
         $controlPath = '';
         do {

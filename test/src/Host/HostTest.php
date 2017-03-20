@@ -52,4 +52,11 @@ class HostTest extends TestCase
         self::assertEquals('value', $host->get('key'));
         self::assertEquals([1, 2], $host->get('array'));
     }
+
+    public function testHostAlias()
+    {
+        $host = new Host('host/alias');
+        self::assertEquals('host/alias', $host->getHostname());
+        self::assertEquals('host', "$host");
+    }
 }

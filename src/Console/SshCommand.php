@@ -53,7 +53,7 @@ class SshCommand extends Command
         Context::push(new Context($host, $input, $output));
 
         $options = $host->sshOptions();
-        $deployPath = $host->get('deploy_path', null);
+        $deployPath = $host->get('deploy_path', '~');
 
         passthru("ssh -t $options $host 'cd '''$deployPath/current'''; exec \$SHELL -l'");
     }

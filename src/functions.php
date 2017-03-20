@@ -60,7 +60,7 @@ function host(...$hostnames)
 function localhost($alias = 'localhost')
 {
     $deployer = Deployer::get();
-    $host = new Localhost();
+    $host = new Localhost($alias);
     $deployer->hosts->set($alias, $host);
     return $host;
 }

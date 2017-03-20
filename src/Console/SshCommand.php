@@ -8,6 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -49,6 +50,8 @@ class SshCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $host = $this->deployer->hosts->get($input->getArgument('hostname'));
+        Context::push(new Context($host, $input, $output));
+
         $options = $host->sshOptions();
         $deployPath = $host->get('deploy_path', null);
 

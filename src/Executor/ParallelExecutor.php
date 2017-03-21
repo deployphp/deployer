@@ -98,7 +98,10 @@ class ParallelExecutor implements ExecutorInterface
         }
 
         $callback = function ($type, $host, $output) {
-            $this->output->write($output);
+            $output = rtrim($output);
+            if (!empty($output)) {
+                $this->output->writeln($output);
+            }
         };
 
         $this->startProcesses($processes);
@@ -134,8 +137,8 @@ class ParallelExecutor implements ExecutorInterface
 
         $process = new Process("$dep $file worker $options --hostname $hostname --task $taskName");
 
-        if (!defined('DEPLOYER_PARALLEL_TTY')) {
-            $process->setTty(true);
+        if (!defined('DEPLOYER_PARALLEL_PTY')) {
+            $process->setPty(true);
         }
 
         return $process;

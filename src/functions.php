@@ -173,7 +173,7 @@ function after($it, $that)
  * @param string $it
  * @param string $that
  */
-function onFailure($it, $that)
+function fail($it, $that)
 {
     $deployer = Deployer::get();
     $deployer['onFailure']->set($it, $that);

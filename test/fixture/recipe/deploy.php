@@ -28,7 +28,7 @@ set('writable_dirs', [
 ]);
 
 
-// Servers
+// Hosts
 
 localhost()
     ->set('deploy_path', __DIR__ . '/../.localhost');
@@ -52,6 +52,27 @@ task('deploy', [
     'success'
 ]);
 
+desc('Test deploy fail');
+task('deploy_fail', [
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:writable',
+    'deploy:vendors',
+    'fail',
+    'deploy:symlink',
+    'deploy:unlock',
+    'cleanup',
+    'success'
+]);
+
+task('fail', 'unknown_command');
+
+// If deploy fails automatically unlock
+
+fail('deploy_fail', 'deploy:unlock');
 
 // Dummy
 

@@ -20,7 +20,6 @@ class ParallelTest extends DepCase
     {
         $output = $this->start('deploy',
             [
-                'localhost',
                 '--parallel' => true,
                 '--file' => FIXTURES . '/recipe/deploy.php'
             ],

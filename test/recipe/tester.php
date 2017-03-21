@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Console\Application;
+use Deployer\Task\Context;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Output\Output;
@@ -85,6 +86,9 @@ abstract class DepCase extends BaseTestCase
         $input = $this->createMock(Input::class);
         $output = $this->createMock(Output::class);
         $this->deployer = new Deployer($console, $input, $output);
+
+        // Clear context
+        Context::pop();
 
         // Load recipe
         $this->load();

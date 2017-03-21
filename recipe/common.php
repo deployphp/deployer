@@ -151,4 +151,4 @@ task('success', function () {
 task('deploy:failed', function () {
 })->setPrivate();
 
-onFailure('deploy', 'deploy:failed');
+fail('deploy', 'deploy:failed');

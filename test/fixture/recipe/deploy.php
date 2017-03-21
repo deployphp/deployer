@@ -12,7 +12,7 @@ require 'recipe/common.php';
 
 // Configuration
 
-set('repository', __DIR__ . '/../fixture/repository');
+set('repository', __DIR__ . '/../repository');
 set('http_user', getenv('USER'));
 
 set('shared_files', [
@@ -31,7 +31,7 @@ set('writable_dirs', [
 // Servers
 
 localhost()
-    ->set('deploy_path', __DIR__ . '/.localhost');
+    ->set('deploy_path', __DIR__ . '/../.localhost');
 
 
 // Tasks

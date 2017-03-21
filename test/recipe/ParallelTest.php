@@ -11,20 +11,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ParallelTest extends DepCase
 {
-    const RECIPE = __DIR__ . '/deploy.php';
-
     protected function load()
     {
-        require self::RECIPE;
+        require FIXTURES . '/recipe/deploy.php';
     }
 
     public function testDeploy()
     {
         $output = $this->start('deploy',
-            ['localhost', '--parallel' => true, '--file' => self::RECIPE],
-            ['verbosity' => OutputInterface::VERBOSITY_DEBUG]
+            [
+                'localhost',
+                '--parallel' => true,
+                '--file' => FIXTURES . '/recipe/deploy.php'
+            ],
+            [
+                'verbosity' => OutputInterface::VERBOSITY_DEBUG
+            ]
         );
 
+        self::assertContains('echo $0', $output, 'Missing output from worker.');
         self::assertContains('Successfully deployed!', $output);
         self::assertDirectoryExists(self::$deployPath . '/.dep');
         self::assertDirectoryExists(self::$deployPath . '/releases');

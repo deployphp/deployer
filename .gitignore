@@ -1,4 +1,4 @@
 /vendor/
-/test/recipe/.localhost/
+/test/fixture/.localhost/
 .php_cs.cache
 *.phar

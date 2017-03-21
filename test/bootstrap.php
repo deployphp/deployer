@@ -20,5 +20,6 @@ if (!$loaded) {
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
 define('DEPLOYER_PARALLEL_PTY', false);
+define('FIXTURES', __DIR__ . '/fixture');
 
 require_once __DIR__ . '/recipe/tester.php';

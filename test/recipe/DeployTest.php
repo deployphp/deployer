@@ -13,7 +13,7 @@ class DeployTest extends DepCase
 {
     protected function load()
     {
-        require __DIR__ . '/deploy.php';
+        require FIXTURES . '/recipe/deploy.php';
     }
 
     public function testDeploy()

@@ -14,7 +14,7 @@ class DeployTest extends DepCase
 {
     protected function load()
     {
-        require FIXTURES . '/recipe/deploy.php';
+        require DEPLOYER_FIXTURES . '/recipe/deploy.php';
     }
 
     public function testDeploy()

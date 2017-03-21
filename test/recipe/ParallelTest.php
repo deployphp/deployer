@@ -13,7 +13,7 @@ class ParallelTest extends DepCase
 {
     protected function load()
     {
-        require FIXTURES . '/recipe/deploy.php';
+        require DEPLOYER_FIXTURES . '/recipe/deploy.php';
     }
 
     public function testDeploy()
@@ -21,7 +21,7 @@ class ParallelTest extends DepCase
         $output = $this->start('deploy',
             [
                 '--parallel' => true,
-                '--file' => FIXTURES . '/recipe/deploy.php'
+                '--file' => DEPLOYER_FIXTURES . '/recipe/deploy.php'
             ],
             [
                 'verbosity' => OutputInterface::VERBOSITY_DEBUG

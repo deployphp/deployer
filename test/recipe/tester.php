@@ -48,13 +48,13 @@ abstract class DepCase extends BaseTestCase
     public static function setUpBeforeClass()
     {
         // Prepare FS
-        self::$deployPath = FIXTURES . '/.localhost';
+        self::$deployPath = DEPLOYER_FIXTURES . '/.localhost';
         self::cleanUp();
         mkdir(self::$deployPath);
         self::$deployPath = realpath(self::$deployPath);
 
         // Init repository
-        $repository = FIXTURES . '/repository';
+        $repository = DEPLOYER_FIXTURES . '/repository';
         \exec("cd $repository && git init");
         \exec("cd $repository && git add .");
         \exec("cd $repository && git config user.name 'John Smith'");

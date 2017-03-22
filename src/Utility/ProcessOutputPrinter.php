@@ -45,7 +45,7 @@ trait ProcessOutputPrinter
 
         if ($output->isDecorated()) {
             if ($type === Process::ERR) {
-                $line = "[$hostname] \033[0;31m<\e[0;90m $line\033[0m";
+                $line = "[$hostname] \033[0;31m<\e[0m $line";
             } else {
                 $line = "[$hostname] \033[0;90m< $line\033[0m";
             }

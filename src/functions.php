@@ -176,7 +176,7 @@ function after($it, $that)
 function fail($it, $that)
 {
     $deployer = Deployer::get();
-    $deployer['onFailure']->set($it, $that);
+    $deployer['fail']->set($it, $that);
 }
 
 /**

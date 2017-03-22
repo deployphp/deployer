@@ -108,7 +108,7 @@ class Deployer extends Container
         $this['hostSelector'] = function ($c) {
             return new Host\HostSelector($c['hosts'], $c['config']['default_stage']);
         };
-        $this['onFailure'] = function () {
+        $this['fail'] = function () {
             return new Collection();
         };
         $this['informer'] = function ($c) {

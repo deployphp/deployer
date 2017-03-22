@@ -100,13 +100,11 @@ $output = new \Symfony\Component\Console\Output\ConsoleOutput();
 $deployer = new \Deployer\Deployer($console);
 
 // Pretty-print uncaught exceptions in symfony-console
-if (class_exists('\Symfony\Component\Console\Style\SymfonyStyle')) {
-    set_exception_handler(function ($e) use ($input, $output) {
-        $io = new \Symfony\Component\Console\Style\SymfonyStyle($input, $output);
-        $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
-        $io->block($e->getTraceAsString());
-    });
-}
+set_exception_handler(function ($e) use ($input, $output) {
+    $io = new \Symfony\Component\Console\Style\SymfonyStyle($input, $output);
+    $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
+    $io->block($e->getTraceAsString());
+});
 
 // Require deploy.php file
 if (is_readable($deployFile)) {

@@ -8,6 +8,9 @@
 namespace Deployer\Console\Output;
 
 use Deployer\Deployer;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
+use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Informer
@@ -93,16 +96,50 @@ class Informer
     }
 
     /**
-     * @param string $hostname
-     * @param string $exceptionClass
-     * @param string $message
+     * @param \Throwable $exception
+     * @param Host|Localhost $host
      */
-    public function taskException($hostname, $exceptionClass, $message)
+    public function taskException($exception, $host = null)
     {
+        /** @var FormatterHelper $formatter */
         $formatter = Deployer::get()->getHelper('formatter');
-        $messages = explode("\n", $message);
-        array_unshift($messages, "Exception [$exceptionClass] on [$hostname] host:");
+        $messages = array_filter(array_map('trim', explode("\n", $exception->getMessage())), function ($line) {
+            return !empty($line);
+        });
+        $exceptionClass = get_class($exception);
+
+        if (empty($host)) {
+            array_unshift($messages, "[$exceptionClass]");
+        } else {
+            array_unshift($messages, "[$exceptionClass] on [{$host->getHostname()}]");
+        }
 
         $this->output->writeln($formatter->formatBlock($messages, 'error', true));
+        $this->output->writeln('');
+
+        if (OutputInterface::VERBOSITY_VERBOSE <= $this->output->getVerbosity()) {
+            $this->output->writeln('<comment>Exception trace:</comment>', OutputInterface::VERBOSITY_QUIET);
+
+            // exception related properties
+            $trace = $exception->getTrace();
+            array_unshift($trace, array(
+                'function' => '',
+                'file' => $exception->getFile() !== null ? $exception->getFile() : 'n/a',
+                'line' => $exception->getLine() !== null ? $exception->getLine() : 'n/a',
+                'args' => array(),
+            ));
+
+            for ($i = 0, $count = count($trace); $i < $count; ++$i) {
+                $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
+                $type = isset($trace[$i]['type']) ? $trace[$i]['type'] : '';
+                $function = $trace[$i]['function'];
+                $file = isset($trace[$i]['file']) ? $trace[$i]['file'] : 'n/a';
+                $line = isset($trace[$i]['line']) ? $trace[$i]['line'] : 'n/a';
+
+                $this->output->writeln(sprintf(' %s%s%s() at <info>%s:%s</info>', $class, $type, $function, $file, $line), OutputInterface::VERBOSITY_QUIET);
+            }
+
+            $this->output->writeln('', OutputInterface::VERBOSITY_QUIET);
+        }
     }
 }

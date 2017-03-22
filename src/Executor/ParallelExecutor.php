@@ -10,6 +10,8 @@ namespace Deployer\Executor;
 use Deployer\Console\Application;
 use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\VerbosityString;
+use Deployer\Exception\Exception;
+use Deployer\Exception\GracefulShutdownException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
@@ -70,7 +72,18 @@ class ParallelExecutor implements ExecutorInterface
                 $task->run(new Context($localhost, $this->input, $this->output));
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
-                    $this->runTask($chunk, $task);
+                    $exitCode = $this->runTask($chunk, $task);
+
+                    switch ($exitCode) {
+                        case 1:
+                            throw new GracefulShutdownException();
+                        case 2:
+                            $success = false;
+                            break;
+                        case 255:
+                            throw new Exception();
+                    }
+
                 }
             }
 
@@ -205,7 +218,9 @@ class ParallelExecutor implements ExecutorInterface
     {
         $code = 0;
         foreach ($processes as $process) {
-            $code = $code + $process->getExitCode();
+            if ($process->getExitCode() > 0) {
+                $code = $process->getExitCode();
+            }
         }
         return $code;
     }

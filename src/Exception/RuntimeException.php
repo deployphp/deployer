@@ -50,7 +50,7 @@ class RuntimeException extends Exception
             $errorOutput
         );
 
-        parent::__construct($message);
+        parent::__construct($message, $exitCode);
     }
 
     private function getExitCodeText($exitCode)

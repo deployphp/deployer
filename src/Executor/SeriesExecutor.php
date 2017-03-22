@@ -63,11 +63,7 @@ class SeriesExecutor implements ExecutorInterface
                             $task->run(new Context($host, $this->input, $this->output));
                         } catch (NonFatalException $exception) {
                             $success = false;
-                            $this->informer->taskException(
-                                $hostname,
-                                NonFatalException::class,
-                                $exception->getMessage()
-                            );
+                            $this->informer->taskException($exception, $host);
                         }
                         $this->informer->endOnHost($hostname);
                     }

@@ -33,6 +33,7 @@ use function Deployer\Support\array_merge_alternate;
 /**
  * Deployer class represents DI container for configuring
  *
+ * @property Console console
  * @property Task\TaskCollection|Task\Task[] tasks
  * @property Host\HostCollection|Collection|Host\Host[] hosts
  * @property Collection config

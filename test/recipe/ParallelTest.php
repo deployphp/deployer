@@ -7,8 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Exception\Exception;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ParallelTest extends DepCase
 {
@@ -41,7 +41,7 @@ class ParallelTest extends DepCase
      */
     public function testFail()
     {
-        self::expectException(ProcessFailedException::class);
+        self::expectException(Exception::class);
         $this->start('deploy_fail', [
             '--parallel' => true,
             '--file' => DEPLOYER_FIXTURES . '/recipe/deploy.php'

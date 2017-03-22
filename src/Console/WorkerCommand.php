@@ -7,9 +7,11 @@
 
 namespace Deployer\Console;
 
-use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
+use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,6 +24,11 @@ class WorkerCommand extends Command
      * @var Deployer
      */
     private $deployer;
+
+    /**
+     * @var Host|Localhost
+     */
+    private $host;
 
     /**
      * @param Deployer $deployer
@@ -51,8 +58,25 @@ class WorkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        try {
+            $this->doExecute($input, $output);
+        } catch (GracefulShutdownException $e) {
+            $this->deployer->informer->taskException($e, $this->host);
+            return 1;
+        } catch (NonFatalException $e) {
+            $this->deployer->informer->taskException($e, $this->host);
+            return 2;
+        } catch (\Throwable $e) {
+            $this->deployer->informer->taskException($e, $this->host);
+            return 255;
+        }
+    }
+
+
+    private function doExecute(InputInterface $input, OutputInterface $output)
+    {
         $hostname = $input->getOption('hostname');
-        $host = $this->deployer->hosts->get($hostname);
+        $this->host = $host = $this->deployer->hosts->get($hostname);
 
         $task = $input->getOption('task');
         $task = $this->deployer->tasks->get($task);
@@ -60,15 +84,7 @@ class WorkerCommand extends Command
         $informer = $this->deployer->informer;
 
         if ($task->shouldBePerformed($host)) {
-            try {
-                $task->run(new Context($host, $input, $output));
-            } catch (NonFatalException $exception) {
-                $informer->taskException(
-                    $hostname,
-                    NonFatalException::class,
-                    $exception->getMessage()
-                );
-            }
+            $task->run(new Context($host, $input, $output));
             $informer->endOnHost($hostname);
         }
     }

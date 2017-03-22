@@ -26,4 +26,3 @@ task('config:current', function () {
         ->setRows($rows);
     $table->render();
 })->local();
-

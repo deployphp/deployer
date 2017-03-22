@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+require __DIR__ . '/config/current.php';
 require __DIR__ . '/config/dump.php';
 require __DIR__ . '/deploy/prepare.php';
 require __DIR__ . '/deploy/lock.php';
@@ -127,14 +128,6 @@ set('bin/symlink', function () {
 option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
 option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
 option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
-
-/**
- * Tasks
- */
-desc('Show current release');
-task('current', function () {
-    writeln('Current release: ' . basename(get('current_path')));
-});
 
 
 /**

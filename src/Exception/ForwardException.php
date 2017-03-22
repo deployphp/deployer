@@ -15,19 +15,14 @@ class ForwardException extends Exception
 
     /**
      * ForwardException constructor.
-     * @param $serverName
-     * @param $exceptionClass
-     * @param $message
+     * @param string $serverName
+     * @param string $exceptionClass
+     * @param string $message
      */
     public function __construct($serverName, $exceptionClass, $message)
     {
         $this->serverName = $serverName;
         $this->exceptionClass = $exceptionClass;
         parent::__construct($message);
-    }
-
-    public function __toString()
-    {
-        parent::__toString();
     }
 }

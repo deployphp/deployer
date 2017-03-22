@@ -8,6 +8,7 @@ production:
 
 beta:
   host: beta.domain.com
+  port: 27
   user: beta
   password: qwerty
   stage: beta
@@ -24,9 +25,20 @@ test:
 
 istanbul_dc_cluster:
   nodes: [192.168.0.1, 192.168.0.2, 192.168.0.3]
+  port: 27
   user: test
   password: qwerty
+  identity_config: ~
+  identity_file: ~
+  pem_file: ~
+  forward_agent: ~
   stage: production
+  pty: false
   deploy_path: /home
   run_test: true
   cluster: true
+
+localhost:
+  local: true
+  user: localuser
+  password: localpass

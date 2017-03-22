@@ -4,14 +4,14 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 // Configuration
-set('shared_files', [
-    'app/etc/env.php',
-    'var/.maintenance.ip',
-]);
 set('shared_dirs', [
     'var/log',
     'var/backups',
     'pub/media',
+]);
+set('shared_files', [
+    'app/etc/env.php',
+    'var/.maintenance.ip',
 ]);
 set('writable_dirs', [
     'var',

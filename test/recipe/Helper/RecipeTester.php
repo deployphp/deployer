@@ -14,6 +14,8 @@ use Symfony\Component\Console\Tester\ApplicationTester;
 
 abstract class RecipeTester extends TestCase
 {
+    use RecipeAssertionsTrait;
+
     /**
      * @var ApplicationTester
      */
@@ -114,5 +116,13 @@ abstract class RecipeTester extends TestCase
     protected function getEnv($name, $server = 'localhost')
     {
         return $this->deployer->environments->get($server)->get($name);
+    }
+
+    /**
+     * @return \Deployer\Task\Task[]|\Deployer\Task\TaskCollection
+     */
+    protected function getTasks()
+    {
+        return $this->deployer->tasks;
     }
 }

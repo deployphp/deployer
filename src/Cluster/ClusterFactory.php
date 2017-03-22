@@ -20,6 +20,8 @@ class ClusterFactory
     /**
      * This class should not be initialized,
      * so set the __construct as private
+     *
+     * @codeCoverageIgnore
      */
     private function __construct()
     {

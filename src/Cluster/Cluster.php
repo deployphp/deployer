@@ -17,7 +17,6 @@ use Deployer\Deployer;
  */
 class Cluster implements ClusterInterface
 {
-
     /**
      * @var string $name
      */
@@ -52,20 +51,18 @@ class Cluster implements ClusterInterface
             throw new \InvalidArgumentException('You must define at least one node to deploy');
         }
 
-        $this->name  = $name;
-        $this->port  = $port;
+        $this->name = $name;
+        $this->port = $port;
 
         foreach ($nodes as $key => $host) {
-            $nName = $name . '_' . $key;
             $node = new Node();
-
             $node->setDeployer($deployer)
-                ->setName($nName)
+                ->setName($name . '_' . $key)
                 ->setHost($host)
                 ->setPort($port);
 
             $node->initialize();
-            $this->nodes[]  = $node;
+            $this->nodes[] = $node;
         }
         $this->clusterBuilder = new ClusterBuilder($this->nodes);
     }

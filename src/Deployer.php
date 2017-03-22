@@ -198,11 +198,9 @@ class Deployer extends Container
         $this->getConsole()->addUserArgumentsAndOptions();
 
         foreach ($this->tasks as $name => $task) {
-            if ($task->isPrivate()) {
-                continue;
+            if (!$task->isPrivate()) {
+                $this->getConsole()->add(new TaskCommand($name, $task->getDescription(), $this));
             }
-
-            $this->getConsole()->add(new TaskCommand($name, $task->getDescription(), $this));
         }
     }
 

@@ -89,7 +89,7 @@ class BootstrapByConfigFile
             unset($config['forward_agent']);
         }
 
-        foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
+        foreach (['user', 'password', 'stage', 'pem_file', 'pty'] as $key) {
             if ($config->has($key)) {
                 $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
                 $builder->$method($config[$key]);
@@ -168,6 +168,9 @@ class BootstrapByConfigFile
     {
         foreach ((array)$this->clusterConfig as $name => $config) {
             try {
+                if (!is_array($config)) {
+                    throw new \RuntimeException();
+                }
                 $config = new Collection($config);
 
                 $clusterBuilder = $config->has('port') ?

@@ -15,22 +15,6 @@ require_once __DIR__ . '/common.php';
 set('typo3_webroot', 'Web');
 
 /**
- * Main TYPO3 task
- */
-task('deploy', [
-    'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:vendors',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
-])->desc('Deploy your project');
-after('deploy', 'success');
-
-/**
  * Shared directories
  */
 set('shared_dirs', [
@@ -55,3 +39,19 @@ set('writable_dirs', [
     '{{typo3_webroot}}/typo3conf',
     '{{typo3_webroot}}/uploads'
 ]);
+
+/**
+ * Main TYPO3 task
+ */
+task('deploy', [
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:vendors',
+    'deploy:symlink',
+    'deploy:unlock',
+    'cleanup',
+])->desc('Deploy your project');
+after('deploy', 'success');

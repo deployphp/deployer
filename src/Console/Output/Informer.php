@@ -122,12 +122,12 @@ class Informer
 
             // exception related properties
             $trace = $exception->getTrace();
-            array_unshift($trace, array(
+            array_unshift($trace, [
                 'function' => '',
                 'file' => $exception->getFile() !== null ? $exception->getFile() : 'n/a',
                 'line' => $exception->getLine() !== null ? $exception->getLine() : 'n/a',
-                'args' => array(),
-            ));
+                'args' => [],
+            ]);
 
             for ($i = 0, $count = count($trace); $i < $count; ++$i) {
                 $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';

@@ -83,7 +83,6 @@ class ParallelExecutor implements ExecutorInterface
                         case 255:
                             throw new Exception();
                     }
-
                 }
             }
 

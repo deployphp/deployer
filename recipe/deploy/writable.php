@@ -82,6 +82,8 @@ task('deploy:writable', function () {
             } else {
                 throw new \RuntimeException("Cant't set writable dirs with ACL.");
             }
+        } elseif ($mode === 'find') {
+            run("$sudo find $dirs -type d -exec chmod {{writable_chmod_mode}} {} \;");
         } else {
             throw new \RuntimeException("Unknown writable_mode `$mode`.");
         }

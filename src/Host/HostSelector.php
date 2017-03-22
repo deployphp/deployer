@@ -29,7 +29,7 @@ class HostSelector
 
     /**
      * @param string $stage
-     * @return array
+     * @return Host[]|Localhost[]
      */
     public function getHosts($stage)
     {

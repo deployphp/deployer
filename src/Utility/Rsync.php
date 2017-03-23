@@ -7,18 +7,18 @@
 
 namespace Deployer\Utility;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 class Rsync
 {
-    use ProcessOutputPrinter;
+    /**
+     * @var ProcessOutputPrinter
+     */
+    private $pop;
 
-    private $output;
-
-    public function __construct(OutputInterface $output)
+    public function __construct(ProcessOutputPrinter $pop)
     {
-        $this->output = $output;
+        $this->pop = $pop;
     }
 
     /**
@@ -39,13 +39,11 @@ class Rsync
 
         $rsync = "rsync -azP " . implode(' ', $config['options']) . " $source $destination";
 
-        if ($this->output->isVeryVerbose()) {
-            $this->output->writeln("[$hostname] <fg=cyan>></fg=cyan> $rsync");
-        }
+        $this->pop->command($hostname, $rsync);
 
         $process = new Process($rsync);
         $process
             ->setTimeout($config['timeout'])
-            ->mustRun($this->callback($this->output, $hostname));
+            ->mustRun($this->pop->callback($hostname));
     }
 }

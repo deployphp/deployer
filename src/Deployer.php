@@ -18,15 +18,15 @@ use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\SeriesExecutor;
+use Deployer\Logger\Handler\FileHandler;
+use Deployer\Logger\Handler\NullHandler;
+use Deployer\Logger\Logger;
 use Deployer\Task;
+use Deployer\Utility\ProcessOutputPrinter;
 use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 use Pimple\Container;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console;
 use function Deployer\Support\array_merge_alternate;
 
@@ -45,6 +45,7 @@ use function Deployer\Support\array_merge_alternate;
  * @property SeriesExecutor seriesExecutor
  * @property ParallelExecutor parallelExecutor
  * @property Informer informer
+ * @property Logger logger
  */
 class Deployer extends Container
 {
@@ -88,14 +89,17 @@ class Deployer extends Container
          *            Core            *
          ******************************/
 
+        $this['pop'] = function ($c) {
+            return new ProcessOutputPrinter($c['output'], $c['logger']);
+        };
         $this['sshClient'] = function ($c) {
-            return new Ssh\Client($c['output'], $c['config']['ssh_multiplexing']);
+            return new Ssh\Client($c['output'], $c['pop'], $c['config']['ssh_multiplexing']);
         };
         $this['rsync'] = function ($c) {
-            return new Rsync($c['output']);
+            return new Rsync($c['pop']);
         };
-        $this['processRunner'] = function () {
-            return new ProcessRunner();
+        $this['processRunner'] = function ($c) {
+            return new ProcessRunner($c['pop']);
         };
         $this['tasks'] = function () {
             return new Task\TaskCollection();
@@ -126,17 +130,13 @@ class Deployer extends Container
          *           Logger           *
          ******************************/
 
-        $this['log_level'] = Logger::DEBUG;
         $this['log_handler'] = function () {
-            return isset($this->config['log_file'])
-                ? new StreamHandler($this->config['log_file'], $this['log_level'])
-                : new NullHandler($this['log_level']);
+            return !empty($this->config['log_file'])
+                ? new FileHandler($this->config['log_file'])
+                : new NullHandler();
         };
-        $this['log'] = function () {
-            $name = isset($this->config['log_name']) ? $this->config['log_name'] : 'Deployer';
-            return new Logger($name, [
-                $this['log_handler']
-            ]);
+        $this['logger'] = function () {
+            return new Logger($this['log_handler']);
         };
 
         /******************************
@@ -276,14 +276,6 @@ class Deployer extends Container
     public function getHelper($name)
     {
         return $this->getConsole()->getHelperSet()->get($name);
-    }
-
-    /**
-     * @return LoggerInterface
-     */
-    public function getLogger()
-    {
-        return $this['log'];
     }
 
     /**

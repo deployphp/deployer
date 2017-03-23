@@ -59,7 +59,7 @@ class TaskCommand extends Command
         $this->addOption(
             'limit',
             'l',
-            Option::VALUE_OPTIONAL,
+            Option::VALUE_REQUIRED,
             'How many host to run in parallel?'
         );
         $this->addOption(
@@ -67,6 +67,12 @@ class TaskCommand extends Command
             null,
             Option::VALUE_NONE,
             'Run task without after/before hooks'
+        );
+        $this->addOption(
+            'log',
+            null,
+            Option::VALUE_REQUIRED,
+            'Log to file'
         );
     }
 
@@ -77,6 +83,10 @@ class TaskCommand extends Command
     {
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
         $hooksEnabled = !$input->getOption('no-hooks');
+
+        if (!empty($input->getOption('log'))) {
+            $this->deployer->config['log_file'] = $input->getOption('log');
+        }
 
         $hosts = $this->deployer->hostSelector->getHosts($stage);
         $tasks = $this->deployer->scriptManager->getTasks(

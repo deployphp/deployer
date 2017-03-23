@@ -60,7 +60,9 @@ class FunctionsTest extends TestCase
             ->method('getConfiguration')
             ->willReturn($this->createMock(Configuration::class));
 
-        $this->deployer = new Deployer($this->console, $this->input, $this->output);
+        $this->deployer = new Deployer($this->console);
+        $this->deployer['input'] = $this->input;
+        $this->deployer['output'] = $this->output;
         Context::push(new Context($this->host, $this->input, $this->output));
     }
 

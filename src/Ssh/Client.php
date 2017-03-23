@@ -16,26 +16,25 @@ use Symfony\Component\Process\Process;
 
 class Client
 {
-    use ProcessOutputPrinter;
-
     /**
      * @var OutputInterface
      */
     private $output;
 
     /**
+     * @var ProcessOutputPrinter
+     */
+    private $pop;
+
+    /**
      * @var bool
      */
     private $multiplexing;
 
-    /**
-     * Client constructor.
-     * @param OutputInterface $output
-     * @param bool $multiplexing
-     */
-    public function __construct(OutputInterface $output, bool $multiplexing)
+    public function __construct(OutputInterface $output, ProcessOutputPrinter $pop, bool $multiplexing)
     {
         $this->output = $output;
+        $this->pop = $pop;
         $this->multiplexing = $multiplexing;
     }
 
@@ -55,9 +54,7 @@ class Client
         ];
         $config = array_merge($defaults, $config);
 
-        if ($this->output->isVeryVerbose()) {
-            $this->output->writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
-        }
+        $this->pop->command($hostname, $command);
 
         $options = $host->sshOptions();
 
@@ -89,9 +86,9 @@ class Client
             ->setInput($command)
             ->setTimeout($config['timeout']);
 
-        $process->run($this->callback($this->output, $hostname));
+        $process->run($this->pop->callback($hostname));
 
-        $output = $this->filterOutput($process->getOutput());
+        $output = $this->pop->filterOutput($process->getOutput());
         $exitCode = $this->parseExitStatus($process);
 
         if ($exitCode !== 0) {
@@ -139,7 +136,7 @@ class Client
         $process->run();
 
         if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {
-            $this->writeln($this->output, Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+            $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
         }
 
         return $options;

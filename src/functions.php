@@ -257,7 +257,6 @@ function run($command, $options = [])
 {
     $client = Deployer::get()->sshClient;
     $process = Deployer::get()->processRunner;
-    $output = Context::get()->getOutput();
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
 
@@ -269,7 +268,7 @@ function run($command, $options = [])
     }
 
     if ($host instanceof Localhost) {
-        $output = $process->run($output, $hostname, $command, $options);
+        $output = $process->run($hostname, $command, $options);
     } else {
         $output = $client->run($host, $command, $options);
     }
@@ -287,7 +286,6 @@ function run($command, $options = [])
 function runLocally($command, $options = [])
 {
     $process = Deployer::get()->processRunner;
-    $output = output();
     $hostname = 'localhost';
 
     $workingPath = workingPath();
@@ -296,7 +294,7 @@ function runLocally($command, $options = [])
         $command = "cd $workingPath && ($command)";
     }
 
-    $output = $process->run($output, $hostname, $command, $options);
+    $output = $process->run($hostname, $command, $options);
 
     return new Result($output);
 }

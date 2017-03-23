@@ -7,14 +7,21 @@
 
 namespace Deployer\Utility;
 
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
 class ProcessRunner
 {
-    use ProcessOutputPrinter;
+    /**
+     * @var ProcessOutputPrinter
+     */
+    private $pop;
 
-    public function run(OutputInterface $output, $hostname, string $command, array $config = [])
+    public function __construct(ProcessOutputPrinter $pop)
+    {
+        $this->pop = $pop;
+    }
+
+    public function run($hostname, string $command, array $config = [])
     {
         $defaults = [
             'timeout' => 300,
@@ -22,15 +29,13 @@ class ProcessRunner
         ];
         $config = array_merge($defaults, $config);
 
-        if ($output->isVeryVerbose()) {
-            $output->writeln("[$hostname] <fg=cyan>></fg=cyan> $command");
-        }
+        $this->pop->command($hostname, $command);
 
         $process = new Process($command);
         $process
             ->setTimeout($config['timeout'])
             ->setTty($config['tty'])
-            ->mustRun($this->callback($output, $hostname));
+            ->mustRun($this->pop->callback($hostname));
 
         return $process->getOutput();
     }

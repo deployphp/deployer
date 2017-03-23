@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class Informer
 {
     /**
-     * @var \Deployer\Console\Output\OutputWatcher
+     * @var OutputWatcher
      */
     private $output;
 
@@ -24,23 +24,17 @@ class Informer
      */
     private $startTime;
 
-    /**
-     * @param \Deployer\Console\Output\OutputWatcher $output
-     */
     public function __construct(OutputWatcher $output)
     {
         $this->output = $output;
     }
 
-    /**
-     * @param string $taskName
-     */
-    public function startTask($taskName)
+    public function startTask(string $taskName)
     {
+        $this->startTime = round(microtime(true) * 1000);
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
             $this->output->writeln("➤ Executing task <info>$taskName</info>");
             $this->output->setWasWritten(false);
-            $this->startTime = round(microtime(true) * 1000);
         }
     }
 
@@ -49,6 +43,12 @@ class Informer
      */
     public function endTask()
     {
+        $endTime = round(microtime(true) * 1000);
+        $millis = $endTime - $this->startTime;
+        $seconds = floor($millis / 1000);
+        $millis = $millis - $seconds * 1000;
+        $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
+
         $shouldReplaceTaskMark =
             $this->output->isDecorated() &&
             $this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL &&
@@ -60,20 +60,12 @@ class Informer
             if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
                 $this->output->writeln("<info>✔</info> Ok");
             } else {
-                $endTime = round(microtime(true) * 1000);
-                $millis = $endTime - $this->startTime;
-                $seconds = floor($millis / 1000);
-                $millis = $millis - $seconds * 1000;
-                $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
                 $this->output->writeln("<info>✔</info> Ok [$taskTime]");
             }
         }
     }
 
-    /**
-     * @param string $hostname
-     */
-    public function endOnHost($hostname)
+    public function endOnHost(string $hostname)
     {
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
             $this->output->writeln("<info>•</info> done on [$hostname]");

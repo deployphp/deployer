@@ -46,9 +46,9 @@ class TaskCommand extends Command
     protected function configure()
     {
         $this->addArgument(
-            'hostname',
+            'stage',
             InputArgument::OPTIONAL,
-            'Hostname or stage'
+            'Stage or hostname'
         );
         $this->addOption(
             'parallel',
@@ -75,7 +75,7 @@ class TaskCommand extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $stage = $input->hasArgument('hostname') ? $input->getArgument('hostname') : null;
+        $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
         $hooksEnabled = !$input->getOption('no-hooks');
 
         $hosts = $this->deployer->hostSelector->getHosts($stage);

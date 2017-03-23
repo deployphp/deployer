@@ -330,6 +330,27 @@ function testLocally($command)
 }
 
 /**
+ * @param string|Host|array $hosts
+ * @param callable $callback
+ */
+function on($hosts, callable $callback)
+{
+    $deployer = Deployer::get();
+
+    if (is_string($hosts)) {
+        $hosts = $deployer->hostSelector->getHosts($hosts);
+    } elseif ($hosts instanceof Host) {
+        $hosts = [$hosts];
+    }
+
+    foreach ($hosts as $host) {
+        Context::push(new Context($host, input(), output()));
+        $callback($host);
+        Context::pop();
+    }
+}
+
+/**
  * Upload file or directory to host
  *
  * @param string $source

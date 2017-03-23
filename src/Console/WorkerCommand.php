@@ -50,6 +50,11 @@ class WorkerCommand extends Command
             null,
             InputOption::VALUE_REQUIRED
         );
+        $this->addOption(
+            'log',
+            null,
+            InputOption::VALUE_REQUIRED
+        );
     }
 
     /**
@@ -79,6 +84,10 @@ class WorkerCommand extends Command
 
         $task = $input->getOption('task');
         $task = $this->deployer->tasks->get($task);
+
+        if (!empty($input->getOption('log'))) {
+            $this->deployer->config['log_file'] = $input->getOption('log');
+        }
 
         $informer = $this->deployer->informer;
 

@@ -233,11 +233,19 @@ class ParallelExecutor implements ExecutorInterface
         $verbosity = new VerbosityString($this->output);
         $input = $verbosity;
 
-        // Console options
+        // Console options without value
         foreach (['quiet', 'ansi', 'no-ansi', 'no-interaction'] as $option) {
             $value = $this->input->getOption($option);
             if ($value) {
                 $input .= " --$option";
+            }
+        }
+
+        // Console options with value
+        foreach (['log'] as $option) {
+            $value = $this->input->getOption($option);
+            if ($value) {
+                $input .= " --$option $value";
             }
         }
 

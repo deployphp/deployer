@@ -61,7 +61,11 @@ class ProcessOutputPrinter
             return;
         }
 
-        $this->logger->log("[$hostname] < $line");
+        if ($type === Process::ERR) {
+            $this->logger->log("[$hostname] < [error] $line");
+        } else {
+            $this->logger->log("[$hostname] < $line");
+        }
 
         if ($this->output->isDecorated()) {
             if ($type === Process::ERR) {

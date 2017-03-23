@@ -8,7 +8,6 @@
 namespace Deployer\Task;
 
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 
 class Task
 {
@@ -169,7 +168,7 @@ class Task
     /**
      * Checks what task should be performed on one of hosts.
      *
-     * @param Host[]|Localhost[] $hosts
+     * @param Host[] $hosts
      * @return bool
      */
     public function shouldBePerformed(...$hosts)

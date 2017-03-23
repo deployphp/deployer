@@ -8,7 +8,6 @@
 namespace Deployer\Task;
 
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 use function Deployer\Support\array_flatten;
 
 class ScriptManager
@@ -30,7 +29,7 @@ class ScriptManager
      * Return tasks to run
      *
      * @param string $name
-     * @param Host[]|Localhost[] $hosts
+     * @param Host[] $hosts
      * @param bool $hooksEnabled
      * @return Task[]
      */

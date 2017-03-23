@@ -9,7 +9,6 @@ namespace Deployer\Console\Output;
 
 use Deployer\Deployer;
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -97,7 +96,7 @@ class Informer
 
     /**
      * @param \Throwable $exception
-     * @param Host|Localhost $host
+     * @param Host $host
      */
     public function taskException($exception, $host = null)
     {

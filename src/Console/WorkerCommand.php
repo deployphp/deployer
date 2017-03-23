@@ -11,7 +11,6 @@ use Deployer\Deployer;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,7 +25,7 @@ class WorkerCommand extends Command
     private $deployer;
 
     /**
-     * @var Host|Localhost
+     * @var Host
      */
     private $host;
 

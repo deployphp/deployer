@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class FileLoaderTest extends TestCase
 {
     /**
-     * @var Host[]|Localhost[]
+     * @var Host[]
      */
     private $hosts;
 
@@ -51,7 +51,7 @@ class FileLoaderTest extends TestCase
 
     /**
      * @param $name
-     * @return Host|Localhost|null
+     * @return Host|null
      */
     private function getHost($name)
     {

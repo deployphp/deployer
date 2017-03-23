@@ -12,7 +12,7 @@ use Deployer\Exception\ConfigurationException;
 class HostSelector
 {
     /**
-     * @var HostCollection|Host[]|Localhost[]
+     * @var HostCollection|Host[]
      */
     private $hosts;
 
@@ -29,7 +29,7 @@ class HostSelector
 
     /**
      * @param string $stage
-     * @return Host[]|Localhost[]
+     * @return Host[]
      */
     public function getHosts($stage)
     {

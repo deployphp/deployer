@@ -129,7 +129,7 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * Get process for task on host.
      *
-     * @param Host|Localhost $host
+     * @param Host $host
      * @param Task $task
      * @return Process
      */

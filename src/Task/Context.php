@@ -11,14 +11,13 @@ use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Deployer\Host\Configuration;
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Context
 {
     /**
-     * @var Host|Localhost
+     * @var Host
      */
     private $host;
 
@@ -38,7 +37,7 @@ class Context
     private static $contexts = [];
 
     /**
-     * @param Host|Localhost $host
+     * @param Host $host
      * @param InputInterface $input
      * @param OutputInterface $output
      */
@@ -114,7 +113,7 @@ class Context
     }
 
     /**
-     * @return Host|Localhost
+     * @return Host
      */
     public function getHost()
     {

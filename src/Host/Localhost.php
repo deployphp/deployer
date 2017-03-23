@@ -7,26 +7,13 @@
 
 namespace Deployer\Host;
 
-class Localhost
+class Localhost extends Host
 {
-    use ConfigurationAccessor;
-
-    private $hostname;
-
     /**
      * @param string $hostname
      */
     public function __construct(string $hostname = 'localhost')
     {
-        $this->hostname = $hostname;
-        $this->configuration = new Configuration();
-    }
-
-    /**
-     * @return string
-     */
-    public function getHostname()
-    {
-        return $this->hostname;
+        parent::__construct($hostname);
     }
 }

@@ -7,6 +7,9 @@
 
 namespace Deployer\Host;
 
+use Deployer\Configuration\Configuration;
+use Deployer\Configuration\ConfigurationAccessor;
+
 class Host
 {
     use ConfigurationAccessor;
@@ -26,7 +29,7 @@ class Host
     public function __construct(string $hostname)
     {
         $this->hostname = $hostname;
-        $this->configuration = new Configuration();
+        $this->config = new Configuration();
     }
 
     /**

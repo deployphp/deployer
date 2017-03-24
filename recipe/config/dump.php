@@ -15,7 +15,7 @@ desc('Print host configuration');
 task('config:dump', function () {
     $host = Context::get()->getHost();
     $common = Deployer::get()->config;
-    $config = Context::get()->getConfiguration();
+    $config = Context::get()->getConfig();
     $dump = [];
 
     foreach ($common as $name => $value) {
@@ -28,7 +28,7 @@ task('config:dump', function () {
         }
     }
 
-    foreach ($config->getValues() as $name => $value) {
+    foreach ($config->getCollection() as $name => $value) {
         if (is_array($value)) {
             $value = json_encode($value, JSON_PRETTY_PRINT);
         } elseif (is_bool($value)) {

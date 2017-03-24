@@ -7,9 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Configuration\Configuration;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
-use Deployer\Host\Configuration;
 use Deployer\Host\Host;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,27 +57,23 @@ class Context
     }
 
     /**
-     * @return Context|false
+     * @return bool
      */
-    public static function get()
+    public static function has()
     {
-        return end(self::$contexts);
+        return empty(self::$contexts);
     }
 
     /**
-     * Throws a Exception when not called within a task-context and therefore no Context is available.
-     *
-     * This method provides a useful error to the end-user to make him/her aware
-     * to use a function in the required task-context.
-     *
-     * @param string $callerName
+     * @return Context|false
      * @throws Exception
      */
-    public static function required($callerName)
+    public static function get()
     {
-        if (!self::get()) {
-            throw new ConfigurationException("'$callerName' can only be used within a task.");
+        if (empty(self::$contexts)) {
+            throw new Exception('Context was required, but there\'s nothing there.');
         }
+        return end(self::$contexts);
     }
 
     /**
@@ -89,11 +85,27 @@ class Context
     }
 
     /**
+     * Throws a Exception when not called within a task-context and therefore no Context is available.
+     *
+     * This method provides a useful error to the end-user to make him/her aware
+     * to use a function in the required task-context.
+     *
+     * @param string $callerName
+     * @throws ConfigurationException
+     */
+    public static function required($callerName)
+    {
+        if (!self::get()) {
+            throw new ConfigurationException("'$callerName' can only be used within a task.");
+        }
+    }
+
+    /**
      * @return Configuration
      */
-    public function getConfiguration()
+    public function getConfig()
     {
-        return $this->host->getConfiguration();
+        return $this->host->getConfig();
     }
 
     /**

@@ -328,10 +328,15 @@ function testLocally($command)
 }
 
 /**
+ * Iterate other hosts, allowing to call run func in callback.
+ *
+ * @experimental
  * @param string|Host|array $hosts
  * @param callable $callback
+ * @param InputInterface $input
+ * @param OutputInterface $output
  */
-function on($hosts, callable $callback)
+function on($hosts, callable $callback, InputInterface $input = null, OutputInterface $output = null)
 {
     $deployer = Deployer::get();
 
@@ -342,7 +347,7 @@ function on($hosts, callable $callback)
     }
 
     foreach ($hosts as $host) {
-        Context::push(new Context($host, input(), output()));
+        Context::push(new Context($host, $input ?: input(), $output ?: output()));
         $callback($host);
         Context::pop();
     }
@@ -396,7 +401,7 @@ function download($source, $destination, array $config = [])
  */
 function writeln($message)
 {
-    output()->writeln($message);
+    output()->writeln(parse($message));
 }
 
 /**
@@ -405,7 +410,7 @@ function writeln($message)
  */
 function write($message)
 {
-    output()->write($message);
+    output()->write(parse($message));
 }
 
 /**
@@ -416,10 +421,10 @@ function write($message)
  */
 function set($name, $value)
 {
-    if (Context::get() === false) {
+    if (Context::has()) {
         Deployer::setDefault($name, $value);
     } else {
-        Context::get()->getConfiguration()->set($name, $value);
+        Context::get()->getConfig()->set($name, $value);
     }
 }
 
@@ -431,10 +436,10 @@ function set($name, $value)
  */
 function add($name, $array)
 {
-    if (Context::get() === false) {
+    if (Context::has()) {
         Deployer::addDefault($name, $array);
     } else {
-        Context::get()->getConfiguration()->add($name, $array);
+        Context::get()->getConfig()->add($name, $array);
     }
 }
 
@@ -447,10 +452,10 @@ function add($name, $array)
  */
 function get($name, $default = null)
 {
-    if (Context::get() === false) {
+    if (Context::has()) {
         return Deployer::getDefault($name, $default);
     } else {
-        return Context::get()->getConfiguration()->get($name, $default);
+        return Context::get()->getConfig()->get($name, $default);
     }
 }
 
@@ -462,10 +467,10 @@ function get($name, $default = null)
  */
 function has($name)
 {
-    if (Context::get() === false) {
+    if (Context::has()) {
         return Deployer::hasDefault($name);
     } else {
-        return Context::get()->getConfiguration()->has($name);
+        return Context::get()->getConfig()->has($name);
     }
 }
 
@@ -666,5 +671,5 @@ function commandExist($command)
  */
 function parse($value)
 {
-    return Context::get()->getConfiguration()->parse($value);
+    return Context::get()->getConfig()->parse($value);
 }

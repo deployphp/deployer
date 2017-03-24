@@ -7,7 +7,7 @@
 
 namespace Deployer\Task;
 
-use Deployer\Host\Configuration;
+use Deployer\Configuration\Configuration;
 use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +20,7 @@ class ContextTest extends TestCase
         $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
         $host
             ->expects($this->once())
-            ->method('getConfiguration')
+            ->method('getConfig')
             ->willReturn($this->createMock(Configuration::class));
 
         $input = $this->getMockBuilder(InputInterface::class)->disableOriginalConstructor()->getMock();
@@ -29,7 +29,7 @@ class ContextTest extends TestCase
         $context = new Context($host, $input, $output);
 
         $this->assertInstanceOf(Host::class, $context->getHost());
-        $this->assertInstanceOf(Configuration::class, $context->getConfiguration());
+        $this->assertInstanceOf(Configuration::class, $context->getConfig());
         $this->assertInstanceOf(InputInterface::class, $context->getInput());
         $this->assertInstanceOf(OutputInterface::class, $context->getOutput());
 

@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Host;
+namespace Deployer\Configuration;
 
 use Deployer\Collection\Collection;
 use Deployer\Deployer;
@@ -17,19 +17,27 @@ class Configuration
     /**
      * @var Collection
      */
-    private $values = null;
+    private $collection = null;
 
     public function __construct()
     {
-        $this->values = new Collection();
+        $this->collection = new Collection();
     }
 
     /**
      * @return Collection
      */
-    public function getValues()
+    public function getCollection()
     {
-        return $this->values;
+        return $this->collection;
+    }
+
+    /**
+     * @param Collection $collection
+     */
+    public function setCollection(Collection $collection)
+    {
+        $this->collection = $collection;
     }
 
     /**
@@ -38,7 +46,7 @@ class Configuration
      */
     public function set($name, $value)
     {
-        $this->values[$name] = $value;
+        $this->collection[$name] = $value;
     }
 
     /**
@@ -65,20 +73,20 @@ class Configuration
      */
     public function get($name, $default = null)
     {
-        if ($this->values->has($name)) {
-            if ($this->isClosure($this->values[$name])) {
-                $value = $this->values[$name] = call_user_func($this->values[$name]);
+        if ($this->collection->has($name)) {
+            if ($this->isClosure($this->collection[$name])) {
+                $value = $this->collection[$name] = call_user_func($this->collection[$name]);
             } else {
-                $value = $this->values[$name];
+                $value = $this->collection[$name];
             }
         } else {
             $config = Deployer::get()->config;
 
             if (isset($config[$name])) {
                 if ($this->isClosure($config[$name])) {
-                    $value = $this->values[$name] = call_user_func($config[$name]);
+                    $value = $this->collection[$name] = call_user_func($config[$name]);
                 } else {
-                    $value = $this->values[$name] = $config[$name];
+                    $value = $this->collection[$name] = $config[$name];
                 }
             } else {
                 if (null === $default) {
@@ -100,7 +108,7 @@ class Configuration
      */
     public function has($name)
     {
-        return $this->values->has($name);
+        return $this->collection->has($name);
     }
 
     /**

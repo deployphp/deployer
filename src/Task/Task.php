@@ -82,7 +82,7 @@ class Task
         call_user_func($this->callback);
 
         // Clear working_path
-        $config = $context->getConfiguration();
+        $config = $context->getConfig();
         if ($config !== null) {
             $config->set('working_path', false);
         }

@@ -14,6 +14,7 @@ use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
+use Deployer\Host\Storage;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
@@ -64,12 +65,18 @@ class ParallelExecutor implements ExecutorInterface
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
+        Storage::persist($hosts, $this->input, $this->output);
+
         foreach ($tasks as $task) {
             $success = true;
             $this->informer->startTask($task->getName());
 
             if ($task->isLocal()) {
-                $task->run(new Context($localhost, $this->input, $this->output));
+                Storage::load($hosts);
+                {
+                    $task->run(new Context($localhost, $this->input, $this->output));
+                }
+                Storage::flush($hosts);
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
                     $exitCode = $this->runTask($chunk, $task);
@@ -97,7 +104,7 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * Run task on hosts.
      *
-     * @param array $hosts
+     * @param Host[] $hosts
      * @param Task $task
      * @return int
      */
@@ -139,7 +146,7 @@ class ParallelExecutor implements ExecutorInterface
         $options = $this->generateOptions();
         $hostname = $host->getHostname();
         $taskName = $task->getName();
-
+        $configFile = $host->get('host_config_storage');
         $value = $this->input->getOption('file');
         $file = $value ? "--file='$value'" : '';
 
@@ -147,7 +154,7 @@ class ParallelExecutor implements ExecutorInterface
             $options .= ' --ansi';
         }
 
-        $process = new Process("$dep $file worker $options --hostname $hostname --task $taskName");
+        $process = new Process("$dep $file worker $options --hostname $hostname --task $taskName --config-file $configFile");
 
         if (!defined('DEPLOYER_PARALLEL_PTY')) {
             $process->setPty(true);

@@ -17,7 +17,7 @@ task('config:current', function () {
     on(input()->getArgument('stage'), function (Host $host) use (&$rows) {
         $rows[] = [
             $host->getHostname(),
-            basename($host->getConfiguration()->get('current_path')),
+            basename($host->getConfig()->get('current_path')),
         ];
     });
 

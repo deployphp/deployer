@@ -5,21 +5,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Host;
+namespace Deployer\Configuration;
 
 trait ConfigurationAccessor
 {
     /**
      * @var Configuration
      */
-    private $configuration;
+    private $config;
 
     /**
      * @return Configuration
      */
-    public function getConfiguration()
+    public function getConfig()
     {
-        return $this->configuration;
+        return $this->config;
     }
 
     /**
@@ -31,7 +31,7 @@ trait ConfigurationAccessor
      */
     public function get(string $name, $default = null)
     {
-        return $this->configuration->get($name, $default);
+        return $this->config->get($name, $default);
     }
 
     /**
@@ -42,7 +42,7 @@ trait ConfigurationAccessor
      */
     public function has(string $name)
     {
-        return $this->configuration->has($name);
+        return $this->config->has($name);
     }
 
     /**
@@ -54,7 +54,7 @@ trait ConfigurationAccessor
      */
     public function set(string $name, $value)
     {
-        $this->configuration->set($name, $value);
+        $this->config->set($name, $value);
         return $this;
     }
 
@@ -67,7 +67,7 @@ trait ConfigurationAccessor
      */
     public function add(string $name, array $value)
     {
-        $this->configuration->add($name, $value);
+        $this->config->add($name, $value);
         return $this;
     }
 
@@ -79,7 +79,7 @@ trait ConfigurationAccessor
      */
     public function stage(string $stage)
     {
-        $this->configuration->set('stage', $stage);
+        $this->config->set('stage', $stage);
         return $this;
     }
 
@@ -91,10 +91,10 @@ trait ConfigurationAccessor
      */
     public function roles(...$roles)
     {
-        $this->configuration->set('roles', []);
+        $this->config->set('roles', []);
 
         foreach ($roles as $role) {
-            $this->configuration->add('roles', [$role]);
+            $this->config->add('roles', [$role]);
         }
 
         return $this;

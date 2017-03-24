@@ -7,8 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Configuration\Configuration;
 use Deployer\Console\Application;
-use Deployer\Host\Configuration;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
@@ -57,7 +57,7 @@ class FunctionsTest extends TestCase
         $this->host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
         $this->host
             ->expects($this->any())
-            ->method('getConfiguration')
+            ->method('getConfig')
             ->willReturn($this->createMock(Configuration::class));
 
         $this->deployer = new Deployer($this->console);

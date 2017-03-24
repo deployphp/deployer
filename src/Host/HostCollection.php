@@ -14,7 +14,7 @@ use Deployer\Collection\Collection;
  */
 class HostCollection extends Collection
 {
-    protected function throwNotFound($name)
+    protected function throwNotFound(string $name)
     {
         throw new \InvalidArgumentException("Host `$name` not found");
     }

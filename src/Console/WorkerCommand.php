@@ -11,6 +11,7 @@ use Deployer\Deployer;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
 use Deployer\Host\Host;
+use Deployer\Host\Storage;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -51,6 +52,11 @@ class WorkerCommand extends Command
             InputOption::VALUE_REQUIRED
         );
         $this->addOption(
+            'config-file',
+            null,
+            InputOption::VALUE_REQUIRED
+        );
+        $this->addOption(
             'log',
             null,
             InputOption::VALUE_REQUIRED
@@ -76,11 +82,11 @@ class WorkerCommand extends Command
         }
     }
 
-
     private function doExecute(InputInterface $input, OutputInterface $output)
     {
         $hostname = $input->getOption('hostname');
-        $this->host = $host = $this->deployer->hosts->get($hostname);
+        $host = $this->host = $this->deployer->hosts->get($hostname);
+        Storage::setup($host, $input->getOption('config-file'));
 
         $task = $input->getOption('task');
         $task = $this->deployer->tasks->get($task);

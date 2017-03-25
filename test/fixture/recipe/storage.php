@@ -42,4 +42,3 @@ task('tie', function () {
     });
     writeln($value);
 })->local();
-

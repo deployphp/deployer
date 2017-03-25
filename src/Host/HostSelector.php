@@ -42,10 +42,10 @@ class HostSelector
 
         if (!empty($stage)) {
             // Look for hosts which has stage with current stage name
-            foreach ($this->hosts as $hostname => $host) {
+            foreach ($this->hosts as $host) {
                 // If host does not have any stage, skip them
                 if ($stage === $host->get('stage', false)) {
-                    $hosts[$hostname] = $host;
+                    $hosts[$host->getHostname()] = $host;
                 }
             }
 
@@ -60,19 +60,48 @@ class HostSelector
             }
         } else {
             // Otherwise run on all hosts what does not specify stage
-            foreach ($this->hosts as $hostname => $host) {
+            foreach ($this->hosts as $host) {
                 if (!$host->has('stage')) {
-                    $hosts[$hostname] = $host;
+                    $hosts[$host->getHostname()] = $host;
                 }
             }
         }
 
         if (empty($hosts)) {
             if (count($this->hosts) === 0) {
-                $localhost = new Localhost();
-                $hosts = ['localhost' => $localhost];
+                $hosts = ['localhost' => new Localhost()];
             } else {
                 throw new ConfigurationException('You need to specify at least one host or stage.');
+            }
+        }
+
+        return $hosts;
+    }
+
+    /**
+     * @param $hostnames
+     * @return Host[]
+     */
+    public function getByHostnames($hostnames)
+    {
+        $hostnames = Range::expand(array_map('trim', explode(',', $hostnames)));
+        return array_map([$this->hosts, 'get'], $hostnames);
+    }
+
+    /**
+     * @param $roles
+     * @return Host[]
+     */
+    public function getByRoles($roles)
+    {
+        $roles = array_map('trim', explode(',', $roles));
+
+        $hosts = [];
+        foreach ($this->hosts as $host) {
+            foreach ($host->get('roles', []) as $role) {
+                if (in_array($role, $roles, true)) {
+                    $hosts[$host->getHostname()] = $host;
+                }
             }
         }
 

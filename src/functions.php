@@ -97,8 +97,8 @@ function inventory($file)
     $fileLoader = new FileLoader();
     $fileLoader->load($file);
 
-    foreach ($fileLoader->getHosts() as $hostname => $host) {
-        $deployer->hosts->set($hostname, $host);
+    foreach ($fileLoader->getHosts() as $host) {
+        $deployer->hosts->set($host->getHostname(), $host);
     }
 }
 

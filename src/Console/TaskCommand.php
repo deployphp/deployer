@@ -8,6 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\ExecutorInterface;
 use Symfony\Component\Console\Command\Command;
@@ -74,6 +75,18 @@ class TaskCommand extends Command
             Option::VALUE_REQUIRED,
             'Log to file'
         );
+        $this->addOption(
+            'roles',
+            null,
+            Option::VALUE_REQUIRED,
+            'Roles to deploy'
+        );
+        $this->addOption(
+            'hosts',
+            null,
+            Option::VALUE_REQUIRED,
+            'Host to deploy, comma separated, supports ranges [:]'
+        );
     }
 
     /**
@@ -82,13 +95,26 @@ class TaskCommand extends Command
     protected function execute(Input $input, Output $output)
     {
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
-        $hooksEnabled = !$input->getOption('no-hooks');
+        $roles = $input->getOption('roles');
+        $hosts = $input->getOption('hosts');
 
+        $hooksEnabled = !$input->getOption('no-hooks');
         if (!empty($input->getOption('log'))) {
             $this->deployer->config['log_file'] = $input->getOption('log');
         }
 
-        $hosts = $this->deployer->hostSelector->getHosts($stage);
+        if (!empty($hosts)) {
+            $hosts = $this->deployer->hostSelector->getByHostnames($hosts);
+        } elseif (!empty($roles)) {
+            $hosts = $this->deployer->hostSelector->getByRoles($roles);
+        } else {
+            $hosts = $this->deployer->hostSelector->getHosts($stage);
+        }
+
+        if (empty($hosts)) {
+            throw new Exception('No host selected');
+        }
+
         $tasks = $this->deployer->scriptManager->getTasks(
             $this->getName(),
             $hosts,

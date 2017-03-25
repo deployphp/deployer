@@ -112,8 +112,8 @@ class ParallelExecutor implements ExecutorInterface
     {
         $processes = [];
 
-        foreach ($hosts as $hostname => $host) {
-            $processes[$hostname] = $this->getProcess($host, $task);
+        foreach ($hosts as $host) {
+            $processes[$host->getHostname()] = $this->getProcess($host, $task);
         }
 
         $callback = function ($type, $host, $output) {

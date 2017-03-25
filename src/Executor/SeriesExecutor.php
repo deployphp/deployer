@@ -57,7 +57,7 @@ class SeriesExecutor implements ExecutorInterface
             if ($task->isLocal()) {
                 $task->run(new Context($localhost, $this->input, $this->output));
             } else {
-                foreach ($hosts as $hostname => $host) {
+                foreach ($hosts as $host) {
                     if ($task->shouldBePerformed($host)) {
                         try {
                             $task->run(new Context($host, $this->input, $this->output));
@@ -65,7 +65,7 @@ class SeriesExecutor implements ExecutorInterface
                             $success = false;
                             $this->informer->taskException($exception, $host);
                         }
-                        $this->informer->endOnHost($hostname);
+                        $this->informer->endOnHost($host->getHostname());
                     }
                 }
             }

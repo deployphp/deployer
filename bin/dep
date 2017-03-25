@@ -96,7 +96,7 @@ if (is_readable($composerLockFile)) {
 $method = new ReflectionMethod('Deployer\Deployer', 'run');
 if (!$method->isStatic()) {
     die(
-        'You need to update Deployer to latest version:' . PHP_EOL .
+        'You need to update Deployer to the latest version:' . PHP_EOL .
         PHP_EOL .
         '  curl -LO https://deployer.org/deployer.phar' . PHP_EOL .
         '  mv deployer.phar /usr/local/bin/dep' . PHP_EOL .

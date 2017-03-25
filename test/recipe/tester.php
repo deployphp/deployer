@@ -17,8 +17,8 @@ use Symfony\Component\Process\Process;
 
 function exec($command)
 {
-    if (!empty(DepCase::$deployPath)) {
-        $command = 'cd ' . DepCase::$deployPath . ' && ' . $command;
+    if (!empty(DepCase::$currentPath)) {
+        $command = 'cd ' . DepCase::$currentPath . ' && ' . $command;
     }
 
     $process = new Process($command);
@@ -43,15 +43,20 @@ abstract class DepCase extends BaseTestCase
     /**
      * @var string
      */
-    public static $deployPath;
+    public static $tmpPath;
+
+    /**
+     * @var string
+     */
+    public static $currentPath = '';
 
     public static function setUpBeforeClass()
     {
         // Prepare FS
-        self::$deployPath = DEPLOYER_FIXTURES . '/.localhost';
+        self::$tmpPath = DEPLOYER_FIXTURES . '/recipe/tmp';
         self::cleanUp();
-        mkdir(self::$deployPath);
-        self::$deployPath = realpath(self::$deployPath);
+        mkdir(self::$tmpPath);
+        self::$tmpPath = realpath(self::$tmpPath);
 
         // Init repository
         $repository = DEPLOYER_FIXTURES . '/repository';
@@ -69,8 +74,8 @@ abstract class DepCase extends BaseTestCase
 
     protected static function cleanUp()
     {
-        if (is_dir(self::$deployPath)) {
-            \exec('rm -rf ' . self::$deployPath);
+        if (is_dir(self::$tmpPath)) {
+            \exec('rm -rf ' . self::$tmpPath);
         }
     }
 
@@ -117,7 +122,7 @@ abstract class DepCase extends BaseTestCase
         $this->tester->run(['command' => $command] + $args, $options);
 
         // Clear realpath cache.
-        clearstatcache(self::$deployPath);
+        clearstatcache(self::$tmpPath);
 
         return $this->tester->getDisplay();
     }

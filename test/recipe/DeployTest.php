@@ -17,15 +17,20 @@ class DeployTest extends DepCase
         require DEPLOYER_FIXTURES . '/recipe/deploy.php';
     }
 
+    protected function setUp()
+    {
+        self::$currentPath = self::$tmpPath . '/localhost';
+    }
+
     public function testDeploy()
     {
         $output = $this->start('deploy', [], ['verbosity' => OutputInterface::VERBOSITY_DEBUG]);
         self::assertContains('Successfully deployed!', $output);
-        self::assertDirectoryExists(self::$deployPath . '/.dep');
-        self::assertDirectoryExists(self::$deployPath . '/releases');
-        self::assertDirectoryExists(self::$deployPath . '/shared');
-        self::assertDirectoryExists(self::$deployPath . '/current');
-        self::assertFileExists(self::$deployPath . '/current/composer.json');
+        self::assertDirectoryExists(self::$currentPath . '/.dep');
+        self::assertDirectoryExists(self::$currentPath . '/releases');
+        self::assertDirectoryExists(self::$currentPath . '/shared');
+        self::assertDirectoryExists(self::$currentPath . '/current');
+        self::assertFileExists(self::$currentPath . '/current/composer.json');
         self::assertEquals(1, exec("ls -1 releases | wc -l"));
     }
 
@@ -53,8 +58,8 @@ class DeployTest extends DepCase
         $this->start('rollback');
 
         self::assertEquals(4, exec("ls -1 releases | wc -l"));
-        self::assertFileExists(self::$deployPath . '/current/ok.txt');
-        self::assertFileNotExists(self::$deployPath . '/current/fail.txt');
+        self::assertFileExists(self::$currentPath . '/current/ok.txt');
+        self::assertFileNotExists(self::$currentPath . '/current/fail.txt');
     }
 
     /**
@@ -71,11 +76,11 @@ class DeployTest extends DepCase
      */
     public function testAfterFail()
     {
-        self::assertFileExists(self::$deployPath . '/current/ok.txt');
-        self::assertFileNotExists(self::$deployPath . '/.dep/deploy.lock');
+        self::assertFileExists(self::$currentPath . '/current/ok.txt');
+        self::assertFileNotExists(self::$currentPath . '/.dep/deploy.lock');
 
         $this->start('cleanup');
         self::assertEquals(4, exec("ls -1 releases | wc -l"));
-        self::assertFileNotExists(self::$deployPath . '/release');
+        self::assertFileNotExists(self::$currentPath . '/release');
     }
 }

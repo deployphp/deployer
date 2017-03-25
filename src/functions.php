@@ -32,13 +32,23 @@ use Symfony\Component\Console\Question\Question;
 
 /**
  * @param array ...$hostnames
- * @return Host|Proxy
+ * @return Host|Host[]|Proxy
  */
 function host(...$hostnames)
 {
     $deployer = Deployer::get();
     $hostnames = Range::expand($hostnames);
 
+    // Return hosts if has
+    if ($deployer->hosts->has($hostnames[0])) {
+        if (count($hostnames) === 1) {
+            return $deployer->hosts->get($hostnames[0]);
+        } else {
+            return array_map([$deployer->hosts, 'get'], $hostnames);
+        }
+    }
+
+    // Add otherwise
     if (count($hostnames) === 1) {
         $host = new Host($hostnames[0]);
         $deployer->hosts->set($hostnames[0], $host);
@@ -54,15 +64,26 @@ function host(...$hostnames)
 }
 
 /**
- * @param string $alias
- * @return Localhost
+ * @param array ...$hostnames
+ * @return Localhost|Localhost[]|Proxy
  */
-function localhost($alias = 'localhost')
+function localhost(...$hostnames)
 {
     $deployer = Deployer::get();
-    $host = new Localhost($alias);
-    $deployer->hosts->set($alias, $host);
-    return $host;
+    $hostnames = Range::expand($hostnames);
+
+    if (count($hostnames) <= 1) {
+        $host = count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
+        $deployer->hosts->set($host->getHostname(), $host);
+        return $host;
+    } else {
+        $hosts = array_map(function ($hostname) use ($deployer) {
+            $host = new Localhost($hostname);
+            $deployer->hosts->set($host->getHostname(), $host);
+            return $host;
+        }, $hostnames);
+        return new Proxy($hosts);
+    }
 }
 
 /**

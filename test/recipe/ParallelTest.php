@@ -17,6 +17,11 @@ class ParallelTest extends DepCase
         require DEPLOYER_FIXTURES . '/recipe/deploy.php';
     }
 
+    protected function setUp()
+    {
+        self::$currentPath = self::$tmpPath . '/localhost';
+    }
+
     public function testDeploy()
     {
         $output = $this->start('deploy', [
@@ -28,11 +33,11 @@ class ParallelTest extends DepCase
 
         self::assertContains('echo $0', $output, 'Missing output from worker.');
         self::assertContains('Successfully deployed!', $output);
-        self::assertDirectoryExists(self::$deployPath . '/.dep');
-        self::assertDirectoryExists(self::$deployPath . '/releases');
-        self::assertDirectoryExists(self::$deployPath . '/shared');
-        self::assertDirectoryExists(self::$deployPath . '/current');
-        self::assertFileExists(self::$deployPath . '/current/composer.json');
+        self::assertDirectoryExists(self::$currentPath . '/.dep');
+        self::assertDirectoryExists(self::$currentPath . '/releases');
+        self::assertDirectoryExists(self::$currentPath . '/shared');
+        self::assertDirectoryExists(self::$currentPath . '/current');
+        self::assertFileExists(self::$currentPath . '/current/composer.json');
         self::assertEquals(1, exec("ls -1 releases | wc -l"));
     }
 

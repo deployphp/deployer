@@ -31,7 +31,7 @@ class Storage
                 $values[$key] = $host->get($key);
             }
 
-            $file = './tmp/' . $host->getHostname() . '.dep';
+            $file = sys_get_temp_dir() . '/' . $host->getHostname() . '.dep';
             $values['host_config_storage'] = $file;
 
             $persistentCollection = new PersistentCollection($file, $values);

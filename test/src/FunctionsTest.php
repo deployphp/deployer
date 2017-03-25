@@ -76,22 +76,22 @@ class FunctionsTest extends TestCase
     public function testHost()
     {
         host('domain.com');
-        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
+        self::assertInstanceOf(Host::class, host('domain.com'));
 
         host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
-        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
-        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('a2.domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a2.domain.com'));
 
         host('db[1:2].domain.com')->set('roles', 'db');
-        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('db1.domain.com'));
-        $this->assertInstanceOf(Host::class, $this->deployer->hosts->get('db2.domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('db1.domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('db2.domain.com'));
     }
 
     public function testLocalhost()
     {
         localhost('domain.com');
-
-        $this->assertInstanceOf(Localhost::class, $this->deployer->hosts->get('domain.com'));
+        self::assertInstanceOf(Localhost::class, $this->deployer->hosts->get('domain.com'));
     }
 
     public function testInventory()
@@ -99,7 +99,7 @@ class FunctionsTest extends TestCase
         inventory(__DIR__ . '/../fixture/inventory.yml');
 
         foreach (['app.deployer.org', 'beta.deployer.org'] as $hostname) {
-            $this->assertInstanceOf(Host::class, $this->deployer->hosts->get($hostname));
+            self::assertInstanceOf(Host::class, $this->deployer->hosts->get($hostname));
         }
     }
 
@@ -108,14 +108,14 @@ class FunctionsTest extends TestCase
         task('task', 'pwd');
 
         $task = $this->deployer->tasks->get('task');
-        $this->assertInstanceOf(Task::class, $task);
+        self::assertInstanceOf(Task::class, $task);
 
         $task = task('task');
-        $this->assertInstanceOf(Task::class, $task);
+        self::assertInstanceOf(Task::class, $task);
 
         task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
-        $this->assertInstanceOf(GroupTask::class, $task);
+        self::assertInstanceOf(GroupTask::class, $task);
     }
 
     public function testBefore()
@@ -125,7 +125,7 @@ class FunctionsTest extends TestCase
         before('main', 'before');
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        $this->assertEquals(['before', 'main'], $names);
+        self::assertEquals(['before', 'main'], $names);
     }
 
     public function testAfter()
@@ -135,15 +135,15 @@ class FunctionsTest extends TestCase
         after('main', 'after');
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        $this->assertEquals(['main', 'after'], $names);
+        self::assertEquals(['main', 'after'], $names);
     }
 
     public function testRunLocally()
     {
         $output = runLocally('echo "hello"');
 
-        $this->assertInstanceOf(Result::class, $output);
-        $this->assertEquals('hello', (string)$output);
+        self::assertInstanceOf(Result::class, $output);
+        self::assertEquals('hello', (string)$output);
     }
 
     private function taskToNames($tasks)

@@ -86,20 +86,20 @@ class WorkerCommand extends Command
     {
         $hostname = $input->getOption('hostname');
         $host = $this->host = $this->deployer->hosts->get($hostname);
+
         Storage::setup($host, $input->getOption('config-file'));
 
         $task = $input->getOption('task');
         $task = $this->deployer->tasks->get($task);
-
         if (!empty($input->getOption('log'))) {
             $this->deployer->config['log_file'] = $input->getOption('log');
         }
 
-        $informer = $this->deployer->informer;
-
         if ($task->shouldBePerformed($host)) {
             $task->run(new Context($host, $input, $output));
-            $informer->endOnHost($hostname);
+            $this->deployer->informer->endOnHost($hostname);
         }
+
+        Storage::flush($host);
     }
 }

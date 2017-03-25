@@ -5,14 +5,23 @@
 
 ### Added
 - Added `use_atomic_symlink` and `use_relative_symlink` option [14a8f8](https://github.com/deployphp/deployer/pull/1092/commits/14a8f8f9c4ebbc7da45c2b6b7c3c00a51b563ccf)
-- Added `Ssh\Client`
-- Added host ranges
+- Added `Ssh\Client` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added host ranges [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added --hosts and --roles options [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `on` function [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `host` and `localhost` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added persistent config [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `--log` option [#1092](https://github.com/deployphp/deployer/pull/1092)
 
 ### Changed
-- `server` refactored to `host`
-- `Enviroment` refactored to `Configuration`
-- phpunit test refactored
-- `upload` and `download` now uses rsync
+- `server` refactored to `host` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `Enviroment` refactored to `Configuration` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- phpunit test refactored [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `upload` and `download` now uses rsync [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Only native ssh client for now [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Task `current` to `config:current` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `onFailure` to `fail` [#1092](https://github.com/deployphp/deployer/pull/1092)
+
 
 ## v4.3.0
 [v4.2.1...v4.3.0](https://github.com/deployphp/deployer/compare/v4.2.1...v4.3.0)

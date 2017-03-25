@@ -20,9 +20,7 @@ if (array_key_exists('v', $opt)) {
 }
 
 chdir(ROOT);
-exec('composer require deployer/phar-update:~2.0 --no-update');
 exec('composer install --no-dev');
-exec('git checkout -- composer.json composer.lock');
 
 $pharName = "deployer.phar";
 $pharFile = ROOT . '/' . $pharName;

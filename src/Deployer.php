@@ -28,6 +28,9 @@ use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
 use Symfony\Component\Console;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use function Deployer\Support\array_merge_alternate;
 
 /**
@@ -276,6 +279,40 @@ class Deployer extends Container
     public function getHelper($name)
     {
         return $this->getConsole()->getHelperSet()->get($name);
+    }
+
+    /**
+     * Run Deployer
+     *
+     * @param string $version
+     * @param string $deployFile
+     */
+    public static function run($version, $deployFile)
+    {
+        // Init Deployer
+        $console = new Application('Deployer', $version);
+        $input = new ArgvInput();
+        $output = new ConsoleOutput();
+        $deployer = new self($console);
+
+        // Pretty-print uncaught exceptions in symfony-console
+        set_exception_handler(function ($e) use ($input, $output) {
+            $io = new SymfonyStyle($input, $output);
+            $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
+            $io->block($e->getTraceAsString());
+        });
+
+        // Require deploy.php file
+        if (is_readable($deployFile)) {
+            // Prevent variable leak into deploy.php file
+            call_user_func(function () use ($deployFile) {
+                require $deployFile;
+            });
+        }
+
+        // Run Deployer
+        $deployer->init();
+        $console->run($input, $output);
     }
 
     /**

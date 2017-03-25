@@ -93,27 +93,21 @@ if (is_readable($composerLockFile)) {
     }
 }
 
-// Init Deployer
-$console = new \Deployer\Console\Application('Deployer', $version);
-$input = new \Symfony\Component\Console\Input\ArgvInput();
-$output = new \Symfony\Component\Console\Output\ConsoleOutput();
-$deployer = new \Deployer\Deployer($console);
+$method = new ReflectionMethod('Deployer\Deployer', 'run');
+if (!$method->isStatic()) {
+    die(
+        'You need to update Deployer to latest version:' . PHP_EOL .
+        PHP_EOL .
+        '  curl -LO https://deployer.org/deployer.phar' . PHP_EOL .
+        '  mv deployer.phar /usr/local/bin/dep' . PHP_EOL .
+        '  chmod +x /usr/local/bin/dep' . PHP_EOL .
+        PHP_EOL .
+        'Or use composer installed version:' . PHP_EOL .
+        PHP_EOL .
+        '  php vendor/bin/dep' . PHP_EOL .
+        PHP_EOL
 
-// Pretty-print uncaught exceptions in symfony-console
-set_exception_handler(function ($e) use ($input, $output) {
-    $io = new \Symfony\Component\Console\Style\SymfonyStyle($input, $output);
-    $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
-    $io->block($e->getTraceAsString());
-});
-
-// Require deploy.php file
-if (is_readable($deployFile)) {
-    // Prevent variable leak into deploy.php file
-    call_user_func(function () use ($deployFile) {
-        require $deployFile;
-    });
+    );
 }
 
-// Run Deployer
-$deployer->init();
-$console->run($input, $output);
+\Deployer\Deployer::run($version, $deployFile);

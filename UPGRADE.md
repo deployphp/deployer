@@ -43,6 +43,12 @@
    * `identityFile($publicKeyFile,, $privateKeyFile, $passPhrase)` to `identityFile($privateKeyFile)`
    * `pemFile($pemFile)` to `identityFile($pemFile)`
    * `forwardAgent()` to `forwardAgent(true)`
+   
+5. Tasks constraints
+ 
+   * `onlyOn` to `onHosts`
+   * `onlyOnStage` to `onStage`
+   
 
 # Upgrade from 3.x to 4.x
 

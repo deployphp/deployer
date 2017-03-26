@@ -29,6 +29,13 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 
 If you are also using it, please let us know ([Edit this file](https://github.com/deployphp/deployer/edit/master/README.md))
 
+## Contributing
+
+Read the [contributing](https://github.com/deployphp/deployer/blob/master/CONTRIBUTING.md) guide, join the [discussions](https://deployer.org/discuss), take a look on open [issues](https://github.com/deployphp/deployer/issues)
+
+[![good+for+beginner](https://img.shields.io/badge/feature-good%20for%20beginner-1d76db.svg)](https://github.com/deployphp/deployer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+for+beginner%22)
+[![advanced+level](https://img.shields.io/badge/feature-advanced%20level-5319e7.svg)](https://github.com/deployphp/deployer/issues?q=is%3Aissue+is%3Aopen+label%3A%22advanced+level%22)
+
 ## Maintainers
 * Anton Medvedev [@antonmedv](https://github.com/antonmedv)
 

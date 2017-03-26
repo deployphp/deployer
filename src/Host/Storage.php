@@ -9,8 +9,6 @@ namespace Deployer\Host;
 
 use Deployer\Collection\PersistentCollection;
 use Deployer\Exception\Exception;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use function Deployer\on;
 use function Deployer\Support\array_flatten;
 
@@ -18,10 +16,8 @@ class Storage
 {
     /**
      * @param Host[] $hosts
-     * @param InputInterface $input
-     * @param OutputInterface $output
      */
-    public static function persist(array $hosts, InputInterface $input, OutputInterface $output)
+    public static function persist(array $hosts)
     {
         on($hosts, function (Host $host) {
             $values = [];
@@ -38,7 +34,7 @@ class Storage
             $persistentCollection->flush();
 
             $host->getConfig()->setCollection($persistentCollection);
-        }, $input, $output);
+        });
     }
 
     /**

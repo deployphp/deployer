@@ -41,7 +41,7 @@ class Context
      * @param InputInterface $input
      * @param OutputInterface $output
      */
-    public function __construct($host, InputInterface $input, OutputInterface $output)
+    public function __construct($host, InputInterface $input = null, OutputInterface $output = null)
     {
         $this->host = $host;
         $this->input = $input;
@@ -61,7 +61,7 @@ class Context
      */
     public static function has()
     {
-        return empty(self::$contexts);
+        return !empty(self::$contexts);
     }
 
     /**

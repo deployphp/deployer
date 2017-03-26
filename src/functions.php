@@ -354,12 +354,12 @@ function testLocally($command)
  * @experimental
  * @param string|Host|array $hosts
  * @param callable $callback
- * @param InputInterface $input
- * @param OutputInterface $output
  */
-function on($hosts, callable $callback, InputInterface $input = null, OutputInterface $output = null)
+function on($hosts, callable $callback)
 {
     $deployer = Deployer::get();
+    $input = Context::has() ? input() : null;
+    $output = Context::has() ? output() : null;
 
     if (is_string($hosts)) {
         $hosts = $deployer->hostSelector->getHosts($hosts);
@@ -368,7 +368,7 @@ function on($hosts, callable $callback, InputInterface $input = null, OutputInte
     }
 
     foreach ($hosts as $host) {
-        Context::push(new Context($host, $input ?: input(), $output ?: output()));
+        Context::push(new Context($host, $input, $output));
         $callback($host);
         Context::pop();
     }
@@ -442,7 +442,7 @@ function write($message)
  */
 function set($name, $value)
 {
-    if (Context::has()) {
+    if (!Context::has()) {
         Deployer::setDefault($name, $value);
     } else {
         Context::get()->getConfig()->set($name, $value);
@@ -457,7 +457,7 @@ function set($name, $value)
  */
 function add($name, $array)
 {
-    if (Context::has()) {
+    if (!Context::has()) {
         Deployer::addDefault($name, $array);
     } else {
         Context::get()->getConfig()->add($name, $array);
@@ -473,7 +473,7 @@ function add($name, $array)
  */
 function get($name, $default = null)
 {
-    if (Context::has()) {
+    if (!Context::has()) {
         return Deployer::getDefault($name, $default);
     } else {
         return Context::get()->getConfig()->get($name, $default);
@@ -488,7 +488,7 @@ function get($name, $default = null)
  */
 function has($name)
 {
-    if (Context::has()) {
+    if (!Context::has()) {
         return Deployer::hasDefault($name);
     } else {
         return Context::get()->getConfig()->has($name);

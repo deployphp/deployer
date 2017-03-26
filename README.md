@@ -9,6 +9,8 @@
 
 A deployment tool written in PHP with support for popular frameworks out of the box
 
+<img src="" alt="">
+
 See [deployer.org](https://deployer.org) for more information and documentation.
 
 ## Features

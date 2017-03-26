@@ -12,6 +12,7 @@
 - Added `host` and `localhost` [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Added persistent config [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Added `--log` option [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `cleanup_use_sudo` [#330](https://github.com/deployphp/deployer/pull/330)
 
 ### Changed
 - `server` refactored to `host` [#1092](https://github.com/deployphp/deployer/pull/1092)

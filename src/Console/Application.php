@@ -28,7 +28,12 @@ class Application extends Console
     /**
      * @var callable
      */
-    private $callback;
+    private $catchIO;
+
+    /**
+     * @var callable
+     */
+    private $after;
 
     /**
      * {@inheritdoc}
@@ -119,6 +124,10 @@ class Application extends Console
         $exception = null;
         $exitCode = 0;
 
+        if (!empty($this->catchIO)) {
+            list($input, $output) = call_user_func($this->catchIO, $input, $output);
+        }
+
         try {
             $exitCode = parent::doRunCommand($command, $input, $output);
         } catch (\Exception $x) {
@@ -127,8 +136,8 @@ class Application extends Console
             $exception = $x;
         }
 
-        if (!empty($this->callback)) {
-            call_user_func($this->callback, new CommandEvent($command, $input, $output, $exception, $exitCode));
+        if (!empty($this->after)) {
+            call_user_func($this->after, new CommandEvent($command, $input, $output, $exception, $exitCode));
         }
 
         if ($exception !== null) {
@@ -141,8 +150,16 @@ class Application extends Console
     /**
      * @param $callable
      */
-    public function addCallback($callable)
+    public function catchIO($callable)
     {
-        $this->callback = $callable;
+        $this->catchIO = $callable;
+    }
+
+    /**
+     * @param $callable
+     */
+    public function afterRun($callable)
+    {
+        $this->after = $callable;
     }
 }

@@ -26,7 +26,7 @@ set('release_name', function () {
 }); // name of folder in releases
 
 /**
- * Return list of releases on server.
+ * Return list of releases on host.
  */
 set('releases_list', function () {
     cd('{{deploy_path}}');
@@ -55,7 +55,7 @@ set('releases_list', function () {
             $csv = run('cat .dep/releases');
         } else {
             // Instead of `tail -n` call here can be `cat` call,
-            // but on servers with a lot of deploys (more 1k) it
+            // but on hosts with a lot of deploys (more 1k) it
             // will output a really big list of previous releases.
             // It spoils appearance of output log, to make it pretty,
             // we limit it to `n*2 + 5` lines from end of file (15 lines).

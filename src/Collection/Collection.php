@@ -12,15 +12,11 @@ class Collection implements CollectionInterface, \Countable
     /**
      * @var array
      */
-    private $collection = [];
+    protected $values = [];
 
-    /**
-     * Collection constructor.
-     * @param array $collection
-     */
     public function __construct(array $collection = [])
     {
-        $this->collection = $collection;
+        $this->values = $collection;
     }
 
     /**
@@ -29,24 +25,9 @@ class Collection implements CollectionInterface, \Countable
     public function get($name)
     {
         if ($this->has($name)) {
-            if (strpos($name, '.') === false) {
-                return $this->collection[$name];
-            } else {
-                $parts = explode('.', $name);
-                $scope = &$this->collection;
-                $count = count($parts) - 1;
-                for ($i = 0; $i < $count; $i++) {
-                    if (!isset($scope[$parts[$i]])) {
-                        return null;
-                    }
-                    $scope = &$scope[$parts[$i]];
-                }
-                return isset($scope[$parts[$i]]) ? $scope[$parts[$i]] : null;
-            }
+            return $this->values[$name];
         } else {
-            $class = explode('\\', static::class);
-            $class = end($class);
-            throw new \RuntimeException("Object `$name` does not exist in $class.");
+            return $this->throwNotFound($name);
         }
     }
 
@@ -55,12 +36,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function has($name)
     {
-        if (strpos($name, '.') === false) {
-            return array_key_exists($name, $this->collection);
-        } else {
-            list($head, ) = explode('.', $name);
-            return array_key_exists($head, $this->collection);
-        }
+        return array_key_exists($name, $this->values);
     }
 
     /**
@@ -68,7 +44,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function set($name, $object)
     {
-        $this->collection[$name] = $object;
+        $this->values[$name] = $object;
     }
 
     /**
@@ -76,7 +52,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->collection);
+        return new \ArrayIterator($this->values);
     }
 
     /**
@@ -108,7 +84,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function offsetUnset($offset)
     {
-        unset($this->collection[$offset]);
+        unset($this->values[$offset]);
     }
 
     /**
@@ -116,7 +92,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function count()
     {
-        return count($this->collection);
+        return count($this->values);
     }
 
     /**
@@ -125,5 +101,10 @@ class Collection implements CollectionInterface, \Countable
     public function toArray()
     {
         return iterator_to_array($this);
+    }
+
+    protected function throwNotFound(string $name)
+    {
+        throw new \InvalidArgumentException("`$name` not found in collection.");
     }
 }

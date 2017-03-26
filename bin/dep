@@ -93,28 +93,19 @@ if (is_readable($composerLockFile)) {
     }
 }
 
-// Init Deployer
-$console = new \Deployer\Console\Application('Deployer', $version);
-$input = new \Symfony\Component\Console\Input\ArgvInput();
-$output = new \Symfony\Component\Console\Output\ConsoleOutput();
-$deployer = new \Deployer\Deployer($console, $input, $output);
+$method = new ReflectionMethod('Deployer\Deployer', 'run');
+if (!$method->isStatic()) {
+    die(
+        'You need to update Deployer to the latest version:' . PHP_EOL .
+        PHP_EOL .
+        '  dep self-update' . PHP_EOL .
+        PHP_EOL .
+        'Or use composer installed version:' . PHP_EOL .
+        PHP_EOL .
+        '  php vendor/bin/dep' . PHP_EOL .
+        PHP_EOL
 
-// Pretty-print uncaught exceptions in symfony-console
-// SymfonyStyle was added in sf-console 2.7, therefore we feature detect first
-if (class_exists('\Symfony\Component\Console\Style\SymfonyStyle')) {
-    set_exception_handler(function($e) use ($input, $output) {
-        $io = new \Symfony\Component\Console\Style\SymfonyStyle($input, $output);
-        $io->error($e);
-    });
+    );
 }
 
-// Require deploy.php file
-if (is_readable($deployFile)) {
-    // Prevent variable leak into deploy.php file
-    call_user_func(function () use ($deployFile) {
-        require $deployFile;
-    });
-}
-
-// Run Deployer
-$deployer->run();
+\Deployer\Deployer::run($version, $deployFile);

@@ -11,6 +11,7 @@ namespace Deployer\Initializer\Template;
  * Generate a Yii deployer configuration.
  *
  * @author Anton Medvedev <anton@medv.io>
+ * @codeCoverageIgnore
  */
 class YiiTemplate extends FrameworkTemplate
 {

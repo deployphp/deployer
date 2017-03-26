@@ -7,7 +7,8 @@
 
 namespace Deployer;
 
-require __DIR__ . '/deploy/config.php';
+require __DIR__ . '/config/current.php';
+require __DIR__ . '/config/dump.php';
 require __DIR__ . '/deploy/prepare.php';
 require __DIR__ . '/deploy/lock.php';
 require __DIR__ . '/deploy/release.php';
@@ -21,8 +22,17 @@ require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
 
-use Symfony\Component\Console\Input\InputArgument;
+use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputOption;
+
+/**
+ * Facts
+ */
+
+set('hostname', function () {
+    return Context::get()->getHost()->getHostname();
+});
+
 
 /**
  * Configuration
@@ -50,7 +60,12 @@ set('http_group', false);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', false);    // Using sudo in clean commands?
 
-set('use_relative_symlink', true);
+set('use_relative_symlink', function () {
+    return test('[[ "$(man ln)" =~ "--relative" ]]');
+});
+set('use_atomic_symlink', function () {
+    return test('[[ "$(man mv)" =~ "--no-target-directory" ]]');
+});
 
 set('composer_action', 'install');
 set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
@@ -103,30 +118,16 @@ set('bin/composer', function () {
 });
 
 set('bin/symlink', function () {
-    if (get('use_relative_symlink')) {
-        // Check if target system supports relative symlink.
-        if (run('if [[ "$(man ln)" =~ "--relative" ]]; then echo "true"; fi')->toBool()) {
-            return 'ln -nfs --relative';
-        }
-    }
-    return 'ln -nfs';
+    return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
 
+
 /**
- * Default arguments and options.
+ * Default options
  */
-argument('stage', InputArgument::OPTIONAL, 'Run tasks only on this server or group of servers');
 option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
 option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
 option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
-
-/**
- * Tasks
- */
-desc('Show current release');
-task('current', function () {
-    writeln('Current release: ' . basename(get('current_path')));
-});
 
 
 /**
@@ -134,7 +135,7 @@ task('current', function () {
  */
 task('success', function () {
     Deployer::setDefault('terminate_message', '<info>Successfully deployed!</info>');
-})->once()->setPrivate();
+})->local()->setPrivate();
 
 
 /**
@@ -143,4 +144,4 @@ task('success', function () {
 task('deploy:failed', function () {
 })->setPrivate();
 
-onFailure('deploy', 'deploy:failed');
+fail('deploy', 'deploy:failed');

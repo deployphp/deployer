@@ -14,4 +14,8 @@ use Deployer\Collection\Collection;
  */
 class TaskCollection extends Collection
 {
+    protected function throwNotFound(string $name)
+    {
+        throw new \InvalidArgumentException("Task `$name` not found");
+    }
 }

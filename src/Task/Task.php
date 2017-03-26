@@ -7,6 +7,8 @@
 
 namespace Deployer\Task;
 
+use Deployer\Host\Host;
+
 class Task
 {
     /**
@@ -15,56 +17,53 @@ class Task
     private $name;
 
     /**
-     * Task code.
      * @var callable
      */
     private $callback;
 
     /**
-     * Task description.
      * @var string
      */
     private $description;
 
     /**
-     * Should run this task only once and locally?
+     * Should we run this task locally?
+     *
      * @var bool
      */
-    private $once = false;
+    private $local = false;
 
     /**
-     * List of stages in which this task should be executed.
-     * @var array  Key contains stage names.
+     * Lists of hosts, roles, stages there task should be executed.
+     *
+     * @var array
      */
-    private $onlyForStage = [];
-
-    /**
-     * List of servers names there this task should be executed.
-     * @var array  Key contains server names.
-     */
-    private $onlyOn = [];
+    private $on = ['hosts' => [], 'roles' => [], 'stages' => []];
 
     /**
      * List of task names to run before.
+     *
      * @var array
      */
     private $before = [];
 
     /**
      * List of task names to run after.
+     *
      * @var array
      */
     private $after = [];
 
     /**
      * Make task internal and not visible in CLI.
+     *
      * @var bool
      */
     private $private = false;
 
     /**
      * @param string $name Tasks name
-     * @param callable $callback Task code.
+     * @param callable $callback Task code
      */
     public function __construct($name, callable $callback = null)
     {
@@ -73,8 +72,6 @@ class Task
     }
 
     /**
-     * Run task.
-     *
      * @param Context $context
      */
     public function run(Context $context)
@@ -85,9 +82,9 @@ class Task
         call_user_func($this->callback);
 
         // Clear working_path
-        $env = $context->getEnvironment();
-        if ($env !== null) {
-            $env->set('working_path', false);
+        $config = $context->getConfig();
+        if ($config !== null) {
+            $config->set('working_path', false);
         }
 
         Context::pop();
@@ -110,9 +107,8 @@ class Task
     }
 
     /**
-     * Set task description.
      * @param string $description
-     * @return Task
+     * @return $this
      */
     public function desc($description)
     {
@@ -121,87 +117,85 @@ class Task
     }
 
     /**
-     * Set this task local and run only once.
-     * @return Task
-     */
-    public function once()
-    {
-        $this->once = true;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isOnce()
-    {
-        return $this->once;
-    }
-
-    /**
-     * @param array|string $servers
-     * @return Task
-     */
-    public function onlyOn($servers = [])
-    {
-        $this->onlyOn = array_flip(is_array($servers) ? $servers : func_get_args());
-        return $this;
-    }
-
-    /**
-     * Indicate for which stages this task should be run.
+     * Mark this task local
      *
-     * @param array|string $stages
-     * @return Task
+     * @return $this
      */
-    public function onlyForStage($stages = [])
+    public function local()
     {
-        $this->onlyForStage = array_flip(is_array($stages) ? $stages: func_get_args());
+        $this->local = true;
         return $this;
     }
 
     /**
-     * @return array
-     */
-    public function getOnlyOn()
-    {
-        return $this->onlyOn;
-    }
-
-    /**
-     * @return array
-     */
-    public function getOnlyForStage()
-    {
-        return $this->onlyForStage;
-    }
-
-    /**
-     * Decide to run or not to run for these stages.
-     * @param $stages
      * @return bool
      */
-    public function isForStages($stages)
+    public function isLocal()
     {
-        if (empty($this->onlyForStage)) {
-            return true;
-        } else {
-            return count(array_intersect((array)$stages, array_keys($this->onlyForStage))) > 0;
-        }
+        return $this->local;
     }
 
     /**
-     * Decide to run or not to run on this server.
-     * @param string $serverName
+     * @param array $hosts
+     * @return $this
+     */
+    public function onHosts(...$hosts)
+    {
+        $this->on['hosts'] = $hosts;
+        return $this;
+    }
+
+    /**
+     * @param array $roles
+     * @return $this
+     */
+    public function onRoles(...$roles)
+    {
+        $this->on['roles'] = $roles;
+        return $this;
+    }
+
+    /**
+     * @param array $stages
+     * @return $this
+     */
+    public function onStage(...$stages)
+    {
+        $this->on['stages'] = $stages;
+        return $this;
+    }
+
+    /**
+     * Checks what task should be performed on one of hosts.
+     *
+     * @param Host[] $hosts
      * @return bool
      */
-    public function isOnServer($serverName)
+    public function shouldBePerformed(...$hosts)
     {
-        if (empty($this->onlyOn)) {
-            return true;
-        } else {
-            return array_key_exists($serverName, $this->onlyOn);
+        foreach ($hosts as $host) {
+            $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
+
+            $onRole = empty($this->on['roles']);
+            foreach ($host->get('roles', []) as $role) {
+                if (in_array($role, $this->on['roles'], true)) {
+                    $onRole = true;
+                }
+            }
+
+            $onStage = empty($this->on['stages']);
+            if ($host->has('stage')) {
+                if (in_array($host->get('stage'), $this->on['stages'], true)) {
+                    $onStage = true;
+                }
+            }
+
+            if ($onHost && $onRole && $onStage) {
+                return true;
+            }
         }
+
+        return empty($hosts);
     }
 
     /**
@@ -213,8 +207,9 @@ class Task
     }
 
     /**
-     * Mark task as private.
-     * @return Task
+     * Mark task as private
+     *
+     * @return $this
      */
     public function setPrivate()
     {
@@ -225,24 +220,16 @@ class Task
     /**
      * @param string $task
      */
-    public function addBefore($task)
+    public function addBefore(string $task)
     {
-        if (!is_string($task)) {
-            throw new \InvalidArgumentException('Invalid argument to `before` hook of "' . $this->getName() . '" task.');
-        }
-
         array_unshift($this->before, $task);
     }
 
     /**
      * @param string $task
      */
-    public function addAfter($task)
+    public function addAfter(string $task)
     {
-        if (!is_string($task)) {
-            throw new \InvalidArgumentException('Invalid argument to `after` hook of "' . $this->getName() . '" task.');
-        }
-
         array_push($this->after, $task);
     }
 

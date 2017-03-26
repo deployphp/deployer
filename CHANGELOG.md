@@ -3,22 +3,40 @@
 ## master
 [v4.3.0...master](https://github.com/deployphp/deployer/compare/v4.3.0...master)
 
---
+### Added
+- Added `use_atomic_symlink` and `use_relative_symlink` option [14a8f8](https://github.com/deployphp/deployer/pull/1092/commits/14a8f8f9c4ebbc7da45c2b6b7c3c00a51b563ccf)
+- Added `Ssh\Client` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added host ranges [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added --hosts and --roles options [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `on` function [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `host` and `localhost` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added persistent config [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Added `--log` option [#1092](https://github.com/deployphp/deployer/pull/1092)
+
+### Changed
+- `server` refactored to `host` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `Enviroment` refactored to `Configuration` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- phpunit test refactored [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `upload` and `download` now uses rsync [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Only native ssh client for now [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Task `current` to `config:current` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `onFailure` to `fail` [#1092](https://github.com/deployphp/deployer/pull/1092)
+
 
 ## v4.3.0
 [v4.2.1...v4.3.0](https://github.com/deployphp/deployer/compare/v4.2.1...v4.3.0)
 
 ### Added
-- Add support for multiple choice questions [#1076](https://github.com/deployphp/deployer/pull/1076)
-- Add a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
-- Add support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
-- Add `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)
+- Added support for multiple choice questions [#1076](https://github.com/deployphp/deployer/pull/1076)
+- Added a way to retrieve a defined task [#1008](https://github.com/deployphp/deployer/pull/1008)
+- Added support for configFile in the NativeSsh implementation [#979](https://github.com/deployphp/deployer/pull/979)
+- Added `--no-hooks` option for running commands without `before()` and `after()` [#1061](https://github.com/deployphp/deployer/pull/1061)
 - Added a usefull error when ask*() is not used wihtin a task() [#1083](https://github.com/deployphp/deployer/pull/1083)
 
 ### Changed
 - Parse hyphens in environment setting names [#1073](https://github.com/deployphp/deployer/pull/1074)
 - Autoload functions via Composer [#1015](https://github.com/deployphp/deployer/pull/1015)
-- Add task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
+- Added task queue:restart for Laravel recipe [#1007](https://github.com/deployphp/deployer/pull/1007)
 - Changed output of errors for native ssh [#1012](https://github.com/deployphp/deployer/issues/1012)
 
 ### Fixed
@@ -30,7 +48,7 @@
 - Fixed old releases not being cleaned up when keep_releases reduced by more than half.
 - Fixed creating non-existed `writable_dirs` [#1000](https://github.com/deployphp/deployer/pull/1000)
 - Fixed uploading files with spaces in a path via Native SSH [#1010](https://github.com/deployphp/deployer/issues/1010)
-- Fix merge of string array config options [#1067](https://github.com/deployphp/deployer/pull/1067)
+- Fixed merge of string array config options [#1067](https://github.com/deployphp/deployer/pull/1067)
 - Fixed uploading of files containing spaces [#1077](https://github.com/deployphp/deployer/issues/1077)
 - Fixed download of files when filename remote contains spaces [#1082](https://github.com/deployphp/deployer/pull/1082)
 

@@ -7,31 +7,27 @@
 
 namespace Deployer\Task;
 
-use Deployer\Server\Environment;
-use Deployer\Server\ServerInterface;
+use Deployer\Configuration\Configuration;
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
+use Deployer\Host\Host;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Context
 {
     /**
-     * @var ServerInterface|null
+     * @var Host
      */
-    private $server;
+    private $host;
 
     /**
-     * @var Environment|null
-     */
-    private $env;
-
-    /**
-     * @var InputInterface|null
+     * @var InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface|null
+     * @var OutputInterface
      */
     private $output;
 
@@ -41,15 +37,13 @@ class Context
     private static $contexts = [];
 
     /**
-     * @param ServerInterface|null $server
-     * @param Environment|null $env
-     * @param InputInterface|null $input
-     * @param OutputInterface|null $output
+     * @param Host $host
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    public function __construct($server, $env, $input, $output)
+    public function __construct($host, InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->server = $server;
-        $this->env = $env;
+        $this->host = $host;
         $this->input = $input;
         $this->output = $output;
     }
@@ -63,27 +57,23 @@ class Context
     }
 
     /**
-     * @return Context|false
+     * @return bool
      */
-    public static function get()
+    public static function has()
     {
-        return end(self::$contexts);
+        return !empty(self::$contexts);
     }
 
     /**
-     * Throws a Exception when not called within a task-context and therefore no Context is available.
-     *
-     * This method provides a useful error to the end-user to make him/her aware
-     * to use a function in the required task-context.
-     *
-     * @param string $callerName
+     * @return Context|false
      * @throws Exception
      */
-    public static function required($callerName)
+    public static function get()
     {
-        if (!self::get()) {
-            throw new Exception("'$callerName' can only be used within a task.");
+        if (empty(self::$contexts)) {
+            throw new Exception('Context was required, but there\'s nothing there.');
         }
+        return end(self::$contexts);
     }
 
     /**
@@ -95,15 +85,31 @@ class Context
     }
 
     /**
-     * @return Environment|null
+     * Throws a Exception when not called within a task-context and therefore no Context is available.
+     *
+     * This method provides a useful error to the end-user to make him/her aware
+     * to use a function in the required task-context.
+     *
+     * @param string $callerName
+     * @throws ConfigurationException
      */
-    public function getEnvironment()
+    public static function required($callerName)
     {
-        return $this->env;
+        if (!self::get()) {
+            throw new ConfigurationException("'$callerName' can only be used within a task.");
+        }
     }
 
     /**
-     * @return InputInterface|null
+     * @return Configuration
+     */
+    public function getConfig()
+    {
+        return $this->host->getConfig();
+    }
+
+    /**
+     * @return InputInterface
      */
     public function getInput()
     {
@@ -111,7 +117,7 @@ class Context
     }
 
     /**
-     * @return OutputInterface|null
+     * @return OutputInterface
      */
     public function getOutput()
     {
@@ -119,10 +125,10 @@ class Context
     }
 
     /**
-     * @return ServerInterface|null
+     * @return Host
      */
-    public function getServer()
+    public function getHost()
     {
-        return $this->server;
+        return $this->host;
     }
 }

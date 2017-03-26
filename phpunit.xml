@@ -20,11 +20,11 @@
         <blacklist>
             <directory suffix=".php">vendor/</directory>
             <directory>bin/</directory>
-            <directory>src/Resources/</directory>
         </blacklist>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>src/</directory>
-            <directory>recipe/</directory>
+            <directory>recipe/common.php</directory>
+            <directory>recipe/deploy/</directory>
         </whitelist>
     </filter>
 </phpunit>

@@ -7,6 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Host\Host;
+use function Deployer\Support\array_flatten;
+
 class ScriptManager
 {
     /**
@@ -15,12 +18,6 @@ class ScriptManager
     private $tasks;
 
     /**
-     * @var bool
-     */
-    private $hooksEnabled = true;
-
-    /**
-     * ScriptManager constructor.
      * @param TaskCollection $tasks
      */
     public function __construct(TaskCollection $tasks)
@@ -29,23 +26,25 @@ class ScriptManager
     }
 
     /**
-     * Return tasks to run.
+     * Return tasks to run
      *
      * @param string $name
-     * @param string $stage
+     * @param Host[] $hosts
+     * @param bool $hooksEnabled
      * @return Task[]
      */
-    public function getTasks($name, $stage = null)
+    public function getTasks($name, array $hosts = [], $hooksEnabled = true)
     {
-        $collect = function ($name) use (&$collect, $stage) {
+        $collect = function ($name) use (&$collect, $hosts, $hooksEnabled) {
             $task = $this->tasks->get($name);
-            if ($stage !== null && !$task->isForStages($stage)) {
+
+            if (!$task->shouldBePerformed(...array_values($hosts))) {
                 return [];
             }
 
             $relatedTasks = [];
 
-            if ($this->isHooksEnabled()) {
+            if ($hooksEnabled) {
                 $relatedTasks = array_merge(array_map($collect, $task->getBefore()), $relatedTasks);
             }
 
@@ -55,7 +54,7 @@ class ScriptManager
                 $relatedTasks = array_merge($relatedTasks, [$task->getName()]);
             }
 
-            if ($this->isHooksEnabled()) {
+            if ($hooksEnabled) {
                 $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getAfter()));
             }
 
@@ -63,34 +62,9 @@ class ScriptManager
         };
 
         $script = $collect($name);
+        $tasks = array_flatten($script);
 
-        // Flatten
-        $tasks = [];
-        array_walk_recursive($script, function ($a) use (&$tasks) {
-            $tasks[] = $a;
-        });
-
-        // Convert names to real strings.
-        $tasks = array_map(function ($name) {
-            return $this->tasks->get($name);
-        }, $tasks);
-
-        return $tasks;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isHooksEnabled()
-    {
-        return $this->hooksEnabled;
-    }
-
-    /**
-     * @param bool $hooksEnabled
-     */
-    public function setHooksEnabled($hooksEnabled)
-    {
-        $this->hooksEnabled = $hooksEnabled;
+        // Convert names to real tasks
+        return array_map([$this->tasks, 'get'], $tasks);
     }
 }

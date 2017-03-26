@@ -7,6 +7,9 @@
 
 namespace Deployer\Initializer\Template;
 
+/**
+ * @codeCoverageIgnore
+ */
 class CodeIgniterTemplate extends FrameworkTemplate
 {
     protected function getRecipe()

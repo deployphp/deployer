@@ -7,6 +7,9 @@
 
 namespace Deployer\Utility;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Reporter
 {
     const ENDPOINT = 'https://deployer.org/api/stats';

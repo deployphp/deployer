@@ -5,16 +5,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Console;
+namespace Deployer\Console\Output;
 
-use Deployer\Console\Output\OutputWatcher;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Formatter\OutputFormatterInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class OutputWatcherTest extends \PHPUnit_Framework_TestCase
+class OutputWatcherTest extends TestCase
 {
     public function testOutputWatcher()
     {
-        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
+        $output = $this->createMock(OutputInterface::class);
 
         $output->expects($this->any())
             ->method('write');
@@ -55,7 +56,7 @@ class OutputWatcherTest extends \PHPUnit_Framework_TestCase
 
         $ow->isDecorated();
 
-        $ow->setFormatter($this->createMock('Symfony\Component\Console\Formatter\OutputFormatterInterface'));
+        $ow->setFormatter($this->createMock(OutputFormatterInterface::class));
 
         $ow->getFormatter();
 

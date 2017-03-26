@@ -7,6 +7,8 @@
 
 namespace Deployer\Initializer;
 
+use Deployer\Initializer\Exception\IOException;
+use Deployer\Initializer\Template\TemplateInterface;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -37,7 +39,7 @@ class InitializerTest extends TestCase
     public function setUp()
     {
         $this->initializer = new Initializer();
-        $this->template = $this->getMockForAbstractClass('Deployer\Initializer\Template\TemplateInterface');
+        $this->template = $this->getMockForAbstractClass(TemplateInterface::class);
         $this->initializer->addTemplate('test', $this->template);
     }
 
@@ -83,13 +85,8 @@ class InitializerTest extends TestCase
     {
         list($tmpDir, $tmpFileName, $tmpFilePath) = $this->createTemporaryFile();
 
-        $this->setExpectedException(
-            'Deployer\Initializer\Exception\IOException',
-            sprintf(
-                'The file "%s" already exist.',
-                $tmpFilePath
-            )
-        );
+        $this->expectException(IOException::class);
+        $this->expectExceptionMessage(sprintf('The file "%s" already exist.', $tmpFilePath));
 
         touch($tmpFilePath);
 
@@ -103,8 +100,8 @@ class InitializerTest extends TestCase
     {
         list($tmpDir) = $this->createTemporaryFile();
 
-        $this->setExpectedException(
-            'Deployer\Initializer\Exception\IOException',
+        $this->expectException(IOException::class);
+        $this->expectExceptionMessage(
             sprintf(
                 'The directory "%s" is not writable.',
                 $tmpDir
@@ -124,9 +121,8 @@ class InitializerTest extends TestCase
         list($tmpDir) = $this->createTemporaryFile();
         $tmpDir .= '/foo';
 
-        $this->setExpectedException(
-            'Deployer\Initializer\Exception\IOException',
-            sprintf(
+        $this->expectException(IOException::class);
+        $this->expectExceptionMessage(sprintf(
                 'Could not create directory "%s". Permission denied',
                 $tmpDir . '/bar'
             )
@@ -148,9 +144,8 @@ class InitializerTest extends TestCase
         list($tmpDir) = $this->createTemporaryFile();
         $tmpDir .= '/foo';
 
-        $this->setExpectedException(
-            'Deployer\Initializer\Exception\IOException',
-            sprintf(
+        $this->expectException(IOException::class);
+        $this->expectExceptionMessage(sprintf(
                 'Can not create directory. The path "%s" already exist.',
                 $tmpDir
             )

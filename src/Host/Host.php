@@ -7,29 +7,57 @@
 
 namespace Deployer\Host;
 
+use Deployer\Configuration\Configuration;
+use Deployer\Configuration\ConfigurationAccessor;
+
 class Host
 {
+    use ConfigurationAccessor;
+
     private $hostname;
     private $user;
     private $port;
     private $configFile;
     private $identityFile;
     private $forwardAgent = true;
-    private $multiplexing = true;
+    private $multiplexing = null;
     private $options = [];
 
     /**
-     * Host constructor.
      * @param string $hostname
      */
     public function __construct(string $hostname)
     {
         $this->hostname = $hostname;
+        $this->config = new Configuration();
     }
 
-    public function generateOptionsString()
+    /**
+     * Generate options string for ssh
+     *
+     * @return string
+     */
+    public function sshOptions()
     {
-        return '';
+        $options = '';
+
+        if ($this->configFile) {
+            $options .= " -F {$this->configFile}";
+        }
+
+        if ($this->identityFile) {
+            $options .= " -i {$this->identityFile}";
+        }
+
+        if ($this->forwardAgent) {
+            $options .= " -A";
+        }
+
+        foreach ($this->options as $option) {
+            $options .= " -o $option";
+        }
+
+        return $options;
     }
 
     /**
@@ -40,7 +68,7 @@ class Host
     public function __toString()
     {
         $user = empty($this->user) ? '' : "{$this->user}@";
-        $hostname = $this->hostname;
+        $hostname = preg_replace('/\/.+$/', '', $this->hostname);
         return "$user$hostname";
     }
 
@@ -54,10 +82,12 @@ class Host
 
     /**
      * @param string $hostname
+     * @return $this
      */
-    public function setHostname(string $hostname)
+    public function hostname(string $hostname)
     {
         $this->hostname = $hostname;
+        return $this;
     }
 
     /**
@@ -70,10 +100,12 @@ class Host
 
     /**
      * @param string $user
+     * @return $this
      */
-    public function setUser(string $user)
+    public function user(string $user)
     {
         $this->user = $user;
+        return $this;
     }
 
     /**
@@ -86,10 +118,12 @@ class Host
 
     /**
      * @param int $port
+     * @return $this
      */
-    public function setPort(int $port)
+    public function port(int $port)
     {
         $this->port = $port;
+        return $this;
     }
 
     /**
@@ -102,10 +136,12 @@ class Host
 
     /**
      * @param string $configFile
+     * @return $this
      */
-    public function setConfigFile(string $configFile)
+    public function configFile(string $configFile)
     {
         $this->configFile = $configFile;
+        return $this;
     }
 
     /**
@@ -118,10 +154,12 @@ class Host
 
     /**
      * @param string $identityFile
+     * @return $this
      */
-    public function setIdentityFile(string $identityFile)
+    public function identityFile(string $identityFile)
     {
         $this->identityFile = $identityFile;
+        return $this;
     }
 
     /**
@@ -134,10 +172,12 @@ class Host
 
     /**
      * @param bool $forwardAgent
+     * @return $this
      */
-    public function setForwardAgent(bool $forwardAgent)
+    public function forwardAgent(bool $forwardAgent = true)
     {
         $this->forwardAgent = $forwardAgent;
+        return $this;
     }
 
     /**
@@ -150,10 +190,12 @@ class Host
 
     /**
      * @param bool $multiplexing
+     * @return $this
      */
-    public function setMultiplexing(bool $multiplexing)
+    public function multiplexing(bool $multiplexing = true)
     {
         $this->multiplexing = $multiplexing;
+        return $this;
     }
 
     /**
@@ -166,17 +208,21 @@ class Host
 
     /**
      * @param array $options
+     * @return $this
      */
-    public function setOptions(array $options)
+    public function options(array $options)
     {
         $this->options = $options;
+        return $this;
     }
 
     /**
      * @param string $option
+     * @return $this
      */
     public function addOption(string $option)
     {
         $this->options[] = $option;
+        return $this;
     }
 }

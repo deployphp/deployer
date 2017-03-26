@@ -65,7 +65,7 @@ class ParallelExecutor implements ExecutorInterface
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
-        Storage::persist($hosts, $this->input, $this->output);
+        Storage::persist($hosts);
 
         foreach ($tasks as $task) {
             $success = true;

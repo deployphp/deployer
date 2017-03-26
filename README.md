@@ -9,7 +9,7 @@
 
 A deployment tool written in PHP with support for popular frameworks out of the box
 
-<img src="https://cloud.githubusercontent.com/assets/141232/24329722/195bf250-1239-11e7-89f8-e2c1a87aee4b.png" alt="">
+<a href="https://deployer.org"><img src="https://cloud.githubusercontent.com/assets/141232/24329722/195bf250-1239-11e7-89f8-e2c1a87aee4b.png" alt="Go to deployer.org"></a>
 
 See [deployer.org](https://deployer.org) for more information and documentation.
 

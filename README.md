@@ -50,4 +50,4 @@ Deployer is an open source project. If you want to support the development of De
 [![Becoming a patron](https://img.shields.io/badge/become-patron-brightgreen.svg)](https://www.patreon.com/deployer)
 
 ## License
-Licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Licensed under the [MIT license](https://github.com/deployphp/deployer/blob/master/LICENSE).

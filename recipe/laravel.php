@@ -100,7 +100,11 @@ task('artisan:optimize', function () {
 
 desc('Execute artisan queue:restart');
 task('artisan:queue:restart', function () {
-    run('{{bin/php}} {{release_path}}/artisan queue:restart');
+    $releases = get('releases_list');
+    if (isset($releases[1])) {
+        $previousReleasePath = "{{deploy_path}}/releases/{$releases[1]}";
+        run("{{bin/php}} $previousReleasePath/artisan queue:restart");
+    }
 });
 
 /**

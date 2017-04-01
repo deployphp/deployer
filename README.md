@@ -22,15 +22,6 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 * **Agentless**, it's just SSH
 * **Zero downtime** deployments
 
-## Who is using Deployer?
-
-* [Aviasales](https://www.aviasales.ru)
-* [Playa](https://playa.hk/en)
-* [INNN Project's](http://innn.es)
-* [Goratsch Webdesign](https://www.goratschwebdesign.de)
-
-If you are also using it, please let us know ([Edit this file](https://github.com/deployphp/deployer/edit/master/README.md))
-
 ## Contributing
 
 Read the [contributing](https://github.com/deployphp/deployer/blob/master/CONTRIBUTING.md) guide, join the [discussions](https://deployer.org/discuss), take a look on open [issues](https://github.com/deployphp/deployer/issues)

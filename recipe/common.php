@@ -63,10 +63,10 @@ set('clear_use_sudo', false);    // Using sudo in clean commands?
 set('cleanup_use_sudo', false); // Using sudo in cleanup commands?
 
 set('use_relative_symlink', function () {
-    return test('[[ "$(man ln)" =~ "--relative" ]]');
+    return test('[[ "$(ln --help)" =~ "--relative" ]]');
 });
 set('use_atomic_symlink', function () {
-    return test('[[ "$(man mv)" =~ "--no-target-directory" ]]');
+    return test('[[ "$(mv --help)" =~ "--no-target-directory" ]]');
 });
 
 set('composer_action', 'install');

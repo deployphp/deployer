@@ -22,6 +22,7 @@
 - Only native ssh client for now [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Task `current` to `config:current` [#1092](https://github.com/deployphp/deployer/pull/1092)
 - `onFailure` to `fail` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- Removed the dependency on the man binary
 
 
 ## v4.3.0

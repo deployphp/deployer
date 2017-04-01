@@ -89,12 +89,14 @@ class HostSelector
     }
 
     /**
-     * @param $roles
+     * @param array|string $roles
      * @return Host[]
      */
     public function getByRoles($roles)
     {
-        $roles = array_map('trim', explode(',', $roles));
+        if (is_string($roles)) {
+            $roles = array_map('trim', explode(',', $roles));
+        }
 
         $hosts = [];
         foreach ($this->hosts as $host) {

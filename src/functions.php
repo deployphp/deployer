@@ -4,6 +4,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Deployer;
 
 use Deployer\Host\FileLoader;
@@ -352,26 +353,55 @@ function testLocally($command)
  * Iterate other hosts, allowing to call run func in callback.
  *
  * @experimental
- * @param string|Host|array $hosts
+ * @param Host|Host[] $hosts
  * @param callable $callback
  */
 function on($hosts, callable $callback)
 {
-    $deployer = Deployer::get();
     $input = Context::has() ? input() : null;
     $output = Context::has() ? output() : null;
 
-    if (is_string($hosts)) {
-        $hosts = $deployer->hostSelector->getHosts($hosts);
-    } elseif ($hosts instanceof Host) {
+    if (!is_array($hosts)) {
         $hosts = [$hosts];
     }
 
     foreach ($hosts as $host) {
-        Context::push(new Context($host, $input, $output));
-        $callback($host);
-        Context::pop();
+        if ($host instanceof Host) {
+            Context::push(new Context($host, $input, $output));
+            $callback($host);
+            Context::pop();
+        } else {
+            throw new \InvalidArgumentException("Function on can iterate only on Host instances.");
+        }
     }
+}
+
+/**
+ * Return hosts based on roles.
+ *
+ * @experimental
+ * @param string[] $roles
+ * @return Host[]
+ */
+function roles(...$roles)
+{
+    return Deployer::get()->hostSelector->getByRoles($roles);
+}
+
+/**
+ * Run task
+ *
+ * @experimental
+ * @param string $task
+ */
+function invoke($task)
+{
+    $task = Deployer::get()->tasks->get($task);
+    $input = Context::get()->getInput();
+    $output = Context::get()->getOutput();
+    $host = Context::get()->getHost();
+
+    $task->run(new Context($host, $input, $output));
 }
 
 /**
@@ -665,16 +695,7 @@ function isDebug()
 }
 
 /**
- * Deprecated, use set()/get().
- * @deprecated
- */
-function env()
-{
-    throw new \RuntimeException('env() function deprecated. Please, use set() or get() instead of.');
-}
-
-/**
- * Check if command exist in bash.
+ * Check if command exists
  *
  * @param string $command
  * @return bool

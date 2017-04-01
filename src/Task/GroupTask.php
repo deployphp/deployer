@@ -7,8 +7,6 @@
 
 namespace Deployer\Task;
 
-use Deployer\Exception\ConfigurationException;
-
 class GroupTask extends Task
 {
     /**
@@ -33,24 +31,7 @@ class GroupTask extends Task
      */
     public function run(Context $context)
     {
-        throw new \RuntimeException('Group task should never be running.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function local()
-    {
-        // TODO: Make it possible to create local group of tasks
-        throw new \RuntimeException('Group task can not be local.');
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function on(...$list)
-    {
-        throw new ConfigurationException('Group task can not be called only on specified hosts');
+        throw new \RuntimeException("Can't run group task.");
     }
 
     /**

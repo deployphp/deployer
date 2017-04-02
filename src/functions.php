@@ -705,7 +705,8 @@ function commandExist($command)
     return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
 }
 
-function commandSupportsOption($command, $option) {
+function commandSupportsOption($command, $option)
+{
     return test("[[ $(man $command 2>&1 || $command -h 2>&1 || $command --help 2>&1) =~ '$option' ]]");
 }
 

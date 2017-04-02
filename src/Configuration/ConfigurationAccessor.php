@@ -70,33 +70,4 @@ trait ConfigurationAccessor
         $this->config->add($name, $value);
         return $this;
     }
-
-    /**
-     * Set stage
-     *
-     * @param string $stage
-     * @return $this
-     */
-    public function stage(string $stage)
-    {
-        $this->config->set('stage', $stage);
-        return $this;
-    }
-
-    /**
-     * Set roles
-     *
-     * @param array ...$roles
-     * @return $this
-     */
-    public function roles(...$roles)
-    {
-        $this->config->set('roles', []);
-
-        foreach ($roles as $role) {
-            $this->config->add('roles', [$role]);
-        }
-
-        return $this;
-    }
 }

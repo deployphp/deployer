@@ -57,6 +57,7 @@ class Client
         $this->pop->command($hostname, $command);
 
         $options = $host->sshOptions();
+        $become = $host->has('become') ? 'sudo -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.
@@ -79,7 +80,7 @@ class Client
             $options = $this->initMultiplexing($host);
         }
 
-        $ssh = "ssh $options $host 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        $ssh = "ssh $options $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
 
         $process = new Process($ssh);
         $process

@@ -225,4 +225,45 @@ class Host
         $this->options[] = $option;
         return $this;
     }
+
+    /**
+     * Set stage
+     *
+     * @param string $stage
+     * @return $this
+     */
+    public function stage(string $stage)
+    {
+        $this->config->set('stage', $stage);
+        return $this;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array ...$roles
+     * @return $this
+     */
+    public function roles(...$roles)
+    {
+        $this->config->set('roles', []);
+
+        foreach ($roles as $role) {
+            $this->config->add('roles', [$role]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set become
+     *
+     * @param string $user
+     * @return $this
+     */
+    public function become(string $user)
+    {
+        $this->config->set('become', $user);
+        return $this;
+    }
 }

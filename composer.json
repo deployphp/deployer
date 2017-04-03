@@ -38,9 +38,6 @@
     "require-dev": {
         "phpunit/phpunit": "~6.0"
     },
-    "suggest": {
-        "deployer/phar-update": "~2.0"
-    },
     "config": {
         "sort-packages": true
     }

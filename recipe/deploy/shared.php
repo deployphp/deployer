@@ -47,14 +47,21 @@ task('deploy:shared', function () {
 
     foreach (get('shared_files') as $file) {
         $dirname = dirname($file);
+
+        // Create dir of shared file
+        run("mkdir -p $sharedPath/" . $dirname);
+
+	// Check if shared file does not exists in shared.
+	// and file exist in release
+	if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
+            // Copy file in shared dir if not present
+	    run("cp -rv {{release_path}}/$file $sharedPath/$file");
+	   }
         // Remove from source.
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 
         // Ensure dir is available in release
         run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
-
-        // Create dir of shared file
-        run("mkdir -p $sharedPath/" . $dirname);
 
         // Touch shared
         run("touch $sharedPath/$file");

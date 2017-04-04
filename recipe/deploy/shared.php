@@ -51,12 +51,12 @@ task('deploy:shared', function () {
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . $dirname);
 
-	// Check if shared file does not exists in shared.
-	// and file exist in release
-	if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
+        // Check if shared file does not exists in shared.
+        // and file exist in release
+        if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
-	    run("cp -rv {{release_path}}/$file $sharedPath/$file");
-	   }
+            run("cp -rv {{release_path}}/$file $sharedPath/$file");
+           }
         // Remove from source.
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 

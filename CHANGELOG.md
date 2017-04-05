@@ -22,6 +22,7 @@
 - Only native ssh client for now [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Task `current` to `config:current` [#1092](https://github.com/deployphp/deployer/pull/1092)
 - `onFailure` to `fail` [#1092](https://github.com/deployphp/deployer/pull/1092)
+- `ssh` no longer need parameter when using default host [#1144](https://github.com/deployphp/deployer/pull/1144)
 
 
 ## v4.3.0

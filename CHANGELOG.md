@@ -4,6 +4,7 @@
 [v4.3.0...master](https://github.com/deployphp/deployer/compare/v4.3.0...master)
 
 ### Added
+- Added console init template for Yii2 basic and advanced receipe [#1146](https://github.com/deployphp/deployer/pull/1146)
 - Added `use_atomic_symlink` and `use_relative_symlink` option [14a8f8](https://github.com/deployphp/deployer/pull/1092/commits/14a8f8f9c4ebbc7da45c2b6b7c3c00a51b563ccf)
 - Added `Ssh\Client` [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Added host ranges [#1092](https://github.com/deployphp/deployer/pull/1092)

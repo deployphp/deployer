@@ -15,6 +15,8 @@ use Deployer\Initializer\Template\DrupalTemplate;
 use Deployer\Initializer\Template\LaravelTemplate;
 use Deployer\Initializer\Template\SymfonyTemplate;
 use Deployer\Initializer\Template\YiiTemplate;
+use Deployer\Initializer\Template\Yii2BasicAppTemplate;
+use Deployer\Initializer\Template\Yii2AdvancedAppTemplate;
 use Deployer\Initializer\Template\ZendTemplate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -107,6 +109,8 @@ class InitCommand extends Command
         $initializer->addTemplate('Laravel', new LaravelTemplate());
         $initializer->addTemplate('Symfony', new SymfonyTemplate());
         $initializer->addTemplate('Yii', new YiiTemplate());
+        $initializer->addTemplate('Yii2 Basic App', new Yii2BasicAppTemplate());
+        $initializer->addTemplate('Yii2 Advanced App', new Yii2AdvancedAppTemplate());
         $initializer->addTemplate('Zend Framework', new ZendTemplate());
         $initializer->addTemplate('CakePHP', new CakeTemplate());
         $initializer->addTemplate('CodeIgniter', new CodeIgniterTemplate());

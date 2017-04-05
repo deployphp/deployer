@@ -56,7 +56,8 @@ task('deploy:shared', function () {
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
             run("cp -rv {{release_path}}/$file $sharedPath/$file");
-           }
+        }
+
         // Remove from source.
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");
 

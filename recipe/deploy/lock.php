@@ -14,9 +14,11 @@ task('deploy:lock', function () {
     $locked = run("if [ -f {{deploy_path}}/.dep/deploy.lock ]; then echo 'true'; fi")->toBool();
 
     if ($locked) {
+        $stage = input()->hasArgument('stage') ? ' ' . input()->getArgument('stage') : '';
+
         throw new GracefulShutdownException(
             "Deploy locked.\n" .
-            "Run deploy:unlock command to unlock."
+            sprintf('Execute "dep deploy:unlock%s" to unlock.', $stage)
         );
     } else {
         run("touch {{deploy_path}}/.dep/deploy.lock");

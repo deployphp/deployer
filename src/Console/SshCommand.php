@@ -62,7 +62,10 @@ class SshCommand extends Command
                return !($host instanceof Localhost);
             });
 
-            if (count($hosts) === 1) {
+            if (count($hosts) === 0) {
+                $output->writeln('No remote hosts.');
+                return; // Because there are no hosts.
+            } else if (count($hosts) === 1) {
                 $host = array_shift($hosts);
             } else {
                 $helper = $this->getHelper('question');

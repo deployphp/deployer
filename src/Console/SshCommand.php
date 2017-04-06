@@ -39,7 +39,7 @@ class SshCommand extends Command
     {
         $this->addArgument(
             'hostname',
-            InputArgument::REQUIRED,
+            InputArgument::OPTIONAL,
             'Hostname'
         );
     }
@@ -49,7 +49,10 @@ class SshCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $host = $this->deployer->hosts->get($input->getArgument('hostname'));
+        $firstHostname = $this->deployer->hosts->getIterator()->current()->getHostname();
+        $hostname = $input->getArgument('hostname') ?? $firstHostname;
+
+        $host = $this->deployer->hosts->get($hostname);
         Context::push(new Context($host, $input, $output));
 
         $options = $host->sshOptions();

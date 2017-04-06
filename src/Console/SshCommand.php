@@ -59,7 +59,7 @@ class SshCommand extends Command
             $host = $this->deployer->hosts->get($hostname);
         } else {
             $hosts = $this->deployer->hosts->select(function ($host) {
-               return !($host instanceof Localhost);
+                return !($host instanceof Localhost);
             });
 
             if (count($hosts) === 1) {

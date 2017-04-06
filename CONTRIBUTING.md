@@ -9,6 +9,8 @@ In order for us to provide you with help as fast as possible, please make sure t
 * Deployer version
 * PHP version
 * Deployment target(s) OS
+* Content of `deploy.php`
+* Output log with enabled option for verbose output `-vvv`
 
 ## New features
 

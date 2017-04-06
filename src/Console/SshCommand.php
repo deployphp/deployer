@@ -8,12 +8,17 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SshCommand extends Command
 {
     /**
@@ -39,7 +44,7 @@ class SshCommand extends Command
     {
         $this->addArgument(
             'hostname',
-            InputArgument::REQUIRED,
+            InputArgument::OPTIONAL,
             'Hostname'
         );
     }
@@ -49,9 +54,30 @@ class SshCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $host = $this->deployer->hosts->get($input->getArgument('hostname'));
-        Context::push(new Context($host, $input, $output));
+        $hostname = $input->getArgument('hostname');
+        if (!empty($hostname)) {
+            $host = $this->deployer->hosts->get($hostname);
+        } else {
+            $hosts = $this->deployer->hosts->select(function ($host) {
+               return !($host instanceof Localhost);
+            });
 
+            if (count($hosts) === 1) {
+                $host = array_shift($hosts);
+            } else {
+                $helper = $this->getHelper('question');
+                $question = new ChoiceQuestion(
+                    'Select host:',
+                    $hosts
+                );
+                $question->setErrorMessage('There is no "%s" host.');
+
+                $hostname = $helper->ask($input, $output, $question);
+                $host = $this->deployer->hosts->get($hostname);
+            }
+        }
+
+        Context::push(new Context($host, $input, $output));
         $options = $host->sshOptions();
         $deployPath = $host->get('deploy_path', '~');
 

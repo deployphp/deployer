@@ -95,6 +95,24 @@ class Collection implements CollectionInterface, \Countable
         return count($this->values);
     }
 
+    public function select(callable $callback)
+    {
+        $values = [];
+
+        foreach ($this as $key => $value) {
+            if ($callback($value, $key)) {
+                $values[$key] = $value;
+            }
+        }
+
+        return $values;
+    }
+
+    public function first()
+    {
+        return array_values($this->values)[0];
+    }
+
     /**
      * @return array
      */

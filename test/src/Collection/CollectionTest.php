@@ -43,6 +43,10 @@ class CollectionTest extends TestCase
         }
 
         $this->assertTrue($traversable, 'Collection does not traversable.');
+
+        $this->assertEquals($collection->select(function ($value, $key) use ($object) {
+            return $value === $object && $key === 'object';
+        }), ['object' => $object]);
     }
 
     /**

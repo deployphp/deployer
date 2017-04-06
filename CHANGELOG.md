@@ -1,10 +1,22 @@
 # Changelog
 
 ## master
-[v4.3.0...master](https://github.com/deployphp/deployer/compare/v4.3.0...master)
+[v5.0.0-beta.1...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...master)
 
 ### Added
 - Added console init template for Yii2 basic and advanced receipe [#1146](https://github.com/deployphp/deployer/pull/1146)
+
+### Changed
+- Error message on locked release [#1145](https://github.com/deployphp/deployer/pull/1145)
+
+### Fixed
+- Fixed task order init/shared for yii2-app-advanced.php [#1143](https://github.com/deployphp/deployer/pull/1143)
+
+
+## v5.0.0-beta.1
+[v4.3.0...v5.0.0-beta.1](https://github.com/deployphp/deployer/compare/v4.3.0...v5.0.0-beta.1)
+
+### Added
 - Added `use_atomic_symlink` and `use_relative_symlink` option [14a8f8](https://github.com/deployphp/deployer/pull/1092/commits/14a8f8f9c4ebbc7da45c2b6b7c3c00a51b563ccf)
 - Added `Ssh\Client` [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Added host ranges [#1092](https://github.com/deployphp/deployer/pull/1092)
@@ -23,7 +35,6 @@
 - Only native ssh client for now [#1092](https://github.com/deployphp/deployer/pull/1092)
 - Task `current` to `config:current` [#1092](https://github.com/deployphp/deployer/pull/1092)
 - `onFailure` to `fail` [#1092](https://github.com/deployphp/deployer/pull/1092)
-- Error message on locked release [#1145](https://github.com/deployphp/deployer/pull/1145)
 
 
 ## v4.3.0
@@ -43,8 +54,6 @@
 - Changed output of errors for native ssh [#1012](https://github.com/deployphp/deployer/issues/1012)
 
 ### Fixed
-- Fixed Create initial shared file from release [#1143](https://github.com/deployphp/deployer/pull/1143)
-- Fixed Fix task order init/shared for yii2-app-advanced.php [#1143](https://github.com/deployphp/deployer/pull/1143)
 - Fixed `Can not share same dirs` for shared folders having similar names [#995](https://github.com/deployphp/deployer/issues/995)
 - Fixed scalar override on recursive option merge [#1003](https://github.com/deployphp/deployer/pull/1003)
 - Fixed incompatible PHP 7.0 syntax [#1020](https://github.com/deployphp/deployer/pull/1020)

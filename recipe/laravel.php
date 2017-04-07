@@ -103,6 +103,11 @@ task('artisan:queue:restart', function () {
     run('{{bin/php}} {{release_path}}/artisan queue:restart');
 });
 
+desc('Execute artisan storage:link');
+task('artisan:storage:link', function () {
+    run('{{bin/php}} {{release_path}}/artisan storage:link');
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file

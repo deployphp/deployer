@@ -6,6 +6,7 @@
 ### Added
 - Added console init template for Yii2 basic and advanced receipe [#1146](https://github.com/deployphp/deployer/pull/1146)
 - Added `artisan:storage:link` task to the Laravel recipe to symlink the public storage directory [#1152](https://github.com/deployphp/deployer/pull/1152)
+- Added `previous_release` var
 
 ### Changed
 - Error message on locked release [#1145](https://github.com/deployphp/deployer/pull/1145)

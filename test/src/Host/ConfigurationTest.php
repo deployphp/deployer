@@ -79,8 +79,8 @@ class ConfigurationTest extends TestCase
     {
         $this->expectException(ConfigurationException::class);
 
-        $env = new Configuration();
-        $env->set('config', 'option');
-        $env->add('config', ['three']);
+        $config = new Configuration();
+        $config->set('config', 'option');
+        $config->add('config', ['three']);
     }
 }

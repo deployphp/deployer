@@ -8,7 +8,6 @@
 namespace Deployer\Task;
 
 use Deployer\Configuration\Configuration;
-use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Symfony\Component\Console\Input\InputInterface;
@@ -91,12 +90,12 @@ class Context
      * to use a function in the required task-context.
      *
      * @param string $callerName
-     * @throws ConfigurationException
+     * @throws Exception
      */
     public static function required($callerName)
     {
         if (!self::get()) {
-            throw new ConfigurationException("'$callerName' can only be used within a task.");
+            throw new Exception("'$callerName' can only be used within a task.");
         }
     }
 

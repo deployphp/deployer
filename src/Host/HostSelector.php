@@ -7,7 +7,7 @@
 
 namespace Deployer\Host;
 
-use Deployer\Exception\ConfigurationException;
+use Deployer\Exception\Exception;
 
 class HostSelector
 {
@@ -30,6 +30,7 @@ class HostSelector
     /**
      * @param string $stage
      * @return Host[]
+     * @throws Exception
      */
     public function getHosts($stage)
     {
@@ -55,7 +56,7 @@ class HostSelector
                     $hosts = [$stage => $this->hosts->get($stage)];
                 } else {
                     // Nothing found.
-                    throw new ConfigurationException("Hostname or stage `$stage` was not found.");
+                    throw new Exception("Hostname or stage `$stage` was not found.");
                 }
             }
         } else {
@@ -71,7 +72,7 @@ class HostSelector
             if (count($this->hosts) === 0) {
                 $hosts = ['localhost' => new Localhost()];
             } else {
-                throw new ConfigurationException('You need to specify at least one host or stage.');
+                throw new Exception('You need to specify at least one host or stage.');
             }
         }
 

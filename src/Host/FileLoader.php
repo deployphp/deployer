@@ -7,7 +7,7 @@
 
 namespace Deployer\Host;
 
-use Deployer\Exception\ConfigurationException;
+use Deployer\Exception\Exception;
 use Symfony\Component\Yaml\Yaml;
 
 class FileLoader
@@ -20,17 +20,18 @@ class FileLoader
     /**
      * @param string $file
      * @return $this
+     * @throws Exception
      */
     public function load($file)
     {
         if (!file_exists($file) || !is_readable($file)) {
-            throw new ConfigurationException("File `$file` doesn't exists or doesn't readable.");
+            throw new Exception("File `$file` doesn't exists or doesn't readable.");
         }
 
         $data = Yaml::parse(file_get_contents($file));
 
         if (!is_array($data)) {
-            throw new ConfigurationException("Hosts file `$file` should contains array of hosts.");
+            throw new Exception("Hosts file `$file` should contains array of hosts.");
         }
 
         foreach ($data as $hostname => $config) {

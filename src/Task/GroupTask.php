@@ -7,6 +7,8 @@
 
 namespace Deployer\Task;
 
+use Deployer\Exception\Exception;
+
 class GroupTask extends Task
 {
     /**
@@ -42,5 +44,10 @@ class GroupTask extends Task
     public function getGroup()
     {
         return $this->group;
+    }
+
+    public function local()
+    {
+        throw new Exception('Group tasks can\'t be local.');
     }
 }

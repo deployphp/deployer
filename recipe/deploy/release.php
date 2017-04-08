@@ -106,6 +106,12 @@ task('deploy:release', function () {
         run('rm release'); // Delete symlink.
     }
 
+    // Set previous_release
+    $list = get('releases_list');
+    if (isset($list[1])) {
+        set('previous_release', "{{deploy_path}}/releases/{$list[1]}");
+    }
+
     $releaseName = get('release_name');
 
     // Fix collisions.

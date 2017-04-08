@@ -1,7 +1,13 @@
 # Changelog
 
 ## master
-[v5.0.0-beta.1...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...master)
+[v5.0.0-beta.2...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...master)
+
+-
+
+
+## v5.0.0-beta.2
+[v5.0.0-beta.1...v5.0.0-beta.2](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...v5.0.0-beta.2)
 
 ### Added
 - Added console init template for Yii2 basic and advanced receipe [#1146](https://github.com/deployphp/deployer/pull/1146)

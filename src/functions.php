@@ -361,7 +361,7 @@ function on($hosts, callable $callback)
     $input = Context::has() ? input() : null;
     $output = Context::has() ? output() : null;
 
-    if (!is_array($hosts)) {
+    if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
         $hosts = [$hosts];
     }
 
@@ -396,12 +396,15 @@ function roles(...$roles)
  */
 function invoke($task)
 {
+    $informer = Deployer::get()->informer;
     $task = Deployer::get()->tasks->get($task);
     $input = Context::get()->getInput();
     $output = Context::get()->getOutput();
     $host = Context::get()->getHost();
 
+    $informer->startTask($task->getName());
     $task->run(new Context($host, $input, $output));
+    $informer->endTask();
 }
 
 /**
@@ -449,19 +452,21 @@ function download($source, $destination, array $config = [])
 /**
  * Writes a message to the output and adds a newline at the end.
  * @param string|array $message
+ * @param int $options
  */
-function writeln($message)
+function writeln($message, $options = 0)
 {
-    output()->writeln(parse($message));
+    output()->writeln(parse($message), $options);
 }
 
 /**
  * Writes a message to the output.
  * @param string $message
+ * @param int $options
  */
-function write($message)
+function write($message, $options = 0)
 {
-    output()->write(parse($message));
+    output()->write(parse($message), $options);
 }
 
 /**

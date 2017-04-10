@@ -41,6 +41,10 @@ class Host
     {
         $options = '';
 
+        if ($this->port) {
+            $options .= " -p {$this->port}";
+        }
+
         if ($this->configFile) {
             $options .= " -F {$this->configFile}";
         }

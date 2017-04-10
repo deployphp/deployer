@@ -33,7 +33,19 @@ class HostTest extends TestCase
         self::assertEquals(true, $host->isForwardAgent());
         self::assertEquals(true, $host->isMultiplexing());
         self::assertEquals(['BatchMode=yes', 'Compression=yes'], $host->getOptions());
-        self::assertContains('-F ~/.ssh/config -i ~/.ssh/id_rsa -A -o BatchMode=yes -o Compression=yes', $host->sshOptions());
+        self::assertContains(' -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -A -o BatchMode=yes -o Compression=yes', $host->sshOptions());
+        self::assertEquals('user@host', "$host");
+    }
+
+    public function testHostWithCustomPort()
+    {
+        $host = new Host('host');
+        $host
+            ->hostname('host')
+            ->user('user')
+            ->port(2222);
+
+        self::assertEquals(' -p 2222 -A', $host->sshOptions());
         self::assertEquals('user@host', "$host");
     }
 

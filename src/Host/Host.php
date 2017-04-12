@@ -31,30 +31,26 @@ class Host
     {
         $this->hostname = $hostname;
         $this->config = new Configuration();
-        $this->options = $this->initOptions();
+        $this->options = new Options;
     }
 
-    private function initOptions() : Options
+    private function initOptions()
     {
-        $options = new Options;
-
         if ($this->port) {
-            $options = $options->withOption('-p', $this->port);
+            $this->options = $this->options->withOption('-p', $this->port);
         }
 
         if ($this->configFile) {
-            $options = $options->withOption('-F', $this->configFile);
+            $this->options = $this->options->withOption('-F', $this->configFile);
         }
 
         if ($this->identityFile) {
-            $options = $options->withOption('-i', $this->identityFile);
+            $this->options = $this->options->withOption('-i', $this->identityFile);
         }
 
         if ($this->forwardAgent) {
-            $options = $options->withFlag('-A');
+            $this->options = $this->options->withFlag('-A');
         }
-
-        return $options;
     }
 
     /**
@@ -197,6 +193,7 @@ class Host
 
     public function getOptions() : Options
     {
+        $this->initOptions();
         return $this->options;
     }
 

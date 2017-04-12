@@ -9,6 +9,7 @@ namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
 use Deployer\Configuration\ConfigurationAccessor;
+use Deployer\Ssh\Options;
 
 class Host
 {
@@ -21,7 +22,7 @@ class Host
     private $identityFile;
     private $forwardAgent = true;
     private $multiplexing = null;
-    private $options = [];
+    private $options;
 
     /**
      * @param string $hostname
@@ -30,35 +31,27 @@ class Host
     {
         $this->hostname = $hostname;
         $this->config = new Configuration();
+        $this->options = $this->initOptions();
     }
 
-    /**
-     * Generate options string for ssh
-     *
-     * @return string
-     */
-    public function sshOptions()
+    private function initOptions() : Options
     {
-        $options = '';
+        $options = new Options;
 
         if ($this->port) {
-            $options .= " -p {$this->port}";
+            $options = $options->withOption('-p', $this->port);
         }
 
         if ($this->configFile) {
-            $options .= " -F {$this->configFile}";
+            $options = $options->withOption('-F', $this->configFile);
         }
 
         if ($this->identityFile) {
-            $options .= " -i {$this->identityFile}";
+            $options = $options->withOption('-i', $this->identityFile);
         }
 
         if ($this->forwardAgent) {
-            $options .= " -A";
-        }
-
-        foreach ($this->options as $option) {
-            $options .= " -o $option";
+            $options = $options->withFlag('-A');
         }
 
         return $options;
@@ -202,31 +195,32 @@ class Host
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getOptions() : Options
     {
         return $this->options;
     }
 
-    /**
-     * @param array $options
-     * @return $this
-     */
-    public function options(array $options)
+    public function options(array $options) : Host
     {
-        $this->options = $options;
+        $this->options = $this->options->withOptions($options);
         return $this;
     }
 
-    /**
-     * @param string $option
-     * @return $this
-     */
-    public function addOption(string $option)
+    public function flags(array $flags) : Host
     {
-        $this->options[] = $option;
+        $this->options = $this->options->withFlags($flags);
+        return $this;
+    }
+
+    public function addOption(string $option, $value) : Host
+    {
+        $this->options = $this->options->withOption($option, $value);
+        return $this;
+    }
+
+    public function addFlag(string $flag) : Host
+    {
+        $this->options = $this->options->withFlag($flag);
         return $this;
     }
 

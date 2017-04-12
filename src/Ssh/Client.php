@@ -56,17 +56,17 @@ class Client
 
         $this->pop->command($hostname, $command);
 
-        $options = $host->sshOptions();
+        $options = $host->getOptions();
         $become = $host->has('become') ? 'sudo -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.
         if ($config['tty']) {
             $this->output->write(''); // Notify OutputWatcher
-            $options .= ' -tt';
+            $options = $options->withFlag('-tt');
             $command = escapeshellarg($command);
 
-            $ssh = "ssh $options $host $command";
+            $ssh = "ssh {$options->getOptionsString()} $host $command";
             $process = new Process($ssh);
             $process
                 ->setTimeout($config['timeout'])
@@ -80,7 +80,7 @@ class Client
             $options = $this->initMultiplexing($host);
         }
 
-        $ssh = "ssh $options $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        $ssh = "ssh {$options->getOptionsString()} $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
 
         $process = new Process($ssh);
         $process
@@ -126,14 +126,18 @@ class Client
      */
     private function initMultiplexing(Host $host)
     {
-        $options = $host->sshOptions();
+        $options = $host->getOptions();
         $controlPath = $this->generateControlPath($host);
 
-        $options .= " -o ControlMaster=auto";
-        $options .= " -o ControlPersist=60";
-        $options .= " -o ControlPath=$controlPath";
+        $multiplexDefaults = (new Options)->withOptions([
+            '-o ControlMaster'  => 'auto',
+            '-o ControlPersist' => '60',
+            '-o ControlPath'    => $controlPath,
+        ]);
 
-        $process = new Process("ssh $options -O check -S $controlPath $host 2>&1");
+        $options = $options->withDefaults($multiplexDefaults);
+
+        $process = new Process("ssh {$options->getOptionsString()} -O check -S $controlPath $host 2>&1");
         $process->run();
 
         if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {

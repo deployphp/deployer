@@ -51,7 +51,8 @@ class FileLoader
                     'identityFile',
                     'forwardAgent',
                     'multiplexing',
-                    'options',
+                    'sshOptions',
+                    'sshFlags',
                 ];
 
                 foreach ($methods as $method) {

@@ -38,15 +38,15 @@ class Host
     private function initOptions()
     {
         if ($this->port) {
-            $this->sshArguments = $this->sshArguments->withOption('-p', $this->port);
+            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port);
         }
 
         if ($this->configFile) {
-            $this->sshArguments = $this->sshArguments->withOption('-F', $this->configFile);
+            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile);
         }
 
         if ($this->identityFile) {
-            $this->sshArguments = $this->sshArguments->withOption('-i', $this->identityFile);
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile);
         }
 
         if ($this->forwardAgent) {

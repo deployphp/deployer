@@ -23,11 +23,11 @@ class Arguments
 
         $valueFlags = array_filter($this->flags);
         $valueFlags = array_map(function ($key, $value) {
-            return sprintf('%s="%s"', $key, $value);
+            return "$key $value";
         }, array_keys($valueFlags), $valueFlags);
 
         $options    = array_map(function ($key, $value) {
-            return sprintf('-o %s="%s"', $key, $value);
+            return "-o $key=$value";
         }, array_keys($this->options), $this->options);
 
         $args = sprintf('%s %s %s', implode(' ', $boolFlags), implode(' ', $valueFlags), implode(' ', $options));

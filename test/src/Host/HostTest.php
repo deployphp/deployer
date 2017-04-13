@@ -34,7 +34,7 @@ class HostTest extends TestCase
         self::assertEquals(true, $host->isMultiplexing());
         self::assertEquals('user@host', "$host");
         self::assertContains(
-            '-A -p="22" -F="~/.ssh/config" -i="~/.ssh/id_rsa" -o BatchMode="yes" -o Compression="yes"',
+            '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -o BatchMode=yes -o Compression=yes',
             $host->getSshArguments()->getCliArguments()
         );
     }
@@ -47,7 +47,7 @@ class HostTest extends TestCase
             ->user('user')
             ->port(2222);
 
-        self::assertEquals('-A -p="2222"', $host->getSshArguments()->getCliArguments());
+        self::assertEquals('-A -p 2222', $host->getSshArguments()->getCliArguments());
         self::assertEquals('user@host', "$host");
     }
 

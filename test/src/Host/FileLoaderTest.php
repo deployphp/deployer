@@ -47,7 +47,7 @@ class FileLoaderTest extends TestCase
         self::assertFalse($bar->isMultiplexing());
         self::assertEquals('param', $bar->get('param'));
         self::assertEquals(
-            '-f -A -someFlag="value" -p="22" -F="configFile" -i="identityFile" -o Option="Value"',
+            '-f -A -someFlag value -p 22 -F configFile -i identityFile -o Option=Value',
             $bar->getSshArguments()->getCliArguments()
         );
     }

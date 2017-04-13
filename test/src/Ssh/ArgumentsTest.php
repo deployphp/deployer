@@ -31,7 +31,7 @@ class ArgumentsTest extends TestCase
         $defaults = (new Arguments)->withFlags(['-F'])->withOptions(['Option' => 'Default']);
         $arguments = $arguments->withDefaults($defaults);
 
-        static::assertSame('-F -A -o Option="Value"', $arguments->getCliArguments());
+        static::assertSame('-F -A -o Option=Value', $arguments->getCliArguments());
     }
 
     /**
@@ -55,12 +55,12 @@ class ArgumentsTest extends TestCase
             [
                 ['-A', '-F'],
                 ['Option' => 'Value'],
-                '-A -F -o Option="Value"'
+                '-A -F -o Option=Value'
             ],
             [
                 ['-A', '-b' => 'somevalue'],
                 ['Option' => 'Value'],
-                '-A -b="somevalue" -o Option="Value"'
+                '-A -b somevalue -o Option=Value'
             ]
         ];
     }

@@ -56,17 +56,17 @@ class Client
 
         $this->pop->command($hostname, $command);
 
-        $options = $host->getOptions();
+        $sshArguments = $host->getSshArguments();
         $become = $host->has('become') ? 'sudo -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.
         if ($config['tty']) {
             $this->output->write(''); // Notify OutputWatcher
-            $options = $options->withFlag('-tt');
+            $sshArguments = $sshArguments->withFlag('-tt');
             $command = escapeshellarg($command);
 
-            $ssh = "ssh {$options->getOptionsString()} $host $command";
+            $ssh = "ssh $sshArguments $host $command";
             $process = new Process($ssh);
             $process
                 ->setTimeout($config['timeout'])
@@ -77,10 +77,10 @@ class Client
         }
 
         if ($host->isMultiplexing() === null ? $this->multiplexing : $host->isMultiplexing()) {
-            $options = $this->initMultiplexing($host);
+            $sshArguments = $this->initMultiplexing($host);
         }
 
-        $ssh = "ssh {$options->getOptionsString()} $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        $ssh = "ssh $sshArguments $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
 
         $process = new Process($ssh);
         $process
@@ -118,26 +118,20 @@ class Client
         return $exitCode;
     }
 
-    /**
-     * Init multiplexing by adding options for ssh command
-     *
-     * @param Host $host
-     * @return string Host options
-     */
-    private function initMultiplexing(Host $host)
+    private function initMultiplexing(Host $host) : Arguments
     {
-        $options = $host->getOptions();
+        $sshArguments = $host->getSshArguments();
         $controlPath = $this->generateControlPath($host);
 
-        $multiplexDefaults = (new Options)->withOptions([
-            '-o ControlMaster'  => 'auto',
-            '-o ControlPersist' => '60',
-            '-o ControlPath'    => $controlPath,
+        $multiplexDefaults = (new Arguments)->withOptions([
+            'ControlMaster'  => 'auto',
+            'ControlPersist' => '60',
+            'ControlPath'    => $controlPath,
         ]);
 
-        $options = $options->withDefaults($multiplexDefaults);
+        $options = $sshArguments->withDefaults($multiplexDefaults);
 
-        $process = new Process("ssh {$options->getOptionsString()} -O check -S $controlPath $host 2>&1");
+        $process = new Process("ssh $sshArguments -O check -S $controlPath $host 2>&1");
         $process->run();
 
         if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {

@@ -2,6 +2,7 @@
 
 namespace Deployer\Ssh;
 
+use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +36,7 @@ class ArgumentsTest extends TestCase
     }
 
     /**
-     * @dataProvider getARgumentStringDataProvider
+     * @dataProvider getArgumentStringDataProvider
      */
     public function testGetArgumentString($flags, $options, $expected)
     {
@@ -44,7 +45,7 @@ class ArgumentsTest extends TestCase
         static::assertSame($expected, $arguments->getCliArguments());
     }
 
-    public function getARgumentStringDataProvider()
+    public function getArgumentStringDataProvider()
     {
         return [
             [
@@ -63,5 +64,45 @@ class ArgumentsTest extends TestCase
                 '-A -b somevalue -o Option=Value'
             ]
         ];
+    }
+
+    public function testWithMultiplexing()
+    {
+        $host = new Host('test');
+        $arguments = (new Arguments)->withMultiplexing($host);
+        $controlPath = $arguments->getOption('ControlPath');
+
+        static::assertEquals(
+            "-o ControlMaster=auto -o ControlPersist=60 -o ControlPath=$controlPath",
+            $arguments->getCliArguments()
+        );
+    }
+
+    public function testCanOverrideMultiplexingOptions()
+    {
+        $host = new Host('test');
+        $arguments = (new Arguments)->withOption('ControlPersist', '600')->withMultiplexing($host);
+        $controlPath = $arguments->getOption('ControlPath');
+
+        static::assertEquals(
+            "-o ControlMaster=auto -o ControlPersist=600 -o ControlPath=$controlPath",
+            $arguments->getCliArguments()
+        );
+    }
+
+    public function testGetOption()
+    {
+        $arguments = (new Arguments)->withOption('ControlPersist', '600');
+
+        static::assertEquals('600', $arguments->getOption('ControlPersist'));
+    }
+
+    public function testGetValue()
+    {
+        $arguments = (new Arguments)->withFlags(['-A', '-p' => null, '-b' => 'value']);
+
+        static::assertTrue($arguments->getFlag('-A'));
+        static::assertTrue($arguments->getFlag('-p'));
+        static::assertEquals('value', $arguments->getFlag('-b'));
     }
 }

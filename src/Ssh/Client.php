@@ -7,7 +7,6 @@
 
 namespace Deployer\Ssh;
 
-use Deployer\Exception\Exception;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
 use Deployer\Utility\ProcessOutputPrinter;
@@ -120,16 +119,8 @@ class Client
 
     private function initMultiplexing(Host $host) : Arguments
     {
-        $sshArguments = $host->getSshArguments();
-        $controlPath = $this->generateControlPath($host);
-
-        $multiplexDefaults = (new Arguments)->withOptions([
-            'ControlMaster'  => 'auto',
-            'ControlPersist' => '60',
-            'ControlPath'    => $controlPath,
-        ]);
-
-        $options = $sshArguments->withDefaults($multiplexDefaults);
+        $sshArguments = $host->getSshArguments()->withMultiplexing($host);
+        $controlPath  = $sshArguments->getOption('ControlPath');
 
         $process = new Process("ssh $sshArguments -O check -S $controlPath $host 2>&1");
         $process->run();
@@ -138,53 +129,6 @@ class Client
             $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
         }
 
-        return $options;
-    }
-
-    /**
-     * Return SSH multiplexing control path
-     *
-     * When ControlPath is longer than 104 chars we can get:
-     *
-     *     SSH Error: unix_listener: too long for Unix domain socket
-     *
-     * So try to get as descriptive path as possible.
-     * %C is for creating hash out of connection attributes.
-     *
-     * @param Host $host
-     * @return string ControlPath
-     * @throws Exception
-     */
-    private function generateControlPath(Host $host)
-    {
-        $connectionData = "$host{$host->getPort()}";
-        $tryLongestPossible = 0;
-        $controlPath = '';
-        do {
-            switch ($tryLongestPossible) {
-                case 1:
-                    $controlPath = "~/.ssh/deployer_mux_$connectionData";
-                    break;
-                case 2:
-                    $controlPath = "~/.ssh/deployer_mux_%C";
-                    break;
-                case 3:
-                    $controlPath = "~/deployer_mux_$connectionData";
-                    break;
-                case 4:
-                    $controlPath = "~/deployer_mux_%C";
-                    break;
-                case 5:
-                    $controlPath = "~/mux_%C";
-                    break;
-                case 6:
-                    throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");
-                default:
-                    $controlPath = "~/.ssh/deployer_mux_$connectionData";
-            }
-            $tryLongestPossible++;
-        } while (strlen($controlPath) > 104); // Unix socket max length
-
-        return $controlPath;
+        return $sshArguments;
     }
 }

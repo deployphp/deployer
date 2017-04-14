@@ -58,7 +58,7 @@ class FunctionsTest extends TestCase
         $this->host
             ->expects($this->any())
             ->method('getConfig')
-            ->willReturn($this->createMock(Configuration::class));
+            ->willReturn(new Configuration());
 
         $this->deployer = new Deployer($this->console);
         $this->deployer['input'] = $this->input;

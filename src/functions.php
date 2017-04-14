@@ -311,6 +311,7 @@ function runLocally($command, $options = [])
     $hostname = 'localhost';
 
     $workingPath = workingPath();
+    $command = parse($command);
 
     if (!empty($workingPath)) {
         $command = "cd $workingPath && ($command)";

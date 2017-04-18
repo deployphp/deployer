@@ -18,12 +18,10 @@ task('cleanup', function () {
         return;
     }
 
-    while ($keep - 1 > 0) {
-        array_shift($releases);
-        --$keep;
-    }
+    $keeps   = array_slice($releases, 0, $keep);
+    $removes = array_diff($releases, $keeps);
 
-    foreach ($releases as $release) {
+    foreach ($removes as $release) {
         run("$sudo rm -rf {{deploy_path}}/releases/$release");
     }
 

@@ -1,4 +1,3 @@
-
 <?php
 /* (c) Anton Medvedev <anton@medv.io>
  *

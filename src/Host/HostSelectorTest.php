@@ -14,6 +14,7 @@ class HostSelectorTest extends TestCase
 	 public function testHostSelectorByName()
     	{
 		$HostSelector= new HostSelector();
+
 		//Declaration of variables 
 		$Host1 = new Host('Host1');
 			$Host1
@@ -27,9 +28,9 @@ class HostSelectorTest extends TestCase
 	
 		$HostSelector->__construct($Hosts, $defaultStage = null);
 
-		self::assertEquals($Host1, getHosts('stage'));
-       		self::assertEquals($Hosts, getByRoles(['db', 'app']));
+		self::assertEquals($Host1, $HostSelector->getHosts('stage'));
+       		self::assertEquals($Hosts, $HostSelector->getByRoles(['db', 'app']));
 
 	}
 }
-?>
+

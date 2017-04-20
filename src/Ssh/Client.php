@@ -80,7 +80,7 @@ class Client
             $options = $this->initMultiplexing($host);
         }
 
-        $ssh = "ssh $options $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        $ssh = "ssh $options $host $become 'bash -ls; printf \"[exit_code:%s]\" $?;'";
 
         $process = new Process($ssh);
         $process

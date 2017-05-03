@@ -5,6 +5,7 @@
 
 ### Fixed
 - Fixed command parsing in runLocally func
+- Added `Request` class for get/post json requests
 
 
 ## v5.0.0-beta.2

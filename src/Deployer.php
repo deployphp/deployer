@@ -347,6 +347,10 @@ class Deployer extends Container
             $stats['exception'] = get_class($commandEvent->getException());
         }
 
+        if ($stats['command_name'] === 'worker') {
+            return;
+        }
+
         Reporter::report($stats);
     }
 }

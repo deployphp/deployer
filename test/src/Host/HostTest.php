@@ -22,8 +22,8 @@ class HostTest extends TestCase
             ->identityFile('~/.ssh/id_rsa')
             ->forwardAgent(true)
             ->multiplexing(true)
-            ->options(['BatchMode=yes'])
-            ->addOption('Compression=yes');
+            ->sshOptions(['BatchMode' => 'yes'])
+            ->addSshOption('Compression', 'yes');
 
         self::assertEquals('host', $host->getHostname());
         self::assertEquals('user', $host->getUser());
@@ -32,9 +32,11 @@ class HostTest extends TestCase
         self::assertEquals('~/.ssh/id_rsa', $host->getIdentityFile());
         self::assertEquals(true, $host->isForwardAgent());
         self::assertEquals(true, $host->isMultiplexing());
-        self::assertEquals(['BatchMode=yes', 'Compression=yes'], $host->getOptions());
-        self::assertContains(' -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -A -o BatchMode=yes -o Compression=yes', $host->sshOptions());
         self::assertEquals('user@host', "$host");
+        self::assertContains(
+            '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -o BatchMode=yes -o Compression=yes',
+            $host->getSshArguments()->getCliArguments()
+        );
     }
 
     public function testHostWithCustomPort()
@@ -45,7 +47,7 @@ class HostTest extends TestCase
             ->user('user')
             ->port(2222);
 
-        self::assertEquals(' -p 2222 -A', $host->sshOptions());
+        self::assertEquals('-A -p 2222', $host->getSshArguments()->getCliArguments());
         self::assertEquals('user@host', "$host");
     }
 

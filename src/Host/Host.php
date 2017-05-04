@@ -9,6 +9,8 @@ namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
 use Deployer\Configuration\ConfigurationAccessor;
+use Deployer\Ssh\Arguments;
+use Deployer\Ssh\Options;
 
 class Host
 {
@@ -21,7 +23,7 @@ class Host
     private $identityFile;
     private $forwardAgent = true;
     private $multiplexing = null;
-    private $options = [];
+    private $sshArguments;
 
     /**
      * @param string $hostname
@@ -30,38 +32,26 @@ class Host
     {
         $this->hostname = $hostname;
         $this->config = new Configuration();
+        $this->sshArguments = new Arguments;
     }
 
-    /**
-     * Generate options string for ssh
-     *
-     * @return string
-     */
-    public function sshOptions()
+    private function initOptions()
     {
-        $options = '';
-
         if ($this->port) {
-            $options .= " -p {$this->port}";
+            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port);
         }
 
         if ($this->configFile) {
-            $options .= " -F {$this->configFile}";
+            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile);
         }
 
         if ($this->identityFile) {
-            $options .= " -i {$this->identityFile}";
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile);
         }
 
         if ($this->forwardAgent) {
-            $options .= " -A";
+            $this->sshArguments = $this->sshArguments->withFlag('-A');
         }
-
-        foreach ($this->options as $option) {
-            $options .= " -o $option";
-        }
-
-        return $options;
     }
 
     /**
@@ -202,31 +192,33 @@ class Host
         return $this;
     }
 
-    /**
-     * @return array
-     */
-    public function getOptions()
+    public function getSshArguments() : Arguments
     {
-        return $this->options;
+        $this->initOptions();
+        return $this->sshArguments;
     }
 
-    /**
-     * @param array $options
-     * @return $this
-     */
-    public function options(array $options)
+    public function sshOptions(array $options) : Host
     {
-        $this->options = $options;
+        $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
-    /**
-     * @param string $option
-     * @return $this
-     */
-    public function addOption(string $option)
+    public function sshFlags(array $flags) : Host
     {
-        $this->options[] = $option;
+        $this->sshArguments = $this->sshArguments->withFlags($flags);
+        return $this;
+    }
+
+    public function addSshOption(string $option, $value) : Host
+    {
+        $this->sshArguments = $this->sshArguments->withOption($option, $value);
+        return $this;
+    }
+
+    public function addSshFlag(string $flag, string $value = null) : Host
+    {
+        $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
         return $this;
     }
 

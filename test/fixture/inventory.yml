@@ -18,8 +18,11 @@ bar:
   identityFile: identityFile
   forwardAgent: true
   multiplexing: false
-  options:
-    - options
+  sshOptions:
+    Option: Value
+  sshFlags:
+    -f:
+    -someFlag: value
   param: param
 
 local:

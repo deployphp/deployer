@@ -7,6 +7,9 @@
 - Added `Request` class for get/post json requests
 - Added host's `addSshFlag` and `addSshOption` methods
 
+### Changed
+- Allow to configure multiplexing [#1165]
+
 ### Fixed
 - Fixed command parsing in runLocally func
 - Fixed releases list and cleanup task [#1175]
@@ -166,5 +169,5 @@
 ## v4.0.0
 🙄
 
-
+[#1165]: https://github.com/deployphp/deployer/issues/1165
 [#1175]: https://github.com/deployphp/deployer/pull/1175

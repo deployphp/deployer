@@ -6,7 +6,7 @@
 ### Fixed
 - Fixed command parsing in runLocally func
 - Added `Request` class for get/post json requests
-
+- Added host's `addSshFlag` and `addSshOption` methods
 
 ## v5.0.0-beta.2
 [v5.0.0-beta.1...v5.0.0-beta.2](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...v5.0.0-beta.2)

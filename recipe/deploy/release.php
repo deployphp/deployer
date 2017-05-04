@@ -98,23 +98,17 @@ desc('Prepare release');
 task('deploy:release', function () {
     cd('{{deploy_path}}');
 
-    // Clean up if there is unfinished release.
+    // Clean up if there is unfinished release
     $previousReleaseExist = run("if [ -h release ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('rm -rf "$(readlink release)"'); // Delete release.
-        run('rm release'); // Delete symlink.
-    }
-
-    // Set previous_release
-    $list = get('releases_list');
-    if (isset($list[1])) {
-        set('previous_release', "{{deploy_path}}/releases/{$list[1]}");
+        run('rm -rf "$(readlink release)"'); // Delete release
+        run('rm release'); // Delete symlink
     }
 
     $releaseName = get('release_name');
 
-    // Fix collisions.
+    // Fix collisions
     $i = 0;
     while (run("if [ -d {{deploy_path}}/releases/$releaseName ]; then echo 'true'; fi")->toBool()) {
         $releaseName .= '.' . ++$i;
@@ -126,10 +120,21 @@ task('deploy:release', function () {
     // Metainfo.
     $date = run('date +"%Y%m%d%H%M%S"');
 
-    // Save metainfo about release.
+    // Save metainfo about release
     run("echo '$date,{{release_name}}' >> .dep/releases");
 
-    // Make new release.
+    // Make new release
     run("mkdir $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
+
+    $releasesList = get('releases_list');
+
+    // Add to releases list
+    array_unshift($releasesList, $releaseName);
+    set('releases_list', $releasesList);
+
+    // Set previous_release
+    if (isset($releasesList[1])) {
+        set('previous_release', "{{deploy_path}}/releases/{$releasesList[1]}");
+    }
 });

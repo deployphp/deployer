@@ -18,7 +18,7 @@ task('cleanup', function () {
         return;
     }
 
-    while ($keep - 1 > 0) {
+    while ($keep > 0) {
         array_shift($releases);
         --$keep;
     }

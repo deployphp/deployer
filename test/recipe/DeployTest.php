@@ -46,7 +46,10 @@ class DeployTest extends DepCase
 
         $this->start('deploy');
         exec('touch current/fail.txt');
+        self::assertEquals(5, exec("ls -1 releases | wc -l"));
 
+        // Make sure what after cleanup task same amount of releases a kept.
+        $this->start('cleanup');
         self::assertEquals(5, exec("ls -1 releases | wc -l"));
     }
 
@@ -80,7 +83,7 @@ class DeployTest extends DepCase
         self::assertFileNotExists(self::$currentPath . '/.dep/deploy.lock');
 
         $this->start('cleanup');
-        self::assertEquals(4, exec("ls -1 releases | wc -l"));
+        self::assertEquals(5, exec("ls -1 releases | wc -l"));
         self::assertFileNotExists(self::$currentPath . '/release');
     }
 }

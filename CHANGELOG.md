@@ -3,10 +3,13 @@
 ## master
 [v5.0.0-beta.2...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...master)
 
-### Fixed
-- Fixed command parsing in runLocally func
+### Added
 - Added `Request` class for get/post json requests
 - Added host's `addSshFlag` and `addSshOption` methods
+
+### Fixed
+- Fixed command parsing in runLocally func
+- Fixed releases list and cleanup task [#1175]
 
 ## v5.0.0-beta.2
 [v5.0.0-beta.1...v5.0.0-beta.2](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...v5.0.0-beta.2)
@@ -162,3 +165,6 @@
 
 ## v4.0.0
 🙄
+
+
+[#1175]: https://github.com/deployphp/deployer/pull/1175

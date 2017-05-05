@@ -3,6 +3,11 @@
 ## master
 [v5.0.0-beta.2...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...master)
 
+-
+
+## v5.0.0-beta.3
+[v5.0.0-beta.2...v5.0.0-beta.3](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...v5.0.0-beta.3)
+
 ### Added
 - Added `Request` class for get/post json requests
 - Added host's `addSshFlag` and `addSshOption` methods

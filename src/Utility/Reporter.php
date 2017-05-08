@@ -27,11 +27,19 @@ class Reporter
 
         if (is_null($pid) || $pid === -1) {
             // Fork fails or there is no `pcntl` extension.
-            Request::post(self::ENDPOINT, $stats);
+            try {
+                Request::post(self::ENDPOINT, $stats);
+            } catch (\Throwable $e) {
+                // pass
+            }
         } elseif ($pid === 0) {
             // Child process.
             posix_setsid();
-            Request::post(self::ENDPOINT, $stats);
+            try {
+                Request::post(self::ENDPOINT, $stats);
+            } catch (\Throwable $e) {
+                // pass
+            }
             // Close child process after doing job.
             exit(0);
         }

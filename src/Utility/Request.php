@@ -6,6 +6,7 @@
  */
 
 namespace Deployer\Utility;
+use Deployer\Exception\Exception;
 
 /**
  * @codeCoverageIgnore
@@ -34,6 +35,10 @@ class Request
 
     private static function curl($method, $url, $query = [], $data = [])
     {
+        if (!extension_loaded('curl')) {
+            throw new Exception("Please, install curl extension.\nhttps://goo.gl/yTAeZh");
+        }
+
         $ch = curl_init($url . '?' . http_build_query($query));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method === 'POST' ? 'POST' : 'GET');
         if (!empty($data)) {

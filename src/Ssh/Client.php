@@ -117,16 +117,22 @@ class Client
         return $exitCode;
     }
 
-    private function initMultiplexing(Host $host) : Arguments
+    private function initMultiplexing(Host $host)
     {
         $sshArguments = $host->getSshArguments()->withMultiplexing($host);
-        $controlPath  = $sshArguments->getOption('ControlPath');
 
-        $process = new Process("ssh $sshArguments -O check -S $controlPath $host 2>&1");
+        $process = new Process("ssh -O check $sshArguments $host 2>&1");
         $process->run();
 
         if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {
             $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+
+            // Open master connection explicit,
+            // ControlMaster=auto could not working
+            (new Process("ssh -M $sshArguments $host"))->start();
+
+            // Delay to wait connection established
+            sleep(1);
         }
 
         return $sshArguments;

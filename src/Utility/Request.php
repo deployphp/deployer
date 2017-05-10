@@ -6,6 +6,7 @@
  */
 
 namespace Deployer\Utility;
+
 use Deployer\Exception\Exception;
 
 /**

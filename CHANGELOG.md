@@ -5,6 +5,7 @@
 
 ### Fixed
 - Fixed ssh multiplexing master connection initializing
+- Fixed `dep ssh` command [#1204]
 
 ## v5.0.0-beta.3
 [v5.0.0-beta.2...v5.0.0-beta.3](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...v5.0.0-beta.3)
@@ -175,6 +176,7 @@
 ## v4.0.0
 🙄
 
+[#1204]: https://github.com/deployphp/deployer/issues/1204
 [#1000]: https://github.com/deployphp/deployer/pull/1000
 [#1003]: https://github.com/deployphp/deployer/pull/1003
 [#1004]: https://github.com/deployphp/deployer/issues/1004 

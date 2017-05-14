@@ -32,7 +32,7 @@ class Host
     {
         $this->hostname = $hostname;
         $this->config = new Configuration();
-        $this->sshArguments = new Arguments;
+        $this->sshArguments = new Arguments();
     }
 
     private function initOptions()
@@ -192,7 +192,7 @@ class Host
         return $this;
     }
 
-    public function getSshArguments() : Arguments
+    public function getSshArguments()
     {
         $this->initOptions();
         return $this->sshArguments;

@@ -1,12 +1,15 @@
 <?php
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Deployer\Ssh;
 
+use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 
-/**
- * @author Michael Woodward <mikeymike.mw@gmail.com>
- */
 class Arguments
 {
     /**
@@ -19,7 +22,7 @@ class Arguments
      */
     private $options = [];
 
-    public function getCliArguments() : string
+    public function getCliArguments()
     {
         $boolFlags  = array_keys(array_filter($this->flags, 'is_null'));
 
@@ -37,15 +40,11 @@ class Arguments
         return trim(preg_replace('!\s+!', ' ', $args));
     }
 
-    public function getOption(string $option) : string
+    public function getOption(string $option)
     {
         return $this->options[$option] ?? '';
     }
 
-    /**
-     * @param string $flag
-     * @return bool|mixed
-     */
     public function getFlag(string $flag)
     {
         if (!array_key_exists($flag, $this->flags)) {
@@ -55,7 +54,7 @@ class Arguments
         return $this->flags[$flag] ?? true;
     }
 
-    public function withFlags(array $flags) : Arguments
+    public function withFlags(array $flags)
     {
         $clone = clone $this;
         $clone->flags = $this->buildFlagsFromArray($flags);
@@ -63,7 +62,7 @@ class Arguments
         return $clone;
     }
 
-    public function withOptions(array $options) : Arguments
+    public function withOptions(array $options)
     {
         $clone = clone $this;
         $clone->options = $options;
@@ -71,7 +70,7 @@ class Arguments
         return $clone;
     }
 
-    public function withFlag(string $flag, string $value = null) : Arguments
+    public function withFlag(string $flag, string $value = null)
     {
         $clone = clone $this;
         $clone->flags = array_merge($this->flags, [$flag => $value]);
@@ -79,7 +78,7 @@ class Arguments
         return $clone;
     }
 
-    public function withOption(string $option, string $value) : Arguments
+    public function withOption(string $option, string $value)
     {
         $clone = clone $this;
         $clone->options = array_merge($this->options, [$option => $value]);
@@ -87,7 +86,7 @@ class Arguments
         return $clone;
     }
 
-    public function withDefaults(Arguments $defaultOptions) : Arguments
+    public function withDefaults(Arguments $defaultOptions)
     {
         $clone = clone $this;
         $clone->options = array_merge($defaultOptions->options, $this->options);
@@ -96,7 +95,7 @@ class Arguments
         return $clone;
     }
 
-    public function withMultiplexing(Host $host) : Arguments
+    public function withMultiplexing(Host $host)
     {
         $controlPath = $this->generateControlPath($host);
 
@@ -156,7 +155,7 @@ class Arguments
         return $controlPath;
     }
 
-    private function buildFlagsFromArray($flags) : array
+    private function buildFlagsFromArray($flags)
     {
         $boolFlags = array_filter(array_map(function ($key, $value) {
             if (is_int($key)) {
@@ -166,6 +165,8 @@ class Arguments
             if (null === $value) {
                 return $key;
             }
+
+            return false;
         }, array_keys($flags), $flags));
 
         $valueFlags = array_filter($flags, function ($key, $value) {
@@ -175,7 +176,7 @@ class Arguments
         return array_merge(array_fill_keys($boolFlags, null), $valueFlags);
     }
 
-    public function __toString() : string
+    public function __toString()
     {
         return $this->getCliArguments();
     }

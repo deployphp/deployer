@@ -13,8 +13,9 @@ use Symfony\Component\Console\Helper\Table;
 desc('Show current paths');
 task('config:current', function () {
     $rows = [];
+    $hosts = Deployer::get()->hostSelector->getHosts(input()->getArgument('stage'));
 
-    on(input()->getArgument('stage'), function (Host $host) use (&$rows) {
+    on($hosts, function (Host $host) use (&$rows) {
         $rows[] = [
             $host->getHostname(),
             basename($host->getConfig()->get('current_path')),

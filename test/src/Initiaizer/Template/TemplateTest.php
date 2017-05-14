@@ -26,23 +26,16 @@ class TemplateTest extends TestCase
         $resource = <<<RESOURCE
 <?php
 require 'recipe/common.php';
-set('repository', '%repository%');
-
 RESOURCE;
 
         $template = $this->createMockForFileResourceTemplate();
         $template->expects($this->once())->method('getTemplateContent')
             ->will($this->returnValue($resource));
 
-        $template->expects($this->once())->method('getParametersForReplace')
-            ->will($this->returnValue([
-                'repository' => 'git://domain.com:foo/bar.git'
-            ]));
-
         $tmpDir = sys_get_temp_dir() . '/' . uniqid();
         mkdir($tmpDir);
 
-        $template->initialize($tmpDir . '/foo.php');
+        $template->initialize($tmpDir . '/foo.php', []);
 
         $this->assertTrue(
             file_exists($tmpDir . '/foo.php') && is_file($tmpDir . '/foo.php'),
@@ -53,8 +46,6 @@ RESOURCE;
         $expectedResource = <<<RESOURCE
 <?php
 require 'recipe/common.php';
-set('repository', 'git://domain.com:foo/bar.git');
-
 RESOURCE;
         $this->assertEquals($expectedResource, $generatedResource, 'Invalid resource');
     }
@@ -73,7 +64,7 @@ RESOURCE;
             true,
             true,
             true,
-            ['getParametersForReplace']
+            []
         );
     }
 }

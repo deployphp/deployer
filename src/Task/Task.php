@@ -38,7 +38,7 @@ class Task
      *
      * @var array
      */
-    private $on = ['hosts' => [], 'roles' => [], 'stages' => []];
+    private $on = ['hosts' => [], 'roles' => [], 'stages' => [], 'conditions' => []];
 
     /**
      * List of task names to run before.
@@ -78,12 +78,14 @@ class Task
     {
         Context::push($context);
 
-        // Call task
-        call_user_func($this->callback);
+        if ($this->canRun($context)) {
+            // Call task
+            call_user_func($this->callback);
 
-        // Clear working_path
-        if ($context->getConfig() !== null) {
-            $context->getConfig()->set('working_path', false);
+            // Clear working_path
+            if ($context->getConfig() !== null) {
+                $context->getConfig()->set('working_path', false);
+            }
         }
 
         Context::pop();
@@ -161,6 +163,15 @@ class Task
     public function onStage(...$stages)
     {
         $this->on['stages'] = $stages;
+        return $this;
+    }
+
+    /**
+     * @param array ...$conditions
+     * @return $this
+     */
+    public function onCondition(...$conditions) {
+        $this->on['conditions'] = $conditions;
         return $this;
     }
 
@@ -248,5 +259,32 @@ class Task
     public function getAfter()
     {
         return $this->after;
+    }
+
+    /**
+     * Check can run based on conditions under the current context
+     *
+     * @param Context $context
+     * @return bool
+     */
+    protected function canRun(Context $context)
+    {
+        foreach ($this->on['conditions'] as $condition) {
+            $onCondition = false;
+            if (is_string($condition)) {
+                $config = $context->getConfig();
+                if ($config !== null) {
+                    $onCondition = $config->get($condition, false);
+                }
+            } elseif (is_callable($condition)) {
+                $onCondition = call_user_func($condition);
+            } else {
+                $onCondition = $condition;
+            }
+            if (!$onCondition) {
+                return false;
+            }
+        }
+        return true;
     }
 }

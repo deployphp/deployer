@@ -3,6 +3,9 @@
 ## master
 [v5.0.0-beta.2...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...master)
 
+### Changed 
+- Working path default is `release_path` instead of home for simple tasks [#1205]
+
 ### Fixed
 - Fixed ssh multiplexing master connection initializing
 - Fixed `dep ssh` command [#1204]
@@ -176,6 +179,7 @@
 ## v4.0.0
 🙄
 
+[#1205]: https://github.com/deployphp/deployer/issues/1205
 [#1204]: https://github.com/deployphp/deployer/issues/1204
 [#1000]: https://github.com/deployphp/deployer/pull/1000
 [#1003]: https://github.com/deployphp/deployer/pull/1003

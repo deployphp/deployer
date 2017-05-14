@@ -145,6 +145,7 @@ function task($name, $body = null)
         $task = new GroupTask($name, $body);
     } elseif (is_string($body)) {
         $task = new T($name, function () use ($body) {
+            cd('{{release_path}}');
             run($body);
         });
     } else {
@@ -252,8 +253,8 @@ function cd($path)
  */
 function within($path, $callback)
 {
-    $lastWorkingPath = workingPath();
-    set('working_path', $path);
+    $lastWorkingPath = get('working_path', '');
+    set('working_path', parse($path));
     $callback();
     set('working_path', $lastWorkingPath);
 }
@@ -261,6 +262,7 @@ function within($path, $callback)
 /**
  * Return the current working path.
  *
+ * @deprecated Will be removed in 6.x
  * @return string
  */
 function workingPath()
@@ -283,7 +285,7 @@ function run($command, $options = [])
     $hostname = $host->getHostname();
 
     $command = parse($command);
-    $workingPath = workingPath();
+    $workingPath = get('working_path', '');
 
     if (!empty($workingPath)) {
         $command = "cd $workingPath && ($command)";
@@ -310,7 +312,7 @@ function runLocally($command, $options = [])
     $process = Deployer::get()->processRunner;
     $hostname = 'localhost';
 
-    $workingPath = workingPath();
+    $workingPath = get('working_path', '');
     $command = parse($command);
 
     if (!empty($workingPath)) {

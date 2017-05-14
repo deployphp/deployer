@@ -10,6 +10,9 @@ namespace Deployer\Ssh;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 
+/**
+ * @author Michael Woodward <mikeymike.mw@gmail.com>
+ */
 class Arguments
 {
     /**

@@ -1,7 +1,7 @@
 # Changelog
 
 ## master
-[v5.0.0-beta.2...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...master)
+[v5.0.0-beta.3...master](https://github.com/deployphp/deployer/compare/v5.0.0-beta.3...master)
 
 ### Changed 
 - Working path default is `release_path` instead of home for simple tasks [#1205]

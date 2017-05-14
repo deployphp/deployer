@@ -137,7 +137,8 @@ class InitCommand extends Command
                 'This function will not affect the performance of Deployer as',
                 'the data is insignificant and transmitted in separate process.',
             ]);
-            $params['allow_anonymous_stats'] = $io->confirm('Do you confirm?');
+
+            $params['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] = $io->confirm('Do you confirm?');
         }
 
         $filePath = $this->initializer->initialize($template, $directory, $file, $params);

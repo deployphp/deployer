@@ -347,6 +347,10 @@ class Deployer extends Container
             $stats['exception'] = get_class($commandEvent->getException());
         }
 
+        if ($stats['command_name'] === 'init') {
+            $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
+        }
+
         if ($stats['command_name'] === 'worker') {
             return;
         }

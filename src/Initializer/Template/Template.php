@@ -18,34 +18,22 @@ abstract class Template implements TemplateInterface
     /**
      * {@inheritDoc}
      */
-    public function initialize($filePath)
+    public function initialize($filePath, $params)
     {
-        $content = $this->getTemplateContent();
+        $params = array_merge([
+            'repository' => 'git@domain.com:username/repository.git',
+            'allow_anonymous_stats' => true,
+        ], $params);
 
-        $parameters = $this->getParametersForReplace();
-        $replaceParameters = [];
-        array_walk($parameters, function ($value, $key) use (&$replaceParameters) {
-            $replaceParameters['%' . $key . '%'] = $value;
-        });
-        $content = strtr($content, $replaceParameters);
-
+        $content = $this->getTemplateContent($params);
         file_put_contents($filePath, $content);
     }
 
     /**
      * Get content of template.
      *
+     * @param array $params
      * @return string
      */
-    abstract protected function getTemplateContent();
-
-    /**
-     * Get parameters for replace in resource
-     *
-     * @return array
-     */
-    protected function getParametersForReplace()
-    {
-        return [];
-    }
+    abstract protected function getTemplateContent($params);
 }

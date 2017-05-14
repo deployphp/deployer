@@ -19,8 +19,11 @@ class CommonTemplate extends Template
     /**
      * {@inheritDoc}
      */
-    protected function getTemplateContent()
+    protected function getTemplateContent($params)
     {
+        $stats = $params['allow_anonymous_stats']
+            ? ''
+            : "set('allow_anonymous_stats', false);";
         return <<<PHP
 <?php
 namespace Deployer;
@@ -29,11 +32,12 @@ require 'recipe/common.php';
 
 // Configuration
 
-set('repository', 'git@domain.com:username/repository.git');
+set('repository', '{$params['repository']}');
 set('git_tty', true); // [Optional] Allocate tty for git on first deployment
 set('shared_files', []);
 set('shared_dirs', []);
 set('writable_dirs', []);
+{$stats}
 
 // Hosts
 

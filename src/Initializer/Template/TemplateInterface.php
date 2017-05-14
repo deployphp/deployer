@@ -18,6 +18,7 @@ interface TemplateInterface
      * Initialize deployer
      *
      * @param string $filePath The file path for "deploy.php"
+     * @param array $params
      */
-    public function initialize($filePath);
+    public function initialize($filePath, $params);
 }

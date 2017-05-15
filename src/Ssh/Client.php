@@ -7,9 +7,9 @@
 
 namespace Deployer\Ssh;
 
-use Deployer\Exception\Exception;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
+use Deployer\Utility\ProcessOutputPrinter;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -21,12 +21,20 @@ class Client
     private $output;
 
     /**
-     * Client constructor.
-     * @param OutputInterface $output
+     * @var ProcessOutputPrinter
      */
-    public function __construct(OutputInterface $output)
+    private $pop;
+
+    /**
+     * @var bool
+     */
+    private $multiplexing;
+
+    public function __construct(OutputInterface $output, ProcessOutputPrinter $pop, bool $multiplexing)
     {
         $this->output = $output;
+        $this->pop = $pop;
+        $this->multiplexing = $multiplexing;
     }
 
     /**
@@ -45,36 +53,44 @@ class Client
         ];
         $config = array_merge($defaults, $config);
 
-        $options = $host->generateOptionsString();
+        $this->pop->command($hostname, $command);
 
-        if ($host->isMultiplexing()) {
-            $options = $this->initMultiplexing($host);
-        }
+        $sshArguments = $host->getSshArguments();
+        $become = $host->has('become') ? 'sudo -u ' . $host->get('become') : '';
 
+        // When tty need to be allocated, don't use multiplexing,
+        // and pass command without bash allocation on remote host.
         if ($config['tty']) {
-            $options .= ' -tt';
+            $this->output->write(''); // Notify OutputWatcher
+            $sshArguments = $sshArguments->withFlag('-tt');
+            $command = escapeshellarg($command);
+
+            $ssh = "ssh $sshArguments $host $command";
+            $process = new Process($ssh);
+            $process
+                ->setTimeout($config['timeout'])
+                ->setTty(true)
+                ->mustRun();
+
+            return $process->getOutput();
         }
 
-        $ssh = "ssh $options $host 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        if ($host->isMultiplexing() === null ? $this->multiplexing : $host->isMultiplexing()) {
+            $sshArguments = $this->initMultiplexing($host);
+        }
+
+        $ssh = "ssh $sshArguments $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
 
         $process = new Process($ssh);
         $process
             ->setInput($command)
-            ->setTimeout($config['timeout'])
-            ->setTty($config['tty']);
+            ->setTimeout($config['timeout']);
 
-        $callback = function ($type, $buffer) use ($hostname) {
-            if ($this->output->isDebug()) {
-                foreach (explode("\n", rtrim($buffer)) as $line) {
-                    $this->writeln($type, $hostname, $line);
-                }
-            }
-        };
+        $process->run($this->pop->callback($hostname));
 
-        $process->run($callback);
-        $output = $this->filterOutput($process->getOutput());
-
+        $output = $this->pop->filterOutput($process->getOutput());
         $exitCode = $this->parseExitStatus($process);
+
         if ($exitCode !== 0) {
             throw new RuntimeException(
                 $hostname,
@@ -88,111 +104,37 @@ class Client
         return $output;
     }
 
-    private function writeln($type, $hostname, $output)
-    {
-        $output = $this->filterOutput($output);
-
-        // Omit empty lines
-        if (empty($output)) {
-            return;
-        }
-
-        if ($this->output->isDecorated()) {
-            if ($type === Process::ERR) {
-                $output = "[$hostname] \033[0;31m< $output\033[0m";
-            } else {
-                $output = "[$hostname] \033[1;30m< $output\033[0m";
-            }
-        } else {
-            $output = "[$hostname] < $output";
-        }
-
-        $this->output->writeln($output, OutputInterface::OUTPUT_RAW);
-    }
-
-    private function filterOutput($output)
-    {
-        return preg_replace('/\[exit_code:(.*?)\]$/', '', $output);
-    }
-
     private function parseExitStatus(Process $process)
     {
         $output = $process->getOutput();
-        preg_match('/\[exit_code:(.*?)\]$/', $output, $match);
+        preg_match('/\[exit_code:(.*?)\]/', $output, $match);
+
+        if (!isset($match[1])) {
+            return -1;
+        }
 
         $exitCode = (int)$match[1];
         return $exitCode;
     }
 
-    /**
-     * Init multiplexing by adding options for ssh command
-     *
-     * @param Host $host
-     * @return string Host options
-     */
     private function initMultiplexing(Host $host)
     {
-        $options = $host->generateOptionsString();
-        $controlPath = $this->generateControlPath($host);
+        $sshArguments = $host->getSshArguments()->withMultiplexing($host);
 
-        $options .= " -o ControlMaster=auto";
-        $options .= " -o ControlPersist=60";
-        $options .= " -o ControlPath=$controlPath";
-        
-        $process = new Process("ssh $options -O check -S $controlPath $host 2>&1");
+        $process = new Process("ssh -O check $sshArguments $host 2>&1");
         $process->run();
 
-        if (!preg_match('/Master running/', $process->getOutput())) {
-            $this->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+        if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {
+            $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+
+            // Open master connection explicit,
+            // ControlMaster=auto could not working
+            (new Process("ssh -M $sshArguments $host"))->start();
+
+            // Delay to wait connection established
+            sleep(1);
         }
 
-        return $options;
-    }
-
-    /**
-     * Return SSH multiplexing control path
-     *
-     * When ControlPath is longer than 104 chars we can get:
-     *
-     *     SSH Error: unix_listener: too long for Unix domain socket
-     *
-     * So try to get as descriptive path as possible.
-     * %C is for creating hash out of connection attributes.
-     *
-     * @param Host $host
-     * @return string ControlPath
-     * @throws Exception
-     */
-    private function generateControlPath(Host $host)
-    {
-        $connectionData = "{$host->getUser()}_{$host->getHostname()}_{$host->getPort()}";
-        $tryLongestPossible = 0;
-        $controlPath = '';
-        do {
-            switch ($tryLongestPossible) {
-                case 1:
-                    $controlPath = "~/.ssh/deployer_mux_$connectionData";
-                    break;
-                case 2:
-                    $controlPath = "~/.ssh/deployer_mux_%C";
-                    break;
-                case 3:
-                    $controlPath = "~/deployer_mux_$connectionData";
-                    break;
-                case 4:
-                    $controlPath = "~/deployer_mux_%C";
-                    break;
-                case 5:
-                    $controlPath = "~/mux_%C";
-                    break;
-                case 6:
-                    throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");
-                default:
-                    $controlPath = "~/.ssh/deployer_mux_$connectionData";
-            }
-            $tryLongestPossible++;
-        } while (strlen($controlPath) > 104); // Unix socket max length
-
-        return $controlPath;
+        return $sshArguments;
     }
 }

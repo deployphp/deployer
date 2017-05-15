@@ -7,6 +7,8 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Console\Output\Informer;
+use Deployer\Console\Output\OutputWatcher;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -14,12 +16,12 @@ class InformerTest extends TestCase
 {
     public function testInformer()
     {
-        $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
+        $output = $this->getMockBuilder(OutputWatcher::class)
             ->disableOriginalConstructor()
             ->setMethods(['getVerbosity', 'getWasWritten', 'write', 'isDecorated'])
             ->getMock();
 
-        $output->expects($this->any())
+        $output->expects($this->atLeastOnce())
             ->method('getVerbosity')
             ->will($this->returnValue(OutputInterface::VERBOSITY_NORMAL));
 
@@ -31,7 +33,7 @@ class InformerTest extends TestCase
 
     public function testEndTask()
     {
-        $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
+        $output = $this->getMockBuilder(OutputWatcher::class)
             ->disableOriginalConstructor()
             ->setMethods(['writeln', 'getVerbosity', 'isDecorated'])
             ->getMock();
@@ -46,7 +48,7 @@ class InformerTest extends TestCase
 
     public function testTaskError()
     {
-        $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
+        $output = $this->getMockBuilder(OutputWatcher::class)
             ->disableOriginalConstructor()
             ->setMethods(['writeln', 'getVerbosity', 'isDecorated'])
             ->getMock();
@@ -61,7 +63,7 @@ class InformerTest extends TestCase
 
     public function testTaskErrorNonFatal()
     {
-        $output = $this->getMockBuilder('Deployer\Console\Output\OutputWatcher')
+        $output = $this->getMockBuilder(OutputWatcher::class)
             ->disableOriginalConstructor()
             ->setMethods(['writeln', 'getVerbosity'])
             ->getMock();

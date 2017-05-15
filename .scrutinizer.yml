@@ -8,12 +8,10 @@ filter:
     - src/*
     - recipe/*
     - bin/*
-  excluded_paths:
-    - src/Resources/*
 
 build:
   environment:
-    php: '5.6.26'
+    php: '7.0.8'
   tests:
     override:
       -

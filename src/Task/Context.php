@@ -7,31 +7,26 @@
 
 namespace Deployer\Task;
 
-use Deployer\Server\Environment;
-use Deployer\Server\ServerInterface;
+use Deployer\Configuration\Configuration;
 use Deployer\Exception\Exception;
+use Deployer\Host\Host;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Context
 {
     /**
-     * @var ServerInterface|null
+     * @var Host
      */
-    private $server;
+    private $host;
 
     /**
-     * @var Environment|null
-     */
-    private $env;
-
-    /**
-     * @var InputInterface|null
+     * @var InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface|null
+     * @var OutputInterface
      */
     private $output;
 
@@ -41,15 +36,13 @@ class Context
     private static $contexts = [];
 
     /**
-     * @param ServerInterface|null $server
-     * @param Environment|null $env
-     * @param InputInterface|null $input
-     * @param OutputInterface|null $output
+     * @param Host $host
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    public function __construct($server, $env, $input, $output)
+    public function __construct($host, InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->server = $server;
-        $this->env = $env;
+        $this->host = $host;
         $this->input = $input;
         $this->output = $output;
     }
@@ -63,11 +56,31 @@ class Context
     }
 
     /**
+     * @return bool
+     */
+    public static function has()
+    {
+        return !empty(self::$contexts);
+    }
+
+    /**
      * @return Context|false
+     * @throws Exception
      */
     public static function get()
     {
+        if (empty(self::$contexts)) {
+            throw new Exception('Context was required, but there\'s nothing there.');
+        }
         return end(self::$contexts);
+    }
+
+    /**
+     * @return Context
+     */
+    public static function pop()
+    {
+        return array_pop(self::$contexts);
     }
 
     /**
@@ -87,23 +100,15 @@ class Context
     }
 
     /**
-     * @return Context
+     * @return Configuration
      */
-    public static function pop()
+    public function getConfig()
     {
-        return array_pop(self::$contexts);
+        return $this->host->getConfig();
     }
 
     /**
-     * @return Environment|null
-     */
-    public function getEnvironment()
-    {
-        return $this->env;
-    }
-
-    /**
-     * @return InputInterface|null
+     * @return InputInterface
      */
     public function getInput()
     {
@@ -111,7 +116,7 @@ class Context
     }
 
     /**
-     * @return OutputInterface|null
+     * @return OutputInterface
      */
     public function getOutput()
     {
@@ -119,10 +124,10 @@ class Context
     }
 
     /**
-     * @return ServerInterface|null
+     * @return Host
      */
-    public function getServer()
+    public function getHost()
     {
-        return $this->server;
+        return $this->host;
     }
 }

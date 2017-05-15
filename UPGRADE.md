@@ -1,3 +1,55 @@
+# Upgrade from 4.x to 5.x
+
+1. Servers to Hosts
+   
+   * `server($name, $hostname)` to `host($hostname)`
+   * `localServer($name)` to `localhost()`
+   * `cluster($name, $nodes, $port)` to `hosts(...$hodes)`
+   * `serverList($file)` to `inventory($file)`
+  
+2. Configuration options
+
+   * Rename `{{server.name}}` to `{{hostname}}`
+   
+3. DotArray syntax
+
+   In v5 access to nested arrays in config via dot notation was removed. 
+   If you was using it, consider to move to plain config options.
+   
+   Refactor this:
+   
+   ```php
+   set('a', ['b' => 1]);
+   
+   // ...
+   
+   get('a.b');
+   ```
+   
+   To:
+   
+   ```php
+   set('a_b', 1);
+   
+   // ...
+   
+   get('a_b');
+   ```
+   
+4. Credentials 
+
+   Best practice in new v5 is to omit credentials for connection in `deploy.php` and write them in `~/.ssh/config` instead.
+ 
+   * `identityFile($publicKeyFile,, $privateKeyFile, $passPhrase)` to `identityFile($privateKeyFile)`
+   * `pemFile($pemFile)` to `identityFile($pemFile)`
+   * `forwardAgent()` to `forwardAgent(true)`
+   
+5. Tasks constraints
+ 
+   * `onlyOn` to `onHosts`
+   * `onlyOnStage` to `onStage`
+   
+
 # Upgrade from 3.x to 4.x
 
 1. Namespace for functions

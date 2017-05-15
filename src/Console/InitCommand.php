@@ -14,13 +14,17 @@ use Deployer\Initializer\Template\CommonTemplate;
 use Deployer\Initializer\Template\DrupalTemplate;
 use Deployer\Initializer\Template\LaravelTemplate;
 use Deployer\Initializer\Template\SymfonyTemplate;
+use Deployer\Initializer\Template\Yii2AdvancedAppTemplate;
+use Deployer\Initializer\Template\Yii2BasicAppTemplate;
 use Deployer\Initializer\Template\YiiTemplate;
 use Deployer\Initializer\Template\ZendTemplate;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Process\Process;
 
 /**
  * The command for initialize Deployer system in your project
@@ -73,20 +77,71 @@ class InitCommand extends Command
         $template = $input->getOption('template');
         $directory = $input->getOption('directory');
         $file = $input->getOption('filename');
+        $params = [];
 
         if ($template === null) {
+            $io = new SymfonyStyle($input, $output);
             $helper = $this->getHelper('question');
-            $question = new ChoiceQuestion(
-                'Please select your project type (defaults to common):',
-                $this->availableTemplates,
-                0
-            );
-            $question->setErrorMessage('Project type %s is invalid.');
+            $formatter = $this->getHelper('formatter');
 
-            $template = $helper->ask($input, $output, $question);
+            // Welcome message
+            $output->writeln([
+                '',
+                $formatter->formatBlock('Welcome to the Deployer config generator', 'bg=blue;fg=white', true),
+                '',
+            ]);
+
+            $io->text([
+                'This utility will walk you through creating a deploy.php file.',
+                'It only covers the most common items, and tries to guess sensible defaults.',
+                '',
+                'Press ^C at any time to quit.',
+            ]);
+
+            // Project type
+            $template = $io->choice('Please select your project type', $this->availableTemplates, 'Common');
+
+            // Repo
+            $default = false;
+            try {
+                $default = (new Process('git remote get-url origin'))
+                    ->mustRun()
+                    ->getOutput();
+                $default = trim($default);
+            } catch (RuntimeException $e) {
+                // pass
+            }
+            $params['repository'] = $io->ask('Repository', $default);
+
+            // Privacy
+            $io->text([
+                'Contribute to the Deployer Development',
+                '',
+                'In order to help development and improve Deployer features in,',
+                'Deployer has a setting for collection of usage data. This function',
+                'collects anonymous usage data and sends it to Deployer. The data is',
+                'used in Deployer development to get reliable statistics on which',
+                'features are used (or not used). The information is not traceable',
+                'to any individual or organization. Participation is voluntary,',
+                'and you can change your mind at any time.',
+                '',
+                'Anonymous usage data contains Deployer version, php version, os type,',
+                'name of the command being executed and whether it was successful or not,',
+                'exception class name, count of hosts and anonymized project hash.',
+                '',
+                'If you would like to allow us to gather this information and help',
+                'us develop a better tool, please add the code below.',
+                '',
+                "    <fg=white>set(<fg=cyan>'allow_anonymous_stats'</fg=cyan>, <fg=magenta;options=bold>true</fg=magenta;options=bold>);</fg=white>",
+                '',
+                'This function will not affect the performance of Deployer as',
+                'the data is insignificant and transmitted in separate process.',
+            ]);
+
+            $params['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] = $io->confirm('Do you confirm?');
         }
 
-        $filePath = $this->initializer->initialize($template, $directory, $file);
+        $filePath = $this->initializer->initialize($template, $directory, $file, $params);
 
         $output->writeln(sprintf(
             '<info>Successfully created:</info> <comment>%s</comment>',
@@ -107,6 +162,8 @@ class InitCommand extends Command
         $initializer->addTemplate('Laravel', new LaravelTemplate());
         $initializer->addTemplate('Symfony', new SymfonyTemplate());
         $initializer->addTemplate('Yii', new YiiTemplate());
+        $initializer->addTemplate('Yii2 Basic App', new Yii2BasicAppTemplate());
+        $initializer->addTemplate('Yii2 Advanced App', new Yii2AdvancedAppTemplate());
         $initializer->addTemplate('Zend Framework', new ZendTemplate());
         $initializer->addTemplate('CakePHP', new CakeTemplate());
         $initializer->addTemplate('CodeIgniter', new CodeIgniterTemplate());

@@ -12,35 +12,42 @@ namespace Deployer\Initializer\Template;
  *
  * @author Vitaliy Zhuk <zhuk2205@gmail.com>
  * @author Anton Medvedev <anton@medv.io>
+ * @codeCoverageIgnore
  */
 class CommonTemplate extends Template
 {
     /**
      * {@inheritDoc}
      */
-    protected function getTemplateContent()
+    protected function getTemplateContent($params)
     {
+        $stats = $params['allow_anonymous_stats']
+            ? ''
+            : "set('allow_anonymous_stats', false);";
         return <<<PHP
 <?php
 namespace Deployer;
+
 require 'recipe/common.php';
 
 // Configuration
 
-set('ssh_type', 'native');
-set('ssh_multiplexing', true);
-
-set('repository', 'git@domain.com:username/repository.git');
+set('repository', '{$params['repository']}');
+set('git_tty', true); // [Optional] Allocate tty for git on first deployment
 set('shared_files', []);
 set('shared_dirs', []);
 set('writable_dirs', []);
+{$stats}
 
-// Servers
+// Hosts
 
-server('production', 'domain.com')
-    ->user('username')
-    ->identityFile()
-    ->set('deploy_path', '/var/www/domain.com');
+host('project.com')
+    ->stage('production')
+    ->set('deploy_path', '/var/www/project.com');
+    
+host('beta.project.com')
+    ->stage('beta')
+    ->set('deploy_path', '/var/www/project.com');    
 
 
 // Tasks

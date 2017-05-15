@@ -7,29 +7,51 @@
 
 namespace Deployer\Host;
 
+use Deployer\Configuration\Configuration;
+use Deployer\Configuration\ConfigurationAccessor;
+use Deployer\Ssh\Arguments;
+use Deployer\Ssh\Options;
+
 class Host
 {
+    use ConfigurationAccessor;
+
     private $hostname;
     private $user;
     private $port;
     private $configFile;
     private $identityFile;
     private $forwardAgent = true;
-    private $multiplexing = true;
-    private $options = [];
+    private $multiplexing = null;
+    private $sshArguments;
 
     /**
-     * Host constructor.
      * @param string $hostname
      */
     public function __construct(string $hostname)
     {
         $this->hostname = $hostname;
+        $this->config = new Configuration();
+        $this->sshArguments = new Arguments();
     }
 
-    public function generateOptionsString()
+    private function initOptions()
     {
-        return '';
+        if ($this->port) {
+            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port);
+        }
+
+        if ($this->configFile) {
+            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile);
+        }
+
+        if ($this->identityFile) {
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile);
+        }
+
+        if ($this->forwardAgent) {
+            $this->sshArguments = $this->sshArguments->withFlag('-A');
+        }
     }
 
     /**
@@ -40,7 +62,7 @@ class Host
     public function __toString()
     {
         $user = empty($this->user) ? '' : "{$this->user}@";
-        $hostname = $this->hostname;
+        $hostname = preg_replace('/\/.+$/', '', $this->hostname);
         return "$user$hostname";
     }
 
@@ -54,10 +76,12 @@ class Host
 
     /**
      * @param string $hostname
+     * @return $this
      */
-    public function setHostname(string $hostname)
+    public function hostname(string $hostname)
     {
         $this->hostname = $hostname;
+        return $this;
     }
 
     /**
@@ -70,10 +94,12 @@ class Host
 
     /**
      * @param string $user
+     * @return $this
      */
-    public function setUser(string $user)
+    public function user(string $user)
     {
         $this->user = $user;
+        return $this;
     }
 
     /**
@@ -86,10 +112,12 @@ class Host
 
     /**
      * @param int $port
+     * @return $this
      */
-    public function setPort(int $port)
+    public function port(int $port)
     {
         $this->port = $port;
+        return $this;
     }
 
     /**
@@ -102,10 +130,12 @@ class Host
 
     /**
      * @param string $configFile
+     * @return $this
      */
-    public function setConfigFile(string $configFile)
+    public function configFile(string $configFile)
     {
         $this->configFile = $configFile;
+        return $this;
     }
 
     /**
@@ -118,10 +148,12 @@ class Host
 
     /**
      * @param string $identityFile
+     * @return $this
      */
-    public function setIdentityFile(string $identityFile)
+    public function identityFile(string $identityFile)
     {
         $this->identityFile = $identityFile;
+        return $this;
     }
 
     /**
@@ -134,10 +166,12 @@ class Host
 
     /**
      * @param bool $forwardAgent
+     * @return $this
      */
-    public function setForwardAgent(bool $forwardAgent)
+    public function forwardAgent(bool $forwardAgent = true)
     {
         $this->forwardAgent = $forwardAgent;
+        return $this;
     }
 
     /**
@@ -150,33 +184,82 @@ class Host
 
     /**
      * @param bool $multiplexing
+     * @return $this
      */
-    public function setMultiplexing(bool $multiplexing)
+    public function multiplexing(bool $multiplexing = true)
     {
         $this->multiplexing = $multiplexing;
+        return $this;
+    }
+
+    public function getSshArguments()
+    {
+        $this->initOptions();
+        return $this->sshArguments;
+    }
+
+    public function sshOptions(array $options) : Host
+    {
+        $this->sshArguments = $this->sshArguments->withOptions($options);
+        return $this;
+    }
+
+    public function sshFlags(array $flags) : Host
+    {
+        $this->sshArguments = $this->sshArguments->withFlags($flags);
+        return $this;
+    }
+
+    public function addSshOption(string $option, $value) : Host
+    {
+        $this->sshArguments = $this->sshArguments->withOption($option, $value);
+        return $this;
+    }
+
+    public function addSshFlag(string $flag, string $value = null) : Host
+    {
+        $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
+        return $this;
     }
 
     /**
-     * @return array
+     * Set stage
+     *
+     * @param string $stage
+     * @return $this
      */
-    public function getOptions()
+    public function stage(string $stage)
     {
-        return $this->options;
+        $this->config->set('stage', $stage);
+        return $this;
     }
 
     /**
-     * @param array $options
+     * Set roles
+     *
+     * @param array ...$roles
+     * @return $this
      */
-    public function setOptions(array $options)
+    public function roles(...$roles)
     {
-        $this->options = $options;
+        $this->config->set('roles', []);
+
+        foreach ($roles as $role) {
+            $this->config->add('roles', [$role]);
+        }
+
+        return $this;
     }
 
     /**
-     * @param string $option
+     * Set become
+     *
+     * @param string $user
+     * @return $this
      */
-    public function addOption(string $option)
+    public function become(string $user)
     {
-        $this->options[] = $option;
+        $this->config->set('become', $user);
+        return $this;
     }
 }

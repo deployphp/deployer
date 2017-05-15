@@ -54,12 +54,12 @@ class Initializer
      * @param string $template
      * @param string $directory
      * @param string $file
-     *
+     * @param array $params
      * @return string The configuration file path
      *
      * @throws TemplateNotFoundException
      */
-    public function initialize($template, $directory, $file = 'deploy.php')
+    public function initialize($template, $directory, $file = 'deploy.php', $params = [])
     {
         if (!isset($this->templates[$template])) {
             throw TemplateNotFoundException::create($template, array_keys($this->templates));
@@ -70,7 +70,7 @@ class Initializer
 
         $filePath = $directory . '/' . $file;
 
-        $this->templates[$template]->initialize($filePath);
+        $this->templates[$template]->initialize($filePath, $params);
 
         return $filePath;
     }

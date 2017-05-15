@@ -9,6 +9,9 @@ namespace Deployer\Exception;
 
 use Symfony\Component\Process\Process;
 
+/**
+ * @codeCoverageIgnore
+ */
 class RuntimeException extends Exception
 {
     private $hostname;
@@ -47,7 +50,7 @@ class RuntimeException extends Exception
             $errorOutput
         );
 
-        parent::__construct($message);
+        parent::__construct($message, $exitCode);
     }
 
     private function getExitCodeText($exitCode)

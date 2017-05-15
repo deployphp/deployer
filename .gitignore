@@ -1,6 +1,5 @@
-.php_cs.cache
 /vendor/
-/test/localhost
+/test/fixture/recipe/tmp/
+.php_cs.cache
 *.phar
-/.vagrant
-deploy.php
+phpunit.xml

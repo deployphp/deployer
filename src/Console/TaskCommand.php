@@ -8,12 +8,11 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\ExecutorInterface;
-use Deployer\Executor\ParallelExecutor;
-use Deployer\Executor\SeriesExecutor;
-use Monolog\Logger;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -47,17 +46,46 @@ class TaskCommand extends Command
      */
     protected function configure()
     {
+        $this->addArgument(
+            'stage',
+            InputArgument::OPTIONAL,
+            'Stage or hostname'
+        );
         $this->addOption(
             'parallel',
             'p',
             Option::VALUE_NONE,
-            'Run tasks in parallel.'
-        )
-        ->addOption(
+            'Run tasks in parallel'
+        );
+        $this->addOption(
+            'limit',
+            'l',
+            Option::VALUE_REQUIRED,
+            'How many host to run in parallel?'
+        );
+        $this->addOption(
             'no-hooks',
             null,
             Option::VALUE_NONE,
             'Run task without after/before hooks'
+        );
+        $this->addOption(
+            'log',
+            null,
+            Option::VALUE_REQUIRED,
+            'Log to file'
+        );
+        $this->addOption(
+            'roles',
+            null,
+            Option::VALUE_REQUIRED,
+            'Roles to deploy'
+        );
+        $this->addOption(
+            'hosts',
+            null,
+            Option::VALUE_REQUIRED,
+            'Host to deploy, comma separated, supports ranges [:]'
         );
     }
 
@@ -67,53 +95,53 @@ class TaskCommand extends Command
     protected function execute(Input $input, Output $output)
     {
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
+        $roles = $input->getOption('roles');
+        $hosts = $input->getOption('hosts');
 
-        $this->deployer->getScriptManager()->setHooksEnabled(!$input->getOption('no-hooks'));
-
-        $tasks = $this->deployer->getScriptManager()->getTasks($this->getName(), $stage);
-        $servers = $this->deployer->getStageStrategy()->getServers($stage);
-        $environments = iterator_to_array($this->deployer->environments);
-
-        // Validation
-        $sshType = \Deployer\get('ssh_type');
-        if ($sshType !== 'native') {
-            $output->write(
-                "<comment>Warning: ssh type `$sshType` will be deprecated in Deployer 5.\n" .
-                "Add this lines to your deploy.php file:\n" .
-                "\n" .
-                "    <fg=white>set(<fg=cyan>'ssh_type'</fg=cyan>, <fg=cyan>'native'</fg=cyan>);\n" .
-                "    set(<fg=cyan>'ssh_multiplexing'</fg=cyan>, <fg=magenta;options=bold>true</fg=magenta;options=bold>);</fg=white>\n" .
-                "\n" .
-                "More info here: https://goo.gl/ya8rKW" .
-                "</comment>\n"
-            );
+        $hooksEnabled = !$input->getOption('no-hooks');
+        if (!empty($input->getOption('log'))) {
+            $this->deployer->config['log_file'] = $input->getOption('log');
         }
 
-        if (isset($this->executor)) {
-            $executor = $this->executor;
+        if (!empty($hosts)) {
+            $hosts = $this->deployer->hostSelector->getByHostnames($hosts);
+        } elseif (!empty($roles)) {
+            $hosts = $this->deployer->hostSelector->getByRoles($roles);
         } else {
-            if ($input->getOption('parallel')) {
-                $executor = new ParallelExecutor($this->deployer->getConsole()->getUserDefinition());
-            } else {
-                $executor = new SeriesExecutor();
-            }
+            $hosts = $this->deployer->hostSelector->getHosts($stage);
+        }
+
+        if (empty($hosts)) {
+            throw new Exception('No host selected');
+        }
+
+        $tasks = $this->deployer->scriptManager->getTasks(
+            $this->getName(),
+            $hosts,
+            $hooksEnabled
+        );
+
+        if ($input->getOption('parallel')) {
+            $executor = $this->deployer->parallelExecutor;
+        } else {
+            $executor = $this->deployer->seriesExecutor;
         }
 
         try {
-            $executor->run($tasks, $servers, $environments, $input, $output);
-        } catch (\Exception $exception) {
-            \Deployer\logger($exception->getMessage(), Logger::ERROR);
+            $executor->run($tasks, $hosts);
+        } catch (\Throwable $exception) {
+            if ($exception instanceof GracefulShutdownException) {
+                throw $exception;
+            } else {
+                // Check if we have tasks to execute on failure
+                if ($this->deployer['fail']->has($this->getName())) {
+                    $taskName = $this->deployer['fail']->get($this->getName());
+                    $tasks = $this->deployer->scriptManager->getTasks($taskName, $hosts, $hooksEnabled);
 
-            if (!($exception instanceof GracefulShutdownException)) {
-                // Check if we have tasks to execute on failure.
-                if ($this->deployer['onFailure']->has($this->getName())) {
-                    $taskName = $this->deployer['onFailure']->get($this->getName());
-                    $tasks = $this->deployer->getScriptManager()->getTasks($taskName, $stage);
-                    $executor->run($tasks, $servers, $environments, $input, $output);
+                    $executor->run($tasks, $hosts);
                 }
+                throw $exception;
             }
-
-            throw $exception;
         }
 
         if (Deployer::hasDefault('terminate_message')) {

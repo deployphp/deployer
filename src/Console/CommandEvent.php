@@ -21,13 +21,13 @@ class CommandEvent
 
     /**
      * CommandEvent constructor.
-     * @param $command
-     * @param $input
-     * @param $output
-     * @param $exception
-     * @param $exitCode
+     * @param Command $command
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param null|\Throwable $exception
+     * @param int $exitCode
      */
-    public function __construct(Command $command, InputInterface $input, OutputInterface $output, \Exception $exception = null, $exitCode = 0)
+    public function __construct(Command $command, InputInterface $input, OutputInterface $output, $exception = null, $exitCode = 0)
     {
         $this->command = $command;
         $this->input = $input;
@@ -61,7 +61,7 @@ class CommandEvent
     }
 
     /**
-     * @return \Exception
+     * @return \Throwable
      */
     public function getException()
     {

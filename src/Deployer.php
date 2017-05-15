@@ -11,25 +11,44 @@ use Deployer\Collection\Collection;
 use Deployer\Console\Application;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
+use Deployer\Console\Output\Informer;
+use Deployer\Console\Output\OutputWatcher;
+use Deployer\Console\SshCommand;
 use Deployer\Console\TaskCommand;
 use Deployer\Console\WorkerCommand;
-use Deployer\Server;
-use Deployer\Stage\StageStrategy;
+use Deployer\Executor\ParallelExecutor;
+use Deployer\Executor\SeriesExecutor;
+use Deployer\Logger\Handler\FileHandler;
+use Deployer\Logger\Handler\NullHandler;
+use Deployer\Logger\Logger;
 use Deployer\Task;
-use Deployer\Type\Config;
+use Deployer\Utility\ProcessOutputPrinter;
+use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
-use Monolog\Handler\NullHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use Deployer\Utility\Rsync;
 use Pimple\Container;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use function Deployer\Support\array_merge_alternate;
 
 /**
+ * Deployer class represents DI container for configuring
+ *
+ * @property Application console
  * @property Task\TaskCollection|Task\Task[] tasks
- * @property Server\ServerCollection|Server\ServerInterface[] servers
- * @property Server\EnvironmentCollection|Server\Environment[] environments
+ * @property Host\HostCollection|Collection|Host\Host[] hosts
  * @property Collection config
+ * @property Rsync rsync
+ * @property Ssh\Client sshClient
+ * @property ProcessRunner processRunner
+ * @property Task\ScriptManager scriptManager
+ * @property Host\HostSelector hostSelector
+ * @property SeriesExecutor seriesExecutor
+ * @property ParallelExecutor parallelExecutor
+ * @property Informer informer
+ * @property Logger logger
  */
 class Deployer extends Container
 {
@@ -41,10 +60,8 @@ class Deployer extends Container
 
     /**
      * @param Application $console
-     * @param Console\Input\InputInterface $input
-     * @param Console\Output\OutputInterface $output
      */
-    public function __construct(Application $console, Console\Input\InputInterface $input, Console\Output\OutputInterface $output)
+    public function __construct(Application $console)
     {
         parent::__construct();
 
@@ -53,13 +70,12 @@ class Deployer extends Container
          ******************************/
 
         $this['console'] = function () use ($console) {
+            $console->catchIO(function ($input, $output) {
+                $this['input'] = $input;
+                $this['output'] =  new OutputWatcher($output);
+                return [$this['input'], $this['output']];
+            });
             return $console;
-        };
-        $this['input'] = function () use ($input) {
-            return $input;
-        };
-        $this['output'] = function () use ($output) {
-            return $output;
         };
 
         /******************************
@@ -69,47 +85,61 @@ class Deployer extends Container
         $this['config'] = function () {
             return new Collection();
         };
-        $this->config['ssh_type'] = 'phpseclib';
+        $this->config['ssh_multiplexing'] = true;
         $this->config['default_stage'] = null;
 
         /******************************
          *            Core            *
          ******************************/
 
+        $this['pop'] = function ($c) {
+            return new ProcessOutputPrinter($c['output'], $c['logger']);
+        };
+        $this['sshClient'] = function ($c) {
+            return new Ssh\Client($c['output'], $c['pop'], $c['config']['ssh_multiplexing']);
+        };
+        $this['rsync'] = function ($c) {
+            return new Rsync($c['pop']);
+        };
+        $this['processRunner'] = function ($c) {
+            return new ProcessRunner($c['pop']);
+        };
         $this['tasks'] = function () {
             return new Task\TaskCollection();
         };
-        $this['servers'] = function () {
-            return new Server\ServerCollection();
-        };
-        $this['environments'] = function () {
-            return new Server\EnvironmentCollection();
+        $this['hosts'] = function () {
+            return new Host\HostCollection();
         };
         $this['scriptManager'] = function ($c) {
             return new Task\ScriptManager($c['tasks']);
         };
-        $this['stageStrategy'] = function ($c) {
-            return new StageStrategy($c['servers'], $c['environments'], $c['config']['default_stage']);
+        $this['hostSelector'] = function ($c) {
+            return new Host\HostSelector($c['hosts'], $c['config']['default_stage']);
         };
-        $this['onFailure'] = function () {
+        $this['fail'] = function () {
             return new Collection();
+        };
+        $this['informer'] = function ($c) {
+            return new Informer($c['output']);
+        };
+        $this['seriesExecutor'] = function ($c) {
+            return new SeriesExecutor($c['input'], $c['output'], $c['informer']);
+        };
+        $this['parallelExecutor'] = function ($c) {
+            return new ParallelExecutor($c['input'], $c['output'], $c['informer'], $c['console']);
         };
 
         /******************************
          *           Logger           *
          ******************************/
 
-        $this['log_level'] = Logger::DEBUG;
         $this['log_handler'] = function () {
-            return isset($this->config['log_file'])
-                ? new StreamHandler($this->config['log_file'], $this['log_level'])
-                : new NullHandler($this['log_level']);
+            return !empty($this->config['log_file'])
+                ? new FileHandler($this->config['log_file'])
+                : new NullHandler();
         };
-        $this['log'] = function () {
-            $name = isset($this->config['log_name']) ? $this->config['log_name'] : 'Deployer';
-            return new Logger($name, [
-                $this['log_handler']
-            ]);
+        $this['logger'] = function () {
+            return new Logger($this['log_handler']);
         };
 
         /******************************
@@ -170,24 +200,22 @@ class Deployer extends Container
             if (!is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
-            self::setDefault($name, Config::merge($config, $array));
+            self::setDefault($name, array_merge_alternate($config, $array));
         } else {
             self::setDefault($name, $array);
         }
     }
 
     /**
-     * Run console application.
+     * Init console application
      */
-    public function run()
+    public function init()
     {
         $this->addConsoleCommands();
-
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add($this['init_command']);
-        $this->getConsole()->addCallback([$this, 'collectAnonymousStats']);
-
-        $this->getConsole()->run($this['input'], $this['output']);
+        $this->getConsole()->add(new SshCommand($this));
+        $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 
     /**
@@ -254,27 +282,37 @@ class Deployer extends Container
     }
 
     /**
-     * @return StageStrategy
+     * Run Deployer
+     *
+     * @param string $version
+     * @param string $deployFile
      */
-    public function getStageStrategy()
+    public static function run($version, $deployFile)
     {
-        return $this['stageStrategy'];
-    }
+        // Init Deployer
+        $console = new Application('Deployer', $version);
+        $input = new ArgvInput();
+        $output = new ConsoleOutput();
+        $deployer = new self($console);
 
-    /**
-     * @return Task\ScriptManager
-     */
-    public function getScriptManager()
-    {
-        return $this['scriptManager'];
-    }
+        // Pretty-print uncaught exceptions in symfony-console
+        set_exception_handler(function ($e) use ($input, $output) {
+            $io = new SymfonyStyle($input, $output);
+            $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
+            $io->block($e->getTraceAsString());
+        });
 
-    /**
-     * @return LoggerInterface
-     */
-    public function getLogger()
-    {
-        return $this['log'];
+        // Require deploy.php file
+        if (is_readable($deployFile)) {
+            // Prevent variable leak into deploy.php file
+            call_user_func(function () use ($deployFile) {
+                require $deployFile;
+            });
+        }
+
+        // Run Deployer
+        $deployer->init();
+        $console->run($input, $output);
     }
 
     /**
@@ -294,7 +332,7 @@ class Deployer extends Container
             'status' => 'success',
             'command_name' => $commandEvent->getCommand()->getName(),
             'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
-            'servers_count' => $this->servers->count(),
+            'hosts_count' => $this->hosts->count(),
             'deployer_version' => $this->getConsole()->getVersion(),
             'deployer_phar' => $this->getConsole()->isPharArchive(),
             'php_version' => phpversion(),
@@ -307,6 +345,14 @@ class Deployer extends Container
         if ($commandEvent->getException() !== null) {
             $stats['status'] = 'error';
             $stats['exception'] = get_class($commandEvent->getException());
+        }
+
+        if ($stats['command_name'] === 'init') {
+            $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
+        }
+
+        if ($stats['command_name'] === 'worker') {
+            return;
         }
 
         Reporter::report($stats);

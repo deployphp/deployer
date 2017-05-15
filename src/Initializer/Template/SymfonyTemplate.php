@@ -11,6 +11,7 @@ namespace Deployer\Initializer\Template;
  * Generate a Symfony deployer configuration.
  *
  * @author Anton Medvedev <anton@medv.io>
+ * @codeCoverageIgnore
  */
 class SymfonyTemplate extends FrameworkTemplate
 {

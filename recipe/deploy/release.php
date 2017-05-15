@@ -26,7 +26,7 @@ set('release_name', function () {
 }); // name of folder in releases
 
 /**
- * Return list of releases on server.
+ * Return list of releases on host.
  */
 set('releases_list', function () {
     cd('{{deploy_path}}');
@@ -55,7 +55,7 @@ set('releases_list', function () {
             $csv = run('cat .dep/releases');
         } else {
             // Instead of `tail -n` call here can be `cat` call,
-            // but on servers with a lot of deploys (more 1k) it
+            // but on hosts with a lot of deploys (more 1k) it
             // will output a really big list of previous releases.
             // It spoils appearance of output log, to make it pretty,
             // we limit it to `n*2 + 5` lines from end of file (15 lines).
@@ -98,17 +98,17 @@ desc('Prepare release');
 task('deploy:release', function () {
     cd('{{deploy_path}}');
 
-    // Clean up if there is unfinished release.
+    // Clean up if there is unfinished release
     $previousReleaseExist = run("if [ -h release ]; then echo 'true'; fi")->toBool();
 
     if ($previousReleaseExist) {
-        run('rm -rf "$(readlink release)"'); // Delete release.
-        run('rm release'); // Delete symlink.
+        run('rm -rf "$(readlink release)"'); // Delete release
+        run('rm release'); // Delete symlink
     }
 
     $releaseName = get('release_name');
 
-    // Fix collisions.
+    // Fix collisions
     $i = 0;
     while (run("if [ -d {{deploy_path}}/releases/$releaseName ]; then echo 'true'; fi")->toBool()) {
         $releaseName .= '.' . ++$i;
@@ -120,10 +120,21 @@ task('deploy:release', function () {
     // Metainfo.
     $date = run('date +"%Y%m%d%H%M%S"');
 
-    // Save metainfo about release.
+    // Save metainfo about release
     run("echo '$date,{{release_name}}' >> .dep/releases");
 
-    // Make new release.
+    // Make new release
     run("mkdir $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
+
+    $releasesList = get('releases_list');
+
+    // Add to releases list
+    array_unshift($releasesList, $releaseName);
+    set('releases_list', $releasesList);
+
+    // Set previous_release
+    if (isset($releasesList[1])) {
+        set('previous_release', "{{deploy_path}}/releases/{$releasesList[1]}");
+    }
 });

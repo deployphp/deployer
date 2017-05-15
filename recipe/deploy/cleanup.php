@@ -10,23 +10,23 @@ namespace Deployer;
 desc('Cleaning up old releases');
 task('cleanup', function () {
     $releases = get('releases_list');
-
     $keep = get('keep_releases');
+    $sudo  = get('cleanup_use_sudo') ? 'sudo' : '';
 
     if ($keep === -1) {
         // Keep unlimited releases.
         return;
     }
 
-    while ($keep - 1 > 0) {
+    while ($keep > 0) {
         array_shift($releases);
         --$keep;
     }
 
     foreach ($releases as $release) {
-        run("rm -rf {{deploy_path}}/releases/$release");
+        run("$sudo rm -rf {{deploy_path}}/releases/$release");
     }
 
-    run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi");
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi");
+    run("cd {{deploy_path}} && if [ -e release ]; then $sudo rm release; fi");
+    run("cd {{deploy_path}} && if [ -h release ]; then $sudo rm release; fi");
 });

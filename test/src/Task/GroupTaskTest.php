@@ -16,7 +16,7 @@ class GroupTaskTest extends TestCase
      */
     public function testGroupTask()
     {
-        $context = $this->getMockBuilder('Deployer\Task\Context')->disableOriginalConstructor()->getMock();
+        $context = $this->getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
 
         $task = new GroupTask('group', []);
         $task->run($context);

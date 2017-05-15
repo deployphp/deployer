@@ -7,12 +7,12 @@
 
 namespace Deployer\Console;
 
-use Deployer\Console\Output\RemoteOutput;
 use Deployer\Deployer;
-use Deployer\Server\Environment;
-use Deployer\Task\Context;
+use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
-use Pure\Client;
+use Deployer\Host\Host;
+use Deployer\Host\Storage;
+use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,26 +26,38 @@ class WorkerCommand extends Command
     private $deployer;
 
     /**
+     * @var Host
+     */
+    private $host;
+
+    /**
      * @param Deployer $deployer
      */
     public function __construct(Deployer $deployer)
     {
         parent::__construct('worker');
+        $this->setDescription('Deployer uses workers for parallel deployment');
         if (method_exists($this, 'setHidden')) {
             $this->setHidden(true);
         }
-        $this->setDescription('Deployer uses workers for parallel deployment');
-
         $this->deployer = $deployer;
-
         $this->addOption(
-            'master',
+            'hostname',
             null,
             InputOption::VALUE_REQUIRED
         );
-
         $this->addOption(
-            'server',
+            'task',
+            null,
+            InputOption::VALUE_REQUIRED
+        );
+        $this->addOption(
+            'config-file',
+            null,
+            InputOption::VALUE_REQUIRED
+        );
+        $this->addOption(
+            'log',
             null,
             InputOption::VALUE_REQUIRED
         );
@@ -56,33 +68,38 @@ class WorkerCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $serverName = $input->getOption('server');
-        list($host, $port) = explode(':', $input->getOption('master'));
-        $pure = new Client($port, $host);
-
         try {
-            $server = $this->deployer->servers->get($serverName);
-            $environment = isset($this->deployer->environments[$serverName]) ? $this->deployer->environments[$serverName] : new Environment();
-            $output = new RemoteOutput($output, $pure, $serverName);
-
-            while ($pure->ping()) {
-                // Get task to do
-                $taskName = $pure->map('tasks_to_do')->get($serverName);
-
-                if (null !== $taskName) {
-                    $task = $this->deployer->tasks->get($taskName);
-
-                    try {
-                        $task->run(new Context($server, $environment, $input, $output));
-                    } catch (NonFatalException $e) {
-                        $pure->queue('exception')->push([$serverName, get_class($e), $e->getMessage()]);
-                    }
-
-                    $pure->map('tasks_to_do')->delete($serverName);
-                }
-            }
-        } catch (\Exception $exception) {
-            $pure->queue('exception')->push([$serverName, get_class($exception), $exception->getMessage()]);
+            $this->doExecute($input, $output);
+        } catch (GracefulShutdownException $e) {
+            $this->deployer->informer->taskException($e, $this->host);
+            return 1;
+        } catch (NonFatalException $e) {
+            $this->deployer->informer->taskException($e, $this->host);
+            return 2;
+        } catch (\Throwable $e) {
+            $this->deployer->informer->taskException($e, $this->host);
+            return 255;
         }
+    }
+
+    private function doExecute(InputInterface $input, OutputInterface $output)
+    {
+        $hostname = $input->getOption('hostname');
+        $host = $this->host = $this->deployer->hosts->get($hostname);
+
+        Storage::setup($host, $input->getOption('config-file'));
+
+        $task = $input->getOption('task');
+        $task = $this->deployer->tasks->get($task);
+        if (!empty($input->getOption('log'))) {
+            $this->deployer->config['log_file'] = $input->getOption('log');
+        }
+
+        if ($task->shouldBePerformed($host)) {
+            $task->run(new Context($host, $input, $output));
+            $this->deployer->informer->endOnHost($hostname);
+        }
+
+        Storage::flush($host);
     }
 }

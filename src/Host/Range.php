@@ -34,8 +34,8 @@ class Range
     {
         if ($zeroBased) {
             return strlen($i) === 1 ? "0$i" : $i;
-        } else {
-            return $i;
         }
+
+        return $i;
     }
 }

@@ -44,9 +44,9 @@ function host(...$hostnames)
     if ($deployer->hosts->has($hostnames[0])) {
         if (count($hostnames) === 1) {
             return $deployer->hosts->get($hostnames[0]);
-        } else {
-            return array_map([$deployer->hosts, 'get'], $hostnames);
         }
+
+        return array_map([$deployer->hosts, 'get'], $hostnames);
     }
 
     // Add otherwise
@@ -115,9 +115,9 @@ function desc($title = null)
 
     if ($title === null) {
         return $store;
-    } else {
-        return $store = $title;
     }
+
+    return $store = $title;
 }
 
 /**
@@ -513,9 +513,9 @@ function get($name, $default = null)
 {
     if (!Context::has()) {
         return Deployer::getDefault($name, $default);
-    } else {
-        return Context::get()->getConfig()->get($name, $default);
     }
+
+    return Context::get()->getConfig()->get($name, $default);
 }
 
 /**
@@ -528,9 +528,9 @@ function has($name)
 {
     if (!Context::has()) {
         return Deployer::hasDefault($name);
-    } else {
-        return Context::get()->getConfig()->has($name);
     }
+
+    return Context::get()->getConfig()->has($name);
 }
 
 /**

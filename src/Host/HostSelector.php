@@ -71,9 +71,9 @@ class HostSelector
         if (empty($hosts)) {
             if (count($this->hosts) === 0) {
                 $hosts = ['localhost' => new Localhost()];
-            } else {
-                throw new Exception('You need to specify at least one host or stage.');
             }
+
+            throw new Exception('You need to specify at least one host or stage.');
         }
 
         return $hosts;

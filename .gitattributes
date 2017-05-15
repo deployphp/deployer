@@ -13,5 +13,5 @@ BACKERS.md export-ignore
 CHANGELOG.md export-ignore
 CONTRIBUTING.md export-ignore
 KNOWN_BUGS.md export-ignore
-phpunit.xml export-ignore
+phpunit.xml.dist export-ignore
 UPGRADE.md export-ignore

@@ -1,8 +1,4 @@
-preset: psr2
-
-enabled:
-  - short_array_syntax
-  - no_whitespace_in_blank_line
+preset: recommended
 
 finder:
   not-name:

@@ -10,6 +10,15 @@
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
 
+// Check for php7
+if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
+    die(
+        'Upgrade to php7' . PHP_EOL .
+        'Deployer 5.x supports only php7 and above.' . PHP_EOL .
+        'If you want to use older php version use Deployer 4.x' . PHP_EOL
+    );
+}
+
 // Detect deploy.php script
 $options = getopt('f::', ['file::']);
 $userSpecifiedFile = null;

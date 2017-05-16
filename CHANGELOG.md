@@ -3,13 +3,14 @@
 ## master
 [v5.0.0...master](https://github.com/deployphp/deployer/compare/v5.0.0...master)
 
--
+### Added
+- Exception when no task will be executed
+
+### Fixed
+- Throw the correct exception on git --reference fail
 
 ## v5.0.0
 [v5.0.0-beta.3...v5.0.0](https://github.com/deployphp/deployer/compare/v5.0.0-beta.3...v5.0.0)
-
-### Added
-- Exception when no task will be executed
 
 ### Changed 
 - Working path default is `release_path` instead of home for simple tasks [#1205]

@@ -121,6 +121,10 @@ class TaskCommand extends Command
             $hooksEnabled
         );
 
+        if (empty($tasks)) {
+            throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
+        }
+
         if ($input->getOption('parallel')) {
             $executor = $this->deployer->parallelExecutor;
         } else {

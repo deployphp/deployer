@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Exception\RuntimeException;
+
 desc('Update code');
 task('deploy:update_code', function () {
     $repository = trim(get('repository'));
@@ -51,7 +53,7 @@ task('deploy:update_code', function () {
     if ($gitCache && has('previous_release')) {
         try {
             run("$git clone $at --recursive -q --reference {{previous_release}} --dissociate $repository  {{release_path}} 2>&1", $options);
-        } catch (\RuntimeException $exc) {
+        } catch (RuntimeException $exc) {
             // If {{deploy_path}}/releases/{$releases[1]} has a failed git clone, is empty, shallow etc, git would throw error and give up. So we're forcing it to act without reference in this situation
             run("$git clone $at --recursive -q $repository {{release_path}} 2>&1", $options);
         }

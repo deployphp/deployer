@@ -176,7 +176,7 @@ class Task
             $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
 
             $onRole = empty($this->on['roles']);
-            foreach ($host->get('roles', []) as $role) {
+            foreach ((array) $host->get('roles', []) as $role) {
                 if (in_array($role, $this->on['roles'], true)) {
                     $onRole = true;
                 }

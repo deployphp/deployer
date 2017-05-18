@@ -124,9 +124,11 @@ class Client
         $process = new Process("ssh -O check $sshArguments $host 2>&1");
         $process->run();
 
-        if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {
-            $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
-
+        if (!preg_match('/Master running/', $process->getOutput())) {
+            if ($this->output->isVeryVerbose()) {
+                $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+            }
+            
             // Open master connection explicit,
             // ControlMaster=auto could not working
             (new Process("ssh -M $sshArguments $host"))->start();

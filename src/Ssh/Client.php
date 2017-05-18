@@ -7,6 +7,7 @@
 
 namespace Deployer\Ssh;
 
+use Deployer\Exception\Exception;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
 use Deployer\Utility\ProcessOutputPrinter;
@@ -121,20 +122,34 @@ class Client
     {
         $sshArguments = $host->getSshArguments()->withMultiplexing($host);
 
-        $process = new Process("ssh -O check $sshArguments $host 2>&1");
-        $process->run();
-
-        if (!preg_match('/Master running/', $process->getOutput()) && $this->output->isVeryVerbose()) {
-            $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+        if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
+            if ($this->output->isVeryVerbose()) {
+                $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
+            }
 
             // Open master connection explicit,
             // ControlMaster=auto could not working
             (new Process("ssh -M $sshArguments $host"))->start();
 
-            // Delay to wait connection established
-            sleep(1);
+            $attempts = 0;
+            while (!$this->isMultiplexingInitialized($host, $sshArguments)) {
+                if ($attempts++ > 5) {
+                    throw new Exception('Wait time exceeded for ssh multiplexing initialization');
+                }
+
+                // Delay to check again if the connection is established
+                sleep(1);
+            }
         }
 
         return $sshArguments;
+    }
+
+    private function isMultiplexingInitialized(Host $host, Arguments $sshArguments)
+    {
+        $process = new Process("ssh -O check $sshArguments $host 2>&1");
+        $process->run();
+
+        return (bool) preg_match('/Master running/', $process->getOutput());
     }
 }

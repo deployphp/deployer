@@ -5,6 +5,7 @@
 
 ### Added
 - Exception when no task will be executed
+- Check for php7 in phar
 
 ### Fixed
 - Throw the correct exception on git --reference fail

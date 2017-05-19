@@ -129,12 +129,17 @@ class Client
 
             // Open master connection explicit,
             // ControlMaster=auto could not working
-            (new Process("ssh -M $sshArguments $host"))->start();
+            $process = new Process("ssh -M $sshArguments $host");
+            $process->start();
 
             $attempts = 0;
             while (!$this->isMultiplexingInitialized($host, $sshArguments)) {
-                if ($attempts++ > 5) {
+                if ($attempts++ > 30) {
                     throw new Exception('Wait time exceeded for ssh multiplexing initialization');
+                }
+
+                if (!$process->isRunning()) {
+                    throw new Exception('Failed to initialize ssh multiplexing');
                 }
 
                 // Delay to check again if the connection is established

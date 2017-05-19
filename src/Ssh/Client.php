@@ -7,7 +7,7 @@
 
 namespace Deployer\Ssh;
 
-use Deployer\Exception\Exception;
+use Deployer\Exception\InitializationException;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
 use Deployer\Utility\ProcessOutputPrinter;
@@ -135,11 +135,11 @@ class Client
             $attempts = 0;
             while (!$this->isMultiplexingInitialized($host, $sshArguments)) {
                 if ($attempts++ > 30) {
-                    throw new Exception('Wait time exceeded for ssh multiplexing initialization');
+                    throw new InitializationException('Wait time exceeded for ssh multiplexing initialization');
                 }
 
                 if (!$process->isRunning()) {
-                    throw new Exception('Failed to initialize ssh multiplexing');
+                    throw new InitializationException('Failed to initialize ssh multiplexing');
                 }
 
                 // Delay to check again if the connection is established

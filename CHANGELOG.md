@@ -1,7 +1,12 @@
 # Changelog
 
 ## master
-[v5.0.0...master](https://github.com/deployphp/deployer/compare/v5.0.0...master)
+[v5.0.1...master](https://github.com/deployphp/deployer/compare/v5.0.1...master)
+
+-
+
+## v5.0.1
+[v5.0.0...v5.0.1](https://github.com/deployphp/deployer/compare/v5.0.0...v5.0.1)
 
 ### Added
 - Exception when no task will be executed

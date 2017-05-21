@@ -195,6 +195,7 @@
 [#1218]: https://github.com/deployphp/deployer/issues/1218
 [#1205]: https://github.com/deployphp/deployer/issues/1205
 [#1204]: https://github.com/deployphp/deployer/issues/1204
+[#1192]: https://github.com/deployphp/deployer/issues/1192
 [#1000]: https://github.com/deployphp/deployer/pull/1000
 [#1003]: https://github.com/deployphp/deployer/pull/1003
 [#1004]: https://github.com/deployphp/deployer/issues/1004 

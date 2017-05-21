@@ -9,7 +9,7 @@
 
 ### Fixed
 - Throw the correct exception on git --reference fail
-- Check if multiplexing is working before continuing
+- Check if multiplexing is working before continuing [#1192]
 - Fixed upload with non-standard SSH port [#1218]
 
 ## v5.0.0

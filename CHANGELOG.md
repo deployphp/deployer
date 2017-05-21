@@ -11,6 +11,8 @@
 - Throw the correct exception on git --reference fail
 - Check if multiplexing is working before continuing [#1192]
 - Fixed upload with non-standard SSH port [#1218]
+- Ensure that host roles are treated as an array.
+
 
 ## v5.0.0
 [v5.0.0-beta.3...v5.0.0](https://github.com/deployphp/deployer/compare/v5.0.0-beta.3...v5.0.0)

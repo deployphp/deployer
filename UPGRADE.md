@@ -20,12 +20,12 @@
    ```php
    host('production')
        ->hostname('domain.com')
-       ->set('deploy_path', '~/{{hostname}}')       
+       ->set('deploy_path', '~/production')       
        ...
        
    host('beta')
        ->hostname('domain.com')
-       ->set('deploy_path', '~/{{hostname}}')       
+       ->set('deploy_path', '~/beta')       
        ...       
    ```
   

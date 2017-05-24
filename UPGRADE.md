@@ -6,6 +6,28 @@
    * `localServer($name)` to `localhost()`
    * `cluster($name, $nodes, $port)` to `hosts(...$hodes)`
    * `serverList($file)` to `inventory($file)`
+   
+   If you need to deploy to same server use [host aliases](https://deployer.org/docs/hosts#host-aliases):
+   
+   ```php
+   host('domain.com/green', 'domain.com/blue')
+       ->set('deploy_path', '~/{{hostname}}')
+       ...
+   ```
+   
+   Or you can define different hosts with same hostname:
+   
+   ```php
+   host('production')
+       ->hostname('domain.com')
+       ->set('deploy_path', '~/{{hostname}}')       
+       ...
+       
+   host('beta')
+       ->hostname('domain.com')
+       ->set('deploy_path', '~/{{hostname}}')       
+       ...       
+   ```
   
 2. Configuration options
 

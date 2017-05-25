@@ -427,9 +427,9 @@ function upload($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
-        $port = $host->getPort();
-        if ($port !== 22) {
-            $config['options'] = ["-e 'ssh -p $port'"];
+        $sshArguments = $host->getSshArguments()->getCliArguments();
+        if (empty($sshArguments) === false) {
+            $config['options'] = ["-e 'ssh $sshArguments'"];
         }
         $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
     }
@@ -452,9 +452,9 @@ function download($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
-        $port = $host->getPort();
-        if ($port !== 22) {
-            $config['options'] = ["-e 'ssh -p $port'"];
+        $sshArguments = $host->getSshArguments()->getCliArguments();
+        if (empty($sshArguments) === false) {
+            $config['options'] = ["-e 'ssh $sshArguments'"];
         }
         $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
     }

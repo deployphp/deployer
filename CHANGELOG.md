@@ -3,7 +3,8 @@
 ## master
 [v5.0.1...master](https://github.com/deployphp/deployer/compare/v5.0.1...master)
 
--
+### Fixed
+- Fixed upload / download with optional rsync ssh options [#1227]
 
 ## v5.0.1
 [v5.0.0...v5.0.1](https://github.com/deployphp/deployer/compare/v5.0.0...v5.0.1)

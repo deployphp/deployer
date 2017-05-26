@@ -68,4 +68,5 @@ class ScriptManagerTest extends TestCase
 
         $this->assertNotEmpty($scriptManager->getTasks("dump"));
     }
+    
 }

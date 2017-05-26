@@ -60,7 +60,7 @@ class HostSelectorTest extends TestCase
     {
         $hostCollection = new HostCollection();
 
-        for($index = 0; $index < 100; $index++) {
+        for ($index = 0; $index < 100; $index++) {
             $hostCollection->set("host$index", new Host("host$index"));
         }
 
@@ -107,4 +107,5 @@ class HostSelectorTest extends TestCase
 
         $this->assertNotEmpty($hostSelector->getByRoles($roles));
     }
+
 }

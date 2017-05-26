@@ -30,7 +30,7 @@ class HostSelectorTest extends TestCase
     public function testReturnArrayWithHostnameThatWasSet($hostname, $host)
     {
         $hostCollection = new HostCollection();
-        $hostCollection->set($hostname , $host);
+        $hostCollection->set($hostname, $host);
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getHosts(null);
 
@@ -60,8 +60,8 @@ class HostSelectorTest extends TestCase
     {
         $hostCollection = new HostCollection();
 
-        for($index = 0; $index < 100 ; $index++) {
-            $hostCollection->set("host$index" , new Host("host$index"));
+        for($index = 0; $index < 100; $index++) {
+            $hostCollection->set("host$index", new Host("host$index"));
         }
 
         $hostSelector = new HostSelector($hostCollection);
@@ -73,9 +73,9 @@ class HostSelectorTest extends TestCase
     public function testGetByHostnameReturnsArrayWithHostsAndCorrectLength()
     {
         $hostCollection = new HostCollection();
-        $hostCollection->set('server' , new Host('server'));
-        $hostCollection->set('app' , new Host('app'));
-        $hostCollection->set('db' , new Host('db'));
+        $hostCollection->set('server', new Host('server'));
+        $hostCollection->set('app', new Host('app'));
+        $hostCollection->set('db', new Host('db'));
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getByHostnames('server, app, db');
 
@@ -99,8 +99,8 @@ class HostSelectorTest extends TestCase
     {
         $roles = "role1, role2";
         $host = new  Host('server');
-        $host->roles( "role1");
-        $host->roles( "role2");
+        $host->roles("role1");
+        $host->roles("role2");
         $hostCollection = new HostCollection();
         $hostCollection->set('server', $host);
         $hostSelector = new HostSelector($hostCollection);

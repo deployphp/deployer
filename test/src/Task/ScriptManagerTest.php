@@ -41,8 +41,8 @@ class ScriptManagerTest extends TestCase
     public function testReturnsArrayOnGetTask()
     {
         $hostCollection = new HostCollection();
-        $hostCollection->set('app' , (new Host('app'))->stage('prod')->roles('app'));
-        $hostCollection->set('db' , (new Host('db'))->stage('prod')->roles('db'));
+        $hostCollection->set('app', (new Host('app'))->stage('prod')->roles('app'));
+        $hostCollection->set('db', (new Host('db'))->stage('prod')->roles('db'));
 
         $task = new Task('compile');
         $task

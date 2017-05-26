@@ -107,5 +107,4 @@ class HostSelectorTest extends TestCase
 
         $this->assertNotEmpty($hostSelector->getByRoles($roles));
     }
-
 }

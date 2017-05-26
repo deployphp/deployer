@@ -1,4 +1,9 @@
 <?php
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Deployer\Host;
 
@@ -68,6 +73,41 @@ class HostSelectorTest extends TestCase
         $hosts = $hostSelector->getHosts(null);
 
         $this->assertSame(count($hosts), 100);
+    }
+
+    /**
+     * @expectedException Exception
+     */
+    public function testShouldThrowExceptionIfHostNameOrStageNotFound()
+    {
+        $host = new Host('app');
+        $hostCollection = new HostCollection();
+        $hostCollection->set('app', $host);
+        $hostSelector = new HostSelector($hostCollection);
+        $hostSelector->getHosts('stage');
+    }
+
+    public function testShouldReturnHostIfItHasStage()
+    {
+        $host = new Host('apps');
+        $host->stage('stage');
+        $hostCollection = new HostCollection();
+        $hostCollection->set('apps', $host);
+        $hostSelector = new HostSelector($hostCollection);
+        $hosts = $hostSelector->getHosts('stage');
+
+        $this->assertSame(1, count($hosts));
+    }
+
+    public function testShouldReturnHostIfItHasHostnameEqualsStageName()
+    {
+        $host = new Host('apps');
+        $hostCollection = new HostCollection();
+        $hostCollection->set('apps', $host);
+        $hostSelector = new HostSelector($hostCollection);
+        $hosts = $hostSelector->getHosts('apps');
+
+        $this->assertSame(1, count($hosts));
     }
 
     public function testGetByHostnameReturnsArrayWithHostsAndCorrectLength()

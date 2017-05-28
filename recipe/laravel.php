@@ -115,7 +115,7 @@ task('artisan:queue:restart', function () {
 
 desc('Execute artisan storage:link');
 task('artisan:storage:link', function () {
-    if (get('laravel_version') > 5.2) {
+    if (version_compare(get('laravel_version'), 5.2, '>')) {
         run('{{bin/php}} {{release_path}}/artisan storage:link');
     }
 });

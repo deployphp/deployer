@@ -35,6 +35,16 @@ set('writable_dirs', [
     'storage/logs',
 ]);
 
+set('laravel_version', function () {
+    $result = run('{{bin/php}} {{release_path}}/artisan --version');
+
+    preg_match_all('/version\ (.+?)$/', $result, $matches);
+
+    $version = $matches[1][0] ?? 5.4;
+
+    return (float) $version;
+});
+
 /**
  * Helper tasks
  */
@@ -110,17 +120,6 @@ task('artisan:storage:link', function () {
     }
 });
 
-desc('Get Laravel version');
-task('artisan:version', function () {
-    $result = run('{{bin/php}} {{release_path}}/artisan --version');
-
-    preg_match_all('/version\ (.+?)$/', $result, $matches);
-
-    $version = $matches[1][0] ?? get('laravel_version') ?? 5.4;
-
-    set('laravel_version', (float) $version);
-});
-
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file
@@ -153,7 +152,6 @@ task('deploy', [
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
-    'artisan:version',
     'artisan:storage:link',
     'artisan:view:clear',
     'artisan:cache:clear',

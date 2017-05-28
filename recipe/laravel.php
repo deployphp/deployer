@@ -105,7 +105,9 @@ task('artisan:queue:restart', function () {
 
 desc('Execute artisan storage:link');
 task('artisan:storage:link', function () {
-    run('{{bin/php}} {{release_path}}/artisan storage:link');
+    if (get('laravel_version') > 5.2) {
+        run('{{bin/php}} {{release_path}}/artisan storage:link');
+    }
 });
 
 desc('Get Laravel version');
@@ -151,6 +153,7 @@ task('deploy', [
     'deploy:shared',
     'deploy:vendors',
     'deploy:writable',
+    'artisan:version',
     'artisan:storage:link',
     'artisan:view:clear',
     'artisan:cache:clear',

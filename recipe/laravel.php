@@ -108,6 +108,17 @@ task('artisan:storage:link', function () {
     run('{{bin/php}} {{release_path}}/artisan storage:link');
 });
 
+desc('Get Laravel version');
+task('artisan:version', function () {
+    $result = run('{{bin/php}} {{release_path}}/artisan --version');
+
+    preg_match_all('/version\ (.+?)$/', $result, $matches);
+
+    $version = $matches[1][0] ?? get('laravel_version') ?? 5.4;
+
+    set('laravel_version', (float) $version);
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file

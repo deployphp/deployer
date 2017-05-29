@@ -18,7 +18,7 @@ require_once __DIR__ . '/common.php';
 set('env', 'prod');
 
 // Symfony shared dirs
-set('shared_dirs', ['app/logs']);
+set('shared_dirs', ['app/logs', 'vendor']);
 
 // Symfony shared files
 set('shared_files', ['app/config/parameters.yml']);

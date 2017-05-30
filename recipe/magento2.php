@@ -87,3 +87,5 @@ task('deploy', [
     'cleanup',
     'success'
 ]);
+
+after('deploy:failed', 'magento:maintenance:disable');

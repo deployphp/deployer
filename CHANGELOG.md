@@ -8,6 +8,8 @@
 - Fixed storage link error when deploying Laravel < 5.3. 
 - Helps [#1153]
 - Disable maintenance mode when Magento2 deployment fails [#1251]
+- Fixed storage link error when deploying Laravel < 5.3. 
+- Helps [#1153]
 
 ## v5.0.1
 [v5.0.0...v5.0.1](https://github.com/deployphp/deployer/compare/v5.0.0...v5.0.1)

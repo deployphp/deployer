@@ -6,7 +6,7 @@
 ### Fixed
 - Fixed upload / download with optional rsync ssh options [#1227]
 - Disable maintenance mode when Magento2 deployment fails [#1251]
-- Fixed storage link error when deploying Laravel < 5.3 
+- Fixed storage link error when deploying Laravel < 5.3. 
 - Helps [#1153]
 
 ## v5.0.1

@@ -5,6 +5,8 @@
 
 ### Fixed
 - Fixed upload / download with optional rsync ssh options [#1227]
+- Fixed storage link error when deploying Laravel < 5.3. 
+- Helps [#1153]
 
 ## v5.0.1
 [v5.0.0...v5.0.1](https://github.com/deployphp/deployer/compare/v5.0.0...v5.0.1)

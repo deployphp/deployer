@@ -38,11 +38,11 @@ set('writable_dirs', [
 set('laravel_version', function () {
     $result = run('{{bin/php}} {{release_path}}/artisan --version');
 
-    preg_match_all('/version\ (.+?)$/', $result, $matches);
+    preg_match_all('/([0-9\.])$/', $result, $matches);
 
     $version = $matches[1][0] ?? 5.4;
 
-    return (float) $version;
+    return $version;
 });
 
 /**
@@ -115,7 +115,10 @@ task('artisan:queue:restart', function () {
 
 desc('Execute artisan storage:link');
 task('artisan:storage:link', function () {
-    if (version_compare(get('laravel_version'), 5.2, '>')) {
+    $needsVersion = 5.3;
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $needsVersion, '>=')) {
         run('{{bin/php}} {{release_path}}/artisan storage:link');
     }
 });

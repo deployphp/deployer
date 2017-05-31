@@ -1,9 +1,17 @@
 # Changelog
 
 ## master
-[v5.0.1...master](https://github.com/deployphp/deployer/compare/v5.0.1...master)
+[v5.0.3...master](https://github.com/deployphp/deployer/compare/v5.0.3...master)
 
 -
+
+
+## v5.0.3
+[v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)
+
+### Fixed 
+- Fix a parsing of laravel version in output [#1252]
+
 
 ## v5.0.2
 [v5.0.1...v5.0.2](https://github.com/deployphp/deployer/compare/v5.0.1...v5.0.2)
@@ -15,6 +23,7 @@
 - Fixed upload / download with optional rsync ssh options [#1227]
 - Disable maintenance mode when Magento2 deployment fails [#1251]
 - Fixed storage link error when deploying Laravel < 5.3 [#1246]
+
 
 ## v5.0.1
 [v5.0.0...v5.0.1](https://github.com/deployphp/deployer/compare/v5.0.0...v5.0.1)
@@ -210,6 +219,7 @@
 ## v4.0.0
 🙄
 
+[#1252]: https://github.com/deployphp/deployer/pull/1252
 [#1251]: https://github.com/deployphp/deployer/pull/1251
 [#1246]: https://github.com/deployphp/deployer/pull/1246
 [#1227]: https://github.com/deployphp/deployer/pull/1227

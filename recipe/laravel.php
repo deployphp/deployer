@@ -38,9 +38,9 @@ set('writable_dirs', [
 set('laravel_version', function () {
     $result = run('{{bin/php}} {{release_path}}/artisan --version');
 
-    preg_match_all('/([0-9\.])$/', $result, $matches);
+    preg_match_all('/(\d+\.?)+/', $result, $matches);
 
-    $version = $matches[1][0] ?? 5.4;
+    $version = $matches[0][0] ?? 5.4;
 
     return $version;
 });

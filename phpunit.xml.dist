@@ -12,8 +12,11 @@
         <testsuite name="Source">
             <directory>test/src/</directory>
         </testsuite>
-        <testsuite name="Recipes">
+        <testsuite name="Recipe">
             <directory>test/recipe/</directory>
+        </testsuite>
+        <testsuite name="Misc">
+            <directory>test/misc/</directory>
         </testsuite>
     </testsuites>
     <filter>

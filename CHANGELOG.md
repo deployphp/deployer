@@ -3,7 +3,8 @@
 ## master
 [v5.0.3...master](https://github.com/deployphp/deployer/compare/v5.0.3...master)
 
--
+# Added
+- Check what `unzip` exists in `deploy:vendors` task
 
 
 ## v5.0.3

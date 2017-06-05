@@ -18,7 +18,7 @@ class Host
 
     private $hostname;
     private $user;
-    private $port;
+    private $port = 22;
     private $configFile;
     private $identityFile;
     private $forwardAgent = true;

@@ -8,6 +8,7 @@
 namespace Deployer\Task;
 
 use Deployer\Exception\Exception;
+use function Deployer\task;
 
 class GroupTask extends Task
 {
@@ -44,6 +45,16 @@ class GroupTask extends Task
     public function getGroup()
     {
         return $this->group;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function onCondition(...$conditions)
+    {
+        foreach ($this->getGroup() as $task) {
+            call_user_func_array([task($task), 'onCondition'], $conditions);
+        }
     }
 
     public function local()

@@ -125,6 +125,54 @@ class TaskTest extends TestCase
         $task3 = new Task('task3', new StubTask());
         $task3->run($context);
         self::assertEquals(1, StubTask::$runned);
+
+        // Test create task with condition [$object, 'method']
+        $context = new Context(new Host('a'));
+
+        $mock4 = self::getMockBuilder('stdClass')
+            ->setMethods(['callback1', 'callback2', 'callback3', 'callback4'])
+            ->getMock();
+
+        //test boolean condition
+        $mock4
+            ->expects(self::once())
+            ->method('callback1');
+
+        $task4 = new Task('task4', [$mock4, 'callback1']);
+        $task4
+            ->onCondition(true)
+            ->run($context);
+
+
+        //test string condition
+        $context->getConfig()->set('test', true);
+        $mock4
+            ->expects(self::once())
+            ->method('callback2');
+
+        $task4 = new Task('task4', [$mock4, 'callback2']);
+        $task4
+            ->onCondition('test')
+            ->run($context);
+
+        //test callback condition
+        $mock4
+            ->expects(self::once())
+            ->method('callback3');
+        $task4 = new Task('task4', [$mock4, 'callback3']);
+        $task4
+            ->onCondition(function () {
+                return true;
+            })
+            ->run($context);
+
+        $mock4
+            ->expects(self::never())
+            ->method('callback4');
+        $task4 = new Task('task4', [$mock4, 'callback4']);
+        $task4
+            ->onCondition(false)
+            ->run($context);
     }
 }
 

@@ -1,4 +1,3 @@
-
 <?php
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -52,8 +51,7 @@ class FileLoader
                     'identityFile',
                     'forwardAgent',
                     'multiplexing',
-                    'sshOptions',
-                    'sshFlags',
+                    'options',
                 ];
 
                 foreach ($methods as $method) {

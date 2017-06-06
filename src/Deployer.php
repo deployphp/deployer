@@ -243,9 +243,9 @@ class Deployer extends Container
     {
         if (isset($this[$name])) {
             return $this[$name];
-        } else {
-            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
+
+        throw new \InvalidArgumentException("Property \"$name\" does not exist.");
     }
 
     /**

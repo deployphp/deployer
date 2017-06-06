@@ -53,11 +53,7 @@ class Result
      */
     public function toBool()
     {
-        if ('true' === $this->toString()) {
-            return true;
-        } else {
-            return false;
-        }
+        return 'true' === $this->toString();
     }
 
     /**

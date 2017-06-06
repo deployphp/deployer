@@ -49,9 +49,9 @@ class Storage
 
             if ($collection instanceof PersistentCollection) {
                 $collection->load();
-            } else {
-                throw new Exception("Can't load data for `$host` host. Host doesn't persistent.");
             }
+
+            throw new Exception("Can't load data for `$host` host. Host doesn't persistent.");
         }
     }
 
@@ -67,9 +67,9 @@ class Storage
 
             if ($collection instanceof PersistentCollection) {
                 $collection->flush();
-            } else {
-                throw new Exception("Can't load data for `$host` host. Host doesn't persistent.");
             }
+
+            throw new Exception("Can't load data for `$host` host. Host doesn't persistent.");
         }
     }
 

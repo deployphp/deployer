@@ -60,7 +60,7 @@ set('http_group', false);
 set('clear_paths', []);         // Relative path from deploy_path
 set('clear_use_sudo', false);    // Using sudo in clean commands?
 
-set('cleanup_use_sudo', false); // Using sudo in cleanup commands?
+set('cleanup_use_sudo', true); // Using sudo in cleanup commands?
 
 set('use_relative_symlink', function () {
     return commandSupportsOption('ln', '--relative');

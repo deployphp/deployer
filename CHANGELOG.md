@@ -214,7 +214,7 @@
 - Fixed `DotArray` syntax in `Collection`
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
-
+- Fixed can't use sudo in cleanup commands
 
 
 ## v4.0.0

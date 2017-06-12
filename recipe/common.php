@@ -99,16 +99,16 @@ set('current_path', function () {
  * Custom bins.
  */
 set('bin/php', function () {
-    return run('which php')->toString();
+    return locateBinaryPath('php');
 });
 
 set('bin/git', function () {
-    return run('which git')->toString();
+    return locateBinaryPath('git');
 });
 
 set('bin/composer', function () {
     if (commandExist('composer')) {
-        $composer = run('which composer')->toString();
+        $composer = locateBinaryPath('composer');
     }
 
     if (empty($composer)) {

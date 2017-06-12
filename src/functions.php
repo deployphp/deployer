@@ -736,3 +736,30 @@ function parse($value)
 {
     return Context::get()->getConfig()->parse($value);
 }
+
+function locateBinaryPath($name)
+{
+    $nameEscaped = escapeshellarg($name);
+
+    // Try `command`, should cover all Bourne-like shells
+    if (commandExist("command")) {
+        return run("command -v $nameEscaped")->toString();
+    }
+
+    // Try `which`, should cover most other cases
+    if (commandExist("which")) {
+        return run("which $nameEscaped")->toString();
+    }
+
+    // Fallback to `type` command, if the rest fails
+    if (commandExist("type")) {
+        $result = run("type -p $nameEscaped")->toString();
+
+        if ($result) {
+            // Deal with issue when `type -p` outputs something like `type -ap` in some implementations
+            return trim(str_replace("$name is", "", $result));
+        }
+    }
+
+    throw new \RuntimeException("Can't locate [$nameEscaped] - neither of [command|which|type] commands are available");
+}

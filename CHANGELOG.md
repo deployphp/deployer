@@ -6,6 +6,9 @@
 # Added
 - Check what `unzip` exists in `deploy:vendors` task
 
+# Changed
+- Use either one of `command`, `which` or `type` commands to locate custom binary path.
+
 
 ## v5.0.3
 [v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)

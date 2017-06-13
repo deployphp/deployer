@@ -423,13 +423,14 @@ function upload($source, $destination, array $config = [])
     $host = Context::get()->getHost();
     $source = parse($source);
     $destination = parse($destination);
+    $config['options'] = is_array($config['options']) ? $config['options'] : [];
 
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            $config['options'] = ["-e 'ssh $sshArguments'"];
+            $config['options'][] = "-e 'ssh $sshArguments'";
         }
         $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
     }
@@ -448,13 +449,14 @@ function download($source, $destination, array $config = [])
     $host = Context::get()->getHost();
     $source = parse($source);
     $destination = parse($destination);
+    $config['options'] = is_array($config['options']) ? $config['options'] : [];
 
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            $config['options'] = ["-e 'ssh $sshArguments'"];
+            $config['options'][] = "-e 'ssh $sshArguments'";
         }
         $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
     }

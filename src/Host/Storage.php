@@ -31,7 +31,7 @@ class Storage
 		// default persistent storage in case we can't use the configured value
 		// or we can't create the default location
 		// use the system temporary folder and the current pid to make the path unique
-		$tmp = sys_get_temp_dir() . '/' . uuid(posix_getpid());
+		$tmp = sys_get_temp_dir() . '/' . uniqid(posix_getpid());
 		
 		// get the location for the deployer configuration
 		$deployerConfig = $config->has('deployer_config') ? $config->get('deployer_config') : null;

@@ -16,8 +16,9 @@ class Storage
 {
 	/**
 	 * In a multi user environment where multiple projects are located on the same instance(s)
-	 *	if two or more users are deploying a project on the same environment, the generated hosts files
-	 *	are overwritten or worse, the deploy will fail due to file permissions
+	 *	if two or more users are deploying at the same time on the same environment, 
+	 *	the generated hosts files are overwritten or worse, the deploy will fail 
+	 *	due to file permissions
 	 *
 	 * Make the persistent storage folder configurable or use the system tmp 
 	 *	as default if not possible
@@ -28,11 +29,11 @@ class Storage
 	private static function _getPersistentStorageLocation() {
 		$config = \Deployer\Deployer::get()->config;
 
-		// default persistent storage in case we can't use the configured value
+		// use the system temporary folder and the current pid as default 
+		// persistent storage in case we can't use the configured value
 		// or we can't create the default location
-		// use the system temporary folder and the current pid to make the path unique
-		$tmp = sys_get_temp_dir() . '/' . uniqid(posix_getpid());
-		
+		$tmp = sys_get_temp_dir() . '/' . posix_getpid();
+
 		// get the location for the deployer configuration
 		$deployerConfig = $config->has('deployer_config') ? $config->get('deployer_config') : null;
 
@@ -76,7 +77,7 @@ class Storage
 		
 		// we now have the repository name
 		$repository = str_replace('/', '_', substr($configRepository, (strrpos($configRepository, ':') + 1)));
-		
+
 		return $deployerConfig . '/' . $repository;
 	}
 

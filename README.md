@@ -34,11 +34,5 @@ Read the [contributing](https://github.com/deployphp/deployer/blob/master/.githu
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 
-## Support
-
-Deployer is an open source project. If you want to support the development of Deployer visit our [patreon page](https://www.patreon.com/deployer).
-
-[![Becoming a patron](https://img.shields.io/badge/become-patron-brightgreen.svg)](https://www.patreon.com/deployer)
-
 ## License
 Licensed under the [MIT license](https://github.com/deployphp/deployer/blob/master/LICENSE).

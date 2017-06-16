@@ -142,7 +142,7 @@ class ParallelExecutor implements ExecutorInterface
      */
     protected function getProcess($host, Task $task)
     {
-        $dep = DEPLOYER_BIN;
+        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $options = $this->generateOptions();
         $hostname = $host->getHostname();
         $taskName = $task->getName();

@@ -8,12 +8,13 @@
 
 # Changed
 - Use either one of `command`, `which` or `type` commands to locate custom binary path.
+- use PHP_BINARY when triggering processes in parallel-executer
 
 
 ## v5.0.3
 [v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)
 
-### Fixed 
+### Fixed
 - Fix a parsing of laravel version in output [#1252]
 
 
@@ -46,7 +47,7 @@
 ## v5.0.0
 [v5.0.0-beta.3...v5.0.0](https://github.com/deployphp/deployer/compare/v5.0.0-beta.3...v5.0.0)
 
-### Changed 
+### Changed
 - Working path default is `release_path` instead of home for simple tasks [#1205]
 
 ### Fixed

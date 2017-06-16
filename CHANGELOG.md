@@ -3,12 +3,14 @@
 ## master
 [v5.0.3...master](https://github.com/deployphp/deployer/compare/v5.0.3...master)
 
-# Added
+### Added
 - Check what `unzip` exists in `deploy:vendors` task
 
-# Changed
+### Changed
 - Use either one of `command`, `which` or `type` commands to locate custom binary path.
-- use PHP_BINARY when triggering processes in parallel-executer
+
+### Fixed
+- Fixed parallel execution with non-standart php bin path [#1265]
 
 
 ## v5.0.3
@@ -224,6 +226,7 @@
 ## v4.0.0
 🙄
 
+[#1265]: https://github.com/deployphp/deployer/pull/1265
 [#1252]: https://github.com/deployphp/deployer/pull/1252
 [#1251]: https://github.com/deployphp/deployer/pull/1251
 [#1246]: https://github.com/deployphp/deployer/pull/1246

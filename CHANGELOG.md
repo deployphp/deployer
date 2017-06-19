@@ -11,7 +11,7 @@
 
 ### Fixed
 - Fixed parallel execution with non-standart php bin path [#1265]
-
+- Fixed ssh multiplexing initialization
 
 ## v5.0.3
 [v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)

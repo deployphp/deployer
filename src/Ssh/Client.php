@@ -7,7 +7,6 @@
 
 namespace Deployer\Ssh;
 
-use Deployer\Exception\InitializationException;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
 use Deployer\Utility\ProcessOutputPrinter;
@@ -127,23 +126,10 @@ class Client
                 $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
             }
 
-            // Open master connection explicit,
-            // ControlMaster=auto could not working
-            $process = new Process("ssh -M $sshArguments $host");
-            $process->start();
+            $output = $this->exec("ssh -N $sshArguments $host");
 
-            $attempts = 0;
-            while (!$this->isMultiplexingInitialized($host, $sshArguments)) {
-                if ($attempts++ > 30) {
-                    throw new InitializationException('Wait time exceeded for ssh multiplexing initialization');
-                }
-
-                if (!$process->isRunning()) {
-                    throw new InitializationException('Failed to initialize ssh multiplexing');
-                }
-
-                // Delay to check again if the connection is established
-                sleep(1);
+            if ($this->output->isVeryVerbose()) {
+                $this->pop->writeln(Process::OUT, $host->getHostname(), $output);
             }
         }
 
@@ -154,7 +140,30 @@ class Client
     {
         $process = new Process("ssh -O check $sshArguments $host 2>&1");
         $process->run();
+        return (bool)preg_match('/Master running/', $process->getOutput());
+    }
 
-        return (bool) preg_match('/Master running/', $process->getOutput());
+    private function exec($command, &$exitCode = null)
+    {
+        $descriptors = [
+            ['pipe', 'r'],
+            ['pipe', 'w'],
+            ['pipe', 'w'],
+        ];
+
+        // Don't read from stderr, there is a bug in OpenSSH_7.2p2 (stderr doesn't closed with ControlMaster)
+
+        $process = proc_open($command, $descriptors, $pipes);
+        if (is_resource($process)) {
+            fclose($pipes[0]);
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            fclose($pipes[2]);
+            $exitCode = proc_close($process);
+        } else {
+            $output = 'proc_open failure';
+            $exitCode = 1;
+        }
+        return $output;
     }
 }

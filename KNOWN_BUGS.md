@@ -9,3 +9,11 @@ Add next line to _deploy.php_ file:
 ~~~php
 set('use_relative_symlink', false);
 ~~~
+
+
+## OpenSSH_7.2p2
+ 
+ControlPersist causes stderr to be left open until the master connection times out.
+
+* https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=714526
+* https://bugzilla.mindrot.org/show_bug.cgi?id=1988

@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use function Deployer\run;
 use function Deployer\write;
+use function Deployer\writeln;
 
 class RunCommand extends Command
 {
@@ -98,9 +99,13 @@ class RunCommand extends Command
             throw new Exception('No host selected');
         }
 
-        $task = new Task($command, function () use ($command) {
+        $task = new Task($command, function () use ($command, $hosts) {
             $output = run($command);
-            write($output);
+            if (count($hosts) > 1) {
+                writeln("[{{hostname}}] > $output");
+            } else {
+                write($output);
+            }
         });
 
         foreach ($hosts as $host) {

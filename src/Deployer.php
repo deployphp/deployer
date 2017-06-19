@@ -302,6 +302,7 @@ class Deployer extends Container
             $io = new SymfonyStyle($input, $output);
             $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
             $io->block($e->getTraceAsString());
+            exit(1);
         });
 
         // Require deploy.php file

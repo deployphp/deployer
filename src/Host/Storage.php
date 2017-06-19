@@ -102,7 +102,7 @@ class Storage
 		// use the system temporary folder and the current pid as default 
 		// persistent storage in case we can't use the configured value
 		// or we can't create the default location
-		$tmp = sys_get_temp_dir() . '/' . posix_getpid();
+		$tmp = sys_get_temp_dir() . '/' . (function_exists('posix_getpid') ? posix_getpid() : getmypid());
 
 		// use the home dir of the current user 
 		// and the repository name

@@ -5,6 +5,7 @@
 
 ### Added
 - Check what `unzip` exists in `deploy:vendors` task
+- Added `dep run` command [#1263]
 
 ### Changed
 - Use either one of `command`, `which` or `type` commands to locate custom binary path.
@@ -228,6 +229,7 @@
 
 [#1268]: https://github.com/deployphp/deployer/pull/1268
 [#1265]: https://github.com/deployphp/deployer/pull/1265
+[#1263]: https://github.com/deployphp/deployer/pull/1263
 [#1252]: https://github.com/deployphp/deployer/pull/1252
 [#1251]: https://github.com/deployphp/deployer/pull/1251
 [#1246]: https://github.com/deployphp/deployer/pull/1246

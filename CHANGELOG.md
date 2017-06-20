@@ -6,6 +6,7 @@
 ### Added
 - Check what `unzip` exists in `deploy:vendors` task
 - Added `dep run` command [#1263]
+- Added new `-o` option which allow to override default configuration
 
 ### Changed
 - Use either one of `command`, `which` or `type` commands to locate custom binary path.

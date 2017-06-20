@@ -87,6 +87,12 @@ class TaskCommand extends Command
             Option::VALUE_REQUIRED,
             'Host to deploy, comma separated, supports ranges [:]'
         );
+        $this->addOption(
+            'option',
+            'o',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Sets configuration option'
+        );
     }
 
     /**
@@ -97,6 +103,7 @@ class TaskCommand extends Command
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
         $roles = $input->getOption('roles');
         $hosts = $input->getOption('hosts');
+        $this->parseOptions($input->getOption('option'));
 
         $hooksEnabled = !$input->getOption('no-hooks');
         if (!empty($input->getOption('log'))) {
@@ -150,6 +157,27 @@ class TaskCommand extends Command
 
         if (Deployer::hasDefault('terminate_message')) {
             $output->writeln(Deployer::getDefault('terminate_message'));
+        }
+    }
+
+    private function parseOptions(array $options)
+    {
+        foreach ($options as $option) {
+            list($name, $value) = explode('=', $option);
+            $value = $this->castValueToPhpType($value);
+            $this->deployer->config->set($name, $value);
+        }
+    }
+
+    private function castValueToPhpType($value)
+    {
+        switch ($value) {
+            case 'true':
+                return true;
+            case 'false':
+                return false;
+            default:
+                return $value;
         }
     }
 }

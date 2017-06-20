@@ -15,7 +15,7 @@
 - Fixed parallel execution with non-standart php bin path [#1265]
 - Fixed ssh multiplexing initialization [#1268]
 - Fixed exit code on error [#1236]
-- Fixed bug with deploying in parallel to same host
+- Fixed bug with deploying in parallel to same host [#1271]
 
 ## v5.0.3
 [v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)
@@ -230,6 +230,7 @@
 ## v4.0.0
 🙄
 
+[#1271]: https://github.com/deployphp/deployer/pull/1271
 [#1268]: https://github.com/deployphp/deployer/pull/1268
 [#1265]: https://github.com/deployphp/deployer/pull/1265
 [#1263]: https://github.com/deployphp/deployer/pull/1263

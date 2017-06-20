@@ -37,8 +37,9 @@ class FileLoaderTest extends TestCase
         self::assertEquals('/var/local', $local->get('deploy_to'));
 
         // bar configured properly
-        $bar = $this->getHost('bar.com');
-        self::assertEquals('bar.com', $bar->getHostname());
+        $bar = $this->getHost('bar');
+        self::assertEquals('bar', $bar->getHostname());
+        self::assertEquals('user@bar.com', "$bar");
         self::assertEquals('user', $bar->getUser());
         self::assertEquals(22, $bar->getPort());
         self::assertEquals('configFile', $bar->getConfigFile());

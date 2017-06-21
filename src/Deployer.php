@@ -354,7 +354,7 @@ class Deployer extends Container
             $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
         }
 
-        if ($stats['command_name'] === 'worker') {
+        if (in_array($stats['command_name'], ['worker', 'list', 'help'], true)) {
             return;
         }
 

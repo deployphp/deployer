@@ -105,7 +105,6 @@ Autocomplete will be working after restarting terminal or you can run "source ~/
 
 HELP
             );
-
         }
     }
 }

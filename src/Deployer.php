@@ -9,6 +9,7 @@ namespace Deployer;
 
 use Deployer\Collection\Collection;
 use Deployer\Console\Application;
+use Deployer\Console\AutocompleteCommand;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\InitCommand;
 use Deployer\Console\Output\Informer;
@@ -217,6 +218,7 @@ class Deployer extends Container
         $this->getConsole()->add($this['init_command']);
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
+        $this->getConsole()->add(new AutocompleteCommand());
         $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 
@@ -354,7 +356,7 @@ class Deployer extends Container
             $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
         }
 
-        if ($stats['command_name'] === 'worker') {
+        if (in_array($stats['command_name'], ['worker', 'list', 'help'], true)) {
             return;
         }
 

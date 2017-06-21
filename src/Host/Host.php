@@ -17,6 +17,7 @@ class Host
     use ConfigurationAccessor;
 
     private $hostname;
+    private $realHostname;
     private $user;
     private $port;
     private $configFile;
@@ -31,6 +32,7 @@ class Host
     public function __construct(string $hostname)
     {
         $this->hostname = $hostname;
+        $this->setRealHostname($hostname);
         $this->config = new Configuration();
         $this->sshArguments = new Arguments();
     }
@@ -62,8 +64,7 @@ class Host
     public function __toString()
     {
         $user = empty($this->user) ? '' : "{$this->user}@";
-        $hostname = preg_replace('/\/.+$/', '', $this->hostname);
-        return "$user$hostname";
+        return "$user{$this->realHostname}";
     }
 
     /**
@@ -80,8 +81,16 @@ class Host
      */
     public function hostname(string $hostname)
     {
-        $this->hostname = $hostname;
+        $this->setRealHostname($hostname);
         return $this;
+    }
+
+    /**
+     * @param mixed $hostname
+     */
+    private function setRealHostname(string $hostname)
+    {
+        $this->realHostname = preg_replace('/\/.+$/', '', $hostname);
     }
 
     /**

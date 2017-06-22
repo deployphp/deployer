@@ -1,7 +1,11 @@
 # Changelog
 
 ## master
-[v5.0.3...master](https://github.com/deployphp/deployer/compare/v5.0.3...master)
+[v5.1.0...master](https://github.com/deployphp/deployer/compare/v5.1.0...master)
+
+
+## v5.1.0
+[v5.0.3...v5.1.0](https://github.com/deployphp/deployer/compare/v5.0.3...v5.1.0)
 
 ### Added
 - Check what `unzip` exists in `deploy:vendors` task

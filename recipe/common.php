@@ -9,6 +9,7 @@ namespace Deployer;
 
 require __DIR__ . '/config/current.php';
 require __DIR__ . '/config/dump.php';
+require __DIR__ . '/config/hosts.php';
 require __DIR__ . '/deploy/prepare.php';
 require __DIR__ . '/deploy/lock.php';
 require __DIR__ . '/deploy/release.php';

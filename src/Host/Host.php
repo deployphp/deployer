@@ -76,6 +76,14 @@ class Host
     }
 
     /**
+     * @return mixed
+     */
+    public function getRealHostname()
+    {
+        return $this->realHostname;
+    }
+
+    /**
      * @param string $hostname
      * @return $this
      */

@@ -3,6 +3,8 @@
 ## master
 [v5.1.0...master](https://github.com/deployphp/deployer/compare/v5.1.0...master)
 
+### Fixed 
+- Fixed bug with `self-update` warnings [#1226]
 
 ## v5.1.0
 [v5.0.3...v5.1.0](https://github.com/deployphp/deployer/compare/v5.0.3...v5.1.0)
@@ -245,6 +247,7 @@
 [#1246]: https://github.com/deployphp/deployer/pull/1246
 [#1236]: https://github.com/deployphp/deployer/issues/1236
 [#1227]: https://github.com/deployphp/deployer/pull/1227
+[#1226]: https://github.com/deployphp/deployer/issues/1226
 [#1218]: https://github.com/deployphp/deployer/issues/1218
 [#1205]: https://github.com/deployphp/deployer/issues/1205
 [#1204]: https://github.com/deployphp/deployer/issues/1204

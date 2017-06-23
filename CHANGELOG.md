@@ -3,6 +3,8 @@
 ## master
 [v5.1.1...master](https://github.com/deployphp/deployer/compare/v5.1.1...master)
 
+### Changed
+- Improved `config:current` output (print each host's current release)
 
 
 ## v5.1.1

@@ -27,14 +27,14 @@ class Arguments
 
     public function getCliArguments()
     {
-        $boolFlags  = array_keys(array_filter($this->flags, 'is_null'));
+        $boolFlags = array_keys(array_filter($this->flags, 'is_null'));
 
         $valueFlags = array_filter($this->flags);
         $valueFlags = array_map(function ($key, $value) {
             return "$key $value";
         }, array_keys($valueFlags), $valueFlags);
 
-        $options    = array_map(function ($key, $value) {
+        $options = array_map(function ($key, $value) {
             return "-o $key=$value";
         }, array_keys($this->options), $this->options);
 
@@ -103,9 +103,9 @@ class Arguments
         $controlPath = $this->generateControlPath($host);
 
         $multiplexDefaults = (new Arguments)->withOptions([
-            'ControlMaster'  => 'auto',
+            'ControlMaster' => 'auto',
             'ControlPersist' => '60',
-            'ControlPath'    => $controlPath,
+            'ControlPath' => $controlPath,
         ]);
 
         return $this->withDefaults($multiplexDefaults);
@@ -127,30 +127,28 @@ class Arguments
      */
     private function generateControlPath(Host $host)
     {
-        $connectionData = "$host{$host->getPort()}";
+        $port = empty($host->getPort()) ? '' : ':' . $host->getPort();
+        $connectionData = "$host$port";
         $tryLongestPossible = 0;
         $controlPath = '';
         do {
             switch ($tryLongestPossible) {
                 case 1:
-                    $controlPath = "~/.ssh/deployer_mux_$connectionData";
+                    $controlPath = "~/.ssh/deployer_%C";
                     break;
                 case 2:
-                    $controlPath = "~/.ssh/deployer_mux_%C";
+                    $controlPath = "~/deployer_$connectionData";
                     break;
                 case 3:
-                    $controlPath = "~/deployer_mux_$connectionData";
+                    $controlPath = "~/deployer_%C";
                     break;
                 case 4:
-                    $controlPath = "~/deployer_mux_%C";
-                    break;
-                case 5:
                     $controlPath = "~/mux_%C";
                     break;
-                case 6:
+                case 5:
                     throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");
                 default:
-                    $controlPath = "~/.ssh/deployer_mux_$connectionData";
+                    $controlPath = "~/.ssh/deployer_$connectionData";
             }
             $tryLongestPossible++;
         } while (strlen($controlPath) > 104); // Unix socket max length

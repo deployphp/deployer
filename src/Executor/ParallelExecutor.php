@@ -252,7 +252,7 @@ class ParallelExecutor implements ExecutorInterface
         foreach (['log'] as $option) {
             $value = $this->input->getOption($option);
             if ($value) {
-                $input .= " --$option $value";
+                $input .= " --$option=$value";
             }
         }
 
@@ -268,7 +268,7 @@ class ParallelExecutor implements ExecutorInterface
         foreach ($this->console->getUserDefinition()->getOptions() as $option) {
             $value = $this->input->getOption($option->getName());
             if ($value) {
-                $input .= " --{$option->getName()} $value";
+                $input .= " --{$option->getName()}=$value";
             }
         }
 

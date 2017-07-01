@@ -15,7 +15,7 @@ task('deploy:writable', function () {
     $httpUser = get('http_user', false);
     $runOpts = [];
     if ($sudo) {
-      $runOpts['tty'] = get('writable_request_tty', false);
+        $runOpts['tty'] = get('writable_request_tty', false);
     }
 
     if (empty($dirs)) {

@@ -3,6 +3,8 @@
 ## master
 [v5.1.3...master](https://github.com/deployphp/deployer/compare/v5.1.3...master)
 
+### Fixed
+- Improved the way `ParallelExecutor` handles option parameters.
 
 
 ## v5.1.3

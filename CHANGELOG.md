@@ -5,7 +5,10 @@
 
 ### Changed
 - Improved `config:current` output (print each host's current release)
-- Fix bug where `ParallelExecutor` threw an error when custom options were added.
+
+### Fixed
+- Fixed bug where `ParallelExecutor` threw an error when custom options were added
+- Fixed bug with parallel deploy in multi user envirouments [#1269]
 
 
 ## v5.1.1
@@ -248,6 +251,7 @@
 🙄
 
 [#1271]: https://github.com/deployphp/deployer/pull/1271
+[#1269]: https://github.com/deployphp/deployer/pull/1269
 [#1268]: https://github.com/deployphp/deployer/pull/1268
 [#1265]: https://github.com/deployphp/deployer/pull/1265
 [#1263]: https://github.com/deployphp/deployer/pull/1263

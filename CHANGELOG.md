@@ -5,7 +5,7 @@
 
 ### Changed
 - Improved `config:current` output (print each host's current release)
-- Fixes cache clearing in the Symfony recipe (now runs both cache:clear and cache:warmup)
+- Fixed cache clearing in the Symfony recipe (now runs both cache:clear and cache:warmup) [#1283]
 
 ### Fixed
 - Fixed bug where `ParallelExecutor` threw an error when custom options were added
@@ -251,6 +251,7 @@
 ## v4.0.0
 🙄
 
+[#1283]: https://github.com/deployphp/deployer/pull/1283
 [#1271]: https://github.com/deployphp/deployer/pull/1271
 [#1269]: https://github.com/deployphp/deployer/pull/1269
 [#1268]: https://github.com/deployphp/deployer/pull/1268

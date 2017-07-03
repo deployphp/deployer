@@ -5,6 +5,7 @@
 
 ### Changed
 - Improved `config:current` output (print each host's current release)
+- Fix bug where `ParallelExecutor` threw an error when custom options were added.
 
 
 ## v5.1.1

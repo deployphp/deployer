@@ -5,6 +5,7 @@
 
 ### Changed
 - Improved `config:current` output (print each host's current release)
+- Fixes cache clearing in the Symfony recipe (now runs both cache:clear and cache:warmup)
 
 ### Fixed
 - Fixed bug where `ParallelExecutor` threw an error when custom options were added

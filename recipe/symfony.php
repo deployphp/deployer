@@ -102,6 +102,12 @@ task('deploy:assetic:dump', function () {
     }
 })->desc('Dump assets');
 
+/**
+ * Clear Cache
+ */
+task('deploy:cache:clear', function () {
+    run('{{env_vars}} {{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-debug --no-warmup');
+})->desc('Clear cache');
 
 /**
  * Warm up cache
@@ -134,6 +140,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:assets:install',
     'deploy:assetic:dump',
+    'deploy:cache:clear',
     'deploy:cache:warmup',
     'deploy:writable',
     'deploy:symlink',

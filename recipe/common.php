@@ -128,9 +128,9 @@ set('bin/symlink', function () {
 /**
  * Default options
  */
-option('tag', null, InputOption::VALUE_OPTIONAL, 'Tag to deploy');
-option('revision', null, InputOption::VALUE_OPTIONAL, 'Revision to deploy');
-option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
+option('tag', null, InputOption::VALUE_REQUIRED, 'Tag to deploy');
+option('revision', null, InputOption::VALUE_REQUIRED, 'Revision to deploy');
+option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
 
 
 /**

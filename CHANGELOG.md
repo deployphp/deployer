@@ -1,8 +1,15 @@
 # Changelog
 
-
 ## master
-[v5.1.2...master](https://github.com/deployphp/deployer/compare/v5.1.2...master)
+[v5.1.3...master](https://github.com/deployphp/deployer/compare/v5.1.3...master)
+
+
+
+## v5.1.3
+[v5.1.2...v5.1.3](https://github.com/deployphp/deployer/compare/v5.1.2...v5.1.3)
+
+### Fixed
+- Fixed bug with wrong version printed after self-update command
 
 
 ## v5.1.2

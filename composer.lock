@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "deployer/phar-update",
-            "version": "v2.0.2",
+            "version": "v2.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/deployphp/phar-update.git",
-                "reference": "1ee838661223e1e79e390b5954a4f0023a3dd131"
+                "reference": "9533a3145ae2eee879eefeb84b9bf29a12813f01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/deployphp/phar-update/zipball/1ee838661223e1e79e390b5954a4f0023a3dd131",
-                "reference": "1ee838661223e1e79e390b5954a4f0023a3dd131",
+                "url": "https://api.github.com/repos/deployphp/phar-update/zipball/9533a3145ae2eee879eefeb84b9bf29a12813f01",
+                "reference": "9533a3145ae2eee879eefeb84b9bf29a12813f01",
                 "shasum": ""
             },
             "require": {
@@ -60,7 +60,7 @@
                 "phar",
                 "update"
             ],
-            "time": "2017-06-23T03:18:54+00:00"
+            "time": "2017-07-03T06:55:29+00:00"
         },
         {
             "name": "pimple/pimple",

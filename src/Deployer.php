@@ -116,7 +116,11 @@ class Deployer extends Container
             return new Task\ScriptManager($c['tasks']);
         };
         $this['hostSelector'] = function ($c) {
-            return new Host\HostSelector($c['hosts'], $c['config']['default_stage']);
+            $defaultStage = $c['config']['default_stage'];
+            if (is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
+                $defaultStage = call_user_func($defaultStage);
+            }
+            return new Host\HostSelector($c['hosts'], $defaultStage);
         };
         $this['fail'] = function () {
             return new Collection();

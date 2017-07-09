@@ -11,6 +11,7 @@
 
 ### Fixed
 - Fixed bug with wrong version printed after self-update command
+- Fixed bug with excess option "--no-debug" in deploy:cache:clear task [#1290]
 
 
 ## v5.1.2

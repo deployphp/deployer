@@ -330,6 +330,7 @@ class Deployer extends Container
      * by setting `allow_anonymous_stats` to false in your deploy.php file.
      *
      * @param CommandEvent $commandEvent
+     * @codeCoverageIgnore
      */
     public function collectAnonymousStats(CommandEvent $commandEvent)
     {

@@ -5,6 +5,7 @@
 
 ### Added
 - Added possibility to use callable when setting 'default_stage'.
+- Added console init template for TYPO3 CMS [#1300]
 
 ## v5.1.3
 [v5.1.2...v5.1.3](https://github.com/deployphp/deployer/compare/v5.1.2...v5.1.3)
@@ -265,6 +266,7 @@
 ## v4.0.0
 🙄
 
+[#1300]: https://github.com/deployphp/deployer/pull/1300
 [#1290]: https://github.com/deployphp/deployer/pull/1290
 [#1283]: https://github.com/deployphp/deployer/pull/1283
 [#1271]: https://github.com/deployphp/deployer/pull/1271

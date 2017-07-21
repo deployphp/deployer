@@ -139,7 +139,7 @@ function task($name, $body = null)
         return $task;
     }
 
-    if ($body instanceof \Closure) {
+    if (is_callable($body)) {
         $task = new T($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);

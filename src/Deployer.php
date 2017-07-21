@@ -89,7 +89,11 @@ class Deployer extends Container
             return new Task\ScriptManager($c['tasks']);
         };
         $this['stageStrategy'] = function ($c) {
-            return new StageStrategy($c['servers'], $c['environments'], $c['config']['default_stage']);
+            $defaultStage = $c['config']['default_stage'];
+            if (is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
+                $defaultStage = call_user_func($defaultStage);
+            }
+            return new StageStrategy($c['servers'], $c['environments'], $defaultStage);
         };
         $this['onFailure'] = function () {
             return new Collection();

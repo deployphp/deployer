@@ -266,7 +266,7 @@
 
 ## v4.0.0
 🙄
-
+[#1311]: https://github.com/deployphp/deployer/pull/1311
 [#1300]: https://github.com/deployphp/deployer/pull/1300
 [#1290]: https://github.com/deployphp/deployer/pull/1290
 [#1283]: https://github.com/deployphp/deployer/pull/1283

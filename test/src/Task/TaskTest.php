@@ -144,7 +144,7 @@ class TaskTest extends TestCase
 
         $task1 = new Task('only:once', [$mock, 'callback']);
         $task1
-            ->onHosts('a','b')
+            ->onHosts('a', 'b')
             ->once();
         self::assertTrue($task1->shouldBePerformed($a));
         self::assertEquals([true, true], array_map([$task1, 'shouldBePerformed'], [$a, $b]));
@@ -154,7 +154,7 @@ class TaskTest extends TestCase
 
         $task2 = new Task('multiple:runs', [$mock, 'callback']);
         $task2
-            ->onHosts('a','b');
+            ->onHosts('a', 'b');
         self::assertTrue($task2->shouldBePerformed($a));
         self::assertEquals([true, true], array_map([$task2, 'shouldBePerformed'], [$a, $b]));
         $task2->run($context);

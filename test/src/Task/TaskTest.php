@@ -160,8 +160,6 @@ class TaskTest extends TestCase
         $task2->run($context);
         self::assertTrue($task2->shouldBePerformed($b));
         self::assertEquals([true, true], array_map([$task2, 'shouldBePerformed'], [$a, $b]));
-
-
     }
 }
 

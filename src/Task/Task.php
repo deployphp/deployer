@@ -62,6 +62,20 @@ class Task
     private $private = false;
 
     /**
+     * Mark task to run only once, of the first node from the pool
+     *
+     * @var bool
+     */
+    private $once = false;
+
+    /**
+     * Mark if the task has run at least once
+     *
+     * @var bool
+     */
+    private $hasRun = false;
+
+    /**
      * @param string $name Tasks name
      * @param callable $callback Task code
      */
@@ -80,6 +94,10 @@ class Task
 
         // Call task
         call_user_func($this->callback);
+
+        if ($this->once) {
+            $this->hasRun = true;
+        }
 
         // Clear working_path
         if ($context->getConfig() !== null) {
@@ -134,6 +152,17 @@ class Task
         return $this->local;
     }
 
+    public function once()
+    {
+        $this->once = true;
+        return $this;
+    }
+
+    public function isOnce()
+    {
+        return $this->once;
+    }
+
     /**
      * @param array $hosts
      * @return $this
@@ -172,6 +201,11 @@ class Task
      */
     public function shouldBePerformed(...$hosts)
     {
+        // don't allow to run again it the task has been marked to run only once
+        if ($this->once && $this->hasRun) {
+            return false;
+        }
+
         foreach ($hosts as $host) {
             $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
 

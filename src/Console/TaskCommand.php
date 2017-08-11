@@ -154,10 +154,6 @@ class TaskCommand extends Command
                 throw $exception;
             }
         }
-
-        if (Deployer::hasDefault('terminate_message')) {
-            $output->writeln(Deployer::getDefault('terminate_message'));
-        }
     }
 
     private function parseOptions(array $options)

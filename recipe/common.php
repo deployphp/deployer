@@ -137,8 +137,11 @@ option('branch', null, InputOption::VALUE_OPTIONAL, 'Branch to deploy');
  * Success message
  */
 task('success', function () {
-    Deployer::setDefault('terminate_message', '<info>Successfully deployed!</info>');
-})->local()->setPrivate();
+    writeln('<info>Successfully deployed!</info>');
+})
+    ->local()
+    ->shallow()
+    ->setPrivate();
 
 
 /**

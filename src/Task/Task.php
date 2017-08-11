@@ -76,6 +76,14 @@ class Task
     private $hasRun = false;
 
     /**
+     * Shallow task will not print execution message/finish massage.
+     * Useful for success messages and info printing.
+     *
+     * @var bool
+     */
+    private $shallow = false;
+
+    /**
      * @param string $name Tasks name
      * @param callable $callback Task code
      */
@@ -282,5 +290,23 @@ class Task
     public function getAfter()
     {
         return $this->after;
+    }
+
+    /**
+     * Sets task shallow.
+     * @return $this
+     */
+    public function shallow()
+    {
+        $this->shallow = true;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShallow()
+    {
+        return $this->shallow;
     }
 }

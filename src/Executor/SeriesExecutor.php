@@ -52,7 +52,7 @@ class SeriesExecutor implements ExecutorInterface
         $localhost = new Localhost();
         foreach ($tasks as $task) {
             $success = true;
-            $this->informer->startTask($task->getName());
+            $this->informer->startTask($task);
 
             if ($task->isLocal()) {
                 $task->run(new Context($localhost, $this->input, $this->output));
@@ -71,7 +71,7 @@ class SeriesExecutor implements ExecutorInterface
             }
 
             if ($success) {
-                $this->informer->endTask();
+                $this->informer->endTask($task);
             } else {
                 $this->informer->taskError();
             }

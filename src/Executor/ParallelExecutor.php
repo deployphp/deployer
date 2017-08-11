@@ -69,7 +69,7 @@ class ParallelExecutor implements ExecutorInterface
 
         foreach ($tasks as $task) {
             $success = true;
-            $this->informer->startTask($task->getName());
+            $this->informer->startTask($task);
 
             if ($task->isLocal()) {
                 Storage::load($hosts);
@@ -94,7 +94,7 @@ class ParallelExecutor implements ExecutorInterface
             }
 
             if ($success) {
-                $this->informer->endTask();
+                $this->informer->endTask($task);
             } else {
                 $this->informer->taskError();
             }

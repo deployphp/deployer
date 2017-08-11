@@ -6,11 +6,13 @@
 ### Added
 - Added possibility to use callable when setting 'default_stage'
 - Added console init template for TYPO3 CMS [#1300]
+- Added possibility to run a task only once [#1311]
 - Added `git_recursive` option
 - Added `shallow` task option
 
 ### Removed 
 - Removed `terminate_message` option
+
 
 ## v5.1.3
 [v5.1.2...v5.1.3](https://github.com/deployphp/deployer/compare/v5.1.2...v5.1.3)
@@ -270,7 +272,7 @@
 
 ## v4.0.0
 🙄
-
+[#1311]: https://github.com/deployphp/deployer/pull/1311
 [#1300]: https://github.com/deployphp/deployer/pull/1300
 [#1290]: https://github.com/deployphp/deployer/pull/1290
 [#1283]: https://github.com/deployphp/deployer/pull/1283

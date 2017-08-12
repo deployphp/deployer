@@ -10,6 +10,7 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

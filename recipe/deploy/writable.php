@@ -24,7 +24,7 @@ task('deploy:writable', function () {
 
     if ($httpUser === false && $mode !== 'chmod') {
         // Detect http user in process list.
-        $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1")->toString();
+        $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1");
 
         if (empty($httpUser)) {
             throw new \RuntimeException(
@@ -75,7 +75,7 @@ task('deploy:writable', function () {
                     $writeableDirs = get('writable_dirs');
                     foreach ($writeableDirs as $dir) {
                         // Check if ACL has been set or not
-                        $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l")->toString();
+                        $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                         // Set ACL for directory if it has not been set before
                         if (!$hasfacl) {
                             run("setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");

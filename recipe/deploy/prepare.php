@@ -12,7 +12,7 @@ use function Deployer\Support\str_contains;
 desc('Preparing host for deploy');
 task('deploy:prepare', function () {
     // Check if shell is POSIX-compliant
-    $result = (string)run('echo $0');
+    $result = run('echo $0');
 
     if (!str_contains($result, 'bash') && !str_contains($result, 'sh')) {
         throw new \RuntimeException(
@@ -23,7 +23,7 @@ task('deploy:prepare', function () {
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Check for existing /current directory (not symlink)
-    $result = run('if [ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]; then echo true; fi')->toBool();
+    $result = test('[ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]');
     if ($result) {
         throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }

@@ -19,6 +19,7 @@ set('writable_dirs', ['application/cache', 'application/logs']);
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

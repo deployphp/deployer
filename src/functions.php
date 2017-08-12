@@ -139,7 +139,7 @@ function task($name, $body = null)
         return $task;
     }
 
-    if ($body instanceof \Closure) {
+    if (is_callable($body)) {
         $task = new T($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
@@ -297,7 +297,7 @@ function run($command, $options = [])
         $output = $client->run($host, $command, $options);
     }
 
-    return new Result($output);
+    return rtrim($output);
 }
 
 /**
@@ -321,7 +321,7 @@ function runLocally($command, $options = [])
 
     $output = $process->run($hostname, $command, $options);
 
-    return new Result($output);
+    return rtrim($output);
 }
 
 /**
@@ -335,7 +335,7 @@ function runLocally($command, $options = [])
  */
 function test($command)
 {
-    return run("if $command; then echo 'true'; fi")->toBool();
+    return run("if $command; then echo 'true'; fi") === 'true';
 }
 
 /**
@@ -349,7 +349,7 @@ function test($command)
  */
 function testLocally($command)
 {
-    return runLocally("if $command; then echo 'true'; fi")->toBool();
+    return runLocally("if $command; then echo 'true'; fi") === 'true';
 }
 
 /**
@@ -724,7 +724,7 @@ function isDebug()
  */
 function commandExist($command)
 {
-    return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
+    return test("hash $command 2>/dev/null");
 }
 
 function commandSupportsOption($command, $option)
@@ -749,17 +749,17 @@ function locateBinaryPath($name)
 
     // Try `command`, should cover all Bourne-like shells
     if (commandExist("command")) {
-        return run("command -v $nameEscaped")->toString();
+        return run("command -v $nameEscaped");
     }
 
     // Try `which`, should cover most other cases
     if (commandExist("which")) {
-        return run("which $nameEscaped")->toString();
+        return run("which $nameEscaped");
     }
 
     // Fallback to `type` command, if the rest fails
     if (commandExist("type")) {
-        $result = run("type -p $nameEscaped")->toString();
+        $result = run("type -p $nameEscaped");
 
         if ($result) {
             // Deal with issue when `type -p` outputs something like `type -ap` in some implementations

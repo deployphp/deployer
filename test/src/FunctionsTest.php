@@ -116,6 +116,9 @@ class FunctionsTest extends TestCase
         task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         self::assertInstanceOf(GroupTask::class, $task);
+
+        $task = task('callable', [$this, __METHOD__]);
+        self::assertInstanceOf(Task::class, $task);
     }
 
     public function testBefore()
@@ -141,9 +144,7 @@ class FunctionsTest extends TestCase
     public function testRunLocally()
     {
         $output = runLocally('echo "hello"');
-
-        self::assertInstanceOf(Result::class, $output);
-        self::assertEquals('hello', (string)$output);
+        self::assertEquals('hello', $output);
     }
 
     private function taskToNames($tasks)

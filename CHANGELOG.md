@@ -1,11 +1,48 @@
 # Changelog
 
 ## master
-[v5.1.1...master](https://github.com/deployphp/deployer/compare/v5.1.1...master)
+[v5.1.3...master](https://github.com/deployphp/deployer/compare/v5.1.3...master)
+
+### Added
+- Added possibility to use callable when setting 'default_stage'
+- Added console init template for TYPO3 CMS [#1300]
+- Added possibility to run a task only once [#1311]
+- Added `git_recursive` option
+- Added `shallow` task option
+- Added `deploy:info` task
+- Added `writable_tty` option for `deploy:writable`
+
+### Changed
+- Changed `branch` parameter and option behavior
+- Extended `task` func to support callables
+
+### Fixed
+- Improved the way `ParallelExecutor` handles option parameters
+
+### Removed 
+- Removed `terminate_message` option
+- Removed `Result` class
+
+
+## v5.1.3
+[v5.1.2...v5.1.3](https://github.com/deployphp/deployer/compare/v5.1.2...v5.1.3)
+
+### Fixed
+- Fixed bug with wrong version printed after self-update command
+- Fixed bug with excess option "--no-debug" in deploy:cache:clear task [#1290]
+
+
+## v5.1.2
+[v5.1.1...v5.1.2](https://github.com/deployphp/deployer/compare/v5.1.1...v5.1.2)
 
 ### Changed
 - Improved `config:current` output (print each host's current release)
-- Added `{{writable_request_tty}}` option for `deploy:writable`
+- Fixed cache clearing in the Symfony recipe (now runs both cache:clear and cache:warmup) [#1283]
+
+### Fixed
+- Fixed bug where `ParallelExecutor` threw an error when custom options were added
+- Fixed bug with parallel deploy in multi user envirouments [#1269]
+
 
 ## v5.1.1
 [v5.1.0...v5.1.1](https://github.com/deployphp/deployer/compare/v5.1.0...v5.1.1)
@@ -245,8 +282,12 @@
 
 ## v4.0.0
 🙄
-
+[#1311]: https://github.com/deployphp/deployer/pull/1311
+[#1300]: https://github.com/deployphp/deployer/pull/1300
+[#1290]: https://github.com/deployphp/deployer/pull/1290
+[#1283]: https://github.com/deployphp/deployer/pull/1283
 [#1271]: https://github.com/deployphp/deployer/pull/1271
+[#1269]: https://github.com/deployphp/deployer/pull/1269
 [#1268]: https://github.com/deployphp/deployer/pull/1268
 [#1265]: https://github.com/deployphp/deployer/pull/1265
 [#1263]: https://github.com/deployphp/deployer/pull/1263

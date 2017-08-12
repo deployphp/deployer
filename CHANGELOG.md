@@ -13,7 +13,7 @@
 
 ### Changed
 - Changed `branch` parameter and option behavior
-- Extended task() to support callables
+- Extended `task` func to support callables
 
 ### Fixed
 - Improved the way `ParallelExecutor` handles option parameters

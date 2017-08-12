@@ -65,7 +65,21 @@ class ParallelExecutor implements ExecutorInterface
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
-        Storage::persist($hosts);
+        // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
+        // This allows to use code like this in parallel mode:
+        //
+        //     host('prod')
+        //         ->set('branch', function () {
+        //             return input()->getOption('branch') ?: 'production';
+        //     })
+        //
+        // Otherwise `input()` wont be accessible (i.e. null)
+        //
+        Context::push(new Context($localhost, $this->input, $this->output));
+        {
+            Storage::persist($hosts);
+        }
+        Context::pop();
 
         foreach ($tasks as $task) {
             $success = true;
@@ -154,7 +168,8 @@ class ParallelExecutor implements ExecutorInterface
             $options .= ' --ansi';
         }
 
-        $process = new Process("$dep $file worker $options --hostname $hostname --task $taskName --config-file $configFile");
+        $command = "$dep $file worker $options --hostname $hostname --task $taskName --config-file $configFile";
+        $process = new Process($command);
 
         if (!defined('DEPLOYER_PARALLEL_PTY')) {
             $process->setPty(true);

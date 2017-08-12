@@ -10,6 +10,7 @@
 - Added `git_recursive` option
 - Added `shallow` task option
 - Added `deploy:info` task
+- Added `writable_tty` option for `deploy:writable`
 
 ### Changed
 - Changed `branch` parameter and option behavior

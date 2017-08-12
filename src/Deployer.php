@@ -23,7 +23,6 @@ use Deployer\Executor\SeriesExecutor;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
-use Deployer\Task;
 use Deployer\Utility\ProcessOutputPrinter;
 use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
@@ -251,9 +250,8 @@ class Deployer extends Container
     {
         if (isset($this[$name])) {
             return $this[$name];
-        } else {
-            throw new \InvalidArgumentException("Property \"$name\" does not exist.");
         }
+        throw new \InvalidArgumentException("Property \"$name\" does not exist.");
     }
 
     /**

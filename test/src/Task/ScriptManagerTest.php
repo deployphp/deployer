@@ -7,9 +7,9 @@
 
 namespace Deployer\Task;
 
+use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
-use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class ScriptManagerTest extends TestCase

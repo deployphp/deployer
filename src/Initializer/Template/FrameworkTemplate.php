@@ -26,39 +26,38 @@ namespace Deployer;
 
 require 'recipe/{$this->getRecipe()}.php';
 
-// Configuration
+// Project name
+set('application', 'my_project');
 
+// Project repository
 set('repository', '{$params['repository']}');
-set('git_tty', true); // [Optional] Allocate tty for git on first deployment
+
+// [Optional] Allocate tty for git clone. Default value is false.
+set('git_tty', true); 
+
+// Shared files/dirs between deploys 
 add('shared_files', []);
 add('shared_dirs', []);
+
+// Writable dirs by web server 
 add('writable_dirs', []);
 {$stats}
 
 // Hosts
 
 host('project.com')
-    ->stage('production')
-    ->set('deploy_path', '/var/www/project.com');
+    ->set('deploy_path', '~/{{application}}');    
     
-host('beta.project.com')
-    ->stage('beta')
-    ->set('deploy_path', '/var/www/project.com');  
-
-
 // Tasks
 
-desc('Restart PHP-FPM service');
-task('php-fpm:restart', function () {
-    // The user must have rights for restart service
-    // /etc/sudoers: username ALL=NOPASSWD:/bin/systemctl restart php-fpm.service
-    run('sudo systemctl restart php-fpm.service');
+task('build', function () {
+    run('cd {{release_path}} && build');
 });
-after('deploy:symlink', 'php-fpm:restart');
 
 // [Optional] if deploy fails automatically unlock.
 after('deploy:failed', 'deploy:unlock');
 {$this->getExtraContent()}
+
 PHP;
     }
 

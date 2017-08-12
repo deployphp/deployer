@@ -7,6 +7,7 @@
 
 namespace Deployer\Utility;
 
+use Deployer\Deployer;
 use Symfony\Component\Process\Process;
 
 class ProcessRunner
@@ -24,7 +25,7 @@ class ProcessRunner
     public function run($hostname, string $command, array $config = [])
     {
         $defaults = [
-            'timeout' => 300,
+            'timeout' => Deployer::getDefault('default_timeout', 300),
             'tty' => false,
         ];
         $config = array_merge($defaults, $config);

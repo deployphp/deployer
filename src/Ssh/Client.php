@@ -7,6 +7,7 @@
 
 namespace Deployer\Ssh;
 
+use Deployer\Deployer;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\Host;
 use Deployer\Utility\ProcessOutputPrinter;
@@ -48,7 +49,7 @@ class Client
     {
         $hostname = $host->getHostname();
         $defaults = [
-            'timeout' => 300,
+            'timeout' => Deployer::getDefault('default_timeout', 300),
             'tty' => false,
         ];
         $config = array_merge($defaults, $config);

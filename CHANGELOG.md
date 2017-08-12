@@ -11,6 +11,7 @@
 - Added `shallow` task option
 - Added `deploy:info` task
 - Added `writable_tty` option for `deploy:writable`
+- Added `default_timeout` option [#1256]
 
 ### Changed
 - Changed `branch` parameter and option behavior
@@ -295,6 +296,7 @@
 [#1265]: https://github.com/deployphp/deployer/pull/1265
 [#1263]: https://github.com/deployphp/deployer/pull/1263
 [#1252]: https://github.com/deployphp/deployer/pull/1252
+[#1256]: https://github.com/deployphp/deployer/issues/1256
 [#1251]: https://github.com/deployphp/deployer/pull/1251
 [#1246]: https://github.com/deployphp/deployer/pull/1246
 [#1236]: https://github.com/deployphp/deployer/issues/1236

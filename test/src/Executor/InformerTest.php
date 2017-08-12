@@ -9,6 +9,7 @@ namespace Deployer\Executor;
 
 use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\OutputWatcher;
+use Deployer\Task\Task;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -26,9 +27,10 @@ class InformerTest extends TestCase
             ->will($this->returnValue(OutputInterface::VERBOSITY_NORMAL));
 
         $informer = new Informer($output);
+        $task = new Task('task');
 
-        $informer->startTask('task');
-        $informer->endTask();
+        $informer->startTask($task);
+        $informer->endTask($task);
     }
 
     public function testEndTask()
@@ -43,7 +45,9 @@ class InformerTest extends TestCase
             ->with($this->stringStartsWith('<info>✔</info> Ok'));
 
         $informer = new Informer($output);
-        $informer->endTask();
+        $task = new Task('task');
+
+        $informer->endTask($task);
     }
 
     public function testTaskError()

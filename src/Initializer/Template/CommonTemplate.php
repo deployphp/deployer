@@ -62,6 +62,7 @@ after('deploy:symlink', 'php-fpm:restart');
 
 desc('Deploy your project');
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

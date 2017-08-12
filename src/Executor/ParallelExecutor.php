@@ -65,11 +65,25 @@ class ParallelExecutor implements ExecutorInterface
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
-        Storage::persist($hosts);
+        // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
+        // This allows to use code like this in parallel mode:
+        //
+        //     host('prod')
+        //         ->set('branch', function () {
+        //             return input()->getOption('branch') ?: 'production';
+        //     })
+        //
+        // Otherwise `input()` wont be accessible (i.e. null)
+        //
+        Context::push(new Context($localhost, $this->input, $this->output));
+        {
+            Storage::persist($hosts);
+        }
+        Context::pop();
 
         foreach ($tasks as $task) {
             $success = true;
-            $this->informer->startTask($task->getName());
+            $this->informer->startTask($task);
 
             if ($task->isLocal()) {
                 Storage::load($hosts);
@@ -94,7 +108,7 @@ class ParallelExecutor implements ExecutorInterface
             }
 
             if ($success) {
-                $this->informer->endTask();
+                $this->informer->endTask($task);
             } else {
                 $this->informer->taskError();
             }
@@ -154,7 +168,8 @@ class ParallelExecutor implements ExecutorInterface
             $options .= ' --ansi';
         }
 
-        $process = new Process("$dep $file worker $options --hostname $hostname --task $taskName --config-file $configFile");
+        $command = "$dep $file worker $options --hostname $hostname --task $taskName --config-file $configFile";
+        $process = new Process($command);
 
         if (!defined('DEPLOYER_PARALLEL_PTY')) {
             $process->setPty(true);
@@ -240,22 +255,6 @@ class ParallelExecutor implements ExecutorInterface
         $verbosity = new VerbosityString($this->output);
         $input = $verbosity;
 
-        // Console options without value
-        foreach (['quiet', 'ansi', 'no-ansi', 'no-interaction'] as $option) {
-            $value = $this->input->getOption($option);
-            if ($value) {
-                $input .= " --$option";
-            }
-        }
-
-        // Console options with value
-        foreach (['log'] as $option) {
-            $value = $this->input->getOption($option);
-            if ($value) {
-                $input .= " --$option=$value";
-            }
-        }
-
         // Get user arguments
         foreach ($this->console->getUserDefinition()->getArguments() as $argument) {
             $value = $this->input->getArgument($argument->getName());
@@ -266,9 +265,15 @@ class ParallelExecutor implements ExecutorInterface
 
         // Get user options
         foreach ($this->console->getUserDefinition()->getOptions() as $option) {
-            $value = $this->input->getOption($option->getName());
+            $name = $option->getName();
+            $value = $this->input->getOption($name);
+
             if ($value) {
-                $input .= " --{$option->getName()}=$value";
+                $input .= " --{$name}";
+
+                if ($option->acceptValue()) {
+                    $input .= " {$value}";
+                }
             }
         }
 

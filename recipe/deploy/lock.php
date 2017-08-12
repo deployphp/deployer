@@ -11,7 +11,7 @@ use Deployer\Exception\GracefulShutdownException;
 
 desc('Lock deploy');
 task('deploy:lock', function () {
-    $locked = run("if [ -f {{deploy_path}}/.dep/deploy.lock ]; then echo 'true'; fi")->toBool();
+    $locked = test("[ -f {{deploy_path}}/.dep/deploy.lock ]");
 
     if ($locked) {
         $stage = input()->hasArgument('stage') ? ' ' . input()->getArgument('stage') : '';

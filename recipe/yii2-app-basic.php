@@ -27,6 +27,7 @@ task('deploy:run_migrations', function () {
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

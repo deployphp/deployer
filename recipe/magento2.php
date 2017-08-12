@@ -73,6 +73,7 @@ task('deploy:magento', [
 
 desc('Deploy your project');
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

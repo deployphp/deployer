@@ -9,6 +9,7 @@ namespace Deployer\Console\Output;
 
 use Deployer\Deployer;
 use Deployer\Host\Host;
+use Deployer\Task\Task;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,11 +30,14 @@ class Informer
         $this->output = $output;
     }
 
-    public function startTask(string $taskName)
+    public function startTask(Task $task)
     {
         $this->startTime = round(microtime(true) * 1000);
-        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
-            $this->output->writeln("➤ Executing task <info>$taskName</info>");
+        if (
+            $this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL &&
+            !$task->isShallow()
+        ) {
+            $this->output->writeln("➤ Executing task <info>{$task->getName()}</info>");
             $this->output->setWasWritten(false);
         }
     }
@@ -41,8 +45,12 @@ class Informer
     /**
      * Print task was ok.
      */
-    public function endTask()
+    public function endTask(Task $task)
     {
+        if ($task->isShallow()) {
+            return;
+        }
+
         $endTime = round(microtime(true) * 1000);
         $millis = $endTime - $this->startTime;
         $seconds = floor($millis / 1000);

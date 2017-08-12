@@ -46,6 +46,7 @@ after('deploy:update_code', 'deploy:clear_version');
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

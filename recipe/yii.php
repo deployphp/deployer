@@ -19,6 +19,7 @@ set('writable_dirs', ['runtime']);
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

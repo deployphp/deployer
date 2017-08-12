@@ -18,7 +18,7 @@ task('deploy:info', function () {
     if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
         $tag = input()->getOption('tag');
         $what = "tag <fg=magenta>$tag</fg=magenta>";
-    } else if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
+    } elseif (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
         $revision = input()->getOption('revision');
         $what = "revision <fg=magenta>$revision</fg=magenta>";
     }

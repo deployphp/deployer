@@ -19,7 +19,9 @@ set('branch', function () {
         $branch = null;
     }
 
-    echo $branch;
+    if ($branch === 'HEAD') {
+        $branch = null; // Travis-CI fix
+    }
 
     if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
         $branch = input()->getOption('branch');

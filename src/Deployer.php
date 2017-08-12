@@ -23,7 +23,6 @@ use Deployer\Executor\SeriesExecutor;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
-use Deployer\Task;
 use Deployer\Utility\ProcessOutputPrinter;
 use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;

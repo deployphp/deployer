@@ -3,7 +3,7 @@
 1. Changed branch option priority
 
     If you have host definition with `branch(...)` parameter, adding `--branch` option will not override it any more.
-    If no `branch(...)` parameter persists, brunch will be fetched from current local git branch. 
+    If no `branch(...)` parameter persists, branch will be fetched from current local git branch. 
     
     ```php
     host('prod')

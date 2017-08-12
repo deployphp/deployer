@@ -79,7 +79,7 @@ set('env_vars', ''); // Variable assignment before cmds (for example, SYMFONY_EN
  * Return current release path.
  */
 set('current_path', function () {
-    $link = run("readlink {{deploy_path}}/current")->toString();
+    $link = run("readlink {{deploy_path}}/current");
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 

@@ -14,7 +14,7 @@ use Deployer\Exception\RuntimeException;
  */
 set('branch', function () {
     try {
-        $branch = (string)runLocally('git rev-parse --abbrev-ref HEAD');
+        $branch = runLocally('git rev-parse --abbrev-ref HEAD');
     } catch (\Throwable $exception) {
         $branch = null;
     }

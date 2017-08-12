@@ -141,9 +141,7 @@ class FunctionsTest extends TestCase
     public function testRunLocally()
     {
         $output = runLocally('echo "hello"');
-
-        self::assertInstanceOf(Result::class, $output);
-        self::assertEquals('hello', (string)$output);
+        self::assertEquals('hello', $output);
     }
 
     private function taskToNames($tasks)

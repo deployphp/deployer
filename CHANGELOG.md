@@ -16,6 +16,7 @@
 
 ### Removed 
 - Removed `terminate_message` option
+- Removed `Result` class
 
 
 ## v5.1.3

@@ -14,7 +14,6 @@ use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task;
-use Deployer\Type\Result;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;

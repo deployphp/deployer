@@ -63,6 +63,8 @@ task('deploy:update_code', function () {
         $at = "-b $branch";
     }
 
+    echo "\n[[$branch]]\n";
+
     // If option `tag` is set
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');

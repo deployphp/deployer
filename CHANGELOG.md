@@ -14,6 +14,9 @@
 ### Changed
 - Changed `branch` parameter and option behavior
 
+### Fixed
+- Improved the way `ParallelExecutor` handles option parameters
+
 ### Removed 
 - Removed `terminate_message` option
 - Removed `Result` class

@@ -23,9 +23,16 @@ set('branch', function () {
         $branch = null; // Travis-CI fix
     }
 
+    echo "\n1: [[$branch]]\n";
+    var_dump($branch);
+
     if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
         $branch = input()->getOption('branch');
     }
+
+    echo "\n2: [[$branch]]\n";
+
+    var_dump($branch);
 
     return $branch;
 });
@@ -62,8 +69,6 @@ task('deploy:update_code', function () {
     if (!empty($branch)) {
         $at = "-b $branch";
     }
-
-    echo "\n[[$branch]]\n";
 
     // If option `tag` is set
     if (input()->hasOption('tag')) {

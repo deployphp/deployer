@@ -158,6 +158,7 @@ class ParallelExecutor implements ExecutorInterface
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $options = $this->generateOptions();
+        $arguments = $this->generateArguments();
         $hostname = $host->getHostname();
         $taskName = $task->getName();
         $configFile = $host->get('host_config_storage');
@@ -168,7 +169,7 @@ class ParallelExecutor implements ExecutorInterface
             $options .= ' --ansi';
         }
 
-        $command = "$dep $file worker $options --hostname $hostname --task $taskName --config-file $configFile";
+        $command = "$dep $file worker $arguments $options --hostname $hostname --task $taskName --config-file $configFile";
         $process = new Process($command);
 
         if (!defined('DEPLOYER_PARALLEL_PTY')) {
@@ -278,5 +279,17 @@ class ParallelExecutor implements ExecutorInterface
         }
 
         return $input;
+    }
+
+    private function generateArguments(): string
+    {
+        $arguments = '';
+
+        if ($this->input->hasArgument('stage')) {
+            // Some people rely on stage argument, so pass it to worker too.
+            $arguments .= $this->input->getArgument('stage');
+        }
+
+        return $arguments;
     }
 }

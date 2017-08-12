@@ -14,6 +14,7 @@ use Deployer\Host\Host;
 use Deployer\Host\Storage;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -44,6 +45,11 @@ class WorkerCommand extends Command
             $this->setHidden(true);
         }
         $this->deployer = $deployer;
+        $this->addArgument(
+            'stage',
+            InputArgument::OPTIONAL,
+            'Stage or hostname'
+        );
         $this->addOption(
             'hostname',
             null,

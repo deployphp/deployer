@@ -18,6 +18,7 @@
 
 ### Fixed
 - Improved the way `ParallelExecutor` handles option parameters
+- Fixed no `stage` argument in parallel mode [#1299]
 
 ### Removed 
 - Removed `terminate_message` option
@@ -282,8 +283,10 @@
 
 ## v4.0.0
 🙄
+
 [#1311]: https://github.com/deployphp/deployer/pull/1311
 [#1300]: https://github.com/deployphp/deployer/pull/1300
+[#1299]: https://github.com/deployphp/deployer/issues/1299
 [#1290]: https://github.com/deployphp/deployer/pull/1290
 [#1283]: https://github.com/deployphp/deployer/pull/1283
 [#1271]: https://github.com/deployphp/deployer/pull/1271

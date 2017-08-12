@@ -26,9 +26,8 @@ class Collection implements CollectionInterface, \Countable
     {
         if ($this->has($name)) {
             return $this->values[$name];
-        } else {
-            return $this->throwNotFound($name);
         }
+        return $this->throwNotFound($name);
     }
 
     /**

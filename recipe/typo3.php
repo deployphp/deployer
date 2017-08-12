@@ -18,6 +18,7 @@ set('typo3_webroot', 'Web');
  * Main TYPO3 task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

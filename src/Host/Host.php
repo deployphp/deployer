@@ -10,7 +10,6 @@ namespace Deployer\Host;
 use Deployer\Configuration\Configuration;
 use Deployer\Configuration\ConfigurationAccessor;
 use Deployer\Ssh\Arguments;
-use Deployer\Ssh\Options;
 
 class Host
 {

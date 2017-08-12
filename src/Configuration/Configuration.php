@@ -91,9 +91,8 @@ class Configuration
             } else {
                 if (null === $default) {
                     throw new ConfigurationException("Configuration parameter `$name` does not exists.");
-                } else {
-                    $value = $default;
                 }
+                $value = $default;
             }
         }
 

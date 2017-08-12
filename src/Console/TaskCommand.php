@@ -143,16 +143,15 @@ class TaskCommand extends Command
         } catch (\Throwable $exception) {
             if ($exception instanceof GracefulShutdownException) {
                 throw $exception;
-            } else {
-                // Check if we have tasks to execute on failure
-                if ($this->deployer['fail']->has($this->getName())) {
-                    $taskName = $this->deployer['fail']->get($this->getName());
-                    $tasks = $this->deployer->scriptManager->getTasks($taskName, $hosts, $hooksEnabled);
-
-                    $executor->run($tasks, $hosts);
-                }
-                throw $exception;
             }
+            // Check if we have tasks to execute on failure
+            if ($this->deployer['fail']->has($this->getName())) {
+                $taskName = $this->deployer['fail']->get($this->getName());
+                $tasks = $this->deployer->scriptManager->getTasks($taskName, $hosts, $hooksEnabled);
+
+                $executor->run($tasks, $hosts);
+            }
+            throw $exception;
         }
     }
 

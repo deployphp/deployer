@@ -14,7 +14,7 @@ use Deployer\Exception\RuntimeException;
  */
 set('branch', function () {
     try {
-        $branch = runLocally('git rev-parse --abbrev-ref HEAD');
+        $branch = (string)runLocally('git rev-parse --abbrev-ref HEAD');
     } catch (\Throwable $exception) {
         $branch = null;
     }
@@ -23,16 +23,9 @@ set('branch', function () {
         $branch = null; // Travis-CI fix
     }
 
-    echo "\n1: [[$branch]]\n";
-    var_dump($branch);
-
     if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
         $branch = input()->getOption('branch');
     }
-
-    echo "\n2: [[$branch]]\n";
-
-    var_dump($branch);
 
     return $branch;
 });

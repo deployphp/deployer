@@ -253,10 +253,10 @@ class ParallelExecutor implements ExecutorInterface
             $name = $option->getName();
             $value = $this->input->getOption($name);
 
-            if($value) {
+            if ($value) {
                 $input .= " --{$name}";
 
-                if($option->acceptValue()) {
+                if ($option->acceptValue()) {
                     $input .= " {$value}";
                 }
             }

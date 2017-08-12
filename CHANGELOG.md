@@ -9,6 +9,10 @@
 - Added possibility to run a task only once [#1311]
 - Added `git_recursive` option
 - Added `shallow` task option
+- Added `deploy:info` task
+
+### Changed
+- Changed `branch` parameter and option behavior
 
 ### Removed 
 - Removed `terminate_message` option

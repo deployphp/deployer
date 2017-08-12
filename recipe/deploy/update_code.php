@@ -9,6 +9,39 @@ namespace Deployer;
 
 use Deployer\Exception\RuntimeException;
 
+/**
+ * Get current git HEAD branch as default brunch to deploy.
+ */
+set('branch', function () {
+    try {
+        $branch = runLocally('git rev-parse --abbrev-ref HEAD');
+    } catch (\Throwable $exception) {
+        $branch = null;
+    }
+
+    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
+        $branch = input()->getOption('branch');
+    }
+
+    return $branch;
+});
+
+/**
+ * Whether to use git cache.
+ *
+ * Faster cloning by borrowing objects from existing clones.
+ */
+set('git_cache', function () {
+    $gitVersion = run('{{bin/git}} version');
+    $regs = [];
+    if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
+        $version = $regs[1];
+    } else {
+        $version = "1.0.0";
+    }
+    return version_compare($version, '2.3', '>=');
+});
+
 desc('Update code');
 task('deploy:update_code', function () {
     $repository = trim(get('repository'));
@@ -21,15 +54,6 @@ task('deploy:update_code', function () {
         'tty' => get('git_tty', false),
     ];
 
-    // If option `branch` is set.
-    if (input()->hasOption('branch')) {
-        $inputBranch = input()->getOption('branch');
-        if (!empty($inputBranch)) {
-            $branch = $inputBranch;
-        }
-    }
-
-    // Branch may come from option or from configuration.
     $at = '';
     if (!empty($branch)) {
         $at = "-b $branch";

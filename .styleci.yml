@@ -2,7 +2,6 @@ preset: psr2
 
 enabled:
   - alpha_ordered_imports
-  - no_unused_imports
   - no_whitespace_in_blank_line
   - short_array_syntax
 

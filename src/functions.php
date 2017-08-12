@@ -44,9 +44,8 @@ function host(...$hostnames)
     if ($deployer->hosts->has($hostnames[0])) {
         if (count($hostnames) === 1) {
             return $deployer->hosts->get($hostnames[0]);
-        } else {
-            return array_map([$deployer->hosts, 'get'], $hostnames);
         }
+        return array_map([$deployer->hosts, 'get'], $hostnames);
     }
 
     // Add otherwise
@@ -54,14 +53,13 @@ function host(...$hostnames)
         $host = new Host($hostnames[0]);
         $deployer->hosts->set($hostnames[0], $host);
         return $host;
-    } else {
-        $hosts = array_map(function ($hostname) use ($deployer) {
-            $host = new Host($hostname);
-            $deployer->hosts->set($hostname, $host);
-            return $host;
-        }, $hostnames);
-        return new Proxy($hosts);
     }
+    $hosts = array_map(function ($hostname) use ($deployer) {
+        $host = new Host($hostname);
+        $deployer->hosts->set($hostname, $host);
+        return $host;
+    }, $hostnames);
+    return new Proxy($hosts);
 }
 
 /**
@@ -77,14 +75,13 @@ function localhost(...$hostnames)
         $host = count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
         $deployer->hosts->set($host->getHostname(), $host);
         return $host;
-    } else {
-        $hosts = array_map(function ($hostname) use ($deployer) {
-            $host = new Localhost($hostname);
-            $deployer->hosts->set($host->getHostname(), $host);
-            return $host;
-        }, $hostnames);
-        return new Proxy($hosts);
     }
+    $hosts = array_map(function ($hostname) use ($deployer) {
+        $host = new Localhost($hostname);
+        $deployer->hosts->set($host->getHostname(), $host);
+        return $host;
+    }, $hostnames);
+    return new Proxy($hosts);
 }
 
 /**
@@ -115,9 +112,8 @@ function desc($title = null)
 
     if ($title === null) {
         return $store;
-    } else {
-        return $store = $title;
     }
+    return $store = $title;
 }
 
 /**
@@ -527,9 +523,8 @@ function get($name, $default = null)
 {
     if (!Context::has()) {
         return Deployer::getDefault($name, $default);
-    } else {
-        return Context::get()->getConfig()->get($name, $default);
     }
+    return Context::get()->getConfig()->get($name, $default);
 }
 
 /**
@@ -542,9 +537,8 @@ function has($name)
 {
     if (!Context::has()) {
         return Deployer::hasDefault($name);
-    } else {
-        return Context::get()->getConfig()->has($name);
     }
+    return Context::get()->getConfig()->has($name);
 }
 
 /**

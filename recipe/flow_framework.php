@@ -40,6 +40,7 @@ task('deploy:publish_resources', function () {
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:release',
     'deploy:update_code',

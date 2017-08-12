@@ -13,6 +13,7 @@ require_once __DIR__ . '/common.php';
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

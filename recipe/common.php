@@ -10,6 +10,7 @@ namespace Deployer;
 require __DIR__ . '/config/current.php';
 require __DIR__ . '/config/dump.php';
 require __DIR__ . '/config/hosts.php';
+require __DIR__ . '/deploy/info.php';
 require __DIR__ . '/deploy/prepare.php';
 require __DIR__ . '/deploy/lock.php';
 require __DIR__ . '/deploy/release.php';
@@ -42,7 +43,6 @@ set('hostname', function () {
 set('keep_releases', 5);
 
 set('repository', ''); // Repository to deploy.
-set('branch', ''); // Branch to deploy.
 
 set('shared_dirs', []);
 set('shared_files', []);
@@ -75,23 +75,11 @@ set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progre
 
 set('env_vars', ''); // Variable assignment before cmds (for example, SYMFONY_ENV={{set}})
 
-set('git_cache', function () { //whether to use git cache - faster cloning by borrowing objects from existing clones.
-    $gitVersion = run('{{bin/git}} version');
-    $regs       = [];
-    if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
-        $version = $regs[1];
-    } else {
-        $version = "1.0.0";
-    }
-    return version_compare($version, '2.3', '>=');
-});
-
-
 /**
  * Return current release path.
  */
 set('current_path', function () {
-    $link = run("readlink {{deploy_path}}/current")->toString();
+    $link = run("readlink {{deploy_path}}/current");
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
@@ -137,8 +125,11 @@ option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
  * Success message
  */
 task('success', function () {
-    Deployer::setDefault('terminate_message', '<info>Successfully deployed!</info>');
-})->local()->setPrivate();
+    writeln('<info>Successfully deployed!</info>');
+})
+    ->local()
+    ->shallow()
+    ->setPrivate();
 
 
 /**

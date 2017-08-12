@@ -32,12 +32,12 @@ set('releases_list', function () {
     cd('{{deploy_path}}');
 
     // If there is no releases return empty list.
-    if (!run('[ -d releases ] && [ "$(ls -A releases)" ] && echo "true" || echo "false"')->toBool()) {
+    if (!test('[ -d releases ] && [ "$(ls -A releases)" ]')) {
         return [];
     }
 
     // Will list only dirs in releases.
-    $list = run('cd releases && ls -t -1 -d */')->toArray();
+    $list = explode("\n", run('cd releases && ls -t -1 -d */'));
 
     // Prepare list.
     $list = array_map(function ($release) {
@@ -49,7 +49,7 @@ set('releases_list', function () {
     // Collect releases based on .dep/releases info.
     // Other will be ignored.
 
-    if (run('if [ -f .dep/releases ]; then echo "true"; fi')->toBool()) {
+    if (test('[ -f .dep/releases ]')) {
         $keepReleases = get('keep_releases');
         if ($keepReleases === -1) {
             $csv = run('cat .dep/releases');
@@ -84,9 +84,9 @@ set('releases_list', function () {
  * Return release path.
  */
 set('release_path', function () {
-    $releaseExists = run("if [ -h {{deploy_path}}/release ]; then echo 'true'; fi")->toBool();
+    $releaseExists = test('[ -h {{deploy_path}}/release ]');
     if ($releaseExists) {
-        $link = run("readlink {{deploy_path}}/release")->toString();
+        $link = run("readlink {{deploy_path}}/release");
         return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
     } else {
         return get('current_path');
@@ -99,7 +99,7 @@ task('deploy:release', function () {
     cd('{{deploy_path}}');
 
     // Clean up if there is unfinished release
-    $previousReleaseExist = run("if [ -h release ]; then echo 'true'; fi")->toBool();
+    $previousReleaseExist = test('[ -h release ]');
 
     if ($previousReleaseExist) {
         run('rm -rf "$(readlink release)"'); // Delete release
@@ -110,7 +110,7 @@ task('deploy:release', function () {
 
     // Fix collisions
     $i = 0;
-    while (run("if [ -d {{deploy_path}}/releases/$releaseName ]; then echo 'true'; fi")->toBool()) {
+    while (test("[ -d {{deploy_path}}/releases/$releaseName ]")) {
         $releaseName .= '.' . ++$i;
         set('release_name', $releaseName);
     }

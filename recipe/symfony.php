@@ -106,7 +106,7 @@ task('deploy:assetic:dump', function () {
  * Clear Cache
  */
 task('deploy:cache:clear', function () {
-    run('{{env_vars}} {{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-debug --no-warmup');
+    run('{{env_vars}} {{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
 })->desc('Clear cache');
 
 /**
@@ -129,6 +129,7 @@ task('database:migrate', function () {
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

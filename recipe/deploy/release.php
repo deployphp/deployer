@@ -88,9 +88,8 @@ set('release_path', function () {
     if ($releaseExists) {
         $link = run("readlink {{deploy_path}}/release");
         return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-    } else {
-        return get('current_path');
     }
+    return get('current_path');
 });
 
 

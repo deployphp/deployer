@@ -20,9 +20,8 @@ task('deploy:lock', function () {
             "Deploy locked.\n" .
             sprintf('Execute "dep deploy:unlock%s" to unlock.', $stage)
         );
-    } else {
-        run("touch {{deploy_path}}/.dep/deploy.lock");
     }
+    run("touch {{deploy_path}}/.dep/deploy.lock");
 });
 
 desc('Unlock deploy');

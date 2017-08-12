@@ -29,6 +29,14 @@
     * `run('command')->toString()` → `run('command')`
     * `run('if command; then echo "true"; fi;')->toBool()` → `test('command')`
 
+4. `env_vars` renamed to `env`
+
+    * `set('env_vars', 'FOO=bar');` → `set('env', ['FOO' => 'bar']);`
+
+    If your are using Symfony recipe, then you need to change `env` setting:
+    
+    * `set('env', 'prod');` → `set('symfony_env', 'prod');`
+
 # Upgrade from 4.x to 5.x
 
 1. Servers to Hosts

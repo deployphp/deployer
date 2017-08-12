@@ -15,7 +15,7 @@ require_once __DIR__ . '/common.php';
  */
 
 // Symfony build set
-set('env', 'prod');
+set('symfony_env', 'prod');
 
 // Symfony shared dirs
 set('shared_dirs', ['app/logs']);
@@ -36,7 +36,11 @@ set('assets', ['web/css', 'web/images', 'web/js']);
 set('dump_assets', false);
 
 // Environment vars
-set('env_vars', 'SYMFONY_ENV={{env}}');
+set('env', function () {
+    return [
+        'SYMFONY_ENV' => get('symfony_env')
+    ];
+});
 
 // Adding support for the Symfony3 directory structure
 set('bin_dir', 'app');
@@ -89,7 +93,7 @@ task('deploy:assets', function () {
  * Install assets from public dir of bundles
  */
 task('deploy:assets:install', function () {
-    run('{{env_vars}} {{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/web');
+    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/web');
 })->desc('Install bundle assets');
 
 
@@ -98,7 +102,7 @@ task('deploy:assets:install', function () {
  */
 task('deploy:assetic:dump', function () {
     if (get('dump_assets')) {
-        run('{{env_vars}} {{bin/php}} {{bin/console}} assetic:dump {{console_options}}');
+        run('{{bin/php}} {{bin/console}} assetic:dump {{console_options}}');
     }
 })->desc('Dump assets');
 
@@ -106,14 +110,14 @@ task('deploy:assetic:dump', function () {
  * Clear Cache
  */
 task('deploy:cache:clear', function () {
-    run('{{env_vars}} {{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
+    run('{{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
 })->desc('Clear cache');
 
 /**
  * Warm up cache
  */
 task('deploy:cache:warmup', function () {
-    run('{{env_vars}} {{bin/php}} {{bin/console}} cache:warmup {{console_options}}');
+    run('{{bin/php}} {{bin/console}} cache:warmup {{console_options}}');
 })->desc('Warm up cache');
 
 
@@ -121,7 +125,7 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    run('{{env_vars}} {{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}} --allow-no-migration');
+    run('{{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}} --allow-no-migration');
 })->desc('Migrate database');
 
 

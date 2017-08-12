@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use function Deployer\Support\array_to_string;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -290,6 +291,12 @@ function run($command, $options = [])
         $command = "cd $workingPath && ($command)";
     }
 
+    $env = get('env', []) + ($options['env'] ?? []);
+    if (!empty($env)) {
+        $env = array_to_string($env);
+        $command = "export $env; $command";
+    }
+
     if ($host instanceof Localhost) {
         $output = $process->run($hostname, $command, $options);
     } else {
@@ -316,6 +323,12 @@ function runLocally($command, $options = [])
 
     if (!empty($workingPath)) {
         $command = "cd $workingPath && ($command)";
+    }
+
+    $env = get('env', []) + ($options['env'] ?? []);
+    if (!empty($env)) {
+        $env = array_to_string($env);
+        $command = "export $env; $command";
     }
 
     $output = $process->run($hostname, $command, $options);

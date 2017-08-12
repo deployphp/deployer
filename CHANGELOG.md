@@ -16,10 +16,12 @@
 ### Changed
 - Changed `branch` parameter and option behavior
 - Extended `task` func to support callables
+- Renamed `env_vars` to `env`
 
 ### Fixed
 - Improved the way `ParallelExecutor` handles option parameters
 - Fixed no `stage` argument in parallel mode [#1299]
+- Improved environment variables management
 
 ### Removed 
 - Removed `terminate_message` option

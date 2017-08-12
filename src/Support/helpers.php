@@ -73,3 +73,19 @@ function str_contains(string $haystack, string $needle)
 {
     return strpos($haystack, $needle) !== false;
 }
+
+/**
+ * Take array of key/value and create string of it.
+ *
+ * This function used for create environment string.
+ */
+function array_to_string(array $array): string
+{
+    return implode(' ', array_map(
+        function ($key, $value) {
+            return sprintf("%s='%s'", $key, $value);
+        },
+        array_keys($array),
+        $array
+    ));
+}

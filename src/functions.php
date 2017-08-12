@@ -15,7 +15,6 @@ use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
-use Deployer\Type\Result;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -275,7 +274,7 @@ function workingPath()
  *
  * @param string $command
  * @param array $options
- * @return Result
+ * @return string
  */
 function run($command, $options = [])
 {
@@ -305,7 +304,7 @@ function run($command, $options = [])
  *
  * @param string $command Command to run locally.
  * @param array $options
- * @return Result Output of command.
+ * @return string Output of command.
  */
 function runLocally($command, $options = [])
 {

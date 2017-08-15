@@ -10,7 +10,7 @@ namespace Deployer;
 use Deployer\Exception\RuntimeException;
 
 /**
- * Get current git HEAD branch as default brunch to deploy.
+ * Get current git HEAD branch as default branch to deploy.
  */
 set('branch', function () {
     try {

@@ -59,6 +59,6 @@ localhost('test_on[01:05]')
 
 task('test_on', function () {
     on(roles('test_on_roles'), function (Host $host) {
-       writeln('<' . ($host->getHostname() === get('hostname') ? 'yes:' : 'no:') . '{{hostname}}' . '>');
+        writeln('<' . ($host->getHostname() === get('hostname') ? 'yes:' : 'no:') . '{{hostname}}' . '>');
     });
 })->local();

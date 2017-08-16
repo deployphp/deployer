@@ -23,6 +23,7 @@
 - Improved the way `ParallelExecutor` handles option parameters
 - Fixed no `stage` argument in parallel mode [#1299]
 - Improved environment variables management
+- Fixed `runLocally` to not cd into remote dir
 
 ### Removed 
 - Removed `terminate_message` option

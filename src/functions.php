@@ -317,13 +317,7 @@ function runLocally($command, $options = [])
 {
     $process = Deployer::get()->processRunner;
     $hostname = 'localhost';
-
-    $workingPath = get('working_path', '');
     $command = parse($command);
-
-    if (!empty($workingPath)) {
-        $command = "cd $workingPath && ($command)";
-    }
 
     $env = get('env', []) + ($options['env'] ?? []);
     if (!empty($env)) {

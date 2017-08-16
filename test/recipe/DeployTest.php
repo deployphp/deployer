@@ -86,11 +86,4 @@ class DeployTest extends DepCase
         self::assertEquals(5, exec("ls -1 releases | wc -l"));
         self::assertFileNotExists(self::$currentPath . '/release');
     }
-
-    public function testEnvironment()
-    {
-        $output = $this->start('test_env');
-        self::assertContains('env value ext', $output);
-        self::assertContains('env value local', $output);
-    }
 }

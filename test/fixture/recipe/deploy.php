@@ -79,17 +79,3 @@ fail('deploy_fail', 'deploy:unlock');
 task('deploy:vendors', function () {
     run('echo {{bin/composer}} {{composer_options}}');
 });
-
-// Environment test
-
-task('test_env', function () {
-    add('env', ['KEY' => 'env value']);
-
-    writeln(run('echo $KEY $EXT', ['env' => [
-        'EXT' => 'ext'
-    ]]));
-
-    writeln(runLocally('echo $KEY $LOCAL', ['env' => [
-        'LOCAL' => 'local'
-    ]]));
-});

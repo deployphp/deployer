@@ -411,9 +411,9 @@ function invoke($task)
     $output = Context::get()->getOutput();
     $host = Context::get()->getHost();
 
-    $informer->startTask($task->getName());
+    $informer->startTask($task);
     $task->run(new Context($host, $input, $output));
-    $informer->endTask();
+    $informer->endTask($task);
 }
 
 /**

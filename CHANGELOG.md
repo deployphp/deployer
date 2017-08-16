@@ -12,6 +12,7 @@
 - Added `deploy:info` task
 - Added `writable_tty` option for `deploy:writable`
 - Added `default_timeout` option [#1256]
+- Added `user` parameter
 
 ### Changed
 - Changed `branch` parameter and option behavior

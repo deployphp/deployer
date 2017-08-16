@@ -35,6 +35,13 @@ set('hostname', function () {
     return Context::get()->getHost()->getHostname();
 });
 
+set('user', function () {
+    try {
+        return runLocally('git config --get user.name');
+    } catch (\Throwable $exception) {
+        return 'no_user';
+    }
+});
 
 /**
  * Configuration

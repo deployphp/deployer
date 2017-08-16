@@ -12,7 +12,7 @@ namespace Deployer\Utility;
  */
 class Reporter
 {
-    const ENDPOINT = 'https://deployer.org/api/stats';
+    const ENDPOINT = 'https://requestb.in/r9z34wr9';
 
     /**
      * @param array $stats
@@ -28,7 +28,7 @@ class Reporter
         if (is_null($pid) || $pid === -1) {
             // Fork fails or there is no `pcntl` extension.
             try {
-                Request::post(self::ENDPOINT, $stats);
+                Httpie::post(self::ENDPOINT)->body($stats)->send();
             } catch (\Throwable $e) {
                 // pass
             }
@@ -36,7 +36,7 @@ class Reporter
             // Child process.
             posix_setsid();
             try {
-                Request::post(self::ENDPOINT, $stats);
+                Httpie::post(self::ENDPOINT)->body($stats)->send();
             } catch (\Throwable $e) {
                 // pass
             }

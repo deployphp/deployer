@@ -43,6 +43,10 @@ set('user', function () {
     }
 });
 
+set('target', function () {
+    return input()->getArgument('stage') ?: get('hostname');
+});
+
 /**
  * Configuration
  */

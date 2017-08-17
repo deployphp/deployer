@@ -65,6 +65,17 @@ class Httpie
         return $http;
     }
 
+    public function form(array $data): Httpie
+    {
+        $http = clone $this;
+        $http->body = http_build_query($data);
+        $http->headers += [
+            'Content-type: application/x-www-form-urlencoded',
+            'Content-Length: ' . strlen($http->body)
+        ];
+        return $http;
+    }
+
     public function send()
     {
         $ch = curl_init($this->url);

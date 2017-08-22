@@ -21,7 +21,11 @@ install:
   - composer self-update
   - composer update --no-interaction --prefer-source $COMPOSER_FLAGS
 
-script: vendor/bin/phpunit
+script:
+  - vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
   webhooks:

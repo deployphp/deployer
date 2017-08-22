@@ -96,7 +96,7 @@ set('current_path', function () {
 
 
 /**
- * Custom bins.
+ * Custom bins
  */
 set('bin/php', function () {
     return locateBinaryPath('php');

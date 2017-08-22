@@ -1,7 +1,13 @@
 # Changelog
 
 ## master
-[v5.1.3...master](https://github.com/deployphp/deployer/compare/v5.1.3...master)
+[v6.0.0...master](https://github.com/deployphp/deployer/compare/v6.0.0...master)
+
+∅
+
+
+## v6.0.0
+[v5.1.3...v6.0.0](https://github.com/deployphp/deployer/compare/v5.1.3...v6.0.0)
 
 ### Added
 - Added possibility to use callable when setting 'default_stage'

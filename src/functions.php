@@ -260,17 +260,6 @@ function within($path, $callback)
 }
 
 /**
- * Return the current working path.
- *
- * @deprecated Will be removed in 6.x
- * @return string
- */
-function workingPath()
-{
-    return get('working_path', false);
-}
-
-/**
  * Run command.
  *
  * @param string $command

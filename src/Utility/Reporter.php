@@ -12,7 +12,7 @@ namespace Deployer\Utility;
  */
 class Reporter
 {
-    const ENDPOINT = 'https://requestb.in/r9z34wr9';
+    const ENDPOINT = 'https://deployer.org/api/stats';
 
     /**
      * @param array $stats

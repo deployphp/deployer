@@ -13,6 +13,7 @@ class Httpie
     private $url = '';
     private $headers = [];
     private $body = '';
+    private $curlopts = [];
 
     public function __construct()
     {
@@ -76,6 +77,13 @@ class Httpie
         return $http;
     }
 
+    public function setopt($key, $value)
+    {
+        $http = clone $this;
+        $http->curlopts[$key] = $value;
+        return $http;
+    }
+
     public function send()
     {
         $ch = curl_init($this->url);
@@ -87,6 +95,9 @@ class Httpie
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        foreach ($this->curlopts as $key => $value) {
+            curl_setopt($ch, $key, $value);
+        }
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;

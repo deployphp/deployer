@@ -17,3 +17,10 @@ ControlPersist causes stderr to be left open until the master connection times o
 
 * https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=714526
 * https://bugzilla.mindrot.org/show_bug.cgi?id=1988
+
+
+## cURL 7.29.0
+
+Certificate verification fails with multiple https urls.
+
+* https://bugzilla.redhat.com/show_bug.cgi?id=1241172

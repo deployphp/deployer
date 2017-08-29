@@ -14,9 +14,6 @@ class Reporter
 {
     const ENDPOINT = 'https://deployer.org/api/stats';
 
-    /**
-     * @param array $stats
-     */
     public static function report(array $stats)
     {
         $pid = null;
@@ -28,7 +25,7 @@ class Reporter
         if (is_null($pid) || $pid === -1) {
             // Fork fails or there is no `pcntl` extension.
             try {
-                Httpie::post(self::ENDPOINT)->body($stats)->send();
+                self::send($stats);
             } catch (\Throwable $e) {
                 // pass
             }
@@ -36,12 +33,20 @@ class Reporter
             // Child process.
             posix_setsid();
             try {
-                Httpie::post(self::ENDPOINT)->body($stats)->send();
+                self::send($stats);
             } catch (\Throwable $e) {
                 // pass
             }
             // Close child process after doing job.
             exit(0);
         }
+    }
+
+    private static function send(array $stats)
+    {
+        Httpie::post(self::ENDPOINT)
+            ->body($stats)
+            ->setopt(CURLOPT_SSL_VERIFYPEER, false)
+            ->send();
     }
 }

@@ -1,8 +1,15 @@
 # Changelog
 
 ## master
-[v6.0.1...master](https://github.com/deployphp/deployer/compare/v6.0.1...master)
+[v6.0.2...master](https://github.com/deployphp/deployer/compare/v6.0.2...master)
 
+🍰
+
+## v6.0.2
+[v6.0.1...v6.0.2](https://github.com/deployphp/deployer/compare/v6.0.1...v6.0.2)
+
+### Fixed 
+- Fixed bug with curl ssh check in _Httpie_ util
 
 ## v6.0.1
 [v6.0.0...v6.0.1](https://github.com/deployphp/deployer/compare/v6.0.0...v6.0.1)

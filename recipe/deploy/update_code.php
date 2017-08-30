@@ -58,6 +58,14 @@ task('deploy:update_code', function () {
         'tty' => get('git_tty', false),
     ];
 
+    $modules = get('git_submodules', true);
+    if ($modules === FALSE) {
+        $recursive = '';
+    } else if (is_string($modules)) {
+        $recursive = '';
+        $modules = explode(',', $modules);
+    }
+
     $at = '';
     if (!empty($branch)) {
         $at = "-b $branch";
@@ -92,6 +100,12 @@ task('deploy:update_code', function () {
     }
 
     if (!empty($revision)) {
-        run("cd {{release_path}} && $git checkout $revision");
+        run("cd {{release_path}} && $git checkout $revision" . ($recursive ? ' --recurse-submodules' : ''));
+    }
+
+    if (is_array($modules)) {
+        foreach ($modules as $module) {
+            run("cd {{release_path}} && $git submodule update --init --recommend-shallow -- $module 2>&1", $options);
+        }
     }
 });

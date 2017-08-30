@@ -10,6 +10,11 @@ namespace Deployer;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
+/**
+ * Class DeployTest
+ * @package Deployer
+ * @group deploy
+ */
 class DeployTest extends DepCase
 {
     protected function load()
@@ -85,5 +90,93 @@ class DeployTest extends DepCase
         $this->start('cleanup');
         self::assertEquals(5, exec("ls -1 releases | wc -l"));
         self::assertFileNotExists(self::$currentPath . '/release');
+    }
+
+    public function testRecursive()
+    {
+        set('git_recursive', true);
+        $this->start('deploy', [], []);
+
+        self::assertFileNotExists(self::$currentPath . '/current/branch1');
+
+        self::assertFileExists(self::$currentPath . '/current/module1/master');
+        self::assertFileExists(self::$currentPath . '/current/module2/master');
+
+        self::assertFileNotExists(self::$currentPath . '/current/module1/branch1');
+        self::assertFileNotExists(self::$currentPath . '/current/module2/branch1');
+    }
+
+    public function testRecursiveBranch()
+    {
+        set('git_recursive', true);
+        set('branch', 'branch1');
+
+        $this->start('deploy', [], []);
+
+        self::assertFileExists(self::$currentPath . '/current/branch1');
+
+        self::assertFileExists(self::$currentPath . '/current/module1/master');
+        self::assertFileExists(self::$currentPath . '/current/module2/master');
+
+        self::assertFileExists(self::$currentPath . '/current/module1/branch1');
+        self::assertFileNotExists(self::$currentPath . '/current/module2/branch1');
+    }
+
+    public function testRecursiveRevision()
+    {
+        set('git_recursive', true);
+
+        $this->start('deploy', ['revision' => 'branch1'], []);
+
+        self::assertFileExists(self::$currentPath . '/current/branch1');
+
+        self::assertFileExists(self::$currentPath . '/current/module1/master');
+        self::assertFileExists(self::$currentPath . '/current/module2/master');
+
+        self::assertFileExists(self::$currentPath . '/current/module1/branch1');
+        self::assertFileNotExists(self::$currentPath . '/current/module2/branch1');
+    }
+
+    public function testRecursiveDefinedModules_None()
+    {
+        set('git_recursive', true);
+        set('git_submodules', false);
+
+        $this->start('deploy', [], []);
+
+        self::assertFileNotExists(self::$currentPath . '/current/module1/master');
+        self::assertFileNotExists(self::$currentPath . '/current/module2/master');
+    }
+
+    public function testRecursiveDefinedModules_String()
+    {
+        set('git_recursive', true);
+        set('git_submodules', 'module1');
+
+        $this->start('deploy', [], []);
+
+        self::assertFileExists(self::$currentPath . '/current/module1/master');
+        self::assertFileNotExists(self::$currentPath . '/current/module2/master');
+    }
+
+    public function testRecursiveDefinedModules_Array()
+    {
+        set('git_recursive', true);
+        set('git_submodules', ['module2']);
+
+        $this->start('deploy', [], []);
+
+        self::assertFileNotExists(self::$currentPath . '/current/module1/master');
+        self::assertFileExists(self::$currentPath . '/current/module2/master');
+    }
+
+    public function testNotRecursive()
+    {
+        set('git_recursive', false);
+
+        $this->start('deploy', [], []);
+
+        self::assertFileNotExists(self::$currentPath . '/current/module1/master');
+        self::assertFileNotExists(self::$currentPath . '/current/module2/master');
     }
 }

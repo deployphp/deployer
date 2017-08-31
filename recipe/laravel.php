@@ -40,7 +40,7 @@ set('laravel_version', function () {
 
     preg_match_all('/(\d+\.?)+/', $result, $matches);
 
-    $version = $matches[0][0] ?? 5.4;
+    $version = $matches[0][0] ?? 5.5;
 
     return $version;
 });
@@ -106,6 +106,12 @@ task('artisan:view:clear', function () {
 desc('Execute artisan optimize');
 task('artisan:optimize', function () {
     run('{{bin/php}} {{release_path}}/artisan optimize');
+    $deprecatedVersion = 5.5;
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $deprecatedVersion, '<')) {
+        run('{{bin/php}} {{release_path}}/artisan optimize');
+    }
 });
 
 desc('Execute artisan queue:restart');

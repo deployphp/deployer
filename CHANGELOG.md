@@ -1,5 +1,9 @@
 # Changelog
 
+## beornlake PR
+- Updated Laravel recipe to not run 'artisan:optimize' on Laravel >= 5.5, as that command is now deprecated ([see upgrade notes](https://laravel.com/docs/5.5/upgrade)).
+- Laravel version check defaults to 5.5 if not found.
+
 ## master
 [v6.0.2...master](https://github.com/deployphp/deployer/compare/v6.0.2...master)
 
@@ -8,7 +12,7 @@
 ## v6.0.2
 [v6.0.1...v6.0.2](https://github.com/deployphp/deployer/compare/v6.0.1...v6.0.2)
 
-### Fixed 
+### Fixed
 - Fixed bug with curl ssh check in _Httpie_ util
 
 ## v6.0.1
@@ -42,7 +46,7 @@
 - Improved environment variables management
 - Fixed `runLocally` to not cd into remote dir
 
-### Removed 
+### Removed
 - Removed `terminate_message` option
 - Removed `Result` class
 
@@ -70,7 +74,7 @@
 ## v5.1.1
 [v5.1.0...v5.1.1](https://github.com/deployphp/deployer/compare/v5.1.0...v5.1.1)
 
-### Fixed 
+### Fixed
 - Fixed bug with `self-update` warnings [#1226]
 
 

@@ -137,7 +137,7 @@ class DeployTest extends DepCase
      */
     public function testRecursiveRevision()
     {
-        $this->postLoad = function() {
+        $this->postLoad = function () {
             set('git_recursive', true);
         };
 
@@ -157,7 +157,7 @@ class DeployTest extends DepCase
      */
     public function testRecursiveDefinedModules_None()
     {
-        $this->postLoad = function() {
+        $this->postLoad = function () {
             set('git_recursive', true);
             set('git_submodules', false);
         };
@@ -173,7 +173,7 @@ class DeployTest extends DepCase
      */
     public function testRecursiveDefinedModules_String()
     {
-        $this->postLoad = function() {
+        $this->postLoad = function () {
             set('git_recursive', true);
             set('git_submodules', 'module1');
         };
@@ -189,7 +189,7 @@ class DeployTest extends DepCase
      */
     public function testRecursiveDefinedModules_Array()
     {
-        $this->postLoad = function() {
+        $this->postLoad = function () {
             set('git_recursive', true);
             set('git_submodules', ['module2']);
         };
@@ -202,7 +202,7 @@ class DeployTest extends DepCase
 
     public function testNotRecursive()
     {
-        $this->postLoad = function() {
+        $this->postLoad = function () {
             set('git_recursive', false);
         };
 

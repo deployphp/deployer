@@ -59,13 +59,13 @@ task('deploy:update_code', function () {
     ];
 
     $modules = get('git_submodules', true);
-    if ($modules === FALSE) {
+    if ($modules === false) {
         $modules = [];
-    } else if (is_string($modules)) {
+    } elseif (is_string($modules)) {
         $modules = explode(',', $modules);
     }
     // When modules is anything other than true disable recursive
-    if ($modules !== TRUE) {
+    if ($modules !== true) {
         $recursive = '';
     }
 

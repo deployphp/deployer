@@ -104,11 +104,15 @@ task('deploy:update_code', function () {
 
     if (!empty($revision)) {
         run("cd {{release_path}} && $git checkout $revision 2>&1");
+        if ($recursive) {
+            // If modules were specified they'll be handled below and $recursive will be FALSEy
+            run("cd {{release_path}} && $git submodule update $depth 2>&1");
+        }
     }
 
     if (is_array($modules)) {
         foreach ($modules as $module) {
-            run("cd {{release_path}} && $git submodule update --init -- $module 2>&1", $options);
+            run("cd {{release_path}} && $git submodule update --init $depth -- $module 2>&1", $options);
         }
     }
 });

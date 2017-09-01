@@ -7,7 +7,6 @@
 
 namespace Deployer;
 
-
 /**
  * Get current git HEAD branch as default branch to deploy.
  */

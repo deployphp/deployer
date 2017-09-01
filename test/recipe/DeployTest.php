@@ -17,9 +17,15 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  */
 class DeployTest extends DepCase
 {
+    protected $postLoad;
+
     protected function load()
     {
         require DEPLOYER_FIXTURES . '/recipe/deploy.php';
+        if (is_callable($this->postLoad)) {
+            call_user_func($this->postLoad, []);
+            $this->postLoad = null;
+        }
     }
 
     protected function setUp()
@@ -106,11 +112,14 @@ class DeployTest extends DepCase
         self::assertFileNotExists(self::$currentPath . '/current/module2/branch1');
     }
 
+    /**
+     * @group deploy-branch
+     */
     public function testRecursiveBranch()
     {
-        set('git_recursive', true);
-        set('branch', 'branch1');
-
+        $this->postLoad = function() {
+            set('branch', 'branch1');
+        };
         $this->start('deploy', [], []);
 
         self::assertFileExists(self::$currentPath . '/current/branch1');
@@ -122,11 +131,17 @@ class DeployTest extends DepCase
         self::assertFileNotExists(self::$currentPath . '/current/module2/branch1');
     }
 
+    /**
+     * @group deploy-branch
+     * @group deploy-revision
+     */
     public function testRecursiveRevision()
     {
-        set('git_recursive', true);
+        $this->postLoad = function() {
+            set('git_recursive', true);
+        };
 
-        $this->start('deploy', ['revision' => 'branch1'], []);
+        $this->start('deploy', ['--revision' => 'branch1'], []);
 
         self::assertFileExists(self::$currentPath . '/current/branch1');
 
@@ -137,10 +152,15 @@ class DeployTest extends DepCase
         self::assertFileNotExists(self::$currentPath . '/current/module2/branch1');
     }
 
+    /**
+     * @group deploy-modules
+     */
     public function testRecursiveDefinedModules_None()
     {
-        set('git_recursive', true);
-        set('git_submodules', false);
+        $this->postLoad = function() {
+            set('git_recursive', true);
+            set('git_submodules', false);
+        };
 
         $this->start('deploy', [], []);
 
@@ -148,10 +168,15 @@ class DeployTest extends DepCase
         self::assertFileNotExists(self::$currentPath . '/current/module2/master');
     }
 
+    /**
+     * @group deploy-modules
+     */
     public function testRecursiveDefinedModules_String()
     {
-        set('git_recursive', true);
-        set('git_submodules', 'module1');
+        $this->postLoad = function() {
+            set('git_recursive', true);
+            set('git_submodules', 'module1');
+        };
 
         $this->start('deploy', [], []);
 
@@ -159,10 +184,15 @@ class DeployTest extends DepCase
         self::assertFileNotExists(self::$currentPath . '/current/module2/master');
     }
 
+    /**
+     * @group deploy-modules
+     */
     public function testRecursiveDefinedModules_Array()
     {
-        set('git_recursive', true);
-        set('git_submodules', ['module2']);
+        $this->postLoad = function() {
+            set('git_recursive', true);
+            set('git_submodules', ['module2']);
+        };
 
         $this->start('deploy', [], []);
 
@@ -172,7 +202,9 @@ class DeployTest extends DepCase
 
     public function testNotRecursive()
     {
-        set('git_recursive', false);
+        $this->postLoad = function() {
+            set('git_recursive', false);
+        };
 
         $this->start('deploy', [], []);
 

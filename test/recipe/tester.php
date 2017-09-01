@@ -65,9 +65,10 @@ abstract class DepCase extends BaseTestCase
         }
         \exec("mkdir -p $repository");
         \exec("cd $repository && git init");
-        \exec("cd $repository && git add .");
         \exec("cd $repository && git config user.name 'John Smith'");
         \exec("cd $repository && git config user.email 'john.smith@example.com'");
+        file_put_contents("$repository/composer.json", json_encode(['require' => ['']]));
+        \exec("cd $repository && git add .");
         \exec("cd $repository && git commit -m 'init commit'");
 
         // Submodules
@@ -97,7 +98,7 @@ abstract class DepCase extends BaseTestCase
 
     public static function tearDownAfterClass()
     {
-        //self::cleanUp();
+        self::cleanUp();
     }
 
     protected static function cleanUp()

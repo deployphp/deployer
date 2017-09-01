@@ -74,7 +74,15 @@ abstract class DepCase extends BaseTestCase
         // Submodules
         $modules = ['module1', 'module2'];
         foreach ($modules as $module) {
-            \exec("cd $repository && mkdir -p $module && touch $module/master && cd $module && git init && git add . && git commit -m 'init commit'");
+            \exec("cd $repository && " .
+                "mkdir -p $module && " .
+                "touch $module/master && " .
+                "cd $module && " .
+                "git init && " .
+                "git config user.name 'John Smith'" .
+                "git config user.email 'john.smith@example.com'" .
+                "git add . && " .
+                "git commit -m 'init $module commit'");
             \exec("cd $repository && git submodule add --name $module ./$module");
         }
         \exec("cd $repository && git commit -a -m 'adding modules'");

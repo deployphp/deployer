@@ -117,7 +117,7 @@ class DeployTest extends DepCase
      */
     public function testRecursiveBranch()
     {
-        $this->postLoad = function() {
+        $this->postLoad = function () {
             set('branch', 'branch1');
         };
         $this->start('deploy', [], []);

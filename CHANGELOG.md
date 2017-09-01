@@ -1,13 +1,13 @@
 # Changelog
 
-## beornlake PR
-- Updated Laravel recipe to not run 'artisan:optimize' on Laravel >= 5.5, as that command is now deprecated ([see upgrade notes](https://laravel.com/docs/5.5/upgrade)).
-- Laravel version check defaults to 5.5 if not found.
-
 ## master
 [v6.0.2...master](https://github.com/deployphp/deployer/compare/v6.0.2...master)
 
-🍰
+### Changed
+- Laravel version check defaults to 5.5 if not found [#1352]
+
+### Fixed 
+- Updated Laravel recipe to not run `artisan:optimize` on Laravel >= 5.5, as that command is now deprecated ([see upgrade notes](https://laravel.com/docs/5.5/upgrade)) [#1352]
 
 ## v6.0.2
 [v6.0.1...v6.0.2](https://github.com/deployphp/deployer/compare/v6.0.1...v6.0.2)
@@ -307,6 +307,7 @@
 
 
 
+[#1352]: https://github.com/deployphp/deployer/pull/1352
 [#1311]: https://github.com/deployphp/deployer/pull/1311
 [#1300]: https://github.com/deployphp/deployer/pull/1300
 [#1299]: https://github.com/deployphp/deployer/issues/1299

@@ -79,8 +79,8 @@ abstract class DepCase extends BaseTestCase
                 "touch $module/master && " .
                 "cd $module && " .
                 "git init && " .
-                "git config user.name 'John Smith'" .
-                "git config user.email 'john.smith@example.com'" .
+                "git config user.name 'John Smith' && " .
+                "git config user.email 'john.smith@example.com' && " .
                 "git add . && " .
                 "git commit -m 'init $module commit'");
             \exec("cd $repository && git submodule add --name $module ./$module");
@@ -91,17 +91,17 @@ abstract class DepCase extends BaseTestCase
         $branches = ['branch1'];
         foreach ($branches as $branch) {
             $module = $modules[0];
-            \exec("cd $repository && git checkout -b $branch");
-            \exec("cd $repository/$module && git checkout -b $branch && touch $branch && git add $branch && git commit -a -m 'adding branch $branch'");
+            \exec("cd $repository && git checkout -b $branch 2>/dev/null");
+            \exec("cd $repository/$module && git checkout -b $branch 2> /dev/null && touch $branch && git add $branch && git commit -a -m 'adding branch $branch'");
             \exec("cd $repository && touch $branch && git add $branch $module && git commit -a -m 'adding branch $branch'");
 
             //Other module stays at master
             $module = $modules[1];
-            \exec("cd $repository/$module && git checkout -b $branch && touch $branch && git add $branch && git commit -a -m 'adding branch $branch' && git checkout master");
+            \exec("cd $repository/$module && git checkout -b $branch 2> /dev/null && touch $branch && git add $branch && git commit -a -m 'adding branch $branch' && git checkout master 2> /dev/null");
         }
 
         // Move back to master
-        \exec("cd $repository && git checkout master && git submodule update");
+        \exec("cd $repository && git checkout master 2> /dev/null && git submodule update");
     }
 
     public static function tearDownAfterClass()

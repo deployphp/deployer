@@ -36,7 +36,7 @@
         "symfony/yaml": "~2.7|~3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.0"
+        "phpunit/phpunit": "~6.1"
     },
     "config": {
         "sort-packages": true

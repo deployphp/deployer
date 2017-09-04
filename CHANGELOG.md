@@ -1,7 +1,12 @@
 # Changelog
 
 ## master
-[v6.0.2...master](https://github.com/deployphp/deployer/compare/v6.0.2...master)
+[v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
+
+
+
+## v6.0.3
+[v6.0.2...v6.0.3](https://github.com/deployphp/deployer/compare/v6.0.2...v6.0.3)
 
 ### Changed
 - Laravel version check defaults to 5.5 if not found [#1352]

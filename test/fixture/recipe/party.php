@@ -46,6 +46,28 @@ task('test_invoke:subtask2', function () {
 
 
 /*
+ * Invoke group test
+ */
+
+task('test_invoke_group', function () {
+    invoke('test_invoke_group:group');
+});
+
+task('test_invoke_group:group', [
+    'test_invoke_group:subtask1',
+    'test_invoke_group:subtask2',
+]);
+
+task('test_invoke_group:subtask1', function () {
+    writeln('first');
+});
+
+task('test_invoke_group:subtask2', function () {
+    writeln('second');
+});
+
+
+/*
  * Function "on" test
  */
 

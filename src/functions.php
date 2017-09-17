@@ -394,15 +394,11 @@ function roles(...$roles)
  */
 function invoke($task)
 {
-    $informer = Deployer::get()->informer;
-    $task = Deployer::get()->tasks->get($task);
-    $input = Context::get()->getInput();
-    $output = Context::get()->getOutput();
-    $host = Context::get()->getHost();
+    $hosts = [Context::get()->getHost()];
+    $tasks = Deployer::get()->scriptManager->getTasks($task, $hosts);
 
-    $informer->startTask($task);
-    $task->run(new Context($host, $input, $output));
-    $informer->endTask($task);
+    $executor = Deployer::get()->seriesExecutor;
+    $executor->run($tasks, $hosts);
 }
 
 /**

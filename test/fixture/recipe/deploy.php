@@ -26,7 +26,7 @@ set('shared_dirs', [
 set('writable_dirs', [
     'app/cache',
 ]);
-
+set('branch', '');
 
 // Hosts
 

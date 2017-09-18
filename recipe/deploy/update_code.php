@@ -56,6 +56,17 @@ task('deploy:update_code', function () {
         'tty' => get('git_tty', false),
     ];
 
+    $modules = get('git_submodules', true);
+    if ($modules === false) {
+        $modules = [];
+    } elseif (is_string($modules)) {
+        $modules = explode(',', $modules);
+    }
+    // When modules is anything other than true disable recursive
+    if ($modules !== true) {
+        $recursive = '';
+    }
+
     $at = '';
     if (!empty($branch)) {
         $at = "-b $branch";
@@ -90,6 +101,16 @@ task('deploy:update_code', function () {
     }
 
     if (!empty($revision)) {
-        run("cd {{release_path}} && $git checkout $revision");
+        run("cd {{release_path}} && $git checkout $revision 2>&1");
+        if ($recursive) {
+            // If modules were specified they'll be handled below and $recursive will be FALSEy
+            run("cd {{release_path}} && $git submodule update $depth 2>&1");
+        }
+    }
+
+    if (is_array($modules)) {
+        foreach ($modules as $module) {
+            run("cd {{release_path}} && $git submodule update --init $depth -- $module 2>&1", $options);
+        }
     }
 });

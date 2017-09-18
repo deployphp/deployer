@@ -32,6 +32,7 @@ task('magento:enable', function () {
 desc('Compile magento di');
 task('magento:compile', function () {
     run("{{bin/php}} {{release_path}}/bin/magento setup:di:compile");
+    run('cd {{release_path}} && {{bin/composer}} dump-autoload -o');
 });
 
 desc('Deploy assets');

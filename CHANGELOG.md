@@ -4,7 +4,7 @@
 [v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
 
 ### Changed
-- Laravel version check defaults to 5.5 if not found [#1365]
+- Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 
 
 ## v6.0.3

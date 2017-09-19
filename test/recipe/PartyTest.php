@@ -33,6 +33,13 @@ class PartyTest extends DepCase
         self::assertContains('second', $output);
     }
 
+    public function testInvokeGroup()
+    {
+        $output = $this->start('test_invoke_group');
+        self::assertContains('first', $output);
+        self::assertContains('second', $output);
+    }
+
     public function testOn()
     {
         $output = $this->start('test_on');

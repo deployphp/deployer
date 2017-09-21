@@ -315,6 +315,7 @@
 
 
 [#1365]: https://github.com/deployphp/deployer/pull/1365
+[#1364]: https://github.com/deployphp/deployer/pull/1364
 [#1352]: https://github.com/deployphp/deployer/pull/1352
 [#1311]: https://github.com/deployphp/deployer/pull/1311
 [#1300]: https://github.com/deployphp/deployer/pull/1300

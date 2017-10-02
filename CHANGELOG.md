@@ -6,6 +6,7 @@
 ### Changed
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
+- Added recipe for discovering known bugs [#1361]
 
 
 ## v6.0.3

@@ -38,6 +38,7 @@ localhost()
 
 desc('Deploy your project');
 task('deploy', [
+    'check_for_known_bugs',
     'deploy:prepare',
     'deploy:lock',
     'deploy:release',

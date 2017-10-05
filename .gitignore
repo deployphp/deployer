@@ -3,5 +3,3 @@
 .php_cs.cache
 *.phar
 phpunit.xml
-.idea
-.DS_Store

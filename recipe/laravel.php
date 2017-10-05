@@ -153,7 +153,6 @@ task('deploy:public_disk', function () {
  */
 desc('Deploy your project');
 task('deploy', [
-    'check_for_known_bugs',
     'deploy:info',
     'deploy:prepare',
     'deploy:lock',

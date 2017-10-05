@@ -44,7 +44,6 @@ task('deploy:run_migrations', function () {
  * Main task
  */
 task('deploy', [
-    'check_for_known_bugs',
     'deploy:info',
     'deploy:prepare',
     'deploy:lock',

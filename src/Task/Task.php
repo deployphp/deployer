@@ -114,7 +114,6 @@ class Task
         }
 
         foreach ($this->iterationConfigurations as $configuration) {
-
             $overwritten = $this->applyDeltaSettings($context, $configuration);
 
             // Call task
@@ -129,7 +128,6 @@ class Task
             if ($context->getConfig() !== null) {
                 $context->getConfig()->set('working_path', false);
             }
-
         }
 
         if ($this->once) {
@@ -358,11 +356,9 @@ class Task
 
         $overwritten = [];
         foreach ($settings as $key => $value) {
-
             if ($configuration->has($key)) {
                 $overwritten[$key] = $configuration->get($key);
-            }
-            else {
+            } else {
                 $overwritten[$key] = null;
             }
 

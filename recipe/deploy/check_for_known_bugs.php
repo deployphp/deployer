@@ -15,11 +15,8 @@ task('check_for_known_bugs', function () {
         'ubuntu 16.04'
     ];
 
-    $buggyCurlVersion = 'curl 7.29.0';
-
     $OSRegularExpression = implode($OSWithKnownBugs, '|');
     $checkOSCommand = "test -f /etc/lsb-release && cat /etc/lsb-release | grep -E '$OSRegularExpression' -i && exit 1 || exit 0";
-    $checkCurlVersionCommand = "command -v curl > /dev/null 2>&1 && curl --version | grep -Eo \'^\w+\s(\d|\.)+\' -i";
 
     $hosts = Deployer::get()->hosts;
     $client = Deployer::get()->sshClient;
@@ -35,11 +32,6 @@ task('check_for_known_bugs', function () {
         } catch (RuntimeException $e) {
             $warnings[$host->getHostname()][] = 'Issue with operating system';
         }
-
-        $curlVersion = $client->run($host, $checkCurlVersionCommand);
-        if (!empty($curlVersion) && strtolower($curlVersion) === $buggyCurlVersion) {
-            $warnings[$host->getHostname()][] = sprintf('Issue with cURL version (%s)', $curlVersion);
-        }
     }
 
     if (empty($warnings)) {
@@ -50,12 +42,10 @@ task('check_for_known_bugs', function () {
         writeln('<error>Host ' . $host . ' has some potential bugs:</error>');
 
         foreach ($messages as $message) {
-            writeln("<error>\t$message</error>");
+            writeln("<error>- $message</error>");
         }
     }
 
     writeln('<error>Read more about known bugs: https://github.com/deployphp/deployer/blob/master/KNOWN_BUGS.md</error>');
-})
-    ->shallow()
-    ->addBefore('deploy');
+})->shallow();
 

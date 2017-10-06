@@ -151,3 +151,8 @@ task('deploy:failed', function () {
 })->setPrivate();
 
 fail('deploy', 'deploy:failed');
+
+/**
+ * Check for potential bugs
+ */
+after('deploy:info', 'check_for_known_bugs');

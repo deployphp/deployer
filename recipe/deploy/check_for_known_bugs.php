@@ -12,7 +12,7 @@ use Deployer\Host\Localhost;
 
 task('check_for_known_bugs', function () {
     $OSWithKnownBugs = [
-        'ubuntu 16.04'
+        'ubuntu 14.04'
     ];
 
     $OSRegularExpression = implode($OSWithKnownBugs, '|');

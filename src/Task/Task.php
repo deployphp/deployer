@@ -7,6 +7,8 @@
 
 namespace Deployer\Task;
 
+use Deployer\Collection\Collection;
+use Deployer\Exception\ConfigurationException;
 use Deployer\Host\Host;
 
 class Task
@@ -84,12 +86,19 @@ class Task
     private $shallow = false;
 
     /**
-     * @param string $name Tasks name
+     * Set of delta-configurations for task iteration. If set the task will be ran for every entry.
+     *
+     * @var Collection[]
+     */
+    private $iterationConfigurations = [];
+
+    /**
+     * @param string   $name     Tasks name
      * @param callable $callback Task code
      */
     public function __construct($name, callable $callback = null)
     {
-        $this->name = $name;
+        $this->name     = $name;
         $this->callback = $callback;
     }
 
@@ -100,16 +109,31 @@ class Task
     {
         Context::push($context);
 
-        // Call task
-        call_user_func($this->callback);
+        if (!count($this->iterationConfigurations)) {
+            $this->iterationConfigurations[] = new Collection();
+        }
+
+        foreach ($this->iterationConfigurations as $configuration) {
+
+            $overwritten = $this->applyDeltaSettings($context, $configuration);
+
+            // Call task
+            try {
+                call_user_func($this->callback);
+            } finally {
+                // Restore original settings
+                $this->applyDeltaSettings($context, $overwritten);
+            }
+
+            // Clear working_path
+            if ($context->getConfig() !== null) {
+                $context->getConfig()->set('working_path', false);
+            }
+
+        }
 
         if ($this->once) {
             $this->hasRun = true;
-        }
-
-        // Clear working_path
-        if ($context->getConfig() !== null) {
-            $context->getConfig()->set('working_path', false);
         }
 
         Context::pop();
@@ -218,7 +242,7 @@ class Task
             $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
 
             $onRole = empty($this->on['roles']);
-            foreach ((array) $host->get('roles', []) as $role) {
+            foreach ((array)$host->get('roles', []) as $role) {
                 if (in_array($role, $this->on['roles'], true)) {
                     $onRole = true;
                 }
@@ -308,5 +332,43 @@ class Task
     public function isShallow()
     {
         return $this->shallow;
+    }
+
+    /**
+     * A set of configuration to iterate the task with
+     */
+    public function iterate($configurations)
+    {
+        $configurations = is_array($configurations) ? $configurations : func_get_args();
+
+        foreach ($configurations as $configuration) {
+            if (!$configuration instanceof Collection) {
+                $configuration = new Collection($configuration);
+            }
+            $this->iterationConfigurations[] = $configuration;
+        }
+    }
+
+    private function applyDeltaSettings(Context $context, Collection $settings)
+    {
+        $configuration = $context->getConfig();
+        if ($context->getConfig() === null && count($settings)) {
+            throw new ConfigurationException('Cannot apply settings on a non-existing configuration');
+        }
+
+        $overwritten = [];
+        foreach ($settings as $key => $value) {
+
+            if ($configuration->has($key)) {
+                $overwritten[$key] = $configuration->get($key);
+            }
+            else {
+                $overwritten[$key] = null;
+            }
+
+            $configuration->set($key, $value);
+        }
+
+        return new Collection($overwritten);
     }
 }

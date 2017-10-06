@@ -273,6 +273,15 @@ function run($command, $options = [])
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
 
+    if (has('command_template') && get('apply_command_template', true) !== false) {
+        $template = get('command_template');
+        if ($template) {
+            $template = preg_replace('/\{\{\s*\?([\w\.\/-]+)\s*\}\}/', '{{\1}}', $template);
+            set('command', escapeshellarg($command));
+            $command = $template;
+        }
+    }
+
     $command = parse($command);
     $workingPath = get('working_path', '');
 
@@ -759,4 +768,16 @@ function locateBinaryPath($name)
     }
 
     throw new \RuntimeException("Can't locate [$nameEscaped] - neither of [command|which|type] commands are available");
+}
+
+function runWithoutTemplate(callable $callback)
+{
+    $previous = get('apply_command_template', true);
+    set('apply_command_template', false);
+    try {
+        $result = $callback();
+    } finally {
+        set('apply_command_template', $previous);
+    }
+    return $result;
 }

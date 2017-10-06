@@ -23,6 +23,7 @@ require __DIR__ . '/deploy/symlink.php';
 require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/rollback.php';
+require __DIR__ . '/deploy/check_for_known_bugs.php';
 
 use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputOption;
@@ -150,3 +151,8 @@ task('deploy:failed', function () {
 })->setPrivate();
 
 fail('deploy', 'deploy:failed');
+
+/**
+ * Check for potential bugs
+ */
+after('deploy:info', 'check_for_known_bugs');

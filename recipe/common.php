@@ -151,8 +151,3 @@ task('deploy:failed', function () {
 })->setPrivate();
 
 fail('deploy', 'deploy:failed');
-
-/**
- * Check for known bugs before deploying
- */
-before('deploy', 'check_for_known_bugs');

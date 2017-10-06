@@ -12,7 +12,7 @@ use Deployer\Host\Localhost;
 
 task('check_for_known_bugs', function () {
     $OSWithKnownBugs = [
-        'ubuntu 14.04'
+        'ubuntu 16.04'
     ];
 
     $buggyCurlVersion = 'curl 7.29.0';
@@ -55,5 +55,7 @@ task('check_for_known_bugs', function () {
     }
 
     writeln('<error>Read more about known bugs: https://github.com/deployphp/deployer/blob/master/KNOWN_BUGS.md</error>');
-})->shallow();
+})
+    ->shallow()
+    ->addBefore('deploy');
 

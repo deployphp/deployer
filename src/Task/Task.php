@@ -8,6 +8,7 @@
 namespace Deployer\Task;
 
 use Deployer\Host\Host;
+use function Deployer\Support\array_flatten;
 
 class Task
 {
@@ -177,7 +178,7 @@ class Task
      */
     public function onHosts(...$hosts)
     {
-        $this->on['hosts'] = $hosts;
+        $this->on['hosts'] = array_flatten($hosts);
         return $this;
     }
 
@@ -187,7 +188,7 @@ class Task
      */
     public function onRoles(...$roles)
     {
-        $this->on['roles'] = $roles;
+        $this->on['roles'] = array_flatten($roles);
         return $this;
     }
 
@@ -197,7 +198,7 @@ class Task
      */
     public function onStage(...$stages)
     {
-        $this->on['stages'] = $stages;
+        $this->on['stages'] = array_flatten($stages);
         return $this;
     }
 

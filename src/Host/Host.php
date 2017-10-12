@@ -10,7 +10,7 @@ namespace Deployer\Host;
 use Deployer\Configuration\Configuration;
 use Deployer\Configuration\ConfigurationAccessor;
 use Deployer\Ssh\Arguments;
-use Deployer\Ssh\Options;
+use function Deployer\Support\array_flatten;
 
 class Host
 {
@@ -261,7 +261,7 @@ class Host
     {
         $this->config->set('roles', []);
 
-        foreach ($roles as $role) {
+        foreach (array_flatten($roles) as $role) {
             $this->config->add('roles', [$role]);
         }
 

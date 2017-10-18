@@ -84,7 +84,7 @@ task('deploy:assets', function () {
         return "{{release_path}}/$asset";
     }, get('assets')));
 
-    run(sprintf('find %s -exec touch -t %s {} \';\' &> /dev/null || true', $assets, date('Ymdhi.s')));
+    run(sprintf('find %s -exec touch -t %s {} \';\' &> /dev/null || true', $assets, date('YmdHi.s')));
 })->desc('Normalize asset timestamps');
 
 

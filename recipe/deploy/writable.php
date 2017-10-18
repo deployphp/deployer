@@ -64,23 +64,31 @@ task('deploy:writable', function () {
                 run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs", $runOpts);
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs", $runOpts);
             } elseif (commandExist('setfacl')) {
-                if (!empty($sudo)) {
-                    run("$sudo setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
-                    run("$sudo setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
-                } else {
-                    // When running without sudo, exception may be thrown
-                    // if executing setfacl on files created by http user (in directory that has been setfacl before).
-                    // These directories/files should be skipped.
-                    // Now, we will check each directory for ACL and only setfacl for which has not been set before.
-                    $writeableDirs = get('writable_dirs');
-                    foreach ($writeableDirs as $dir) {
-                        // Check if ACL has been set or not
+                // When running without sudo, exception may be thrown
+                // if executing setfacl on files created by http user (in directory that has been setfacl before).
+                // These directories/files should be skipped.
+                // Now, we will check each directory for ACL and only setfacl for which has not been set before.
+                $writeableDirs = get('writable_dirs');
+                foreach ($writeableDirs as $dir) {
+                    // Check if ACL has been set or not
+                    if (!empty($sudo)) {
+                        $hasfacl = run("$sudo getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l", $runOpts);
+                    } else {
                         $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
-                        // Set ACL for directory if it has not been set before
-                        if (!$hasfacl) {
-                            run("setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                            run("setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                        }
+                    }
+
+                    // If the ACL is set, continue without setting it.
+                    if ($hasfacl) {
+                        continue;
+                    }
+
+                    // Set ACL for directory if it has not been set before
+                    if (!empty($sudo)) {
+                        run("$sudo setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
+                        run("$sudo setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
+                    } else {
+                        run("setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                        run("setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
                     }
                 }
             } else {

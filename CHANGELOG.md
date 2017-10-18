@@ -7,6 +7,7 @@
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 - Host's `roles()` API now can accept arrays too 
+- Checking if ACLs are set when using sudo and skip if so.
 
 ## v6.0.3
 [v6.0.2...v6.0.3](https://github.com/deployphp/deployer/compare/v6.0.2...v6.0.3)

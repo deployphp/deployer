@@ -7,6 +7,7 @@
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 - Host's `roles()` API now can accept arrays too 
+- Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
 
 ## v6.0.3
 [v6.0.2...v6.0.3](https://github.com/deployphp/deployer/compare/v6.0.2...v6.0.3)
@@ -314,6 +315,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1390]: https://github.com/deployphp/deployer/pull/1390
 [#1365]: https://github.com/deployphp/deployer/pull/1365
 [#1364]: https://github.com/deployphp/deployer/pull/1364
 [#1352]: https://github.com/deployphp/deployer/pull/1352

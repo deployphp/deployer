@@ -3,7 +3,8 @@
 ## 4.x
 [v4.3.1...4.x](https://github.com/deployphp/deployer/compare/v4.3.1...4.x)
 
--
+### Changed
+- Fixed bug where wrong time format is passed to touch when deploying assets [#1391]
 
 ## v4.3.1
 [v4.3.0...v4.3.1](https://github.com/deployphp/deployer/compare/v4.3.0...v4.3.1)

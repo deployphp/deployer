@@ -22,6 +22,7 @@ require __DIR__ . '/deploy/vendors.php';
 require __DIR__ . '/deploy/symlink.php';
 require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/copy_dirs.php';
+require __DIR__ . '/deploy/copy_files.php';
 require __DIR__ . '/deploy/rollback.php';
 
 use Deployer\Task\Context;
@@ -59,6 +60,7 @@ set('shared_dirs', []);
 set('shared_files', []);
 
 set('copy_dirs', []);
+set('copy_files', []);
 
 set('writable_dirs', []);
 set('writable_mode', 'acl'); // chmod, chown, chgrp or acl.

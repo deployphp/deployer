@@ -20,6 +20,9 @@ set('symfony_env', 'prod');
 // Symfony shared dirs
 set('shared_dirs', ['app/logs']);
 
+// Symfony web dir
+set('web_dir', 'web');
+
 // Symfony shared files
 set('shared_files', ['app/config/parameters.yml']);
 
@@ -27,10 +30,17 @@ set('shared_files', ['app/config/parameters.yml']);
 set('writable_dirs', ['app/cache', 'app/logs']);
 
 // Clear paths
-set('clear_paths', ['web/app_*.php', 'web/config.php']);
+set('clear_paths', [
+    get('web_dir') .'/app_*.php', 
+    get('web_dir') .'/config.php'
+);
 
 // Assets
-set('assets', ['web/css', 'web/images', 'web/js']);
+set('assets', [
+    get('web_dir') . '/css', 
+    get('web_dir') . '/images', 
+    get('web_dir') . '/js'
+]);
 
 // Requires non symfony-core package `kriswallsmith/assetic` to be installed
 set('dump_assets', false);
@@ -92,7 +102,7 @@ task('deploy:assets', function () {
  * Install assets from public dir of bundles
  */
 task('deploy:assets:install', function () {
-    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/web');
+    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/' . get('web_dir'));
 })->desc('Install bundle assets');
 
 

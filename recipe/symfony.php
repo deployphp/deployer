@@ -33,7 +33,7 @@ set('writable_dirs', ['app/cache', 'app/logs']);
 set('clear_paths', [
     get('web_dir') .'/app_*.php', 
     get('web_dir') .'/config.php'
-);
+]);
 
 // Assets
 set('assets', [

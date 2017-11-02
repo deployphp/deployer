@@ -1,5 +1,8 @@
 # Changelog
 
+### Fixed
+- Fixed bug when config:hosts shows more than one table of hosts [#1403]
+
 ## master
 [v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
 

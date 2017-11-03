@@ -1,5 +1,8 @@
 # Changelog
 
+### Fixed
+- Fixed bug when config:hosts shows more than one table of hosts [#1403]
+
 ## master
 [v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
 
@@ -314,7 +317,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1403]: https://github.com/deployphp/deployer/pull/1403
 [#1390]: https://github.com/deployphp/deployer/pull/1390
 [#1365]: https://github.com/deployphp/deployer/pull/1365
 [#1364]: https://github.com/deployphp/deployer/pull/1364

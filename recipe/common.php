@@ -98,13 +98,13 @@ set('current_path', function () {
 /**
  * Return project path related to repository
  */
-set('project_path','');     // eg: '/app'
-set('project_relative_path',function () {
+set('project_path', '');     // eg: '/app'
+set('project_relative_path', function () {
     $project_path = get('project_path');
-    return substr($project_path,1);
+    return substr($project_path, 1);
 });    // eg: 'app'
-set('current_project_path','{{current_path}}{{project_path}}');
-set('release_project_path','{{release_path}}{{project_path}}');
+set('current_project_path', '{{current_path}}{{project_path}}');
+set('release_project_path', '{{release_path}}{{project_path}}');
 
 /**
  * Custom bins.

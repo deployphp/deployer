@@ -95,6 +95,16 @@ set('current_path', function () {
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
+/**
+ * Return project path related to repository
+ */
+set('project_path','');     // eg: '/app'
+set('project_relative_path',function () {
+    $project_path = get('project_path');
+    return substr($project_path,1);
+});    // eg: 'app'
+set('current_project_path','{{current_path}}{{project_path}}');
+set('release_project_path','{{release_path}}{{project_path}}');
 
 /**
  * Custom bins.
@@ -113,8 +123,8 @@ set('bin/composer', function () {
     }
 
     if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{release_path}}/composer.phar';
+        run("cd {{release_project_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
+        $composer = '{{release_project_path}}/composer.phar';
     }
 
     return '{{bin/php}} ' . $composer;

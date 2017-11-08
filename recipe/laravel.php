@@ -14,29 +14,29 @@ require_once __DIR__ . '/common.php';
 
 // Laravel shared dirs
 set('shared_dirs', [
-    'storage',
+    '{{project_relative_path}}/storage',
 ]);
 
 // Laravel shared file
 set('shared_files', [
-    '.env',
+    '{{project_relative_path}}/.env',
 ]);
 
 // Laravel writable dirs
 set('writable_dirs', [
-    'bootstrap/cache',
-    'storage',
-    'storage/app',
-    'storage/app/public',
-    'storage/framework',
-    'storage/framework/cache',
-    'storage/framework/sessions',
-    'storage/framework/views',
-    'storage/logs',
+    '{{project_relative_path}}/bootstrap/cache',
+    '{{project_relative_path}}/storage',
+    '{{project_relative_path}}/storage/app',
+    '{{project_relative_path}}/storage/app/public',
+    '{{project_relative_path}}/storage/framework',
+    '{{project_relative_path}}/storage/framework/cache',
+    '{{project_relative_path}}/storage/framework/sessions',
+    '{{project_relative_path}}/storage/framework/views',
+    '{{project_relative_path}}/storage/logs',
 ]);
 
 set('laravel_version', function () {
-    $result = run('{{bin/php}} {{release_path}}/artisan --version');
+    $result = run('{{bin/php}} {{release_project_path}}/artisan --version');
 
     preg_match_all('/(\d+\.?)+/', $result, $matches);
 
@@ -50,67 +50,67 @@ set('laravel_version', function () {
  */
 desc('Disable maintenance mode');
 task('artisan:up', function () {
-    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan up; fi');
+    $output = run('if [ -f {{current_project_path}}/artisan ]; then {{bin/php}} {{current_project_path}}/artisan up; fi');
     writeln('<info>' . $output . '</info>');
 });
 
 desc('Enable maintenance mode');
 task('artisan:down', function () {
-    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi');
+    $output = run('if [ -f {{current_project_path}}/artisan ]; then {{bin/php}} {{current_project_path}}/artisan down; fi');
     writeln('<info>' . $output . '</info>');
 });
 
 desc('Execute artisan migrate');
 task('artisan:migrate', function () {
-    run('{{bin/php}} {{release_path}}/artisan migrate --force');
+    run('{{bin/php}} {{release_project_path}}/artisan migrate --force');
 });
 
 desc('Execute artisan migrate:rollback');
 task('artisan:migrate:rollback', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan migrate:rollback --force');
+    $output = run('{{bin/php}} {{release_project_path}}/artisan migrate:rollback --force');
     writeln('<info>' . $output . '</info>');
 });
 
 desc('Execute artisan migrate:status');
 task('artisan:migrate:status', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan migrate:status');
+    $output = run('{{bin/php}} {{release_project_path}}/artisan migrate:status');
     writeln('<info>' . $output . '</info>');
 });
 
 desc('Execute artisan db:seed');
 task('artisan:db:seed', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan db:seed --force');
+    $output = run('{{bin/php}} {{release_project_path}}/artisan db:seed --force');
     writeln('<info>' . $output . '</info>');
 });
 
 desc('Execute artisan cache:clear');
 task('artisan:cache:clear', function () {
-    run('{{bin/php}} {{release_path}}/artisan cache:clear');
+    run('{{bin/php}} {{release_project_path}}/artisan cache:clear');
 });
 
 desc('Execute artisan config:cache');
 task('artisan:config:cache', function () {
-    run('{{bin/php}} {{release_path}}/artisan config:cache');
+    run('{{bin/php}} {{release_project_path}}/artisan config:cache');
 });
 
 desc('Execute artisan route:cache');
 task('artisan:route:cache', function () {
-    run('{{bin/php}} {{release_path}}/artisan route:cache');
+    run('{{bin/php}} {{release_project_path}}/artisan route:cache');
 });
 
 desc('Execute artisan view:clear');
 task('artisan:view:clear', function () {
-    run('{{bin/php}} {{release_path}}/artisan view:clear');
+    run('{{bin/php}} {{release_project_path}}/artisan view:clear');
 });
 
 desc('Execute artisan optimize');
 task('artisan:optimize', function () {
-    run('{{bin/php}} {{release_path}}/artisan optimize');
+    run('{{bin/php}} {{release_project_path}}/artisan optimize');
 });
 
 desc('Execute artisan queue:restart');
 task('artisan:queue:restart', function () {
-    run('{{bin/php}} {{release_path}}/artisan queue:restart');
+    run('{{bin/php}} {{release_project_path}}/artisan queue:restart');
 });
 
 desc('Execute artisan storage:link');
@@ -119,7 +119,7 @@ task('artisan:storage:link', function () {
     $currentVersion = get('laravel_version');
 
     if (version_compare($currentVersion, $needsVersion, '>=')) {
-        run('{{bin/php}} {{release_path}}/artisan storage:link');
+        run('{{bin/php}} {{release_project_path}}/artisan storage:link');
     }
 });
 
@@ -134,13 +134,13 @@ task('artisan:storage:link', function () {
 desc('Make symlink for public disk');
 task('deploy:public_disk', function () {
     // Remove from source.
-    run('if [ -d $(echo {{release_path}}/public/storage) ]; then rm -rf {{release_path}}/public/storage; fi');
+    run('if [ -d $(echo {{release_project_path}}/public/storage) ]; then rm -rf {{release_project_path}}/public/storage; fi');
 
     // Create shared dir if it does not exist.
     run('mkdir -p {{deploy_path}}/shared/storage/app/public');
 
     // Symlink shared dir to release dir
-    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_path}}/public/storage');
+    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_project_path}}/public/storage');
 });
 
 /**

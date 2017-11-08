@@ -5,7 +5,7 @@
 
 ### Changed
 - Improved `config:current` output (print each host's current release)
-
+- Add `project_path` param
 
 ## v5.1.1
 [v5.1.0...v5.1.1](https://github.com/deployphp/deployer/compare/v5.1.0...v5.1.1)

@@ -8,10 +8,10 @@
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 - Host's `roles()` API now can accept arrays too 
 - Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
-- Fixed bug that inventory method does not return Proxy [#1413]
 
 ### Fixed
 - Fixed bug when config:hosts shows more than one table of hosts [#1403]
+- Fixed bug that inventory method does not return Proxy [#1413]
 
 ## v6.0.3
 [v6.0.2...v6.0.3](https://github.com/deployphp/deployer/compare/v6.0.2...v6.0.3)

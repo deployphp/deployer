@@ -86,18 +86,25 @@ set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 
 // Detect version
 $version = 'master';
-
-$composerLockFile = $deployFilePath . '/composer.lock';
-if (is_readable($composerLockFile)) {
-    $lock = json_decode(file_get_contents($composerLockFile), true);
-    foreach ($lock['packages'] as $package) {
-        if ($package['name'] === 'deployer/deployer') {
-            $version = $package['version'];
-        }
+$composerLockFiles = array(
+        realpath($deployFilePath . '/../composer.lock'),
+        realpath(__DIR__ . '/../../../../composer.lock')
+);
+foreach($composerLockFiles as $composerLockFile){
+    if($version != 'master'){
+        break;
     }
-    foreach ($lock['packages-dev'] as $package) {
-        if ($package['name'] === 'deployer/deployer') {
-            $version = $package['version'];
+    if (is_readable($composerLockFile)) {
+        $lock = json_decode(file_get_contents($composerLockFile), true);
+        foreach ($lock['packages'] as $package) {
+            if ($package['name'] === 'deployer/deployer') {
+                $version = $package['version'];
+            }
+        }
+        foreach ($lock['packages-dev'] as $package) {
+            if ($package['name'] === 'deployer/deployer') {
+                $version = $package['version'];
+            }
         }
     }
 }

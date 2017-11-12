@@ -8,6 +8,7 @@
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 - Host's `roles()` API now can accept arrays too 
 - Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
+- Added artisan:migrate:fresh task for laravel recipe
 
 ### Fixed
 - Fixed bug when config:hosts shows more than one table of hosts [#1403]

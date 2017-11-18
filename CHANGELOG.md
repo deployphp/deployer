@@ -4,6 +4,7 @@
 [v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
 
 ### Changed
+- Allow Symfony 4.0 in composer.json
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 - Host's `roles()` API now can accept arrays too 

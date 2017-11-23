@@ -39,6 +39,9 @@
         "phpunit/phpunit": "~6.1"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.0"
+        }
     }
 }

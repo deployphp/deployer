@@ -9,13 +9,15 @@ namespace Deployer;
 
 desc('Creating symlink to release');
 task('deploy:symlink', function () {
+    $symlink_name = get('symlink_name', 'current');
+
     if (get('use_atomic_symlink')) {
-        run("mv -T {{deploy_path}}/release {{deploy_path}}/current");
+        run("mv -T {{deploy_path}}/release {{deploy_path}}/{$symlink_name}");
     } else {
         // Atomic symlink does not supported.
         // Will use simple≤ two steps switch.
 
-        run("cd {{deploy_path}} && {{bin/symlink}} {{release_path}} current"); // Atomic override symlink.
+        run("cd {{deploy_path}} && {{bin/symlink}} {{release_path}} {$symlink_name}"); // Atomic override symlink.
         run("cd {{deploy_path}} && rm release"); // Remove release link.
     }
 });

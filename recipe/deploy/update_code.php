@@ -76,7 +76,7 @@ task('deploy:update_code', function () {
             $depth = '';
         }
     }
-    
+
     cd('{{deploy_path}}');
     if ($gitCache && has('previous_release')) {
         try {

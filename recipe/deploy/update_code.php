@@ -77,6 +77,7 @@ task('deploy:update_code', function () {
         }
     }
 
+    cd('{{deploy_path}}');
     if ($gitCache && has('previous_release')) {
         try {
             run("$git clone $at $recursive -q --reference {{previous_release}} --dissociate $repository  {{release_path}} 2>&1", $options);

@@ -65,6 +65,11 @@ task('artisan:migrate', function () {
     run('{{bin/php}} {{release_path}}/artisan migrate --force');
 });
 
+desc('Execute artisan migrate:fresh');
+task('artisan:migrate:fresh', function () {
+    run('{{bin/php}} {{release_path}}/artisan migrate:fresh --force');
+});
+
 desc('Execute artisan migrate:rollback');
 task('artisan:migrate:rollback', function () {
     $output = run('{{bin/php}} {{release_path}}/artisan migrate:rollback --force');

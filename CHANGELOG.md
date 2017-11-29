@@ -8,6 +8,13 @@
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
 - Host's `roles()` API now can accept arrays too 
 - Checking if ACLs are set when using sudo and skip if so.
+- Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
+- Added artisan:migrate:fresh task for laravel recipe
+- Added platform config to composer.json [#1426]
+
+### Fixed
+- Fixed bug when config:hosts shows more than one table of hosts [#1403]
+- Fixed bug that inventory method does not return Proxy [#1413]
 
 ## v6.0.3
 [v6.0.2...v6.0.3](https://github.com/deployphp/deployer/compare/v6.0.2...v6.0.3)
@@ -314,7 +321,10 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1426]: https://github.com/deployphp/deployer/pull/1426
+[#1413]: https://github.com/deployphp/deployer/pull/1413
+[#1403]: https://github.com/deployphp/deployer/pull/1403
+[#1390]: https://github.com/deployphp/deployer/pull/1390
 [#1365]: https://github.com/deployphp/deployer/pull/1365
 [#1364]: https://github.com/deployphp/deployer/pull/1364
 [#1352]: https://github.com/deployphp/deployer/pull/1352

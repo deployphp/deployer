@@ -28,4 +28,4 @@ task('config:hosts', function () {
         ->setHeaders(['Host', 'Hostname', 'Stage', 'Roles', 'Deploy path'])
         ->setRows($hosts);
     $table->render();
-});
+})->once();

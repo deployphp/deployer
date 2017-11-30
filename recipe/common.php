@@ -35,6 +35,10 @@ set('hostname', function () {
     return Context::get()->getHost()->getHostname();
 });
 
+set('realhostname', function () {
+    return Context::get()->getHost()->getRealHostname();
+});
+
 set('user', function () {
     try {
         return runLocally('git config --get user.name');

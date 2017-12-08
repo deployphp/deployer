@@ -24,10 +24,10 @@ class CommandEvent
      * @param $command
      * @param $input
      * @param $output
-     * @param $exception
+     * @param \Exception|\Error $exception
      * @param $exitCode
      */
-    public function __construct(Command $command, InputInterface $input, OutputInterface $output, \Exception $exception = null, $exitCode = 0)
+    public function __construct(Command $command, InputInterface $input, OutputInterface $output, $exception = null, $exitCode = 0)
     {
         $this->command = $command;
         $this->input = $input;
@@ -61,7 +61,7 @@ class CommandEvent
     }
 
     /**
-     * @return \Exception
+     * @return \Exception|\Error
      */
     public function getException()
     {

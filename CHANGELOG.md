@@ -6,6 +6,9 @@
 ### Changed
 - Fixed bug where wrong time format is passed to touch when deploying assets [#1391]
 
+### Fixed
+- support php7 \Errors in CommandEvent [#1442]
+
 ## v4.3.1
 [v4.3.0...v4.3.1](https://github.com/deployphp/deployer/compare/v4.3.0...v4.3.1)
 

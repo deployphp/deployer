@@ -4,9 +4,10 @@
 [v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
 
 ### Changed
+- Added recipe for Symfony flex
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
-- Host's `roles()` API now can accept arrays too 
+- Host's `roles()` API now can accept arrays too
 - Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
 - Added artisan:migrate:fresh task for laravel recipe
 - Added platform config to composer.json [#1426]
@@ -21,7 +22,7 @@
 ### Changed
 - Laravel version check defaults to 5.5 if not found [#1352]
 
-### Fixed 
+### Fixed
 - Updated Laravel recipe to not run `artisan:optimize` on Laravel >= 5.5, as that command is now deprecated ([see upgrade notes](https://laravel.com/docs/5.5/upgrade)) [#1352]
 
 ## v6.0.2

@@ -24,7 +24,7 @@ class CommandEvent
      * @param $command
      * @param $input
      * @param $output
-     * @param \Exception|\Error $exception
+     * @param \Throwable $exception
      * @param $exitCode
      */
     public function __construct(Command $command, InputInterface $input, OutputInterface $output, $exception = null, $exitCode = 0)

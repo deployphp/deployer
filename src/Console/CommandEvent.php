@@ -61,7 +61,7 @@ class CommandEvent
     }
 
     /**
-     * @return \Exception|\Error
+     * @return \Throwable
      */
     public function getException()
     {

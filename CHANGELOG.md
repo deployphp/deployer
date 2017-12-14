@@ -10,6 +10,7 @@
 - Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
 - Added artisan:migrate:fresh task for laravel recipe
 - Added platform config to composer.json [#1426]
+- Moved symfony finder to dev-dependency [#1452]
 
 ### Fixed
 - Fixed bug when config:hosts shows more than one table of hosts [#1403]
@@ -320,6 +321,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1452]: https://github.com/deployphp/deployer/pull/1452
 [#1426]: https://github.com/deployphp/deployer/pull/1426
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403

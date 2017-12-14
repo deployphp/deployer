@@ -321,6 +321,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1452]: https://github.com/deployphp/deployer/pull/1452
 [#1426]: https://github.com/deployphp/deployer/pull/1426
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403

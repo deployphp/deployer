@@ -52,8 +52,7 @@ task('magento:maintenance:disable', function () {
 
 desc('Upgrade magento database');
 task('magento:upgrade:db', function () {
-    run("{{bin/php}} {{release_path}}/bin/magento setup:db-schema:upgrade");
-    run("{{bin/php}} {{release_path}}/bin/magento setup:db-data:upgrade");
+    run("{{bin/php}} {{release_path}}/bin/magento setup:upgrade --keep-generated");
 });
 
 desc('Flush Magento Cache');

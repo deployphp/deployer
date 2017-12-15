@@ -3,6 +3,10 @@
 ## master
 [v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
 
+
+## v6.0.4
+[v6.0.3...v6.0.4](https://github.com/deployphp/deployer/compare/v6.0.3...v6.0.4)
+
 ### Changed
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
@@ -16,6 +20,7 @@
 - Fixed bug when config:hosts shows more than one table of hosts [#1403]
 - Fixed bug that inventory method does not return Proxy [#1413]
 
+
 ## v6.0.3
 [v6.0.2...v6.0.3](https://github.com/deployphp/deployer/compare/v6.0.2...v6.0.3)
 
@@ -25,17 +30,20 @@
 ### Fixed 
 - Updated Laravel recipe to not run `artisan:optimize` on Laravel >= 5.5, as that command is now deprecated ([see upgrade notes](https://laravel.com/docs/5.5/upgrade)) [#1352]
 
+
 ## v6.0.2
 [v6.0.1...v6.0.2](https://github.com/deployphp/deployer/compare/v6.0.1...v6.0.2)
 
 ### Fixed
 - Fixed bug with curl ssh check in _Httpie_ util
 
+
 ## v6.0.1
 [v6.0.0...v6.0.1](https://github.com/deployphp/deployer/compare/v6.0.0...v6.0.1)
 
 ### Fixed
 - Fixed stat url
+
 
 ## v6.0.0
 [v5.1.3...v6.0.0](https://github.com/deployphp/deployer/compare/v5.1.3...v6.0.0)

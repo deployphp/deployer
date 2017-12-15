@@ -1,7 +1,7 @@
 # Changelog
 
 ## master
-[v6.0.3...master](https://github.com/deployphp/deployer/compare/v6.0.3...master)
+[v6.0.4...master](https://github.com/deployphp/deployer/compare/v6.0.4...master)
 
 
 ## v6.0.4

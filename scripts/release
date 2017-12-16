@@ -25,7 +25,7 @@ if (array_key_exists('v', $opt)) {
         die("Version number must follow semantic versioning.\n");
     }
 } else {
-    die("Please, specify verion to release. Latest version is -v$latestVersion\n");
+    die("Please, specify version to release. Latest version is -v$latestVersion\n");
 }
 
 // Next goes bunch of regexs. Now we have three problems.

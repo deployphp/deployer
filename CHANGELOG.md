@@ -4,7 +4,8 @@
 [v6.0.4...master](https://github.com/deployphp/deployer/compare/v6.0.4...master)
 
 ### Fixed
-- Fixed `previous_release` param when `release_name` was overrided [#1455]
+- Fixed `previous_release` param when `release_name` was overridden [#1455]
+
 
 ## v6.0.4
 [v6.0.3...v6.0.4](https://github.com/deployphp/deployer/compare/v6.0.3...v6.0.4)

@@ -106,6 +106,10 @@ task('deploy:release', function () {
         run('rm release'); // Delete symlink
     }
 
+    // We need to get releases_list at same point as release_name,
+    // as standard release_name's implementation depends on it and,
+    // if user overrides it, we need to get releases_list manually. 
+    $releasesList = get('releases_list');
     $releaseName = get('release_name');
 
     // Fix collisions
@@ -116,7 +120,6 @@ task('deploy:release', function () {
     }
 
     $releasePath = parse("{{deploy_path}}/releases/{{release_name}}");
-    $releasesList = get('releases_list');
 
     // Metainfo.
     $date = run('date +"%Y%m%d%H%M%S"');

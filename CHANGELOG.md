@@ -4,7 +4,7 @@
 [v6.0.4...master](https://github.com/deployphp/deployer/compare/v6.0.4...master)
 
 ### Fixed
-- Fixed `previous_release` var
+- Fixed `previous_release` param when `release_name` was overrided [#1455]
 
 ## v6.0.4
 [v6.0.3...v6.0.4](https://github.com/deployphp/deployer/compare/v6.0.3...v6.0.4)
@@ -331,6 +331,8 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+
+[#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452
 [#1426]: https://github.com/deployphp/deployer/pull/1426
 [#1413]: https://github.com/deployphp/deployer/pull/1413

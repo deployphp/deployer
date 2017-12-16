@@ -108,7 +108,7 @@ task('deploy:release', function () {
 
     // We need to get releases_list at same point as release_name,
     // as standard release_name's implementation depends on it and,
-    // if user overrides it, we need to get releases_list manually. 
+    // if user overrides it, we need to get releases_list manually.
     $releasesList = get('releases_list');
     $releaseName = get('release_name');
 

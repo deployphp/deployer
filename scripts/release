@@ -50,4 +50,4 @@ $changelog = preg_replace('/# Changelog/', $new, $changelog);
 
 file_put_contents('CHANGELOG.md', $changelog);
 
-echo "Updated CHANGELOG.md to v$version.";
+echo "Updated CHANGELOG.md to v$version.\n";

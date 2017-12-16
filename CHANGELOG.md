@@ -1,7 +1,11 @@
 # Changelog
 
 ## master
-[v6.0.4...master](https://github.com/deployphp/deployer/compare/v6.0.4...master)
+[v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
+
+
+## v6.0.5
+[v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
 
 ### Fixed
 - Fixed `previous_release` param when `release_name` was overridden [#1455]

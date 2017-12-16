@@ -3,6 +3,8 @@
 ## master
 [v6.0.4...master](https://github.com/deployphp/deployer/compare/v6.0.4...master)
 
+### Fixed
+- Fixed `previous_release` var
 
 ## v6.0.4
 [v6.0.3...v6.0.4](https://github.com/deployphp/deployer/compare/v6.0.3...v6.0.4)

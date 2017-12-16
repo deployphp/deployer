@@ -116,6 +116,7 @@ task('deploy:release', function () {
     }
 
     $releasePath = parse("{{deploy_path}}/releases/{{release_name}}");
+    $releasesList = get('releases_list');
 
     // Metainfo.
     $date = run('date +"%Y%m%d%H%M%S"');
@@ -126,8 +127,6 @@ task('deploy:release', function () {
     // Make new release
     run("mkdir $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
-
-    $releasesList = get('releases_list');
 
     // Add to releases list
     array_unshift($releasesList, $releaseName);

@@ -70,7 +70,7 @@ class Client
             if ($this->output->isDebug()) {
                 $this->pop->writeln(Process::OUT, $host->getHostname(), $ssh);
             }
-            
+
             $process = new Process($ssh);
             $process
                 ->setTimeout($config['timeout'])
@@ -151,7 +151,7 @@ class Client
         if ($this->output->isDebug()) {
             $this->pop->writeln(Process::OUT, $host->getHostname(), $ssh);
         }
-        
+
         $process = new Process();
         $process->run($ssh);
         return (bool)preg_match('/Master running/', $process->getOutput());
@@ -164,7 +164,7 @@ class Client
             ['pipe', 'w'],
             ['pipe', 'w'],
         ];
-        
+
         if ($this->output->isDebug()) {
             $this->pop->writeln(Process::OUT, $host->getHostname(), $command);
         }        

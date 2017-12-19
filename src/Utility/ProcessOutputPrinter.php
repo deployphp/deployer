@@ -29,6 +29,11 @@ class ProcessOutputPrinter
         $this->logger = $logger;
     }
 
+    /**
+     * Returns a callable for use with the symfony Process->run($callable) method.
+     *
+     * @return callable A function expecting a int $type (e.g. Process::OUT or Process::ERR) and string $buffer parameters.
+     */
     public function callback(string $hostname)
     {
         return function ($type, $buffer) use ($hostname) {

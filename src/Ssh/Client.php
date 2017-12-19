@@ -167,7 +167,7 @@ class Client
 
         if ($this->output->isDebug()) {
             $this->pop->writeln(Process::OUT, $host->getHostname(), $command);
-        }        
+        }
 
         // Don't read from stderr, there is a bug in OpenSSH_7.2p2 (stderr doesn't closed with ControlMaster)
 

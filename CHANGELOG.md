@@ -3,6 +3,7 @@
 ## master
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
+- print ssh commands when running in debug-mode (-vvv) [#1461]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -337,6 +338,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1461]: https://github.com/deployphp/deployer/pull/1461
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452
 [#1426]: https://github.com/deployphp/deployer/pull/1426

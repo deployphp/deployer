@@ -67,6 +67,10 @@ class Client
             $command = escapeshellarg($command);
 
             $ssh = "ssh $sshArguments $host $command";
+            if ($this->output->isDebug()) {
+                $this->pop->writeln(Process::OUT, $host->getHostname(), $ssh);
+            }
+
             $process = new Process($ssh);
             $process
                 ->setTimeout($config['timeout'])
@@ -81,6 +85,9 @@ class Client
         }
 
         $ssh = "ssh $sshArguments $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        if ($this->output->isDebug()) {
+            $this->pop->writeln(Process::OUT, $host->getHostname(), $ssh);
+        }
 
         $process = new Process($ssh);
         $process
@@ -127,7 +134,8 @@ class Client
                 $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
             }
 
-            $output = $this->exec("ssh -N $sshArguments $host");
+            $ssh = "ssh -N $sshArguments $host";
+            $output = $this->exec($host, $ssh);
 
             if ($this->output->isVeryVerbose()) {
                 $this->pop->writeln(Process::OUT, $host->getHostname(), $output);
@@ -139,18 +147,27 @@ class Client
 
     private function isMultiplexingInitialized(Host $host, Arguments $sshArguments)
     {
-        $process = new Process("ssh -O check $sshArguments $host 2>&1");
-        $process->run();
+        $ssh = "ssh -O check $sshArguments $host 2>&1";
+        if ($this->output->isDebug()) {
+            $this->pop->writeln(Process::OUT, $host->getHostname(), $ssh);
+        }
+
+        $process = new Process();
+        $process->run($ssh);
         return (bool)preg_match('/Master running/', $process->getOutput());
     }
 
-    private function exec($command, &$exitCode = null)
+    private function exec(Host $host, $command, &$exitCode = null)
     {
         $descriptors = [
             ['pipe', 'r'],
             ['pipe', 'w'],
             ['pipe', 'w'],
         ];
+
+        if ($this->output->isDebug()) {
+            $this->pop->writeln(Process::OUT, $host->getHostname(), $command);
+        }
 
         // Don't read from stderr, there is a bug in OpenSSH_7.2p2 (stderr doesn't closed with ControlMaster)
 

@@ -4,7 +4,8 @@
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
 ### Fixed
-- fix within() to also restore the working-path when the given callback throws a Exception [#1463]
+- Fix within() to also restore the working-path when the given callback throws a Exception [#1463]
+- Fix "[[: not found" warning in `commandSupportsOption()` [#1445]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -339,6 +340,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1445]: https://github.com/deployphp/deployer/issues/1445
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452

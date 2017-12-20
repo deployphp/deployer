@@ -3,6 +3,8 @@
 ## master
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
+### Fixed
+- use try/finally to make sure working-path restore on Exceptions [#1463]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -337,6 +339,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452
 [#1426]: https://github.com/deployphp/deployer/pull/1426

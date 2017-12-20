@@ -35,7 +35,7 @@ class Informer
         if ($task->isShallow()) {
             return;
         }
-        
+
         $this->startTime = round(microtime(true) * 1000);
         if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
             $this->output->writeln("➤ Executing task <info>{$task->getName()}</info>");

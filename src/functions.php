@@ -263,7 +263,7 @@ function within($path, $callback)
         $callback();
     } finally {
         set('working_path', $lastWorkingPath);
-    }        
+    }
 }
 
 /**

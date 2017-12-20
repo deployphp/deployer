@@ -32,11 +32,12 @@ class Informer
 
     public function startTask(Task $task)
     {
+        if ($task->isShallow()) {
+            return;
+        }
+        
         $this->startTime = round(microtime(true) * 1000);
-        if (
-            $this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL &&
-            !$task->isShallow()
-        ) {
+        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL) {
             $this->output->writeln("➤ Executing task <info>{$task->getName()}</info>");
             $this->output->setWasWritten(false);
         }

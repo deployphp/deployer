@@ -258,9 +258,12 @@ function cd($path)
 function within($path, $callback)
 {
     $lastWorkingPath = get('working_path', '');
-    set('working_path', parse($path));
-    $callback();
-    set('working_path', $lastWorkingPath);
+    try {
+        set('working_path', parse($path));
+        $callback();
+    } finally {
+        set('working_path', $lastWorkingPath);
+    }
 }
 
 /**

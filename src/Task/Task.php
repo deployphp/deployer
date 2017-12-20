@@ -77,7 +77,7 @@ class Task
     private $hasRun = false;
 
     /**
-     * Shallow task will not print execution message/finish massage.
+     * Shallow task will not print execution message/finish messages.
      * Useful for success messages and info printing.
      *
      * @var bool
@@ -295,6 +295,9 @@ class Task
 
     /**
      * Sets task shallow.
+     *
+     * Shallow task will not print execution message/finish messages.
+     *
      * @return $this
      */
     public function shallow()

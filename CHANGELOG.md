@@ -4,7 +4,8 @@
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
 ### Fixed
-- fix within() to also restore the working-path when the given callback throws a Exception [#1463]
+- Make sure we can use invoke('deploy:lock'); several times within the recipe without errors [#1470]
+- Fix within() to also restore the working-path when the given callback throws a Exception [#1463]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -338,7 +339,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1470]: https://github.com/deployphp/deployer/pull/1470
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452

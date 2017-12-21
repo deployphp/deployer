@@ -11,6 +11,12 @@ use Deployer\Exception\GracefulShutdownException;
 
 desc('Lock deploy');
 task('deploy:lock', function () {
+
+    if (get('holds_deploy_lock')) {
+        // we already hold the lock
+        return;
+    }
+
     $locked = test("[ -f {{deploy_path}}/.dep/deploy.lock ]");
 
     if ($locked) {
@@ -22,10 +28,12 @@ task('deploy:lock', function () {
         );
     } else {
         run("touch {{deploy_path}}/.dep/deploy.lock");
+        set('holds_deploy_lock', true);
     }
 });
 
 desc('Unlock deploy');
 task('deploy:unlock', function () {
     run("rm -f {{deploy_path}}/.dep/deploy.lock");//always success
+    set('holds_deploy_lock', false);
 });

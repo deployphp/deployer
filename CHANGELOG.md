@@ -3,6 +3,9 @@
 ## master
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
+### Added
+- `deploy:islocked` task which allows to determine if a lock was already acquired by another process/task [#1469]
+
 ### Fixed
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
 
@@ -339,6 +342,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1469]: https://github.com/deployphp/deployer/pull/1469
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452

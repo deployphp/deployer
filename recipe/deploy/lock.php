@@ -29,3 +29,8 @@ desc('Unlock deploy');
 task('deploy:unlock', function () {
     run("rm -f {{deploy_path}}/.dep/deploy.lock");//always success
 });
+
+desc('Checks whether deploy is locked');
+task('deploy:islocked', function () {
+    return test("[ -f {{deploy_path}}/.dep/deploy.lock ]");
+});

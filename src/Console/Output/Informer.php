@@ -38,6 +38,11 @@ class Informer
             !$task->isShallow()
         ) {
             $this->output->writeln("➤ Executing task <info>{$task->getName()}</info>");
+
+            if ($this->output->isDebug() && $task->getDescription()) {
+                $this->output->writeln("  <comment>".$task->getDescription() ."<comment>");
+            }
+
             $this->output->setWasWritten(false);
         }
     }

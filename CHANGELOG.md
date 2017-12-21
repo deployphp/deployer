@@ -3,6 +3,10 @@
 ## master
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
+### Added
+
+- DX: print the task description when in debug mode, to get a human friendly message what the task is supposed todo [#1468]
+
 ### Fixed
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
 
@@ -339,6 +343,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1468]: https://github.com/deployphp/deployer/pull/1468
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452

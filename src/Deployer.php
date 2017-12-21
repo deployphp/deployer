@@ -51,6 +51,7 @@ use function Deployer\Support\array_merge_alternate;
  * @property ParallelExecutor parallelExecutor
  * @property Informer informer
  * @property Logger logger
+ * @property ProcessOutputPrinter pop
  */
 class Deployer extends Container
 {

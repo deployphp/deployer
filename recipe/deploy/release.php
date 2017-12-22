@@ -94,7 +94,7 @@ set('release_path', function () {
 });
 
 
-desc('Prepare release. Clean up unfinished releases and prepare next release.');
+desc('Prepare release. Clean up unfinished releases and prepare next release');
 task('deploy:release', function () {
     cd('{{deploy_path}}');
 

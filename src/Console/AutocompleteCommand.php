@@ -16,7 +16,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @codeCoverageIgnore
  */
 class AutocompleteCommand extends Command
-{    
+{
     /**
      * {@inheritDoc}
      */
@@ -26,7 +26,7 @@ class AutocompleteCommand extends Command
             ->setName('autocomplete')
             ->setDescription('Install command line autocompletion capabilities')
             ->addOption('--install', null, InputOption::VALUE_NONE);
-    }    
+    }
 
     /**
      * {@inheritdoc}

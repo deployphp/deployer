@@ -39,9 +39,6 @@
         "symfony/finder": "~2.7|~3.0"
     },
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "7.0.0"
-        }
+        "sort-packages": true
     }
 }

@@ -16,16 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @codeCoverageIgnore
  */
 class AutocompleteCommand extends Command
-{
-    public function __construct()
+{    
+    /**
+     * {@inheritDoc}
+     */
+    protected function configure()
     {
-        parent::__construct('autocomplete');
-        $this->addOption(
-            '--install',
-            null,
-            InputOption::VALUE_NONE
-        );
-    }
+        $this
+            ->setName('autocomplete')
+            ->setDescription('Install command line autocompletion capabilities')
+            ->addOption('--install', null, InputOption::VALUE_NONE);
+    }    
 
     /**
      * {@inheritdoc}

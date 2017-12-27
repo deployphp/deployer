@@ -17,7 +17,7 @@ class Reporter
     public static function report(array $stats)
     {
         $pid = null;
-        if (extension_loaded('pcntl')) {
+        if (extension_loaded('pcntl') && strpos(ini_get('disable_functions'), 'pcntl_fork') === false) {
             declare(ticks = 1);
             $pid = pcntl_fork();
         }

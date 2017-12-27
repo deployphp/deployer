@@ -197,7 +197,7 @@ function after($it, $that)
 /**
  * Setup which task run on failure of first.
  *
- * @param string $it The task which need to fail for $that should be run.
+ * @param string $it The task which need to fail so $that should be run.
  * @param string $that The task to be run.
  */
 function fail($it, $that)

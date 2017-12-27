@@ -52,6 +52,7 @@ use function Deployer\Support\array_merge_alternate;
  * @property Informer informer
  * @property Logger logger
  * @property ProcessOutputPrinter pop
+ * @property Collection fail
  */
 class Deployer extends Container
 {

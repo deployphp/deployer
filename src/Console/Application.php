@@ -9,13 +9,13 @@ namespace Deployer\Console;
 
 use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
 use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
+use Deployer\Deployer;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Deployer\Deployer;
 
 class Application extends Console
 {
@@ -174,5 +174,4 @@ class Application extends Console
             $deployer->logger->log($e->getTraceAsString());
         }
     }
-
 }

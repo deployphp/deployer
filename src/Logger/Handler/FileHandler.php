@@ -25,7 +25,7 @@ class FileHandler implements HandlerInterface
         $this->buffer = '';
 
         // write remaining buffer to the log when php shuts down
-        register_shutdown_function(function() {
+        register_shutdown_function(function () {
             $this->flush();
         });
     }
@@ -39,7 +39,8 @@ class FileHandler implements HandlerInterface
         }
     }
 
-    private function flush() {
+    private function flush()
+    {
         file_put_contents($this->filePath, $this->buffer, FILE_APPEND);
         $this->buffer = '';
     }

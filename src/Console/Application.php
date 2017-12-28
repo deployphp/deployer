@@ -164,7 +164,7 @@ class Application extends Console
         $this->after = $callable;
     }
 
-    public function renderException(\Exception $e, OutputInterface $output)
+    public function renderException($e, $output)
     {
         parent::renderException($e, $output);
 

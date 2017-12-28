@@ -27,6 +27,5 @@ task('cleanup', function () {
         run("$sudo rm -rf {{deploy_path}}/releases/$release");
     }
 
-    run("cd {{deploy_path}} && if [ -e release ]; then $sudo rm release; fi");
-    run("cd {{deploy_path}} && if [ -h release ]; then $sudo rm release; fi");
+    run("cd {{deploy_path}} && if [ -e release ]; then $sudo rm release; fi && if [ -h release ]; then $sudo rm release; fi");
 });

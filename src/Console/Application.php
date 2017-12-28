@@ -15,6 +15,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Deployer\Deployer;
 
 class Application extends Console
 {
@@ -162,4 +163,16 @@ class Application extends Console
     {
         $this->after = $callable;
     }
+
+    public function renderException(\Exception $e, OutputInterface $output)
+    {
+        parent::renderException($e, $output);
+
+        $deployer = Deployer::get();
+        if ($deployer) {
+            $deployer->logger->log($e->getMessage());
+            $deployer->logger->log($e->getTraceAsString());
+        }
+    }
+
 }

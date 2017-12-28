@@ -5,6 +5,7 @@
 
 ### Added
 - Added a description to the autocomplete command [#1472]
+- Added a log buffer to the FileHandler loggin to reduce overhead [#1485]
 
 ### Fixed
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
@@ -22,7 +23,7 @@
 ### Changed
 - Added support for GroupTask in invoke() [#1364]
 - Magento2 recipe optimizes the autoloader after the DI compilation [#1365]
-- Host's `roles()` API now can accept arrays too 
+- Host's `roles()` API now can accept arrays too
 - Fixed bug where wrong time format is passed to touch when deploying assets [#1390]
 - Added artisan:migrate:fresh task for laravel recipe
 - Added platform config to composer.json [#1426]
@@ -39,7 +40,7 @@
 ### Changed
 - Laravel version check defaults to 5.5 if not found [#1352]
 
-### Fixed 
+### Fixed
 - Updated Laravel recipe to not run `artisan:optimize` on Laravel >= 5.5, as that command is now deprecated ([see upgrade notes](https://laravel.com/docs/5.5/upgrade)) [#1352]
 
 
@@ -341,6 +342,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1485]: https://github.com/deployphp/deployer/pull/1485
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455

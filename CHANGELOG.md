@@ -6,6 +6,7 @@
 ### Added
 - Added a description to the autocomplete command [#1472]
 - Log unhandled exceptions into logfile [#1481]
+- Added a log buffer to the FileHandler loggin to reduce overhead [#1485]
 
 ### Fixed
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
@@ -345,6 +346,7 @@
 
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1476]: https://github.com/deployphp/deployer/pull/1476
+[#1485]: https://github.com/deployphp/deployer/pull/1485
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455

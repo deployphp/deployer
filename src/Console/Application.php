@@ -163,15 +163,4 @@ class Application extends Console
     {
         $this->after = $callable;
     }
-
-    public function renderException($e, $output)
-    {
-        parent::renderException($e, $output);
-
-        $deployer = Deployer::get();
-        if ($deployer) {
-            $deployer->logger->log($e->getMessage());
-            $deployer->logger->log($e->getTraceAsString());
-        }
-    }
 }

@@ -141,6 +141,9 @@ class TaskCommand extends Command
         try {
             $executor->run($tasks, $hosts);
         } catch (\Throwable $exception) {
+            $this->deployer->logger->log('['. get_class($exception) .'] '. $exception->getMessage());
+            $this->deployer->logger->log($exception->getTraceAsString());
+
             if ($exception instanceof GracefulShutdownException) {
                 throw $exception;
             } else {

@@ -311,7 +311,7 @@ class Deployer extends Container
             $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
             $io->block($e->getTraceAsString());
 
-            $deployer->logger->log($e->getMessage());
+            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
             $deployer->logger->log($e->getTraceAsString());
             exit(1);
         });

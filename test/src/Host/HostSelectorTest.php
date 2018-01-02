@@ -20,8 +20,6 @@ class HostSelectorTest extends TestCase
         $this->assertInstanceOf($classname, $hostSelector);
     }
 
-    /**
-     */
     public function testThrowExceptionIfStageOrHostnameNotFound()
     {
         $this->expectException(\Exception::class);
@@ -76,8 +74,6 @@ class HostSelectorTest extends TestCase
         $this->assertSame(count($hosts), 100);
     }
 
-    /**
-     */
     public function testShouldThrowExceptionIfHostNameOrStageNotFound()
     {
         $this->expectException(\Exception::class);

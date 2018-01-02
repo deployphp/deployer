@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 class GroupTaskTest extends TestCase
 {
-    /**
-     */
     public function testGroupTask()
     {
         $this->expectException(\RuntimeException::class);

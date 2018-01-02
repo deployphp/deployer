@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7292d716bc0ed31aed6bf203be85d17",
+    "content-hash": "9aa32f5e6bc5a805a6502dfb616c02bb",
     "packages": [
         {
             "name": "deployer/phar-update",

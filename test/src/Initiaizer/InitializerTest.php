@@ -69,7 +69,6 @@ class InitializerTest extends TestCase
 
     /**
      * Test with template not found
-     *
      */
     public function testWithTemplateNotFound()
     {

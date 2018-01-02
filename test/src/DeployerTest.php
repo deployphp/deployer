@@ -52,8 +52,6 @@ class DeployerTest extends TestCase
         $this->assertInstanceOf(CollectionInterface::class, $this->deployer->{$collection});
     }
 
-    /**
-     */
     public function testCollectionsE()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -107,8 +105,6 @@ class DeployerTest extends TestCase
         $this->assertEquals($expected, Deployer::getDefault('config'));
     }
 
-    /**
-     */
     public function testAddDefaultToNotArray()
     {
         $this->expectException(\RuntimeException::class);

@@ -21,10 +21,11 @@ class HostSelectorTest extends TestCase
     }
 
     /**
-     * @expectedException Exception
      */
     public function testThrowExceptionIfStageOrHostnameNotFound()
     {
+        $this->expectException(\Exception::class);
+
         $hostSelector = new HostSelector(new HostCollection());
         $hostSelector->getHosts('ThisHostDoNotExists');
     }
@@ -76,10 +77,11 @@ class HostSelectorTest extends TestCase
     }
 
     /**
-     * @expectedException Exception
      */
     public function testShouldThrowExceptionIfHostNameOrStageNotFound()
     {
+        $this->expectException(\Exception::class);
+
         $host = new Host('app');
         $hostCollection = new HostCollection();
         $hostCollection->set('app', $host);

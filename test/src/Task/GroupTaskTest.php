@@ -12,10 +12,11 @@ use PHPUnit\Framework\TestCase;
 class GroupTaskTest extends TestCase
 {
     /**
-     * @expectedException \RuntimeException
      */
     public function testGroupTask()
     {
+        $this->expectException(\RuntimeException::class);
+
         $context = $this->getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
 
         $task = new GroupTask('group', []);

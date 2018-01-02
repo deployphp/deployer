@@ -22,8 +22,6 @@ class ScriptManagerTest extends TestCase
         $this->assertInstanceOf($classname, $scriptManager);
     }
 
-    /**
-     */
     public function testThrowsExceptionIfTaskCollectionEmpty()
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -32,8 +30,6 @@ class ScriptManagerTest extends TestCase
         $scriptManager->getTasks("");
     }
 
-    /**
-     */
     public function testThrowsExceptionIfTaskDontExists()
     {
         $this->expectException(\InvalidArgumentException::class);

@@ -10,6 +10,7 @@ namespace Deployer\Console;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -80,6 +81,7 @@ class DebugCommand extends Command
             throw new Exception('No task to be shown, because the selected hosts do not meet the conditions of the tasks');
         }
 
+        $output->writeln('');
         $output->writeln("The task-tree for <fg=cyan>$rootTask</fg=cyan>:");
 
         $beforeMap = [];
@@ -97,17 +99,22 @@ class DebugCommand extends Command
             }
         }
 
+        $rows = [];
         foreach($tasks as $task) {
             $currentTaskName = $task->getName();
-            $beforeAfterString = '';
 
-            if (array_key_exists($currentTaskName, $beforeMap)) {
-                $beforeAfterString = sprintf('[before: %s]', $beforeMap[$currentTaskName]);
-            } elseif (array_key_exists($currentTaskName, $afterMap)) {
-                $beforeAfterString = sprintf('[after: %s]', $afterMap[$currentTaskName]);
-            }
-
-            $output->writeln(sprintf(' - %s %s', $currentTaskName, $beforeAfterString));
+            $rows[] = [
+                count($rows),
+                $currentTaskName,
+                array_key_exists($currentTaskName, $beforeMap) ? $beforeMap[$currentTaskName] : null,
+                array_key_exists($currentTaskName, $afterMap) ? $afterMap[$currentTaskName] : null
+            ];
         }
+
+        $table = new Table($output);
+        $table
+            ->setHeaders(['Index', 'Task', 'Before', 'After'])
+            ->setRows($rows);
+        $table->render();
     }
 }

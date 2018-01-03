@@ -88,19 +88,19 @@ class DebugCommand extends Command
         $afterMap = [];
 
         //index the before and after tasks
-        foreach($tasks as $task) {
+        foreach ($tasks as $task) {
             $currentTaskName = $task->getName();
 
-            foreach($task->getBefore() as $beforeTaskName) {
+            foreach ($task->getBefore() as $beforeTaskName) {
                 $beforeMap[$beforeTaskName] = $currentTaskName;
             }
-            foreach($task->getAfter() as $afterTaskName) {
+            foreach ($task->getAfter() as $afterTaskName) {
                 $afterMap[$afterTaskName] = $currentTaskName;
             }
         }
 
         $rows = [];
-        foreach($tasks as $task) {
+        foreach ($tasks as $task) {
             $currentTaskName = $task->getName();
 
             $rows[] = [

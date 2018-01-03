@@ -4,6 +4,7 @@
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
 ### Added
+- Added debug:task command to display the order of task execution [#1488]
 - Added a description to the autocomplete command [#1472]
 - Log unhandled exceptions into logfile [#1481]
 

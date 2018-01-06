@@ -52,6 +52,7 @@ use function Deployer\Support\array_merge_alternate;
  * @property Informer informer
  * @property Logger logger
  * @property ProcessOutputPrinter pop
+ * @property Collection fail
  */
 class Deployer extends Container
 {
@@ -305,10 +306,13 @@ class Deployer extends Container
         $deployer = new self($console);
 
         // Pretty-print uncaught exceptions in symfony-console
-        set_exception_handler(function ($e) use ($input, $output) {
+        set_exception_handler(function ($e) use ($input, $output, $deployer) {
             $io = new SymfonyStyle($input, $output);
             $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
             $io->block($e->getTraceAsString());
+
+            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
+            $deployer->logger->log($e->getTraceAsString());
             exit(1);
         });
 

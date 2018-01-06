@@ -169,8 +169,8 @@ function task($name, $body = null)
 /**
  * Call that task before specified task runs.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task before $that should be run.
+ * @param string $that The task to be run.
  */
 function before($it, $that)
 {
@@ -183,8 +183,8 @@ function before($it, $that)
 /**
  * Call that task after specified task runs.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task after $that should be run.
+ * @param string $that The task to be run.
  */
 function after($it, $that)
 {
@@ -197,13 +197,13 @@ function after($it, $that)
 /**
  * Setup which task run on failure of first.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task which need to fail so $that should be run.
+ * @param string $that The task to be run.
  */
 function fail($it, $that)
 {
     $deployer = Deployer::get();
-    $deployer['fail']->set($it, $that);
+    $deployer->fail->set($it, $that);
 }
 
 /**

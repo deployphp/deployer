@@ -69,12 +69,12 @@ class InitializerTest extends TestCase
 
     /**
      * Test with template not found
-     *
-     * @expectedException \Deployer\Initializer\Exception\TemplateNotFoundException
-     * @expectedExceptionMessage Not found template with name "foo". Available templates: "test"
      */
     public function testWithTemplateNotFound()
     {
+        $this->expectException(\Deployer\Initializer\Exception\TemplateNotFoundException::class);
+        $this->expectExceptionMessage('Not found template with name "foo". Available templates: "test"');
+
         $this->initializer->initialize('foo', sys_get_temp_dir(), 'deploy.php');
     }
 

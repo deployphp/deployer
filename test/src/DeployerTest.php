@@ -52,11 +52,10 @@ class DeployerTest extends TestCase
         $this->assertInstanceOf(CollectionInterface::class, $this->deployer->{$collection});
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testCollectionsE()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->deployer->some_collection;
     }
 
@@ -106,12 +105,11 @@ class DeployerTest extends TestCase
         $this->assertEquals($expected, Deployer::getDefault('config'));
     }
 
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Configuration parameter `config` isn't array.
-     */
     public function testAddDefaultToNotArray()
     {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Configuration parameter `config` isn\'t array.');
+
         Deployer::setDefault('config', 'option');
         Deployer::addDefault('config', ['three']);
     }

@@ -9,6 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
 use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
+use Deployer\Deployer;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;

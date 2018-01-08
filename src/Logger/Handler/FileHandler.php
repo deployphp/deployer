@@ -14,13 +14,34 @@ class FileHandler implements HandlerInterface
      */
     private $filePath;
 
+    /**
+     * @var string
+     */
+    private $buffer;
+
     public function __construct(string $filePath)
     {
         $this->filePath = $filePath;
+        $this->buffer = '';
+
+        // write remaining buffer to the log when php shuts down
+        register_shutdown_function(function () {
+            $this->flush();
+        });
     }
 
     public function log(string $message)
     {
-        file_put_contents($this->filePath, $message, FILE_APPEND);
+        $this->buffer .= $message;
+
+        if (strlen($this->buffer) > 4096) {
+            $this->flush();
+        }
+    }
+
+    private function flush()
+    {
+        file_put_contents($this->filePath, $this->buffer, FILE_APPEND);
+        $this->buffer = '';
     }
 }

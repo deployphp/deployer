@@ -5,11 +5,11 @@
 
 ### Added
 - Added a description to the autocomplete command [#1472]
+- Added a log buffer to the FileHandler loggin to reduce overhead [#1485]
 - Log unhandled exceptions into logfile [#1481]
 
 ### Fixed
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
-- `pcntl_fork` is blacklisted per default on ubuntu lts boxes. make sure deployer doesnt emit a warning in this case [#1476]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -343,8 +343,8 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1485]: https://github.com/deployphp/deployer/pull/1485
 [#1481]: https://github.com/deployphp/deployer/issues/1481
-[#1476]: https://github.com/deployphp/deployer/pull/1476
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455

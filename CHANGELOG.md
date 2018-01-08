@@ -5,6 +5,7 @@
 
 ### Added
 - Added a description to the autocomplete command [#1472]
+- Added a log buffer to the FileHandler loggin to reduce overhead [#1485]
 - Log unhandled exceptions into logfile [#1481]
 - Added a log buffer to the FileHandler loggin to reduce overhead [#1485]
 
@@ -344,6 +345,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1485]: https://github.com/deployphp/deployer/pull/1485
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1476]: https://github.com/deployphp/deployer/pull/1476
 [#1485]: https://github.com/deployphp/deployer/pull/1485

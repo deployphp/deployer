@@ -1,5 +1,8 @@
 # Changelog
 
+### Fixed
+- Update silverstripe recipe to support silverstripe 4
+
 ## master
 [v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 

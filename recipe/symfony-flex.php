@@ -26,9 +26,5 @@ set('web_dir', 'public');
 // Assets
 set('assets', ['public/css', 'public/images', 'public/js']);
 
-// Environment vars
-set('env', function () {
-    return [
-        'APP_ENV' => get('symfony_env')
-    ];
-});
+// No need environment vars if using DotEnv
+set('env', []);

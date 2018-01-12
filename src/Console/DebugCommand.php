@@ -9,8 +9,11 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
+use Deployer\Host\Host;
+use Deployer\Task\GroupTask;
+use Deployer\Task\Task;
+use Deployer\Task\TaskCollection;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -18,10 +21,38 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class DebugCommand extends Command
 {
+    /** @var Output */
+    protected $output;
+
+    /**
+     * @var string
+     */
+    private $rootTaskName;
+
+    /**
+     * @var array
+     */
+    private $beforeMap;
+
+    /**
+     * @var array
+     */
+    private $afterMap;
+
+    /**
+     * @var TaskCollection
+     */
+    private $tasks;
+
     /**
      * @var Deployer
      */
     private $deployer;
+
+    /**
+     * @var array
+     */
+    private $tree;
 
     /**
      * @param Deployer $deployer
@@ -31,6 +62,7 @@ class DebugCommand extends Command
         parent::__construct('debug:task');
         $this->setDescription('Display the task-tree for a given task');
         $this->deployer = $deployer;
+        $this->tree = [];
     }
 
     /**
@@ -54,6 +86,12 @@ class DebugCommand extends Command
             Option::VALUE_REQUIRED,
             'Host to show the task-tree for, comma separated, supports ranges [:]'
         );
+        $this->addOption(
+            'no-hooks',
+            null,
+            Option::VALUE_NONE,
+            'Debug task without after/before hooks'
+        );
     }
 
     /**
@@ -61,9 +99,12 @@ class DebugCommand extends Command
      */
     protected function execute(Input $input, Output $output)
     {
-        $rootTask = $input->getArgument('task');
+        $this->output = $output;
+
+        $this->rootTaskName = $input->getArgument('task');
         $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
         $hosts = $input->getOption('hosts');
+        $hooksEnabled = !$input->getOption('no-hooks');
 
         if (!empty($hosts)) {
             $hosts = $this->deployer->hostSelector->getByHostnames($hosts);
@@ -75,46 +116,118 @@ class DebugCommand extends Command
             throw new Exception('No host selected');
         }
 
-        $tasks = Deployer::get()->scriptManager->getTasks($rootTask, $hosts);
+        //TODO the following should also be in a seperate kickStart-method
+        $this->tasks = Deployer::get()->tasks;
+        $rootTask = $this->tasks->get($this->rootTaskName);
 
-        if (empty($tasks)) {
-            throw new Exception('No task to be shown, because the selected hosts do not meet the conditions of the tasks');
+        if (! ($rootTask instanceof GroupTask) ) {
+            $output->writeln("The task-tree for <fg=cyan>$this->rootTaskName</fg=cyan>:");
+            $output->writeln(" $rootTask->getName()");
+
+            //bail out, it was no GroupTask
+            return;
         }
 
-        $output->writeln('');
-        $output->writeln("The task-tree for <fg=cyan>$rootTask</fg=cyan>:");
+        $this->indexBeforeAfterNames($hosts);
 
-        $beforeMap = [];
-        $afterMap = [];
+        $this->createTreeFromTask($this->rootTaskName);
+
+        $this->outputTree();
+    }
+
+    private function buildTree($flat, $pidKey, $idKey = null)
+    {
+        $grouped = array();
+        foreach ($flat as $sub){
+            $grouped[$sub[$pidKey]][] = $sub;
+        }
+
+        $fnBuilder = function($siblings) use (&$fnBuilder, $grouped, $idKey) {
+            foreach ($siblings as $k => $sibling) {
+                $id = $sibling[$idKey];
+                if(isset($grouped[$id])) {
+                    $sibling['children'] = $fnBuilder($grouped[$id]);
+                }
+                $siblings[$k] = $sibling;
+            }
+
+            return $siblings;
+        };
+
+        $tree = $fnBuilder($grouped[0]);
+
+        return $tree;
+    }
+
+    /**
+     * Index the before and after references for the whole tasklist
+     *
+     * @param Host[] $hosts
+     */
+    private function indexBeforeAfterNames($hosts)
+    {
+        $flatTaskList = Deployer::get()->scriptManager->getTasks($this->rootTaskName, $hosts);
+
+        $this->beforeMap = [];
+        $this->afterMap = [];
 
         //index the before and after tasks
-        foreach ($tasks as $task) {
+        foreach($flatTaskList as $task) {
             $currentTaskName = $task->getName();
 
-            foreach ($task->getBefore() as $beforeTaskName) {
-                $beforeMap[$beforeTaskName] = $currentTaskName;
+            foreach($task->getBefore() as $beforeTaskName) {
+                $this->beforeMap[$beforeTaskName] = $currentTaskName;
             }
-            foreach ($task->getAfter() as $afterTaskName) {
-                $afterMap[$afterTaskName] = $currentTaskName;
+            foreach($task->getAfter() as $afterTaskName) {
+                $this->afterMap[$afterTaskName] = $currentTaskName;
             }
         }
+    }
 
-        $rows = [];
-        foreach ($tasks as $task) {
-            $currentTaskName = $task->getName();
+    /**
+     * Decorate the taskName with possible before or after reference
+     *
+     * @param Task $task
+     * @return string
+     */
+    private function decorateTaskName(Task $task) {
+        $taskName = $task->getName();
 
-            $rows[] = [
-                count($rows),
-                $currentTaskName,
-                array_key_exists($currentTaskName, $beforeMap) ? $beforeMap[$currentTaskName] : null,
-                array_key_exists($currentTaskName, $afterMap) ? $afterMap[$currentTaskName] : null
-            ];
+        $beforeAfterString = '';
+
+        if (array_key_exists($taskName, $this->beforeMap)) {
+            $beforeAfterString = sprintf('[before: %s]', $this->beforeMap[$taskName]);
+        } elseif (array_key_exists($taskName, $this->afterMap)) {
+            $beforeAfterString = sprintf('[after: %s]', $this->afterMap[$taskName]);
         }
 
-        $table = new Table($output);
-        $table
-            ->setHeaders(['Index', 'Task', 'Before', 'After'])
-            ->setRows($rows);
-        $table->render();
+        //TODO add indentation (give it as an argument)
+        return sprintf('%s %s', $taskName, $beforeAfterString);
+    }
+
+    /**
+     * Create tree from the given taskname
+     *
+     * @param string $taskName
+     */
+    private function createTreeFromTask($taskName)
+    {
+        $task = $this->tasks->get($taskName);
+
+//            if ($task instanceof GroupTask) {
+//                foreach($task->getGroup() as $subtask) {
+//                    $tree[] = $makeTree($subtask);
+//                }
+//            } else {
+        $this->tree[] = $this->decorateTaskName($task);
+//            }
+    }
+
+    private function outputTree()
+    {
+        $this->output->writeln("The task-tree for <fg=cyan>$this->rootTaskName</fg=cyan>:");
+
+        var_dump($this->tree);
+        exit;
     }
 }

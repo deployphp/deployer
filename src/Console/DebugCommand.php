@@ -34,7 +34,7 @@ class DebugCommand extends Command
     /**
      * @var array
      */
-    private $flatTree;
+    private $tree;
 
     /**
      * Depth of nesting (for rendering purposes)
@@ -55,7 +55,7 @@ class DebugCommand extends Command
         parent::__construct('debug:task');
         $this->setDescription('Display the task-tree for a given task');
         $this->deployer = $deployer;
-        $this->flatTree = [];
+        $this->tree = [];
     }
 
     /**
@@ -66,7 +66,7 @@ class DebugCommand extends Command
         $this->addArgument(
             'task',
             InputArgument::REQUIRED,
-            'Task to display the tree from'
+            'Task to display the tree for'
         );
     }
 
@@ -86,11 +86,11 @@ class DebugCommand extends Command
     private function buildTree($taskName)
     {
         $this->tasks = Deployer::get()->tasks;
-        $this->createTreeFromTaskName($taskName, '');
+        $this->createTreeFromTaskName($taskName, '', true);
     }
 
     /**
-     * Create tree from the given taskname
+     * Create a tree from the given taskname
      *
      * @param string $taskName
      * @param string $postfix
@@ -109,6 +109,8 @@ class DebugCommand extends Command
         }
 
         if ($task instanceof GroupTask) {
+
+            $isLast = $isLast && empty($task->getAfter());
 
             $this->addTaskToTree($task->getName() . $postfix, true, $isLast);
 
@@ -144,7 +146,7 @@ class DebugCommand extends Command
     }
 
     private function addTaskToTree($taskName, $hasChildren = false, $isLast = false) {
-        $this->flatTree[] = [
+        $this->tree[] = [
             'taskName' => $taskName,
             'depth' => $this->depth,
             'hasChildren' => $hasChildren,
@@ -157,20 +159,20 @@ class DebugCommand extends Command
     {
         $this->output->writeln("The task-tree for <fg=cyan>$taskName</fg=cyan>:");
 
-        $repeatCount = 4;
+        $REPEAT_COUNT = 4;
 
-        foreach ($this->flatTree as $treeItem) {
+        foreach ($this->tree as $treeItem) {
             $depth = $treeItem['depth'];
 
-            $startSymbol = $treeItem['isLast'] || $treeItem === end($this->flatTree) ? '└' : '├';
+            $startSymbol = $treeItem['isLast'] || $treeItem === end($this->tree) ? '└' : '├';
 
             $prefix = '';
 
             for ($i = 0; $i < $depth; $i++) {
                 if (in_array($i, $treeItem['openDepths'])) {
-                    $prefix .= '│' . str_repeat(' ', $repeatCount - 1);
+                    $prefix .= '│' . str_repeat(' ', $REPEAT_COUNT - 1);
                 } else {
-                    $prefix .= str_repeat(' ', $repeatCount);
+                    $prefix .= str_repeat(' ', $REPEAT_COUNT);
                 }
             }
 

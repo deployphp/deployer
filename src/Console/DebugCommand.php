@@ -45,6 +45,11 @@ class DebugCommand extends Command
     private $depth = 0;
 
     /**
+     * @var array
+     */
+    private $openGroupDepths = [];
+
+    /**
      * @param Deployer $deployer
      */
     public function __construct(Deployer $deployer)
@@ -107,7 +112,11 @@ class DebugCommand extends Command
 
         if ($task instanceof GroupTask) {
 
-            $this->addTaskToTree($task->getName() . ' (group)', true, $lastOfGroup);
+            $this->addTaskToTree($task->getName(), true, $lastOfGroup);
+
+            if (!$lastOfGroup) {
+                $this->openGroupDepths[] = $this->depth;
+            }
 
             $this->depth++;
 
@@ -117,6 +126,10 @@ class DebugCommand extends Command
                 $isLastSubtask = $subtask === end($taskGroup);
 
                 $this->createTreeFromTaskName($subtask, '', $isLastSubtask);
+            }
+
+            if (!$lastOfGroup) {
+                array_pop($this->openGroupDepths);
             }
 
             $this->depth--;
@@ -139,7 +152,8 @@ class DebugCommand extends Command
             'taskName' => $taskName,
             'depth' => $this->depth,
             'hasChildren' => $hasChildren,
-            'isLastOfGroup' => $isLastOfGroup
+            'isLastOfGroup' => $isLastOfGroup,
+            'openDepths' => $this->openGroupDepths
         ];
     }
 
@@ -147,14 +161,24 @@ class DebugCommand extends Command
     {
         $this->output->writeln("The task-tree for <fg=cyan>$taskName</fg=cyan>:");
 
-        $spaces = '      ';
+        $repeatCount = 4;
 
         foreach($this->flatTree as $treeItem) {
             $depth = $treeItem['depth'];
 
             $startSymbol = $treeItem['isLastOfGroup'] ? '└' : '├';
 
-            $prefix = ($depth > 0 ? str_repeat($spaces, $depth) : '') . $startSymbol . '──';
+            $prefix = '';
+
+            for($i = 0; $i < $depth; $i++) {
+                if (in_array($i, $treeItem['openDepths'])) {
+                    $prefix .= '│' . str_repeat(' ', $repeatCount - 1);
+                } else {
+                    $prefix .= str_repeat(' ', $repeatCount);
+                }
+            }
+
+            $prefix .=  $startSymbol . '──';
 
             $this->output->writeln(sprintf('%s %s', $prefix, $treeItem['taskName']));
         }

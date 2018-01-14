@@ -103,7 +103,7 @@ class DebugCommand extends Command
         if ($task->getBefore()) {
             $beforePostfix = sprintf(' [before:%s]', $task->getName());
 
-            foreach($task->getBefore() as $beforeTask) {
+            foreach ($task->getBefore() as $beforeTask) {
                 $this->createTreeFromTaskName($beforeTask, $beforePostfix);
             }
         }
@@ -139,7 +139,7 @@ class DebugCommand extends Command
         if ($task->getAfter()) {
             $afterPostfix = sprintf(' [after:%s]', $task->getName());
 
-            foreach($task->getAfter() as $afterTask) {
+            foreach ($task->getAfter() as $afterTask) {
                 $this->createTreeFromTaskName($afterTask, $afterPostfix);
             }
         }

@@ -110,7 +110,7 @@ class DebugCommand extends Command
 
         if ($task instanceof GroupTask) {
 
-            $this->addTaskToTree($task->getName(), true, $isLast);
+            $this->addTaskToTree($task->getName() . $postfix, true, $isLast);
 
             if (!$isLast) {
                 $this->openGroupDepths[] = $this->depth;

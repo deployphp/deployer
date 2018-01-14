@@ -9,13 +9,11 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Exception\Exception;
 use Deployer\Task\GroupTask;
 use Deployer\Task\TaskCollection;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
-use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class DebugCommand extends Command
@@ -88,7 +86,7 @@ class DebugCommand extends Command
     private function buildTree($taskName)
     {
         $this->tasks = Deployer::get()->tasks;
-        $this->createTreeFromTaskName($taskName, '', true);
+        $this->createTreeFromTaskName($taskName, '');
     }
 
     /**
@@ -96,9 +94,9 @@ class DebugCommand extends Command
      *
      * @param string $taskName
      * @param string $postfix
-     * @param bool $lastOfGroup
+     * @param bool $isLast
      */
-    private function createTreeFromTaskName($taskName, $postfix = '', $lastOfGroup = false)
+    private function createTreeFromTaskName($taskName, $postfix = '', $isLast = false)
     {
         $task = $this->tasks->get($taskName);
 
@@ -112,30 +110,28 @@ class DebugCommand extends Command
 
         if ($task instanceof GroupTask) {
 
-            $this->addTaskToTree($task->getName(), true, $lastOfGroup);
+            $this->addTaskToTree($task->getName(), true, $isLast);
 
-            if (!$lastOfGroup) {
+            if (!$isLast) {
                 $this->openGroupDepths[] = $this->depth;
             }
 
             $this->depth++;
 
             $taskGroup = $task->getGroup();
-
-            foreach($taskGroup as $subtask) {
+            foreach ($taskGroup as $subtask) {
                 $isLastSubtask = $subtask === end($taskGroup);
-
                 $this->createTreeFromTaskName($subtask, '', $isLastSubtask);
             }
 
-            if (!$lastOfGroup) {
+            if (!$isLast) {
                 array_pop($this->openGroupDepths);
             }
 
             $this->depth--;
 
         } else {
-            $this->addTaskToTree($task->getName() . $postfix, false, $lastOfGroup);
+            $this->addTaskToTree($task->getName() . $postfix, false, $isLast);
         }
 
         if ($task->getAfter()) {
@@ -147,12 +143,12 @@ class DebugCommand extends Command
         }
     }
 
-    private function addTaskToTree($taskName, $hasChildren = false, $isLastOfGroup = false) {
+    private function addTaskToTree($taskName, $hasChildren = false, $isLast = false) {
         $this->flatTree[] = [
             'taskName' => $taskName,
             'depth' => $this->depth,
             'hasChildren' => $hasChildren,
-            'isLastOfGroup' => $isLastOfGroup,
+            'isLast' => $isLast,
             'openDepths' => $this->openGroupDepths
         ];
     }
@@ -163,14 +159,14 @@ class DebugCommand extends Command
 
         $repeatCount = 4;
 
-        foreach($this->flatTree as $treeItem) {
+        foreach ($this->flatTree as $treeItem) {
             $depth = $treeItem['depth'];
 
-            $startSymbol = $treeItem['isLastOfGroup'] ? '└' : '├';
+            $startSymbol = $treeItem['isLast'] || $treeItem === end($this->flatTree) ? '└' : '├';
 
             $prefix = '';
 
-            for($i = 0; $i < $depth; $i++) {
+            for ($i = 0; $i < $depth; $i++) {
                 if (in_array($i, $treeItem['openDepths'])) {
                     $prefix .= '│' . str_repeat(' ', $repeatCount - 1);
                 } else {

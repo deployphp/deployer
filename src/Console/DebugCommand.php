@@ -109,7 +109,6 @@ class DebugCommand extends Command
         }
 
         if ($task instanceof GroupTask) {
-
             $isLast = $isLast && empty($task->getAfter());
 
             $this->addTaskToTree($task->getName() . $postfix, true, $isLast);
@@ -131,7 +130,6 @@ class DebugCommand extends Command
             }
 
             $this->depth--;
-
         } else {
             $this->addTaskToTree($task->getName() . $postfix, false, $isLast);
         }
@@ -145,7 +143,8 @@ class DebugCommand extends Command
         }
     }
 
-    private function addTaskToTree($taskName, $hasChildren = false, $isLast = false) {
+    private function addTaskToTree($taskName, $hasChildren = false, $isLast = false)
+    {
         $this->tree[] = [
             'taskName' => $taskName,
             'depth' => $this->depth,

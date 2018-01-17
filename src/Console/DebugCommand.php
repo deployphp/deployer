@@ -83,6 +83,12 @@ class DebugCommand extends Command
         $this->outputTree($rootTaskName);
     }
 
+    /**
+     * Build the tree based on the given taskName
+     * @param $taskName
+     *
+     * @return void
+     */
     private function buildTree($taskName)
     {
         $this->tasks = Deployer::get()->tasks;
@@ -95,6 +101,8 @@ class DebugCommand extends Command
      * @param string $taskName
      * @param string $postfix
      * @param bool $isLast
+     *
+     * @return void
      */
     private function createTreeFromTaskName($taskName, $postfix = '', $isLast = false)
     {
@@ -111,7 +119,7 @@ class DebugCommand extends Command
         if ($task instanceof GroupTask) {
             $isLast = $isLast && empty($task->getAfter());
 
-            $this->addTaskToTree($task->getName() . $postfix, true, $isLast);
+            $this->addTaskToTree($task->getName() . $postfix, $isLast);
 
             if (!$isLast) {
                 $this->openGroupDepths[] = $this->depth;
@@ -131,7 +139,7 @@ class DebugCommand extends Command
 
             $this->depth--;
         } else {
-            $this->addTaskToTree($task->getName() . $postfix, false, $isLast);
+            $this->addTaskToTree($task->getName() . $postfix, $isLast);
         }
 
         if ($task->getAfter()) {
@@ -143,21 +151,34 @@ class DebugCommand extends Command
         }
     }
 
-    private function addTaskToTree($taskName, $hasChildren = false, $isLast = false)
+    /**
+     * Add the (formatted) taskName to the rendertree, with some additional information
+     *
+     * @param string $taskName formatted with prefixes if needed
+     * @param bool $isLast indication for what symbol to use for rendering
+     */
+    private function addTaskToTree($taskName, $isLast = false)
     {
         $this->tree[] = [
             'taskName' => $taskName,
             'depth' => $this->depth,
-            'hasChildren' => $hasChildren,
             'isLast' => $isLast,
             'openDepths' => $this->openGroupDepths
         ];
     }
 
+    /**
+     * Render the tree, after everything is build
+     *
+     * @param $taskName
+     */
     private function outputTree($taskName)
     {
         $this->output->writeln("The task-tree for <fg=cyan>$taskName</fg=cyan>:");
 
+        /**
+         * @var $REPEAT_COUNT number of spaces for each depth increase
+         */
         $REPEAT_COUNT = 4;
 
         foreach ($this->tree as $treeItem) {

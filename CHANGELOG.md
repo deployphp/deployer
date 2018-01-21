@@ -11,7 +11,7 @@
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
 - `pcntl_fork` is blacklisted per default on ubuntu lts boxes. make sure deployer doesnt emit a warning in this case [#1476]
 - Update silverstripe recipe to support silverstripe 4
-- Make sure pop() is called when Callback errors in on(...) function [#1513]
+- Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)

@@ -16,15 +16,28 @@ set('shared_dirs', [
 // Silverstripe writable dirs
 set('writable_dirs', ['assets']);
 
+// Silverstripe cli script
+set('silverstripe_cli_script', function () {
+    $paths = [
+        'framework/cli-script.php',
+        'vendor/silverstripe/framework/cli-script.php'
+    ];
+    foreach ($paths as $path) {
+        if (test('[ -f {{release_path}}/'.$path.' ]')) {
+            return $path;
+        }
+    }
+});
+
 /**
  * Helper tasks
  */
 task('silverstripe:build', function () {
-    return run('{{bin/php}} {{release_path}}/framework/cli-script.php /dev/build');
+    return run('{{bin/php}} {{release_path}}/{{silverstripe_cli_script}} /dev/build');
 })->desc('Run /dev/build');
 
 task('silverstripe:buildflush', function () {
-    return run('{{bin/php}} {{release_path}}/framework/cli-script.php /dev/build flush=all');
+    return run('{{bin/php}} {{release_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
 })->desc('Run /dev/build?flush=all');
 
 /**

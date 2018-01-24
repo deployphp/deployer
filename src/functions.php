@@ -372,8 +372,8 @@ function on($hosts, callable $callback)
 
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
+            Context::push(new Context($host, $input, $output));
             try {
-                Context::push(new Context($host, $input, $output));
                 $callback($host);
             } finally {
                 Context::pop();

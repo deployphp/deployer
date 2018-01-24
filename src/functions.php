@@ -23,6 +23,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use function Deployer\Support\array_to_string;
+use Deployer\Exception\RuntimeException;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -246,7 +247,11 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    set('working_path', parse($path));
+    try {
+        set('working_path', parse($path));
+    } catch (RuntimeException $e) {
+        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
+    }
 }
 
 /**

@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\RuntimeException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -23,7 +24,6 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use function Deployer\Support\array_to_string;
-use Deployer\Exception\RuntimeException;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.

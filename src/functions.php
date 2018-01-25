@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\RuntimeException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -246,7 +247,11 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    set('working_path', parse($path));
+    try {
+        set('working_path', parse($path));
+    } catch (RuntimeException $e) {
+        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
+    }
 }
 
 /**

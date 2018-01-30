@@ -280,8 +280,6 @@ function within($path, $callback)
  */
 function run($command, $options = [])
 {
-    $client = Deployer::get()->sshClient;
-    $process = Deployer::get()->processRunner;
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
 
@@ -299,8 +297,10 @@ function run($command, $options = [])
     }
 
     if ($host instanceof Localhost) {
+        $process = Deployer::get()->processRunner;
         $output = $process->run($hostname, $command, $options);
     } else {
+        $client = Deployer::get()->sshClient;
         $output = $client->run($host, $command, $options);
     }
 

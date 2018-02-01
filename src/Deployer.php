@@ -100,7 +100,7 @@ class Deployer extends Container
             return new ProcessOutputPrinter($c['output'], $c['logger']);
         };
         $this['sshClient'] = function ($c) {
-            return new Ssh\Client($c['output'], $c['pop'], $c['config']['ssh_multiplexing']);
+            return new Ssh\Client($c['output'], $c['pop']);
         };
         $this['rsync'] = function ($c) {
             return new Rsync($c['pop']);

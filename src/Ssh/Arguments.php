@@ -111,6 +111,17 @@ class Arguments
         return $this->withDefaults($multiplexDefaults);
     }
 
+    public function withoutMultiplexing()
+    {
+        $clone = clone $this;
+
+        unset($clone->options['ControlMaster']);
+        unset($clone->options['ControlPersist']);
+        unset($clone->options['ControlPath']);
+
+        return $clone;
+    }
+
     /**
      * Return SSH multiplexing control path
      *

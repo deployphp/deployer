@@ -54,6 +54,10 @@ class Host
         if ($this->forwardAgent) {
             $this->sshArguments = $this->sshArguments->withFlag('-A');
         }
+
+        if ($this->isMultiplexing()) {
+            $this->sshArguments = $this->sshArguments->withMultiplexing($this);
+        }
     }
 
     /**

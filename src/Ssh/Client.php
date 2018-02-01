@@ -26,16 +26,10 @@ class Client
      */
     private $pop;
 
-    /**
-     * @var bool
-     */
-    private $multiplexing;
-
-    public function __construct(OutputInterface $output, ProcessOutputPrinter $pop, bool $multiplexing)
+    public function __construct(OutputInterface $output, ProcessOutputPrinter $pop)
     {
         $this->output = $output;
         $this->pop = $pop;
-        $this->multiplexing = $multiplexing;
     }
 
     /**
@@ -49,6 +43,7 @@ class Client
     {
         $hostname = $host->getHostname();
         $defaults = [
+            'multiplexing' => Deployer::getDefault('ssh_multiplexing', true),
             'timeout' => Deployer::getDefault('default_timeout', 300),
             'tty' => false,
         ];
@@ -63,7 +58,7 @@ class Client
         // and pass command without bash allocation on remote host.
         if ($config['tty']) {
             $this->output->write(''); // Notify OutputWatcher
-            $sshArguments = $sshArguments->withFlag('-tt');
+            $sshArguments = $sshArguments->withFlag('-tt')->withoutMultiplexing();
             $command = escapeshellarg($command);
 
             $ssh = "ssh $sshArguments $host $command";
@@ -76,8 +71,8 @@ class Client
             return $process->getOutput();
         }
 
-        if ($host->isMultiplexing() === null ? $this->multiplexing : $host->isMultiplexing()) {
-            $sshArguments = $this->initMultiplexing($host);
+        if ($host->isMultiplexing() ?? $config['multiplexing']) {
+            $this->initMultiplexing($host);
         }
 
         $ssh = "ssh $sshArguments $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
@@ -120,7 +115,7 @@ class Client
 
     private function initMultiplexing(Host $host)
     {
-        $sshArguments = $host->getSshArguments()->withMultiplexing($host);
+        $sshArguments = $host->getSshArguments();
 
         if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
             if ($this->output->isVeryVerbose()) {
@@ -133,8 +128,6 @@ class Client
                 $this->pop->writeln(Process::OUT, $host->getHostname(), $output);
             }
         }
-
-        return $sshArguments;
     }
 
     private function isMultiplexingInitialized(Host $host, Arguments $sshArguments)

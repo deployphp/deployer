@@ -78,6 +78,20 @@ class ArgumentsTest extends TestCase
         );
     }
 
+    public function testWitouthMultiplexing()
+    {
+        $host = new Host('test');
+        $arguments = (new Arguments)->withMultiplexing($host);
+        $controlPath = $arguments->getOption('ControlPath');
+
+        $arguments = $arguments->withoutMultiplexing();
+        $cliArguments = $arguments->getCliArguments();
+
+        static::assertNotContains('-o ControlMaster=auto', $cliArguments);
+        static::assertNotContains('-o ControlPersist=60', $cliArguments);
+        static::assertNotContains("-o ControlPath=$controlPath", $cliArguments);
+    }
+
     public function testCanOverrideMultiplexingOptions()
     {
         $host = new Host('test');

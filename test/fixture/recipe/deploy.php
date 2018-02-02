@@ -27,6 +27,7 @@ set('writable_dirs', [
     'app/cache',
 ]);
 
+set('branch', 'master');
 
 // Hosts
 

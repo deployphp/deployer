@@ -25,6 +25,10 @@ class HostTest extends TestCase
             ->sshOptions(['BatchMode' => 'yes'])
             ->addSshOption('Compression', 'yes');
 
+        $expectedArgs =  '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa ';
+        $expectedArgs .= '-o ControlMaster=auto -o ControlPersist=60 -o ControlPath=~/.ssh/deployer_user@host:22 ';
+        $expectedArgs .= '-o BatchMode=yes -o Compression=yes';
+
         self::assertEquals('host', $host->getHostname());
         self::assertEquals('user', $host->getUser());
         self::assertEquals(22, $host->getPort());
@@ -33,10 +37,7 @@ class HostTest extends TestCase
         self::assertEquals(true, $host->isForwardAgent());
         self::assertEquals(true, $host->isMultiplexing());
         self::assertEquals('user@host', "$host");
-        self::assertContains(
-            '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -o BatchMode=yes -o Compression=yes',
-            $host->getSshArguments()->getCliArguments()
-        );
+        self::assertContains($expectedArgs, $host->getSshArguments()->getCliArguments());
     }
 
     public function testHostWithCustomPort()

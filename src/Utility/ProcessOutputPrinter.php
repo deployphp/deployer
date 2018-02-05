@@ -13,6 +13,8 @@ use Symfony\Component\Process\Process;
 
 class ProcessOutputPrinter
 {
+    const REDACTED = '**SECRECT**';
+
     /**
      * @var OutputInterface
      */
@@ -23,10 +25,16 @@ class ProcessOutputPrinter
      */
     private $logger;
 
+    /**
+     * @var string[]
+     */
+    private $blacklist;
+
     public function __construct(OutputInterface $output, Logger $logger)
     {
         $this->output = $output;
         $this->logger = $logger;
+        $this->blacklist = [];
     }
 
     /**
@@ -45,6 +53,8 @@ class ProcessOutputPrinter
 
     public function command(string $hostname, string $command)
     {
+        $command = str_replace($this->blacklist, self::REDACTED, $command);
+
         $this->logger->log("[$hostname] > $command");
 
         if ($this->output->isVeryVerbose()) {
@@ -95,6 +105,19 @@ class ProcessOutputPrinter
      */
     public function filterOutput($output)
     {
-        return preg_replace('/\[exit_code:(.*?)\]/', '', $output);
+        $output = preg_replace('/\[exit_code:(.*?)\]/', '', $output);
+        $output = str_replace($this->blacklist, self::REDACTED, $output);
+        return $output;
+    }
+
+    /**
+     * Add the given string to the output-blacklist.
+     * Blacklisted strings will be redacted before being rendered to the output stream or logfile.
+     *
+     * @param string $string
+     */
+    public function blacklist($string)
+    {
+        $this->blacklist[] = $string;
     }
 }

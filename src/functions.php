@@ -667,7 +667,12 @@ function askHiddenResponse($message)
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 
-    return $helper->ask(input(), output(), $question);
+    $secret = $helper->ask(input(), output(), $question);
+
+    $pop = Deployer::get()->pop;
+    $pop->blacklist($secret);
+
+    return $secret;
 }
 
 /**

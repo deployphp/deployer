@@ -53,6 +53,7 @@ class FileLoader
                     'multiplexing',
                     'sshOptions',
                     'sshFlags',
+                    'shellCommand',
                 ];
 
                 foreach ($methods as $method) {

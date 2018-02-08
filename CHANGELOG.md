@@ -17,7 +17,6 @@
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
 - Update silverstripe recipe to support silverstripe 4
 
-
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
 

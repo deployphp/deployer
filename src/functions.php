@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\RuntimeException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -246,7 +247,11 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    set('working_path', parse($path));
+    try {
+        set('working_path', parse($path));
+    } catch (RuntimeException $e) {
+        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
+    }
 }
 
 /**
@@ -275,8 +280,6 @@ function within($path, $callback)
  */
 function run($command, $options = [])
 {
-    $client = Deployer::get()->sshClient;
-    $process = Deployer::get()->processRunner;
     $host = Context::get()->getHost();
     $hostname = $host->getHostname();
 
@@ -294,8 +297,10 @@ function run($command, $options = [])
     }
 
     if ($host instanceof Localhost) {
+        $process = Deployer::get()->processRunner;
         $output = $process->run($hostname, $command, $options);
     } else {
+        $client = Deployer::get()->sshClient;
         $output = $client->run($host, $command, $options);
     }
 
@@ -372,8 +377,8 @@ function on($hosts, callable $callback)
 
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
+            Context::push(new Context($host, $input, $output));
             try {
-                Context::push(new Context($host, $input, $output));
                 $callback($host);
             } finally {
                 Context::pop();

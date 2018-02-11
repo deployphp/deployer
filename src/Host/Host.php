@@ -48,7 +48,7 @@ class Host
         }
 
         if ($this->identityFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile);
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
         }
 
         if ($this->forwardAgent) {
@@ -72,7 +72,7 @@ class Host
      */
     public function getHostname()
     {
-        return $this->hostname;
+        return $this->config->parse($this->hostname);
     }
 
     /**
@@ -80,7 +80,7 @@ class Host
      */
     public function getRealHostname()
     {
-        return $this->realHostname;
+        return $this->config->parse($this->realHostname);
     }
 
     /**
@@ -106,7 +106,7 @@ class Host
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->config->parse($this->user);
     }
 
     /**
@@ -160,7 +160,7 @@ class Host
      */
     public function getIdentityFile()
     {
-        return $this->identityFile;
+        return $this->config->parse($this->identityFile);
     }
 
     /**

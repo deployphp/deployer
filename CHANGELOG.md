@@ -15,6 +15,7 @@
 - Throw meaningfull exception on errors in cd() [#1480]
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
 - Update silverstripe recipe to support silverstripe 4
+- Don't create shared files automatically when they do not exist yet [#1540]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)

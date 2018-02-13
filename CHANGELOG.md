@@ -6,6 +6,7 @@
 ### Added
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
+- Added command to show current deployed versions [#1543]
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]

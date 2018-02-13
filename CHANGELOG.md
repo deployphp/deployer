@@ -10,6 +10,7 @@
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
 - Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
+- Fixed shared dir/file paths containing variables (`{{variable}}`)
 
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]

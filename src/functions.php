@@ -171,40 +171,71 @@ function task($name, $body = null)
  * Call that task before specified task runs.
  *
  * @param string $it The task before $that should be run.
- * @param string $that The task to be run.
+ * @param string|callable $that  Callable task or the task to be run.
  */
 function before($it, $that)
 {
     $deployer = Deployer::get();
     $beforeTask = $deployer->tasks->get($it);
 
-    $beforeTask->addBefore($that);
+    if (is_callable($that)) {
+        $taskName = 'before_' . $it;
+        $task = new T($taskName, $that);
+        $deployer->tasks->set($taskName, $task);
+    } elseif (is_string($that)) {
+        $taskName = $that;
+    } else {
+        throw new \InvalidArgumentException('Task should be an closure or other task.');
+    }
+
+    $beforeTask->addBefore($taskName);
 }
 
 /**
  * Call that task after specified task runs.
  *
  * @param string $it The task after $that should be run.
- * @param string $that The task to be run.
+ * @param string|callable $that  Callable task or the task to be run.
  */
 function after($it, $that)
 {
     $deployer = Deployer::get();
     $afterTask = $deployer->tasks->get($it);
 
-    $afterTask->addAfter($that);
+    if (is_callable($that)) {
+        $taskName = 'after_' . $it;
+        $task = new T($taskName, $that);
+        $deployer->tasks->set($taskName, $task);
+    } elseif (is_string($that)) {
+        $taskName = $that;
+    } else {
+        throw new \InvalidArgumentException('Task should be an closure or other task.');
+    }
+
+    $afterTask->addAfter($taskName);
 }
 
 /**
  * Setup which task run on failure of first.
  *
  * @param string $it The task which need to fail so $that should be run.
- * @param string $that The task to be run.
+ * @param string|callable $that  Callable task or the task to be run.
  */
 function fail($it, $that)
 {
     $deployer = Deployer::get();
-    $deployer->fail->set($it, $that);
+
+    if (is_callable($that)) {
+        $taskName = 'after_' . $it;
+        $task = new T($taskName, $that);
+        $deployer->tasks->set($taskName, $task);
+    } elseif (is_string($that)) {
+        $taskName = $that;
+    } else {
+        throw new \InvalidArgumentException('Task should be an closure or other task.');
+    }
+
+    $deployer->fail->set($it, $taskName);
 }
 
 /**

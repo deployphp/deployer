@@ -134,7 +134,8 @@ class FunctionsTest extends TestCase
     public function testBeforeCallable()
     {
         task('main', 'pwd');
-        before('main', function () {});
+        before('main', function () {
+        });
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
         self::assertEquals(['before_main', 'main'], $names);
@@ -153,7 +154,8 @@ class FunctionsTest extends TestCase
     public function testAfterCallable()
     {
         task('main', 'pwd');
-        after('main', function () {});
+        after('main', function () {
+        });
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
         self::assertEquals(['main', 'after_main'], $names);

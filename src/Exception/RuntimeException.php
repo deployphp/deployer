@@ -47,7 +47,7 @@ class RuntimeException extends Exception
 
         $message .= sprintf(
             "\n\n================\n%s",
-            $errorOutput
+            trim($errorOutput) ? $errorOutput : $output
         );
 
         parent::__construct($message, $exitCode);

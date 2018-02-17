@@ -185,7 +185,7 @@ function before($it, $that)
     } elseif (is_string($that)) {
         $taskName = $that;
     } else {
-        throw new \InvalidArgumentException('Task should be an closure or other task.');
+        throw new \InvalidArgumentException('Task should be an closure or other task name.');
     }
 
     $beforeTask->addBefore($taskName);
@@ -209,7 +209,7 @@ function after($it, $that)
     } elseif (is_string($that)) {
         $taskName = $that;
     } else {
-        throw new \InvalidArgumentException('Task should be an closure or other task.');
+        throw new \InvalidArgumentException('Task should be an closure or other task name.');
     }
 
     $afterTask->addAfter($taskName);
@@ -232,7 +232,7 @@ function fail($it, $that)
     } elseif (is_string($that)) {
         $taskName = $that;
     } else {
-        throw new \InvalidArgumentException('Task should be an closure or other task.');
+        throw new \InvalidArgumentException('Task should be an closure or other task name.');
     }
 
     $deployer->fail->set($it, $taskName);

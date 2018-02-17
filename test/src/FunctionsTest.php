@@ -131,14 +131,26 @@ class FunctionsTest extends TestCase
         self::assertEquals(['before', 'main'], $names);
     }
 
-    public function testBeforeCallable()
+    public function testCallableBefore()
     {
         task('main', 'pwd');
         before('main', function () {
         });
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        self::assertEquals(['before_main', 'main'], $names);
+        self::assertEquals(['before_main_1', 'main'], $names);
+    }
+
+    public function testMultipleCallableBefore()
+    {
+        task('main', 'pwd');
+        before('main', function () {
+        });
+        before('main', function () {
+        });
+
+        $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
+        self::assertEquals(['before_main_2', 'before_main_1', 'main'], $names);
     }
 
     public function testAfter()
@@ -151,14 +163,26 @@ class FunctionsTest extends TestCase
         self::assertEquals(['main', 'after'], $names);
     }
 
-    public function testAfterCallable()
+    public function testCallableAfter()
     {
         task('main', 'pwd');
         after('main', function () {
         });
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        self::assertEquals(['main', 'after_main'], $names);
+        self::assertEquals(['main', 'after_main_1'], $names);
+    }
+
+    public function testMultipleCallableAfter()
+    {
+        task('main', 'pwd');
+        after('main', function () {
+        });
+        after('main', function () {
+        });
+
+        $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
+        self::assertEquals(['main', 'after_main_1', 'after_main_2'], $names);
     }
 
     public function testRunLocally()

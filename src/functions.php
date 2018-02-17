@@ -179,7 +179,7 @@ function before($it, $that)
     $beforeTask = $deployer->tasks->get($it);
 
     if (is_callable($that)) {
-        $taskName = 'before_' . $it;
+        $taskName = 'before_' . $it . '_' . (count($beforeTask->getBefore()) + 1);
         $task = new T($taskName, $that);
         $deployer->tasks->set($taskName, $task);
     } elseif (is_string($that)) {
@@ -203,7 +203,7 @@ function after($it, $that)
     $afterTask = $deployer->tasks->get($it);
 
     if (is_callable($that)) {
-        $taskName = 'after_' . $it;
+        $taskName = 'after_' . $it . '_' . (count($afterTask->getAfter()) + 1);
         $task = new T($taskName, $that);
         $deployer->tasks->set($taskName, $task);
     } elseif (is_string($that)) {
@@ -226,7 +226,7 @@ function fail($it, $that)
     $deployer = Deployer::get();
 
     if (is_callable($that)) {
-        $taskName = 'after_' . $it;
+        $taskName = 'fail_' . $it;
         $task = new T($taskName, $that);
         $deployer->tasks->set($taskName, $task);
     } elseif (is_string($that)) {

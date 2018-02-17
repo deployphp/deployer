@@ -16,6 +16,7 @@
 - Throw meaningfull exception on errors in cd() [#1480]
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
 - Update silverstripe recipe to support silverstripe 4
+- Show standard output in exceptions when error output is empty [#1554]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -349,7 +350,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1554]: https://github.com/deployphp/deployer/pull/1554
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
 [#1481]: https://github.com/deployphp/deployer/issues/1481

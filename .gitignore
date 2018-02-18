@@ -1,4 +1,5 @@
 /vendor/
+composer.lock
 /test/fixture/recipe/tmp/
 .php_cs.cache
 *.phar

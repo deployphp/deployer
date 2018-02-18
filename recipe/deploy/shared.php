@@ -30,7 +30,7 @@ task('deploy:shared', function () {
 
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname($dir));
+                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname(parse($dir)));
             }
         }
 
@@ -46,7 +46,7 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_files') as $file) {
-        $dirname = dirname($file);
+        $dirname = dirname(parse($file));
 
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . $dirname);

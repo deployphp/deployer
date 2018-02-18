@@ -12,12 +12,13 @@
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
 - Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
+- Fixed shared dir/file paths containing variables (`{{variable}}`)
 
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
 - Update silverstripe recipe to support silverstripe 4
-
+- Show standard output in exceptions when error output is empty [#1554]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -351,6 +352,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1554]: https://github.com/deployphp/deployer/pull/1554
 [#1527]: https://github.com/deployphp/deployer/issues/1527
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513

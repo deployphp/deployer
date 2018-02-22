@@ -57,7 +57,10 @@ class Client
         $this->pop->command($hostname, $command);
 
         $sshArguments = $host->getSshArguments();
-        $become = $host->has('become') ? 'sudo -u ' . $host->get('become') : '';
+
+        // Request that the security policy set the HOME environment variable to the home directory specified by the target user's password database entry.
+        $becomeSetHome = $host->isBecomeSetHome() ? '-H' : '';
+        $become = $host->has('become') ? 'sudo ' . $becomeSetHome . ' -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.

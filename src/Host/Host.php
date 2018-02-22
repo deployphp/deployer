@@ -24,6 +24,7 @@ class Host
     private $identityFile;
     private $forwardAgent = true;
     private $multiplexing = null;
+    private $becomeSetHome = true;
     private $sshArguments;
 
     /**
@@ -209,31 +210,49 @@ class Host
         return $this;
     }
 
+    /**
+     * @return bool
+     */
+    public function isBecomeSetHome()
+    {
+        return $this->becomeSetHome;
+    }
+
+    /**
+     * @param bool $becomeSetHome
+     * @return $this
+     */
+    public function becomeSetHome(bool $becomeSetHome = true)
+    {
+        $this->becomeSetHome = $becomeSetHome;
+        return $this;
+    }
+
     public function getSshArguments()
     {
         $this->initOptions();
         return $this->sshArguments;
     }
 
-    public function sshOptions(array $options) : Host
+    public function sshOptions(array $options): Host
     {
         $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
-    public function sshFlags(array $flags) : Host
+    public function sshFlags(array $flags): Host
     {
         $this->sshArguments = $this->sshArguments->withFlags($flags);
         return $this;
     }
 
-    public function addSshOption(string $option, $value) : Host
+    public function addSshOption(string $option, $value): Host
     {
         $this->sshArguments = $this->sshArguments->withOption($option, $value);
         return $this;
     }
 
-    public function addSshFlag(string $flag, string $value = null) : Host
+    public function addSshFlag(string $flag, string $value = null): Host
     {
         $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
         return $this;

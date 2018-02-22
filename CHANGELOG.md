@@ -6,6 +6,7 @@
 ### Added
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
+- Added becomeSetHome method to add -H flag when using become [#1556]
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
@@ -350,6 +351,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1556]: https://github.com/deployphp/deployer/pull/1556
 [#1554]: https://github.com/deployphp/deployer/pull/1554
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513

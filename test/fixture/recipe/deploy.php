@@ -13,6 +13,7 @@ require 'recipe/common.php';
 // Configuration
 
 set('repository', __DIR__ . '/../repository');
+set('branch', null);
 set('http_user', getenv('USER'));
 
 set('media_dir', 'public/media');

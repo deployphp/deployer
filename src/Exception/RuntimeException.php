@@ -20,14 +20,6 @@ class RuntimeException extends Exception
     private $output;
     private $errorOutput;
 
-    /**
-     * RuntimeException constructor.
-     * @param string $hostname
-     * @param int $command
-     * @param $exitCode
-     * @param $output
-     * @param $errorOutput
-     */
     public function __construct($hostname, $command, $exitCode, $output, $errorOutput)
     {
         $this->hostname = $hostname;
@@ -58,41 +50,26 @@ class RuntimeException extends Exception
         return isset(Process::$exitCodes[$exitCode]) ? Process::$exitCodes[$exitCode] : 'Unknown error';
     }
 
-    /**
-     * @return string
-     */
-    public function getHostname(): string
+    public function getHostname()
     {
         return $this->hostname;
     }
 
-    /**
-     * @return int
-     */
-    public function getCommand(): int
+    public function getCommand()
     {
         return $this->command;
     }
 
-    /**
-     * @return \Exception|null
-     */
     public function getExitCode()
     {
         return $this->exitCode;
     }
 
-    /**
-     * @return mixed
-     */
     public function getOutput()
     {
         return $this->output;
     }
 
-    /**
-     * @return mixed
-     */
     public function getErrorOutput()
     {
         return $this->errorOutput;

@@ -6,7 +6,6 @@
 ### Added
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
-- Update symfony package dependencies to ~4.0 [#1559]
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
@@ -19,6 +18,7 @@
 - Update silverstripe recipe to support silverstripe 4
 - Show standard output in exceptions when error output is empty [#1554]
 - Improve readability of command for finding web server user [#1557]
+- Update symfony package dependencies to ~4.0 [#1559]
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)

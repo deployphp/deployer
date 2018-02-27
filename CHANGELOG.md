@@ -6,6 +6,7 @@
 ### Added
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
+- Update symfony package dependencies to ~4.0 [#1559]
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
@@ -351,6 +352,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
 [#1554]: https://github.com/deployphp/deployer/pull/1554
 [#1521]: https://github.com/deployphp/deployer/pull/1521

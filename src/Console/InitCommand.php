@@ -13,6 +13,7 @@ use Deployer\Initializer\Template\CodeIgniterTemplate;
 use Deployer\Initializer\Template\CommonTemplate;
 use Deployer\Initializer\Template\DrupalTemplate;
 use Deployer\Initializer\Template\LaravelTemplate;
+use Deployer\Initializer\Template\SymfonyFlexTemplate;
 use Deployer\Initializer\Template\SymfonyTemplate;
 use Deployer\Initializer\Template\Typo3Template;
 use Deployer\Initializer\Template\Yii2AdvancedAppTemplate;
@@ -162,6 +163,7 @@ class InitCommand extends Command
         $initializer->addTemplate('Common', new CommonTemplate());
         $initializer->addTemplate('Laravel', new LaravelTemplate());
         $initializer->addTemplate('Symfony', new SymfonyTemplate());
+        $initializer->addTemplate('Symfony flex', new SymfonyFlexTemplate());
         $initializer->addTemplate('Yii', new YiiTemplate());
         $initializer->addTemplate('Yii2 Basic App', new Yii2BasicAppTemplate());
         $initializer->addTemplate('Yii2 Advanced App', new Yii2AdvancedAppTemplate());

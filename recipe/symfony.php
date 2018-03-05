@@ -42,9 +42,10 @@ set('env', function () {
     ];
 });
 
-// Adding support for the Symfony3 directory structure
+// Adding support for the Symfony3 and flex directory structure
 set('bin_dir', 'app');
 set('var_dir', 'app');
+set('web_dir', 'web');
 
 // Symfony console bin
 set('bin/console', function () {
@@ -92,7 +93,7 @@ task('deploy:assets', function () {
  * Install assets from public dir of bundles
  */
 task('deploy:assets:install', function () {
-    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/web');
+    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/{{web_dir}}');
 })->desc('Install bundle assets');
 
 

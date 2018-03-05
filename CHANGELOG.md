@@ -1,7 +1,10 @@
 # Changelog
 
 ## master
-[v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
+[v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
+
+## v6.1.0
+[v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
 
 ### Added
 - Added debug:task command to display the order of task execution [#1488]

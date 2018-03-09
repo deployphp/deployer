@@ -13,4 +13,3 @@ metrics:
         - callee:
             selector: '=Deployer\Deployer::__get' # aggregate the costs of all Deployer::__get calls
             argument: { 1: "^" }  # but create separate nodes by the first argument value
-                        

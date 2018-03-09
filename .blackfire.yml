@@ -1,0 +1,16 @@
+metrics:
+  deployer.process_runner: # metric name
+    label: "ProcessRunner processes"
+    matching_calls:
+      php:
+        - callee:
+            selector: '=Deployer\Utility\ProcessRunner::run' # aggregate the costs of all ProcessRunner::run calls
+            argument: { 2: "^" }  # but create separate nodes by the second argument value
+  deployer.di_container: # metric name
+    label: "DI Container magic calls"
+    matching_calls:
+      php:
+        - callee:
+            selector: '=Deployer\Deployer::__get' # aggregate the costs of all Deployer::__get calls
+            argument: { 1: "^" }  # but create separate nodes by the first argument value
+                        

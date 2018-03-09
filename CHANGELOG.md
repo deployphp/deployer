@@ -3,6 +3,9 @@
 ## master
 [v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
+### Added
+- Support blackfire captured metrics for subprocesses and DI calls [#1564]
+
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
 
@@ -358,6 +361,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1564]: https://github.com/deployphp/deployer/pull/1564
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
 [#1554]: https://github.com/deployphp/deployer/pull/1554

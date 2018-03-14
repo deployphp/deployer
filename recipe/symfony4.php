@@ -9,13 +9,28 @@ namespace Deployer;
 
 require_once 'recipe/common.php';
 
-set('shared_dirs', ['var/log']);
+set('shared_dirs', ['var/log', 'var/sessions']);
 set('shared_files', ['.env']);
 set('writable_dirs', ['var']);
 
 set('bin/console', function () {
     return parse('{{bin/php}} {{release_path}}/bin/console --no-interaction');
 });
+
+
+task('deploy:assetic:dump', function () {
+    if (get('dump_assets')) {
+        run('{{bin/php}} {{bin/console}} assetic:dump {{console_options}}');
+    }
+})->desc('Dump assets');
+
+task('deploy:cache:clear', function () {
+    run('{{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
+})->desc('Clear cache');
+
+task('deploy:cache:warmup', function () {
+    run('{{bin/php}} {{bin/console}} cache:warmup {{console_options}}');
+})->desc('Warm up cache');
 
 desc('Migrate database');
 task('database:migrate', function () {
@@ -32,6 +47,9 @@ task('deploy', [
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',
+    'deploy:assetic:dump',
+    'deploy:cache:clear',
+    'deploy:cache:warmup',
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',

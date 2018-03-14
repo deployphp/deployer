@@ -17,13 +17,6 @@ set('bin/console', function () {
     return parse('{{bin/php}} {{release_path}}/bin/console --no-interaction');
 });
 
-
-task('deploy:assetic:dump', function () {
-    if (get('dump_assets')) {
-        run('{{bin/php}} {{bin/console}} assetic:dump {{console_options}}');
-    }
-})->desc('Dump assets');
-
 task('deploy:cache:clear', function () {
     run('{{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
 })->desc('Clear cache');
@@ -47,7 +40,6 @@ task('deploy', [
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',
-    'deploy:assetic:dump',
     'deploy:cache:clear',
     'deploy:cache:warmup',
     'deploy:symlink',

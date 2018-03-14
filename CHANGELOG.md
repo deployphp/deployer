@@ -11,6 +11,7 @@
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
 - Added Symfony 4 recipe [#1437]
+- Added missing var/sessions folder and cache:warmup to standard symfony4 workflow
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]

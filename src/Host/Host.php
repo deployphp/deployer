@@ -24,7 +24,6 @@ class Host
     private $identityFile;
     private $forwardAgent = true;
     private $multiplexing = null;
-    private $becomeSetHome = true;
     private $sshArguments;
 
     /**
@@ -207,24 +206,6 @@ class Host
     public function multiplexing(bool $multiplexing = true)
     {
         $this->multiplexing = $multiplexing;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isBecomeSetHome()
-    {
-        return $this->becomeSetHome;
-    }
-
-    /**
-     * @param bool $becomeSetHome
-     * @return $this
-     */
-    public function becomeSetHome(bool $becomeSetHome = true)
-    {
-        $this->becomeSetHome = $becomeSetHome;
         return $this;
     }
 

@@ -1,13 +1,17 @@
 # Changelog
 
 ## master
-[v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
+[v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
+
+## v6.1.0
+[v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
 
 ### Added
 - Added debug:task command to display the order of task execution [#1488]
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
 - Added default -H flag when using become [#1556]
+- Added Symfony 4 recipe [#1437]
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
@@ -21,6 +25,7 @@
 - Show standard output in exceptions when error output is empty [#1554]
 - Improve readability of command for finding web server user [#1557]
 - Update symfony package dependencies to ~4.0 [#1559]
+
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -368,6 +373,7 @@
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452
+[#1437]: https://github.com/deployphp/deployer/issues/1437
 [#1426]: https://github.com/deployphp/deployer/pull/1426
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403

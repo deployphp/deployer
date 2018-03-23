@@ -12,6 +12,9 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+set('maintenance_message', '');
+set('retry_after', null);
+
 // Laravel shared dirs
 set('shared_dirs', [
     'storage',
@@ -59,11 +62,12 @@ task('artisan:down', function () {
     $minVersion = 5.3;
     $currentVersion = get('laravel_version');
     $output = '';
+   
     if (version_compare($currentVersion, $minVersion, '<')) {
         $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi");
     } else {
-        $messageOption = ask("Which maintenance message do you want to display?", null);
-        $retryOption = ask("What value should the Retry-After HTTP header contain?", null);
+        $messageOption = (get('maintenance_message') && !empty(get('maintenance_message'))) ? get('maintenance_message') : ask("Which maintenance message do you want to display?", null);
+        $retryOption = (get('retry_after') && !empty(get('retry_after'))) ? get('retry_after') : ask("What value should the Retry-After HTTP header contain?", null);
 
         $message = $retry = '';
         if ($messageOption != "" && $messageOption != null) {
@@ -72,6 +76,7 @@ task('artisan:down', function () {
         if ($retryOption != "" && $retryOption != null) {
             $retry = '--retry=' .$retryOption;
         }
+     
         $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down $message $retry; fi");
     }
 

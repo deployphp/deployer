@@ -69,7 +69,7 @@ task('artisan:down', function () {
         if ($messageOption != "" && $messageOption != null) {
             $message = "--message=\"$messageOption\"";
         }
-        if ($retryOption != "" && $retryOption != null){
+        if ($retryOption != "" && $retryOption != null) {
             $retry = '--retry=' .$retryOption;
         }
         $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down $message $retry; fi");

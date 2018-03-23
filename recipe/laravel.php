@@ -62,7 +62,6 @@ task('artisan:down', function () {
     $minVersion = 5.3;
     $currentVersion = get('laravel_version');
     $output = '';
-   
     if (version_compare($currentVersion, $minVersion, '<')) {
         $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi");
     } else {
@@ -76,7 +75,6 @@ task('artisan:down', function () {
         if ($retryOption != "" && $retryOption != null) {
             $retry = '--retry=' .$retryOption;
         }
-     
         $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down $message $retry; fi");
     }
 

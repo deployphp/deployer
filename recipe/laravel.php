@@ -56,7 +56,25 @@ task('artisan:up', function () {
 
 desc('Enable maintenance mode');
 task('artisan:down', function () {
-    $output = run('if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi');
+    $minVersion = 5.3;
+    $currentVersion = get('laravel_version');
+    $output = '';
+    if (version_compare($currentVersion, $minVersion, '<')) {
+        $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down; fi");
+    } else {
+        $messageOption = ask("Which maintenance message do you want to display?", null);
+        $retryOption = ask("What value should the Retry-After HTTP header contain?", null);
+
+        $message = $retry = '';
+        if ($messageOption != "" && $messageOption != null) {
+            $message = "--message=\"$messageOption\"";
+        }
+        if ($retryOption != "" && $retryOption != null){
+            $retry = '--retry=' .$retryOption;
+        }
+        $output = run("if [ -f {{deploy_path}}/current/artisan ]; then {{bin/php}} {{deploy_path}}/current/artisan down $message $retry; fi");
+    }
+
     writeln('<info>' . $output . '</info>');
 });
 

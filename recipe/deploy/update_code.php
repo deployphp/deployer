@@ -39,8 +39,9 @@ set('git_cache', function () {
     if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
         $version = $regs[1];
     } else {
-        $version = "1.0.0";
+        $version = '1.0.0';
     }
+
     return version_compare($version, '2.3', '>=');
 });
 
@@ -53,7 +54,8 @@ task('deploy:update_code', function () {
     $recursive = get('git_recursive', true) ? '--recursive' : '';
     $depth = $gitCache ? '' : '--depth 1';
     $options = [
-        'tty' => get('git_tty', false),
+        'tty'     => get('git_tty', false),
+        'timeout' => get('git_timeout', null),
     ];
 
     $at = '';

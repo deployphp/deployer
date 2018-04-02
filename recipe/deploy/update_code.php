@@ -55,7 +55,7 @@ task('deploy:update_code', function () {
     $depth = $gitCache ? '' : '--depth 1';
     $options = [
         'tty'     => get('git_tty', false),
-        'timeout' => get('git_timeout', 600),
+        'timeout' => get('git_timeout', 0),
     ];
 
     $at = '';

@@ -24,6 +24,7 @@ class CommonTemplate extends Template
         $stats = $params['allow_anonymous_stats']
             ? ''
             : "set('allow_anonymous_stats', false);";
+
         return <<<PHP
 <?php
 namespace Deployer;
@@ -38,6 +39,9 @@ set('repository', '{$params['repository']}');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
+
+// [Optional] Set SSH timeout for git clone. Default value is 600.
+set('git_timeout', null); 
 
 // Shared files/dirs between deploys 
 set('shared_files', []);

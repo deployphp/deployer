@@ -4,7 +4,7 @@
 [v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
 ### Changed
-- Set default ssh timeout to `null` for cloning git repository in `update_code`.
+- Set default ssh timeout to `0` for cloning git repository in `update_code`.
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)

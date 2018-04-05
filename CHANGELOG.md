@@ -16,7 +16,7 @@
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
 - Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
 - Fixed shared dir/file paths containing variables (`{{variable}}`)
-- Fixed that long http user name is not detected correctly [#1579]
+- Fixed that long http user name is not detected correctly [#1580]
 
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]
@@ -359,7 +359,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-[#1579]: https://github.com/deployphp/deployer/pull/1580
+[#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
 [#1554]: https://github.com/deployphp/deployer/pull/1554

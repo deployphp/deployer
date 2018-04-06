@@ -24,7 +24,7 @@ task('deploy:writable', function () {
 
     if ($httpUser === false && $mode !== 'chmod') {
         // Detect http user in process list.
-        $httpUser = run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d ' ' -f2");
+        $httpUser = run("ps axo comm,user | grep -v root | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | head -1 | awk '{print $2}'");
 
         if (empty($httpUser)) {
             throw new \RuntimeException(

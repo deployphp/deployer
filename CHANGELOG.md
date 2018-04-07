@@ -16,6 +16,7 @@
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
 - Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
 - Fixed shared dir/file paths containing variables (`{{variable}}`)
+- Fixed release error if `cleanup_use_sudo` is true [#1235] 
 
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]
@@ -394,6 +395,7 @@
 [#1251]: https://github.com/deployphp/deployer/pull/1251
 [#1246]: https://github.com/deployphp/deployer/pull/1246
 [#1236]: https://github.com/deployphp/deployer/issues/1236
+[#1235]: https://github.com/deployphp/deployer/issues/1235
 [#1227]: https://github.com/deployphp/deployer/pull/1227
 [#1226]: https://github.com/deployphp/deployer/issues/1226
 [#1218]: https://github.com/deployphp/deployer/issues/1218

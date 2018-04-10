@@ -84,7 +84,7 @@ task('deploy:writable', function () {
                     }
                 }
             } else {
-                throw new \RuntimeException("Cant't set writable dirs with ACL.");
+                throw new \RuntimeException("Can't set writable dirs with ACL.");
             }
         } else {
             throw new \RuntimeException("Unknown writable_mode `$mode`.");

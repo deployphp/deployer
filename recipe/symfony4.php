@@ -11,7 +11,7 @@ require_once 'recipe/common.php';
 
 set('shared_dirs', ['var/log']);
 set('shared_files', ['.env']);
-set('writable_dirs', ['var']);
+set('writable_dirs', ['var/cache', 'var/log', 'var/sessions']);
 
 set('bin/console', function () {
     return parse('{{bin/php}} {{release_path}}/bin/console --no-interaction');

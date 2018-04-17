@@ -3,6 +3,9 @@
 ## master
 [v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
+### Fixed
+- Fixed shared recipe bug described in [#1593] shared ignores changes pulled from git in release shared folders
+
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
 

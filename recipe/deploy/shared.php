@@ -27,15 +27,15 @@ task('deploy:shared', function () {
         if (!test("[ -d $sharedPath/$dir ]")) {
             // Create shared dir if it does not exist.
             run("mkdir -p $sharedPath/$dir");
-
-            // If release contains shared dir, copy that dir from release to shared.
-            if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname(parse($dir)));
-            }
         }
 
-        // Remove from source.
-        run("rm -rf {{release_path}}/$dir");
+        // If release contains shared dir, copy that dir from release to shared and remove it from source.
+        if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
+            run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname(parse($dir)));
+
+            // Remove from source.
+            run("rm -rf {{release_path}}/$dir");
+        }
 
         // Create path to shared dir in release dir if it does not exist.
         // Symlink will not create the path and will fail otherwise.

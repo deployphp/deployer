@@ -1,10 +1,10 @@
 # Changelog
 
 ## master
-[v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
 - Make used shell configurable via `shellCommand` [#1536]
 
 ### Fixed
@@ -375,6 +375,7 @@
 [#1536]: https://github.com/deployphp/deployer/pull/1536
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
+[#1508]: https://github.com/deployphp/deployer/issues/1508
 [#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1480]: https://github.com/deployphp/deployer/issues/1480

@@ -63,8 +63,10 @@ class FileLoader
                 }
             }
 
-            foreach ($config as $name => $value) {
-                $host->set($name, $value);
+            if (is_array($config)) {
+                foreach ($config as $name => $value) {
+                    $host->set($name, $value);
+                }
             }
 
             $this->hosts[$hostname] = $host;

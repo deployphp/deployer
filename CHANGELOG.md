@@ -3,8 +3,11 @@
 ## master
 [v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
-### Fixed
+### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]
+
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
 
 
 ## v6.1.0
@@ -363,7 +366,7 @@
 - Fixed remove of shared dir on first deploy
 
 
-
+[#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1575]: https://github.com/deployphp/deployer/pull/1575
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557

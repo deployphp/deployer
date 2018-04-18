@@ -13,14 +13,19 @@ require 'recipe/common.php';
 // Configuration
 
 set('repository', __DIR__ . '/../repository');
+set('branch', null);
 set('http_user', getenv('USER'));
 
+set('media_dir', 'public/media');
+set('parameters.yml', 'app/config/parameters.yml');
+
 set('shared_files', [
-    'app/config/parameters.yml',
+    '{{parameters.yml}}',
 ]);
 
 set('shared_dirs', [
     'app/logs',
+    '{{media_dir}}',
 ]);
 
 set('writable_dirs', [

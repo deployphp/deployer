@@ -118,8 +118,8 @@ class InitCommand extends Command
             $io->text([
                 'Contribute to the Deployer Development',
                 '',
-                'In order to help development and improve Deployer features in,',
-                'Deployer has a setting for collection of usage data. This function',
+                'In order to help development and improve the features in Deployer,',
+                'Deployer has a setting for usage data collection. This function',
                 'collects anonymous usage data and sends it to Deployer. The data is',
                 'used in Deployer development to get reliable statistics on which',
                 'features are used (or not used). The information is not traceable',
@@ -136,7 +136,7 @@ class InitCommand extends Command
                 "    <fg=white>set(<fg=cyan>'allow_anonymous_stats'</fg=cyan>, <fg=magenta;options=bold>true</fg=magenta;options=bold>);</fg=white>",
                 '',
                 'This function will not affect the performance of Deployer as',
-                'the data is insignificant and transmitted in separate process.',
+                'the data is insignificant and transmitted in a separate process.',
             ]);
 
             $params['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] = $io->confirm('Do you confirm?');

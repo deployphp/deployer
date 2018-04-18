@@ -24,7 +24,7 @@ task('deploy:writable', function () {
 
     if ($httpUser === false && $mode !== 'chmod') {
         // Detect http user in process list.
-        $httpUser = run("ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\\  -f1");
+        $httpUser = run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | awk '{print $2}'");
 
         if (empty($httpUser)) {
             throw new \RuntimeException(
@@ -84,7 +84,7 @@ task('deploy:writable', function () {
                     }
                 }
             } else {
-                throw new \RuntimeException("Cant't set writable dirs with ACL.");
+                throw new \RuntimeException("Can't set writable dirs with ACL.");
             }
         } else {
             throw new \RuntimeException("Unknown writable_mode `$mode`.");

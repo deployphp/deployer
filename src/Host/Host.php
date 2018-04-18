@@ -25,6 +25,7 @@ class Host
     private $forwardAgent = true;
     private $multiplexing = null;
     private $sshArguments;
+    private $shellCommand = 'bash -s';
 
     /**
      * @param string $hostname
@@ -236,6 +237,21 @@ class Host
     public function addSshFlag(string $flag, string $value = null) : Host
     {
         $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
+        return $this;
+    }
+
+    public function getShellCommand() : string
+    {
+        return $this->shellCommand;
+    }
+
+    /**
+     * @param string $shellCommand
+     * @return $this
+     */
+    public function shellCommand(string $shellCommand)
+    {
+        $this->shellCommand = $shellCommand;
         return $this;
     }
 

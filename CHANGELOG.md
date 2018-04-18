@@ -1,21 +1,38 @@
 # Changelog
 
 ## master
-[v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
-- Fixed parsing host variables [#1508]
 
 ### Added
+- Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
+- Make used shell configurable via `shellCommand` [#1536]
+
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
+
+
+## v6.1.0
+[v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
+
+### Added
+- Added debug:task command to display the order of task execution [#1488]
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
+- Added Symfony 4 recipe [#1437]
 
 ### Fixed
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
 - Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
+- Fixed shared dir/file paths containing variables (`{{variable}}`)
 
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
 - Update silverstripe recipe to support silverstripe 4
+- Show standard output in exceptions when error output is empty [#1554]
+- Improve readability of command for finding web server user [#1557]
+- Update symfony package dependencies to ~4.0 [#1559]
+
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -350,9 +367,16 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1580]: https://github.com/deployphp/deployer/pull/1580
+[#1575]: https://github.com/deployphp/deployer/pull/1575
+[#1559]: https://github.com/deployphp/deployer/pull/1559
+[#1557]: https://github.com/deployphp/deployer/pull/1557
+[#1554]: https://github.com/deployphp/deployer/pull/1554
+[#1536]: https://github.com/deployphp/deployer/pull/1536
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
 [#1508]: https://github.com/deployphp/deployer/issues/1508
+[#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1480]: https://github.com/deployphp/deployer/issues/1480
 [#1476]: https://github.com/deployphp/deployer/pull/1476
@@ -360,6 +384,7 @@
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452
+[#1437]: https://github.com/deployphp/deployer/issues/1437
 [#1426]: https://github.com/deployphp/deployer/pull/1426
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403

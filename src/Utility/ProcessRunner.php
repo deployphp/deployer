@@ -8,6 +8,7 @@
 namespace Deployer\Utility;
 
 use Deployer\Deployer;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
 class ProcessRunner
@@ -22,6 +23,17 @@ class ProcessRunner
         $this->pop = $pop;
     }
 
+    /**
+     * Runs a command, consider deployer global configs (timeout,...)
+     *
+     * @param string $hostname
+     * @param string $command
+     * @param array $config
+     *
+     * @return string
+     *
+     * @throws ProcessFailedException When the process does not return a 0 exit code.
+     */
     public function run($hostname, string $command, array $config = [])
     {
         $defaults = [

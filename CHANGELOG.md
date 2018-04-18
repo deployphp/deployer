@@ -5,6 +5,7 @@
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]
+- Make used shell configurable via `shellCommand` [#1536]
 
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]
@@ -371,6 +372,7 @@
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
 [#1554]: https://github.com/deployphp/deployer/pull/1554
+[#1536]: https://github.com/deployphp/deployer/pull/1536
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
 [#1488]: https://github.com/deployphp/deployer/issues/1488

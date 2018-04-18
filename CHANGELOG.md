@@ -9,6 +9,7 @@
 
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]
+- Fixed missing `var/sessions` in Symfony 4 shared_dirs
 
 
 ## v6.1.0

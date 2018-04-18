@@ -216,25 +216,25 @@ class Host
         return $this->sshArguments;
     }
 
-    public function sshOptions(array $options) : Host
+    public function sshOptions(array $options): Host
     {
         $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
-    public function sshFlags(array $flags) : Host
+    public function sshFlags(array $flags): Host
     {
         $this->sshArguments = $this->sshArguments->withFlags($flags);
         return $this;
     }
 
-    public function addSshOption(string $option, $value) : Host
+    public function addSshOption(string $option, $value): Host
     {
         $this->sshArguments = $this->sshArguments->withOption($option, $value);
         return $this;
     }
 
-    public function addSshFlag(string $flag, string $value = null) : Host
+    public function addSshFlag(string $flag, string $value = null): Host
     {
         $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
         return $this;

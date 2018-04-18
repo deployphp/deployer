@@ -19,6 +19,7 @@
 - Added debug:task command to display the order of task execution [#1488]
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
+- Added default -H flag when using become [#1556]
 - Added Symfony 4 recipe [#1437]
 
 ### Fixed
@@ -372,6 +373,7 @@
 [#1575]: https://github.com/deployphp/deployer/pull/1575
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
+[#1556]: https://github.com/deployphp/deployer/pull/1556
 [#1554]: https://github.com/deployphp/deployer/pull/1554
 [#1536]: https://github.com/deployphp/deployer/pull/1536
 [#1521]: https://github.com/deployphp/deployer/pull/1521

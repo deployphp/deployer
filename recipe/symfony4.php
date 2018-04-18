@@ -22,6 +22,16 @@ task('database:migrate', function () {
     run('{{bin/console}} doctrine:migrations:migrate --allow-no-migration');
 });
 
+desc('Clear cache');
+task('deploy:cache:clear', function () {
+    run('{{bin/console}} cache:clear --no-warmup');
+});
+
+desc('Warm up cache');
+task('deploy:cache:warmup', function () {
+    run('{{bin/console}} cache:warmup');
+});
+
 desc('Deploy project');
 task('deploy', [
     'deploy:info',
@@ -32,6 +42,8 @@ task('deploy', [
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',
+    'deploy:cache:clear',
+    'deploy:cache:warmup',
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',

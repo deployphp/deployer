@@ -3,6 +3,13 @@
 ## master
 [v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
+### Added
+- Added cache clear/warmup task for symfony4 recipe [#1575]
+
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
+
+
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
 
@@ -16,7 +23,6 @@
 - Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
 - Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
 - Fixed shared dir/file paths containing variables (`{{variable}}`)
-- Fixed that long http user name is not detected correctly [#1580]
 
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]
@@ -359,7 +365,9 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+
 [#1580]: https://github.com/deployphp/deployer/pull/1580
+[#1575]: https://github.com/deployphp/deployer/pull/1575
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
 [#1554]: https://github.com/deployphp/deployer/pull/1554

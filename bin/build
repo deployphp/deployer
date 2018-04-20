@@ -34,24 +34,19 @@ $phar->setSignatureAlgorithm(\Phar::SHA1);
 
 $phar->startBuffering();
 
-$finder = new Symfony\Component\Finder\Finder();
-$finder->files()
-    ->ignoreVCS(true)
-    ->name('*.php')
-    ->name('*.json')
-    ->name('*.exe')
-    ->exclude('phpunit')
-    ->exclude('Tests')
-    ->exclude('test')
-    ->exclude('tests')
-    ->exclude('phpspec')
-    ->in(ROOT);
+$iterator = new RecursiveDirectoryIterator(ROOT, FilesystemIterator::SKIP_DOTS);
+$iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
+    return !in_array($fileInfo->getBasename(), ['.git', 'Tests', 'test'], true);
+});
+$iterator = new RecursiveIteratorIterator($iterator);
+$iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
+   return in_array($fileInfo->getExtension(), ['php', 'exe'], true);
+});
 
-foreach ($finder as $fileInfo) {
+foreach ($iterator as $fileInfo) {
     $file = str_replace(ROOT, '', $fileInfo->getRealPath());
 
     echo "Add file: " . $file . "\n";
-
     $phar->addFile($fileInfo->getRealPath(), $file);
 }
 

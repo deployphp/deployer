@@ -66,8 +66,7 @@ __HALT_COMPILER();
 STUB;
 
 $phar->setStub($stub);
-// Bug #53467. Phar cannot compress large archives. https://bugs.php.net/bug.php?id=53467
-// $phar->compressFiles(Phar::GZ);
+$phar->compressFiles(Phar::GZ);
 $phar->stopBuffering();
 unset($phar);
 

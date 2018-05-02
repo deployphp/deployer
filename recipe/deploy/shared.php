@@ -42,7 +42,9 @@ task('deploy:shared', function () {
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
         // Symlink shared dir to release dir
-        run("{{bin/symlink}} $sharedPath/$dir {{release_path}}/$dir");
+        $sharedDir = rtrim("$sharedPath/$dir", '/');
+        $releaseDir = rtrim("{{release_path}}/$dir", '/');
+        run("{{bin/symlink}} $sharedDir $releaseDir");
     }
 
     foreach (get('shared_files') as $file) {
@@ -68,6 +70,8 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");
+        $sharedFile = rtrim("$sharedPath/$file", '/');
+        $releaseFile = rtrim("{{release_path}}/$file", '/');
+        run("{{bin/symlink}} $sharedFile $releaseFile");
     }
 });

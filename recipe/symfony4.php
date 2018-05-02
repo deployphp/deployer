@@ -9,7 +9,7 @@ namespace Deployer;
 
 require_once 'recipe/common.php';
 
-set('shared_dirs', ['var/log']);
+set('shared_dirs', ['var/log', 'var/sessions']);
 set('shared_files', ['.env']);
 set('writable_dirs', ['var']);
 

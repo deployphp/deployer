@@ -25,6 +25,7 @@ class Host
     private $forwardAgent = true;
     private $multiplexing = null;
     private $sshArguments;
+    private $shellCommand = 'bash -s';
 
     /**
      * @param string $hostname
@@ -48,7 +49,7 @@ class Host
         }
 
         if ($this->identityFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile);
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
         }
 
         if ($this->forwardAgent) {
@@ -72,7 +73,7 @@ class Host
      */
     public function getHostname()
     {
-        return $this->hostname;
+        return $this->config->parse($this->hostname);
     }
 
     /**
@@ -80,7 +81,7 @@ class Host
      */
     public function getRealHostname()
     {
-        return $this->realHostname;
+        return $this->config->parse($this->realHostname);
     }
 
     /**
@@ -106,7 +107,7 @@ class Host
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->config->parse($this->user);
     }
 
     /**
@@ -160,7 +161,7 @@ class Host
      */
     public function getIdentityFile()
     {
-        return $this->identityFile;
+        return $this->config->parse($this->identityFile);
     }
 
     /**
@@ -215,27 +216,42 @@ class Host
         return $this->sshArguments;
     }
 
-    public function sshOptions(array $options) : Host
+    public function sshOptions(array $options): Host
     {
         $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
-    public function sshFlags(array $flags) : Host
+    public function sshFlags(array $flags): Host
     {
         $this->sshArguments = $this->sshArguments->withFlags($flags);
         return $this;
     }
 
-    public function addSshOption(string $option, $value) : Host
+    public function addSshOption(string $option, $value): Host
     {
         $this->sshArguments = $this->sshArguments->withOption($option, $value);
         return $this;
     }
 
-    public function addSshFlag(string $flag, string $value = null) : Host
+    public function addSshFlag(string $flag, string $value = null): Host
     {
         $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
+        return $this;
+    }
+
+    public function getShellCommand() : string
+    {
+        return $this->shellCommand;
+    }
+
+    /**
+     * @param string $shellCommand
+     * @return $this
+     */
+    public function shellCommand(string $shellCommand)
+    {
+        $this->shellCommand = $shellCommand;
         return $this;
     }
 

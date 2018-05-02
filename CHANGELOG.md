@@ -1,14 +1,16 @@
 # Changelog
 
 ## master
-[v6.1.0...master](https://github.com/deployphp/deployer/compare/v6.1.0...master)
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
+- Make used shell configurable via `shellCommand` [#1536]
 
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]
-
+- Fixed missing `var/sessions` in Symfony 4 shared_dirs
+- Fixed warning with host without configuration [#1583]
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
@@ -17,6 +19,7 @@
 - Added debug:task command to display the order of task execution [#1488]
 - Added a description to the autocomplete command [#1472]
 - Added logging of unhandled exceptions into logfile [#1481]
+- Added default -H flag when using become [#1556]
 - Added Symfony 4 recipe [#1437]
 
 ### Fixed
@@ -366,13 +369,17 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1583]: https://github.com/deployphp/deployer/issues/1583]
 [#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1575]: https://github.com/deployphp/deployer/pull/1575
 [#1559]: https://github.com/deployphp/deployer/pull/1559
 [#1557]: https://github.com/deployphp/deployer/pull/1557
+[#1556]: https://github.com/deployphp/deployer/pull/1556
 [#1554]: https://github.com/deployphp/deployer/pull/1554
+[#1536]: https://github.com/deployphp/deployer/pull/1536
 [#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
+[#1508]: https://github.com/deployphp/deployer/issues/1508
 [#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1480]: https://github.com/deployphp/deployer/issues/1480

@@ -3,6 +3,12 @@
 ## master
 [v6.2.0...master](https://github.com/deployphp/deployer/compare/v6.2.0...master)
 
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
+- Fixed missing `var/sessions` in Symfony 4 shared_dirs
+- Fixed warning with host without configuration [#1583]
+- Removed the `magento:enable` task from the Magento 2 recipe since the module states are defined in `app/etc/config.php` and this task overwrote that.
+
 
 ## v6.2.0
 

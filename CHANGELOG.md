@@ -3,6 +3,12 @@
 ## master
 [v6.2.0...master](https://github.com/deployphp/deployer/compare/v6.2.0...master)
 
+### Added
+- Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
+- Make used shell configurable via `shellCommand` [#1536]
+- Added `cleanup_tty` option for `deploy:cleanup`
+
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]
 - Fixed missing `var/sessions` in Symfony 4 shared_dirs

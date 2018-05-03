@@ -23,7 +23,9 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_dirs') as $dir) {
+        var_dump($dir);
         $dir = rtrim($dir, '/');
+        var_dump($dir);
         // Check if shared dir does not exist.
         if (!test("[ -d $sharedPath/$dir ]")) {
             // Create shared dir if it does not exist.

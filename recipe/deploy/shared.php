@@ -47,7 +47,6 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_files') as $file) {
-        $file = rtrim($file, '/');
         $dirname = dirname(parse($file));
 
         // Create dir of shared file

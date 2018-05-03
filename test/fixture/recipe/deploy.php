@@ -19,11 +19,9 @@ set('http_user', getenv('USER'));
 set('media_dir', 'public/media');
 set('dist_dir', 'public/dist/');
 set('parameters.yml', 'app/config/parameters.yml');
-set('config.yml', 'app/config/config.yml');
 
 set('shared_files', [
-    '{{parameters.yml}}',
-    '{{config.yml}}'
+    '{{parameters.yml}}'
 ]);
 
 set('shared_dirs', [

@@ -17,7 +17,6 @@ set('branch', null);
 set('http_user', getenv('USER'));
 
 set('media_dir', 'public/media');
-set('dist_dir', 'public/dist/');
 set('parameters.yml', 'app/config/parameters.yml');
 
 set('shared_files', [
@@ -26,8 +25,8 @@ set('shared_files', [
 
 set('shared_dirs', [
     'app/logs',
-    '{{media_dir}}',
-    '{{dist_dir}}'
+    'public/dist/',
+    '{{media_dir}}'
 ]);
 
 set('writable_dirs', [

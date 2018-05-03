@@ -23,6 +23,7 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_dirs') as $dir) {
+        $dir = rtrim($dir, '/');
         // Check if shared dir does not exist.
         if (!test("[ -d $sharedPath/$dir ]")) {
             // Create shared dir if it does not exist.
@@ -42,12 +43,11 @@ task('deploy:shared', function () {
         run("mkdir -p `dirname {{release_path}}/$dir`");
 
         // Symlink shared dir to release dir
-        $sharedDir = rtrim("$sharedPath/$dir", '/');
-        $releaseDir = rtrim("{{release_path}}/$dir", '/');
-        run("{{bin/symlink}} $sharedDir $releaseDir");
+        run("{{bin/symlink}} $sharedPath/$dir {{release_path}}/$dir");
     }
 
     foreach (get('shared_files') as $file) {
+        $file = rtrim($file, '/');
         $dirname = dirname(parse($file));
 
         // Create dir of shared file
@@ -70,8 +70,6 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        $sharedFile = rtrim("$sharedPath/$file", '/');
-        $releaseFile = rtrim("{{release_path}}/$file", '/');
-        run("{{bin/symlink}} $sharedFile $releaseFile");
+        run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");
     }
 });

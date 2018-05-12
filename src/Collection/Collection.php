@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,12 @@ class Collection implements CollectionInterface, \Countable
     /**
      * @var array
      */
-    private $collection = [];
+    protected $values = [];
+
+    public function __construct(array $collection = [])
+    {
+        $this->values = $collection;
+    }
 
     /**
      * {@inheritdoc}
@@ -20,11 +25,9 @@ class Collection implements CollectionInterface, \Countable
     public function get($name)
     {
         if ($this->has($name)) {
-            return $this->collection[$name];
+            return $this->values[$name];
         } else {
-            $class = explode('\\', get_class($this));
-            $class = end($class);
-            throw new \RuntimeException("Object `$name` does not exist in $class.");
+            return $this->throwNotFound($name);
         }
     }
 
@@ -33,7 +36,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function has($name)
     {
-        return array_key_exists($name, $this->collection);
+        return array_key_exists($name, $this->values);
     }
 
     /**
@@ -41,7 +44,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function set($name, $object)
     {
-        $this->collection[$name] = $object;
+        $this->values[$name] = $object;
     }
 
     /**
@@ -49,7 +52,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function getIterator()
     {
-        return new \ArrayIterator($this->collection);
+        return new \ArrayIterator($this->values);
     }
 
     /**
@@ -81,7 +84,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function offsetUnset($offset)
     {
-        unset($this->collection[$offset]);
+        unset($this->values[$offset]);
     }
 
     /**
@@ -89,6 +92,37 @@ class Collection implements CollectionInterface, \Countable
      */
     public function count()
     {
-        return count($this->collection);
+        return count($this->values);
+    }
+
+    public function select(callable $callback)
+    {
+        $values = [];
+
+        foreach ($this as $key => $value) {
+            if ($callback($value, $key)) {
+                $values[$key] = $value;
+            }
+        }
+
+        return $values;
+    }
+
+    public function first()
+    {
+        return array_values($this->values)[0];
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return iterator_to_array($this);
+    }
+
+    protected function throwNotFound(string $name)
+    {
+        throw new \InvalidArgumentException("`$name` not found in collection.");
     }
 }

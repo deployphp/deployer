@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,21 +7,47 @@
 
 namespace Deployer\Task;
 
+use Deployer\Exception\Exception;
+
 class GroupTask extends Task
 {
     /**
-     * Yes, it is constructor.
+     * List of tasks
+     *
+     * @var array
      */
-    public function __construct()
+    private $group;
+
+    /**
+     * @param string $name
+     * @param array $group
+     */
+    public function __construct($name, $group)
     {
-        // Do nothing
+        parent::__construct($name);
+        $this->group = $group;
     }
 
     /**
-     * {@inheritdoc
+     * {@inheritdoc}
      */
     public function run(Context $context)
     {
-        throw new \RuntimeException('Group task should never be running.');
+        throw new \RuntimeException("Can't run group task.");
+    }
+
+    /**
+     * List of dependent tasks names
+     *
+     * @return array
+     */
+    public function getGroup()
+    {
+        return $this->group;
+    }
+
+    public function local()
+    {
+        throw new Exception('Group tasks can\'t be local.');
     }
 }

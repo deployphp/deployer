@@ -1,16 +1,73 @@
 #!/usr/bin/env php
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-$loaded = false;
+// Deployer constants
+define('DEPLOYER', true);
+define('DEPLOYER_BIN', __FILE__);
 
-foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
-    if (file_exists($file)) {
-        require $file;
+// Check for php7
+if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
+    die(
+        'Upgrade to php7' . PHP_EOL .
+        'Deployer 5.x supports only php7 and above.' . PHP_EOL .
+        'If you want to use older php version use Deployer 4.x' . PHP_EOL
+    );
+}
+
+// Detect deploy.php script
+$options = getopt('f::', ['file::']);
+$userSpecifiedFile = null;
+
+if (isset($options['f'])) {
+    $userSpecifiedFile = $options['f'];
+} elseif (isset($options['file'])) {
+    $userSpecifiedFile = $options['file'];
+}
+
+if (empty($userSpecifiedFile)) {
+    $deployFile = getcwd() . '/deploy.php';
+
+    if (!is_readable($deployFile)) {
+        $currentDir = getcwd();
+        $count = 0;
+        do {
+            $currentDir = dirname($currentDir);
+            $deployFile = $currentDir . '/deploy.php';
+            $count++;
+        } while (!is_readable($deployFile) && $count < 100);
+    }
+} else {
+    $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile;
+}
+
+$deployFilePath = dirname($deployFile);
+
+// Detect source location
+
+$autoload = [
+    $deployFilePath . '/vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+];
+
+$includes = [
+    $deployFilePath . '/vendor/deployer/deployer',
+    __DIR__ . '/../../../deployer/deployer',
+    __DIR__ . '/../'
+];
+
+$loaded = false;
+$includePath = false;
+
+for ($i = 0; $i < count($autoload); $i++) {
+    if (file_exists($autoload[$i]) && file_exists($includes[$i])) {
+        require $autoload[$i];
+        $includePath = $includes[$i];
         $loaded = true;
         break;
     }
@@ -24,40 +81,40 @@ if (!$loaded) {
     );
 }
 
-// Recipe include path
-set_include_path(__DIR__ . '/../' . PATH_SEPARATOR . get_include_path());
+// Setup include path
+set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 
-// Include function declarations
-require_once 'src/functions.php';
+// Detect version
+$version = 'master';
 
-// Deployer constants
-define('DEPLOYER_BIN', __FILE__);
-
-// Init Deployer
-$console = new \Deployer\Console\Application('Deployer', 'master');
-$input = new \Symfony\Component\Console\Input\ArgvInput();
-$output = new \Symfony\Component\Console\Output\ConsoleOutput();
-$deployer = new \Deployer\Deployer($console, $input, $output);
-
-// Require deploy.php script
-$options = getopt('f::', ['file::']);
-$userSpecifiedFile = null;
-
-if (isset($options['f'])) {
-    $userSpecifiedFile = $options['f'];
-} elseif (isset($options['file'])) {
-    $userSpecifiedFile = $options['file'];
+$composerLockFile = $deployFilePath . '/composer.lock';
+if (is_readable($composerLockFile)) {
+    $lock = json_decode(file_get_contents($composerLockFile), true);
+    foreach ($lock['packages'] as $package) {
+        if ($package['name'] === 'deployer/deployer') {
+            $version = $package['version'];
+        }
+    }
+    foreach ($lock['packages-dev'] as $package) {
+        if ($package['name'] === 'deployer/deployer') {
+            $version = $package['version'];
+        }
+    }
 }
 
-if (empty($userSpecifiedFile)) {
-    $deployFile = getcwd() . '/deploy.php';
-} else {
-    $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile;
+$method = new ReflectionMethod('Deployer\Deployer', 'run');
+if (!$method->isStatic()) {
+    die(
+        'You need to update Deployer to the latest version:' . PHP_EOL .
+        PHP_EOL .
+        '  dep self-update' . PHP_EOL .
+        PHP_EOL .
+        'Or use composer installed version:' . PHP_EOL .
+        PHP_EOL .
+        '  php vendor/bin/dep' . PHP_EOL .
+        PHP_EOL
+
+    );
 }
 
-if (is_file($deployFile) && is_readable($deployFile)) {
-    require $deployFile;
-}
-
-// Run Deployer
-$deployer->run();
+\Deployer\Deployer::run($version, $deployFile);

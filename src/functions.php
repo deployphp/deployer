@@ -1,168 +1,168 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Deployer\Deployer;
-use Deployer\Server\Local;
-use Deployer\Server\Remote;
-use Deployer\Server\Builder;
-use Deployer\Server\Configuration;
-use Deployer\Server\Environment;
-use Deployer\Task\Task as TheTask;
+
+namespace Deployer;
+
+use Deployer\Exception\RuntimeException;
+use Deployer\Host\FileLoader;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
+use Deployer\Host\Range;
+use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
-use Deployer\Task\Scenario\GroupScenario;
-use Deployer\Task\Scenario\Scenario;
-use Deployer\Type\Result;
-use Symfony\Component\Yaml\Yaml;
+use Deployer\Task\Task as T;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
+use function Deployer\Support\array_to_string;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
 // Context dependent function uses while task execution and must require only Context::get() method.
 // But there is also a third type of functions: mixed. Mixed function uses in definition stage and in task
 // execution stage. They are acts like two different function, but have same name. Example of such function
-// is env() func. This function determine in which stage it was called by Context::get() method.
+// is set() func. This function determine in which stage it was called by Context::get() method.
 
 /**
- * @param string $name
- * @param string|null $host
- * @param int $port
- * @return Builder
+ * @param array ...$hostnames
+ * @return Host|Host[]|Proxy
  */
-function server($name, $host = null, $port = 22)
+function host(...$hostnames)
 {
     $deployer = Deployer::get();
+    $hostnames = Range::expand($hostnames);
 
-    $env = new Environment();
-    $config = new Configuration($name, $host, $port);
-
-    if ($deployer->parameters->has('ssh_type') && $deployer->parameters->get('ssh_type') === 'ext-ssh2') {
-        $server = new Remote\SshExtension($config);
-    } else {
-        $server = new Remote\PhpSecLib($config);
+    // Return hosts if has
+    if ($deployer->hosts->has($hostnames[0])) {
+        if (count($hostnames) === 1) {
+            return $deployer->hosts->get($hostnames[0]);
+        } else {
+            return array_map([$deployer->hosts, 'get'], $hostnames);
+        }
     }
 
-    $deployer->servers->set($name, $server);
-    $deployer->environments->set($name, $env);
-
-    return new Builder($config, $env);
+    // Add otherwise
+    if (count($hostnames) === 1) {
+        $host = new Host($hostnames[0]);
+        $deployer->hosts->set($hostnames[0], $host);
+        return $host;
+    } else {
+        $hosts = array_map(function ($hostname) use ($deployer) {
+            $host = new Host($hostname);
+            $deployer->hosts->set($hostname, $host);
+            return $host;
+        }, $hostnames);
+        return new Proxy($hosts);
+    }
 }
 
-
 /**
- * @param string $name
- * @return Builder
+ * @param array ...$hostnames
+ * @return Localhost|Localhost[]|Proxy
  */
-function localServer($name)
+function localhost(...$hostnames)
 {
     $deployer = Deployer::get();
+    $hostnames = Range::expand($hostnames);
 
-    $env = new Environment();
-    $server = new Local();
-    $config = new Configuration($name, 'localhost'); // Builder requires server configuration.
-
-    $deployer->servers->set($name, $server);
-    $deployer->environments->set($name, $env);
-
-    return new Builder($config, $env);
+    if (count($hostnames) <= 1) {
+        $host = count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
+        $deployer->hosts->set($host->getHostname(), $host);
+        return $host;
+    } else {
+        $hosts = array_map(function ($hostname) use ($deployer) {
+            $host = new Localhost($hostname);
+            $deployer->hosts->set($host->getHostname(), $host);
+            return $host;
+        }, $hostnames);
+        return new Proxy($hosts);
+    }
 }
 
+/**
+ * Load list of hosts from file
+ *
+ * @param string $file
+ * @return Proxy
+ */
+function inventory($file)
+{
+    $deployer = Deployer::get();
+    $fileLoader = new FileLoader();
+    $fileLoader->load($file);
+
+    $hosts = $fileLoader->getHosts();
+    foreach ($hosts as $host) {
+        $deployer->hosts->set($host->getHostname(), $host);
+    }
+
+    return new Proxy($hosts);
+}
 
 /**
- * Load server list file.
- * @param string $file
+ * Set task description.
+ *
+ * @param string $title
+ * @return string
  */
-function serverList($file)
+function desc($title = null)
 {
-    $serverList = Yaml::parse(file_get_contents($file));
+    static $store = null;
 
-    foreach ((array)$serverList as $name => $config) {
-        try {
-            if (!is_array($config)) {
-                throw new \RuntimeException();
-            }
-
-            $da = new \Deployer\Type\DotArray($config);
-
-            if ($da->hasKey('local')) {
-                $builder = localServer($name);
-            } else {
-                $builder = $da->hasKey('port') ? server($name, $da['host'], $da['port']) : server($name, $da['host']);
-            }
-
-            unset($da['local']);
-            unset($da['host']);
-            unset($da['port']);
-
-            if ($da->hasKey('identity_file')) {
-                if ($da['identity_file'] === null) {
-                    $builder->identityFile();
-                } else {
-                    $builder->identityFile(
-                        $da['identity_file.public_key'],
-                        $da['identity_file.private_key'],
-                        $da['identity_file.password']
-                    );
-                }
-
-                unset($da['identity_file']);
-            }
-
-            if ($da->hasKey('forward_agent')) {
-                $builder->forwardAgent();
-                unset($da['forward_agent']);
-            }
-
-            foreach (['user', 'password', 'stage', 'pem_file'] as $key) {
-                if ($da->hasKey($key)) {
-                    $method = lcfirst(str_replace(' ', '', ucwords(str_replace('_', ' ', $key))));
-                    $builder->$method($da[$key]);
-                    unset($da[$key]);
-                }
-            }
-
-            // Everything else are env vars.
-            foreach ($da->toArray() as $key => $value) {
-                $builder->env($key, $value);
-            }
-        } catch (\RuntimeException $e) {
-            throw new \RuntimeException("Error in parsing `$file` file.");
-        }
+    if ($title === null) {
+        return $store;
+    } else {
+        return $store = $title;
     }
 }
 
 /**
  * Define a new task and save to tasks list.
  *
+ * Alternatively get a defined task.
+ *
  * @param string $name Name of current task.
- * @param callable|array $body Callable task or array of other tasks names.
- * @return TheTask
- * @throws InvalidArgumentException
+ * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
+ * @return Task\Task
+ * @throws \InvalidArgumentException
  */
-function task($name, $body)
+function task($name, $body = null)
 {
     $deployer = Deployer::get();
 
-    if ($body instanceof \Closure) {
-        $task = new TheTask($name, $body);
-        $scenario = new Scenario($name);
+    if (empty($body)) {
+        $task = $deployer->tasks->get($name);
+        return $task;
+    }
+
+    if (is_callable($body)) {
+        $task = new T($name, $body);
     } elseif (is_array($body)) {
-        $task = new GroupTask();
-        $scenario = new GroupScenario(array_map(function ($name) use ($deployer) {
-            return $deployer->scenarios->get($name);
-        }, $body));
+        $task = new GroupTask($name, $body);
+    } elseif (is_string($body)) {
+        $task = new T($name, function () use ($body) {
+            cd('{{release_path}}');
+            run($body);
+        });
     } else {
-        throw new InvalidArgumentException('Task should be an closure or array of other tasks.');
+        throw new \InvalidArgumentException('Task should be an closure or array of other tasks.');
     }
 
     $deployer->tasks->set($name, $task);
-    $deployer->scenarios->set($name, $scenario);
+
+    if (!empty(desc())) {
+        $task->desc(desc());
+        desc(''); // Clear title.
+    }
 
     return $task;
 }
@@ -170,31 +170,41 @@ function task($name, $body)
 /**
  * Call that task before specified task runs.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task before $that should be run.
+ * @param string $that The task to be run.
  */
 function before($it, $that)
 {
     $deployer = Deployer::get();
-    $beforeScenario = $deployer->scenarios->get($it);
-    $scenario = $deployer->scenarios->get($that);
+    $beforeTask = $deployer->tasks->get($it);
 
-    $beforeScenario->addBefore($scenario);
+    $beforeTask->addBefore($that);
 }
 
 /**
  * Call that task after specified task runs.
  *
- * @param string $it
- * @param string $that
+ * @param string $it The task after $that should be run.
+ * @param string $that The task to be run.
  */
 function after($it, $that)
 {
     $deployer = Deployer::get();
-    $afterScenario = $deployer->scenarios->get($it);
-    $scenario = $deployer->scenarios->get($that);
+    $afterTask = $deployer->tasks->get($it);
 
-    $afterScenario->addAfter($scenario);
+    $afterTask->addAfter($that);
+}
+
+/**
+ * Setup which task run on failure of first.
+ *
+ * @param string $it The task which need to fail so $that should be run.
+ * @param string $that The task to be run.
+ */
+function fail($it, $that)
+{
+    $deployer = Deployer::get();
+    $deployer->fail->set($it, $that);
 }
 
 /**
@@ -237,7 +247,11 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    env('working_path', env()->parse($path));
+    try {
+        set('working_path', parse($path));
+    } catch (RuntimeException $e) {
+        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
+    }
 }
 
 /**
@@ -248,189 +262,312 @@ function cd($path)
  */
 function within($path, $callback)
 {
-    $lastWorkingPath = workingPath();
-    env()->set('working_path', $path);
-    $callback();
-    env()->set('working_path', $lastWorkingPath);
+    $lastWorkingPath = get('working_path', '');
+    try {
+        set('working_path', parse($path));
+        $callback();
+    } finally {
+        set('working_path', $lastWorkingPath);
+    }
 }
 
 /**
- * Return the current working path.
- *
- * @return string
- */
-function workingPath()
-{
-    return env()->get('working_path', env()->get(Environment::DEPLOY_PATH));
-}
-
-/**
- * Run command on server.
+ * Run command.
  *
  * @param string $command
- * @return Result
+ * @param array $options
+ * @return string
  */
-function run($command)
+function run($command, $options = [])
 {
-    $server = Context::get()->getServer();
-    $command = env()->parse($command);
-    $workingPath = workingPath();
+    $host = Context::get()->getHost();
+    $hostname = $host->getHostname();
+
+    $command = parse($command);
+    $workingPath = get('working_path', '');
 
     if (!empty($workingPath)) {
-        $command = "cd $workingPath && $command";
+        $command = "cd $workingPath && ($command)";
     }
 
-    if (isVeryVerbose()) {
-        writeln("<comment>Run</comment>: $command");
+    $env = get('env', []) + ($options['env'] ?? []);
+    if (!empty($env)) {
+        $env = array_to_string($env);
+        $command = "export $env; $command";
     }
 
-    $output = $server->run($command);
-
-    if (isDebug() && !empty($output)) {
-        writeln(array_map(function ($line) {
-            return "<fg=red>></fg=red> $line";
-        }, explode("\n", $output)));
-    }
-
-    return new Result($output);
-}
-
-/**
- * Execute commands on local machine.
- * @param string $command Command to run locally.
- * @param int $timeout (optional) Override process command timeout in seconds.
- * @return Result Output of command.
- * @throws \RuntimeException
- */
-function runLocally($command, $timeout = 60)
-{
-    $command = env()->parse($command);
-
-    if (isVeryVerbose()) {
-        writeln("<comment>Run locally</comment>: $command");
-    }
-
-    $process = new Symfony\Component\Process\Process($command);
-    $process->setTimeout($timeout);
-    $process->run(function ($type, $buffer) {
-        if (isDebug()) {
-            if ('err' === $type) {
-                write("<fg=red>></fg=red> $buffer");
-            } else {
-                write("<fg=green>></fg=green> $buffer");
-            }
-        }
-    });
-
-    if (!$process->isSuccessful()) {
-        throw new \RuntimeException($process->getErrorOutput());
-    }
-    
-    return new Result($process->getOutput());
-}
-
-/**
- * Upload file or directory to current server.
- * @param string $local
- * @param string $remote
- * @throws \RuntimeException
- */
-function upload($local, $remote)
-{
-    $server = Context::get()->getServer();
-
-    if (is_file($local)) {
-        writeln("Upload file <info>$local</info> to <info>$remote</info>");
-
-        $server->upload($local, $remote);
-    } elseif (is_dir($local)) {
-        writeln("Upload from <info>$local</info> to <info>$remote</info>");
-
-        $finder = new Symfony\Component\Finder\Finder();
-        $files = $finder
-            ->files()
-            ->ignoreUnreadableDirs()
-            ->ignoreVCS(true)
-            ->ignoreDotFiles(false)
-            ->in($local);
-
-        /** @var $file \Symfony\Component\Finder\SplFileInfo */
-        foreach ($files as $file) {
-            $server->upload(
-                $file->getRealPath(),
-                $remote . '/' . $file->getRelativePathname()
-            );
-        }
+    if ($host instanceof Localhost) {
+        $process = Deployer::get()->processRunner;
+        $output = $process->run($hostname, $command, $options);
     } else {
-        throw new \RuntimeException("Uploading path '$local' does not exist.");
+        $client = Deployer::get()->sshClient;
+        $output = $client->run($host, $command, $options);
+    }
+
+    return rtrim($output);
+}
+
+/**
+ * Execute commands on local machine
+ *
+ * @param string $command Command to run locally.
+ * @param array $options
+ * @return string Output of command.
+ */
+function runLocally($command, $options = [])
+{
+    $process = Deployer::get()->processRunner;
+    $hostname = 'localhost';
+    $command = parse($command);
+
+    $env = get('env', []) + ($options['env'] ?? []);
+    if (!empty($env)) {
+        $env = array_to_string($env);
+        $command = "export $env; $command";
+    }
+
+    $output = $process->run($hostname, $command, $options);
+
+    return rtrim($output);
+}
+
+/**
+ * Run test command.
+ * Example:
+ *
+ *     test('[ -d {{release_path}} ]')
+ *
+ * @param string $command
+ * @return bool
+ */
+function test($command)
+{
+    return run("if $command; then echo 'true'; fi") === 'true';
+}
+
+/**
+ * Run test command locally.
+ * Example:
+ *
+ *     testLocally('[ -d {{local_release_path}} ]')
+ *
+ * @param string $command
+ * @return bool
+ */
+function testLocally($command)
+{
+    return runLocally("if $command; then echo 'true'; fi") === 'true';
+}
+
+/**
+ * Iterate other hosts, allowing to call run func in callback.
+ *
+ * @experimental
+ * @param Host|Host[] $hosts
+ * @param callable $callback
+ */
+function on($hosts, callable $callback)
+{
+    $input = Context::has() ? input() : null;
+    $output = Context::has() ? output() : null;
+
+    if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
+        $hosts = [$hosts];
+    }
+
+    foreach ($hosts as $host) {
+        if ($host instanceof Host) {
+            Context::push(new Context($host, $input, $output));
+            try {
+                $callback($host);
+            } finally {
+                Context::pop();
+            }
+        } else {
+            throw new \InvalidArgumentException("Function on can iterate only on Host instances.");
+        }
     }
 }
 
 /**
- * Download file from remote server.
+ * Return hosts based on roles.
  *
- * @param string $local
- * @param string $remote
+ * @experimental
+ * @param string[] $roles
+ * @return Host[]
  */
-function download($local, $remote)
+function roles(...$roles)
 {
-    $server = Context::get()->getServer();
-    $server->download($local, $remote);
+    return Deployer::get()->hostSelector->getByRoles($roles);
+}
+
+/**
+ * Run task
+ *
+ * @experimental
+ * @param string $task
+ */
+function invoke($task)
+{
+    $hosts = [Context::get()->getHost()];
+    $tasks = Deployer::get()->scriptManager->getTasks($task, $hosts);
+
+    $executor = Deployer::get()->seriesExecutor;
+    $executor->run($tasks, $hosts);
+}
+
+/**
+ * Upload file or directory to host
+ *
+ * @param string $source
+ * @param string $destination
+ * @param array $config
+ */
+function upload($source, $destination, array $config = [])
+{
+    $rsync = Deployer::get()->rsync;
+    $host = Context::get()->getHost();
+    $source = parse($source);
+    $destination = parse($destination);
+
+    if ($host instanceof Localhost) {
+        $rsync->call($host->getHostname(), $source, $destination, $config);
+    } else {
+        $sshArguments = $host->getSshArguments()->getCliArguments();
+        if (empty($sshArguments) === false) {
+            if (!isset($config['options']) || !is_array($config['options'])) {
+                $config['options'] = [];
+            }
+            $config['options'][] = "-e 'ssh $sshArguments'";
+        }
+        $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
+    }
+}
+
+/**
+ * Download file or directory from host
+ *
+ * @param string $destination
+ * @param string $source
+ * @param array $config
+ */
+function download($source, $destination, array $config = [])
+{
+    $rsync = Deployer::get()->rsync;
+    $host = Context::get()->getHost();
+    $source = parse($source);
+    $destination = parse($destination);
+
+    if ($host instanceof Localhost) {
+        $rsync->call($host->getHostname(), $source, $destination, $config);
+    } else {
+        $sshArguments = $host->getSshArguments()->getCliArguments();
+        if (empty($sshArguments) === false) {
+            if (!isset($config['options']) || !is_array($config['options'])) {
+                $config['options'] = [];
+            }
+            $config['options'][] = "-e 'ssh $sshArguments'";
+        }
+        $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
+    }
 }
 
 /**
  * Writes a message to the output and adds a newline at the end.
  * @param string|array $message
+ * @param int $options
  */
-function writeln($message)
+function writeln($message, $options = 0)
 {
-    output()->writeln($message);
+    output()->writeln(parse($message), $options);
 }
 
 /**
  * Writes a message to the output.
  * @param string $message
+ * @param int $options
  */
-function write($message)
+function write($message, $options = 0)
 {
-    output()->write($message);
+    output()->write(parse($message), $options);
 }
 
 /**
- * @param string $key
+ * Setup configuration option.
+ *
+ * @param string $name
  * @param mixed $value
  */
-function set($key, $value)
+function set($name, $value)
 {
-    Deployer::get()->parameters->set($key, $value);
+    if (!Context::has()) {
+        Deployer::setDefault($name, $value);
+    } else {
+        Context::get()->getConfig()->set($name, $value);
+    }
 }
 
 /**
- * @param string $key
+ * Merge new config params to existing config array.
+ *
+ * @param string $name
+ * @param array $array
+ */
+function add($name, $array)
+{
+    if (!Context::has()) {
+        Deployer::addDefault($name, $array);
+    } else {
+        Context::get()->getConfig()->add($name, $array);
+    }
+}
+
+/**
+ * Get configuration value.
+ *
+ * @param string $name
+ * @param mixed|null $default
  * @return mixed
  */
-function get($key)
+function get($name, $default = null)
 {
-    return Deployer::get()->parameters->get($key);
+    if (!Context::has()) {
+        return Deployer::getDefault($name, $default);
+    } else {
+        return Context::get()->getConfig()->get($name, $default);
+    }
 }
 
 /**
- * @param string $key
+ * Check if there is such configuration option.
+ *
+ * @param string $name
  * @return boolean
  */
-function has($key)
+function has($name)
 {
-    return Deployer::get()->parameters->has($key);
+    if (!Context::has()) {
+        return Deployer::hasDefault($name);
+    } else {
+        return Context::get()->getConfig()->has($name);
+    }
 }
 
 /**
  * @param string $message
  * @param string|null $default
+ * @param string[]|null $suggestedChoices
  * @return string
  * @codeCoverageIgnore
  */
-function ask($message, $default = null)
+function ask($message, $default = null, $suggestedChoices = null)
 {
+    Context::required(__FUNCTION__);
+
+    if (($suggestedChoices !== null) && (empty($suggestedChoices))) {
+        throw new \InvalidArgumentException('Suggested choices should not be empty');
+    }
+
     if (isQuiet()) {
         return $default;
     }
@@ -439,7 +576,48 @@ function ask($message, $default = null)
 
     $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
 
-    $question = new \Symfony\Component\Console\Question\Question($message, $default);
+    $question = new Question($message, $default);
+
+    if (empty($suggestedChoices) === false) {
+        $question->setAutocompleterValues($suggestedChoices);
+    }
+
+    return $helper->ask(input(), output(), $question);
+}
+
+/**
+ * @param string $message
+ * @param string[] $availableChoices
+ * @param string|null $default
+ * @param bool|false $multiselect
+ * @return array
+ * @codeCoverageIgnore
+ */
+function askChoice($message, array $availableChoices, $default = null, $multiselect = false)
+{
+    Context::required(__FUNCTION__);
+
+    if (empty($availableChoices)) {
+        throw new \InvalidArgumentException('Available choices should not be empty');
+    }
+
+    if ($default !== null && !array_key_exists($default, $availableChoices)) {
+        throw new \InvalidArgumentException('Default choice is not available');
+    }
+
+    if (isQuiet()) {
+        if ($default === null) {
+            $default = key($availableChoices);
+        }
+        return [$default => $availableChoices[$default]];
+    }
+
+    $helper = Deployer::get()->getHelper('question');
+
+    $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
+
+    $question = new ChoiceQuestion($message, $availableChoices, $default);
+    $question->setMultiselect($multiselect);
 
     return $helper->ask(input(), output(), $question);
 }
@@ -452,6 +630,8 @@ function ask($message, $default = null)
  */
 function askConfirmation($message, $default = false)
 {
+    Context::required(__FUNCTION__);
+
     if (isQuiet()) {
         return $default;
     }
@@ -461,7 +641,7 @@ function askConfirmation($message, $default = false)
     $yesOrNo = $default ? 'Y/n' : 'y/N';
     $message = "<question>$message [$yesOrNo]</question> ";
 
-    $question = new \Symfony\Component\Console\Question\ConfirmationQuestion($message, $default);
+    $question = new ConfirmationQuestion($message, $default);
 
     return $helper->ask(input(), output(), $question);
 }
@@ -473,6 +653,8 @@ function askConfirmation($message, $default = false)
  */
 function askHiddenResponse($message)
 {
+    Context::required(__FUNCTION__);
+
     if (isQuiet()) {
         return '';
     }
@@ -481,7 +663,7 @@ function askHiddenResponse($message)
 
     $message = "<question>$message</question> ";
 
-    $question = new \Symfony\Component\Console\Question\Question($message);
+    $question = new Question($message);
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 
@@ -541,36 +723,55 @@ function isDebug()
 }
 
 /**
- * Return current server env or set default values or get env value.
- * When set env value you can write over values line "{{name}}".
- *
- * @param string|null $name
- * @param mixed $value
- * @return Environment|mixed
- */
-function env($name = null, $value = null)
-{
-    if (false === Context::get()) {
-        Environment::setDefault($name, $value);
-    } else {
-        if (null === $name && null === $value) {
-            return Context::get()->getEnvironment();
-        } elseif (null !== $name && null === $value) {
-            return Context::get()->getEnvironment()->get($name);
-        } else {
-            Context::get()->getEnvironment()->set($name, $value);
-        }
-        return null;
-    }
-}
-
-/**
- * Check if command exist in bash.
+ * Check if command exists
  *
  * @param string $command
  * @return bool
  */
 function commandExist($command)
 {
-    return run("if hash $command 2>/dev/null; then echo 'true'; fi")->toBool();
+    return test("hash $command 2>/dev/null");
+}
+
+function commandSupportsOption($command, $option)
+{
+    return test("[[ $(man $command 2>&1 || $command -h 2>&1 || $command --help 2>&1) =~ '$option' ]]");
+}
+
+/**
+ * Parse set values.
+ *
+ * @param string $value
+ * @return string
+ */
+function parse($value)
+{
+    return Context::get()->getConfig()->parse($value);
+}
+
+function locateBinaryPath($name)
+{
+    $nameEscaped = escapeshellarg($name);
+
+    // Try `command`, should cover all Bourne-like shells
+    if (commandExist("command")) {
+        return run("command -v $nameEscaped");
+    }
+
+    // Try `which`, should cover most other cases
+    if (commandExist("which")) {
+        return run("which $nameEscaped");
+    }
+
+    // Fallback to `type` command, if the rest fails
+    if (commandExist("type")) {
+        $result = run("type -p $nameEscaped");
+
+        if ($result) {
+            // Deal with issue when `type -p` outputs something like `type -ap` in some implementations
+            return trim(str_replace("$name is", "", $result));
+        }
+    }
+
+    throw new \RuntimeException("Can't locate [$nameEscaped] - neither of [command|which|type] commands are available");
 }

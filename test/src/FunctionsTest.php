@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,11 +7,21 @@
 
 namespace Deployer;
 
+use Deployer\Configuration\Configuration;
 use Deployer\Console\Application;
-use Deployer\Server\Environment;
+use Deployer\Host\Host;
+use Deployer\Host\Localhost;
 use Deployer\Task\Context;
+use Deployer\Task\GroupTask;
+use Deployer\Task\Task;
+use Deployer\Type\Result;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Input\Input;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class FunctionsTest extends \PHPUnit_Framework_TestCase
+class FunctionsTest extends TestCase
 {
     /**
      * @var Deployer
@@ -24,36 +34,36 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     private $console;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var InputInterface
      */
-    private $_input;
+    private $input;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var OutputInterface
      */
-    private $_output;
+    private $output;
 
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var Host
      */
-    private $_server;
-
-    /**
-     * @var Environment
-     */
-    private $_env;
+    private $host;
 
     protected function setUp()
     {
         $this->console = new Application();
 
-        $this->_input = $this->getMock('Symfony\Component\Console\Input\InputInterface');
-        $this->_output = $this->getMock('Symfony\Component\Console\Output\OutputInterface');
-        $this->_server = $this->getMockBuilder('Deployer\Server\ServerInterface')->disableOriginalConstructor()->getMock();
-        $this->_env = new Environment();
+        $this->input = $this->createMock(Input::class);
+        $this->output = $this->createMock(Output::class);
+        $this->host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
+        $this->host
+            ->expects($this->any())
+            ->method('getConfig')
+            ->willReturn(new Configuration());
 
-        $this->deployer = new Deployer($this->console, $this->_input, $this->_output);
-        Context::push(new Context($this->_server, $this->_env, $this->_input, $this->_output));
+        $this->deployer = new Deployer($this->console);
+        $this->deployer['input'] = $this->input;
+        $this->deployer['output'] = $this->output;
+        Context::push(new Context($this->host, $this->input, $this->output));
     }
 
     protected function tearDown()
@@ -63,106 +73,84 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         $this->deployer = null;
     }
 
-    public function testServer()
+    public function testHost()
     {
-        server('main', 'domain.com', 22);
+        host('domain.com');
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
+        self::assertInstanceOf(Host::class, host('domain.com'));
 
-        $server = $this->deployer->servers->get('main');
-        $env = $this->deployer->environments->get('main');
+        host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a2.domain.com'));
 
-        $this->assertInstanceOf('Deployer\Server\ServerInterface', $server);
-        $this->assertInstanceOf('Deployer\Server\Environment', $env);
+        host('db[1:2].domain.com')->set('roles', 'db');
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('db1.domain.com'));
+        self::assertInstanceOf(Host::class, $this->deployer->hosts->get('db2.domain.com'));
     }
 
-    public function testLocalServer()
+    public function testLocalhost()
     {
-        localServer('main')->env('deploy_path', __DIR__ . '/localhost');
-
-        $server = $this->deployer->servers->get('main');
-        $env = $this->deployer->environments->get('main');
-
-        $this->assertInstanceOf('Deployer\Server\ServerInterface', $server);
-        $this->assertInstanceOf('Deployer\Server\Environment', $env);
-        $this->assertEquals(__DIR__ . '/localhost', $env->get('deploy_path'));
+        localhost('domain.com');
+        self::assertInstanceOf(Localhost::class, $this->deployer->hosts->get('domain.com'));
     }
 
-    public function testServerList()
+    public function testInventory()
     {
-        serverList(__DIR__ . '/../fixture/servers.yml');
+        inventory(__DIR__ . '/../fixture/inventory.yml');
 
-        foreach (['production', 'beta', 'test'] as $stage) {
-            $server = $this->deployer->servers->get($stage);
-            $env = $this->deployer->environments->get($stage);
-
-            $this->assertInstanceOf('Deployer\Server\ServerInterface', $server);
-            $this->assertInstanceOf('Deployer\Server\Environment', $env);
-
-            $this->assertEquals('/home', $env->get('deploy_path'));
+        foreach (['app.deployer.org', 'beta.deployer.org'] as $hostname) {
+            self::assertInstanceOf(Host::class, $this->deployer->hosts->get($hostname));
         }
     }
 
     public function testTask()
     {
-        task('task', function () {});
+        task('task', 'pwd');
 
         $task = $this->deployer->tasks->get('task');
-        $this->assertInstanceOf('Deployer\Task\Task', $task);
+        self::assertInstanceOf(Task::class, $task);
+
+        $task = task('task');
+        self::assertInstanceOf(Task::class, $task);
 
         task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
-        $this->assertInstanceOf('Deployer\Task\GroupTask', $task);
+        self::assertInstanceOf(GroupTask::class, $task);
 
-        $this->setExpectedException('InvalidArgumentException', 'Task should be an closure or array of other tasks.');
-        task('wrong', 'thing');
+        $task = task('callable', [$this, __METHOD__]);
+        self::assertInstanceOf(Task::class, $task);
     }
 
     public function testBefore()
     {
-        task('main', function () {});
-        task('before', function () {});
+        task('main', 'pwd');
+        task('before', 'ls');
         before('main', 'before');
 
-        $mainScenario = $this->deployer->scenarios->get('main');
-        $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
-        $this->assertEquals(['before', 'main'], $mainScenario->getTasks());
+        $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
+        self::assertEquals(['before', 'main'], $names);
     }
 
     public function testAfter()
     {
-        task('main', function () {});
-        task('after', function () {});
+        task('main', 'pwd');
+        task('after', 'ls');
         after('main', 'after');
 
-        $mainScenario = $this->deployer->scenarios->get('main');
-        $this->assertInstanceOf('Deployer\Task\Scenario\Scenario', $mainScenario);
-        $this->assertEquals(['main', 'after'], $mainScenario->getTasks());
+        $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
+        self::assertEquals(['main', 'after'], $names);
     }
 
     public function testRunLocally()
     {
         $output = runLocally('echo "hello"');
-
-        $this->assertInstanceOf('Deployer\Type\Result', $output);
-        $this->assertEquals('hello', (string)$output);
+        self::assertEquals('hello', $output);
     }
 
-    public function testUpload()
+    private function taskToNames($tasks)
     {
-        $this->_server
-            ->expects($this->any())
-            ->method('upload')
-            ->with(
-                $this->callback(function ($local) {
-                    return is_file($local);
-                }),
-                $this->callback(function ($remote) {
-                    return is_file(str_replace('/home/www', __DIR__ . '/../fixture/app', $remote));
-                }));
-
-        // Directory
-        upload(__DIR__ . '/../fixture/app', '/home/www');
-
-        // File
-        upload(__DIR__ . '/../fixture/app/README.md', '/home/www/README.md');
+        return array_map(function (Task $task) {
+            return $task->getName();
+        }, $tasks);
     }
 }

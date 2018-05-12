@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,22 +7,18 @@
 
 namespace Deployer\Collection;
 
-use Deployer\Server\EnvironmentCollection;
-use Deployer\Server\GroupCollection;
-use Deployer\Server\ServerCollection;
-use Deployer\Task\Scenario\ScenarioCollection;
+use Deployer\Host\HostCollection;
 use Deployer\Task\TaskCollection;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTest extends \PHPUnit_Framework_TestCase
+class CollectionTest extends TestCase
 {
     public static function collections()
     {
         return [
             [new Collection()],
             [new TaskCollection()],
-            [new ScenarioCollection()],
-            [new ServerCollection()],
-            [new EnvironmentCollection()],
+            [new HostCollection()],
         ];
     }
 
@@ -31,7 +27,7 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testCollection($collection)
     {
-        $this->assertInstanceOf('Deployer\Collection\CollectionInterface', $collection);
+        $this->assertInstanceOf(CollectionInterface::class, $collection);
 
         $object = new \stdClass();
         $collection->set('object', $object);
@@ -47,15 +43,19 @@ class CollectionTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue($traversable, 'Collection does not traversable.');
+
+        $this->assertEquals($collection->select(function ($value, $key) use ($object) {
+            return $value === $object && $key === 'object';
+        }), ['object' => $object]);
     }
 
     /**
      * @dataProvider collections
      * @depends      testCollection
-     * @expectedException \RuntimeException
      */
     public function testException($collection)
     {
+        $this->expectException(\InvalidArgumentException::class);
         $collection->get('unexpected');
     }
 

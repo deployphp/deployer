@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,30 +7,26 @@
 
 namespace Deployer\Task;
 
-use Deployer\Server\Environment;
-use Deployer\Server\ServerInterface;
+use Deployer\Configuration\Configuration;
+use Deployer\Exception\Exception;
+use Deployer\Host\Host;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Context
 {
     /**
-     * @var ServerInterface|null
+     * @var Host
      */
-    private $server;
+    private $host;
 
     /**
-     * @var Environment|null
-     */
-    private $env;
-
-    /**
-     * @var InputInterface|null
+     * @var InputInterface
      */
     private $input;
 
     /**
-     * @var OutputInterface|null
+     * @var OutputInterface
      */
     private $output;
 
@@ -40,15 +36,13 @@ class Context
     private static $contexts = [];
 
     /**
-     * @param ServerInterface|null $server
-     * @param Environment|null $env
-     * @param InputInterface|null $input
-     * @param OutputInterface|null $output
+     * @param Host $host
+     * @param InputInterface $input
+     * @param OutputInterface $output
      */
-    public function __construct($server, $env, $input, $output)
+    public function __construct($host, InputInterface $input = null, OutputInterface $output = null)
     {
-        $this->server = $server;
-        $this->env = $env;
+        $this->host = $host;
         $this->input = $input;
         $this->output = $output;
     }
@@ -62,13 +56,25 @@ class Context
     }
 
     /**
+     * @return bool
+     */
+    public static function has()
+    {
+        return !empty(self::$contexts);
+    }
+
+    /**
      * @return Context|false
+     * @throws Exception
      */
     public static function get()
     {
+        if (empty(self::$contexts)) {
+            throw new Exception('Context was required, but there\'s nothing there.');
+        }
         return end(self::$contexts);
     }
-    
+
     /**
      * @return Context
      */
@@ -78,15 +84,31 @@ class Context
     }
 
     /**
-     * @return Environment|null
+     * Throws a Exception when not called within a task-context and therefore no Context is available.
+     *
+     * This method provides a useful error to the end-user to make him/her aware
+     * to use a function in the required task-context.
+     *
+     * @param string $callerName
+     * @throws Exception
      */
-    public function getEnvironment()
+    public static function required($callerName)
     {
-        return $this->env;
+        if (!self::get()) {
+            throw new Exception("'$callerName' can only be used within a task.");
+        }
     }
 
     /**
-     * @return InputInterface|null
+     * @return Configuration
+     */
+    public function getConfig()
+    {
+        return $this->host->getConfig();
+    }
+
+    /**
+     * @return InputInterface
      */
     public function getInput()
     {
@@ -94,7 +116,7 @@ class Context
     }
 
     /**
-     * @return OutputInterface|null
+     * @return OutputInterface
      */
     public function getOutput()
     {
@@ -102,10 +124,10 @@ class Context
     }
 
     /**
-     * @return ServerInterface|null
+     * @return Host
      */
-    public function getServer()
+    public function getHost()
     {
-        return $this->server;
+        return $this->host;
     }
 }

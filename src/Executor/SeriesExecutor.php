@@ -1,5 +1,5 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -7,50 +7,73 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\Output\OutputWatcher;
-use Deployer\Server\Environment;
+use Deployer\Console\Output\Informer;
+use Deployer\Exception\NonFatalException;
+use Deployer\Host\Localhost;
 use Deployer\Task\Context;
-use Deployer\Task\NonFatalException;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class SeriesExecutor implements ExecutorInterface
 {
     /**
+     * @var InputInterface
+     */
+    private $input;
+
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
+    /**
+     * @var Informer
+     */
+    private $informer;
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param Informer $informer
+     */
+    public function __construct(InputInterface $input, OutputInterface $output, Informer $informer)
+    {
+        $this->input = $input;
+        $this->output = $output;
+        $this->informer = $informer;
+    }
+
+
+    /**
      * {@inheritdoc}
      */
-    public function run($tasks, $servers, $environments, $input, $output)
+    public function run($tasks, $hosts)
     {
-        $output = new OutputWatcher($output);
-        $informer = new Informer($output);
-
+        $localhost = new Localhost();
         foreach ($tasks as $task) {
             $success = true;
-            $informer->startTask($task->getName());
+            $this->informer->startTask($task);
 
-            if ($task->isOnce()) {
-                $task->run(new Context(null, null, $input, $output));
+            if ($task->isLocal()) {
+                $task->run(new Context($localhost, $this->input, $this->output));
             } else {
-                foreach ($servers as $serverName => $server) {
-                    if ($task->runOnServer($serverName)) {
-                        $env = isset($environments[$serverName]) ? $environments[$serverName] : $environments[$serverName] = new Environment();
-
-                        $informer->onServer($serverName);
-
+                foreach ($hosts as $host) {
+                    if ($task->shouldBePerformed($host)) {
                         try {
-                            $task->run(new Context($server, $env, $input, $output));
+                            $task->run(new Context($host, $this->input, $this->output));
                         } catch (NonFatalException $exception) {
                             $success = false;
-                            $informer->taskException($serverName, 'Deployer\Task\NonFatalException', $exception->getMessage());
+                            $this->informer->taskException($exception, $host);
                         }
-
-                        $informer->endOnServer($serverName);
+                        $this->informer->endOnHost($host->getHostname());
                     }
                 }
             }
 
             if ($success) {
-                $informer->endTask();
+                $this->informer->endTask($task);
             } else {
-                $informer->taskError();
+                $this->informer->taskError();
             }
         }
     }

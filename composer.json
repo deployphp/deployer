@@ -2,41 +2,45 @@
     "name": "deployer/deployer",
     "description": "Deployment Tool",
     "license": "MIT",
-    "homepage": "http://deployer.org",
+    "homepage": "https://deployer.org",
     "support": {
         "issues": "https://github.com/deployphp/deployer/issues",
         "source": "https://github.com/deployphp/deployer",
-        "docs": "http://deployer.org/docs"
+        "docs": "https://deployer.org/docs"
     },
     "authors": [
         {
             "name": "Anton Medvedev",
-            "email": "anton@elfet.ru"
+            "email": "anton@medv.io"
         }
     ],
     "autoload": {
         "psr-4": {
             "Deployer\\": "src/"
-        }
+        },
+        "files": [
+            "src/Support/helpers.php",
+            "src/functions.php"
+        ]
     },
     "bin": [
         "bin/dep"
     ],
     "require": {
-        "php": ">=5.4.0",
-        "elfet/pure": "~1.1",
-        "symfony/finder": "~2.6",
-        "symfony/console": "~2.6",
-        "symfony/yaml": "~2.6",
-        "symfony/process": "~2.6",
-        "kherge/amend": "~3.0",
-        "deployer/phpseclib": "~1.0"
+        "php": "~7.0",
+        "deployer/phar-update": "~2.1",
+        "pimple/pimple": "~3.0",
+        "symfony/console": "~2.7|~3.0|~4.0",
+        "symfony/process": "~2.7|~3.0|~4.0",
+        "symfony/yaml": "~2.7|~3.0|~4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.5"
+        "phpunit/phpunit": "^6.4.3"
     },
-    "suggest": {
-        "herzult/php-ssh": "For SSH support through native SSH2 extension",
-        "ext-sockets": "For parallel deployment"
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.0.8"
+        }
     }
 }

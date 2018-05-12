@@ -1,0 +1,73 @@
+#!/usr/bin/env php
+<?php
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+require __DIR__ . '/../vendor/autoload.php';
+
+define('ROOT', realpath(__DIR__ . '/..'));
+$opt = getopt('v::');
+
+$version = 'dev-master';
+if (array_key_exists('v', $opt)) {
+    $version = $opt['v'];
+    if (!preg_match('/^\d+\.\d+\.\d+(-[\d\w\.]+)?$/i', $version)) {
+        die("Version number must follow semantic versioning.\n");
+    }
+}
+
+chdir(ROOT);
+exec('composer install --no-dev');
+
+$pharName = "deployer.phar";
+$pharFile = ROOT . '/' . $pharName;
+
+if (file_exists($pharFile)) {
+    unlink($pharFile);
+}
+
+$phar = new \Phar($pharFile, 0, $pharName);
+$phar->setSignatureAlgorithm(\Phar::SHA1);
+
+$phar->startBuffering();
+
+$iterator = new RecursiveDirectoryIterator(ROOT, FilesystemIterator::SKIP_DOTS);
+$iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
+    return !in_array($fileInfo->getBasename(), ['.git', 'Tests', 'test'], true);
+});
+$iterator = new RecursiveIteratorIterator($iterator);
+$iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
+   return in_array($fileInfo->getExtension(), ['php', 'exe'], true);
+});
+
+foreach ($iterator as $fileInfo) {
+    $file = str_replace(ROOT, '', $fileInfo->getRealPath());
+
+    echo "Add file: " . $file . "\n";
+    $phar->addFile($fileInfo->getRealPath(), $file);
+}
+
+// Add bin/dep file
+$depContent = file_get_contents(ROOT . '/bin/dep');
+$depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
+$depContent = str_replace("'master'", "'$version'", $depContent);
+$depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
+$phar->addFromString('bin/dep', $depContent);
+
+$stub = <<<STUB
+#!/usr/bin/env php
+<?php
+Phar::mapPhar('{$pharName}');
+require 'phar://{$pharName}/bin/dep';
+__HALT_COMPILER();
+STUB;
+
+$phar->setStub($stub);
+$phar->compressFiles(Phar::GZ);
+$phar->stopBuffering();
+unset($phar);
+
+echo "$pharName was created successfully.\n";

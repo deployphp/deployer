@@ -2,20 +2,20 @@ checks:
   php:
     code_rating: true
     duplication: true
-    
+
 filter:
   paths:
     - src/*
     - recipe/*
     - bin/*
-  excluded_paths:
-    - src/Resources/*
 
 build:
+  environment:
+    php: '7.0.8'
   tests:
     override:
       -
-        command: phpunit --coverage-clover=coverage
+        command: 'php vendor/bin/phpunit --coverage-clover=coverage'
         coverage:
           file: coverage
           format: php-clover

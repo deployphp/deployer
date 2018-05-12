@@ -1,15 +1,21 @@
 <?php
-/* (c) Anton Medvedev <anton@elfet.ru>
+/* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
+namespace Deployer;
+
 require_once __DIR__ . '/common.php';
+
 
 /**
  * Symfony Configuration
  */
+
+// Symfony build set
+set('symfony_env', 'prod');
 
 // Symfony shared dirs
 set('shared_dirs', ['app/logs']);
@@ -20,16 +26,36 @@ set('shared_files', ['app/config/parameters.yml']);
 // Symfony writable dirs
 set('writable_dirs', ['app/cache', 'app/logs']);
 
+// Clear paths
+set('clear_paths', ['web/app_*.php', 'web/config.php']);
+
 // Assets
 set('assets', ['web/css', 'web/images', 'web/js']);
 
+// Requires non symfony-core package `kriswallsmith/assetic` to be installed
+set('dump_assets', false);
+
 // Environment vars
-env('env_vars', 'SYMFONY_ENV=prod');
-env('env', 'prod');
+set('env', function () {
+    return [
+        'SYMFONY_ENV' => get('symfony_env')
+    ];
+});
 
 // Adding support for the Symfony3 directory structure
 set('bin_dir', 'app');
 set('var_dir', 'app');
+
+// Symfony console bin
+set('bin/console', function () {
+    return sprintf('{{release_path}}/%s/console', trim(get('bin_dir'), '/'));
+});
+
+// Symfony console opts
+set('console_options', function () {
+    $options = '--no-interaction --env={{symfony_env}}';
+    return get('symfony_env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
+});
 
 
 /**
@@ -37,7 +63,7 @@ set('var_dir', 'app');
  */
 task('deploy:create_cache_dir', function () {
     // Set cache dir
-    env('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
+    set('cache_dir', '{{release_path}}/' . trim(get('var_dir'), '/') . '/cache');
 
     // Remove cache dir if it exist
     run('if [ -d "{{cache_dir}}" ]; then rm -rf {{cache_dir}}; fi');
@@ -58,29 +84,39 @@ task('deploy:assets', function () {
         return "{{release_path}}/$asset";
     }, get('assets')));
 
-    $time = run('date +%Y%m%d%H%M.%S');
-
-    run("find $assets -exec touch -t $time {} ';' &> /dev/null || true");
+    run(sprintf('find %s -exec touch -t %s {} \';\' &> /dev/null || true', $assets, date('YmdHi.s')));
 })->desc('Normalize asset timestamps');
+
+
+/**
+ * Install assets from public dir of bundles
+ */
+task('deploy:assets:install', function () {
+    run('{{bin/php}} {{bin/console}} assets:install {{console_options}} {{release_path}}/web');
+})->desc('Install bundle assets');
 
 
 /**
  * Dump all assets to the filesystem
  */
 task('deploy:assetic:dump', function () {
-
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console assetic:dump --env={{env}} --no-debug');
-
+    if (get('dump_assets')) {
+        run('{{bin/php}} {{bin/console}} assetic:dump {{console_options}}');
+    }
 })->desc('Dump assets');
 
+/**
+ * Clear Cache
+ */
+task('deploy:cache:clear', function () {
+    run('{{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
+})->desc('Clear cache');
 
 /**
  * Warm up cache
  */
 task('deploy:cache:warmup', function () {
-
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console cache:warmup  --env={{env}} --no-debug');
-
+    run('{{bin/php}} {{bin/console}} cache:warmup {{console_options}}');
 })->desc('Warm up cache');
 
 
@@ -88,40 +124,33 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-
-    run('php {{release_path}}/' . trim(get('bin_dir'), '/') . '/console doctrine:migrations:migrate --env={{env}} --no-debug --no-interaction');
-
+    run('{{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}} --allow-no-migration');
 })->desc('Migrate database');
-
-
-/**
- * Remove app_dev.php files
- */
-task('deploy:clear_controllers', function () {
-
-    run("rm -f {{release_path}}/web/app_*.php");
-
-})->setPrivate();
-
-after('deploy:update_code', 'deploy:clear_controllers');
 
 
 /**
  * Main task
  */
 task('deploy', [
+    'deploy:info',
     'deploy:prepare',
+    'deploy:lock',
     'deploy:release',
     'deploy:update_code',
+    'deploy:clear_paths',
     'deploy:create_cache_dir',
     'deploy:shared',
-    'deploy:writable',
     'deploy:assets',
     'deploy:vendors',
+    'deploy:assets:install',
     'deploy:assetic:dump',
+    'deploy:cache:clear',
     'deploy:cache:warmup',
+    'deploy:writable',
     'deploy:symlink',
+    'deploy:unlock',
     'cleanup',
 ])->desc('Deploy your project');
 
+// Display success message on completion
 after('deploy', 'success');

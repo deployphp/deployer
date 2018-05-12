@@ -1,5 +1,4 @@
 <?php
-// Search and include "autoload" file
 $loaded = false;
 
 foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php'] as $file) {
@@ -18,7 +17,9 @@ if (!$loaded) {
     );
 }
 
-// Include common files
-require_once __DIR__ . '/../src/functions.php';
-require_once __DIR__ . '/src/Helper/DeployerHelper.php';
-require_once __DIR__ . '/recipe/Helper/RecipeTester.php';
+define('DEPLOYER', true);
+define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
+define('DEPLOYER_PARALLEL_PTY', false);
+define('DEPLOYER_FIXTURES', __DIR__ . '/fixture');
+
+require_once __DIR__ . '/recipe/tester.php';

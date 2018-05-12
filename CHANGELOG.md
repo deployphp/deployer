@@ -14,6 +14,7 @@
 - Fixed missing `var/sessions` in Symfony 4 shared_dirs
 - Fixed warning with host without configuration [#1583]
 - Removed the `magento:enable` task from the Magento 2 recipe since the module states are defined in `app/etc/config.php` and this task overwrote that.
+- Allow to set template file path in Drupal 7 recipe [#1603]
 
 
 ## v6.2.0
@@ -378,7 +379,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1603]: https://github.com/deployphp/deployer/issues/1603
 [#1583]: https://github.com/deployphp/deployer/issues/1583
 [#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1575]: https://github.com/deployphp/deployer/pull/1575

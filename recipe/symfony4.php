@@ -43,7 +43,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:cache:clear',
     'deploy:cache:warmup',
-    'deploy:writable',    
+    'deploy:writable',
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',

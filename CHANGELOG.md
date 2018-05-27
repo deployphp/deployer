@@ -15,6 +15,7 @@
 - Fixed warning with host without configuration [#1583]
 - Removed the `magento:enable` task from the Magento 2 recipe since the module states are defined in `app/etc/config.php` and this task overwrote that.
 - Allow to set template file path in Drupal 7 recipe [#1603]
+- Fixed once() tasks that where being run multiple times with ParallelExecutor
 
 
 ## v6.2.0
@@ -401,6 +402,7 @@
 [#1452]: https://github.com/deployphp/deployer/pull/1452
 [#1437]: https://github.com/deployphp/deployer/issues/1437
 [#1426]: https://github.com/deployphp/deployer/pull/1426
+[#1419]: https://github.com/deployphp/deployer/issues/1419
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403
 [#1390]: https://github.com/deployphp/deployer/pull/1390

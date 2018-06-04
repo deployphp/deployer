@@ -1,5 +1,6 @@
 <?php
-/* (c) Jad Bitar <jadb@cakephp.org>
+/**
+ * (c) Jad Bitar <jadb@cakephp.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,6 +12,8 @@ require_once __DIR__ . '/common.php';
 
 /**
  * CakePHP 3 Project Template configuration
+ * 
+ * @see https://cakephp.org/
  */
 
 // CakePHP 3 Project Template shared dirs
@@ -36,9 +39,16 @@ task('deploy:init', function () {
  */
 task('deploy:run_migrations', function () {
     run('{{release_path}}/bin/cake migrations migrate');
-    run('{{release_path}}/bin/cake orm_cache clear');
-    run('{{release_path}}/bin/cake orm_cache build');
 })->desc('Run migrations');
+
+/**
+ * Clear the core caches
+ */
+task('deploy:clear_cache', function () {
+    run('{{release_path}}/bin/cake cache clear _cake_core_');
+    run('{{release_path}}/bin/cake cache clear _cake_routes_');
+    run('{{release_path}}/bin/cake cache clear _cake_models_');
+});
 
 /**
  * Main task

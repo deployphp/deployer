@@ -8,6 +8,9 @@
 - Make used shell configurable via `shellCommand` [#1536]
 - Added `cleanup_tty` option for `deploy:cleanup`
 
+### Changed
+- Optimize locateBinaryPath() to create less subprocesses [#1634]
+
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]
 - Fixed missing `var/sessions` in Symfony 4 shared_dirs
@@ -372,6 +375,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1634]: https://github.com/deployphp/deployer/pull/1634
 [#1603]: https://github.com/deployphp/deployer/issues/1603
 [#1583]: https://github.com/deployphp/deployer/issues/1583
 [#1580]: https://github.com/deployphp/deployer/pull/1580

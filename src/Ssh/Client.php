@@ -58,7 +58,7 @@ class Client
 
         $sshArguments = $host->getSshArguments();
 
-        $become = $host->has('become') ? 'sudo -H -u ' . $host->get('become') : '';
+        $become = ($host->has('become') && $host->get('become')) ? 'sudo -H -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.

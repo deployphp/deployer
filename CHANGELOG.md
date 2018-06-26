@@ -7,6 +7,7 @@
 - Added ability to use config params in host variables [#1508]
 - Make used shell configurable via `shellCommand` [#1536]
 - Added `cleanup_tty` option for `deploy:cleanup`
+- Added Prestashop 1.6 recipe
 
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]

@@ -146,6 +146,8 @@ class ParallelExecutor implements ExecutorInterface
 
         while ($this->areRunning($processes)) {
             $this->gatherOutput($processes, $callback);
+            
+            usleep(1000);
         }
         $this->gatherOutput($processes, $callback);
 

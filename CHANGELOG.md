@@ -16,6 +16,7 @@
 - Removed the `magento:enable` task from the Magento 2 recipe since the module states are defined in `app/etc/config.php` and this task overwrote that.
 - Allow to set template file path in Drupal 7 recipe [#1603]
 - Fixed once() tasks that where being run multiple times with ParallelExecutor
+- Fixed high CPU usage when running in paralell
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)

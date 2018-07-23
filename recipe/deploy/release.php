@@ -18,7 +18,7 @@ set('release_name', function () {
     });
 
     $nextReleaseNumber = 1;
-    if (count($list) > 0) {
+    if (\count($list) > 0) {
         $nextReleaseNumber = (int)max($list) + 1;
     }
 
@@ -60,13 +60,13 @@ set('releases_list', function () {
             // It spoils appearance of output log, to make it pretty,
             // we limit it to `n*2 + 5` lines from end of file (15 lines).
             // Always read as many lines as there are release directories.
-            $csv = run("tail -n " . max(count($releases), ($keepReleases * 2 + 5)) . " .dep/releases");
+            $csv = run("tail -n " . max(\count($releases), ($keepReleases * 2 + 5)) . " .dep/releases");
         }
 
         $metainfo = Csv::parse($csv);
 
-        for ($i = count($metainfo) - 1; $i >= 0; --$i) {
-            if (is_array($metainfo[$i]) && count($metainfo[$i]) >= 2) {
+        for ($i = \count($metainfo) - 1; $i >= 0; --$i) {
+            if (\is_array($metainfo[$i]) && \count($metainfo[$i]) >= 2) {
                 list(, $release) = $metainfo[$i];
                 $index = array_search($release, $list, true);
                 if ($index !== false) {

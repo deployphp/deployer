@@ -189,7 +189,7 @@ class DebugCommand extends Command
             $prefix = '';
 
             for ($i = 0; $i < $depth; $i++) {
-                if (in_array($i, $treeItem['openDepths'])) {
+                if (\in_array($i, $treeItem['openDepths'])) {
                     $prefix .= '│' . str_repeat(' ', $REPEAT_COUNT - 1);
                 } else {
                     $prefix .= str_repeat(' ', $REPEAT_COUNT);

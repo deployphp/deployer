@@ -126,7 +126,7 @@ class Application extends Console
         $exitCode = 0;
 
         if (!empty($this->catchIO)) {
-            list($input, $output) = call_user_func($this->catchIO, $input, $output);
+            list($input, $output) = \call_user_func($this->catchIO, $input, $output);
         }
 
         try {
@@ -138,7 +138,7 @@ class Application extends Console
         }
 
         if (!empty($this->after)) {
-            call_user_func($this->after, new CommandEvent($command, $input, $output, $exception, $exitCode));
+            \call_user_func($this->after, new CommandEvent($command, $input, $output, $exception, $exitCode));
         }
 
         if ($exception !== null) {

@@ -105,7 +105,7 @@ class Informer
         $messages = array_filter(array_map('trim', explode("\n", $exception->getMessage())), function ($line) {
             return !empty($line);
         });
-        $exceptionClass = get_class($exception);
+        $exceptionClass = \get_class($exception);
 
         if (empty($host)) {
             array_unshift($messages, "[$exceptionClass]");
@@ -128,7 +128,7 @@ class Informer
                 'args' => [],
             ]);
 
-            for ($i = 0, $count = count($trace); $i < $count; ++$i) {
+            for ($i = 0, $count = \count($trace); $i < $count; ++$i) {
                 $class = isset($trace[$i]['class']) ? $trace[$i]['class'] : '';
                 $type = isset($trace[$i]['type']) ? $trace[$i]['type'] : '';
                 $function = $trace[$i]['function'];

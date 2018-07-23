@@ -38,7 +38,7 @@ function array_merge_alternate(array $original, array $override)
 {
     foreach ($override as $key => $value) {
         if (isset($original[$key])) {
-            if (!is_array($original[$key])) {
+            if (!\is_array($original[$key])) {
                 if (is_numeric($key)) {
                     // Append scalar value
                     $original[] = $value;
@@ -46,7 +46,7 @@ function array_merge_alternate(array $original, array $override)
                     // Override scalar value
                     $original[$key] = $value;
                 }
-            } elseif (array_keys($original[$key]) === range(0, count($original[$key]) - 1)) {
+            } elseif (array_keys($original[$key]) === range(0, \count($original[$key]) - 1)) {
                 // Uniquely append to array with numeric keys
                 $original[$key] = array_unique(array_merge($original[$key], $value));
             } else {

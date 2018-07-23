@@ -43,7 +43,7 @@ function host(...$hostnames)
 
     // Return hosts if has
     if ($deployer->hosts->has($hostnames[0])) {
-        if (count($hostnames) === 1) {
+        if (\count($hostnames) === 1) {
             return $deployer->hosts->get($hostnames[0]);
         } else {
             return array_map([$deployer->hosts, 'get'], $hostnames);
@@ -51,7 +51,7 @@ function host(...$hostnames)
     }
 
     // Add otherwise
-    if (count($hostnames) === 1) {
+    if (\count($hostnames) === 1) {
         $host = new Host($hostnames[0]);
         $deployer->hosts->set($hostnames[0], $host);
         return $host;
@@ -74,8 +74,8 @@ function localhost(...$hostnames)
     $deployer = Deployer::get();
     $hostnames = Range::expand($hostnames);
 
-    if (count($hostnames) <= 1) {
-        $host = count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
+    if (\count($hostnames) <= 1) {
+        $host = \count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
         $deployer->hosts->set($host->getHostname(), $host);
         return $host;
     } else {
@@ -144,11 +144,11 @@ function task($name, $body = null)
         return $task;
     }
 
-    if (is_callable($body)) {
+    if (\is_callable($body)) {
         $task = new T($name, $body);
-    } elseif (is_array($body)) {
+    } elseif (\is_array($body)) {
         $task = new GroupTask($name, $body);
-    } elseif (is_string($body)) {
+    } elseif (\is_string($body)) {
         $task = new T($name, function () use ($body) {
             cd('{{release_path}}');
             run($body);
@@ -371,7 +371,7 @@ function on($hosts, callable $callback)
     $input = Context::has() ? input() : null;
     $output = Context::has() ? output() : null;
 
-    if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
+    if (!\is_array($hosts) && !($hosts instanceof \Traversable)) {
         $hosts = [$hosts];
     }
 
@@ -435,7 +435,7 @@ function upload($source, $destination, array $config = [])
     } else {
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            if (!isset($config['options']) || !is_array($config['options'])) {
+            if (!isset($config['options']) || !\is_array($config['options'])) {
                 $config['options'] = [];
             }
             $config['options'][] = "-e 'ssh $sshArguments'";
@@ -463,7 +463,7 @@ function download($source, $destination, array $config = [])
     } else {
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            if (!isset($config['options']) || !is_array($config['options'])) {
+            if (!isset($config['options']) || !\is_array($config['options'])) {
                 $config['options'] = [];
             }
             $config['options'][] = "-e 'ssh $sshArguments'";

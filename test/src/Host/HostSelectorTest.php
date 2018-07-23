@@ -71,7 +71,7 @@ class HostSelectorTest extends TestCase
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getHosts(null);
 
-        $this->assertSame(count($hosts), 100);
+        $this->assertSame(\count($hosts), 100);
     }
 
     public function testShouldThrowExceptionIfHostNameOrStageNotFound()
@@ -94,7 +94,7 @@ class HostSelectorTest extends TestCase
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getHosts('stage');
 
-        $this->assertSame(1, count($hosts));
+        $this->assertSame(1, \count($hosts));
     }
 
     public function testShouldReturnHostIfItHasHostnameEqualsStageName()
@@ -105,7 +105,7 @@ class HostSelectorTest extends TestCase
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getHosts('apps');
 
-        $this->assertSame(1, count($hosts));
+        $this->assertSame(1, \count($hosts));
     }
 
     public function testGetByHostnameReturnsArrayWithHostsAndCorrectLength()
@@ -117,7 +117,7 @@ class HostSelectorTest extends TestCase
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getByHostnames('server, app, db');
 
-        $this->assertSame(count($hosts), 3);
+        $this->assertSame(\count($hosts), 3);
         $this->assertSame('server', $hosts[0]->getHostname());
         $this->assertSame('app', $hosts[1]->getHostname());
         $this->assertSame('db', $hosts[2]->getHostname());

@@ -27,7 +27,7 @@ class PersistentCollection extends Collection
 
     public function flush()
     {
-        $dir = dirname($this->file);
+        $dir = \dirname($this->file);
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }

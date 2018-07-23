@@ -27,7 +27,7 @@ class Arguments
 
     public function getCliArguments()
     {
-        $boolFlags = array_keys(array_filter($this->flags, 'is_null'));
+        $boolFlags = array_keys(array_filter($this->flags, '\is_null'));
 
         $valueFlags = array_filter($this->flags);
         $valueFlags = array_map(function ($key, $value) {
@@ -151,7 +151,7 @@ class Arguments
                     $controlPath = "~/.ssh/deployer_$connectionData";
             }
             $tryLongestPossible++;
-        } while (strlen($controlPath) > 104); // Unix socket max length
+        } while (\strlen($controlPath) > 104); // Unix socket max length
 
         return $controlPath;
     }
@@ -159,7 +159,7 @@ class Arguments
     private function buildFlagsFromArray($flags)
     {
         $boolFlags = array_filter(array_map(function ($key, $value) {
-            if (is_int($key)) {
+            if (\is_int($key)) {
                 return $value;
             }
 
@@ -171,7 +171,7 @@ class Arguments
         }, array_keys($flags), $flags));
 
         $valueFlags = array_filter($flags, function ($key, $value) {
-            return is_string($key) && is_string($value);
+            return \is_string($key) && \is_string($value);
         }, ARRAY_FILTER_USE_BOTH);
 
         return array_merge(array_fill_keys($boolFlags, null), $valueFlags);

@@ -63,7 +63,7 @@ class ParallelExecutor implements ExecutorInterface
     public function run($tasks, $hosts)
     {
         $localhost = new Localhost();
-        $limit = (int)$this->input->getOption('limit') ?: count($hosts);
+        $limit = (int)$this->input->getOption('limit') ?: \count($hosts);
 
         // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
         // This allows to use code like this in parallel mode:
@@ -178,7 +178,7 @@ class ParallelExecutor implements ExecutorInterface
         $command = "$dep $file worker $arguments $options --hostname $hostname --task $taskName --config-file $configFile";
         $process = new Process($command);
 
-        if (!defined('DEPLOYER_PARALLEL_PTY')) {
+        if (!\defined('DEPLOYER_PARALLEL_PTY')) {
             $process->setPty(true);
         }
 

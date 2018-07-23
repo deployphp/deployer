@@ -57,7 +57,7 @@ class Configuration
     {
         if ($this->has($name)) {
             $config = $this->get($name);
-            if (!is_array($config)) {
+            if (!\is_array($config)) {
                 throw new ConfigurationException("Configuration parameter `$name` isn't array.");
             }
             $this->set($name, array_merge_alternate($config, $array));
@@ -75,7 +75,7 @@ class Configuration
     {
         if ($this->collection->has($name)) {
             if ($this->isClosure($this->collection[$name])) {
-                $value = $this->collection[$name] = call_user_func($this->collection[$name]);
+                $value = $this->collection[$name] = \call_user_func($this->collection[$name]);
             } else {
                 $value = $this->collection[$name];
             }
@@ -84,7 +84,7 @@ class Configuration
 
             if (isset($config[$name])) {
                 if ($this->isClosure($config[$name])) {
-                    $value = $this->collection[$name] = call_user_func($config[$name]);
+                    $value = $this->collection[$name] = \call_user_func($config[$name]);
                 } else {
                     $value = $this->collection[$name] = $config[$name];
                 }
@@ -119,7 +119,7 @@ class Configuration
      */
     public function parse($value)
     {
-        if (is_string($value)) {
+        if (\is_string($value)) {
             $value = preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $value);
         }
 
@@ -143,6 +143,6 @@ class Configuration
      */
     private function isClosure($t)
     {
-        return is_object($t) && ($t instanceof \Closure);
+        return \is_object($t) && ($t instanceof \Closure);
     }
 }

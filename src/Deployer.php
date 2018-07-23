@@ -120,8 +120,8 @@ class Deployer extends Container
         };
         $this['hostSelector'] = function ($c) {
             $defaultStage = $c['config']['default_stage'];
-            if (is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
-                $defaultStage = call_user_func($defaultStage);
+            if (\is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
+                $defaultStage = \call_user_func($defaultStage);
             }
             return new Host\HostSelector($c['hosts'], $defaultStage);
         };
@@ -206,7 +206,7 @@ class Deployer extends Container
     {
         if (self::hasDefault($name)) {
             $config = self::getDefault($name);
-            if (!is_array($config)) {
+            if (!\is_array($config)) {
                 throw new \RuntimeException("Configuration parameter `$name` isn't array.");
             }
             self::setDefault($name, array_merge_alternate($config, $array));
@@ -310,10 +310,10 @@ class Deployer extends Container
         // Pretty-print uncaught exceptions in symfony-console
         set_exception_handler(function ($e) use ($input, $output, $deployer) {
             $io = new SymfonyStyle($input, $output);
-            $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
+            $io->block($e->getMessage(), \get_class($e), 'fg=white;bg=red', ' ', true);
             $io->block($e->getTraceAsString());
 
-            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
+            $deployer->logger->log('['. \get_class($e) .'] '. $e->getMessage());
             $deployer->logger->log($e->getTraceAsString());
             exit(1);
         });
@@ -321,7 +321,7 @@ class Deployer extends Container
         // Require deploy.php file
         if (is_readable($deployFile)) {
             // Prevent variable leak into deploy.php file
-            call_user_func(function () use ($deployFile) {
+            \call_user_func(function () use ($deployFile) {
                 require $deployFile;
             });
         }
@@ -353,22 +353,22 @@ class Deployer extends Container
             'deployer_version' => $this->getConsole()->getVersion(),
             'deployer_phar' => $this->getConsole()->isPharArchive(),
             'php_version' => phpversion(),
-            'extension_pcntl' => extension_loaded('pcntl'),
-            'extension_curl' => extension_loaded('curl'),
-            'os' => defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
+            'extension_pcntl' => \extension_loaded('pcntl'),
+            'extension_curl' => \extension_loaded('curl'),
+            'os' => \defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
             'exception' => null,
         ];
 
         if ($commandEvent->getException() !== null) {
             $stats['status'] = 'error';
-            $stats['exception'] = get_class($commandEvent->getException());
+            $stats['exception'] = \get_class($commandEvent->getException());
         }
 
         if ($stats['command_name'] === 'init') {
             $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
         }
 
-        if (in_array($stats['command_name'], ['worker', 'list', 'help'], true)) {
+        if (\in_array($stats['command_name'], ['worker', 'list', 'help'], true)) {
             return;
         }
 

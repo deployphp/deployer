@@ -92,7 +92,7 @@ class Collection implements CollectionInterface, \Countable
      */
     public function count()
     {
-        return count($this->values);
+        return \count($this->values);
     }
 
     public function select(callable $callback)

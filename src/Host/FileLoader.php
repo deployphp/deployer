@@ -30,7 +30,7 @@ class FileLoader
 
         $data = Yaml::parse(file_get_contents($file));
 
-        if (!is_array($data)) {
+        if (!\is_array($data)) {
             throw new Exception("Hosts file `$file` should contains array of hosts.");
         }
 
@@ -63,7 +63,7 @@ class FileLoader
                 }
             }
 
-            if (is_array($config)) {
+            if (\is_array($config)) {
                 foreach ($config as $name => $value) {
                     $host->set($name, $value);
                 }

@@ -29,9 +29,9 @@ task('config:dump', function () {
     }
 
     foreach ($config->getCollection() as $name => $value) {
-        if (is_array($value)) {
+        if (\is_array($value)) {
             $value = json_encode($value, JSON_PRETTY_PRINT);
-        } elseif (is_bool($value)) {
+        } elseif (\is_bool($value)) {
             $value = $value ? 'Yes' : 'No';
         }
 

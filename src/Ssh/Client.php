@@ -158,7 +158,7 @@ class Client
         // Don't read from stderr, there is a bug in OpenSSH_7.2p2 (stderr doesn't closed with ControlMaster)
 
         $process = proc_open($command, $descriptors, $pipes);
-        if (is_resource($process)) {
+        if (\is_resource($process)) {
             fclose($pipes[0]);
             $output = stream_get_contents($pipes[1]);
             fclose($pipes[1]);

@@ -69,7 +69,7 @@ class HostSelector
         }
 
         if (empty($hosts)) {
-            if (count($this->hosts) === 0) {
+            if (\count($this->hosts) === 0) {
                 $hosts = ['localhost' => new Localhost()];
             } else {
                 throw new Exception('You need to specify at least one host or stage.');
@@ -95,14 +95,14 @@ class HostSelector
      */
     public function getByRoles($roles)
     {
-        if (is_string($roles)) {
+        if (\is_string($roles)) {
             $roles = array_map('trim', explode(',', $roles));
         }
 
         $hosts = [];
         foreach ($this->hosts as $host) {
             foreach ($host->get('roles', []) as $role) {
-                if (in_array($role, $roles, true)) {
+                if (\in_array($role, $roles, true)) {
                     $hosts[$host->getHostname()] = $host;
                 }
             }

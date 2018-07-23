@@ -102,7 +102,7 @@ class Task
         Context::push($context);
 
         // Call task
-        call_user_func($this->callback);
+        \call_user_func($this->callback);
 
         if ($this->once) {
             $this->hasRun = true;
@@ -216,18 +216,18 @@ class Task
         }
 
         foreach ($hosts as $host) {
-            $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
+            $onHost = empty($this->on['hosts']) || \in_array($host->getHostname(), $this->on['hosts'], true);
 
             $onRole = empty($this->on['roles']);
             foreach ((array) $host->get('roles', []) as $role) {
-                if (in_array($role, $this->on['roles'], true)) {
+                if (\in_array($role, $this->on['roles'], true)) {
                     $onRole = true;
                 }
             }
 
             $onStage = empty($this->on['stages']);
             if ($host->has('stage')) {
-                if (in_array($host->get('stage'), $this->on['stages'], true)) {
+                if (\in_array($host->get('stage'), $this->on['stages'], true)) {
                     $onStage = true;
                 }
             }

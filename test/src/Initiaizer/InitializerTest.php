@@ -49,7 +49,7 @@ class InitializerTest extends TestCase
     public function tearDown()
     {
         if ($this->tmpFilePath) {
-            $dir = dirname($this->tmpFilePath);
+            $dir = \dirname($this->tmpFilePath);
 
             $files = new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS),

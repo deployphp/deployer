@@ -101,7 +101,7 @@ class RunCommand extends Command
 
         $task = new Task($command, function () use ($command, $hosts) {
             $output = run($command);
-            if (count($hosts) > 1) {
+            if (\count($hosts) > 1) {
                 writeln("[{{hostname}}] > $output");
             } else {
                 write($output);

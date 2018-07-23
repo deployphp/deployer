@@ -18,12 +18,12 @@ class Reporter
     {
         $pid = null;
         // make sure function is not disabled via php.ini "disable_functions"
-        if (extension_loaded('pcntl') && function_exists('pcntl_fork')) {
+        if (\extension_loaded('pcntl') && \function_exists('pcntl_fork')) {
             declare(ticks = 1);
             $pid = pcntl_fork();
         }
 
-        if (is_null($pid) || $pid === -1) {
+        if (\is_null($pid) || $pid === -1) {
             // Fork fails or there is no `pcntl` extension.
             try {
                 self::send($stats);

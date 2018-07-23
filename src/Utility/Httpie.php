@@ -17,7 +17,7 @@ class Httpie
 
     public function __construct()
     {
-        if (!extension_loaded('curl')) {
+        if (!\extension_loaded('curl')) {
             throw new \Exception(
                 "Please, install curl extension.\n" .
                 "https://goo.gl/yTAeZh"
@@ -61,7 +61,7 @@ class Httpie
         $http->body = json_encode($data, JSON_PRETTY_PRINT);
         $http->headers += [
             'Content-Type: application/json',
-            'Content-Length: ' . strlen($http->body)
+            'Content-Length: ' . \strlen($http->body)
         ];
         return $http;
     }
@@ -72,7 +72,7 @@ class Httpie
         $http->body = http_build_query($data);
         $http->headers += [
             'Content-type: application/x-www-form-urlencoded',
-            'Content-Length: ' . strlen($http->body)
+            'Content-Length: ' . \strlen($http->body)
         ];
         return $http;
     }

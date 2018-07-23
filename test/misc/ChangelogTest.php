@@ -32,7 +32,7 @@ class ChangelogTest extends TestCase
         preg_match_all('|\[#(\d+)\]: https://github.com/deployphp/[\S/]+/\1/?|', $changelog, $matches);
         $refs = $matches[1];
 
-        for ($i = 1; $i < count($refs); $i++) {
+        for ($i = 1, $iMax = count($refs); $i < $iMax; $i++) {
             self::assertTrue($refs[$i - 1] > $refs[$i],
                 "Please, sort references in descending order.\n" .
                 "References for [#{$refs[$i - 1]}] and [#{$refs[$i]}] unordered."

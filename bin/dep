@@ -64,7 +64,7 @@ $includes = [
 $loaded = false;
 $includePath = false;
 
-for ($i = 0; $i < count($autoload); $i++) {
+for ($i = 0, $iMax = count($autoload); $i < $iMax; $i++) {
     if (file_exists($autoload[$i]) && file_exists($includes[$i])) {
         require $autoload[$i];
         $includePath = $includes[$i];

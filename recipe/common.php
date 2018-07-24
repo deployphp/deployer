@@ -39,6 +39,10 @@ set('user', function () {
     try {
         return runLocally('git config --get user.name');
     } catch (\Throwable $exception) {
+        if (false !== getenv('CI')) {
+            return 'Continuous Integration';
+        }
+
         return 'no_user';
     }
 });

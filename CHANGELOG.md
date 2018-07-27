@@ -22,6 +22,7 @@
 - Allow to set template file path in Drupal 7 recipe [#1603]
 - Fixed once() tasks that where being run multiple times with ParallelExecutor
 - Fixed high CPU usage when running in parallel
+- Fixed `deploy:writable` no need to specify http_user when using chgrp writable_mode
 
 
 ## v6.2.0

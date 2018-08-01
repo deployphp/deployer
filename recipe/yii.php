@@ -24,6 +24,7 @@ task('deploy', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
+    'deploy:shared',
     'deploy:vendors',
     'deploy:symlink',
     'deploy:unlock',

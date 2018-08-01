@@ -58,6 +58,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:init',
     'deploy:shared',
+    'deploy:writable',
     'deploy:run_migrations',
     'deploy:symlink',
     'deploy:unlock',

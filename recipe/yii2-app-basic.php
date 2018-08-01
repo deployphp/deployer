@@ -34,6 +34,7 @@ task('deploy', [
     'deploy:update_code',
     'deploy:shared',
     'deploy:vendors',
+    'deploy:writable',
     'deploy:run_migrations',
     'deploy:symlink',
     'deploy:unlock',

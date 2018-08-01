@@ -23,6 +23,7 @@
 - Fixed once() tasks that where being run multiple times with ParallelExecutor
 - Fixed high CPU usage when running in parallel
 - Fixed `deploy:writable` no need to specify http_user when using chgrp writable_mode
+- Fixed missing `deploy:writable` entries in recipes [#1661]
 
 
 ## v6.2.0
@@ -387,6 +388,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634
 [#1603]: https://github.com/deployphp/deployer/issues/1603
 [#1583]: https://github.com/deployphp/deployer/issues/1583

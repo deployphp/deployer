@@ -735,7 +735,7 @@ function commandExist($command)
 
 function commandSupportsOption($command, $option)
 {
-    return test("[[ $(man $command 2>&1 || $command -h 2>&1 || $command --help 2>&1) =~ '$option' ]]");
+    return test("[ $(man $command 2>&1 || $command -h 2>&1 || $command --help 2>&1) =~ '$option' ]");
 }
 
 /**

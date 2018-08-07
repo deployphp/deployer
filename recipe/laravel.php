@@ -133,6 +133,11 @@ task('artisan:storage:link', function () {
     }
 });
 
+desc('Execute artisan horizon:terminate');
+task('artisan:horizon:terminate', function () {
+    run('{{bin/php}} {{release_path}}/artisan horizon:terminate');
+});
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file

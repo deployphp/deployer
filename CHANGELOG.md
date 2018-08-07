@@ -9,6 +9,7 @@
 - Added `cleanup_tty` option for `deploy:cleanup`
 - Added Prestashop 1.6 recipe
 - Set dedicated user variable under CI environments, if not provided by git-config
+- Added artisan:horizon:terminate task for laravel recipe
 
 ### Changed
 - Optimize locateBinaryPath() to create less subprocesses [#1634]

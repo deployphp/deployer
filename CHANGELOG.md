@@ -24,6 +24,7 @@
 - Fixed `deploy:writable` no need to specify http_user when using chgrp writable_mode
 - Fixed `deploy:shared` missing from some recipes [#1663]
 - Fixed missing `deploy:writable` entries in recipes [#1661]
+- Fixed chmod recursively changing file permissions within directories [#1675]
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
@@ -382,6 +383,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1675]: https://github.com/deployphp/deployer/pull/1675
 [#1663]: https://github.com/deployphp/deployer/issues/1663
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634

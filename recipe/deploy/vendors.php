@@ -12,5 +12,12 @@ task('deploy:vendors', function () {
     if (!commandExist('unzip')) {
         writeln('<comment>To speed up composer installation setup "unzip" command with PHP zip extension https://goo.gl/sxzFcD</comment>');
     }
-    run('cd {{release_path}} && {{bin/composer}} {{composer_options}}');
+
+    $options = trim(get('composer_options'));
+    $action  = trim(get('composer_action'));
+    if (strpos($options, $action) === 0) {
+        set('composer_options', substr_replace($options, '', 0, strlen($action)));
+    }
+
+    run('cd {{release_path}} && {{bin/composer}} {{composer_action}} {{composer_options}}');
 });

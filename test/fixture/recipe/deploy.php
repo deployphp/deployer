@@ -82,5 +82,5 @@ fail('deploy_fail', 'deploy:unlock');
 // Dummy
 
 task('deploy:vendors', function () {
-    run('echo {{bin/composer}} {{composer_options}}');
+    run('echo {{bin/composer}} {{composer_action}} {{composer_options}}');
 });

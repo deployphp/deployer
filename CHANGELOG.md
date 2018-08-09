@@ -24,6 +24,7 @@
 - Fixed `deploy:writable` no need to specify http_user when using chgrp writable_mode
 - Fixed `deploy:shared` missing from some recipes [#1663]
 - Fixed missing `deploy:writable` entries in recipes [#1661]
+- Fixed implicit `composer_action` [#1666]
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)

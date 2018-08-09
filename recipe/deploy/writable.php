@@ -55,8 +55,7 @@ task('deploy:writable', function () {
             }
             run("$sudo chgrp -RH $httpGroup $dirs", $runOpts);
         } elseif ($mode === 'chmod') {
-            if (get('writable_chmod_recursive'))
-            {
+            if (get('writable_chmod_recursive')) {
                 run("$sudo find $dirs -type d -exec chmod {{writable_chmod_mode}} {} \;", $runOpts);
             } else {
                 run("$sudo chmod {{writable_chmod_mode}} $dirs", $runOpts);

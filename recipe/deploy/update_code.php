@@ -77,7 +77,13 @@ task('deploy:update_code', function () {
         }
     }
 
-    cd('{{deploy_path}}');
+    try {
+      cd('{{deploy_path}}');
+    } catch (\Exception $e) {
+      // Deploy_path is not set
+      writeln("➤ Deploy_Path is not set. -> won't cd into it");
+    }
+
     if ($gitCache && has('previous_release')) {
         try {
             run("$git clone $at $recursive -q --reference {{previous_release}} --dissociate $repository  {{release_path}} 2>&1", $options);

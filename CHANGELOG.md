@@ -1,7 +1,11 @@
 # Changelog
 
 ## master
-[v6.2.0...master](https://github.com/deployphp/deployer/compare/v6.2.0...master)
+[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+
+
+## v6.3.0
+[v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]

@@ -168,7 +168,6 @@ task('deploy', [
     'deploy:writable',
     'artisan:storage:link',
     'artisan:view:clear',
-    'artisan:cache:clear',
     'artisan:config:cache',
     'artisan:optimize',
     'deploy:symlink',

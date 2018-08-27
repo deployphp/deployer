@@ -3,6 +3,9 @@
 ## master
 [v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
 
+### Changed
+- Laravel recipe should not run `artisan:cache:clear` in `deploy` task
+
 
 ## v6.3.0
 [v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)

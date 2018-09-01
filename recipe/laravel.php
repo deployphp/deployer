@@ -88,6 +88,12 @@ task('artisan:db:seed', function () {
     writeln('<info>' . $output . '</info>');
 });
 
+desc('Execute artisan auth:clear-resets');
+task('artisan:auth:clear-resets', function () {
+    $output = run('{{bin/php}} {{release_path}}/artisan auth:clear-resets');
+    writeln('<info>' . $output . '</info>');
+});
+
 desc('Execute artisan cache:clear');
 task('artisan:cache:clear', function () {
     run('{{bin/php}} {{release_path}}/artisan cache:clear');
@@ -101,6 +107,11 @@ task('artisan:config:cache', function () {
 desc('Execute artisan route:cache');
 task('artisan:route:cache', function () {
     run('{{bin/php}} {{release_path}}/artisan route:cache');
+});
+
+desc('Execute artisan view:cache');
+task('artisan:view:cache', function () {
+    run('{{bin/php}} {{release_path}}/artisan view:cache');
 });
 
 desc('Execute artisan view:clear');

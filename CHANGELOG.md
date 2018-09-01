@@ -1,14 +1,19 @@
 # Changelog
 
 ## master
-[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+[v6.3.1...master](https://github.com/deployphp/deployer/compare/v6.3.1...master)
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 
+## v6.3.1
+[v6.3.0...v6.3.1](https://github.com/deployphp/deployer/compare/v6.3.0...v6.3.1)
+
+### Added
+- Added `artisan:view:cache` command
+- Added `auth:clear-resets` command
 
 ## v6.3.0
-[v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]

@@ -90,8 +90,7 @@ task('artisan:db:seed', function () {
 
 desc('Execute artisan auth:clear-resets');
 task('artisan:auth:clear-resets', function () {
-    $output = run('{{bin/php}} {{release_path}}/artisan auth:clear-resets');
-    writeln('<info>' . $output . '</info>');
+    run('{{bin/php}} {{release_path}}/artisan auth:clear-resets');
 });
 
 desc('Execute artisan cache:clear');

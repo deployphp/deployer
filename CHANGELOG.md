@@ -1,7 +1,13 @@
 # Changelog
 
+
+
 ## master
 [v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+- Added a function to Deployer\Host\FileLoader, expandOnLoad, which rebuilds the parsed yaml array with expanded hostnames. 
+- Updated deployer/test/fixtures/inventory.xml by combining db1.deployer.org and db2.deployer.org into db[1:2].deployer.org in order to test file loading with range.
+- Added tests for db1.deployer.org and db2.deployer.org in FileLoaderTest testLoad(). 
+- Added tests in FunctionTest testInventory() function to test for db1.deployer.org and db2.deployer.org because the bug report referenced inventory().
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task

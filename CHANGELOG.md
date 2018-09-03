@@ -4,14 +4,20 @@
 
 ## master
 [v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
-- Added a function to Deployer\Host\FileLoader, expandOnLoad, which rebuilds the parsed yaml array with expanded hostnames. 
-- Updated deployer/test/fixtures/inventory.xml by combining db1.deployer.org and db2.deployer.org into db[1:2].deployer.org in order to test file loading with range.
-- Added tests for db1.deployer.org and db2.deployer.org in FileLoaderTest testLoad(). 
-- Added tests in FunctionTest testInventory() function to test for db1.deployer.org and db2.deployer.org because the bug report referenced inventory().
+
 
 ### Changed
+- Updated db1.deployer.org and db2.deployer.org to db[1:2].deployer.org in test/fixture/inventory.yml.
+- Updated testInventory from FileLoadTest.php to test for db1.deployer.org and db2.deployer.org expansion when loaded from file.
+- Updated FileLoaderTest testLoad to validate db1.deployer.org and db2.deployer.org are expanded.
+
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 
+### Added
+- expandOnLoad function which expands ranges and rebuilds the array created by the Yaml parser.
+
+### Fixed
+- Fixed Range expansion when hosts.yml is loaded. [#1671]
 
 ## v6.3.0
 [v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)
@@ -409,7 +415,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634

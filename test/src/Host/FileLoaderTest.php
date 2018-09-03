@@ -52,10 +52,10 @@ class FileLoaderTest extends TestCase
             $bar->getSshArguments()->getCliArguments()
         );
 	
-	    $db1 = $this->getHost('db1.deployer.org');
-	    self::assertEquals('db1.deployer.org', $db1->getHostname());
-	    $db2 = $this->getHost('db2.deployer.org');
-	    self::assertEquals('db2.deployer.org', $db2->getHostname());
+	     $db1 = $this->getHost('db1.deployer.org');
+	     self::assertEquals('db1.deployer.org', $db1->getHostname());
+	     $db2 = $this->getHost('db2.deployer.org');
+	     self::assertEquals('db2.deployer.org', $db2->getHostname());
     }
 
     /**

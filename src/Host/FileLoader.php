@@ -20,7 +20,7 @@ class FileLoader
      * @param array $datain
      * @return array $dataexp
      */
-    public function expandOnLoad($datain) 
+    public function expandOnLoad($datain)
     {
         $dataout = [];
         foreach ($datain as $hostname => $config) {
@@ -29,9 +29,9 @@ class FileLoader
                     $dataout["$splithost"] = $config;
                 }
                 
-        } else {
+            } else {
 			    $dataout["$hostname"] = $config;
-        }
+            }
 
         }
 
@@ -49,7 +49,7 @@ class FileLoader
         }
 
         $data = Yaml::parse(file_get_contents($file));
-	    $data = $this->expandOnLoad($data);
+        $data = $this->expandOnLoad($data);
 	
         if (!is_array($data)) {
             throw new Exception("Hosts file `$file` should contains array of hosts.");

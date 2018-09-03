@@ -20,17 +20,18 @@ class FileLoader
      * @param array $datain
      * @return array $dataexp
      */
-    public function expandOnLoad($datain) {
+    public function expandOnLoad($datain) 
+    {
         $dataout = [];
         foreach ($datain as $hostname => $config) {
             if (preg_match('/\[(.+?)\]/', $hostname)) {
-                foreach(Range::expand([$hostname]) as $splithost) {
+                foreach (Range::expand([$hostname]) as $splithost) {
                     $dataout["$splithost"] = $config;
                 }
                 
-                } else {
-			        $dataout["$hostname"] = $config;
-                }
+        } else {
+			    $dataout["$hostname"] = $config;
+        }
 
         }
 

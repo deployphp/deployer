@@ -1,6 +1,18 @@
 # Changelog
 
+
 ## master
+[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+
+### Changed
+- Laravel recipe should not run `artisan:cache:clear` in `deploy` task
+
+### Fixed
+- Fixed Range expansion when hosts.yml is loaded. [#1671]
+
+
+## v6.3.0
+[v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]
@@ -12,6 +24,7 @@
 
 ### Changed
 - Optimize locateBinaryPath() to create less subprocesses [#1634]
+- Laravel recipe runs migrations only once
 
 ### Fixed
 - Fixed that long http user name is not detected correctly [#1580]
@@ -24,6 +37,19 @@
 - Fixed `deploy:writable` no need to specify http_user when using chgrp writable_mode
 - Fixed `deploy:shared` missing from some recipes [#1663]
 - Fixed missing `deploy:writable` entries in recipes [#1661]
+
+
+## v6.2.0
+
+### Added
+- Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
+- Make used shell configurable via `shellCommand` [#1536]
+
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
+- Fixed missing `var/sessions` in Symfony 4 shared_dirs
+- Fixed warning with host without configuration [#1583]
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
@@ -381,7 +407,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634

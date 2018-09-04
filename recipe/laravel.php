@@ -63,7 +63,7 @@ task('artisan:down', function () {
 desc('Execute artisan migrate');
 task('artisan:migrate', function () {
     run('{{bin/php}} {{release_path}}/artisan migrate --force');
-});
+})->once();
 
 desc('Execute artisan migrate:fresh');
 task('artisan:migrate:fresh', function () {
@@ -168,7 +168,6 @@ task('deploy', [
     'deploy:writable',
     'artisan:storage:link',
     'artisan:view:clear',
-    'artisan:cache:clear',
     'artisan:config:cache',
     'artisan:optimize',
     'deploy:symlink',

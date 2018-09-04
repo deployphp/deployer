@@ -79,7 +79,7 @@ task('deploy:update_code', function () {
 
     // Enter deploy_path if present
     if (has('deploy_path')) {
-      cd('{{deploy_path}}');
+        cd('{{deploy_path}}');
     }
 
     if ($gitCache && has('previous_release')) {

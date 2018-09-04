@@ -28,9 +28,8 @@ class FileLoader
                 foreach (Range::expand([$hostname]) as $splithost) {
                     $dataout["$splithost"] = $config;
                 }
-                
             } else {
-			    $dataout["$hostname"] = $config;
+                $dataout["$hostname"] = $config;
             }
 
         }

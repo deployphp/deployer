@@ -16,7 +16,25 @@ class FileLoader
      * @var Host[]
      */
     private $hosts = [];
+    /**
+     * @param array $datain
+     * @return array $dataexp
+     */
+    public function expandOnLoad($datain)
+    {
+        $dataout = [];
+        foreach ($datain as $hostname => $config) {
+            if (preg_match('/\[(.+?)\]/', $hostname)) {
+                foreach (Range::expand([$hostname]) as $splithost) {
+                    $dataout["$splithost"] = $config;
+                }
+            } else {
+                $dataout["$hostname"] = $config;
+            }
+        }
 
+        return $dataout;
+    }
     /**
      * @param string $file
      * @return $this
@@ -29,6 +47,7 @@ class FileLoader
         }
 
         $data = Yaml::parse(file_get_contents($file));
+        $data = $this->expandOnLoad($data);
 
         if (!is_array($data)) {
             throw new Exception("Hosts file `$file` should contains array of hosts.");

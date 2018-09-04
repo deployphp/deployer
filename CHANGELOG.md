@@ -1,10 +1,14 @@
 # Changelog
 
+
 ## master
 [v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
+
+### Fixed
+- Fixed Range expansion when hosts.yml is loaded. [#1671]
 
 
 ## v6.3.0
@@ -403,7 +407,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634

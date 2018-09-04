@@ -98,7 +98,7 @@ class FunctionsTest extends TestCase
     {
         inventory(__DIR__ . '/../fixture/inventory.yml');
 
-        foreach (['app.deployer.org', 'beta.deployer.org'] as $hostname) {
+        foreach (['app.deployer.org', 'beta.deployer.org', 'db1.deployer.org', 'db2.deployer.org'] as $hostname) {
             self::assertInstanceOf(Host::class, $this->deployer->hosts->get($hostname));
         }
     }

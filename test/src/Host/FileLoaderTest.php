@@ -51,7 +51,7 @@ class FileLoaderTest extends TestCase
             '-f -A -someFlag value -p 22 -F configFile -i identityFile -o Option=Value',
             $bar->getSshArguments()->getCliArguments()
         );
-	
+
         $db1 = $this->getHost('db1.deployer.org');
         self::assertEquals('db1.deployer.org', $db1->getHostname());
         $db2 = $this->getHost('db2.deployer.org');

@@ -1,23 +1,15 @@
 # Changelog
 
 
-
 ## master
 [v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
 
-
 ### Changed
-- Updated db1.deployer.org and db2.deployer.org to db[1:2].deployer.org in test/fixture/inventory.yml.
-- Updated testInventory from FileLoadTest.php to test for db1.deployer.org and db2.deployer.org expansion when loaded from file.
-- Updated FileLoaderTest testLoad to validate db1.deployer.org and db2.deployer.org are expanded.
-
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
-
-### Added
-- expandOnLoad function which expands ranges and rebuilds the array created by the Yaml parser.
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
+
 
 ## v6.3.0
 [v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)

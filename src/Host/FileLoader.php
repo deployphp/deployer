@@ -31,7 +31,6 @@ class FileLoader
             } else {
                 $dataout["$hostname"] = $config;
             }
-
         }
 
         return $dataout;
@@ -49,7 +48,7 @@ class FileLoader
 
         $data = Yaml::parse(file_get_contents($file));
         $data = $this->expandOnLoad($data);
-	
+
         if (!is_array($data)) {
             throw new Exception("Hosts file `$file` should contains array of hosts.");
         }

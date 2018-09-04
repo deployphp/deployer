@@ -77,11 +77,9 @@ task('deploy:update_code', function () {
         }
     }
 
-    try {
-        cd('{{deploy_path}}');
-    } catch (\Exception $e) {
-        // Deploy_path is not set
-        writeln("➤ Deploy_Path is not set. -> won't cd into it");
+    // Enter deploy_path if present
+    if (has('deploy_path')) {
+      cd('{{deploy_path}}');
     }
 
     if ($gitCache && has('previous_release')) {

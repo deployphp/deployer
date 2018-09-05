@@ -9,6 +9,7 @@
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
+- Fixed usage (only if present) of deploy_path config setting. [#1677]
 
 
 ## v6.3.0

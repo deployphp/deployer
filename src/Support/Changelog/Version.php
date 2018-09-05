@@ -72,7 +72,6 @@ class Version
 
 {$added}{$changed}{$fixed}{$removed}
 MD;
-
     }
 
     public function getVersion(): string

@@ -43,7 +43,6 @@ class Changelog
 {$references}
 
 MD;
-
     }
 
     public function setTitle(string $title): void

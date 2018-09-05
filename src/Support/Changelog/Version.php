@@ -39,6 +39,42 @@ class Version
      */
     private $removed;
 
+    public function __toString()
+    {
+        $f = function (Item $item) {
+            return "- $item";
+        };
+
+        $added = "";
+        $changed = "";
+        $fixed = "";
+        $removed = "";
+        if (!empty($this->added)) {
+            $added = join("\n", array_map($f, $this->added));
+            $added = "### Added\n$added\n\n";
+        }
+        if (!empty($this->changed)) {
+            $changed = join("\n", array_map($f, $this->changed));
+            $changed = "### Changed\n$changed\n\n";
+        }
+        if (!empty($this->fixed)) {
+            $fixed = join("\n", array_map($f, $this->fixed));
+            $fixed = "### Fixed\n$fixed\n\n";
+        }
+        if (!empty($this->removed)) {
+            $removed = join("\n", array_map($f, $this->removed));
+            $removed = "### Removed\n$removed\n\n";
+        }
+
+        return <<<MD
+## {$this->version}
+[{$this->previous}...{$this->version}](https://github.com/deployphp/deployer/compare/{$this->previous}...{$this->version})
+
+{$added}{$changed}{$fixed}{$removed}
+MD;
+
+    }
+
     public function getVersion(): string
     {
         return $this->version;

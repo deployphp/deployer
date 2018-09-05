@@ -63,11 +63,6 @@
 - Added default -H flag when using become [#1556]
 - Added Symfony 4 recipe [#1437]
 
-### Fixed
-- Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
-- Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
-- Fixed shared dir/file paths containing variables (`{{variable}}`)
-
 ### Changed
 - Throw meaningfull exception on errors in cd() [#1480]
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
@@ -75,6 +70,11 @@
 - Show standard output in exceptions when error output is empty [#1554]
 - Improve readability of command for finding web server user [#1557]
 - Update symfony package dependencies to ~4.0 [#1559]
+
+### Fixed
+- Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
+- Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
+- Fixed shared dir/file paths containing variables (`{{variable}}`)
 
 
 ## v6.0.5
@@ -410,6 +410,7 @@
 - Fixed `DotArray` syntax in `Collection`
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
+
 
 
 [#1671]: https://github.com/deployphp/deployer/issues/1671

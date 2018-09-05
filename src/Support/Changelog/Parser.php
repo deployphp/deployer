@@ -125,16 +125,21 @@ class Parser
             $version = new Version();
             $version->setVersion($curr = $m[1]);
 
+            $compareLink = $this->next();
+            if (!preg_match('/^\[/', $compareLink)) {
+                throw $this->error("Expected link to compare page with previous version");
+            }
+
             $prev = 'v\d+\.\d+\.\d+(-[\d\w\.]+)?';
             $regexp = "/
                 ^ \[($prev)\.\.\.$curr\]
                 \(https\:\/\/github\.com\/deployphp\/deployer\/compare\/$prev\.\.\.$curr\) $
                 /x";
 
-            if (preg_match($regexp, $this->next(), $m)) {
+            if (preg_match($regexp, $compareLink, $m)) {
                 $version->setPrevious($m[1]);
             } else {
-                throw $this->error("Expected link to compare page with previous version");
+                throw $this->error("Error in compare link syntax");
             }
 
             $this->acceptEmptyLine();

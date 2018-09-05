@@ -9,6 +9,7 @@
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
+- Fixed usage (only if present) of deploy_path config setting. [#1677]
 
 
 ## v6.3.0
@@ -407,6 +408,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+[#1677]: https://github.com/deployphp/deployer/pull/1677
 [#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663
 [#1661]: https://github.com/deployphp/deployer/pull/1661
@@ -502,3 +504,4 @@
 [#911]: https://github.com/deployphp/deployer/pull/911
 [#381]: https://github.com/deployphp/deployer/pull/381
 [#330]: https://github.com/deployphp/deployer/pull/330
+

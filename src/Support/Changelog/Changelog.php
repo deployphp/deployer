@@ -39,7 +39,6 @@ class Changelog
 
 
 {$versions}
-
 {$references}
 
 MD;

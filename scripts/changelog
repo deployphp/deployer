@@ -29,7 +29,7 @@ $app->register('update')->setCode(function () {
 
     $changelog = $parser->parse();
 
-    print_r($changelog);
+    print_r("$changelog");
 });
 
 $app->run($input, $output);

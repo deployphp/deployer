@@ -24,9 +24,26 @@ class Changelog
      */
     private $references = [];
 
-    public function getTitle(): string
+    public function __toString()
     {
-        return $this->title;
+        $versions = join("\n", $this->versions);
+
+        krsort($this->references, SORT_NUMERIC);
+
+        $references = join("\n", array_map(function ($link, $ref) {
+            return "[#$ref]: $link";
+        }, $this->references, array_keys($this->references)));
+
+        return <<<MD
+# {$this->title}
+
+
+{$versions}
+
+{$references}
+
+MD;
+
     }
 
     public function setTitle(string $title): void

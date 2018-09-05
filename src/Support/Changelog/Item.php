@@ -13,9 +13,20 @@ class Item
     private $message;
 
     /**
-     * @var string[]
+     * @var int[]
      */
     private $references = [];
+
+    public function __toString()
+    {
+        sort($this->references, SORT_NUMERIC);
+
+        $references = join('', array_map(function ($ref) {
+            return " [#$ref]";
+        }, $this->references));
+
+        return "{$this->message}$references";
+    }
 
     public function getMessage(): string
     {
@@ -32,7 +43,7 @@ class Item
         return $this->references;
     }
 
-    public function addReference(string $reference): void
+    public function addReference(int $reference): void
     {
         $this->references[] = $reference;
     }

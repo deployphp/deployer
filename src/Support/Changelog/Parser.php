@@ -180,7 +180,7 @@ class Parser
                 $item->addReference($m);
             }
 
-            $message = rtrim(preg_replace($ref, '', $message));
+            $message = trim(preg_replace($ref, '', $message));
             $item->setMessage($message);
             $items[] = $item;
         }
@@ -190,9 +190,12 @@ class Parser
     private function parseReferences()
     {
         $refs = [];
-        while (preg_match('/^ \[\#(\d+)\]\: \s (https\:\/\/github\.com\/deployphp\/deployer\/(issues|pull)\/\d+)$/x', $this->current(), $m)) {
-            $this->next();
-            $refs[$m[1]] = $m[2];
+        while (preg_match('/^\[/', $this->current())) {
+            if (preg_match('/^ \[\#(\d+)\]\: \s (https\:\/\/github\.com\/deployphp\/deployer\/(issues|pull)\/\d+)$/x', $this->next(), $m)) {
+                $refs[$m[1]] = $m[2];
+            } else {
+                throw $this->error('Error parsing reference');
+            }
         }
         return $refs;
     }

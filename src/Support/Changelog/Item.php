@@ -47,6 +47,4 @@ class Item
     {
         $this->references[] = $reference;
     }
-
-
 }

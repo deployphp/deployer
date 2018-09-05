@@ -23,12 +23,8 @@ $io = new SymfonyStyle($input, $output);
 
 $app->setDefaultCommand('update');
 $app->register('update')->setCode(function () {
-    $input = file_get_contents('CHANGELOG.md');
-
-    $parser = new Parser($input);
-
+    $parser = new Parser(file_get_contents('CHANGELOG.md'));
     $changelog = $parser->parse();
-
     print_r("$changelog");
 });
 

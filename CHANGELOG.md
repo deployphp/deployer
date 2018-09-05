@@ -40,6 +40,7 @@
 
 
 ## v6.2.0
+[v6.1.0...v6.2.0](https://github.com/deployphp/deployer/compare/v6.1.0...v6.2.0)
 
 ### Added
 - Added cache clear/warmup task for symfony4 recipe [#1575]
@@ -50,6 +51,7 @@
 - Fixed that long http user name is not detected correctly [#1580]
 - Fixed missing `var/sessions` in Symfony 4 shared_dirs
 - Fixed warning with host without configuration [#1583]
+
 
 ## v6.1.0
 [v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
@@ -199,6 +201,7 @@
 - Fixed exit code on error [#1236]
 - Fixed bug with deploying in parallel to same host [#1271]
 
+
 ## v5.0.3
 [v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)
 
@@ -243,6 +246,7 @@
 - Fixed `dep ssh` command [#1204]
 - Fixed `dep config:current` task
 
+
 ## v5.0.0-beta.3
 [v5.0.0-beta.2...v5.0.0-beta.3](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...v5.0.0-beta.3)
 
@@ -256,6 +260,7 @@
 ### Fixed
 - Fixed command parsing in runLocally func
 - Fixed releases list and cleanup task [#1175]
+
 
 ## v5.0.0-beta.2
 [v5.0.0-beta.1...v5.0.0-beta.2](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...v5.0.0-beta.2)
@@ -325,6 +330,7 @@
 - Fixed uploading of files containing spaces [#1077]
 - Fixed download of files when filename remote contains spaces [#1082]
 
+
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)
 
@@ -376,7 +382,6 @@
 - Fixed bug with `$httpGroup` guard clause [#948]
 
 
-
 ## v4.0.2
 [v4.0.1...v4.0.2](https://github.com/deployphp/deployer/compare/v4.0.1...v4.0.2)
 
@@ -385,7 +390,6 @@
 - Fixed recursive upload in native ssh
 - Improved Laravel recipe
 - Improved exceptions in runLocally
-
 
 
 ## v4.0.1
@@ -406,6 +410,7 @@
 - Fixed `DotArray` syntax in `Collection`
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
+
 
 [#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663

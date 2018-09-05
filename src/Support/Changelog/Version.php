@@ -75,32 +75,14 @@ MD;
 
     }
 
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
-
     public function setVersion(string $version): void
     {
         $this->version = $version;
     }
 
-    public function getPrevious(): string
-    {
-        return $this->previous;
-    }
-
     public function setPrevious(string $previous): void
     {
         $this->previous = $previous;
-    }
-
-    /**
-     * @return Item[]
-     */
-    public function getAdded(): array
-    {
-        return $this->added;
     }
 
     /**
@@ -112,14 +94,6 @@ MD;
     }
 
     /**
-     * @return Item[]
-     */
-    public function getChanged(): array
-    {
-        return $this->changed;
-    }
-
-    /**
      * @param Item[] $changed
      */
     public function setChanged(array $changed): void
@@ -128,27 +102,11 @@ MD;
     }
 
     /**
-     * @return Item[]
-     */
-    public function getFixed(): array
-    {
-        return $this->fixed;
-    }
-
-    /**
      * @param Item[] $fixed
      */
     public function setFixed(array $fixed): void
     {
         $this->fixed = $fixed;
-    }
-
-    /**
-     * @return Item[]
-     */
-    public function getRemoved(): array
-    {
-        return $this->removed;
     }
 
     /**

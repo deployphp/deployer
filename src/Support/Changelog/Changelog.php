@@ -50,25 +50,9 @@ MD;
         $this->title = $title;
     }
 
-    /**
-     * @return Version[]
-     */
-    public function getVersions(): array
-    {
-        return $this->versions;
-    }
-
     public function addVersion(Version $version): void
     {
         $this->versions[] = $version;
-    }
-
-    /**
-     * @return array
-     */
-    public function getReferences(): array
-    {
-        return $this->references;
     }
 
     /**

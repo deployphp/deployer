@@ -37,12 +37,12 @@ task('magento:deploy:assets', function () {
 
 desc('Enable maintenance mode');
 task('magento:maintenance:enable', function () {
-    run("if [ -d $(echo {{deploy_path}}/current) ]; then {{bin/php}} {{deploy_path}}/current/bin/magento maintenance:enable; fi");
+    run("if [ -d $(echo {{deploy_path}}/{{web_dir}}) ]; then {{bin/php}} {{deploy_path}}/{{web_dir}}/bin/magento maintenance:enable; fi");
 });
 
 desc('Disable maintenance mode');
 task('magento:maintenance:disable', function () {
-    run("if [ -d $(echo {{deploy_path}}/current) ]; then {{bin/php}} {{deploy_path}}/current/bin/magento maintenance:disable; fi");
+    run("if [ -d $(echo {{deploy_path}}/{{web_dir}}) ]; then {{bin/php}} {{deploy_path}}/{{web_dir}}/bin/magento maintenance:disable; fi");
 });
 
 desc('Upgrade magento database');

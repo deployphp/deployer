@@ -23,9 +23,9 @@ task('deploy:prepare', function () {
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Check for existing /current directory (not symlink)
-    $result = test('[ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]');
+    $result = test('[ ! -L {{deploy_path}}/{{web_dir}} ] && [ -d {{deploy_path}}/{{web_dir}} ]');
     if ($result) {
-        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+        throw new \RuntimeException('There already is a directory (not symlink) named "' . get('web_dir') . '" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
     // Create metadata .dep dir.

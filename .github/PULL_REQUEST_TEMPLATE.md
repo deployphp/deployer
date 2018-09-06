@@ -6,7 +6,7 @@
 | Deprecations? | Yes or No
 | Fixed tickets | N/A or xx
 
-> Do not forget to add notes about your changes to [CHANGELOG.md](https://github.com/deployphp/deployer/blob/master/CHANGELOG.md)
+> Do not forget to add notes about your changes to CHANGELOG.md
 >
 > Easiest way to do it, by running next command:
 >

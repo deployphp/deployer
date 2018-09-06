@@ -24,9 +24,15 @@ class Parser
      */
     private $lineNumber = 0;
 
-    public function __construct(string $changelog)
+    /**
+     * @var bool
+     */
+    private $strict;
+
+    public function __construct(string $changelog, bool $strict = true)
     {
         $this->tokens = preg_split("/\n/", $changelog);
+        $this->strict = $strict;
     }
 
     private function current(): string
@@ -57,8 +63,14 @@ class Parser
 
     private function acceptEmptyLine()
     {
-        if ("" !== $this->next()) {
-            throw $this->error("Expected an empty line");
+        if ($this->strict) {
+            if ("" !== $this->next()) {
+                throw $this->error("Expected an empty line");
+            }
+        } else {
+            while (preg_match('/^\s*$/', $this->current()) && count($this->tokens) > 0) {
+                $this->next();
+            }
         }
     }
 

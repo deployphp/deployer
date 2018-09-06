@@ -54,11 +54,48 @@ MD;
         $this->versions[] = $version;
     }
 
+    public function prependVersion(Version $version): void
+    {
+        array_unshift($this->versions, $version);
+    }
+
+    public function findMaster(): Version
+    {
+        foreach ($this->versions as $version) {
+            if ($version->getVersion() === 'master') {
+                return $version;
+            }
+        }
+
+        $version = new Version();
+        $version->setVersion('master');
+        $version->setPrevious($this->findLatest()->getVersion());
+        $this->prependVersion($version);
+
+        return $version;
+    }
+
+    public function findLatest(): Version
+    {
+        foreach ($this->versions as $version) {
+            if ($version->getVersion() === 'master') {
+                continue;
+            }
+            return $version;
+        }
+        throw new \RuntimeException('There no versions.');
+    }
+
     /**
      * @param array $references
      */
     public function setReferences(array $references): void
     {
         $this->references = $references;
+    }
+
+    public function addReferences(int $ref, string $url)
+    {
+        $this->references[$ref] = $url;
     }
 }

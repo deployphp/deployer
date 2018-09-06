@@ -74,6 +74,11 @@ class Version
 MD;
     }
 
+    public function getVersion(): string
+    {
+        return $this->version;
+    }
+
     public function setVersion(string $version): void
     {
         $this->version = $version;
@@ -114,5 +119,25 @@ MD;
     public function setRemoved(array $removed): void
     {
         $this->removed = $removed;
+    }
+
+    public function addAdded(Item $added): void
+    {
+        $this->added[] = $added;
+    }
+
+    public function addChanged(Item $changed): void
+    {
+        $this->changed[] = $changed;
+    }
+
+    public function addFixed(Item $fixed): void
+    {
+        $this->fixed[] = $fixed;
+    }
+
+    public function addRemoved(Item $removed): void
+    {
+        $this->removed[] = $removed;
     }
 }

@@ -42,10 +42,6 @@ class ChangelogTest extends TestCase
         }
     }
 
-    /**
-     * @depends testChangelogHasReferences
-     * @depends testChangelogReferencesOrdered
-     */
     public function testChangelogParse()
     {
         $input = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
@@ -54,5 +50,21 @@ class ChangelogTest extends TestCase
         $changelog = $parser->parse();
 
         self::assertTrue($changelog instanceof Changelog);
+    }
+
+    public function testChangelogString()
+    {
+        $input = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+
+        $parser = new Parser($input, false);
+        $changelog = $parser->parse();
+
+        self::assertTrue(
+            "$changelog" === $input,
+            "Please make sure what CHANGELOG.md formatted properly. Run next command:\n" .
+            "\n" .
+            "    php bin/changelog fix\n" .
+            "\n"
+        );
     }
 }

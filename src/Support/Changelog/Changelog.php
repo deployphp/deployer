@@ -44,17 +44,17 @@ class Changelog
 MD;
     }
 
-    public function setTitle(string $title): void
+    public function setTitle(string $title)
     {
         $this->title = $title;
     }
 
-    public function addVersion(Version $version): void
+    public function addVersion(Version $version)
     {
         $this->versions[] = $version;
     }
 
-    public function prependVersion(Version $version): void
+    public function prependVersion(Version $version)
     {
         array_unshift($this->versions, $version);
     }
@@ -89,7 +89,7 @@ MD;
     /**
      * @param array $references
      */
-    public function setReferences(array $references): void
+    public function setReferences(array $references)
     {
         $this->references = $references;
     }

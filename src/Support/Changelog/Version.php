@@ -79,12 +79,12 @@ MD;
         return $this->version;
     }
 
-    public function setVersion(string $version): void
+    public function setVersion(string $version)
     {
         $this->version = $version;
     }
 
-    public function setPrevious(string $previous): void
+    public function setPrevious(string $previous)
     {
         $this->previous = $previous;
     }
@@ -92,7 +92,7 @@ MD;
     /**
      * @param Item[] $added
      */
-    public function setAdded(array $added): void
+    public function setAdded(array $added)
     {
         $this->added = $added;
     }
@@ -100,7 +100,7 @@ MD;
     /**
      * @param Item[] $changed
      */
-    public function setChanged(array $changed): void
+    public function setChanged(array $changed)
     {
         $this->changed = $changed;
     }
@@ -108,7 +108,7 @@ MD;
     /**
      * @param Item[] $fixed
      */
-    public function setFixed(array $fixed): void
+    public function setFixed(array $fixed)
     {
         $this->fixed = $fixed;
     }
@@ -116,27 +116,27 @@ MD;
     /**
      * @param Item[] $removed
      */
-    public function setRemoved(array $removed): void
+    public function setRemoved(array $removed)
     {
         $this->removed = $removed;
     }
 
-    public function addAdded(Item $added): void
+    public function addAdded(Item $added)
     {
         $this->added[] = $added;
     }
 
-    public function addChanged(Item $changed): void
+    public function addChanged(Item $changed)
     {
         $this->changed[] = $changed;
     }
 
-    public function addFixed(Item $fixed): void
+    public function addFixed(Item $fixed)
     {
         $this->fixed[] = $fixed;
     }
 
-    public function addRemoved(Item $removed): void
+    public function addRemoved(Item $removed)
     {
         $this->removed[] = $removed;
     }

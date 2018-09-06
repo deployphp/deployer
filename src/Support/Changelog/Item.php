@@ -28,12 +28,12 @@ class Item
         return "{$this->message}$references";
     }
 
-    public function setMessage(string $message): void
+    public function setMessage(string $message)
     {
         $this->message = $message;
     }
 
-    public function addReference(int $reference): void
+    public function addReference(int $reference)
     {
         $this->references[] = $reference;
     }

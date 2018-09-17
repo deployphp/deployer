@@ -36,6 +36,7 @@ See also the list of [contributors](https://github.com/deployphp/deployer/graphs
 
 ## Backers
 * <a href="https://hyper.host">Tony James from HYPERHOST <img src="https://hyper.host/img/hyper-host-logo-green.png" alt="hyper.host" width="40"></a>
+* Daniel Knoch from [cariba.de](https://cariba.de)
 
 ## License
 Licensed under the [MIT license](https://github.com/deployphp/deployer/blob/master/LICENSE).

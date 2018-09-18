@@ -27,7 +27,7 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "elfet/pure": "~2.0",
+        "elfet/pure": "~2.0|~3.0",
         "monolog/monolog": "^1.21",
         "phpseclib/phpseclib": "~2.0",
         "pimple/pimple": "~3.0",

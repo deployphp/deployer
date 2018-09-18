@@ -10,6 +10,7 @@
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
+- Parameters -f or --file now are accepted also without the equal sign [#1479]
 
 
 ## v6.3.0
@@ -433,6 +434,7 @@
 [#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1480]: https://github.com/deployphp/deployer/issues/1480
+[#1479]: https://github.com/deployphp/deployer/issues/1479
 [#1476]: https://github.com/deployphp/deployer/pull/1476
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463

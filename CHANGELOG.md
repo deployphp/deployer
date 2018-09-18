@@ -8,6 +8,7 @@
 - Log unhandled exceptions into logfile [#1481]
 
 ### Fixed
+- fix parameters -f or --file now are accepted without the equal sign [#1479] 
 - fix within() to also restore the working-path when the given callback throws a Exception [#1463]
 - `pcntl_fork` is blacklisted per default on ubuntu lts boxes. make sure deployer doesnt emit a warning in this case [#1476]
 - Update silverstripe recipe to support silverstripe 4

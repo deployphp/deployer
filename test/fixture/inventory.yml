@@ -35,11 +35,7 @@ app.deployer.org:
   roles: app
   deploy_path: ~/app
 
-db1.deployer.org:
-  stage: production
-  roles: db
-
-db2.deployer.org:
+db[1:2].deployer.org:
   stage: production
   roles: db
 

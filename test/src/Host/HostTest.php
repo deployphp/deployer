@@ -73,4 +73,15 @@ class HostTest extends TestCase
         self::assertEquals('host/alias', $host->getHostname());
         self::assertEquals('host', "$host");
     }
+
+    public function testHostWithParams()
+    {
+        $host = new Host('host');
+        $value = 'new_value';
+        $host
+            ->set('env', $value)
+            ->identityFile('{{env}}');
+
+        self::assertEquals($value, $host->getIdentityFile());
+    }
 }

@@ -57,7 +57,8 @@ class Client
         $this->pop->command($hostname, $command);
 
         $sshArguments = $host->getSshArguments();
-        $become = $host->has('become') ? 'sudo -u ' . $host->get('become') : '';
+
+        $become = $host->has('become') ? 'sudo -H -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.
@@ -80,7 +81,9 @@ class Client
             $sshArguments = $this->initMultiplexing($host);
         }
 
-        $ssh = "ssh $sshArguments $host $become 'bash -s; printf \"[exit_code:%s]\" $?;'";
+        $shellCommand = $host->getShellCommand();
+
+        $ssh = "ssh $sshArguments $host $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
 
         $process = new Process($ssh);
         $process

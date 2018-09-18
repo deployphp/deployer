@@ -24,11 +24,6 @@ set('clear_paths', [
 ]);
 
 // Tasks
-desc('Enable all modules');
-task('magento:enable', function () {
-    run("{{bin/php}} {{release_path}}/bin/magento module:enable --all");
-});
-
 desc('Compile magento di');
 task('magento:compile', function () {
     run("{{bin/php}} {{release_path}}/bin/magento setup:di:compile");
@@ -62,7 +57,6 @@ task('magento:cache:flush', function () {
 
 desc('Magento2 deployment operations');
 task('deploy:magento', [
-    'magento:enable',
     'magento:compile',
     'magento:deploy:assets',
     'magento:maintenance:enable',
@@ -79,8 +73,8 @@ task('deploy', [
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
-    'deploy:writable',
     'deploy:vendors',
+    'deploy:writable',
     'deploy:clear_paths',
     'deploy:magento',
     'deploy:symlink',

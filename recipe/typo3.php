@@ -25,6 +25,7 @@ task('deploy', [
     'deploy:update_code',
     'deploy:shared',
     'deploy:vendors',
+    'deploy:writable',
     'deploy:symlink',
     'deploy:unlock',
     'cleanup',

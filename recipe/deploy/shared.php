@@ -23,14 +23,14 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_dirs') as $dir) {
-        // Check if shared dir does not exists.
+        // Check if shared dir does not exist.
         if (!test("[ -d $sharedPath/$dir ]")) {
             // Create shared dir if it does not exist.
             run("mkdir -p $sharedPath/$dir");
 
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname($dir));
+                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname(parse($dir)));
             }
         }
 
@@ -46,12 +46,12 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_files') as $file) {
-        $dirname = dirname($file);
+        $dirname = dirname(parse($file));
 
         // Create dir of shared file
         run("mkdir -p $sharedPath/" . $dirname);
 
-        // Check if shared file does not exists in shared.
+        // Check if shared file does not exist in shared.
         // and file exist in release
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present

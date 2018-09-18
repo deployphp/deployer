@@ -6,7 +6,9 @@
 | Deprecations? | Yes or No
 | Fixed tickets | N/A or xx
 
-> Do not forget to add notes about your changes to [CHANGELOG.md](https://github.com/deployphp/deployer/blob/master/CHANGELOG.md)
-> * Add description under added/changed/fixed section.
-> * Add reference to closed issues `[#000]`.
-> * Add link to issue in the end of document.
+> Do not forget to add notes about your changes to CHANGELOG.md
+>
+> Easiest way to do it, by running next command:
+>
+>     php bin/changelog
+>

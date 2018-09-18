@@ -1,18 +1,82 @@
 # Changelog
 
-## master
-[v6.0.5...master](https://github.com/deployphp/deployer/compare/v6.0.5...master)
 
-### Added
-- Added a description to the autocomplete command [#1472]
-- Log unhandled exceptions into logfile [#1481]
+## master
+[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+
+### Changed
+- Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 
 ### Fixed
-- fix parameters -f or --file now are accepted without the equal sign [#1479] 
-- fix within() to also restore the working-path when the given callback throws a Exception [#1463]
-- `pcntl_fork` is blacklisted per default on ubuntu lts boxes. make sure deployer doesnt emit a warning in this case [#1476]
-- Update silverstripe recipe to support silverstripe 4
+- Fixed Range expansion when hosts.yml is loaded. [#1671]
+- Fixed usage (only if present) of deploy_path config setting. [#1677]
+
+
+## v6.3.0
+[v6.2.0...v6.3.0](https://github.com/deployphp/deployer/compare/v6.2.0...v6.3.0)
+
+### Added
+- Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
+- Make used shell configurable via `shellCommand` [#1536]
+- Added `cleanup_tty` option for `deploy:cleanup`
+- Added Prestashop 1.6 recipe
+- Set dedicated user variable under CI environments, if not provided by git-config
+
+### Changed
+- Optimize locateBinaryPath() to create less subprocesses [#1634]
+- Laravel recipe runs migrations only once
+
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
+- Fixed missing `var/sessions` in Symfony 4 shared_dirs
+- Fixed warning with host without configuration [#1583]
+- Removed the `magento:enable` task from the Magento 2 recipe since the module states are defined in `app/etc/config.php` and this task overwrote that.
+- Allow to set template file path in Drupal 7 recipe [#1603]
+- Fixed once() tasks that where being run multiple times with ParallelExecutor
+- Fixed high CPU usage when running in parallel
+- Fixed `deploy:writable` no need to specify http_user when using chgrp writable_mode
+- Fixed `deploy:shared` missing from some recipes [#1663]
+- Fixed missing `deploy:writable` entries in recipes [#1661]
+
+
+## v6.2.0
+[v6.1.0...v6.2.0](https://github.com/deployphp/deployer/compare/v6.1.0...v6.2.0)
+
+### Added
+- Added cache clear/warmup task for symfony4 recipe [#1575]
+- Added ability to use config params in host variables [#1508]
+- Make used shell configurable via `shellCommand` [#1536]
+
+### Fixed
+- Fixed that long http user name is not detected correctly [#1580]
+- Fixed missing `var/sessions` in Symfony 4 shared_dirs
+- Fixed warning with host without configuration [#1583]
+
+
+## v6.1.0
+[v6.0.5...v6.1.0](https://github.com/deployphp/deployer/compare/v6.0.5...v6.1.0)
+
+### Added
+- Added debug:task command to display the order of task execution [#1488]
+- Added a description to the autocomplete command [#1472]
+- Added logging of unhandled exceptions into logfile [#1481]
+- Added default -H flag when using become [#1556]
+- Added Symfony 4 recipe [#1437]
+
+### Changed
+- Throw meaningfull exception on errors in cd() [#1480]
 - Make sure Context::pop() is called when Callback errors in on(...) function [#1513]
+- Update silverstripe recipe to support silverstripe 4
+- Show standard output in exceptions when error output is empty [#1554]
+- Improve readability of command for finding web server user [#1557]
+- Update symfony package dependencies to ~4.0 [#1559]
+
+### Fixed
+- Fixed within() to also restore the working-path when the given callback throws a Exception [#1463]
+- Fixed `pcntl_fork` check for blacklisted Ubuntu LTS boxes [#1476]
+- Fixed shared dir/file paths containing variables (`{{variable}}`)
+
 
 ## v6.0.5
 [v6.0.4...v6.0.5](https://github.com/deployphp/deployer/compare/v6.0.4...v6.0.5)
@@ -138,6 +202,7 @@
 - Fixed exit code on error [#1236]
 - Fixed bug with deploying in parallel to same host [#1271]
 
+
 ## v5.0.3
 [v5.0.2...v5.0.3](https://github.com/deployphp/deployer/compare/v5.0.2...v5.0.3)
 
@@ -182,6 +247,7 @@
 - Fixed `dep ssh` command [#1204]
 - Fixed `dep config:current` task
 
+
 ## v5.0.0-beta.3
 [v5.0.0-beta.2...v5.0.0-beta.3](https://github.com/deployphp/deployer/compare/v5.0.0-beta.2...v5.0.0-beta.3)
 
@@ -195,6 +261,7 @@
 ### Fixed
 - Fixed command parsing in runLocally func
 - Fixed releases list and cleanup task [#1175]
+
 
 ## v5.0.0-beta.2
 [v5.0.0-beta.1...v5.0.0-beta.2](https://github.com/deployphp/deployer/compare/v5.0.0-beta.1...v5.0.0-beta.2)
@@ -264,6 +331,7 @@
 - Fixed uploading of files containing spaces [#1077]
 - Fixed download of files when filename remote contains spaces [#1082]
 
+
 ## v4.2.1
 [v4.2.0...v4.2.1](https://github.com/deployphp/deployer/compare/v4.2.0...v4.2.1)
 
@@ -315,7 +383,6 @@
 - Fixed bug with `$httpGroup` guard clause [#948]
 
 
-
 ## v4.0.2
 [v4.0.1...v4.0.2](https://github.com/deployphp/deployer/compare/v4.0.1...v4.0.2)
 
@@ -324,7 +391,6 @@
 - Fixed recursive upload in native ssh
 - Improved Laravel recipe
 - Improved exceptions in runLocally
-
 
 
 ## v4.0.1
@@ -346,14 +412,35 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
+
+[#1677]: https://github.com/deployphp/deployer/pull/1677
+[#1671]: https://github.com/deployphp/deployer/issues/1671
+[#1663]: https://github.com/deployphp/deployer/issues/1663
+[#1661]: https://github.com/deployphp/deployer/pull/1661
+[#1634]: https://github.com/deployphp/deployer/pull/1634
+[#1603]: https://github.com/deployphp/deployer/issues/1603
+[#1583]: https://github.com/deployphp/deployer/issues/1583
+[#1580]: https://github.com/deployphp/deployer/pull/1580
+[#1575]: https://github.com/deployphp/deployer/pull/1575
+[#1559]: https://github.com/deployphp/deployer/pull/1559
+[#1557]: https://github.com/deployphp/deployer/pull/1557
+[#1556]: https://github.com/deployphp/deployer/pull/1556
+[#1554]: https://github.com/deployphp/deployer/pull/1554
+[#1536]: https://github.com/deployphp/deployer/pull/1536
+[#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
+[#1508]: https://github.com/deployphp/deployer/issues/1508
+[#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
+[#1480]: https://github.com/deployphp/deployer/issues/1480
 [#1476]: https://github.com/deployphp/deployer/pull/1476
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463
 [#1455]: https://github.com/deployphp/deployer/pull/1455
 [#1452]: https://github.com/deployphp/deployer/pull/1452
+[#1437]: https://github.com/deployphp/deployer/issues/1437
 [#1426]: https://github.com/deployphp/deployer/pull/1426
+[#1419]: https://github.com/deployphp/deployer/issues/1419
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403
 [#1390]: https://github.com/deployphp/deployer/pull/1390

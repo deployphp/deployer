@@ -25,6 +25,7 @@ class Host
     private $forwardAgent = true;
     private $multiplexing = null;
     private $sshArguments;
+    private $shellCommand = 'bash -s';
 
     /**
      * @param string $hostname
@@ -48,7 +49,7 @@ class Host
         }
 
         if ($this->identityFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile);
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
         }
 
         if ($this->forwardAgent) {
@@ -72,7 +73,7 @@ class Host
      */
     public function getHostname()
     {
-        return $this->hostname;
+        return $this->config->parse($this->hostname);
     }
 
     /**
@@ -80,14 +81,10 @@ class Host
      */
     public function getRealHostname()
     {
-        return $this->realHostname;
+        return $this->config->parse($this->realHostname);
     }
 
-    /**
-     * @param string $hostname
-     * @return $this
-     */
-    public function hostname(string $hostname)
+    public function hostname(string $hostname): self
     {
         $this->setRealHostname($hostname);
         return $this;
@@ -106,14 +103,10 @@ class Host
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->config->parse($this->user);
     }
 
-    /**
-     * @param string $user
-     * @return $this
-     */
-    public function user(string $user)
+    public function user(string $user): self
     {
         $this->user = $user;
         return $this;
@@ -127,11 +120,7 @@ class Host
         return $this->port;
     }
 
-    /**
-     * @param int $port
-     * @return $this
-     */
-    public function port(int $port)
+    public function port(int $port): self
     {
         $this->port = $port;
         return $this;
@@ -145,11 +134,7 @@ class Host
         return $this->configFile;
     }
 
-    /**
-     * @param string $configFile
-     * @return $this
-     */
-    public function configFile(string $configFile)
+    public function configFile(string $configFile): self
     {
         $this->configFile = $configFile;
         return $this;
@@ -160,14 +145,10 @@ class Host
      */
     public function getIdentityFile()
     {
-        return $this->identityFile;
+        return $this->config->parse($this->identityFile);
     }
 
-    /**
-     * @param string $identityFile
-     * @return $this
-     */
-    public function identityFile(string $identityFile)
+    public function identityFile(string $identityFile): self
     {
         $this->identityFile = $identityFile;
         return $this;
@@ -181,11 +162,7 @@ class Host
         return $this->forwardAgent;
     }
 
-    /**
-     * @param bool $forwardAgent
-     * @return $this
-     */
-    public function forwardAgent(bool $forwardAgent = true)
+    public function forwardAgent(bool $forwardAgent = true): self
     {
         $this->forwardAgent = $forwardAgent;
         return $this;
@@ -199,11 +176,7 @@ class Host
         return $this->multiplexing;
     }
 
-    /**
-     * @param bool $multiplexing
-     * @return $this
-     */
-    public function multiplexing(bool $multiplexing = true)
+    public function multiplexing(bool $multiplexing = true): self
     {
         $this->multiplexing = $multiplexing;
         return $this;
@@ -215,49 +188,48 @@ class Host
         return $this->sshArguments;
     }
 
-    public function sshOptions(array $options) : Host
+    public function sshOptions(array $options): self
     {
         $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
-    public function sshFlags(array $flags) : Host
+    public function sshFlags(array $flags): self
     {
         $this->sshArguments = $this->sshArguments->withFlags($flags);
         return $this;
     }
 
-    public function addSshOption(string $option, $value) : Host
+    public function addSshOption(string $option, $value): self
     {
         $this->sshArguments = $this->sshArguments->withOption($option, $value);
         return $this;
     }
 
-    public function addSshFlag(string $flag, string $value = null) : Host
+    public function addSshFlag(string $flag, string $value = null): self
     {
         $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
         return $this;
     }
 
-    /**
-     * Set stage
-     *
-     * @param string $stage
-     * @return $this
-     */
-    public function stage(string $stage)
+    public function getShellCommand() : string
+    {
+        return $this->shellCommand;
+    }
+
+    public function shellCommand(string $shellCommand): self
+    {
+        $this->shellCommand = $shellCommand;
+        return $this;
+    }
+
+    public function stage(string $stage): self
     {
         $this->config->set('stage', $stage);
         return $this;
     }
 
-    /**
-     * Set roles
-     *
-     * @param array ...$roles
-     * @return $this
-     */
-    public function roles(...$roles)
+    public function roles(...$roles): self
     {
         $this->config->set('roles', []);
 
@@ -268,13 +240,7 @@ class Host
         return $this;
     }
 
-    /**
-     * Set become
-     *
-     * @param string $user
-     * @return $this
-     */
-    public function become(string $user)
+    public function become(string $user): self
     {
         $this->config->set('become', $user);
         return $this;

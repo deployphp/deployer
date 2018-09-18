@@ -5,6 +5,8 @@
  * file that was distributed with this source code.
  */
 
+use Deployer\Support\Changelog\Changelog;
+use Deployer\Support\Changelog\Parser;
 use PHPUnit\Framework\TestCase;
 
 class ChangelogTest extends TestCase
@@ -38,5 +40,31 @@ class ChangelogTest extends TestCase
                 "References for [#{$refs[$i - 1]}] and [#{$refs[$i]}] unordered."
             );
         }
+    }
+
+    public function testChangelogParse()
+    {
+        $input = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+
+        $parser = new Parser($input);
+        $changelog = $parser->parse();
+
+        self::assertTrue($changelog instanceof Changelog);
+    }
+
+    public function testChangelogString()
+    {
+        $input = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+
+        $parser = new Parser($input, false);
+        $changelog = $parser->parse();
+
+        self::assertTrue(
+            "$changelog" === $input,
+            "Please make sure what CHANGELOG.md formatted properly. Run next command:\n" .
+            "\n" .
+            "    php bin/changelog fix\n" .
+            "\n"
+        );
     }
 }

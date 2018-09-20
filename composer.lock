@@ -1,35 +1,35 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "41315607c3aa4cab0f8994a63fea3e6b",
+    "content-hash": "4e82b74892a67f56cc6bdf0a22e0e35f",
     "packages": [
         {
             "name": "elfet/pure",
-            "version": "v2.0.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/elfet/purephp.git",
-                "reference": "9d6422d31b89c4f79c322df2a7772936a8bc74a1"
+                "url": "https://github.com/antonmedv/purephp.git",
+                "reference": "05aa6b44cea9b0457ec1e5e67e8278cd89d47f21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elfet/purephp/zipball/9d6422d31b89c4f79c322df2a7772936a8bc74a1",
-                "reference": "9d6422d31b89c4f79c322df2a7772936a8bc74a1",
+                "url": "https://api.github.com/repos/antonmedv/purephp/zipball/05aa6b44cea9b0457ec1e5e67e8278cd89d47f21",
+                "reference": "05aa6b44cea9b0457ec1e5e67e8278cd89d47f21",
                 "shasum": ""
             },
             "require": {
                 "react/react": "~0.4",
-                "symfony/console": "~2.6|~3.0",
-                "symfony/debug": "~2.6|~3.0",
-                "symfony/expression-language": "~2.6|~3.0"
+                "symfony/console": "~2.6 || ~3.0 || ~4.0",
+                "symfony/debug": "~2.6 || ~3.0 || ~4.0",
+                "symfony/expression-language": "~2.6 || ~3.0 || ~4.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.4",
-                "symfony/finder": "~2.6|~3.0",
-                "symfony/process": "~2.6|~3.0"
+                "symfony/finder": "~2.6 || ~3.0 || ~4.0",
+                "symfony/process": "~2.6 || ~3.0 || ~4.0"
             },
             "bin": [
                 "pure"
@@ -47,11 +47,11 @@
             "authors": [
                 {
                     "name": "Anton Medvedev",
-                    "email": "anton@medv.io"
+                    "email": "anton@elfet.ru"
                 }
             ],
             "description": "Pure PHP key-value storage",
-            "time": "2016-03-19T14:26:03+00:00"
+            "time": "2018-09-18T08:59:27+00:00"
         },
         {
             "name": "evenement/evenement",
@@ -925,6 +925,7 @@
             "keywords": [
                 "Socket"
             ],
+            "abandoned": "react/socket",
             "time": "2016-12-06T10:54:49+00:00"
         },
         {
@@ -1205,55 +1206,6 @@
                 }
             ],
             "description": "Symfony ExpressionLanguage Component",
-            "homepage": "https://symfony.com",
-            "time": "2017-01-02T20:32:22+00:00"
-        },
-        {
-            "name": "symfony/finder",
-            "version": "v3.2.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/finder.git",
-                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/finder/zipball/8c71141cae8e2957946b403cc71a67213c0380d6",
-                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5.9"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.2-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Finder\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Fabien Potencier",
-                    "email": "fabien@symfony.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony Finder Component",
             "homepage": "https://symfony.com",
             "time": "2017-01-02T20:32:22+00:00"
         },
@@ -2680,6 +2632,55 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
+        },
+        {
+            "name": "symfony/finder",
+            "version": "v3.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/finder.git",
+                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/finder/zipball/8c71141cae8e2957946b403cc71a67213c0380d6",
+                "reference": "8c71141cae8e2957946b403cc71a67213c0380d6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Finder\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony Finder Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-01-02T20:32:22+00:00"
         },
         {
             "name": "webmozart/assert",

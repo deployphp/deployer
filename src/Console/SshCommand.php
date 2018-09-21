@@ -84,7 +84,7 @@ class SshCommand extends Command
         if ($host->has('shell_path')) {
             $shell_path = 'exec '.$host->get('shell_path').' -l';
         }
-        
+
         Context::push(new Context($host, $input, $output));
         $options = $host->getSshArguments();
         $deployPath = $host->get('deploy_path', '~');

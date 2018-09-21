@@ -79,7 +79,7 @@ class SshCommand extends Command
                 $host = $this->deployer->hosts->get($hostname);
             }
         }
-        
+
         $shell_path = 'exec $SHELL -l';
         if ($host->has('shell_path')) {
             $shell_path = 'exec '.$host->get('shell_path').' -l';

@@ -80,10 +80,15 @@ class SshCommand extends Command
             }
         }
 
+        $shell_path = 'exec $SHELL -l';
+        if ($host->has('shell_path')) {
+            $shell_path = 'exec '.$host->get('shell_path').' -l';
+        }
+
         Context::push(new Context($host, $input, $output));
         $options = $host->getSshArguments();
         $deployPath = $host->get('deploy_path', '~');
 
-        passthru("ssh -t $options $host 'cd '''$deployPath/current'''; exec \$SHELL -l'");
+        passthru("ssh -t $options $host 'cd '''$deployPath/current'''; $shell_path'");
     }
 }

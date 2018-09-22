@@ -4,6 +4,9 @@
 ## master
 [v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
 
+### Added
+- Support to define remote shell path via host-config [#1708] [#1709] [#1709]
+
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 
@@ -413,6 +416,8 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1709]: https://github.com/deployphp/deployer/issues/1709
+[#1708]: https://github.com/deployphp/deployer/pull/1708
 [#1677]: https://github.com/deployphp/deployer/pull/1677
 [#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663

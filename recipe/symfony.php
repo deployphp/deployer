@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -36,7 +36,7 @@ set('assets', ['web/css', 'web/images', 'web/js']);
 set('dump_assets', false);
 
 // Environment vars
-set('env', function () {
+set('env', function (): array {
     return [
         'SYMFONY_ENV' => get('symfony_env')
     ];
@@ -47,12 +47,12 @@ set('bin_dir', 'app');
 set('var_dir', 'app');
 
 // Symfony console bin
-set('bin/console', function () {
+set('bin/console', function (): string {
     return sprintf('{{release_path}}/%s/console', trim(get('bin_dir'), '/'));
 });
 
 // Symfony console opts
-set('console_options', function () {
+set('console_options', function (): string {
     $options = '--no-interaction --env={{symfony_env}}';
     return get('symfony_env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
 });
@@ -80,7 +80,7 @@ task('deploy:create_cache_dir', function () {
  * Normalize asset timestamps
  */
 task('deploy:assets', function () {
-    $assets = implode(' ', array_map(function ($asset) {
+    $assets = implode(' ', array_map(function (string $asset): string {
         return "{{release_path}}/$asset";
     }, get('assets')));
 

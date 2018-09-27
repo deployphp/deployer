@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -31,11 +31,11 @@ use Symfony\Component\Console\Input\InputOption;
  * Facts
  */
 
-set('hostname', function () {
+set('hostname', function (): string {
     return Context::get()->getHost()->getHostname();
 });
 
-set('user', function () {
+set('user', function (): string {
     try {
         return runLocally('git config --get user.name');
     } catch (\Throwable $exception) {
@@ -47,7 +47,7 @@ set('user', function () {
     }
 });
 
-set('target', function () {
+set('target', function (): string {
     return input()->getArgument('stage') ?: get('hostname');
 });
 
@@ -78,10 +78,10 @@ set('clear_use_sudo', false);    // Using sudo in clean commands?
 
 set('cleanup_use_sudo', false); // Using sudo in cleanup commands?
 
-set('use_relative_symlink', function () {
+set('use_relative_symlink', function (): bool {
     return commandSupportsOption('ln', '--relative');
 });
-set('use_atomic_symlink', function () {
+set('use_atomic_symlink', function (): bool {
     return commandSupportsOption('mv', '--no-target-directory');
 });
 
@@ -93,7 +93,7 @@ set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 /**
  * Return current release path.
  */
-set('current_path', function () {
+set('current_path', function (): string {
     $link = run("readlink {{deploy_path}}/current");
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
@@ -102,15 +102,15 @@ set('current_path', function () {
 /**
  * Custom bins
  */
-set('bin/php', function () {
+set('bin/php', function (): string {
     return locateBinaryPath('php');
 });
 
-set('bin/git', function () {
+set('bin/git', function (): string {
     return locateBinaryPath('git');
 });
 
-set('bin/composer', function () {
+set('bin/composer', function (): string {
     if (commandExist('composer')) {
         $composer = locateBinaryPath('composer');
     }
@@ -123,7 +123,7 @@ set('bin/composer', function () {
     return '{{bin/php}} ' . $composer;
 });
 
-set('bin/symlink', function () {
+set('bin/symlink', function (): string {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
 

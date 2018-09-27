@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -13,7 +13,7 @@ set('shared_dirs', ['var/log', 'var/sessions']);
 set('shared_files', ['.env']);
 set('writable_dirs', ['var']);
 
-set('bin/console', function () {
+set('bin/console', function (): string {
     return parse('{{bin/php}} {{release_path}}/bin/console --no-interaction');
 });
 

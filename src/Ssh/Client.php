@@ -71,13 +71,12 @@ class Client
             $process = new Process($ssh);
             $process
                 ->setTimeout($config['timeout'])
-                //->setTty(true)
                 ->mustRun();
 
             try {
 	            $process->setTty( true );
             } catch (RuntimeException $e) {
-	           //
+	           // ignore exception
             }
 
             return $process->getOutput();

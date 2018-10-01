@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -43,11 +43,10 @@ class SeriesExecutor implements ExecutorInterface
         $this->informer = $informer;
     }
 
-
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $hosts)
+    public function run(array $tasks, array $hosts)
     {
         $localhost = new Localhost();
         foreach ($tasks as $task) {

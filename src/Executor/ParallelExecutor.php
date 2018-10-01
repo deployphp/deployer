@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -60,7 +60,7 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $hosts)
+    public function run(array $tasks, array $hosts)
     {
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
@@ -122,7 +122,7 @@ class ParallelExecutor implements ExecutorInterface
      * @param Task $task
      * @return int
      */
-    private function runTask(array $hosts, Task $task)
+    private function runTask(array $hosts, Task $task): int
     {
         $processes = [];
 
@@ -135,9 +135,9 @@ class ParallelExecutor implements ExecutorInterface
             }
         }
 
-        $callback = function ($type, $host, $output) {
+        $callback = function (string $type, string $host, string $output) {
             $output = rtrim($output);
-            if (!empty($output)) {
+            if (strlen($output) !== 0) {
                 $this->output->writeln($output);
             }
         };
@@ -160,7 +160,7 @@ class ParallelExecutor implements ExecutorInterface
      * @param Task $task
      * @return Process
      */
-    protected function getProcess($host, Task $task)
+    protected function getProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $options = $this->generateOptions();
@@ -204,7 +204,7 @@ class ParallelExecutor implements ExecutorInterface
      * @param Process[] $processes
      * @return bool
      */
-    protected function areRunning(array $processes)
+    protected function areRunning(array $processes): bool
     {
         foreach ($processes as $process) {
             if ($process->isRunning()) {
@@ -219,19 +219,19 @@ class ParallelExecutor implements ExecutorInterface
      *
      * @param Process[] $processes
      * @param callable $callback
+     * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
     {
         foreach ($processes as $host => $process) {
-            $methods = [
-                Process::OUT => 'getIncrementalOutput',
-                Process::ERR => 'getIncrementalErrorOutput',
-            ];
-            foreach ($methods as $type => $method) {
-                $output = $process->{$method}();
-                if (!empty($output)) {
-                    $callback($type, $host, $output);
-                }
+            $output = $process->getIncrementalOutput();
+            if (strlen($output) !== 0) {
+                $callback(Process::OUT, $host, $output);
+            }
+
+            $errorOutput = $process->getIncrementalErrorOutput();
+            if (strlen($errorOutput) !== 0) {
+                $callback(Process::ERR, $host, $errorOutput);
             }
         }
     }
@@ -242,30 +242,29 @@ class ParallelExecutor implements ExecutorInterface
      * @param Process[] $processes
      * @return int
      */
-    protected function gatherExitCodes(array $processes)
+    protected function gatherExitCodes(array $processes): int
     {
-        $code = 0;
         foreach ($processes as $process) {
             if ($process->getExitCode() > 0) {
-                $code = $process->getExitCode();
+                return $process->getExitCode();
             }
         }
-        return $code;
+
+        return 0;
     }
 
     /**
      * Generate options and arguments string.
      * @return string
      */
-    private function generateOptions()
+    private function generateOptions(): string
     {
-        $verbosity = new VerbosityString($this->output);
-        $input = $verbosity;
+        $input = (string)(new VerbosityString($this->output));
 
         // Get user arguments
         foreach ($this->console->getUserDefinition()->getArguments() as $argument) {
             $value = $this->input->getArgument($argument->getName());
-            if ($value) {
+            if (strlen($value) !== 0) {
                 $input .= " $value";
             }
         }
@@ -275,7 +274,7 @@ class ParallelExecutor implements ExecutorInterface
             $name = $option->getName();
             $value = $this->input->getOption($name);
 
-            if ($value) {
+            if (null !== $value && strlen($value) !== 0) {
                 $input .= " --{$name}";
 
                 if ($option->acceptValue()) {

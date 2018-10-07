@@ -2,4 +2,3 @@
 /test/fixture/recipe/tmp/
 *.phar
 phpunit.xml
-coverage.xml

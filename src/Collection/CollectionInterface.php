@@ -10,21 +10,15 @@ namespace Deployer\Collection;
 interface CollectionInterface extends \IteratorAggregate, \ArrayAccess
 {
     /**
-     * @param string $name
      * @return mixed
      */
     public function get(string $name);
 
     /**
-     * @param string $name
      * @param mixed $object
      * @return void
      */
     public function set(string $name, $object);
 
-    /**
-     * @param string $name
-     * @return bool
-     */
     public function has(string $name): bool;
 }

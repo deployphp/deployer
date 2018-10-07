@@ -31,13 +31,11 @@ class SeriesExecutor implements ExecutorInterface
      */
     private $informer;
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param Informer $informer
-     */
-    public function __construct(InputInterface $input, OutputInterface $output, Informer $informer)
-    {
+    public function __construct(
+        InputInterface $input,
+        OutputInterface $output,
+        Informer $informer
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;

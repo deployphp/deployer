@@ -14,9 +14,6 @@ trait ConfigurationAccessor
      */
     private $config;
 
-    /**
-     * @return Configuration
-     */
     public function getConfig(): Configuration
     {
         return $this->config;
@@ -25,7 +22,6 @@ trait ConfigurationAccessor
     /**
      * Get configuration options
      *
-     * @param string $name
      * @param mixed $default
      * @return mixed
      */
@@ -36,9 +32,6 @@ trait ConfigurationAccessor
 
     /**
      * Check configuration option
-     *
-     * @param string $name
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -48,7 +41,6 @@ trait ConfigurationAccessor
     /**
      * Set configuration option
      *
-     * @param string $name
      * @param mixed $value
      * @return static
      */
@@ -61,7 +53,6 @@ trait ConfigurationAccessor
     /**
      * Add configuration option
      *
-     * @param string $name
      * @param mixed[] $value
      * @return static
      */

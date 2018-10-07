@@ -101,7 +101,6 @@ class Collection implements CollectionInterface, \Countable
     }
 
     /**
-     * @param callable $callback
      * @return mixed[]
      */
     public function select(callable $callback): array

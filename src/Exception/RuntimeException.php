@@ -39,8 +39,13 @@ class RuntimeException extends Exception
      */
     private $errorOutput;
 
-    public function __construct(string $hostname, string $command, int $exitCode, string $output, string $errorOutput)
-    {
+    public function __construct(
+        string $hostname,
+        string $command,
+        int $exitCode,
+        string $output,
+        string $errorOutput
+    ) {
         $this->hostname = $hostname;
         $this->command = $command;
         $this->exitCode = $exitCode;

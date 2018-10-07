@@ -15,7 +15,6 @@ class PersistentCollection extends Collection
     private $file;
 
     /**
-     * @param string $file
      * @param mixed[] $collection
      */
     public function __construct(string $file, array $collection = [])

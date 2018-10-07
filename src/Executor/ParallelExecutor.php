@@ -43,14 +43,12 @@ class ParallelExecutor implements ExecutorInterface
      */
     private $console;
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param Informer $informer
-     * @param Application $console
-     */
-    public function __construct(InputInterface $input, OutputInterface $output, Informer $informer, Application $console)
-    {
+    public function __construct(
+        InputInterface $input,
+        OutputInterface $output,
+        Informer $informer,
+        Application $console
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;
@@ -119,8 +117,6 @@ class ParallelExecutor implements ExecutorInterface
      * Run task on hosts.
      *
      * @param Host[] $hosts
-     * @param Task $task
-     * @return int
      */
     private function runTask(array $hosts, Task $task): int
     {
@@ -155,10 +151,6 @@ class ParallelExecutor implements ExecutorInterface
 
     /**
      * Get process for task on host.
-     *
-     * @param Host $host
-     * @param Task $task
-     * @return Process
      */
     protected function getProcess(Host $host, Task $task): Process
     {
@@ -202,7 +194,6 @@ class ParallelExecutor implements ExecutorInterface
      * Determine if any of the processes are running.
      *
      * @param Process[] $processes
-     * @return bool
      */
     protected function areRunning(array $processes): bool
     {
@@ -218,7 +209,6 @@ class ParallelExecutor implements ExecutorInterface
      * Gather the output from all of the processes.
      *
      * @param Process[] $processes
-     * @param callable $callback
      * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
@@ -240,7 +230,6 @@ class ParallelExecutor implements ExecutorInterface
      * Gather the cumulative exit code for the processes.
      *
      * @param Process[] $processes
-     * @return int
      */
     protected function gatherExitCodes(array $processes): int
     {
@@ -255,7 +244,6 @@ class ParallelExecutor implements ExecutorInterface
 
     /**
      * Generate options and arguments string.
-     * @return string
      */
     private function generateOptions(): string
     {

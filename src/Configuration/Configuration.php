@@ -17,23 +17,20 @@ class Configuration
     /**
      * @var Collection
      */
-    private $collection = null;
+    private $collection;
 
     public function __construct()
     {
         $this->collection = new Collection();
     }
 
-    /**
-     * @return Collection
-     */
     public function getCollection(): Collection
     {
         return $this->collection;
     }
 
     /**
-     * @param Collection $collection
+     * @return void
      */
     public function setCollection(Collection $collection)
     {
@@ -41,8 +38,8 @@ class Configuration
     }
 
     /**
-     * @param string $name
-     * @param bool|int|string|array $value
+     * @param mixed $value
+     * @return void
      */
     public function set(string $name, $value)
     {
@@ -50,8 +47,8 @@ class Configuration
     }
 
     /**
-     * @param string $name
      * @param mixed[] $array
+     * @return void
      */
     public function add(string $name, array $array)
     {
@@ -67,7 +64,6 @@ class Configuration
     }
 
     /**
-     * @param string $name
      * @param mixed $default
      * @return mixed
      */
@@ -102,9 +98,6 @@ class Configuration
 
     /**
      * Checks if set var exists
-     *
-     * @param string $name
-     * @return bool
      */
     public function has(string $name): bool
     {
@@ -139,7 +132,6 @@ class Configuration
 
     /**
      * @param mixed $var
-     * @return bool
      */
     private function isClosure($var): bool
     {

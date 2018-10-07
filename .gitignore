@@ -3,4 +3,3 @@
 *.phar
 phpunit.xml
 coverage.xml
-.DS_Store

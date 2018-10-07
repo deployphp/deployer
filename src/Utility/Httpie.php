@@ -59,10 +59,10 @@ class Httpie
     {
         $http = clone $this;
         $http->body = json_encode($data, JSON_PRETTY_PRINT);
-        $http->headers += [
+        $http->headers = array_merge($http->headers, [
             'Content-Type: application/json',
             'Content-Length: ' . strlen($http->body)
-        ];
+        ]);
         return $http;
     }
 
@@ -70,10 +70,10 @@ class Httpie
     {
         $http = clone $this;
         $http->body = http_build_query($data);
-        $http->headers += [
+        $http->headers = array_merge($this->headers, [
             'Content-type: application/x-www-form-urlencoded',
             'Content-Length: ' . strlen($http->body)
-        ];
+        ]);
         return $http;
     }
 

@@ -10,7 +10,6 @@
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 - Pass-through the quiet mode into the git commands for updating code
-- Updated .gitignore
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]

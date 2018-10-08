@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -14,10 +14,7 @@ trait ConfigurationAccessor
      */
     private $config;
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): Configuration
     {
         return $this->config;
     }
@@ -25,9 +22,8 @@ trait ConfigurationAccessor
     /**
      * Get configuration options
      *
-     * @param string $name
-     * @param null $default
-     * @return array|bool|int|string
+     * @param mixed $default
+     * @return mixed
      */
     public function get(string $name, $default = null)
     {
@@ -36,11 +32,8 @@ trait ConfigurationAccessor
 
     /**
      * Check configuration option
-     *
-     * @param string $name
-     * @return bool
      */
-    public function has(string $name)
+    public function has(string $name): bool
     {
         return $this->config->has($name);
     }
@@ -48,9 +41,8 @@ trait ConfigurationAccessor
     /**
      * Set configuration option
      *
-     * @param string $name
-     * @param array|bool|int|string $value
-     * @return $this
+     * @param mixed $value
+     * @return static
      */
     public function set(string $name, $value)
     {
@@ -61,9 +53,8 @@ trait ConfigurationAccessor
     /**
      * Add configuration option
      *
-     * @param string $name
-     * @param array $value
-     * @return $this
+     * @param mixed[] $value
+     * @return static
      */
     public function add(string $name, array $value)
     {

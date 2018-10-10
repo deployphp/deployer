@@ -1,5 +1,7 @@
 language: php
 
+sudo: false
+
 php:
   - 7.0
   - 7.1
@@ -10,13 +12,18 @@ env:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS="--prefer-stable"
 
-before_install:
-  - sudo apt-get -qq update
-  - sudo apt-get install -y acl
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+addons:
+  apt:
+    packages:
+      - acl
 
 install:
   - composer self-update
-  - composer update --no-interaction --prefer-source $COMPOSER_FLAGS
+  - composer update --no-interaction --prefer-dist $COMPOSER_FLAGS
 
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.xml

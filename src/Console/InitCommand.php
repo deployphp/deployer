@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -40,14 +40,14 @@ class InitCommand extends Command
     private $initializer;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $availableTemplates;
 
     /**
      * Construct
      *
-     * @param string $name
+     * @param null|string $name
      */
     public function __construct($name = null)
     {
@@ -82,7 +82,6 @@ class InitCommand extends Command
 
         if ($template === null) {
             $io = new SymfonyStyle($input, $output);
-            $helper = $this->getHelper('question');
             $formatter = $this->getHelper('formatter');
 
             // Welcome message
@@ -152,10 +151,8 @@ class InitCommand extends Command
 
     /**
      * Create a initializer system
-     *
-     * @return Initializer
      */
-    private function createInitializer()
+    private function createInitializer(): Initializer
     {
         $initializer = new Initializer();
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -15,13 +15,16 @@ abstract class FrameworkTemplate extends Template
     /**
      * {@inheritDoc}
      */
-    protected function getTemplateContent($params)
+    protected function getTemplateContent(array $params): string
     {
         $stats = $params['allow_anonymous_stats']
             ? ''
             : "set('allow_anonymous_stats', false);";
         return <<<PHP
 <?php
+
+declare(strict_types=1);
+
 namespace Deployer;
 
 require 'recipe/{$this->getRecipe()}.php';
@@ -61,9 +64,9 @@ after('deploy:failed', 'deploy:unlock');
 PHP;
     }
 
-    abstract protected function getRecipe();
+    abstract protected function getRecipe(): string;
 
-    protected function getExtraContent()
+    protected function getExtraContent(): string
     {
         return '';
     }

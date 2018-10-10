@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,7 +18,7 @@ abstract class Template implements TemplateInterface
     /**
      * {@inheritDoc}
      */
-    public function initialize($filePath, $params)
+    public function initialize(string $filePath, array $params)
     {
         $params = array_merge([
             'repository' => 'git@domain.com:username/repository.git',
@@ -32,8 +32,7 @@ abstract class Template implements TemplateInterface
     /**
      * Get content of template.
      *
-     * @param array $params
-     * @return string
+     * @param mixed[] $params
      */
-    abstract protected function getTemplateContent($params);
+    abstract protected function getTemplateContent(array $params): string;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,19 +19,14 @@ use Deployer\Initializer\Template\TemplateInterface;
 class Initializer
 {
     /**
-     * @var array|TemplateInterface[]
+     * @var array<string, TemplateInterface>
      */
     private $templates;
 
     /**
      * Add template to initializer
-     *
-     * @param string            $name
-     * @param TemplateInterface $template
-     *
-     * @return Initializer
      */
-    public function addTemplate($name, TemplateInterface $template)
+    public function addTemplate(string $name, TemplateInterface $template): self
     {
         $this->templates[$name] = $template;
 
@@ -41,9 +36,9 @@ class Initializer
     /**
      * Get template names
      *
-     * @return array
+     * @return string[]
      */
-    public function getTemplateNames()
+    public function getTemplateNames(): array
     {
         return array_keys($this->templates);
     }
@@ -51,43 +46,58 @@ class Initializer
     /**
      * Initialize deployer in project
      *
-     * @param string $template
-     * @param string $directory
-     * @param string $file
-     * @param array $params
+     * @param mixed[] $params
+     *
      * @return string The configuration file path
      *
+     * @throws IOException
      * @throws TemplateNotFoundException
      */
-    public function initialize($template, $directory, $file = 'deploy.php', $params = [])
-    {
-        if (!isset($this->templates[$template])) {
-            throw TemplateNotFoundException::create($template, array_keys($this->templates));
-        }
+    public function initialize(
+        string $templateName,
+        string $directory,
+        string $file = 'deploy.php',
+        array $params = []
+    ): string {
+        $template = $this->getTemplateByName($templateName);
 
         $this->checkDirectoryBeforeInitialize($directory);
         $this->checkFileBeforeInitialize($directory, $file);
 
         $filePath = $directory . '/' . $file;
 
-        $this->templates[$template]->initialize($filePath, $params);
+        $template->initialize($filePath, $params);
 
         return $filePath;
     }
 
     /**
+     * @throws TemplateNotFoundException
+     */
+    private function getTemplateByName(string $templateName): TemplateInterface
+    {
+        if (!isset($this->templates[$templateName])) {
+            throw TemplateNotFoundException::create($templateName, $this->getTemplateNames());
+        }
+
+        return $this->templates[$templateName];
+    }
+
+    /**
      * Check the directory before initialize
      *
-     * @param string $directory
+     * @return void
      *
      * @throws IOException
      */
-    private function checkDirectoryBeforeInitialize($directory)
+    private function checkDirectoryBeforeInitialize(string $directory)
     {
         if (!file_exists($directory)) {
-            set_error_handler(function ($errCode, $errStr) use ($directory) {
+            set_error_handler(function (int $errCode, string $errStr) use ($directory) {
                 $parts = explode(':', $errStr, 2);
-                $errorMessage = isset($parts[1]) ? trim($parts[1]) : 'Undefined';
+                $errorMessage = isset($parts[1]) && strlen(trim($parts[1])) !== 0
+                    ? trim($parts[1])
+                    : 'Undefined';
 
                 throw new IOException(sprintf(
                     'Could not create directory "%s". %s',
@@ -115,12 +125,11 @@ class Initializer
     /**
      * Check the file before initialize
      *
-     * @param string $directory
-     * @param string $file
+     * @return void
      *
      * @throws IOException
      */
-    private function checkFileBeforeInitialize($directory, $file)
+    private function checkFileBeforeInitialize(string $directory, string $file)
     {
         $filePath = $directory . '/' . $file;
 

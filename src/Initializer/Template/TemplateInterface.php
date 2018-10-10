@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,7 +18,9 @@ interface TemplateInterface
      * Initialize deployer
      *
      * @param string $filePath The file path for "deploy.php"
-     * @param array $params
+     * @param mixed[] $params
+     *
+     * @return void
      */
-    public function initialize($filePath, $params);
+    public function initialize(string $filePath, array $params);
 }

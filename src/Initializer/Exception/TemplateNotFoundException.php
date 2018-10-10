@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,14 +17,9 @@ class TemplateNotFoundException extends \Exception
     /**
      * Create a new exception via template name
      *
-     * @param string     $template
-     * @param array      $availableTemplates
-     * @param int        $code
-     * @param \Exception $prev
-     *
-     * @return TemplateNotFoundException
+     * @param string[]      $availableTemplates
      */
-    public static function create($template, array $availableTemplates, $code = 0, \Exception $prev = null)
+    public static function create(string $template, array $availableTemplates, int $code = 0, \Throwable $prev = null): self
     {
         return new static(sprintf(
             'Not found template with name "%s". Available templates: "%s"',

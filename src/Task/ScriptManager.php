@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,9 +17,6 @@ class ScriptManager
      */
     private $tasks;
 
-    /**
-     * @param TaskCollection $tasks
-     */
     public function __construct(TaskCollection $tasks)
     {
         $this->tasks = $tasks;
@@ -28,14 +25,16 @@ class ScriptManager
     /**
      * Return tasks to run
      *
-     * @param string $name
      * @param Host[] $hosts
-     * @param bool $hooksEnabled
+     *
      * @return Task[]
      */
-    public function getTasks($name, array $hosts = [], $hooksEnabled = true)
-    {
-        $collect = function ($name) use (&$collect, $hosts, $hooksEnabled) {
+    public function getTasks(
+        string $name,
+        array $hosts = [],
+        bool $hooksEnabled = true
+    ): array {
+        $collect = function (string $name) use (&$collect, $hosts, $hooksEnabled): array {
             $task = $this->tasks->get($name);
 
             if (!$task->shouldBePerformed(...array_values($hosts))) {
@@ -61,10 +60,7 @@ class ScriptManager
             return $relatedTasks;
         };
 
-        $script = $collect($name);
-        $tasks = array_flatten($script);
-
         // Convert names to real tasks
-        return array_map([$this->tasks, 'get'], $tasks);
+        return array_map([$this->tasks, 'get'], array_flatten($collect($name)));
     }
 }

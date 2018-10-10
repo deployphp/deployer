@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -10,10 +10,10 @@ namespace Deployer\Support;
 /**
  * Flatten array
  *
- * @param array $array
- * @return array
+ * @param array<mixed, mixed> $array
+ * @return array<int, mixed>
  */
-function array_flatten(array $array)
+function array_flatten(array $array): array
 {
     $flatten = [];
     array_walk_recursive($array, function ($value) use (&$flatten) {
@@ -29,12 +29,14 @@ function array_flatten(array $array)
  * 2. array values are extended uniquely if all keys are numeric
  * 3. all other array values are merged
  *
- * @param array $original
- * @param array $override
- * @return array
+ * @param array<mixed, mixed> $original
+ * @param array<mixed, mixed> $override
+ *
+ * @return array<mixed, mixed>
+ *
  * @see http://stackoverflow.com/a/36366886/6812729
  */
-function array_merge_alternate(array $original, array $override)
+function array_merge_alternate(array $original, array $override): array
 {
     foreach ($override as $key => $value) {
         if (isset($original[$key])) {
@@ -64,12 +66,8 @@ function array_merge_alternate(array $original, array $override)
 
 /**
  * Determines if the given string contains the given value.
- *
- * @param string $haystack
- * @param string $needle
- * @return bool
  */
-function str_contains(string $haystack, string $needle)
+function str_contains(string $haystack, string $needle): bool
 {
     return strpos($haystack, $needle) !== false;
 }
@@ -80,8 +78,6 @@ function str_contains(string $haystack, string $needle)
  * This function used for create environment string.
  *
  * @param array $array
- *
- * @return string
  */
 function array_to_string(array $array): string
 {

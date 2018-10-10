@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,6 +19,9 @@ class FileHandler implements HandlerInterface
         $this->filePath = $filePath;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function log(string $message)
     {
         file_put_contents($this->filePath, $message, FILE_APPEND);

@@ -37,5 +37,6 @@ class ContextTest extends TestCase
 
         $this->assertEquals($context, Context::get());
         $this->assertEquals($context, Context::pop());
+        $this->assertEquals(null, Context::pop());
     }
 }

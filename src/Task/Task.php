@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,12 +18,12 @@ class Task
     private $name;
 
     /**
-     * @var callable
+     * @var null|callable
      */
     private $callback;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $description;
 
@@ -35,23 +35,37 @@ class Task
     private $local = false;
 
     /**
-     * Lists of hosts, roles, stages there task should be executed.
+     * Lists of stages there task should be executed.
      *
-     * @var array
+     * @var string[]
      */
-    private $on = ['hosts' => [], 'roles' => [], 'stages' => []];
+    private $onStages = [];
+
+    /**
+     * Lists of roles there task should be executed.
+     *
+     * @var string[]
+     */
+    private $onRoles = [];
+
+    /**
+     * Lists of hosts there task should be executed.
+     *
+     * @var string[]
+     */
+    private $onHosts = [];
 
     /**
      * List of task names to run before.
      *
-     * @var array
+     * @var string[]
      */
     private $before = [];
 
     /**
      * List of task names to run after.
      *
-     * @var array
+     * @var string[]
      */
     private $after = [];
 
@@ -84,25 +98,23 @@ class Task
      */
     private $shallow = false;
 
-    /**
-     * @param string $name Tasks name
-     * @param callable $callback Task code
-     */
-    public function __construct($name, callable $callback = null)
+    public function __construct(string $name, callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;
     }
 
     /**
-     * @param Context $context
+     * @return void
      */
     public function run(Context $context)
     {
         Context::push($context);
 
-        // Call task
-        call_user_func($this->callback);
+        if ($this->callback !== null) {
+            // Call task
+            call_user_func($this->callback);
+        }
 
         if ($this->once) {
             $this->hasRun = true;
@@ -116,27 +128,20 @@ class Task
         Context::pop();
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getDescription()
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return $this
-     */
-    public function desc($description)
+    public function desc(string $description): self
     {
         $this->description = $description;
         return $this;
@@ -145,7 +150,7 @@ class Task
     /**
      * Mark this task local
      *
-     * @return $this
+     * @return static
      */
     public function local()
     {
@@ -153,62 +158,44 @@ class Task
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isLocal()
+    public function isLocal(): bool
     {
         return $this->local;
     }
 
-    public function once()
+    public function once(): self
     {
         $this->once = true;
         return $this;
     }
 
-    public function isOnce()
+    public function isOnce(): bool
     {
         return $this->once;
     }
 
-    /**
-     * @param array $hosts
-     * @return $this
-     */
-    public function onHosts(...$hosts)
+    public function onHosts(string ...$hosts): self
     {
-        $this->on['hosts'] = array_flatten($hosts);
+        $this->onHosts = $hosts;
         return $this;
     }
 
-    /**
-     * @param array $roles
-     * @return $this
-     */
-    public function onRoles(...$roles)
+    public function onRoles(string ...$roles): self
     {
-        $this->on['roles'] = array_flatten($roles);
+        $this->onRoles = $roles;
         return $this;
     }
 
-    /**
-     * @param array $stages
-     * @return $this
-     */
-    public function onStage(...$stages)
+    public function onStage(string ...$stages): self
     {
-        $this->on['stages'] = array_flatten($stages);
+        $this->onStages = $stages;
         return $this;
     }
 
     /**
      * Checks what task should be performed on one of hosts.
-     *
-     * @param Host[] $hosts
-     * @return bool
      */
-    public function shouldBePerformed(...$hosts)
+    public function shouldBePerformed(Host ...$hosts): bool
     {
         // don't allow to run again it the task has been marked to run only once
         if ($this->once && $this->hasRun) {
@@ -216,18 +203,18 @@ class Task
         }
 
         foreach ($hosts as $host) {
-            $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
+            $onHost = empty($this->onHosts) || in_array($host->getHostname(), $this->onHosts, true);
 
-            $onRole = empty($this->on['roles']);
+            $onRole = empty($this->onRoles);
             foreach ((array) $host->get('roles', []) as $role) {
-                if (in_array($role, $this->on['roles'], true)) {
+                if (in_array($role, $this->onRoles, true)) {
                     $onRole = true;
                 }
             }
 
-            $onStage = empty($this->on['stages']);
+            $onStage = empty($this->onStages);
             if ($host->has('stage')) {
-                if (in_array($host->get('stage'), $this->on['stages'], true)) {
+                if (in_array($host->get('stage'), $this->onStages, true)) {
                     $onStage = true;
                 }
             }
@@ -240,20 +227,15 @@ class Task
         return empty($hosts);
     }
 
-    /**
-     * @return boolean
-     */
-    public function isPrivate()
+    public function isPrivate(): bool
     {
         return $this->private;
     }
 
     /**
      * Mark task as private
-     *
-     * @return $this
      */
-    public function setPrivate()
+    public function setPrivate(): self
     {
         $this->private = true;
         return $this;
@@ -262,7 +244,7 @@ class Task
     /**
      * @param string $task
      *
-     * @return $this
+     * @return static
      */
     public function addBefore(string $task)
     {
@@ -273,7 +255,7 @@ class Task
     /**
      * @param string $task
      *
-     * @return $this
+     * @return static
      */
     public function addAfter(string $task)
     {
@@ -283,18 +265,20 @@ class Task
 
     /**
      * Get before tasks names.
+     *
      * @return string[]
      */
-    public function getBefore()
+    public function getBefore(): array
     {
         return $this->before;
     }
 
     /**
      * Get after tasks names.
+     *
      * @return string[]
      */
-    public function getAfter()
+    public function getAfter(): array
     {
         return $this->after;
     }
@@ -303,19 +287,14 @@ class Task
      * Sets task shallow.
      *
      * Shallow task will not print execution message/finish messages.
-     *
-     * @return $this
      */
-    public function shallow()
+    public function shallow(): self
     {
         $this->shallow = true;
         return $this;
     }
 
-    /**
-     * @return bool
-     */
-    public function isShallow()
+    public function isShallow(): bool
     {
         return $this->shallow;
     }

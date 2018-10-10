@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -14,22 +14,23 @@ class GroupTask extends Task
     /**
      * List of tasks
      *
-     * @var array
+     * @var mixed[]
      */
     private $group;
 
     /**
-     * @param string $name
-     * @param array $group
+     * @param mixed[] $group
      */
-    public function __construct($name, $group)
+    public function __construct(string $name, array $group = [])
     {
-        parent::__construct($name);
         $this->group = $group;
+        parent::__construct($name);
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \RuntimeException
      */
     public function run(Context $context)
     {
@@ -39,13 +40,18 @@ class GroupTask extends Task
     /**
      * List of dependent tasks names
      *
-     * @return array
+     * @return mixed[]
      */
-    public function getGroup()
+    public function getGroup(): array
     {
         return $this->group;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws Exception
+     */
     public function local()
     {
         throw new Exception('Group tasks can\'t be local.');

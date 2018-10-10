@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -21,6 +21,9 @@ class Logger
         $this->handler = $handler;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function log(string $message)
     {
         $this->handler->log("$message\n");

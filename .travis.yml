@@ -1,7 +1,5 @@
 language: php
 
-sudo: false
-
 php:
   - 7.0
   - 7.1
@@ -18,6 +16,7 @@ cache:
 
 addons:
   apt:
+    update: true
     packages:
       - acl
 

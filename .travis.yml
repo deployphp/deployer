@@ -23,6 +23,7 @@ addons:
 
 install:
   - composer self-update
+  - composer global require hirak/prestissimo
   - composer update --no-interaction --prefer-dist $COMPOSER_FLAGS
 
 script:

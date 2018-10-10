@@ -6,6 +6,7 @@
 
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
+- Added `horizon:terminate` to the Laravel recipe
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task

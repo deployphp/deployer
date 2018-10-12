@@ -6,6 +6,7 @@
 
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
+- Added `horizon:terminate` to the Laravel recipe
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
@@ -14,6 +15,7 @@
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
+- Fixed adding custom headers causes Httpie default header override.
 
 
 ## v6.3.0

@@ -7,6 +7,7 @@
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
 - Added `horizon:terminate` to the Laravel recipe
+- Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task

@@ -87,7 +87,7 @@ set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 // Detect version
 $version = 'master';
 
-$composerLockFile = $deployFilePath . '/composer.lock';
+$composerLockFile = __DIR__ . '/../../../../composer.lock';
 if (is_readable($composerLockFile)) {
     $lock = json_decode(file_get_contents($composerLockFile), true);
     foreach ($lock['packages'] as $package) {

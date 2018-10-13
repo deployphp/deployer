@@ -16,6 +16,7 @@
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
 - Fixed adding custom headers causes Httpie default header override.
+- Fixed --version option bug. [#1351]
 
 
 ## v6.3.0
@@ -455,6 +456,7 @@
 [#1365]: https://github.com/deployphp/deployer/pull/1365
 [#1364]: https://github.com/deployphp/deployer/pull/1364
 [#1352]: https://github.com/deployphp/deployer/pull/1352
+[#1351]: https://github.com/deployphp/deployer/issues/1351
 [#1311]: https://github.com/deployphp/deployer/pull/1311
 [#1300]: https://github.com/deployphp/deployer/pull/1300
 [#1299]: https://github.com/deployphp/deployer/issues/1299

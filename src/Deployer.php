@@ -227,6 +227,7 @@ class Deployer extends Container
         $this->getConsole()->add(new RunCommand($this));
         $this->getConsole()->add(new DebugCommand($this));
         $this->getConsole()->add(new AutocompleteCommand());
+        $this->getConsole()->add(new LogCommand());
         $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 

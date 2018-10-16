@@ -12,6 +12,7 @@
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 - Pass-through the quiet mode into the git commands for updating code
+- Check for opcache.enable_cli and apc.enable_cli [#1385]
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
@@ -453,6 +454,7 @@
 [#1413]: https://github.com/deployphp/deployer/pull/1413
 [#1403]: https://github.com/deployphp/deployer/pull/1403
 [#1390]: https://github.com/deployphp/deployer/pull/1390
+[#1385]: https://github.com/deployphp/deployer/issues/1385
 [#1365]: https://github.com/deployphp/deployer/pull/1365
 [#1364]: https://github.com/deployphp/deployer/pull/1364
 [#1352]: https://github.com/deployphp/deployer/pull/1352

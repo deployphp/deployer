@@ -21,6 +21,16 @@ if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
     exit(1);
 }
 
+// Check for opcache.enable_cli
+if (ini_get('opcache.enable_cli')) {
+    echo('Disable opcache.enable_cli' . PHP_EOL);
+};
+
+// Check for apc.enable_cli
+if (ini_get('apc.enable_cli')) {
+    echo('Disable apc.enable_cli' . PHP_EOL);
+};
+
 // Detect deploy.php script
 $options = getopt('f::', ['file::']);
 $userSpecifiedFile = null;

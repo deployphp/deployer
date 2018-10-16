@@ -12,11 +12,13 @@ define('DEPLOYER_BIN', __FILE__);
 
 // Check for php7
 if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
-    die(
+    fwrite(
+        STDERR,
         'Upgrade to php7' . PHP_EOL .
         'Deployer 5.x supports only php7 and above.' . PHP_EOL .
         'If you want to use older php version use Deployer 4.x' . PHP_EOL
     );
+    exit(1);
 }
 
 // Detect deploy.php script
@@ -74,11 +76,13 @@ for ($i = 0; $i < count($autoload); $i++) {
 }
 
 if (!$loaded) {
-    die(
+    fwrite(
+        STDERR,
         'You need to set up the project dependencies using the following commands:' . PHP_EOL .
         'wget http://getcomposer.org/composer.phar' . PHP_EOL .
         'php composer.phar install' . PHP_EOL
     );
+    exit(1);
 }
 
 // Setup include path
@@ -104,7 +108,8 @@ if (is_readable($composerLockFile)) {
 
 $method = new ReflectionMethod('Deployer\Deployer', 'run');
 if (!$method->isStatic()) {
-    die(
+    fwrite(
+        STDERR,
         'You need to update Deployer to the latest version:' . PHP_EOL .
         PHP_EOL .
         '  dep self-update' . PHP_EOL .
@@ -115,6 +120,7 @@ if (!$method->isStatic()) {
         PHP_EOL
 
     );
+    exit(1);
 }
 
 \Deployer\Deployer::run($version, $deployFile);

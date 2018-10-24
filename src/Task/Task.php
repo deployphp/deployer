@@ -261,18 +261,24 @@ class Task
 
     /**
      * @param string $task
+     * 
+     * @return $this
      */
     public function addBefore(string $task)
     {
         array_unshift($this->before, $task);
+        return $this;
     }
 
     /**
      * @param string $task
+     * 
+     * @return $this
      */
     public function addAfter(string $task)
     {
         array_push($this->after, $task);
+        return $this;
     }
 
     /**

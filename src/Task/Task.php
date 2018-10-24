@@ -261,7 +261,7 @@ class Task
 
     /**
      * @param string $task
-     * 
+     *
      * @return $this
      */
     public function addBefore(string $task)
@@ -272,7 +272,7 @@ class Task
 
     /**
      * @param string $task
-     * 
+     *
      * @return $this
      */
     public function addAfter(string $task)

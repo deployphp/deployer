@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -39,9 +39,9 @@ class Version
      */
     private $removed;
 
-    public function __toString()
+    public function __toString(): string
     {
-        $f = function (Item $item) {
+        $f = function (Item $item): string {
             return "- $item";
         };
 
@@ -50,20 +50,16 @@ class Version
         $fixed = '';
         $removed = '';
         if (!empty($this->added)) {
-            $added = implode("\n", array_map($f, $this->added));
-            $added = "### Added\n$added\n\n";
+            $added = sprintf("### Added\n%s\n\n", implode("\n", array_map($f, $this->added)));
         }
         if (!empty($this->changed)) {
-            $changed = implode("\n", array_map($f, $this->changed));
-            $changed = "### Changed\n$changed\n\n";
+            $changed = sprintf("### Changed\n%s\n\n", implode("\n", array_map($f, $this->changed)));
         }
         if (!empty($this->fixed)) {
-            $fixed = implode("\n", array_map($f, $this->fixed));
-            $fixed = "### Fixed\n$fixed\n\n";
+            $fixed = sprintf("### Fixed\n%s\n\n", implode("\n", array_map($f, $this->fixed)));
         }
         if (!empty($this->removed)) {
-            $removed = implode("\n", array_map($f, $this->removed));
-            $removed = "### Removed\n$removed\n\n";
+            $removed = sprintf("### Removed\n%s\n\n", implode("\n", array_map($f, $this->removed)));
         }
 
         return <<<MD

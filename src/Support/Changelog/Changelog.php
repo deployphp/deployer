@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,18 +20,18 @@ class Changelog
     private $versions = [];
 
     /**
-     * @var array
+     * @var array<int, string>
      */
     private $references = [];
 
-    public function __toString()
+    public function __toString(): string
     {
         $versions = join("\n", $this->versions);
 
         krsort($this->references, SORT_NUMERIC);
 
-        $references = join("\n", array_map(function ($link, $ref) {
-            return "[#$ref]: $link";
+        $references = implode("\n", array_map(function (string $link, int $ref): string {
+            return sprintf('[#%d]: %s', $ref, $link);
         }, $this->references, array_keys($this->references)));
 
         return <<<MD
@@ -44,16 +44,25 @@ class Changelog
 MD;
     }
 
+    /**
+     * @return void
+     */
     public function setTitle(string $title)
     {
         $this->title = $title;
     }
 
+    /**
+     * @return void
+     */
     public function addVersion(Version $version)
     {
         $this->versions[] = $version;
     }
 
+    /**
+     * @return void
+     */
     public function prependVersion(Version $version)
     {
         array_unshift($this->versions, $version);
@@ -75,6 +84,9 @@ MD;
         return $version;
     }
 
+    /**
+     * @throws \RuntimeException
+     */
     public function findLatest(): Version
     {
         foreach ($this->versions as $version) {
@@ -87,13 +99,18 @@ MD;
     }
 
     /**
-     * @param array $references
+     * @param array<int, string> $references
+     *
+     * @return void
      */
     public function setReferences(array $references)
     {
         $this->references = $references;
     }
 
+    /**
+     * @return void
+     */
     public function addReferences(int $ref, string $url)
     {
         $this->references[$ref] = $url;

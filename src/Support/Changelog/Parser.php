@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -68,7 +68,7 @@ class Parser
                 throw $this->error('Expected an empty line');
             }
         } else {
-            while (preg_match('/^\s*$/', $this->current()) && count($this->tokens) > 0) {
+            while (1 === preg_match('/^\s*$/', $this->current()) && count($this->tokens) > 0) {
                 $this->next();
             }
         }
@@ -82,12 +82,12 @@ class Parser
         }
     }
 
-    private function matchVersion($line, &$m = null)
+    private function matchVersion(string $line, &$m = null): bool
     {
-        return preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\w\.]+)? | master )$/x', $line, $m);
+        return 1 === preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\w\.]+)? | master )$/x', $line, $m);
     }
 
-    private function error($message): ParseException
+    private function error(string $message): ParseException
     {
         $c = count($this->span) - 1;
         $this->span[$c] = preg_replace('/^\s{4}/', ' -> ', $this->span[$c]);
@@ -122,7 +122,7 @@ class Parser
 
     private function parseTitle(): Changelog
     {
-        if (preg_match('/# (.+)/', $this->next(), $m)) {
+        if (1 === preg_match('/# (.+)/', $this->next(), $m)) {
             $c = new Changelog();
             $c->setTitle($m[1]);
             return $c;
@@ -134,11 +134,13 @@ class Parser
     private function parseVersion(): Version
     {
         if ($this->matchVersion($this->next(), $m)) {
+            $curr = $m[1];
+
             $version = new Version();
-            $version->setVersion($curr = $m[1]);
+            $version->setVersion($curr);
 
             $compareLink = $this->next();
-            if (!preg_match('/^\[/', $compareLink)) {
+            if (1 !== preg_match('/^\[/', $compareLink)) {
                 throw $this->error('Expected link to compare page with previous version');
             }
 
@@ -148,7 +150,7 @@ class Parser
                 \(https\:\/\/github\.com\/deployphp\/deployer\/compare\/$prev\.\.\.$curr\) $
                 /x";
 
-            if (preg_match($regexp, $compareLink, $m)) {
+            if (1 === preg_match($regexp, $compareLink, $m)) {
                 $version->setPrevious($m[1]);
             } else {
                 throw $this->error('Error in compare link syntax');
@@ -161,7 +163,7 @@ class Parser
 
             for ($i = 0; $i < $sectionsCount; $i++) {
                 foreach ($sections as $key => $section) {
-                    if (preg_match('/^\#\#\# \s ' . $section . ' $/x', $this->current())) {
+                    if (1 === preg_match('/^\#\#\# \s ' . $section . ' $/x', $this->current())) {
                         $this->next();
 
                         $version->{"set$section"}($this->parseItems());
@@ -179,13 +181,18 @@ class Parser
             return $version;
         }
 
-        throw $this->error('Expected version');
+        throw $this->error("Expected version");
     }
 
+    /**
+     * @return Item[]
+     *
+     * @throws ParseException
+     */
     private function parseItems(): array
     {
         $items = [];
-        while (preg_match('/^\- (.+) $/x', $this->current(), $m)) {
+        while (1 === preg_match('/^\- (.+) $/x', $this->current(), $m)) {
             $this->next();
 
             $item = new Item();
@@ -194,26 +201,33 @@ class Parser
 
             preg_match_all($ref, $message, $matches);
             foreach ($matches[1] as $m) {
-                $item->addReference($m);
+                $item->addReference((int) $m);
             }
 
             $message = trim(preg_replace($ref, '', $message));
             $item->setMessage($message);
             $items[] = $item;
         }
+
         return $items;
     }
 
+    /**
+     * @return array<int, string>
+     *
+     * @throws ParseException
+     */
     private function parseReferences(): array
     {
         $refs = [];
-        while (preg_match('/^\[/', $this->current())) {
-            if (preg_match('/^ \[\#(\d+)\]\: \s (https\:\/\/github\.com\/deployphp\/deployer\/(issues|pull)\/\d+)$/x', $this->next(), $m)) {
-                $refs[$m[1]] = $m[2];
+        while (1 === preg_match('/^\[/', $this->current())) {
+            if (1 === preg_match('/^ \[\#(\d+)\]\: \s (https\:\/\/github\.com\/deployphp\/deployer\/(issues|pull)\/\d+)$/x', $this->next(), $m)) {
+                $refs[(int) $m[1]] = $m[2];
             } else {
                 throw $this->error('Error parsing reference');
             }
         }
+
         return $refs;
     }
 }

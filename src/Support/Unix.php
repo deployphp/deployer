@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -12,17 +12,16 @@ class Unix
     /**
      * Parse "~" symbol from path.
      *
-     * @param string $path
-     * @return string
+     * @throws \RuntimeException
      */
     public static function parseHomeDir(string $path): string
     {
         if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
+            return str_replace('~', $_SERVER['HOME'], $path);
         } elseif (isset($_SERVER['HOMEDRIVE'], $_SERVER['HOMEPATH'])) {
-            $path = str_replace('~', $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'], $path);
+            return str_replace('~', $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'], $path);
         }
 
-        return $path;
+        throw new \RuntimeException('Missing server parameters "HOME" or "HOMEDRIVE && HOMEPATH"');
     }
 }

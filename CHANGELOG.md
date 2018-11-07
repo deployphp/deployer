@@ -2,12 +2,13 @@
 
 
 ## master
-[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)    
 
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
 - Added `horizon:terminate` to the Laravel recipe
 - Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
+- Added `check_remote_head` option, by setting this to true, deployer will avoid unnecessary new releases by checking the remote git HEAD without cloning the repo [#1755].
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task

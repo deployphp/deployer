@@ -36,4 +36,26 @@ task('deploy:prepare', function () {
 
     // Create shared dir.
     run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
+
+    // Check the remote HEAD
+    if (true === get('check_remote_head') && null == input()->getOption('tag')) {
+        $repository  = trim(get('repository'));
+        $revision    = input()->getOption('revision') ?? null;
+        $remoteHead  = $revision ? $revision :
+            trim(run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"',
+        get('bin/git'), $repository)));
+
+        $headPath   = trim(get('deploy_path').'/.dep/HEAD');
+        $isRemoteHeadExists = (bool) run('if [ -f '.$headPath.' ]; then echo 1; else echo 0; fi');
+
+        //check if HEAD file is exists and then compare it
+        if (true === $isRemoteHeadExists) {
+            $headContents = run('cat '.$headPath);
+            if ($headContents === $remoteHead) {
+                writeln('<info>Already up-to-date.</info>');
+                exit(0);
+            }
+        }
+        run("cd {{deploy_path}} && echo ".$remoteHead.' > .dep/HEAD');
+    }
 });

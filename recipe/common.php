@@ -56,6 +56,8 @@ set('target', function () {
  */
 
 set('keep_releases', 5);
+// By setting this to true, deployer will avoid unnecessary new release by checking the remote git HEAD without cloning the repo.
+set('check_remote_head', false);
 
 set('repository', ''); // Repository to deploy.
 

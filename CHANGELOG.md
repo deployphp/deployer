@@ -8,6 +8,7 @@
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
 - Added `horizon:terminate` to the Laravel recipe
 - Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
+- Added recipe for sulu 2.0 [#1758]
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
@@ -420,6 +421,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709
 [#1708]: https://github.com/deployphp/deployer/pull/1708
 [#1677]: https://github.com/deployphp/deployer/pull/1677

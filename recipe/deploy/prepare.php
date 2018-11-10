@@ -37,15 +37,15 @@ task('deploy:prepare', function () {
     // Create shared dir.
     run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
 
-    // Check the remote HEAD
+    // Check and save the remote HEAD/revision and compare it with the existing saved one (if any)
+    // This avoid unnecessary releases when the last commit id matches the existing one (HEAD)
+    $repository  = trim(get('repository'));
+    $revision    = input()->getOption('revision') ?? null;
+    $remoteHead  = $revision ? $revision :
+        trim(run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"',
+            get('bin/git'), $repository)));
     if (true === get('check_remote_head') && null == input()->getOption('tag')) {
-        $repository  = trim(get('repository'));
-        $revision    = input()->getOption('revision') ?? null;
-        $remoteHead  = $revision ? $revision :
-            trim(run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"',
-        get('bin/git'), $repository)));
-
-        $headPath   = trim(get('deploy_path').'/.dep/HEAD');
+        $headPath = trim(get('deploy_path').'/.dep/HEAD');
         $isRemoteHeadExists = (bool) run('if [ -f '.$headPath.' ]; then echo 1; else echo 0; fi');
 
         //check if HEAD file is exists and then compare it
@@ -56,6 +56,6 @@ task('deploy:prepare', function () {
                 exit(0);
             }
         }
-        run("cd {{deploy_path}} && echo ".$remoteHead.' > .dep/HEAD');
     }
+    run("cd {{deploy_path}} && echo ".$remoteHead.' > .dep/HEAD');
 });

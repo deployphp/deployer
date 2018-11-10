@@ -182,7 +182,7 @@ class Parser
         throw $this->error('Expected version');
     }
 
-    private function parseItems()
+    private function parseItems(): array
     {
         $items = [];
         while (preg_match('/^\- (.+) $/x', $this->current(), $m)) {
@@ -204,7 +204,7 @@ class Parser
         return $items;
     }
 
-    private function parseReferences()
+    private function parseReferences(): array
     {
         $refs = [];
         while (preg_match('/^\[/', $this->current())) {

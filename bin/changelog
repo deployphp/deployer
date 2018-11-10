@@ -77,7 +77,7 @@ $app->register('release')->setCode(function () use ($io) {
 
     do {
         $v = $io->ask("What version to release? (latest {$latest->getVersion()})");
-        if (!preg_match('/^\d+\.\d+\.\d+(-[\d\w\.]+)?$/', $v)) {
+        if (!preg_match('/^\d+\.\d+\.\d+(-[\w\.]+)?$/', $v)) {
             $io->warning('Version number must follow semantic versioning.');
             continue;
         }

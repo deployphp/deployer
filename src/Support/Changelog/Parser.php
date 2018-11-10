@@ -84,7 +84,7 @@ class Parser
 
     private function matchVersion($line, &$m = null)
     {
-        return preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\d\w\.]+)? | master )$/x', $line, $m);
+        return preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\w\.]+)? | master )$/x', $line, $m);
     }
 
     private function error($message): ParseException

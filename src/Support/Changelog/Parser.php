@@ -31,7 +31,7 @@ class Parser
 
     public function __construct(string $changelog, bool $strict = true)
     {
-        $this->tokens = preg_split("/\n/", $changelog);
+        $this->tokens = array_map('trim', explode("\n", $changelog));
         $this->strict = $strict;
     }
 

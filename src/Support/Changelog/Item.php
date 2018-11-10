@@ -21,7 +21,7 @@ class Item
     {
         sort($this->references, SORT_NUMERIC);
 
-        $references = join('', array_map(function ($ref) {
+        $references = implode('', array_map(function ($ref) {
             return " [#$ref]";
         }, $this->references));
 

@@ -50,19 +50,19 @@ class Version
         $fixed = '';
         $removed = '';
         if (!empty($this->added)) {
-            $added = join("\n", array_map($f, $this->added));
+            $added = implode("\n", array_map($f, $this->added));
             $added = "### Added\n$added\n\n";
         }
         if (!empty($this->changed)) {
-            $changed = join("\n", array_map($f, $this->changed));
+            $changed = implode("\n", array_map($f, $this->changed));
             $changed = "### Changed\n$changed\n\n";
         }
         if (!empty($this->fixed)) {
-            $fixed = join("\n", array_map($f, $this->fixed));
+            $fixed = implode("\n", array_map($f, $this->fixed));
             $fixed = "### Fixed\n$fixed\n\n";
         }
         if (!empty($this->removed)) {
-            $removed = join("\n", array_map($f, $this->removed));
+            $removed = implode("\n", array_map($f, $this->removed));
             $removed = "### Removed\n$removed\n\n";
         }
 

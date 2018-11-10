@@ -96,7 +96,7 @@ class Parser
             $this->next();
         }
 
-        return new ParseException($message, join("\n", $this->span));
+        return new ParseException($message, implode("\n", $this->span));
     }
 
     public function parse(): Changelog

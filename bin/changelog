@@ -58,7 +58,7 @@ $app->register('update')->setCode(function () use ($io) {
 
     $changelog->findMaster()->{"add$type"}($item);
 
-    file_put_contents(CHANGELOG, "$changelog");
+    file_put_contents(CHANGELOG, (string)$changelog);
 
     $io->success(CHANGELOG . ' updated');
 });
@@ -66,7 +66,7 @@ $app->register('update')->setCode(function () use ($io) {
 $app->register('fix')->setCode(function () use ($io) {
     $parser = new Parser(file_get_contents(CHANGELOG), false);
     $changelog = $parser->parse();
-    file_put_contents(CHANGELOG, "$changelog");
+    file_put_contents(CHANGELOG, (string)$changelog);
 });
 
 $app->register('release')->setCode(function () use ($io) {
@@ -86,7 +86,7 @@ $app->register('release')->setCode(function () use ($io) {
 
     $changelog->findMaster()->setVersion('v' . $v);
 
-    file_put_contents(CHANGELOG, "$changelog");
+    file_put_contents(CHANGELOG, (string)$changelog);
     $io->success(CHANGELOG . " updated to v$v");
 });
 

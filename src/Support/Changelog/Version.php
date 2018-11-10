@@ -45,10 +45,10 @@ class Version
             return "- $item";
         };
 
-        $added = "";
-        $changed = "";
-        $fixed = "";
-        $removed = "";
+        $added = '';
+        $changed = '';
+        $fixed = '';
+        $removed = '';
         if (!empty($this->added)) {
             $added = join("\n", array_map($f, $this->added));
             $added = "### Added\n$added\n\n";

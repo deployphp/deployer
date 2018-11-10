@@ -38,7 +38,7 @@ class Parser
     private function current(): string
     {
         if (count($this->tokens) === 0) {
-            return "";
+            return '';
         }
         return $this->tokens[0];
     }
@@ -64,8 +64,8 @@ class Parser
     private function acceptEmptyLine()
     {
         if ($this->strict) {
-            if ("" !== $this->next()) {
-                throw $this->error("Expected an empty line");
+            if ('' !== $this->next()) {
+                throw $this->error('Expected an empty line');
             }
         } else {
             while (preg_match('/^\s*$/', $this->current()) && count($this->tokens) > 0) {
@@ -78,7 +78,7 @@ class Parser
     {
         if (count($this->tokens) !== 0) {
             $this->next();
-            throw $this->error("Expected EOF");
+            throw $this->error('Expected EOF');
         }
     }
 
@@ -128,7 +128,7 @@ class Parser
             return $c;
         }
 
-        throw $this->error("Expected title");
+        throw $this->error('Expected title');
     }
 
     private function parseVersion(): Version
@@ -139,7 +139,7 @@ class Parser
 
             $compareLink = $this->next();
             if (!preg_match('/^\[/', $compareLink)) {
-                throw $this->error("Expected link to compare page with previous version");
+                throw $this->error('Expected link to compare page with previous version');
             }
 
             $prev = 'v\d+\.\d+\.\d+(-[\d\w\.]+)?';
@@ -151,7 +151,7 @@ class Parser
             if (preg_match($regexp, $compareLink, $m)) {
                 $version->setPrevious($m[1]);
             } else {
-                throw $this->error("Error in compare link syntax");
+                throw $this->error('Error in compare link syntax');
             }
 
             $this->acceptEmptyLine();
@@ -179,7 +179,7 @@ class Parser
             return $version;
         }
 
-        throw $this->error("Expected version");
+        throw $this->error('Expected version');
     }
 
     private function parseItems()

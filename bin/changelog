@@ -45,14 +45,14 @@ $app->register('update')->setCode(function () use ($io) {
         $url = $io->ask('Closed issues/pulls url', $noop);
         if ($url === $noop) {
             break;
+        }
+
+        if (preg_match('#^https\://github\.com/deployphp/deployer/(issues|pull)/(\d+)$#', $url, $m)) {
+            $ref = (int)$m[2];
+            $item->addReference($ref);
+            $changelog->addReferences($ref, $url);
         } else {
-            if (preg_match('#^https\://github\.com/deployphp/deployer/(issues|pull)/(\d+)$#', $url, $m)) {
-                $ref = (int)$m[2];
-                $item->addReference($ref);
-                $changelog->addReferences($ref, $url);
-            } else {
-                $io->warning('Url should be link to GitHub issue or pull page of deployphp/deployer repo.');
-            }
+            $io->warning('Url should be link to GitHub issue or pull page of deployphp/deployer repo.');
         }
     } while (true);
 

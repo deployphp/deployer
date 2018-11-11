@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\str_contains;
 
 desc('Preparing host for deploy');
@@ -46,14 +47,13 @@ task('deploy:prepare', function () {
             get('bin/git'), $repository)));
     if (true === get('check_remote_head') && null == input()->getOption('tag')) {
         $headPath = trim(get('deploy_path').'/.dep/HEAD');
-        $isRemoteHeadExists = (bool) run('if [ -f '.$headPath.' ]; then echo 1; else echo 0; fi');
+        $isRemoteHeadExists = test("[ -f $headPath ]");
 
         //check if HEAD file is exists and then compare it
         if (true === $isRemoteHeadExists) {
             $headContents = run('cat '.$headPath);
             if ($headContents === $remoteHead) {
-                writeln('<info>Already up-to-date.</info>');
-                exit(0);
+                throw new GracefulShutdownException("Already up-to-date.");
             }
         }
     }

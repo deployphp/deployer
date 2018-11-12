@@ -42,8 +42,7 @@ task('deploy:prepare', function () {
     // This avoid unnecessary releases when the last commit id matches the existing one (HEAD)
     $repository  = trim(get('repository'));
     $revision    = input()->getOption('revision') ?? null;
-    $remoteHead  = $revision ? $revision :
-        run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"', get('bin/git'), $repository));
+    $remoteHead  = $revision ?? run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"', get('bin/git'), $repository));
 
     if (true === get('check_remote_head') && null == input()->getOption('tag')) {
         $headPath = trim(get('deploy_path').'/.dep/HEAD');

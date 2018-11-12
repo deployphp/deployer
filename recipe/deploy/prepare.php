@@ -43,18 +43,14 @@ task('deploy:prepare', function () {
     $repository  = trim(get('repository'));
     $revision    = input()->getOption('revision') ?? null;
     $remoteHead  = $revision ? $revision :
-        trim(run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"',
-            get('bin/git'), $repository)));
+        run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"', get('bin/git'), $repository));
+
     if (true === get('check_remote_head') && null == input()->getOption('tag')) {
         $headPath = trim(get('deploy_path').'/.dep/HEAD');
-        $isRemoteHeadExists = test("[ -f $headPath ]");
-
+        $headContents = run(sprintf('if [ -e %s ]; then cat %1$s; fi', $headPath));
         //check if HEAD file is exists and then compare it
-        if (true === $isRemoteHeadExists) {
-            $headContents = run('cat '.$headPath);
-            if ($headContents === $remoteHead) {
-                throw new GracefulShutdownException("Already up-to-date.");
-            }
+        if (trim($headContents) === trim($remoteHead)) {
+            throw new GracefulShutdownException("Already up-to-date.");
         }
     }
     run("cd {{deploy_path}} && echo ".$remoteHead.' > .dep/HEAD');

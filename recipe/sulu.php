@@ -4,9 +4,9 @@ namespace Deployer;
 
 require_once __DIR__ . '/symfony3.php';
 
-set('shared_dirs', ['var/indexes', 'var/logs', 'var/sessions', 'var/sitemaps', 'var/uploads', 'web/uploads']);
+add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'web/uploads']);
 
-set('writable_dirs', ['var/indexes', 'var/logs', 'var/sessions', 'var/sitemaps', 'var/uploads', 'web/uploads', 'var/cache']);
+add('writable_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'web/uploads']);
 
 set('bin/websiteconsole', function () {
     return parse('{{bin/php}} {{release_path}}/bin/websiteconsole --no-interaction');

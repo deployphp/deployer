@@ -4,9 +4,9 @@ namespace Deployer;
 
 require_once __DIR__ . '/symfony4.php';
 
-set('shared_dirs', ['var/indexes', 'var/log', 'var/sessions', 'var/sitemaps', 'var/uploads', 'public/uploads']);
+add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/uploads']);
 
-set('writable_dirs', ['var', 'public/uploads']);
+add('writable_dirs', ['public/uploads']);
 
 set('bin/websiteconsole', function () {
     return parse('{{bin/php}} {{release_path}}/bin/websiteconsole --no-interaction');

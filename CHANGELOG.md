@@ -9,6 +9,7 @@
 - Added `horizon:terminate` to the Laravel recipe
 - Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
 - Added recipe for sulu 2.0 [#1758]
+- Added recipe for sulu 1.x [#1764]
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
@@ -422,6 +423,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709
 [#1708]: https://github.com/deployphp/deployer/pull/1708

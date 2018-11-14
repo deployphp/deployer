@@ -7,7 +7,7 @@
 
 namespace Deployer;
 
-require_once 'recipe/common.php';
+require_once __DIR__ . '/common.php';
 
 set('shared_dirs', ['var/log', 'var/sessions']);
 set('shared_files', ['.env']);

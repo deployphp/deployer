@@ -20,6 +20,7 @@
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
 - Fixed adding custom headers causes Httpie default header override.
 - Fixed parser errors by adding the trim function to the changelog parser tokens
+- Uploads using rsync did not honor the 'become' option set for a host
 
 
 ## v6.3.0

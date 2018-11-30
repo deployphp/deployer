@@ -10,6 +10,7 @@
 - Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
 - Added recipe for sulu 2.0 [#1758]
 - Added recipe for sulu 1.x and improve sulu 2.0 recipe [#1764]
+- Added `become` option for rsync upload
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
@@ -20,7 +21,6 @@
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
 - Fixed adding custom headers causes Httpie default header override.
 - Fixed parser errors by adding the trim function to the changelog parser tokens
-- Uploads using rsync did not honor the 'become' option set for a host
 
 
 ## v6.3.0

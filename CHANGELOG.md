@@ -20,6 +20,7 @@
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
 - Fixed adding custom headers causes Httpie default header override.
 - Fixed parser errors by adding the trim function to the changelog parser tokens
+- Fixed arguments for rsync to be properly escaped
 
 
 ## v6.3.0

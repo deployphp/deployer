@@ -461,13 +461,19 @@ function download($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
+        if (!isset($config['options']) || !is_array($config['options'])) {
+            $config['options'] = [];
+        }
+
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            if (!isset($config['options']) || !is_array($config['options'])) {
-                $config['options'] = [];
-            }
             $config['options'][] = "-e 'ssh $sshArguments'";
         }
+
+        if ($host->has("become")) {
+            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+        }
+
         $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
     }
 }

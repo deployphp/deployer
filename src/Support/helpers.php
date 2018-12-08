@@ -93,3 +93,15 @@ function array_to_string(array $array): string
         $array
     ));
 }
+
+/**
+ * Take array of needles and check if it's in haystack.
+ *
+ * @param $needles
+ * @param array $haystack
+ * @return bool
+ */
+function array_has(array $needles, array $haystack)
+{
+    return empty(array_diff($needles, $haystack));
+}

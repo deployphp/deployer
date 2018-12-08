@@ -150,8 +150,7 @@ class HostSelectorTest extends TestCase
     {
         $roles = 'role1+role2';
         $host = new  Host('server');
-        $host->roles('role1');
-        $host->roles('role2');
+        $host->roles('role1', 'role2');
         $hostCollection = new HostCollection();
         $hostCollection->set('server', $host);
         $hostSelector = new HostSelector($hostCollection);

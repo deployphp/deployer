@@ -149,12 +149,25 @@ class HostSelectorTest extends TestCase
     public function testReturnHostsByMultipleRolesUsingGetByRoles()
     {
         $roles = 'role1+role2';
+        $roles2 = 'role1+role2,role3';
+        $roles3 = 'role2,role1,role3+role2';
+
         $host = new  Host('server');
         $host->roles('role1', 'role2');
+        $host2 = new Host('server2');
+        $host2->roles('role1');
+        $host3 = new Host('server3');
+        $host3->roles('role2', 'role3');
+
         $hostCollection = new HostCollection();
         $hostCollection->set('server', $host);
+        $hostCollection->set('server2', $host2);
+        $hostCollection->set('server3', $host3);
+
         $hostSelector = new HostSelector($hostCollection);
 
-        $this->assertNotEmpty($hostSelector->getByRoles($roles));
+        $this->assertEquals(['server' => $host], $hostSelector->getByRoles($roles));
+        $this->assertEquals(['server' => $host, 'server3' => $host3], $hostSelector->getByRoles($roles2));
+        $this->assertEquals(['server' => $host, 'server2' => $host2, 'server3' => $host3], $hostSelector->getByRoles($roles3));
     }
 }

@@ -105,15 +105,7 @@ class HostSelector
             $rolesByHost = $host->get('roles', []);
 
             foreach ($roles as $role) {
-                if (strpos($role, '+')) {
-                    if (array_has(\explode('+', $role), $rolesByHost)) {
-                        $hosts[$host->getHostname()] = $host;
-                    }
-                }
-            }
-
-            foreach ($rolesByHost as $role) {
-                if (in_array($role, $roles, true)) {
+                if (array_has(\explode('+', $role), $rolesByHost)) {
                     $hosts[$host->getHostname()] = $host;
                 }
             }

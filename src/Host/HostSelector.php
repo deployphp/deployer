@@ -8,6 +8,7 @@
 namespace Deployer\Host;
 
 use Deployer\Exception\Exception;
+use function Deployer\Support\array_has;
 
 class HostSelector
 {
@@ -101,8 +102,10 @@ class HostSelector
 
         $hosts = [];
         foreach ($this->hosts as $host) {
-            foreach ($host->get('roles', []) as $role) {
-                if (in_array($role, $roles, true)) {
+            $rolesByHost = $host->get('roles', []);
+
+            foreach ($roles as $role) {
+                if (array_has(\explode('+', $role), $rolesByHost)) {
                     $hosts[$host->getHostname()] = $host;
                 }
             }

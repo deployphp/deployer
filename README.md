@@ -9,7 +9,7 @@
 
 A deployment tool written in PHP with support for popular frameworks out of the box
 
-> I'm working on **first LTS release** of Deployer. Please, consider supporting Deployer development on [Patreon page](https://www.patreon.com/deployer)
+> I'm working on **first LTS release** of Deployer. Please, consider supporting Deployer development on [Patreon page](https://www.patreon.com/deployer).
 > [![Goal](https://medv.io/assets/fundraised.svg?no-cache=1)](https://www.patreon.com/deployer)
 
 See [deployer.org](https://deployer.org) for more information and documentation.

@@ -9,7 +9,8 @@
 
 A deployment tool written in PHP with support for popular frameworks out of the box
 
-<a href="https://deployer.org"><img src="https://deployer.org/images/header.png" alt=""></a>
+> I'm working on **first LTS release** of Deployer. Please, consider supporting Deployer development on [Patreon page](https://www.patreon.com/deployer)
+> [![Goal](https://medv.io/assets/fundraised.svg?no-cache=1)](https://www.patreon.com/deployer)
 
 See [deployer.org](https://deployer.org) for more information and documentation.
 
@@ -36,7 +37,7 @@ See also the list of [contributors](https://github.com/deployphp/deployer/graphs
 
 ## Sponsorship
 
-Development of the **Deployer** generously supported by contributions from individuals and corporations. If you are benefiting from **Deployer** and would like to help keep the project financially sustainable, please visit Anton Medvedev's [Patreon page](https://www.patreon.com/deployer) or contact him [via email](mailto:anton@medv.io).
+Development of the **Deployer** generously supported by contributions from individuals and corporations. If you are benefiting from **Deployer** and would like to help keep the project financially sustainable, please visit Anton Medvedev's [Patreon page](https://www.patreon.com/deployer) or contact him [via email](mailto:anton@medv.io)
 
 ### Top Supporters
 

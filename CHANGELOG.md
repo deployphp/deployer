@@ -22,6 +22,7 @@
 - Fixed adding custom headers causes Httpie default header override.
 - Fixed parser errors by adding the trim function to the changelog parser tokens
 - Fixed arguments for rsync to be properly escaped
+- Fix bug to execute ssh command on windows [#1600]
 
 
 ## v6.3.0
@@ -435,6 +436,7 @@
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634
 [#1603]: https://github.com/deployphp/deployer/issues/1603
+[#1600]: https://github.com/deployphp/deployer/issues/1600
 [#1583]: https://github.com/deployphp/deployer/issues/1583
 [#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1575]: https://github.com/deployphp/deployer/pull/1575

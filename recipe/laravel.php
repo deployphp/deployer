@@ -36,7 +36,7 @@ set('writable_dirs', [
 ]);
 
 set('laravel_version', function () {
-    $result = run('{{bin/php}} {{release_path}}/artisan --version');
+    $result = run('cd {{release_path}} && {{bin/php}} artisan --version');
 
     preg_match_all('/(\d+\.?)+/', $result, $matches);
 

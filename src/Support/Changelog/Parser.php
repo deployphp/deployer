@@ -31,14 +31,14 @@ class Parser
 
     public function __construct(string $changelog, bool $strict = true)
     {
-        $this->tokens = preg_split("/\n/", $changelog);
+        $this->tokens = array_map('trim', explode("\n", $changelog));
         $this->strict = $strict;
     }
 
     private function current(): string
     {
         if (count($this->tokens) === 0) {
-            return "";
+            return '';
         }
         return $this->tokens[0];
     }
@@ -64,8 +64,8 @@ class Parser
     private function acceptEmptyLine()
     {
         if ($this->strict) {
-            if ("" !== $this->next()) {
-                throw $this->error("Expected an empty line");
+            if ('' !== $this->next()) {
+                throw $this->error('Expected an empty line');
             }
         } else {
             while (preg_match('/^\s*$/', $this->current()) && count($this->tokens) > 0) {
@@ -78,13 +78,13 @@ class Parser
     {
         if (count($this->tokens) !== 0) {
             $this->next();
-            throw $this->error("Expected EOF");
+            throw $this->error('Expected EOF');
         }
     }
 
     private function matchVersion($line, &$m = null)
     {
-        return preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\d\w\.]+)? | master )$/x', $line, $m);
+        return preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\w\.]+)? | master )$/x', $line, $m);
     }
 
     private function error($message): ParseException
@@ -96,7 +96,7 @@ class Parser
             $this->next();
         }
 
-        return new ParseException($message, join("\n", $this->span));
+        return new ParseException($message, implode("\n", $this->span));
     }
 
     public function parse(): Changelog
@@ -128,7 +128,7 @@ class Parser
             return $c;
         }
 
-        throw $this->error("Expected title");
+        throw $this->error('Expected title');
     }
 
     private function parseVersion(): Version
@@ -139,7 +139,7 @@ class Parser
 
             $compareLink = $this->next();
             if (!preg_match('/^\[/', $compareLink)) {
-                throw $this->error("Expected link to compare page with previous version");
+                throw $this->error('Expected link to compare page with previous version');
             }
 
             $prev = 'v\d+\.\d+\.\d+(-[\d\w\.]+)?';
@@ -151,7 +151,7 @@ class Parser
             if (preg_match($regexp, $compareLink, $m)) {
                 $version->setPrevious($m[1]);
             } else {
-                throw $this->error("Error in compare link syntax");
+                throw $this->error('Error in compare link syntax');
             }
 
             $this->acceptEmptyLine();
@@ -179,10 +179,10 @@ class Parser
             return $version;
         }
 
-        throw $this->error("Expected version");
+        throw $this->error('Expected version');
     }
 
-    private function parseItems()
+    private function parseItems(): array
     {
         $items = [];
         while (preg_match('/^\- (.+) $/x', $this->current(), $m)) {
@@ -204,7 +204,7 @@ class Parser
         return $items;
     }
 
-    private function parseReferences()
+    private function parseReferences(): array
     {
         $refs = [];
         while (preg_match('/^\[/', $this->current())) {

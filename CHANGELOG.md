@@ -6,6 +6,11 @@
 
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
+- Added `horizon:terminate` to the Laravel recipe
+- Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
+- Added recipe for sulu 2.0 [#1758]
+- Added recipe for sulu 1.x and improve sulu 2.0 recipe [#1764]
+- Added `become` option for rsync upload
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
@@ -16,6 +21,8 @@
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
 - Fixed adding custom headers causes Httpie default header override.
 - Fixed Laravel `laravel_version` failure
+- Fixed parser errors by adding the trim function to the changelog parser tokens
+- Fixed arguments for rsync to be properly escaped
 
 
 ## v6.3.0
@@ -419,6 +426,8 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1764]: https://github.com/deployphp/deployer/pull/1764
+[#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709
 [#1708]: https://github.com/deployphp/deployer/pull/1708
 [#1677]: https://github.com/deployphp/deployer/pull/1677

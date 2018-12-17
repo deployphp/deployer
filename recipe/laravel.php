@@ -123,6 +123,11 @@ task('artisan:queue:restart', function () {
     run('{{bin/php}} {{release_path}}/artisan queue:restart');
 });
 
+desc('Execute artisan horizon:terminate');
+task('artisan:horizon:terminate', function () {
+    run('{{bin/php}} {{release_path}}/artisan horizon:terminate');
+});
+
 desc('Execute artisan storage:link');
 task('artisan:storage:link', function () {
     $needsVersion = 5.3;

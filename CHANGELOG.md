@@ -427,6 +427,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1778]: https://github.com/deployphp/deployer/issues/1778
 [#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709

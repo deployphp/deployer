@@ -23,6 +23,7 @@
 - Fixed Laravel `laravel_version` failure
 - Fixed parser errors by adding the trim function to the changelog parser tokens
 - Fixed arguments for rsync to be properly escaped
+- Warning on send anonymous statistics, when repository is callable type
 
 
 ## v6.3.0

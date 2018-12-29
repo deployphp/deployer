@@ -345,10 +345,16 @@ class Deployer extends Container
             return;
         }
 
+        $repository = $this->config['repository'];
+
+        if (is_callable($repository)) {
+            $repository = $repository();
+        }
+
         $stats = [
             'status' => 'success',
             'command_name' => $commandEvent->getCommand()->getName(),
-            'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
+            'project_hash' => empty($repository) ? null : sha1($repository),
             'hosts_count' => $this->hosts->count(),
             'deployer_version' => $this->getConsole()->getVersion(),
             'deployer_phar' => $this->getConsole()->isPharArchive(),

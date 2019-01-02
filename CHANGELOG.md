@@ -15,6 +15,7 @@
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 - Pass-through the quiet mode into the git commands for updating code
+- `deploy:writable` will no longer be able to automatically detect http_user if there are multiple candidates for the role [#1778]
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
@@ -426,6 +427,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1778]: https://github.com/deployphp/deployer/issues/1778
 [#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709

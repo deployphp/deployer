@@ -7,6 +7,7 @@
 
 * Bioley Léal
 * Almost Night
+* Jarek He
 
 [Become a supporter](https://www.patreon.com/deployer)
 

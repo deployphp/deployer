@@ -11,7 +11,7 @@ require 'recipe/common.php';
 
 // Hosts
 
-localhost('host[1:2]')
+localhost('host[1:4]')
     ->set('deploy_path', __DIR__ . '/tmp/localhost');
 
 

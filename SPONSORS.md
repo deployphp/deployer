@@ -8,6 +8,7 @@
 * Bioley Léal
 * Almost Night
 * Jarek He
+* Kostadin Anev
 
 [Become a supporter](https://www.patreon.com/deployer)
 

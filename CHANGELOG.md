@@ -24,6 +24,7 @@
 - Fixed Laravel `laravel_version` failure
 - Fixed parser errors by adding the trim function to the changelog parser tokens
 - Fixed arguments for rsync to be properly escaped
+- Prevent multiple execution of task()->once() with --parallel and --limit option [#1419]
 
 
 ## v6.3.0

@@ -126,7 +126,7 @@ class ParallelExecutor implements ExecutorInterface
             if ($task->shouldBePerformed($host)) {
                 $processes[$host->getHostname()] = $this->getProcess($host, $task);
                 if ($task->isOnce()) {
-                    break;
+                    $task->setHasRun();
                 }
             }
         }

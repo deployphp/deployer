@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.0...master](https://github.com/deployphp/deployer/compare/v6.4.0...master)
+## v6.4.1
+[v6.4.0...v6.4.1](https://github.com/deployphp/deployer/compare/v6.4.0...v6.4.1)
 
 ### Fixed
 - Fixed http_user detection [#1790]

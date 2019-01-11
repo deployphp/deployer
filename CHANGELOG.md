@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+## v6.4.0
+[v6.3.0...v6.4.0](https://github.com/deployphp/deployer/compare/v6.3.0...v6.4.0)
 
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]

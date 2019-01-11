@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.0...master](https://github.com/deployphp/deployer/compare/v6.4.0...master)
+
+### Fixed
+- Fixed http_user detection [#1790]
+
+
 ## v6.4.0
 [v6.3.0...v6.4.0](https://github.com/deployphp/deployer/compare/v6.3.0...v6.4.0)
 
@@ -428,6 +435,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1790]: https://github.com/deployphp/deployer/pull/1790
 [#1778]: https://github.com/deployphp/deployer/issues/1778
 [#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,44 +16,29 @@ class VerbosityString
      */
     private $output;
 
-    /**
-     * @param OutputInterface $output
-     */
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
     }
 
-    /**
-     * @return string
-     */
-    public function __toString()
+    public function __toString(): string
     {
         switch ($this->output->getVerbosity()) {
-            case OutputInterface::VERBOSITY_NORMAL:
-                $verbosity = '';
-                break;
-
             case OutputInterface::VERBOSITY_VERBOSE:
-                $verbosity = '-v';
-                break;
+                return '-v';
 
             case OutputInterface::VERBOSITY_VERY_VERBOSE:
-                $verbosity = '-vv';
-                break;
+                return '-vv';
 
             case OutputInterface::VERBOSITY_DEBUG:
-                $verbosity = '-vvv';
-                break;
+                return '-vvv';
 
             case OutputInterface::VERBOSITY_QUIET:
-                $verbosity = '-q';
-                break;
+                return '-q';
 
+            case OutputInterface::VERBOSITY_NORMAL:
             default:
-                $verbosity = '';
+                return '';
         }
-
-        return $verbosity;
     }
 }

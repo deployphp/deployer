@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.1...master](https://github.com/deployphp/deployer/compare/v6.4.1...master)
+## v6.4.2
+[v6.4.1...v6.4.2](https://github.com/deployphp/deployer/compare/v6.4.1...v6.4.2)
 
 ### Fixed
 - Improved ParallelExecutor::generateOptions to manage all types of InputOption [#1792]

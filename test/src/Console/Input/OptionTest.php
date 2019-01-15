@@ -17,13 +17,16 @@ final class OptionTest extends TestCase
     {
         // InputOption::VALUE_NONE
         foreach ([
-                     ['--fooBar', 'fooBar'],
-                     ['--0', '0'],
-                     ['--1', '1'],
-                     ['--foo\-%&Bar', 'foo\-%&Bar'],
-                     ['--ù+ì', 'ù+ì'],
-                 ] as list($expectedValue, $optionName)) {
+                     ['--fooBar', 'fooBar', true],
+                     ['--0', '0', true],
+                     ['--1', '1', true],
+                     ['--foo\-%&Bar', 'foo\-%&Bar', true],
+                     ['--ù+ì', 'ù+ì', true],
+                 ] as list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
+            $input->expects($this->once())
+                ->method('getOption')
+                ->willReturn($optionValue);
 
             $option = $this->createMock(InputOption::class);
             $option->expects($this->once())

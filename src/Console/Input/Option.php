@@ -12,6 +12,12 @@ use Symfony\Component\Console\Input\InputOption;
 
 final class Option
 {
+    /**
+     * @param InputInterface $input
+     * @param InputOption    $option
+     *
+     * @return string
+     */
     public static function toString(
         InputInterface $input,
         InputOption $option
@@ -19,10 +25,9 @@ final class Option
         $name = $option->getName();
 
         if (!$option->acceptValue()) {
-            return \sprintf(
-                '--%s',
-                $name
-            );
+            return true === $input->getOption($name)
+                ? \sprintf('--%s', $name)
+                : '';
         }
 
         if (!$option->isArray()) {
@@ -53,7 +58,11 @@ final class Option
     }
 
     /**
+     * @param InputOption $option
+     * @param string      $name
      * @param null|string $value
+     *
+     * @return string
      */
     private static function generatePartialOption(
         InputOption $option,

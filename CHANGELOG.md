@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.1...master](https://github.com/deployphp/deployer/compare/v6.4.1...master)
+
+### Fixed
+- Improved ParallelExecutor::generateOptions to manage all types of InputOption [#1792]
+
+
 ## v6.4.1
 [v6.4.0...v6.4.1](https://github.com/deployphp/deployer/compare/v6.4.0...v6.4.1)
 
@@ -435,6 +442,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1792]: https://github.com/deployphp/deployer/pull/1792
 [#1790]: https://github.com/deployphp/deployer/pull/1790
 [#1778]: https://github.com/deployphp/deployer/issues/1778
 [#1764]: https://github.com/deployphp/deployer/pull/1764

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -22,6 +24,7 @@ final class OptionTest extends TestCase
                      ['--1', '1', true],
                      ['--foo\-%&Bar', 'foo\-%&Bar', true],
                      ['--ù+ì', 'ù+ì', true],
+                     ['', 'value-none-unset', false],
                  ] as list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
             $input->expects($this->once())
@@ -199,8 +202,6 @@ final class OptionTest extends TestCase
 
     /**
      * @dataProvider toStringProvider
-     *
-     * @return void
      */
     public function testToString(
         string $expectedValue,

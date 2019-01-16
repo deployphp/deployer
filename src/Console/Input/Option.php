@@ -12,78 +12,36 @@ use Symfony\Component\Console\Input\InputOption;
 
 final class Option
 {
-    /**
-     * @param InputInterface $input
-     * @param InputOption    $option
-     *
-     * @return string
-     */
     public static function toString(
         InputInterface $input,
         InputOption $option
     ): string {
         $name = $option->getName();
+        $values = $input->getOption($name);
 
         if (!$option->acceptValue()) {
-            return true === $input->getOption($name)
+            return true === $values
                 ? \sprintf('--%s', $name)
                 : '';
         }
 
         if (!$option->isArray()) {
-            return self::generatePartialOption(
-                $option,
-                $name,
-                $input->getOption($name)
-            );
+            $values = [$values];
         }
 
         /** @var string[] $outputs */
         $outputs = [];
-        foreach ($input->getOption($name) as $value) {
-            $value = self::generatePartialOption(
-                $option,
+        foreach ($values as $value) {
+            $value = sprintf(
+                '--%s%s%s',
                 $name,
+                \null === $value ? '' : '=',
                 $value
             );
-
-            if ($value === '') {
-                continue;
-            }
 
             $outputs[] = $value;
         }
 
         return \implode(' ', $outputs);
-    }
-
-    /**
-     * @param InputOption $option
-     * @param string      $name
-     * @param null|string $value
-     *
-     * @return string
-     */
-    private static function generatePartialOption(
-        InputOption $option,
-        string $name,
-        $value
-    ): string {
-        if (\null !== $value && \strlen($value) !== 0) {
-            return \sprintf(
-                '--%s=%s',
-                $name,
-                $value
-            );
-        }
-
-        if ($option->isValueOptional()) {
-            return \sprintf(
-                '--%s',
-                $name
-            );
-        }
-
-        return '';
     }
 }

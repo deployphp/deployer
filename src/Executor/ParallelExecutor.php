@@ -268,7 +268,7 @@ class ParallelExecutor implements ExecutorInterface
             $inputs[] = Option::toString($this->input, $option);
         }
 
-        return implode(' ', array_filter($inputs, function (string $item) {
+        return implode(' ', array_filter($inputs, function (string $item): bool {
             return $item !== '';
         }));
     }

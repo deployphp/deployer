@@ -202,6 +202,8 @@ final class OptionTest extends TestCase
 
     /**
      * @dataProvider toStringProvider
+     *
+     * @return void
      */
     public function testToString(
         string $expectedValue,

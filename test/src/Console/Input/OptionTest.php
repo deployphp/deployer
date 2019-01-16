@@ -72,7 +72,7 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\false);
 
-            $option->expects($this->any())
+            $option->expects($this->once())
                 ->method('isValueRequired')
                 ->willReturn(\true);
 
@@ -110,7 +110,7 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\false);
 
-            $option->expects($this->any())
+            $option->expects($this->once())
                 ->method('isValueRequired')
                 ->willReturn(\false);
 
@@ -149,7 +149,7 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\true);
 
-            $option->expects($this->any())
+            $option->expects($this->once())
                 ->method('isValueRequired')
                 ->willReturn(\true);
 
@@ -187,7 +187,7 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\true);
 
-            $option->expects($this->any())
+            $option->expects($this->once())
                 ->method('isValueRequired')
                 ->willReturn(\false);
 

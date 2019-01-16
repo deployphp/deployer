@@ -33,7 +33,7 @@ final class Option
         /** @var string[] $outputs */
         $outputs = [];
         foreach ($values as $value) {
-            if ((\null === $value || '' === $value) && $isValueRequired) {
+            if ($isValueRequired && \null === $value) {
                 continue;
             }
             $value = sprintf(

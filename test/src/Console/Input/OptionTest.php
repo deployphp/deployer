@@ -49,7 +49,7 @@ final class OptionTest extends TestCase
         foreach ([
                     'VALUE_REQUIRED 1' => ['--fooBar=ciao', 'fooBar', 'ciao'],
                     'VALUE_REQUIRED 2' => ['', 'fooBar', \null],
-                    'VALUE_REQUIRED 3' => ['', 'fooBar', ''],
+                    'VALUE_REQUIRED 3' => ['--fooBar=', 'fooBar', ''],
                     'VALUE_REQUIRED 4' => ['--fooBar=0', 'fooBar', '0'],
                     'VALUE_REQUIRED 5' => ['--foo\-%&Bar=test', 'foo\-%&Bar', 'test'],
                     'VALUE_REQUIRED 6' => ['--ù+ì=omg', 'ù+ì', 'omg'],
@@ -125,10 +125,11 @@ final class OptionTest extends TestCase
         foreach ([
                     'VALUE_ARRAY_REQUIRED 1' => ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', 'Привет']],
                     'VALUE_ARRAY_REQUIRED 2' => ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', \null, 'Привет']],
-                    'VALUE_ARRAY_REQUIRED 3' => ['', 'fooBar', [\null, '']],
+                    'VALUE_ARRAY_REQUIRED 3' => ['--fooBar=', 'fooBar', [\null, '']],
                     'VALUE_ARRAY_REQUIRED 4' => ['', 'fooBar', [\null]],
-                    'VALUE_ARRAY_REQUIRED 5' => ['', 'fooBar', ['']],
+                    'VALUE_ARRAY_REQUIRED 5' => ['--fooBar=', 'fooBar', ['']],
                     'VALUE_ARRAY_REQUIRED 6' => ['--fooBar=0 --fooBar=1 --fooBar=2 --fooBar=...', 'fooBar', ['0', '1', '2', '...']],
+                    'VALUE_ARRAY_REQUIRED 7' => ['--fooBar=ciao --fooBar= --fooBar=Привет', 'fooBar', ['ciao', '', 'Привет']],
                  ] as $key => list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
             $input->expects($this->once())

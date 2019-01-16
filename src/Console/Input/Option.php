@@ -29,9 +29,13 @@ final class Option
             $values = [$values];
         }
 
+        $isValueRequired = $option->isValueRequired();
         /** @var string[] $outputs */
         $outputs = [];
         foreach ($values as $value) {
+            if ((\null === $value || '' === $value) && $isValueRequired) {
+                continue;
+            }
             $value = sprintf(
                 '--%s%s%s',
                 $name,

@@ -20,7 +20,6 @@ use Deployer\Host\Storage;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
@@ -269,7 +268,9 @@ class ParallelExecutor implements ExecutorInterface
             $inputs[] = Option::toString($this->input, $option);
         }
 
-        return implode(' ', $inputs);
+        return implode(' ', array_filter($inputs, static function (string $item): bool {
+            return $item !== '';
+        }));
     }
 
     private function generateArguments(): string

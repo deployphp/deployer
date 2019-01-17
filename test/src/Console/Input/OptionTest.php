@@ -17,13 +17,17 @@ final class OptionTest extends TestCase
     {
         // InputOption::VALUE_NONE
         foreach ([
-                     ['--fooBar', 'fooBar'],
-                     ['--0', '0'],
-                     ['--1', '1'],
-                     ['--foo\-%&Bar', 'foo\-%&Bar'],
-                     ['--ù+ì', 'ù+ì'],
-                 ] as list($expectedValue, $optionName)) {
+                    'VALUE_NONE 1' => ['--fooBar', 'fooBar', true],
+                    'VALUE_NONE 2' => ['--0', '0', true],
+                    'VALUE_NONE 3' => ['--1', '1', true],
+                    'VALUE_NONE 4' => ['--foo\-%&Bar', 'foo\-%&Bar', true],
+                    'VALUE_NONE 5' => ['--ù+ì', 'ù+ì', true],
+                    'VALUE_NONE 6' => ['', 'value-none-unset', false],
+                 ] as $key => list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
+            $input->expects($this->once())
+                ->method('getOption')
+                ->willReturn($optionValue);
 
             $option = $this->createMock(InputOption::class);
             $option->expects($this->once())
@@ -34,7 +38,7 @@ final class OptionTest extends TestCase
                 ->method('acceptValue')
                 ->willReturn(\false);
 
-            yield [
+            yield $key => [
                 $expectedValue,
                 $input,
                 $option,
@@ -43,13 +47,13 @@ final class OptionTest extends TestCase
 
         // InputOption::VALUE_REQUIRED
         foreach ([
-                     ['--fooBar=ciao', 'fooBar', 'ciao'],
-                     ['', 'fooBar', \null],
-                     ['', 'fooBar', ''],
-                     ['--fooBar=0', 'fooBar', '0'],
-                     ['--foo\-%&Bar=test', 'foo\-%&Bar', 'test'],
-                     ['--ù+ì=omg', 'ù+ì', 'omg'],
-                 ] as list($expectedValue, $optionName, $optionValue)) {
+                    'VALUE_REQUIRED 1' => ['--fooBar=ciao', 'fooBar', 'ciao'],
+                    'VALUE_REQUIRED 2' => ['', 'fooBar', \null],
+                    'VALUE_REQUIRED 3' => ['--fooBar=', 'fooBar', ''],
+                    'VALUE_REQUIRED 4' => ['--fooBar=0', 'fooBar', '0'],
+                    'VALUE_REQUIRED 5' => ['--foo\-%&Bar=test', 'foo\-%&Bar', 'test'],
+                    'VALUE_REQUIRED 6' => ['--ù+ì=omg', 'ù+ì', 'omg'],
+                 ] as $key => list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
             $input->expects($this->once())
                 ->method('getOption')
@@ -68,11 +72,11 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\false);
 
-            $option->expects($this->any())
-                ->method('isValueOptional')
-                ->willReturn(\false);
+            $option->expects($this->once())
+                ->method('isValueRequired')
+                ->willReturn(\true);
 
-            yield [
+            yield $key => [
                 $expectedValue,
                 $input,
                 $option,
@@ -81,13 +85,13 @@ final class OptionTest extends TestCase
 
         // InputOption::VALUE_OPTIONAL
         foreach ([
-                     ['--fooBar=ciao', 'fooBar', 'ciao'],
-                     ['--fooBar', 'fooBar', \null],
-                     ['--fooBar', 'fooBar', ''],
-                     ['--fooBar=0', 'fooBar', '0'],
-                     ['--foo\-%&Bar=test', 'foo\-%&Bar', 'test'],
-                     ['--ù+ì=omg', 'ù+ì', 'omg'],
-                 ] as list($expectedValue, $optionName, $optionValue)) {
+                    'VALUE_OPTIONAL 1' => ['--fooBar=ciao', 'fooBar', 'ciao'],
+                    'VALUE_OPTIONAL 2' => ['--fooBar', 'fooBar', \null],
+                    'VALUE_OPTIONAL 3' => ['--fooBar=', 'fooBar', ''],
+                    'VALUE_OPTIONAL 4' => ['--fooBar=0', 'fooBar', '0'],
+                    'VALUE_OPTIONAL 5' => ['--foo\-%&Bar=test', 'foo\-%&Bar', 'test'],
+                    'VALUE_OPTIONAL 6' => ['--ù+ì=omg', 'ù+ì', 'omg'],
+                 ] as $key => list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
             $input->expects($this->once())
                 ->method('getOption')
@@ -106,11 +110,11 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\false);
 
-            $option->expects($this->any())
-                ->method('isValueOptional')
-                ->willReturn(\true);
+            $option->expects($this->once())
+                ->method('isValueRequired')
+                ->willReturn(\false);
 
-            yield [
+            yield $key => [
                 $expectedValue,
                 $input,
                 $option,
@@ -119,13 +123,14 @@ final class OptionTest extends TestCase
 
         // InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY
         foreach ([
-                     ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', 'Привет']],
-                     ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', \null, 'Привет']],
-                     ['', 'fooBar', [\null, '']],
-                     ['', 'fooBar', [\null]],
-                     ['', 'fooBar', ['']],
-                     ['--fooBar=0 --fooBar=1 --fooBar=2 --fooBar=...', 'fooBar', ['0', '1', '2', '...']],
-                 ] as list($expectedValue, $optionName, $optionValue)) {
+                    'VALUE_ARRAY_REQUIRED 1' => ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', 'Привет']],
+                    'VALUE_ARRAY_REQUIRED 2' => ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', \null, 'Привет']],
+                    'VALUE_ARRAY_REQUIRED 3' => ['--fooBar=', 'fooBar', [\null, '']],
+                    'VALUE_ARRAY_REQUIRED 4' => ['', 'fooBar', [\null]],
+                    'VALUE_ARRAY_REQUIRED 5' => ['--fooBar=', 'fooBar', ['']],
+                    'VALUE_ARRAY_REQUIRED 6' => ['--fooBar=0 --fooBar=1 --fooBar=2 --fooBar=...', 'fooBar', ['0', '1', '2', '...']],
+                    'VALUE_ARRAY_REQUIRED 7' => ['--fooBar=ciao --fooBar= --fooBar=Привет', 'fooBar', ['ciao', '', 'Привет']],
+                 ] as $key => list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
             $input->expects($this->once())
                 ->method('getOption')
@@ -144,11 +149,11 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\true);
 
-            $option->expects($this->any())
-                ->method('isValueOptional')
-                ->willReturn(\false);
+            $option->expects($this->once())
+                ->method('isValueRequired')
+                ->willReturn(\true);
 
-            yield [
+            yield $key => [
                 $expectedValue,
                 $input,
                 $option,
@@ -157,13 +162,13 @@ final class OptionTest extends TestCase
 
         // InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
         foreach ([
-                     ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', 'Привет']],
-                     ['--fooBar=ciao --fooBar --fooBar=Привет', 'fooBar', ['ciao', \null, 'Привет']],
-                     ['--fooBar --fooBar', 'fooBar', [\null, '']],
-                     ['--fooBar', 'fooBar', [\null]],
-                     ['--fooBar', 'fooBar', ['']],
-                     ['--fooBar=0 --fooBar=1 --fooBar=2 --fooBar=...', 'fooBar', ['0', '1', '2', '...']],
-                 ] as list($expectedValue, $optionName, $optionValue)) {
+                    'VALUE_ARRAY_OPTIONAL 1' => ['--fooBar=ciao --fooBar=Привет', 'fooBar', ['ciao', 'Привет']],
+                    'VALUE_ARRAY_OPTIONAL 2' => ['--fooBar=ciao --fooBar --fooBar=Привет', 'fooBar', ['ciao', \null, 'Привет']],
+                    'VALUE_ARRAY_OPTIONAL 3' => ['--fooBar --fooBar=', 'fooBar', [\null, '']],
+                    'VALUE_ARRAY_OPTIONAL 4' => ['--fooBar', 'fooBar', [\null]],
+                    'VALUE_ARRAY_OPTIONAL 5' => ['--fooBar=', 'fooBar', ['']],
+                    'VALUE_ARRAY_OPTIONAL 6' => ['--fooBar=0 --fooBar=1 --fooBar=2 --fooBar=...', 'fooBar', ['0', '1', '2', '...']],
+                 ] as $key => list($expectedValue, $optionName, $optionValue)) {
             $input = $this->createMock(InputInterface::class);
             $input->expects($this->once())
                 ->method('getOption')
@@ -182,11 +187,11 @@ final class OptionTest extends TestCase
                 ->method('isArray')
                 ->willReturn(\true);
 
-            $option->expects($this->any())
-                ->method('isValueOptional')
-                ->willReturn(\true);
+            $option->expects($this->once())
+                ->method('isValueRequired')
+                ->willReturn(\false);
 
-            yield [
+            yield $key => [
                 $expectedValue,
                 $input,
                 $option,

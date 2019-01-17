@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.2...master](https://github.com/deployphp/deployer/compare/v6.4.2...master)
+
+### Fixed
+- Input option handling [#1793]
+
+
 ## v6.4.2
 [v6.4.1...v6.4.2](https://github.com/deployphp/deployer/compare/v6.4.1...v6.4.2)
 
@@ -442,6 +449,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1793]: https://github.com/deployphp/deployer/pull/1793
 [#1792]: https://github.com/deployphp/deployer/pull/1792
 [#1790]: https://github.com/deployphp/deployer/pull/1790
 [#1778]: https://github.com/deployphp/deployer/issues/1778

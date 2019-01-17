@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.2...master](https://github.com/deployphp/deployer/compare/v6.4.2...master)
+## v6.4.3
+[v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)
 
 ### Fixed
 - Input option handling [#1793]

@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.3...master](https://github.com/deployphp/deployer/compare/v6.4.3...master)
+
+### Fixed
+- Fix rsync upload honor become option for host [#1796]
+
+
 ## v6.4.3
 [v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)
 
@@ -449,6 +456,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1796]: https://github.com/deployphp/deployer/pull/1796
 [#1793]: https://github.com/deployphp/deployer/pull/1793
 [#1792]: https://github.com/deployphp/deployer/pull/1792
 [#1790]: https://github.com/deployphp/deployer/pull/1790

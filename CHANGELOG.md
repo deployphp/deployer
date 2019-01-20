@@ -6,6 +6,7 @@
 
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]
+- Fixed bug to execute ssh command on windows [#1775]
 
 
 ## v6.4.3
@@ -461,6 +462,7 @@
 [#1792]: https://github.com/deployphp/deployer/pull/1792
 [#1790]: https://github.com/deployphp/deployer/pull/1790
 [#1778]: https://github.com/deployphp/deployer/issues/1778
+[#1775]: https://github.com/deployphp/deployer/pull/1775
 [#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709

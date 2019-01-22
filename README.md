@@ -12,6 +12,7 @@ A deployment tool written in PHP with support for popular frameworks out of the 
 > I'm working on **first LTS release** of Deployer. Please, consider supporting Deployer development on [Patreon page](https://www.patreon.com/deployer).
 > [![Goal](https://medv.io/assets/fundraised.svg?no-cache=2)](https://www.patreon.com/deployer)  
 > <a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
+> <a href="https://www.wispay.io/t/ZQb" target="_blank"><img src="https://assets.wispay.io/wgt2_d_b.png" height="60"></a>
 
 See [deployer.org](https://deployer.org) for more information and documentation.
 

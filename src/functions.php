@@ -263,7 +263,7 @@ function cd($path)
 function within($path, $callback)
 {
     $lastWorkingPath = get('working_path', '');
-    foreach ((array)$path as $workingPath){
+    foreach ((array)$path as $workingPath) {
         try {
             set('working_path', parse($workingPath));
             $callback($workingPath);

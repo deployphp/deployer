@@ -257,19 +257,22 @@ function cd($path)
 /**
  * Execute a callback within a specific directory and revert back to the initial working directory.
  *
- * @param string $path
+ * @param string|array $path
  * @param callable $callback
  */
 function within($path, $callback)
 {
     $lastWorkingPath = get('working_path', '');
-    try {
-        set('working_path', parse($path));
-        $callback();
-    } finally {
-        set('working_path', $lastWorkingPath);
+    foreach ((array)$path as $workingPath){
+        try {
+            set('working_path', parse($workingPath));
+            $callback($workingPath);
+        } finally {
+            set('working_path', $lastWorkingPath);
+        }
     }
 }
+
 
 /**
  * Run command.

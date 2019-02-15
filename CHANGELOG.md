@@ -4,6 +4,9 @@
 ## master
 [v6.4.3...master](https://github.com/deployphp/deployer/compare/v6.4.3...master)
 
+### Changed
+- Add lock and unlock task to flow_framework receipe
+
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]
 - Fixed bug to execute ssh command on windows [#1775]

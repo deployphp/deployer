@@ -10,6 +10,7 @@
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]
 - Fixed bug to execute ssh command on windows [#1775]
+- Changes to .env for symfony4 recipe
 
 
 ## v6.4.3

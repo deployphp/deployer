@@ -8,6 +8,8 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Application;
+use Deployer\Console\Input\Argument;
+use Deployer\Console\Input\Option;
 use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Exception\Exception;
@@ -61,7 +63,7 @@ class ParallelExecutor implements ExecutorInterface
     public function run(array $tasks, array $hosts)
     {
         $localhost = new Localhost();
-        $limit = (int)$this->input->getOption('limit') ?: count($hosts);
+        $limit = (int) $this->input->getOption('limit') ?: count($hosts);
 
         // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
         // This allows to use code like this in parallel mode:
@@ -126,7 +128,7 @@ class ParallelExecutor implements ExecutorInterface
             if ($task->shouldBePerformed($host)) {
                 $processes[$host->getHostname()] = $this->getProcess($host, $task);
                 if ($task->isOnce()) {
-                    break;
+                    $task->setHasRun();
                 }
             }
         }
@@ -154,7 +156,7 @@ class ParallelExecutor implements ExecutorInterface
      */
     protected function getProcess(Host $host, Task $task): Process
     {
-        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
+        $dep = PHP_BINARY.' '.DEPLOYER_BIN;
         $options = $this->generateOptions();
         $arguments = $this->generateArguments();
         $hostname = $host->getHostname();
@@ -181,6 +183,7 @@ class ParallelExecutor implements ExecutorInterface
      * Start all of the processes.
      *
      * @param Process[] $processes
+     *
      * @return void
      */
     protected function startProcesses(array $processes)
@@ -202,6 +205,7 @@ class ParallelExecutor implements ExecutorInterface
                 return true;
             }
         }
+
         return false;
     }
 
@@ -209,6 +213,7 @@ class ParallelExecutor implements ExecutorInterface
      * Gather the output from all of the processes.
      *
      * @param Process[] $processes
+     *
      * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
@@ -247,31 +252,25 @@ class ParallelExecutor implements ExecutorInterface
      */
     private function generateOptions(): string
     {
-        $input = (string)(new VerbosityString($this->output));
+        /** @var string[] $inputs */
+        $inputs = [
+            (string) (new VerbosityString($this->output)),
+        ];
 
+        $userDefinition = $this->console->getUserDefinition();
         // Get user arguments
-        foreach ($this->console->getUserDefinition()->getArguments() as $argument) {
-            $value = $this->input->getArgument($argument->getName());
-            if (strlen($value) !== 0) {
-                $input .= " $value";
-            }
+        foreach ($userDefinition->getArguments() as $argument) {
+            $inputs[] = Argument::toString($this->input, $argument);
         }
 
         // Get user options
-        foreach ($this->console->getUserDefinition()->getOptions() as $option) {
-            $name = $option->getName();
-            $value = $this->input->getOption($name);
-
-            if (null !== $value && strlen($value) !== 0) {
-                $input .= " --{$name}";
-
-                if ($option->acceptValue()) {
-                    $input .= " {$value}";
-                }
-            }
+        foreach ($userDefinition->getOptions() as $option) {
+            $inputs[] = Option::toString($this->input, $option);
         }
 
-        return $input;
+        return implode(' ', array_filter($inputs, static function (string $item): bool {
+            return $item !== '';
+        }));
     }
 
     private function generateArguments(): string

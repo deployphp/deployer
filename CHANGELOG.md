@@ -2,7 +2,39 @@
 
 
 ## master
-[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+[v6.4.3...master](https://github.com/deployphp/deployer/compare/v6.4.3...master)
+
+### Changed
+- Add lock and unlock task to flow_framework receipe
+
+### Fixed
+- Fix rsync upload honor become option for host [#1796]
+- Fixed bug to execute ssh command on windows [#1775]
+
+
+## v6.4.3
+[v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)
+
+### Fixed
+- Input option handling [#1793]
+
+
+## v6.4.2
+[v6.4.1...v6.4.2](https://github.com/deployphp/deployer/compare/v6.4.1...v6.4.2)
+
+### Fixed
+- Improved ParallelExecutor::generateOptions to manage all types of InputOption [#1792]
+
+
+## v6.4.1
+[v6.4.0...v6.4.1](https://github.com/deployphp/deployer/compare/v6.4.0...v6.4.1)
+
+### Fixed
+- Fixed http_user detection [#1790]
+
+
+## v6.4.0
+[v6.3.0...v6.4.0](https://github.com/deployphp/deployer/compare/v6.3.0...v6.4.0)
 
 ### Added
 - Support to define remote shell path via host-config [#1708] [#1709] [#1709]
@@ -15,13 +47,16 @@
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
 - Pass-through the quiet mode into the git commands for updating code
+- `deploy:writable` will no longer be able to automatically detect http_user if there are multiple candidates for the role [#1778]
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
 - Fixed adding custom headers causes Httpie default header override.
+- Fixed Laravel `laravel_version` failure
 - Fixed parser errors by adding the trim function to the changelog parser tokens
 - Fixed arguments for rsync to be properly escaped
+- Prevent multiple execution of task()->once() with --parallel and --limit option [#1419]
 
 
 ## v6.3.0
@@ -425,6 +460,12 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1796]: https://github.com/deployphp/deployer/pull/1796
+[#1793]: https://github.com/deployphp/deployer/pull/1793
+[#1792]: https://github.com/deployphp/deployer/pull/1792
+[#1790]: https://github.com/deployphp/deployer/pull/1790
+[#1778]: https://github.com/deployphp/deployer/issues/1778
+[#1775]: https://github.com/deployphp/deployer/pull/1775
 [#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758
 [#1709]: https://github.com/deployphp/deployer/issues/1709

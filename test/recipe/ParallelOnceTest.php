@@ -33,5 +33,23 @@ class ParallelOnceTest extends DepCase
 
         self::assertFileExists(self::$currentPath . '/deployed-host1');
         self::assertFileNotExists(self::$currentPath . '/deployed-host2');
+        self::assertFileNotExists(self::$currentPath . '/deployed-host3');
+        self::assertFileNotExists(self::$currentPath . '/deployed-host4');
+    }
+
+    public function testOnceWithLimit()
+    {
+        $output = $this->start('deploy', [
+            '--parallel' => true,
+            '--limit' => 2,
+            '--file' => DEPLOYER_FIXTURES . '/recipe/parallel.php'
+        ], [
+            'verbosity' => OutputInterface::VERBOSITY_DEBUG
+        ]);
+
+        self::assertFileExists(self::$currentPath . '/deployed-host1');
+        self::assertFileNotExists(self::$currentPath . '/deployed-host2');
+        self::assertFileNotExists(self::$currentPath . '/deployed-host3');
+        self::assertFileNotExists(self::$currentPath . '/deployed-host4');
     }
 }

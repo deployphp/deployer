@@ -319,4 +319,14 @@ class Task
     {
         return $this->shallow;
     }
+
+    /**
+     * @internal this is used by ParallelExecutor and prevent multiple run
+     */
+    public function setHasRun()
+    {
+        if ($this->isOnce()) {
+            $this->hasRun = true;
+        }
+    }
 }

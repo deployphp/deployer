@@ -41,7 +41,7 @@
 
 1. Servers to Hosts
    
-   * `server($name, $hostname)` to `host($hostname)`
+   * `server($hostname)` to `host($hostname)`, and `server($name, $hostname)` to `host($name)->hostname($hostname)`
    * `localServer($name)` to `localhost()`
    * `cluster($name, $nodes, $port)` to `hosts(...$hodes)`
    * `serverList($file)` to `inventory($file)`

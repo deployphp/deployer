@@ -4,6 +4,9 @@
 ## master
 [v6.4.3...master](https://github.com/deployphp/deployer/compare/v6.4.3...master)
 
+### Added
+- Add support for + in --roles option #1610
+
 ### Changed
 - Add lock and unlock task to flow_framework receipe
 

@@ -11,6 +11,7 @@ use Deployer\Initializer\Initializer;
 use Deployer\Initializer\Template\CakeTemplate;
 use Deployer\Initializer\Template\CodeIgniterTemplate;
 use Deployer\Initializer\Template\CommonTemplate;
+use Deployer\Initializer\Template\CraftTemplate;
 use Deployer\Initializer\Template\DrupalTemplate;
 use Deployer\Initializer\Template\LaravelTemplate;
 use Deployer\Initializer\Template\SymfonyTemplate;
@@ -170,6 +171,7 @@ class InitCommand extends Command
         $initializer->addTemplate('CodeIgniter', new CodeIgniterTemplate());
         $initializer->addTemplate('Drupal', new DrupalTemplate());
         $initializer->addTemplate('TYPO3', new Typo3Template());
+        $initializer->addTemplate('CraftCMS', new CraftTemplate());
 
         return $initializer;
     }

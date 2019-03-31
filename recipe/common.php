@@ -67,8 +67,9 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_mode', 'acl'); // chmod, chown, chgrp or acl.
 set('writable_use_sudo', false); // Using sudo in writable commands?
+set('writable_recursive', true); // Common for all modes
 set('writable_chmod_mode', '0755'); // For chmod mode
-set('writable_chmod_recursive', true); // For chmod mode
+set('writable_chmod_recursive', true); // For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
 set('http_user', false);
 set('http_group', false);

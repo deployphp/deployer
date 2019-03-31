@@ -6,6 +6,7 @@
 
 ### Added
 - Added `git_clone_dissociate` option, defaults to true; when set to false git-clone doesn't dissociate the eventual reference repository after clone, useful when using git-lfs [#1820]
+- Added `writable_recursive` option (default: true) used in all writable modes (chmod, chown, chgrp, acl) [#1822]
 
 ### Changed
 - Add lock and unlock task to flow_framework receipe
@@ -463,6 +464,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1822]: https://github.com/deployphp/deployer/issues/1822
 [#1820]: https://github.com/deployphp/deployer/pull/1820
 [#1796]: https://github.com/deployphp/deployer/pull/1796
 [#1793]: https://github.com/deployphp/deployer/pull/1793

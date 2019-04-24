@@ -15,6 +15,9 @@
 - Fix rsync upload honor become option for host [#1796]
 - Fixed bug to execute ssh command on windows [#1775]
 
+### Removed
+- Deploy:vendors from the wordpress recipe
+
 
 ## v6.4.3
 [v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)

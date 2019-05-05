@@ -118,6 +118,16 @@ task('artisan:optimize', function () {
     }
 });
 
+desc('Execute artisan optimize:clear');
+task('artisan:optimize:clear', function () {
+    $needsVersion = 5.7;
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $needsVersion, '>=')) {
+        run('{{bin/php}} {{release_path}}/artisan optimize:clear');
+    }
+});
+
 desc('Execute artisan queue:restart');
 task('artisan:queue:restart', function () {
     run('{{bin/php}} {{release_path}}/artisan queue:restart');

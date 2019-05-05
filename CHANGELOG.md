@@ -7,6 +7,7 @@
 ### Added
 - Added `git_clone_dissociate` option, defaults to true; when set to false git-clone doesn't dissociate the eventual reference repository after clone, useful when using git-lfs [#1820]
 - Added `writable_recursive` option (default: true) used in all writable modes (chmod, chown, chgrp, acl) [#1822]
+- Added `artisan:optimize:clear` task for Laravel 5.7 and above
 
 ### Changed
 - Add lock and unlock task to flow_framework receipe

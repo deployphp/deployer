@@ -111,10 +111,24 @@ task('artisan:view:clear', function () {
 desc('Execute artisan optimize');
 task('artisan:optimize', function () {
     $deprecatedVersion = 5.5;
+    $readdedInVersion = 5.7;
     $currentVersion = get('laravel_version');
 
-    if (version_compare($currentVersion, $deprecatedVersion, '<')) {
+    if (
+        version_compare($currentVersion, $deprecatedVersion, '<') ||
+        version_compare($currentVersion, $readdedInVersion, '>=')
+    ) {
         run('{{bin/php}} {{release_path}}/artisan optimize');
+    }
+});
+
+desc('Execute artisan optimize:clear');
+task('artisan:optimize:clear', function () {
+    $needsVersion = 5.7;
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $needsVersion, '>=')) {
+        run('{{bin/php}} {{release_path}}/artisan optimize:clear');
     }
 });
 

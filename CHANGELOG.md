@@ -7,9 +7,11 @@
 ### Added
 - Added `git_clone_dissociate` option, defaults to true; when set to false git-clone doesn't dissociate the eventual reference repository after clone, useful when using git-lfs [#1820]
 - Added `writable_recursive` option (default: true) used in all writable modes (chmod, chown, chgrp, acl) [#1822]
+- Added `artisan:optimize:clear` task for Laravel 5.7 and above
 
 ### Changed
 - Add lock and unlock task to flow_framework receipe
+- Updated `artisan:optimize` to run for Laravel 5.7 and above, since [it got added back](https://github.com/laravel/framework/commit/fe1cbdf3b51ce1235b8c91f5e603f1e9306e4f6f) last year. It still doesn't run for 5.5 and below.
 
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]

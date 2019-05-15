@@ -65,10 +65,12 @@ $includes = [
 
 $loaded = false;
 $includePath = false;
+$vendorDir = false;
 
 for ($i = 0; $i < count($autoload); $i++) {
     if (file_exists($autoload[$i]) && file_exists($includes[$i])) {
         require $autoload[$i];
+        $vendorDir = dirname($autoload[$i]);
         $includePath = $includes[$i];
         $loaded = true;
         break;
@@ -91,17 +93,13 @@ set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 // Detect version
 $version = 'master';
 
-$composerLockFile = $deployFilePath . '/composer.lock';
-if (is_readable($composerLockFile)) {
-    $lock = json_decode(file_get_contents($composerLockFile), true);
-    foreach ($lock['packages'] as $package) {
+$installedFile = $vendorDir . '/composer/installed.json';
+if (is_readable($installedFile)) {
+    $packages = json_decode(file_get_contents($installedFile), true);
+    foreach ($packages as $package) {
         if ($package['name'] === 'deployer/deployer') {
             $version = $package['version'];
-        }
-    }
-    foreach ($lock['packages-dev'] as $package) {
-        if ($package['name'] === 'deployer/deployer') {
-            $version = $package['version'];
+            break;
         }
     }
 }

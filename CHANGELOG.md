@@ -16,6 +16,7 @@
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]
 - Fixed bug to execute ssh command on windows [#1775]
+- Fix deployer detects wrong version [#1842]
 
 ### Removed
 - Deploy:vendors from the wordpress recipe
@@ -469,6 +470,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1842]: https://github.com/deployphp/deployer/pull/1842
 [#1822]: https://github.com/deployphp/deployer/issues/1822
 [#1820]: https://github.com/deployphp/deployer/pull/1820
 [#1796]: https://github.com/deployphp/deployer/pull/1796

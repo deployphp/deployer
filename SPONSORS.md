@@ -9,6 +9,7 @@
 * Almost Night
 * Jarek He
 * Kostadin Anev
+* Sergey Mukhin
 
 [Become a supporter](https://www.patreon.com/deployer)
 

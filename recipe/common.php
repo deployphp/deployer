@@ -67,8 +67,9 @@ set('copy_dirs', []);
 set('writable_dirs', []);
 set('writable_mode', 'acl'); // chmod, chown, chgrp or acl.
 set('writable_use_sudo', false); // Using sudo in writable commands?
+set('writable_recursive', true); // Common for all modes
 set('writable_chmod_mode', '0755'); // For chmod mode
-set('writable_chmod_recursive', true); // For chmod mode
+set('writable_chmod_recursive', true); // For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
 set('http_user', false);
 set('http_group', false);
@@ -86,7 +87,7 @@ set('use_atomic_symlink', function () {
 });
 
 set('composer_action', 'install');
-set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
+set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest');
 
 set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 

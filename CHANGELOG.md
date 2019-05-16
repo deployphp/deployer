@@ -16,6 +16,7 @@
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]
 - Fixed bug to execute ssh command on windows [#1775]
+- Fix when recipe/deploy/writable.php resolves <defunct> as one of http users.
 - Fix deployer detects wrong version [#1842]
 
 ### Removed

@@ -28,7 +28,7 @@ set('writable_dirs', [
     'pub/media',
     'generation'
 ]);
-set('clear_paths', [   
+set('clear_paths', [
     'generation/*',
     'pub/static/_cache/*',
     'var/generation/*',

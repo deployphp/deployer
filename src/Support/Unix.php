@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -10,17 +10,23 @@ namespace Deployer\Support;
 class Unix
 {
     /**
-     * Parse "~" symbol from path.
+     * Expand leading tilde (~) symbol in given path.
      *
      * @param string $path
      * @return string
      */
     public static function parseHomeDir(string $path): string
     {
-        if (isset($_SERVER['HOME'])) {
-            $path = str_replace('~', $_SERVER['HOME'], $path);
-        } elseif (isset($_SERVER['HOMEDRIVE'], $_SERVER['HOMEPATH'])) {
-            $path = str_replace('~', $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'], $path);
+        if ('~' === $path || 0 === strpos($path, '~/')) {
+            if (isset($_SERVER['HOME'])) {
+                $home = $_SERVER['HOME'];
+            } elseif (isset($_SERVER['HOMEDRIVE'], $_SERVER['HOMEPATH'])) {
+                $home = $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
+            } else {
+                return $path;
+            }
+
+            return $home . substr($path, 1);
         }
 
         return $path;

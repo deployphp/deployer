@@ -12,6 +12,7 @@
 ### Changed
 - Add lock and unlock task to flow_framework receipe
 - Updated `artisan:optimize` to run for Laravel 5.7 and above, since [it got added back](https://github.com/laravel/framework/commit/fe1cbdf3b51ce1235b8c91f5e603f1e9306e4f6f) last year. It still doesn't run for 5.5 and below.
+- View:clear command to a new view:cache command
 
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]

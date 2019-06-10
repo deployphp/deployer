@@ -105,7 +105,14 @@ task('artisan:route:cache', function () {
 
 desc('Execute artisan view:cache');
 task('artisan:view:cache', function () {
-    run('{{bin/php}} {{release_path}}/artisan view:cache');
+    $needsVersion = 5.6;
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $needsVersion, '>=')) {
+        run('{{bin/php}} {{release_path}}/artisan view:cache');
+    } else {
+        run('{{bin/php}} {{release_path}}/artisan view:clear');
+    }
 });
 
 desc('Execute artisan optimize');

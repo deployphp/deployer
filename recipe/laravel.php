@@ -103,9 +103,9 @@ task('artisan:route:cache', function () {
     run('{{bin/php}} {{release_path}}/artisan route:cache');
 });
 
-desc('Execute artisan view:clear');
-task('artisan:view:clear', function () {
-    run('{{bin/php}} {{release_path}}/artisan view:clear');
+desc('Execute artisan view:cache');
+task('artisan:view:cache', function () {
+    run('{{bin/php}} {{release_path}}/artisan view:cache');
 });
 
 desc('Execute artisan optimize');
@@ -186,7 +186,7 @@ task('deploy', [
     'deploy:vendors',
     'deploy:writable',
     'artisan:storage:link',
-    'artisan:view:clear',
+    'artisan:view:cache',
     'artisan:config:cache',
     'artisan:optimize',
     'deploy:symlink',

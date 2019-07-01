@@ -1,6 +1,6 @@
 # Top Supporters
 
-* <a href="https://hyper.host">Tony James from HYPERHOST <img src="https://hyper.host/img/hyper-host-logo-green.png" alt="hyper.host" width="40"></a>
+* Tony James [hyper.host](https://hyper.host)
 * Daniel Knoch from [cariba.de](https://cariba.de)
 
 # Supporters

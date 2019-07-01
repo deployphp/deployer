@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.3...master](https://github.com/deployphp/deployer/compare/v6.4.3...master)
+## v6.4.4
+[v6.4.3...v6.4.4](https://github.com/deployphp/deployer/compare/v6.4.3...v6.4.4)
 
 ### Added
 - Added `git_clone_dissociate` option, defaults to true; when set to false git-clone doesn't dissociate the eventual reference repository after clone, useful when using git-lfs [#1820]

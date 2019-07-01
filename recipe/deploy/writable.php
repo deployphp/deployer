@@ -24,9 +24,9 @@ task('deploy:writable', function () {
 
     if ($httpUser === false && ! in_array($mode, ['chgrp', 'chmod'], true)) {
         // Attempt to detect http user in process list.
-        $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print $NF}' | uniq"));
-        if (count($httpUserCandidates) === 1) {
-            $httpUser = $httpUserCandidates[0];
+        $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+        if (count($httpUserCandidates)) {
+            $httpUser = array_shift($httpUserCandidates);
         }
 
         if (empty($httpUser)) {

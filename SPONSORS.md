@@ -5,11 +5,20 @@
 
 # Supporters
 
-* Bioley Léal
-* Almost Night
-* Jarek He
-* Kostadin Anev
-* Sergey Mukhin
+* Almost Night		 
+* Bioley Léal			 
+* Dwi Fahni Denni		 
+* Georgi				 
+* Ivan Gretsky		 
+* Jan Čejka			 
+* Janos Pasztor		 
+* Jarek He			 
+* Kostadin Anev		 
+* Nofoe				 
+* Robbert van Os		 
+* Sergey				 
+* Taras Pevnev		 
+* Websec.io							
 
 [Become a supporter](https://www.patreon.com/deployer)
 

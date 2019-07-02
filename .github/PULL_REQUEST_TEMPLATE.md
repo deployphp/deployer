@@ -1,12 +1,3 @@
-#####################################################################
-I'm working on **first LTS release** of Deployer. 
-Please, consider supporting Deployer development on Patreon page: 
-
-   https://www.patreon.com/deployer
-
-#####################################################################
-
-
 | Q             | A
 | ------------- | ---
 | Bug fix?      | Yes or No

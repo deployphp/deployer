@@ -93,6 +93,12 @@ class TaskCommand extends Command
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
             'Sets configuration option'
         );
+        $this->addOption(
+            'skip-task',
+            null,
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Skip one or more tasks'
+        );
     }
 
     /**
@@ -104,6 +110,7 @@ class TaskCommand extends Command
         $roles = $input->getOption('roles');
         $hosts = $input->getOption('hosts');
         $this->parseOptions($input->getOption('option'));
+        $skip = $input->getOption('skip-task');
 
         $hooksEnabled = !$input->getOption('no-hooks');
         if (!empty($input->getOption('log'))) {
@@ -122,6 +129,10 @@ class TaskCommand extends Command
             throw new Exception('No host selected');
         }
 
+        if (in_array($this->getName(), $skip)) {
+            throw new Exception('Cannot skip the task you are trying to run');
+        }
+
         $tasks = $this->deployer->scriptManager->getTasks(
             $this->getName(),
             $hosts,
@@ -130,6 +141,10 @@ class TaskCommand extends Command
 
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
+        }
+
+        if (!empty($skip)) {
+            $tasks = array_values(array_diff($tasks, $skip));
         }
 
         if ($input->getOption('parallel')) {

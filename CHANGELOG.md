@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.5...master](https://github.com/deployphp/deployer/compare/v6.4.5...master)
+
+### Added
+- --skip-task flag for task commands
+
+
 ## v6.4.5
 [v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)
 

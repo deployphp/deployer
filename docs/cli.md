@@ -56,6 +56,7 @@ Options:
       --roles=ROLES          Roles to deploy
       --hosts=HOSTS          Host to deploy, comma separated, supports ranges [:]
   -o, --option=OPTION        Sets configuration option (multiple values allowed)
+      --skip-task=SKIP-TASK  Skip one or more tasks (multiple values allowed)
   -h, --help                 Display this help message
   -q, --quiet                Do not output any message
   -V, --version              Display this application version

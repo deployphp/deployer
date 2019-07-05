@@ -26,10 +26,10 @@ set('writable_dirs', [
     'var',
     'pub/static',
     'pub/media',
-    'generation'
+    'generated'
 ]);
 set('clear_paths', [
-    'generation/*',
+    'generated/*',
     'pub/static/_cache/*',
     'var/generation/*',
     'var/cache/*',

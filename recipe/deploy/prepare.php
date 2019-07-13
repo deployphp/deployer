@@ -29,11 +29,11 @@ task('deploy:prepare', function () {
     }
 
     // Create metadata .dep dir.
-    run("cd {{deploy_path}} && if [ ! -d .dep ]; then mkdir .dep; fi");
+    run('cd {{deploy_path}} && if [ ! -d .dep ]; then mkdir .dep; fi');
 
     // Create releases dir.
-    run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
+    run('cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi');
 
     // Create shared dir.
-    run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
+    run('cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi');
 });

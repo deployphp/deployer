@@ -33,9 +33,7 @@
 - Fixed bug to execute ssh command on windows [#1775]
 - Fix when recipe/deploy/writable.php resolves <defunct> as one of http users.
 - Fix deployer detects wrong version [#1842]
-
-### Removed
-- Deploy:vendors from the wordpress recipe
+- Fix crashes on including autoloader in recipe file [#1602]
 
 
 ## v6.4.3
@@ -507,6 +505,7 @@
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634
 [#1603]: https://github.com/deployphp/deployer/issues/1603
+[#1602]: https://github.com/deployphp/deployer/issues/1602
 [#1583]: https://github.com/deployphp/deployer/issues/1583
 [#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1575]: https://github.com/deployphp/deployer/pull/1575

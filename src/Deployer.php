@@ -319,12 +319,7 @@ class Deployer extends Container
         });
 
         // Require deploy.php file
-        if (is_readable($deployFile)) {
-            // Prevent variable leak into deploy.php file
-            call_user_func(function () use ($deployFile) {
-                require $deployFile;
-            });
-        }
+        self::loadRecipe($deployFile);
 
         // Run Deployer
         $deployer->init();
@@ -373,5 +368,32 @@ class Deployer extends Container
         }
 
         Reporter::report($stats);
+    }
+
+    /**
+     * Load recipe file
+     *
+     * @param string $deployFile
+     *
+     * @return void
+     * @codeCoverageIgnore
+     */
+    public static function loadRecipe($deployFile)
+    {
+        if (is_readable($deployFile)) {
+            // Prevent variable leak into deploy.php file
+            call_user_func(function () use ($deployFile) {
+                // reorder autoload stack.
+                $originStack = spl_autoload_functions();
+                require $deployFile;
+                $newStack = spl_autoload_functions();
+                if ($originStack[0] !== $newStack[0]) {
+                    foreach (array_reverse($originStack) as $loader) {
+                        spl_autoload_unregister($loader);
+                        spl_autoload_register($loader, true, true);
+                    }
+                }
+            });
+        }
     }
 }

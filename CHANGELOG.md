@@ -33,7 +33,8 @@
 - Fixed bug to execute ssh command on windows [#1775]
 - Fix when recipe/deploy/writable.php resolves <defunct> as one of http users.
 - Fix deployer detects wrong version [#1842]
-- Fix crashes on including autoloader in recipe file [#1602]  
+- Fix crashes on including autoloader in recipe file [#1602]
+
 
 ## v6.4.3
 [v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)

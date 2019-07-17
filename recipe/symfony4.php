@@ -10,7 +10,7 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 set('shared_dirs', ['var/log', 'var/sessions']);
-set('shared_files', ['.env']);
+set('shared_files', ['.env.local']);
 set('writable_dirs', ['var']);
 set('migrations_config', '');
 

@@ -9,18 +9,32 @@ set('shared_files', [
     'var/.maintenance.ip',
 ]);
 set('shared_dirs', [
+    'var/composer_home',
     'var/log',
+    'var/cache',
+    'var/export',
+    'var/report',
+    'var/import_history',
+    'var/session',
+    'var/importexport',
     'var/backups',
-    'pub/media',
+    'var/tmp',
+    'pub/sitemaps',
+    'pub/media'
 ]);
 set('writable_dirs', [
     'var',
     'pub/static',
     'pub/media',
+    'generated'
 ]);
 set('clear_paths', [
+    'generated/*',
+    'pub/static/_cache/*',
     'var/generation/*',
     'var/cache/*',
+    'var/page_cache/*',
+    'var/view_preprocessed/*'
 ]);
 
 // Tasks

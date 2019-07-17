@@ -9,10 +9,7 @@
 
 A deployment tool written in PHP with support for popular frameworks out of the box
 
-> I'm working on **first LTS release** of Deployer. Please, consider supporting Deployer development on [Patreon page](https://www.patreon.com/deployer).
-> [![Goal](https://medv.io/assets/fundraised.svg?no-cache=2)](https://www.patreon.com/deployer)  
-> <a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
-> <a href="https://www.wispay.io/t/ZQb" target="_blank"><img src="https://assets.wispay.io/wgt2_d_b.png" height="60"></a>
+<a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
 
 See [deployer.org](https://deployer.org) for more information and documentation.
 
@@ -43,7 +40,6 @@ Development of the **Deployer** generously supported by contributions from indiv
 
 ### Top Supporters
 
-* <a href="https://hyper.host">Tony James from HYPERHOST <img src="https://hyper.host/img/hyper-host-logo-green.png" alt="hyper.host" width="40"></a>
 * Daniel Knoch from [cariba.de](https://cariba.de)
 
 See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).

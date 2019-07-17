@@ -43,7 +43,7 @@ class FileLoader
     public function load($file)
     {
         if (!file_exists($file) || !is_readable($file)) {
-            throw new Exception("File `$file` doesn't exists or doesn't readable.");
+            throw new Exception("File `$file` doesn't exists or isn't readable.");
         }
 
         $data = Yaml::parse(file_get_contents($file));

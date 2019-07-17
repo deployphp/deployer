@@ -2,20 +2,38 @@
 
 
 ## master
-[v6.4.3...master](https://github.com/deployphp/deployer/compare/v6.4.3...master)
+[v6.4.5...master](https://github.com/deployphp/deployer/compare/v6.4.5...master)
+
+### Changed
+- Change the default shared files in the Symfony4 recipe. The .env file is versionned now and not the .env.local [#1881]
+
+
+## v6.4.5
+[v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)
+
+### Fixed
+- Fixed detection of http user [#1876]
+
+
+## v6.4.4
+[v6.4.3...v6.4.4](https://github.com/deployphp/deployer/compare/v6.4.3...v6.4.4)
 
 ### Added
 - Added `git_clone_dissociate` option, defaults to true; when set to false git-clone doesn't dissociate the eventual reference repository after clone, useful when using git-lfs [#1820]
 - Added `writable_recursive` option (default: true) used in all writable modes (chmod, chown, chgrp, acl) [#1822]
+- Added `artisan:optimize:clear` task for Laravel 5.7 and above
 
 ### Changed
 - Add lock and unlock task to flow_framework receipe
+- Updated `artisan:optimize` to run for Laravel 5.7 and above, since [it got added back](https://github.com/laravel/framework/commit/fe1cbdf3b51ce1235b8c91f5e603f1e9306e4f6f) last year. It still doesn't run for 5.5 and below.
+- View:clear command to a new view:cache command
 
 ### Fixed
 - Fix rsync upload honor become option for host [#1796]
 - Fixed bug to execute ssh command on windows [#1775]
-- Fix crashes on including autoloader in recipe file [#1602]
-
+- Fix when recipe/deploy/writable.php resolves <defunct> as one of http users.
+- Fix deployer detects wrong version [#1842]
+- Fix crashes on including autoloader in recipe file [#1602]  
 
 ## v6.4.3
 [v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)
@@ -465,6 +483,9 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1881]: https://github.com/deployphp/deployer/pull/1881
+[#1876]: https://github.com/deployphp/deployer/pull/1876
+[#1842]: https://github.com/deployphp/deployer/pull/1842
 [#1822]: https://github.com/deployphp/deployer/issues/1822
 [#1820]: https://github.com/deployphp/deployer/pull/1820
 [#1796]: https://github.com/deployphp/deployer/pull/1796

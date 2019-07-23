@@ -2,9 +2,9 @@
 
 Apparently you already have some **Laravel application** and some **server** or **shared hosting**. 
 Now you need to automate the process of **deployment**. 
-Deployer will helps you in this as it ships with some ready to use recipes for **Laravel** based application. 
+Deployer will help you with this, as it ships with some ready to use recipes for **Laravel** based applications. 
 
-Let's start with [installation](installation.md) of Deployer. Run next commands in terminal: 
+Let's start with [installation](installation.md) of Deployer. Run the following commands in terminal: 
 
 ```sh
 curl -LO https://deployer.org/deployer.phar
@@ -18,7 +18,7 @@ Next, in your projects directory run:
 dep init -t Laravel
 ```
 
-Command will create `deploy.php` file for *deploying Laravel*. This file called *recipe* and based on built-in recipe *laravel.php*.
+This command will create a `deploy.php` file for *deploying Laravel*. This file is called a *recipe* and based on built-in recipe *laravel.php*.
 It's contains some host configuration and example task. 
 
 First, we need to configure `repository` config of our application:
@@ -34,9 +34,9 @@ host('domain.org')
     ->set('deploy_path', '/var/www/html');
 ```
 
-Make sure what `~/.ssh/config` contains `domain.org` and you can connect to host thought ssh.
+Make sure what `~/.ssh/config` contains `domain.org`, and that you can connect to host through ssh.
 
-Another important parameter it is `deploy_path`, where you project will be located on remote host. 
+Another important parameter is your project's `deploy_path`; where your project will be located on remote host. 
 
 Let's do our first deploy:
 
@@ -44,7 +44,7 @@ Let's do our first deploy:
 dep deploy
 ```
 
-If every think goes well, deployer will create next structure on remote host in `deploy_path`:
+If every thing goes well, deployer will create the following structure on remote host in `deploy_path`:
 
 ```text
 ├── .dep
@@ -61,7 +61,7 @@ If every think goes well, deployer will create next structure on remote host in 
 * `current` is symlink to last release,
 * `.dep` dir contains special metadata for deployer (releases log, `deploy.log` file, etc).
 
-Configure you server to serve files from `current`. For example if you are using nginx next:
+Configure your web server to serve files from the `current`. For example if you are using nginx:
 
 ```config
 server {
@@ -76,11 +76,11 @@ server {
 }
 ```
 
-Now you will be able to serve you **laravel project**:
+Now you will be able to serve your **laravel project**!
 
 ![Laravel App](images/laravel.png)
 
-If you want to automatically migrate database, *Laravel* recipe ships with `artisan:migrate` task. Add this lines to your `deploy.php`:
+If you want to automatically migrate your database, *Laravel* recipe ships with `artisan:migrate` task. Add these lines to your `deploy.php`:
 
 ```php
 after('deploy:update_code', 'artisan:migrate');

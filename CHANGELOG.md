@@ -11,6 +11,7 @@
 - Change the default shared files in the Symfony4 recipe. The .env file is versionned now and not the .env.local [#1881]
 - Change the `artisan:view:cache` task to only run the `view:cache` command
 
+
 ## v6.4.5
 [v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)
 

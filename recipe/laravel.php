@@ -103,6 +103,11 @@ task('artisan:route:cache', function () {
     run('{{bin/php}} {{release_path}}/artisan route:cache');
 });
 
+desc('Execute artisan view:clear');
+task('artisan:view:clear', function () {
+    run('{{bin/php}} {{release_path}}/artisan view:clear');
+});
+
 desc('Execute artisan view:cache');
 task('artisan:view:cache', function () {
     $needsVersion = 5.6;
@@ -110,8 +115,6 @@ task('artisan:view:cache', function () {
 
     if (version_compare($currentVersion, $needsVersion, '>=')) {
         run('{{bin/php}} {{release_path}}/artisan view:cache');
-    } else {
-        run('{{bin/php}} {{release_path}}/artisan view:clear');
     }
 });
 

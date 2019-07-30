@@ -4,8 +4,12 @@
 ## master
 [v6.4.5...master](https://github.com/deployphp/deployer/compare/v6.4.5...master)
 
+### Added
+- Re-added the `artisan:view:clear` task
+
 ### Changed
 - Change the default shared files in the Symfony4 recipe. The .env file is versionned now and not the .env.local [#1881]
+- Change the `artisan:view:cache` task to only run the `view:cache` command
 
 
 ## v6.4.5

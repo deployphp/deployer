@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.5...master](https://github.com/deployphp/deployer/compare/v6.4.5...master)
+## v6.4.6
+[v6.4.5...v6.4.6](https://github.com/deployphp/deployer/compare/v6.4.5...v6.4.6)
 
 ### Added
 - Re-added the `artisan:view:clear` task

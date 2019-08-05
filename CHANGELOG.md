@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.6...master](https://github.com/deployphp/deployer/compare/v6.4.6...master)
+
+### Added
+- A task to cache the event listeners manifest in Laravel [#1893]
+
+
 ## v6.4.6
 [v6.4.5...v6.4.6](https://github.com/deployphp/deployer/compare/v6.4.5...v6.4.6)
 
@@ -488,6 +495,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1893]: https://github.com/deployphp/deployer/pull/1893
 [#1881]: https://github.com/deployphp/deployer/pull/1881
 [#1876]: https://github.com/deployphp/deployer/pull/1876
 [#1842]: https://github.com/deployphp/deployer/pull/1842

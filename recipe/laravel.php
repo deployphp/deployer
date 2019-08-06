@@ -118,6 +118,26 @@ task('artisan:view:cache', function () {
     }
 });
 
+desc('Execute artisan event:cache');
+task('artisan:event:cache', function () {
+    $needsVersion = '5.8.9';
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $needsVersion, '>=')) {
+        run('{{bin/php}} {{release_path}}/artisan event:cache');
+    }
+});
+
+desc('Execute artisan event:clear');
+task('artisan:event:clear', function () {
+    $needsVersion = '5.8.9';
+    $currentVersion = get('laravel_version');
+
+    if (version_compare($currentVersion, $needsVersion, '>=')) {
+        run('{{bin/php}} {{release_path}}/artisan event:clear');
+    }
+});
+
 desc('Execute artisan optimize');
 task('artisan:optimize', function () {
     $deprecatedVersion = 5.5;

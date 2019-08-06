@@ -33,6 +33,8 @@ class DeployTest extends DepCase
         self::assertFileExists(self::$currentPath . '/current/composer.json');
         self::assertFileExists(self::$currentPath . '/shared/public/media/.gitkeep');
         self::assertFileExists(self::$currentPath . '/shared/app/config/parameters.yml');
+        self::assertFileExists(self::$currentPath . '/shared/app/config/parameters_dev.yml');
+        self::assertFileExists(self::$currentPath . '/shared/app/config/parameters_prod.yml');
         self::assertEquals(1, exec("ls -1 releases | wc -l"));
     }
 

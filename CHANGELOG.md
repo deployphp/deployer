@@ -10,7 +10,6 @@
 - Handling asterisk wildcard in shared files [#374]
 
 
-
 ## v6.4.6
 [v6.4.5...v6.4.6](https://github.com/deployphp/deployer/compare/v6.4.5...v6.4.6)
 

@@ -8,6 +8,7 @@
 - A task to cache the event listeners manifest in Laravel [#1893]
 - Added `check_remote_head` option, by setting this to true, deployer will avoid unnecessary new releases by checking the remote git HEAD without cloning the repo [#1755]
 
+
 ## v6.4.6
 [v6.4.5...v6.4.6](https://github.com/deployphp/deployer/compare/v6.4.5...v6.4.6)
 

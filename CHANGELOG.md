@@ -7,6 +7,8 @@
 ### Added
 - A task to cache the event listeners manifest in Laravel [#1893]
 - Added `check_remote_head` option, by setting this to true, deployer will avoid unnecessary new releases by checking the remote git HEAD without cloning the repo [#1755]
+- Handling asterisk wildcard in shared files [#374]
+
 
 
 ## v6.4.6
@@ -609,4 +611,5 @@
 [#914]: https://github.com/deployphp/deployer/pull/914
 [#911]: https://github.com/deployphp/deployer/pull/911
 [#381]: https://github.com/deployphp/deployer/pull/381
+[#374]: https://github.com/deployphp/deployer/issues/374
 [#330]: https://github.com/deployphp/deployer/pull/330

@@ -48,9 +48,6 @@ task('deploy:shared', function () {
     foreach (get('shared_files') as $file) {
         $dirname = dirname(parse($file));
 
-        // Check if file name has a wildcard * (e.g. config/parameters_*.yml)
-        $hasWildcard = strpos(str_replace($dirname, '', parse($file)), '*') !== false;
-
         // Create dir of shared file if not existing
         if (!test("[ -d {$sharedPath}/{$dirname} ]")) {
             run("mkdir -p {$sharedPath}/{$dirname}");
@@ -61,9 +58,6 @@ task('deploy:shared', function () {
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
             run("cp -rv {{release_path}}/$file $sharedPath/$file");
-        } elseif ($hasWildcard) {
-            // Copy files in shared dir if not present (does not overwrite an existing file)
-            run("cp -nrv {{release_path}}/$file $sharedPath/$dirname");
         }
 
         // Remove from source.
@@ -76,6 +70,6 @@ task('deploy:shared', function () {
         run("touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
-        run("{{bin/symlink}} $sharedPath/$file {{release_path}}/" . ($hasWildcard ? $dirname : $file));
+        run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");
     }
 });

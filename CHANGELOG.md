@@ -8,6 +8,8 @@
 - A task to cache the event listeners manifest in Laravel [#1893]
 - Added `check_remote_head` option, by setting this to true, deployer will avoid unnecessary new releases by checking the remote git HEAD without cloning the repo [#1755]
 
+### Fixed
+- fixed invalid magic-property phpdoc in Deployer\Deployer class [#1899]
 
 ## v6.4.6
 [v6.4.5...v6.4.6](https://github.com/deployphp/deployer/compare/v6.4.5...v6.4.6)
@@ -495,7 +497,7 @@
 - Fixed typo3 recipe
 - Fixed remove of shared dir on first deploy
 
-
+[#1899]: https://github.com/deployphp/deployer/pull/1899
 [#1893]: https://github.com/deployphp/deployer/pull/1893
 [#1881]: https://github.com/deployphp/deployer/pull/1881
 [#1876]: https://github.com/deployphp/deployer/pull/1876

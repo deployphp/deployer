@@ -9,14 +9,8 @@ namespace Deployer\Collection;
 
 class PersistentCollection extends Collection
 {
-    /**
-     * @var string
-     */
     private $file;
 
-    /**
-     * @param mixed[] $collection
-     */
     public function __construct(string $file, array $collection = [])
     {
         $this->file = $file;

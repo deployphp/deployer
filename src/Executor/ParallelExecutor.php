@@ -50,7 +50,8 @@ class ParallelExecutor implements ExecutorInterface
         OutputInterface $output,
         Informer $informer,
         Application $console
-    ) {
+    )
+    {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;
@@ -63,7 +64,7 @@ class ParallelExecutor implements ExecutorInterface
     public function run(array $tasks, array $hosts)
     {
         $localhost = new Localhost();
-        $limit = (int) $this->input->getOption('limit') ?: count($hosts);
+        $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
         // This allows to use code like this in parallel mode:
@@ -119,6 +120,7 @@ class ParallelExecutor implements ExecutorInterface
      * Run task on hosts.
      *
      * @param Host[] $hosts
+     * @return int
      */
     private function runTask(array $hosts, Task $task): int
     {
@@ -156,7 +158,7 @@ class ParallelExecutor implements ExecutorInterface
      */
     protected function getProcess(Host $host, Task $task): Process
     {
-        $dep = PHP_BINARY.' '.DEPLOYER_BIN;
+        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $options = $this->generateOptions();
         $arguments = $this->generateArguments();
         $hostname = $host->getHostname();
@@ -183,7 +185,6 @@ class ParallelExecutor implements ExecutorInterface
      * Start all of the processes.
      *
      * @param Process[] $processes
-     *
      * @return void
      */
     protected function startProcesses(array $processes)
@@ -197,6 +198,7 @@ class ParallelExecutor implements ExecutorInterface
      * Determine if any of the processes are running.
      *
      * @param Process[] $processes
+     * @return bool
      */
     protected function areRunning(array $processes): bool
     {
@@ -213,7 +215,7 @@ class ParallelExecutor implements ExecutorInterface
      * Gather the output from all of the processes.
      *
      * @param Process[] $processes
-     *
+     * @param callable $callback
      * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
@@ -233,8 +235,6 @@ class ParallelExecutor implements ExecutorInterface
 
     /**
      * Gather the cumulative exit code for the processes.
-     *
-     * @param Process[] $processes
      */
     protected function gatherExitCodes(array $processes): int
     {
@@ -254,7 +254,7 @@ class ParallelExecutor implements ExecutorInterface
     {
         /** @var string[] $inputs */
         $inputs = [
-            (string) (new VerbosityString($this->output)),
+            (string)(new VerbosityString($this->output)),
         ];
 
         $userDefinition = $this->console->getUserDefinition();

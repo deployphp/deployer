@@ -29,27 +29,16 @@ class Configuration
         return $this->collection;
     }
 
-    /**
-     * @return void
-     */
     public function setCollection(Collection $collection)
     {
         $this->collection = $collection;
     }
 
-    /**
-     * @param mixed $value
-     * @return void
-     */
     public function set(string $name, $value)
     {
         $this->collection[$name] = $value;
     }
 
-    /**
-     * @param mixed[] $array
-     * @return void
-     */
     public function add(string $name, array $array)
     {
         if ($this->has($name)) {
@@ -63,10 +52,6 @@ class Configuration
         }
     }
 
-    /**
-     * @param mixed $default
-     * @return mixed
-     */
     public function get(string $name, $default = null)
     {
         if ($this->collection->has($name)) {
@@ -96,9 +81,6 @@ class Configuration
         return $this->parse($value);
     }
 
-    /**
-     * Checks if set var exists
-     */
     public function has(string $name): bool
     {
         return $this->collection->has($name);
@@ -130,9 +112,6 @@ class Configuration
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
-    /**
-     * @param mixed $var
-     */
     private function isClosure($var): bool
     {
         return is_object($var) && ($var instanceof \Closure);

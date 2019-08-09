@@ -602,7 +602,7 @@ function ask($message, $default = null, $suggestedChoices = null)
  * @param string[] $availableChoices
  * @param string|null $default
  * @param bool|false $multiselect
- * @return mixed The user answer
+ * @return string|string[]
  * @codeCoverageIgnore
  */
 function askChoice($message, array $availableChoices, $default = null, $multiselect = false)

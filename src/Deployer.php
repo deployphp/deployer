@@ -39,21 +39,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Deployer class represents DI container for configuring
  *
- * @property Application console
- * @property Task\TaskCollection|Task\Task[] tasks
- * @property Host\HostCollection|Collection|Host\Host[] hosts
- * @property Collection config
- * @property Rsync rsync
- * @property Ssh\Client sshClient
- * @property ProcessRunner processRunner
- * @property Task\ScriptManager scriptManager
- * @property Host\HostSelector hostSelector
- * @property SeriesExecutor seriesExecutor
- * @property ParallelExecutor parallelExecutor
- * @property Informer informer
- * @property Logger logger
- * @property ProcessOutputPrinter pop
- * @property Collection fail
+ * @property Application $console
+ * @property Task\TaskCollection|Task\Task[] $tasks
+ * @property Host\HostCollection|Collection|Host\Host[] $hosts
+ * @property Collection $config
+ * @property Rsync $rsync
+ * @property Ssh\Client $sshClient
+ * @property ProcessRunner $processRunner
+ * @property Task\ScriptManager $scriptManager
+ * @property Host\HostSelector $hostSelector
+ * @property SeriesExecutor $seriesExecutor
+ * @property ParallelExecutor $parallelExecutor
+ * @property Informer $informer
+ * @property Logger $logger
+ * @property ProcessOutputPrinter $pop
+ * @property Collection $fail
  */
 class Deployer extends Container
 {

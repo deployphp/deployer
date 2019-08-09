@@ -50,8 +50,7 @@ class ParallelExecutor implements ExecutorInterface
         OutputInterface $output,
         Informer $informer,
         Application $console
-    )
-    {
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;

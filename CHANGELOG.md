@@ -10,6 +10,7 @@
 
 ### Fixed
 - fixed invalid magic-property phpdoc in Deployer\Deployer class [#1899]
+- Updated `config:hosts` and `config:current` tasks to output only the selected stage
 
 
 ## v6.4.6

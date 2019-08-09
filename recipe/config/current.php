@@ -15,7 +15,7 @@ task('config:current', function () {
     $rows = [];
     $selectedStage = Deployer::get()->getInput()->getArgument('stage');
 
-    on($hosts, function (Host $host) use (&$rows, $selectedStage) {
+    on(Deployer::get()->hosts, function (Host $host) use (&$rows, $selectedStage) {
         if ($host->get('stage') !== $selectedStage) {
             return;
         }

@@ -31,6 +31,6 @@ task('config:hosts', function () {
     $table = new Table(output());
     $table
         ->setHeaders(['Host', 'Hostname', 'Stage', 'Roles', 'Deploy path'])
-        ->setRows($hosts);
+        ->setRows($rows);
     $table->render();
 })->once();

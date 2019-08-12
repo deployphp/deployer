@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.7...master](https://github.com/deployphp/deployer/compare/v6.4.7...master)
+## v6.5.0
+[v6.4.7...v6.5.0](https://github.com/deployphp/deployer/compare/v6.4.7...v6.5.0)
 
 ### Added
 - Added `deploy:check_remote` task [#1755]

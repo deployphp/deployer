@@ -15,7 +15,8 @@ final class Option
     public static function toString(
         InputInterface $input,
         InputOption $option
-    ): string {
+    ): string
+    {
         $name = $option->getName();
         $values = $input->getOption($name);
 
@@ -45,7 +46,6 @@ final class Option
 
             $outputs[] = $value;
         }
-
         return \implode(' ', $outputs);
     }
 }

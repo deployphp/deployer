@@ -16,19 +16,8 @@ use Symfony\Component\Process\Process;
 
 class Client
 {
-    /**
-     * @var OutputInterface
-     */
     private $output;
-
-    /**
-     * @var ProcessOutputPrinter
-     */
     private $pop;
-
-    /**
-     * @var bool
-     */
     private $multiplexing;
 
     public function __construct(OutputInterface $output, ProcessOutputPrinter $pop, bool $multiplexing)
@@ -38,13 +27,6 @@ class Client
         $this->multiplexing = $multiplexing;
     }
 
-    /**
-     * @param Host $host
-     * @param string $command
-     * @param array $config
-     * @return string
-     * @throws RuntimeException
-     */
     public function run(Host $host, string $command, array $config = [])
     {
         $hostname = $host->getHostname();
@@ -53,21 +35,21 @@ class Client
             'tty' => false,
         ];
         $config = array_merge($defaults, $config);
-
-        $this->pop->command($hostname, $command);
-
         $sshArguments = $host->getSshArguments();
-
         $become = $host->has('become') ? 'sudo -H -u ' . $host->get('become') : '';
 
         // When tty need to be allocated, don't use multiplexing,
         // and pass command without bash allocation on remote host.
         if ($config['tty']) {
-            $this->output->write(''); // Notify OutputWatcher
             $sshArguments = $sshArguments->withFlag('-tt');
             $command = escapeshellarg($command);
+            $ssh = "ssh $sshArguments $host $become $command";
 
-            $ssh = "ssh $sshArguments $host $command";
+            if ($this->output->isDebug()) {
+                $this->pop->writeln(Process::OUT, $hostname, "$ssh");
+            }
+            $this->pop->command($hostname, $command);
+
             $process = new Process($ssh);
             $process
                 ->setTimeout($config['timeout'])
@@ -88,6 +70,11 @@ class Client
         } else {
             $ssh = "ssh $sshArguments $host $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
         }
+
+        if ($this->output->isDebug()) {
+            $this->pop->writeln(Process::OUT, $hostname, "$ssh");
+        }
+        $this->pop->command($hostname, $command);
 
         $process = new Process($ssh);
         $process
@@ -125,19 +112,23 @@ class Client
         return $exitCode;
     }
 
+    public function connect(Host $host) {
+        if ($host->isMultiplexing() === null ? $this->multiplexing : $host->isMultiplexing()) {
+            $this->initMultiplexing($host);
+        }
+    }
+
     private function initMultiplexing(Host $host)
     {
         $sshArguments = $host->getSshArguments()->withMultiplexing($host);
 
         if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
-            if ($this->output->isVeryVerbose()) {
+            if ($this->output->isDebug()) {
                 $this->pop->writeln(Process::OUT, $host->getHostname(), 'ssh multiplexing initialization');
             }
-
             $output = $this->exec("ssh -N $sshArguments $host");
-
-            if ($this->output->isVeryVerbose()) {
-                $this->pop->writeln(Process::OUT, $host->getHostname(), $output);
+            if ($this->output->isDebug()) {
+                $this->pop->printBuffer(Process::OUT, $host->getHostname(), $output);
             }
         }
 

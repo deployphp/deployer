@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -8,75 +8,52 @@
 namespace Deployer\Host;
 
 use Deployer\Collection\PersistentCollection;
-use Deployer\Exception\Exception;
 use function Deployer\on;
-use function Deployer\Support\array_flatten;
 
 class Storage
 {
-    /**
-     * @param Host[] $hosts
-     */
-    public static function persist(array $hosts)
+    public static function persist(Host ...$hosts)
     {
         on($hosts, function (Host $host) {
             $values = [];
 
-            // Materialize config values
             foreach ($host->getConfig()->getCollection() as $key => $value) {
                 $values[$key] = $host->get($key);
             }
 
             $file = sys_get_temp_dir() . '/' . uniqid('deployer-') . '-' . $host->getHostname() . '.dep';
-            $values['host_config_storage'] = $file;
+            $values['host_config_file'] = $file;
 
             $persistentCollection = new PersistentCollection($file, $values);
             $persistentCollection->flush();
-
             $host->getConfig()->setCollection($persistentCollection);
         });
     }
 
-    /**
-     * @param Host[] $hosts
-     * @throws Exception
-     */
-    public static function load(...$hosts)
+    public static function load(Host ...$hosts)
     {
-        $hosts = array_flatten($hosts);
         foreach ($hosts as $host) {
             $collection = $host->getConfig()->getCollection();
-
             if ($collection instanceof PersistentCollection) {
                 $collection->load();
             } else {
-                throw new Exception("Can't load data for `$host` host. Host doesn't persistent.");
+                die("Can't load data for $host host. Host isn't persistent.");
             }
         }
     }
 
-    /**
-     * @param Host[] $hosts
-     * @throws Exception
-     */
-    public static function flush(...$hosts)
+    public static function flush(Host ...$hosts)
     {
-        $hosts = array_flatten($hosts);
         foreach ($hosts as $host) {
             $collection = $host->getConfig()->getCollection();
-
             if ($collection instanceof PersistentCollection) {
                 $collection->flush();
             } else {
-                throw new Exception("Can't load data for `$host` host. Host doesn't persistent.");
+                die("Can't load data for $host host. Host isn't persistent.");
             }
         }
     }
 
-    /**
-     * @param Host $host
-     * @param string $file
-     */
     public static function setup(Host $host, string $file)
     {
         $persistentCollection = new PersistentCollection($file);

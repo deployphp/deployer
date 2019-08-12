@@ -48,7 +48,7 @@ set('user', function () {
 });
 
 set('target', function () {
-    return input()->getArgument('stage') ?: get('hostname');
+    return get('hostname'); // TODO: input()->getArgument('stage') ?: get('hostname');
 });
 
 /**
@@ -143,7 +143,7 @@ option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
  * Success message
  */
 task('success', function () {
-    writeln('<info>Successfully deployed!</info>');
+    writeln('<fg=green;options=bold>Successfully deployed!</>');
 })
     ->local()
     ->shallow()

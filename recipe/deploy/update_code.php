@@ -11,18 +11,11 @@ namespace Deployer;
  * Get current git HEAD branch as default branch to deploy.
  */
 set('branch', function () {
-    try {
-        $branch = runLocally('git rev-parse --abbrev-ref HEAD');
-    } catch (\Throwable $exception) {
-        $branch = null;
-    }
+    exec('git rev-parse --abbrev-ref HEAD', $branch);
+    $branch = join('', $branch);
 
     if ($branch === 'HEAD') {
         $branch = null; // Travis-CI fix
-    }
-
-    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
-        $branch = input()->getOption('branch');
     }
 
     return $branch;

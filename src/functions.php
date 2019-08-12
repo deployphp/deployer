@@ -7,12 +7,12 @@
 
 namespace Deployer;
 
+use Deployer\Configuration\UserConfiguration;
 use Deployer\Exception\RuntimeException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
-use function Deployer\Support\array_to_string;
 use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use function Deployer\Support\array_to_string;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -250,7 +251,7 @@ function cd($path)
     try {
         set('working_path', parse($path));
     } catch (RuntimeException $e) {
-        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
+        throw new \Exception('Unable to change directory into "' . $path . '"', 0, $e);
     }
 }
 
@@ -443,7 +444,7 @@ function upload($source, $destination, array $config = [])
         }
 
         if ($host->has("become")) {
-            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+            $config['options'][] = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
         }
 
         $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
@@ -477,11 +478,36 @@ function download($source, $destination, array $config = [])
         }
 
         if ($host->has("become")) {
-            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+            $config['options'][] = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
         }
 
         $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
     }
+}
+
+/**
+ * @param string $hostname
+ * @return string
+ */
+function hostnameTag($hostname)
+{
+    static $map = null;
+    if ($map === null) {
+        $map = UserConfiguration::load(UserConfiguration::HOSTNAME_COLORS, []);
+    }
+    $tag = $map[$hostname] ?? 'fg=default';
+    return "[<{$tag}>$hostname</>] ";
+}
+
+/**
+ * Writes an info message.
+ * @param string $message
+ * @throws Exception\Exception
+ */
+function writeInfo($message)
+{
+    $host = Context::get()->getHost();
+    output()->writeln(hostnameTag($host->getHostname()) . "<info>info</info> " . parse($message));
 }
 
 /**

@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.7...master](https://github.com/deployphp/deployer/compare/v6.4.7...master)
+
+### Added
+- Added `deploy:check_remote` task [#1755]
+
+
 ## v6.4.7
 [v6.4.6...v6.4.7](https://github.com/deployphp/deployer/compare/v6.4.6...v6.4.7)
 
@@ -515,7 +522,7 @@
 [#1775]: https://github.com/deployphp/deployer/pull/1775
 [#1764]: https://github.com/deployphp/deployer/pull/1764
 [#1758]: https://github.com/deployphp/deployer/pull/1758
-[#1755]: https://github.com/deployphp/deployer/pull/1755
+[#1755]: https://github.com/deployphp/deployer/issues/1755
 [#1709]: https://github.com/deployphp/deployer/issues/1709
 [#1708]: https://github.com/deployphp/deployer/pull/1708
 [#1677]: https://github.com/deployphp/deployer/pull/1677

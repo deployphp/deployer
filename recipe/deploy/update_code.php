@@ -46,7 +46,7 @@ set('git_cache', function () {
 
 desc('Update code');
 task('deploy:update_code', function () {
-    $repository = trim(get('repository'));
+    $repository = get('repository');
     $branch = get('branch');
     $git = get('bin/git');
     $gitCache = get('git_cache');

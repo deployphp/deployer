@@ -93,7 +93,7 @@ task('deploy', [
     'deploy:magento',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
     'success'
 ]);
 

@@ -63,16 +63,8 @@ class FileLoader
             } else {
                 $host = new Host($hostname);
                 $methods = [
-                    'hostname',
-                    'user',
-                    'port',
-                    'configFile',
-                    'identityFile',
-                    'forwardAgent',
-                    'multiplexing',
                     'sshOptions',
                     'sshFlags',
-                    'shellCommand',
                 ];
 
                 foreach ($methods as $method) {

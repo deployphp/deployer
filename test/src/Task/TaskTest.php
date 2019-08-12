@@ -47,32 +47,24 @@ class TaskTest extends TestCase
 
     public function testShouldBePerformed()
     {
-        $a = (new Host('a'))->stage('prod')->roles('app');
-        $b = (new Host('b'))->stage('prod')->roles('db');
-        $c = (new Host('c'))->stage('beta')->roles('app', 'db');
+        $a = (new Host('a'))->set('roles', ['app']);
+        $b = (new Host('b'))->set('roles', ['db']);
+        $c = (new Host('c'))->set('roles', ['app', 'db']);
 
         $task = new Task('task');
-        $task
-            ->onStage('prod')
-            ->onRoles('app');
-        self::assertEquals([true, false, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+        self::assertEquals([true, true, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
 
         $task = new Task('task');
-        $task
-            ->onStage('prod')
-            ->onRoles('db');
-        self::assertEquals([false, true, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+        $task->onRoles('app');
+        self::assertEquals([true, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
 
         $task = new Task('task');
-        $task
-            ->onStage('beta')
-            ->onRoles('app', 'db');
-        self::assertEquals([false, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+        $task->onRoles('db');
+        self::assertEquals([false, true, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
 
         $task = new Task('task');
-        $task
-            ->onStage('beta');
-        self::assertEquals([false, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
+        $task->onRoles('app', 'db');
+        self::assertEquals([true, true, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
 
         $task = new Task('task');
         $task
@@ -132,14 +124,14 @@ class TaskTest extends TestCase
 
     public function testOnce()
     {
-        $a = (new Host('a'))->stage('prod')->roles('app');
-        $b = (new Host('b'))->stage('prod')->roles('app');
+        $a = (new Host('a'))->set('roles', 'app');
+        $b = (new Host('b'))->set('roles', 'app');
 
         $context = self::getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
 
         // Test create task with [$object, 'method']
         $mock = self::getMockBuilder('stdClass')
-            ->setMethods(['callback'])
+            ->addMethods(['callback'])
             ->getMock();
 
         $task1 = new Task('only:once', [$mock, 'callback']);

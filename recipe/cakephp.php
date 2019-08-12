@@ -56,7 +56,7 @@ task('deploy', [
     'deploy:run_migrations',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

@@ -157,7 +157,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ])->desc('Deploy your project');
 
 // Display success message on completion

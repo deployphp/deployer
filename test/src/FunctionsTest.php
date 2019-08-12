@@ -93,15 +93,6 @@ class FunctionsTest extends TestCase
         self::assertInstanceOf(Localhost::class, $this->deployer->hosts->get('domain.com'));
     }
 
-    public function testInventory()
-    {
-        inventory(__DIR__ . '/../fixture/inventory.yml');
-
-        foreach (['app.deployer.org', 'beta.deployer.org', 'db1.deployer.org', 'db2.deployer.org'] as $hostname) {
-            self::assertInstanceOf(Host::class, $this->deployer->hosts->get($hostname));
-        }
-    }
-
     public function testTask()
     {
         task('task', 'pwd');

@@ -7,7 +7,10 @@
 
 namespace Deployer\Logger;
 
+use Deployer\Component\ProcessRunner\Printer;
+use Deployer\Host\Host;
 use Deployer\Logger\Handler\HandlerInterface;
+use Symfony\Component\Process\Process;
 
 class Logger
 {
@@ -24,5 +27,37 @@ class Logger
     public function log(string $message)
     {
         $this->handler->log("$message\n");
+    }
+
+    public function callback(Host $host)
+    {
+        return function ($type, $buffer) use ($host) {
+            $this->printBuffer($type, $host, $buffer);
+        };
+    }
+
+    public function printBuffer(Host $host, string $type, string $buffer)
+    {
+        foreach (explode("\n", rtrim($buffer)) as $line) {
+            $this->writeln($host, $type, $line);
+        }
+    }
+
+    public function writeln(Host $host, string $type, string $line)
+    {
+        $line = Printer::filterOutput($line);
+
+        // Omit empty lines
+        if (empty($line)) {
+            return;
+        }
+
+        if ($type === Process::ERR) {
+            $line = "[{$host->alias()}] err $line";
+        } else {
+            $line = "[{$host->alias()}] $line";
+        }
+
+        $this->log($line);
     }
 }

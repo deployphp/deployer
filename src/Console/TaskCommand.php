@@ -10,31 +10,17 @@ namespace Deployer\Console;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
-use Deployer\Executor\ExecutorInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class TaskCommand extends Command
 {
-    /**
-     * @var Deployer
-     */
-    private $deployer;
+    protected $deployer;
 
-    /**
-     * @var ExecutorInterface
-     */
-    public $executor;
-
-    /**
-     * @param string $name
-     * @param string $description
-     * @param Deployer $deployer
-     */
-    public function __construct($name, $description, Deployer $deployer)
+    public function __construct(string $name, ?string $description, Deployer $deployer)
     {
         parent::__construct($name);
         if ($description) {
@@ -43,21 +29,19 @@ class TaskCommand extends Command
         $this->deployer = $deployer;
     }
 
-    /**
-     * Configures the command
-     */
     protected function configure()
     {
-        $this->addArgument(
-            'stage',
-            InputArgument::OPTIONAL,
-            'Stage or hostname'
+        $this->addOption(
+            'hosts',
+            null,
+            Option::VALUE_REQUIRED,
+            'Hosts to deploy, comma separated, supports ranges [:]'
         );
         $this->addOption(
-            'parallel',
-            'p',
-            Option::VALUE_NONE,
-            'Run tasks in parallel'
+            'roles',
+            null,
+            Option::VALUE_REQUIRED,
+            'Roles to deploy'
         );
         $this->addOption(
             'limit',
@@ -78,18 +62,6 @@ class TaskCommand extends Command
             'Log to file'
         );
         $this->addOption(
-            'roles',
-            null,
-            Option::VALUE_REQUIRED,
-            'Roles to deploy'
-        );
-        $this->addOption(
-            'hosts',
-            null,
-            Option::VALUE_REQUIRED,
-            'Host to deploy, comma separated, supports ranges [:]'
-        );
-        $this->addOption(
             'option',
             'o',
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
@@ -97,70 +69,65 @@ class TaskCommand extends Command
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(Input $input, Output $output)
     {
-        $stage = $input->hasArgument('stage') ? $input->getArgument('stage') : null;
+        $output->getFormatter()->setStyle('success', new OutputFormatterStyle('green'));
+        if (!$output->isDecorated()) {
+            define('NO_ANSI', 'true');
+        }
+
         $roles = $input->getOption('roles');
         $hosts = $input->getOption('hosts');
-        $this->parseOptions($input->getOption('option'));
-
+        $logFile = $input->getOption('log');
         $hooksEnabled = !$input->getOption('no-hooks');
-        if (!empty($input->getOption('log'))) {
-            $this->deployer->config['log_file'] = $input->getOption('log');
+
+        foreach ($this->deployer->console->getUserDefinition()->getOptions() as $option) {
+            if (!empty($input->getOption($option->getName()))) {
+                $this->deployer->config[$option->getName()] = $input->getOption($option->getName());
+            }
         }
 
-        if (!empty($hosts)) {
-            $hosts = $this->deployer->hostSelector->getByHostnames($hosts);
-        } elseif (!empty($roles)) {
-            $hosts = $this->deployer->hostSelector->getByRoles($roles);
-        } else {
-            $hosts = $this->deployer->hostSelector->getHosts($stage);
+        $this->parseOptions($input->getOption('option'));
+        $this->deployer->config['log_file'] = $logFile;
+
+        if (empty($hosts) && empty($roles) && $this->deployer->config->has('default_roles')) {
+            $roles = $this->deployer->config->get('default_roles');
         }
 
-        if (empty($hosts)) {
+        $selectedHosts = $this->deployer->hostSelector->select($hosts, $roles);
+        if (empty($selectedHosts)) {
             throw new Exception('No host selected');
         }
 
         $tasks = $this->deployer->scriptManager->getTasks(
             $this->getName(),
-            $hosts,
+            $selectedHosts,
             $hooksEnabled
         );
-
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
 
-        if ($input->getOption('parallel')) {
-            $executor = $this->deployer->parallelExecutor;
-        } else {
-            $executor = $this->deployer->seriesExecutor;
+        $exitCode = $this->deployer->executor->run($tasks, $selectedHosts);
+        if ($exitCode === 0) {
+            return 0;
+        }
+        if ($exitCode === GracefulShutdownException::EXIR_CODE) {
+            return 1;
         }
 
-        try {
-            $executor->run($tasks, $hosts);
-        } catch (\Throwable $exception) {
-            $this->deployer->logger->log('['. get_class($exception) .'] '. $exception->getMessage());
-            $this->deployer->logger->log($exception->getTraceAsString());
-
-            if ($exception instanceof GracefulShutdownException) {
-                throw $exception;
-            } else {
-                // Check if we have tasks to execute on failure
-                if ($this->deployer['fail']->has($this->getName())) {
-                    $taskName = $this->deployer['fail']->get($this->getName());
-                    $tasks = $this->deployer->scriptManager->getTasks($taskName, $hosts, $hooksEnabled);
-
-                    $executor->run($tasks, $hosts);
-                }
-                throw $exception;
-            }
+        // Check if we have tasks to execute on failure.
+        if ($this->deployer['fail']->has($this->getName())) {
+            $taskName = $this->deployer['fail']->get($this->getName());
+            $tasks = $this->deployer->scriptManager->getTasks(
+                $taskName,
+                $selectedHosts,
+                $hooksEnabled
+            );
+            $this->deployer->executor->run($tasks, $selectedHosts);
         }
 
-        return 0;
+        return $exitCode;
     }
 
     private function parseOptions(array $options)

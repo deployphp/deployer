@@ -52,7 +52,7 @@ task('deploy', [
     'deploy:publish_resources',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

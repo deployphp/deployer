@@ -7,23 +7,23 @@
 
 namespace Deployer;
 
-use Deployer\Exception\RuntimeException;
+use Deployer\Exception\Exception;
+use Deployer\Exception\RunException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
-use function Deployer\Support\array_to_string;
 use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use function Deployer\Support\array_to_string;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -33,7 +33,7 @@ use Symfony\Component\Console\Question\Question;
 // is set() func. This function determine in which stage it was called by Context::get() method.
 
 /**
- * @param array ...$hostnames
+ * @param string|array ...$hostnames
  * @return Host|Host[]|Proxy
  */
 function host(...$hostnames)
@@ -41,7 +41,6 @@ function host(...$hostnames)
     $deployer = Deployer::get();
     $hostnames = Range::expand($hostnames);
 
-    // Return hosts if has
     if ($deployer->hosts->has($hostnames[0])) {
         if (count($hostnames) === 1) {
             return $deployer->hosts->get($hostnames[0]);
@@ -50,7 +49,6 @@ function host(...$hostnames)
         }
     }
 
-    // Add otherwise
     if (count($hostnames) === 1) {
         $host = new Host($hostnames[0]);
         $deployer->hosts->set($hostnames[0], $host);
@@ -76,12 +74,12 @@ function localhost(...$hostnames)
 
     if (count($hostnames) <= 1) {
         $host = count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
-        $deployer->hosts->set($host->getHostname(), $host);
+        $deployer->hosts->set($host->alias(), $host);
         return $host;
     } else {
         $hosts = array_map(function ($hostname) use ($deployer) {
             $host = new Localhost($hostname);
-            $deployer->hosts->set($host->getHostname(), $host);
+            $deployer->hosts->set($host->alias(), $host);
             return $host;
         }, $hostnames);
         return new Proxy($hosts);
@@ -102,7 +100,7 @@ function inventory($file)
 
     $hosts = $fileLoader->getHosts();
     foreach ($hosts as $host) {
-        $deployer->hosts->set($host->getHostname(), $host);
+        $deployer->hosts->set($host->alias(), $host);
     }
 
     return new Proxy($hosts);
@@ -208,23 +206,6 @@ function fail($it, $that)
 }
 
 /**
- * Add users arguments.
- *
- * Note what Deployer already has one argument: "stage".
- *
- * @param string $name
- * @param int $mode
- * @param string $description
- * @param mixed $default
- */
-function argument($name, $mode = null, $description = '', $default = null)
-{
-    Deployer::get()->getConsole()->getUserDefinition()->addArgument(
-        new InputArgument($name, $mode, $description, $default)
-    );
-}
-
-/**
  * Add users options.
  *
  * @param string $name
@@ -247,11 +228,7 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  */
 function cd($path)
 {
-    try {
-        set('working_path', parse($path));
-    } catch (RuntimeException $e) {
-        throw new \Exception('Unable to change directory into "'. $path .'"', 0, $e);
-    }
+    set('working_path', parse($path));
 }
 
 /**
@@ -281,7 +258,6 @@ function within($path, $callback)
 function run($command, $options = [])
 {
     $host = Context::get()->getHost();
-    $hostname = $host->getHostname();
 
     $command = parse($command);
     $workingPath = get('working_path', '');
@@ -298,7 +274,7 @@ function run($command, $options = [])
 
     if ($host instanceof Localhost) {
         $process = Deployer::get()->processRunner;
-        $output = $process->run($hostname, $command, $options);
+        $output = $process->run($host, $command, $options);
     } else {
         $client = Deployer::get()->sshClient;
         $output = $client->run($host, $command, $options);
@@ -317,7 +293,6 @@ function run($command, $options = [])
 function runLocally($command, $options = [])
 {
     $process = Deployer::get()->processRunner;
-    $hostname = 'localhost';
     $command = parse($command);
 
     $env = get('env', []) + ($options['env'] ?? []);
@@ -326,7 +301,7 @@ function runLocally($command, $options = [])
         $command = "export $env; $command";
     }
 
-    $output = $process->run($hostname, $command, $options);
+    $output = $process->run(localhost(), $command, $options);
 
     return rtrim($output);
 }
@@ -357,6 +332,15 @@ function test($command)
 function testLocally($command)
 {
     return runLocally("if $command; then echo 'true'; fi") === 'true';
+}
+
+/**
+ * @return Host
+ * @throws Exception
+ */
+function currentHost()
+{
+    return Context::get()->getHost();
 }
 
 /**
@@ -426,12 +410,12 @@ function invoke($task)
 function upload($source, $destination, array $config = [])
 {
     $rsync = Deployer::get()->rsync;
-    $host = Context::get()->getHost();
+    $host = currentHost();
     $source = parse($source);
     $destination = parse($destination);
 
     if ($host instanceof Localhost) {
-        $rsync->call($host->getHostname(), $source, $destination, $config);
+        $rsync->call($host, $source, $destination, $config);
     } else {
         if (!isset($config['options']) || !is_array($config['options'])) {
             $config['options'] = [];
@@ -443,10 +427,10 @@ function upload($source, $destination, array $config = [])
         }
 
         if ($host->has("become")) {
-            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+            $config['options'][] = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
         }
 
-        $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
+        $rsync->call($host, $source, "{$host->hostname()}:$destination", $config);
     }
 }
 
@@ -460,12 +444,12 @@ function upload($source, $destination, array $config = [])
 function download($source, $destination, array $config = [])
 {
     $rsync = Deployer::get()->rsync;
-    $host = Context::get()->getHost();
+    $host = currentHost();
     $source = parse($source);
     $destination = parse($destination);
 
     if ($host instanceof Localhost) {
-        $rsync->call($host->getHostname(), $source, $destination, $config);
+        $rsync->call($host, $source, $destination, $config);
     } else {
         if (!isset($config['options']) || !is_array($config['options'])) {
             $config['options'] = [];
@@ -477,11 +461,29 @@ function download($source, $destination, array $config = [])
         }
 
         if ($host->has("become")) {
-            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+            $config['options'][] = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
         }
 
-        $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
+        $rsync->call($host, "{$host->hostname()}:$source", $destination, $config);
     }
+}
+
+/**
+ * Writes an info message.
+ * @param string $message
+ */
+function info($message)
+{
+    output()->writeln("<fg=green;options=bold>info</> " . parse($message));
+}
+
+/**
+ * Writes an warning message.
+ * @param string $message
+ */
+function warning($message)
+{
+    writeln("<fg=yellow;options=bold>warning</> <comment>" . parse($message) . "</comment>");
 }
 
 /**
@@ -491,7 +493,8 @@ function download($source, $destination, array $config = [])
  */
 function writeln($message, $options = 0)
 {
-    output()->writeln(parse($message), $options);
+    $host = currentHost();
+    output()->writeln("[{$host->tag()}] " . parse($message), $options);
 }
 
 /**
@@ -513,7 +516,7 @@ function write($message, $options = 0)
 function set($name, $value)
 {
     if (!Context::has()) {
-        Deployer::setDefault($name, $value);
+        Deployer::get()->config->set($name, $value);
     } else {
         Context::get()->getConfig()->set($name, $value);
     }
@@ -528,7 +531,7 @@ function set($name, $value)
 function add($name, $array)
 {
     if (!Context::has()) {
-        Deployer::addDefault($name, $array);
+        Deployer::get()->config->add($name, $array);
     } else {
         Context::get()->getConfig()->add($name, $array);
     }
@@ -544,7 +547,7 @@ function add($name, $array)
 function get($name, $default = null)
 {
     if (!Context::has()) {
-        return Deployer::getDefault($name, $default);
+        return Deployer::get()->config->get($name, $default);
     } else {
         return Context::get()->getConfig()->get($name, $default);
     }
@@ -559,7 +562,7 @@ function get($name, $default = null)
 function has($name)
 {
     if (!Context::has()) {
-        return Deployer::hasDefault($name);
+        return Deployer::get()->config->has($name);
     } else {
         return Context::get()->getConfig()->has($name);
     }

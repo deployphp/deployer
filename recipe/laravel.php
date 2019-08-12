@@ -4,13 +4,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-/*
- * This recipe supports Laravel 5.1+, for older versions, please read the documentation https://github.com/deployphp/docs
- */
 
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
+
+set('log_files', 'storage/logs/*.log');
 
 // Laravel shared dirs
 set('shared_dirs', [
@@ -34,16 +33,6 @@ set('writable_dirs', [
     'storage/framework/views',
     'storage/logs',
 ]);
-
-set('laravel_version', function () {
-    $result = run('cd {{release_path}} && {{bin/php}} artisan --version');
-
-    preg_match_all('/(\d+\.?)+/', $result, $matches);
-
-    $version = $matches[0][0] ?? 5.5;
-
-    return $version;
-});
 
 /**
  * Helper tasks
@@ -110,56 +99,27 @@ task('artisan:view:clear', function () {
 
 desc('Execute artisan view:cache');
 task('artisan:view:cache', function () {
-    $needsVersion = 5.6;
-    $currentVersion = get('laravel_version');
-
-    if (version_compare($currentVersion, $needsVersion, '>=')) {
-        run('{{bin/php}} {{release_path}}/artisan view:cache');
-    }
+    run('{{bin/php}} {{release_path}}/artisan view:cache');
 });
 
 desc('Execute artisan event:cache');
 task('artisan:event:cache', function () {
-    $needsVersion = '5.8.9';
-    $currentVersion = get('laravel_version');
-
-    if (version_compare($currentVersion, $needsVersion, '>=')) {
-        run('{{bin/php}} {{release_path}}/artisan event:cache');
-    }
+    run('{{bin/php}} {{release_path}}/artisan event:cache');
 });
 
 desc('Execute artisan event:clear');
 task('artisan:event:clear', function () {
-    $needsVersion = '5.8.9';
-    $currentVersion = get('laravel_version');
-
-    if (version_compare($currentVersion, $needsVersion, '>=')) {
-        run('{{bin/php}} {{release_path}}/artisan event:clear');
-    }
+    run('{{bin/php}} {{release_path}}/artisan event:clear');
 });
 
 desc('Execute artisan optimize');
 task('artisan:optimize', function () {
-    $deprecatedVersion = 5.5;
-    $readdedInVersion = 5.7;
-    $currentVersion = get('laravel_version');
-
-    if (
-        version_compare($currentVersion, $deprecatedVersion, '<') ||
-        version_compare($currentVersion, $readdedInVersion, '>=')
-    ) {
-        run('{{bin/php}} {{release_path}}/artisan optimize');
-    }
+    run('{{bin/php}} {{release_path}}/artisan optimize');
 });
 
 desc('Execute artisan optimize:clear');
 task('artisan:optimize:clear', function () {
-    $needsVersion = 5.7;
-    $currentVersion = get('laravel_version');
-
-    if (version_compare($currentVersion, $needsVersion, '>=')) {
-        run('{{bin/php}} {{release_path}}/artisan optimize:clear');
-    }
+    run('{{bin/php}} {{release_path}}/artisan optimize:clear');
 });
 
 desc('Execute artisan queue:restart');
@@ -174,12 +134,7 @@ task('artisan:horizon:terminate', function () {
 
 desc('Execute artisan storage:link');
 task('artisan:storage:link', function () {
-    $needsVersion = 5.3;
-    $currentVersion = get('laravel_version');
-
-    if (version_compare($currentVersion, $needsVersion, '>=')) {
-        run('{{bin/php}} {{release_path}}/artisan storage:link');
-    }
+    run('{{bin/php}} {{release_path}}/artisan storage:link');
 });
 
 /**
@@ -203,25 +158,13 @@ task('deploy:public_disk', function () {
 });
 
 /**
- * Main task
+ * Run laravel specified tasks.
  */
-desc('Deploy your project');
-task('deploy', [
-    'deploy:info',
-    'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:vendors',
-    'deploy:writable',
+task('deploy:laravel', [
     'artisan:storage:link',
     'artisan:view:cache',
     'artisan:config:cache',
-    'artisan:optimize',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
 ]);
 
-after('deploy', 'success');
+after('deploy:update_code', 'deploy:vendors');
+before('deploy:symlink', 'deploy:laravel');

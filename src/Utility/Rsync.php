@@ -7,16 +7,18 @@
 
 namespace Deployer\Utility;
 
+use Deployer\Component\ProcessRunner\Printer;
+use Deployer\Host\Host;
 use Symfony\Component\Process\Process;
 
 class Rsync
 {
     /**
-     * @var ProcessOutputPrinter
+     * @var Printer
      */
     private $pop;
 
-    public function __construct(ProcessOutputPrinter $pop)
+    public function __construct(Printer $pop)
     {
         $this->pop = $pop;
     }
@@ -24,12 +26,12 @@ class Rsync
     /**
      * Start rsync process
      *
-     * @param $hostname
-     * @param $source
-     * @param $destination
+     * @param Host $host
+     * @param string $source
+     * @param string $destination
      * @param array $config
      */
-    public function call($hostname, $source, $destination, array $config = [])
+    public function call(Host $host, string $source, string $destination, array $config = [])
     {
         $defaults = [
             'timeout' => null,
@@ -41,15 +43,11 @@ class Rsync
         $escapedDestination = escapeshellarg($destination);
         $rsync = "rsync -azP " . implode(' ', $config['options']) . " $escapedSource $escapedDestination";
 
-        $this->pop->command($hostname, $rsync);
+        $this->pop->command($host, $rsync);
 
-        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($rsync);
-        } else {
-            $process = new Process($rsync);
-        }
+        $process = Process::fromShellCommandline($rsync);
         $process
             ->setTimeout($config['timeout'])
-            ->mustRun($this->pop->callback($hostname));
+            ->mustRun($this->pop->callback($host));
     }
 }

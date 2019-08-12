@@ -15,12 +15,12 @@ task('deploy', [
     'deploy:clear_paths',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
     'success'
 ]);
 ~~~
 
-Framework recipes may differ in flow, but the basic structure is the same. You can create your own flow by overriding the `deploy` task, but a better solution is to use the cache. 
+Framework recipes may differ in flow, but the basic structure is the same. You can create your own flow by overriding the `deploy` task, but a better solution is to use the cache.
 For example, if you want to run some task before you symlink the new release:
 
 ~~~php
@@ -33,7 +33,7 @@ Or, to send notifications after a successful deployment:
 after('success', 'notify');
 ~~~
 
-The next section provides a short overview of each task. 
+The next section provides a short overview of each task.
 
 ### deploy:prepare
 
@@ -45,11 +45,11 @@ Preparation for deployment. Checks if `deploy_path` exists, otherwise creates it
 
 ### deploy:lock
 
-Locks deployment so only one concurrent deployment can be running. To lock deployment, this task checks for the existence of the  `.dep/deploy.lock` file. If the deploy process was cancelled by Ctrl+C, run `dep deploy:unlock` to delete this file. In the event that deployment fails, the `deploy:unlock` task will be triggered automatically. 
+Locks deployment so only one concurrent deployment can be running. To lock deployment, this task checks for the existence of the  `.dep/deploy.lock` file. If the deploy process was cancelled by Ctrl+C, run `dep deploy:unlock` to delete this file. In the event that deployment fails, the `deploy:unlock` task will be triggered automatically.
 
 ### deploy:release
 
-Creates a new release folder based on the `release_name` config parameter. Also reads `.dep/releases` to get a list of releases that were created before. 
+Creates a new release folder based on the `release_name` config parameter. Also reads `.dep/releases` to get a list of releases that were created before.
 
 Also, if in the `deploy_path` there was a previous release symlink, it will be deleted.
 
@@ -108,7 +108,7 @@ set('writable_use_sudo', true);
 
 ### deploy:vendors
 
-Installs composer dependencies. You can configure composer options with the `composer_options` parameter. 
+Installs composer dependencies. You can configure composer options with the `composer_options` parameter.
 
 ### deploy:clear_paths
 

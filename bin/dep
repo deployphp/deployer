@@ -7,10 +7,13 @@
  */
 
 // Deployer constants
+
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
+define('DEPLOYER_VERSION', '7.0.0-master');
 
 // Check for php7
+
 if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
     fwrite(
         STDERR,
@@ -22,6 +25,7 @@ if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
 }
 
 // Detect deploy.php script
+
 $options = getopt('f::', ['file::']);
 $userSpecifiedFile = null;
 
@@ -60,7 +64,7 @@ if (empty($userSpecifiedFile)) {
 
 $deployFilePath = dirname($deployFile);
 
-// Detect source location
+// Detect autoload location
 
 $autoload = [
     $deployFilePath . '/vendor/autoload.php',
@@ -98,40 +102,16 @@ if (!$loaded) {
     exit(1);
 }
 
-// Setup include path
+define('DEPLOYER_INCLUDE_PATH', $includePath);
 set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 
-// Detect version
-$version = 'master';
-
-$installedFile = $vendorDir . '/composer/installed.json';
-if (is_readable($installedFile)) {
-    $installed = json_decode(file_get_contents($installedFile), true);
-    $packages = $installed['packages'] ?? $installed;
-
-    foreach ($packages as $package) {
-        if ($package['name'] === 'deployer/deployer') {
-            $version = $package['version'];
-            break;
-        }
+set_error_handler(function ($severity, $message, $filename, $lineno) {
+    if (error_reporting() == 0) {
+        return;
     }
-}
+    if (error_reporting() & $severity) {
+        throw new ErrorException($message, 0, $severity, $filename, $lineno);
+    }
+});
 
-$method = new ReflectionMethod('Deployer\Deployer', 'run');
-if (!$method->isStatic()) {
-    fwrite(
-        STDERR,
-        'You need to update Deployer to the latest version:' . PHP_EOL .
-        PHP_EOL .
-        '  dep self-update' . PHP_EOL .
-        PHP_EOL .
-        'Or use composer installed version:' . PHP_EOL .
-        PHP_EOL .
-        '  php vendor/bin/dep' . PHP_EOL .
-        PHP_EOL
-
-    );
-    exit(1);
-}
-
-\Deployer\Deployer::run($version, $deployFile);
+\Deployer\Deployer::run(DEPLOYER_VERSION, $deployFile);

@@ -19,7 +19,7 @@ class FileLoaderTest extends TestCase
     public function testLoad()
     {
         $this->hosts = (new FileLoader())
-            ->load(__DIR__ . '/../../fixture/inventory.yml')
+            ->load(__DIR__ . '/inventory.yml')
             ->getHosts();
 
 
@@ -38,14 +38,14 @@ class FileLoaderTest extends TestCase
 
         // bar configured properly
         $bar = $this->getHost('bar');
-        self::assertEquals('bar', $bar->getHostname());
-        self::assertEquals('user@bar.com', "$bar");
-        self::assertEquals('user', $bar->getUser());
-        self::assertEquals(22, $bar->getPort());
-        self::assertEquals('configFile', $bar->getConfigFile());
-        self::assertEquals('identityFile', $bar->getIdentityFile());
-        self::assertTrue($bar->isForwardAgent());
-        self::assertFalse($bar->isMultiplexing());
+        self::assertEquals('bar', $bar->alias());
+        self::assertEquals('bar.com', $bar->hostname());
+        self::assertEquals('user', $bar->user());
+        self::assertEquals(22, $bar->port());
+        self::assertEquals('configFile', $bar->configFile());
+        self::assertEquals('identityFile', $bar->identityFile());
+        self::assertTrue($bar->forwardAgent());
+        self::assertFalse($bar->sshMultiplexing());
         self::assertEquals('param', $bar->get('param'));
         self::assertEquals(
             '-f -A -someFlag value -p 22 -F configFile -i identityFile -o Option=Value',
@@ -53,9 +53,9 @@ class FileLoaderTest extends TestCase
         );
 
         $db1 = $this->getHost('db1.deployer.org');
-        self::assertEquals('db1.deployer.org', $db1->getHostname());
+        self::assertEquals('db1.deployer.org', $db1->alias());
         $db2 = $this->getHost('db2.deployer.org');
-        self::assertEquals('db2.deployer.org', $db2->getHostname());
+        self::assertEquals('db2.deployer.org', $db2->alias());
     }
 
     /**
@@ -65,7 +65,7 @@ class FileLoaderTest extends TestCase
     private function getHost($name)
     {
         foreach ($this->hosts as $host) {
-            if ($host->getHostname() === $name) {
+            if ($host->alias() === $name) {
                 return $host;
             }
         }

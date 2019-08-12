@@ -7,135 +7,137 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Collection\PersistentCollection;
+use Deployer\Configuration\Configuration;
 use Deployer\Console\Application;
-use Deployer\Console\Input\Argument;
-use Deployer\Console\Input\Option;
-use Deployer\Console\Output\Informer;
-use Deployer\Console\Output\VerbosityString;
+use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Storage;
+use Deployer\Component\Ssh\Client;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class ParallelExecutor implements ExecutorInterface
+const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+
+function spinner($message = '')
 {
-    /**
-     * @var InputInterface
-     */
+    $frame = FRAMES[(int)(microtime(true) * 10) % count(FRAMES)];
+    return "  $frame $message\r";
+}
+
+class ParallelExecutor
+{
     private $input;
-
-    /**
-     * @var OutputInterface
-     */
     private $output;
-
-    /**
-     * @var Informer
-     */
     private $informer;
-
-    /**
-     * @var Application
-     */
     private $console;
+    private $client;
+    private $config;
 
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
-        Informer $informer,
-        Application $console
-    ) {
+        Status $informer,
+        Application $console,
+        Client $client,
+        Configuration $config
+    )
+    {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;
         $this->console = $console;
+        $this->client = $client;
+        $this->config = $config;
     }
 
     /**
-     * {@inheritdoc}
+     * @param Host[] $hosts
      */
-    public function run(array $tasks, array $hosts)
+    private function connect(array $hosts)
     {
+        $callback = function (string $output) {
+            $output = preg_replace('/\n$/', '', $output);
+            if (strlen($output) !== 0) {
+                $this->output->writeln($output);
+            }
+        };
+
+        // Connect to each host sequentially, to prevent getting locked.
+        foreach ($hosts as $host) {
+            if ($host instanceof Localhost) {
+                continue;
+            }
+            $process = $this->getProcess($host, new Task('connect'));
+            $process->start();
+
+            while ($process->isRunning()) {
+                $this->gatherOutput([$process], $callback);
+                $this->output->write(spinner(str_pad("connect {$host->tag()}", intval(getenv('COLUMNS')) - 1)));
+                usleep(1000);
+            }
+        }
+
+        // Clear spinner.
+        $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
+    }
+
+    /**
+     * @param Task[] $tasks
+     * @param Host[] $hosts
+     */
+    public function run(array $tasks, array $hosts): int
+    {
+        $this->persistHosts($hosts);
+        $this->connect($hosts);
+
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
-        // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
-        // This allows to use code like this in parallel mode:
-        //
-        //     host('prod')
-        //         ->set('branch', function () {
-        //             return input()->getOption('branch') ?: 'production';
-        //     })
-        //
-        // Otherwise `input()` wont be accessible (i.e. null)
-        //
-        Context::push(new Context($localhost, $this->input, $this->output));
-        {
-            Storage::persist($hosts);
-        }
-        Context::pop();
-
         foreach ($tasks as $task) {
-            $success = true;
             $this->informer->startTask($task);
 
             if ($task->isLocal()) {
-                Storage::load($hosts);
+                Storage::load(...$hosts);
                 {
                     $task->run(new Context($localhost, $this->input, $this->output));
                 }
-                Storage::flush($hosts);
+                Storage::flush(...$hosts);
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
                     $exitCode = $this->runTask($chunk, $task);
-
-                    switch ($exitCode) {
-                        case 1:
-                            throw new GracefulShutdownException();
-                        case 2:
-                            $success = false;
-                            break;
-                        case 255:
-                            throw new Exception();
+                    if ($exitCode !== 0) {
+                        return $exitCode;
                     }
                 }
             }
 
-            if ($success) {
-                $this->informer->endTask($task);
-            } else {
-                $this->informer->taskError();
-            }
+            $this->informer->endTask($task);
         }
+
+        return 0;
     }
 
-    /**
-     * Run task on hosts.
-     *
-     * @param Host[] $hosts
-     * @return int
-     */
     private function runTask(array $hosts, Task $task): int
     {
         $processes = [];
-
         foreach ($hosts as $host) {
             if ($task->shouldBePerformed($host)) {
-                $processes[$host->getHostname()] = $this->getProcess($host, $task);
+                $processes[] = $this->getProcess($host, $task);
                 if ($task->isOnce()) {
                     $task->setHasRun();
                 }
             }
         }
 
-        $callback = function (string $type, string $host, string $output) {
-            $output = rtrim($output);
+        $callback = function (string $output) {
+            $output = preg_replace('/\n$/', '', $output);
             if (strlen($output) !== 0) {
                 $this->output->writeln($output);
             }
@@ -145,43 +147,27 @@ class ParallelExecutor implements ExecutorInterface
 
         while ($this->areRunning($processes)) {
             $this->gatherOutput($processes, $callback);
+            $this->output->write(spinner());
             usleep(1000);
         }
+        $this->output->write("\r");
         $this->gatherOutput($processes, $callback);
 
         return $this->gatherExitCodes($processes);
     }
 
-    /**
-     * Get process for task on host.
-     */
     protected function getProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $options = $this->generateOptions();
-        $arguments = $this->generateArguments();
-        $hostname = $host->getHostname();
-        $taskName = $task->getName();
-        $configFile = $host->get('host_config_storage');
-        $value = $this->input->getOption('file');
-        $file = $value ? "--file='$value'" : '';
+        $configFile = $host->get('worker-config');
+        $decorated = $this->output->isDecorated() ? '--decorated' : '';
+        $command = "$dep worker $task {$host->alias()} $configFile {$this->input} $decorated";
 
-        if ($this->output->isDecorated()) {
-            $options .= ' --ansi';
+        if ($this->output->isDebug()) {
+            $this->output->writeln("[{$host->tag()}] $command");
         }
 
-        $command = "$dep $file worker $arguments $options --hostname $hostname --task $taskName --config-file $configFile";
-        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($command);
-        } else {
-            $process = new Process($command);
-        }
-
-        if (!defined('DEPLOYER_PARALLEL_PTY')) {
-            $process->setPty(true);
-        }
-
-        return $process;
+        return Process::fromShellCommandline($command);
     }
 
     /**
@@ -223,15 +209,15 @@ class ParallelExecutor implements ExecutorInterface
      */
     protected function gatherOutput(array $processes, callable $callback)
     {
-        foreach ($processes as $host => $process) {
+        foreach ($processes as $process) {
             $output = $process->getIncrementalOutput();
             if (strlen($output) !== 0) {
-                $callback(Process::OUT, $host, $output);
+                $callback($output);
             }
 
             $errorOutput = $process->getIncrementalErrorOutput();
             if (strlen($errorOutput) !== 0) {
-                $callback(Process::ERR, $host, $errorOutput);
+                $callback($errorOutput);
             }
         }
     }
@@ -251,40 +237,22 @@ class ParallelExecutor implements ExecutorInterface
     }
 
     /**
-     * Generate options and arguments string.
+     * @param Host[] $hosts
      */
-    private function generateOptions(): string
+    private function persistHosts(array $hosts)
     {
-        /** @var string[] $inputs */
-        $inputs = [
-            (string)(new VerbosityString($this->output)),
-        ];
+        foreach ($hosts as $host) {
+            Context::push(new Context($host, $this->input, $this->output));
 
-        $userDefinition = $this->console->getUserDefinition();
-        // Get user arguments
-        foreach ($userDefinition->getArguments() as $argument) {
-            $inputs[] = Argument::toString($this->input, $argument);
+            $values = $host->getConfig()->persist();
+            $workerConfig = sys_get_temp_dir() . '/' . uniqid('deployer-') . '-' . $host->alias() . '.dep';
+            $values['worker-config'] = $workerConfig;
+
+            $persistentCollection = new PersistentCollection($workerConfig, $values);
+            $persistentCollection->flush();
+            $host->getConfig()->setCollection($persistentCollection);
+
+            Context::pop();
         }
-
-        // Get user options
-        foreach ($userDefinition->getOptions() as $option) {
-            $inputs[] = Option::toString($this->input, $option);
-        }
-
-        return implode(' ', array_filter($inputs, static function (string $item): bool {
-            return $item !== '';
-        }));
-    }
-
-    private function generateArguments(): string
-    {
-        $arguments = '';
-
-        if ($this->input->hasArgument('stage')) {
-            // Some people rely on stage argument, so pass it to worker too.
-            $arguments .= $this->input->getArgument('stage');
-        }
-
-        return $arguments;
     }
 }

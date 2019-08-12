@@ -7,32 +7,30 @@
 
 namespace Deployer;
 
-require __DIR__ . '/config/current.php';
-require __DIR__ . '/config/dump.php';
-require __DIR__ . '/config/hosts.php';
-require __DIR__ . '/deploy/info.php';
-require __DIR__ . '/deploy/prepare.php';
-require __DIR__ . '/deploy/lock.php';
-require __DIR__ . '/deploy/release.php';
-require __DIR__ . '/deploy/update_code.php';
-require __DIR__ . '/deploy/clear_paths.php';
-require __DIR__ . '/deploy/shared.php';
-require __DIR__ . '/deploy/writable.php';
-require __DIR__ . '/deploy/vendors.php';
-require __DIR__ . '/deploy/symlink.php';
+require __DIR__ . '/deploy/check_remote.php';
 require __DIR__ . '/deploy/cleanup.php';
+require __DIR__ . '/deploy/clear_paths.php';
 require __DIR__ . '/deploy/copy_dirs.php';
+require __DIR__ . '/deploy/info.php';
+require __DIR__ . '/deploy/lock.php';
+require __DIR__ . '/deploy/prepare.php';
+require __DIR__ . '/deploy/release.php';
 require __DIR__ . '/deploy/rollback.php';
+require __DIR__ . '/deploy/shared.php';
+require __DIR__ . '/deploy/symlink.php';
+require __DIR__ . '/deploy/update_code.php';
+require __DIR__ . '/deploy/vendors.php';
+require __DIR__ . '/deploy/writable.php';
 
-use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\Output;
 
 /**
  * Facts
  */
 
 set('hostname', function () {
-    return Context::get()->getHost()->getHostname();
+    return currentHost()->hostname();
 });
 
 set('user', function () {
@@ -40,20 +38,18 @@ set('user', function () {
         return runLocally('git config --get user.name');
     } catch (\Throwable $exception) {
         if (false !== getenv('CI')) {
-            return 'Continuous Integration';
+            return 'ci';
         }
 
         return 'no_user';
     }
 });
 
-set('target', function () {
-    return input()->getArgument('stage') ?: get('hostname');
-});
-
 /**
  * Configuration
  */
+
+set('default_roles', null);
 
 set('keep_releases', 5);
 
@@ -138,12 +134,29 @@ option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
 
 
 /**
+ * Main deploy task.
+ */
+desc('Deploy your project');
+task('deploy', [
+    'deploy:info',
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    'deploy:shared',
+    'deploy:writable',
+    'deploy:symlink',
+    'deploy:unlock',
+    'deploy:cleanup',
+    'deploy:success',
+]);
+
+/**
  * Success message
  */
-task('success', function () {
-    writeln('<info>Successfully deployed!</info>');
+task('deploy:success', function () {
+    info(currentHost()->tag() . ' successfully deployed!');
 })
-    ->local()
     ->shallow()
     ->setPrivate();
 
@@ -155,3 +168,19 @@ task('deploy:failed', function () {
 })->setPrivate();
 
 fail('deploy', 'deploy:failed');
+
+/**
+ * Follow latest application logs.
+ */
+task('logs', function () {
+    if (!has('log_files')) {
+        warning("Please, specify \"log_files\" option.");
+        return;
+    }
+
+    if (output()->getVerbosity() === Output::VERBOSITY_NORMAL) {
+        output()->setVerbosity(Output::VERBOSITY_VERBOSE);
+    }
+    cd('{{deploy_path}}/current');
+    run('tail -f {{log_files}}');
+});

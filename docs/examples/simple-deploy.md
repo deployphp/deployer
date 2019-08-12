@@ -205,7 +205,7 @@ task( 'update:restart_chat_client_server', function () {
 } );
 
 // erase any extra old releases
-task( 'cleanup', function () {
+task( 'deploy:cleanup', function () {
 	$releases = get( 'releases_list' );
 	$keep     = get( 'keep_releases' );     // how many to keep?
 
@@ -261,7 +261,7 @@ task( 'deploy', [
 	'update:vendors',
 	'update:release_symlinks',
 	'update:restart_chat_client_server',
-	'cleanup',
+	'deploy:cleanup',
 	'notify:done',
 ] );
 

@@ -19,7 +19,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup'
+    'deploy:cleanup'
 ]);
 
 //Set drupal site. Change if you use different site

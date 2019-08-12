@@ -45,7 +45,7 @@ task('build', 'npm build');
 > By default all simple tasks cd to `release_path`, so you don't need to.
 
 Or you can use a multi line script:
- 
+
 ```php
 task('build', '
     gulp build;
@@ -64,7 +64,7 @@ task('deploy', [
     'deploy:update_code',
     'deploy:vendors',
     'deploy:symlink',
-    'cleanup'
+    'deploy:cleanup'
 ]);
 ```
 
@@ -133,7 +133,7 @@ task('build', function () {
 })->local();
 ```
 
-> Note that calling `run` inside a local task will have the same effect as calling `runLocally`. 
+> Note that calling `run` inside a local task will have the same effect as calling `runLocally`.
 
 ### Once
 
@@ -185,7 +185,7 @@ task('foo:bar', function() {
     if (input()->hasArgument('stage')) {
         $stage = input()->getArgument('stage');
     }
-    
+
     // For option
     $tag = null;
     if (input()->hasOption('tag')) {
@@ -204,8 +204,8 @@ To speedup deployment add the `--parallel` or `-p` option. This will run tasks i
 
 <svg width="600" height="153" viewBox="0 0 600 153" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g transform="translate(456 91)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="42" y="24">task 2</tspan></text></g><g transform="translate(306 91)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="42" y="24">task 2</tspan></text></g><g transform="translate(156 91)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="42" y="24">task 2</tspan></text></g><g transform="translate(6 91)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="43" y="24">task 2</tspan></text></g><g transform="translate(456 43)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="41" y="24">task 1</tspan></text></g><g transform="translate(306 43)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="41" y="24">task 1</tspan></text></g><g transform="translate(156 43)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="41" y="24">task 1</tspan></text></g><g transform="translate(6 43)"><rect fill="#EBEBEB" width="140" height="37.176" rx="8"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="41" y="24">task 1</tspan></text></g><path d="M3 35h594.5" stroke="#EBEBEB" stroke-linecap="square" stroke-dasharray="3,5"/><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="497" y="25">Host 4</tspan></text><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="347" y="25">Host 3</tspan></text><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="197" y="25">Host 2</tspan></text><text font-family="Monaco" font-size="16" fill="#9B9B9B"><tspan x="47" y="25">Host 1</tspan></text></g></svg>
 
-Limit the number of concurrent tasks by specifying a number. By default, up to 10 tasks will be processed concurrently.
-  
+Limit the number of concurrent tasks by specifing a number. By default, up to 10 tasks will be processed concurrently.
+
 ```sh
 dep deploy --parallel --limit 2
 ```

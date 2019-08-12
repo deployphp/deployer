@@ -24,6 +24,7 @@ use Deployer\Executor\SeriesExecutor;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
+use function Deployer\Support\array_merge_alternate;
 use Deployer\Task;
 use Deployer\Utility\ProcessOutputPrinter;
 use Deployer\Utility\ProcessRunner;
@@ -34,7 +35,6 @@ use Symfony\Component\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use function Deployer\Support\array_merge_alternate;
 
 /**
  * Deployer class represents DI container for configuring

@@ -7,10 +7,10 @@
 
 namespace Deployer\Utility;
 
+use function Deployer\hostnameTag;
 use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use function Deployer\hostnameTag;
 
 class ProcessOutputPrinter
 {

@@ -9,6 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
+use function Deployer\run;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Command\Command;
@@ -16,7 +17,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
-use function Deployer\run;
 
 class RunCommand extends Command
 {

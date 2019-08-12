@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.4.6...master](https://github.com/deployphp/deployer/compare/v6.4.6...master)
+## v6.4.7
+[v6.4.6...v6.4.7](https://github.com/deployphp/deployer/compare/v6.4.6...v6.4.7)
 
 ### Added
 - A task to cache the event listeners manifest in Laravel [#1893]

@@ -10,13 +10,12 @@ namespace Deployer\Console;
 use Deployer\Deployer;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
-use Deployer\Host\Host;
 use Deployer\Host\Storage;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -24,34 +23,16 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class WorkerCommand extends Command
 {
-    /**
-     * @var Deployer
-     */
     private $deployer;
-
-    /**
-     * @var Host
-     */
     private $host;
 
-    /**
-     * @param Deployer $deployer
-     */
     public function __construct(Deployer $deployer)
     {
         parent::__construct('worker');
-        $this->setDescription('Deployer uses workers for parallel deployment');
-        if (method_exists($this, 'setHidden')) {
-            $this->setHidden(true);
-        }
         $this->deployer = $deployer;
-        $this->addArgument(
-            'stage',
-            InputArgument::OPTIONAL,
-            'Stage or hostname'
-        );
+        $this->setHidden(true);
         $this->addOption(
-            'hostname',
+            'host',
             null,
             InputOption::VALUE_REQUIRED
         );
@@ -66,19 +47,22 @@ class WorkerCommand extends Command
             InputOption::VALUE_REQUIRED
         );
         $this->addOption(
-            'log',
-            null,
-            InputOption::VALUE_REQUIRED
+            'option',
+            'o',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Sets configuration option'
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->parseOptions($input->getOption('option'));
+        $output->setDecorated($this->deployer->config['decorated']);
+        $output->setVerbosity($this->deployer->config['verbosity']);
+
         try {
             $this->doExecute($input, $output);
+            return 0;
         } catch (GracefulShutdownException $e) {
             $this->deployer->informer->taskException($e, $this->host);
             return 1;
@@ -93,22 +77,40 @@ class WorkerCommand extends Command
 
     private function doExecute(InputInterface $input, OutputInterface $output)
     {
-        $hostname = $input->getOption('hostname');
-        $host = $this->host = $this->deployer->hosts->get($hostname);
-
-        Storage::setup($host, $input->getOption('config-file'));
-
         $task = $input->getOption('task');
-        $task = $this->deployer->tasks->get($task);
-        if (!empty($input->getOption('log'))) {
-            $this->deployer->config['log_file'] = $input->getOption('log');
-        }
+        $hostname = $input->getOption('host');
+        $this->host = $this->deployer->hosts->get($hostname);
 
-        if ($task->shouldBePerformed($host)) {
-            $task->run(new Context($host, $input, $output));
+        // Load host configuration from file and replace host config collection with PersistentCollection.
+        Storage::setup($this->host, $input->getOption('config-file'));
+
+        $task = $this->deployer->tasks->get($task);
+        if ($task->shouldBePerformed($this->host)) {
+            $task->run(new Context($this->host, $input, $output));
             $this->deployer->informer->endOnHost($hostname);
         }
 
-        Storage::flush($host);
+        Storage::flush($this->host);
+    }
+
+    private function parseOptions(array $options)
+    {
+        foreach ($options as $option) {
+            list($name, $value) = explode('=', $option);
+            $value = $this->castValueToPhpType($value);
+            $this->deployer->config->set($name, $value);
+        }
+    }
+
+    private function castValueToPhpType($value)
+    {
+        switch ($value) {
+            case 'true':
+                return true;
+            case 'false':
+                return false;
+            default:
+                return $value;
+        }
     }
 }

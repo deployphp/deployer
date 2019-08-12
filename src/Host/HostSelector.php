@@ -46,14 +46,14 @@ class HostSelector
             foreach ($this->hosts as $host) {
                 // If host does not have any stage, skip them
                 if ($stage === $host->get('stage', false)) {
-                    $hosts[$host->getHostname()] = $host;
+                    $hosts[] = $host;
                 }
             }
 
             // If still is empty, try to find host by name
             if (empty($hosts)) {
                 if ($this->hosts->has($stage)) {
-                    $hosts = [$stage => $this->hosts->get($stage)];
+                    $hosts = [$this->hosts->get($stage)];
                 } else {
                     // Nothing found.
                     throw new Exception("Hostname or stage `$stage` was not found.");
@@ -63,14 +63,14 @@ class HostSelector
             // Otherwise run on all hosts what does not specify stage
             foreach ($this->hosts as $host) {
                 if (!$host->has('stage')) {
-                    $hosts[$host->getHostname()] = $host;
+                    $hosts[] = $host;
                 }
             }
         }
 
         if (empty($hosts)) {
             if (count($this->hosts) === 0) {
-                $hosts = ['localhost' => new Localhost()];
+                $hosts = [new Localhost()];
             } else {
                 throw new Exception('You need to specify at least one host or stage.');
             }

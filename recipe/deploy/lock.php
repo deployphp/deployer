@@ -14,7 +14,7 @@ task('deploy:lock', function () {
     $locked = test("[ -f {{deploy_path}}/.dep/deploy.lock ]");
 
     if ($locked) {
-        $stage = input()->hasArgument('stage') ? ' ' . input()->getArgument('stage') : '';
+        $stage = ''; // TODO: input()->hasArgument('stage') ? ' ' . input()->getArgument('stage') : '';
 
         throw new GracefulShutdownException(
             "Deploy locked.\n" .

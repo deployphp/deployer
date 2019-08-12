@@ -20,10 +20,8 @@ task('rollback', function () {
         // Remove release
         run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
 
-        if (isVerbose()) {
-            writeln("Rollback to `{$releases[1]}` release was successful.");
-        }
+        writeInfo("<info>Rollback to {$releases[1]} release was successful.</info>");
     } else {
-        writeln("<comment>No more releases you can revert to.</comment>");
+        writeInfo("<comment>No more releases you can revert to.</comment>");
     }
 });

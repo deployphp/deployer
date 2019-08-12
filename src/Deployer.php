@@ -24,7 +24,6 @@ use Deployer\Executor\SeriesExecutor;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
-use function Deployer\Support\array_merge_alternate;
 use Deployer\Task;
 use Deployer\Utility\ProcessOutputPrinter;
 use Deployer\Utility\ProcessRunner;
@@ -35,6 +34,7 @@ use Symfony\Component\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function Deployer\Support\array_merge_alternate;
 
 /**
  * Deployer class represents DI container for configuring
@@ -48,8 +48,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Host\HostSelector $hostSelector
- * @property SeriesExecutor $seriesExecutor
- * @property ParallelExecutor $parallelExecutor
+ * @property ParallelExecutor $executor
  * @property Informer $informer
  * @property Logger $logger
  * @property ProcessOutputPrinter $pop
@@ -77,7 +76,7 @@ class Deployer extends Container
         $this['console'] = function () use ($console) {
             $console->catchIO(function ($input, $output) {
                 $this['input'] = $input;
-                $this['output'] =  new OutputWatcher($output);
+                $this['output'] = new OutputWatcher($output);
                 return [$this['input'], $this['output']];
             });
             return $console;
@@ -131,11 +130,15 @@ class Deployer extends Container
         $this['informer'] = function ($c) {
             return new Informer($c['output']);
         };
-        $this['seriesExecutor'] = function ($c) {
-            return new SeriesExecutor($c['input'], $c['output'], $c['informer']);
-        };
-        $this['parallelExecutor'] = function ($c) {
-            return new ParallelExecutor($c['input'], $c['output'], $c['informer'], $c['console']);
+        $this['executor'] = function ($c) {
+            return new ParallelExecutor(
+                $c['input'],
+                $c['output'],
+                $c['informer'],
+                $c['console'],
+                $c['sshClient'],
+                $c['config']
+            );
         };
 
         /******************************
@@ -313,7 +316,7 @@ class Deployer extends Container
             $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
             $io->block($e->getTraceAsString());
 
-            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
+            $deployer->logger->log('[' . get_class($e) . '] ' . $e->getMessage());
             $deployer->logger->log($e->getTraceAsString());
             exit(1);
         });

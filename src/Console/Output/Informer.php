@@ -12,12 +12,10 @@ use Deployer\Host\Host;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Deployer\hostnameTag;
 
 class Informer
 {
-    /**
-     * @var OutputWatcher
-     */
     private $output;
 
     /**
@@ -33,16 +31,13 @@ class Informer
     public function startTask(Task $task)
     {
         $this->startTime = round(microtime(true) * 1000);
-        if (
-            $this->output->getVerbosity() >= OutputInterface::VERBOSITY_NORMAL &&
-            !$task->isShallow()
-        ) {
-            $this->output->writeln("➤ Executing task <info>{$task->getName()}</info>");
+        if (!$task->isShallow()) {
+            $this->output->writeln("<info>task</info> {$task->getName()}");
             $this->output->setWasWritten(false);
         }
     }
 
-    /**
+    /*
      * Print task was ok.
      */
     public function endTask(Task $task)
@@ -57,35 +52,19 @@ class Informer
         $millis = $millis - $seconds * 1000;
         $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
 
-        $shouldReplaceTaskMark =
-            $this->output->isDecorated() &&
-            $this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL &&
-            !$this->output->getWasWritten();
-
-        if ($shouldReplaceTaskMark) {
-            $this->output->writeln("\r\033[K\033[1A\r<info>✔</info>");
-        } else {
-            if ($this->output->getVerbosity() == OutputInterface::VERBOSITY_NORMAL) {
-                $this->output->writeln("<info>✔</info> Ok");
-            } else {
-                $this->output->writeln("<info>✔</info> Ok [$taskTime]");
-            }
+        if ($this->output->isVerbose()) {
+            $this->output->writeln("<info>done</info> $taskTime");
         }
     }
 
     public function endOnHost(string $hostname)
     {
-        if ($this->output->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE) {
-            $this->output->writeln("<info>•</info> done on [$hostname]");
+        if ($this->output->isVerbose()) {
+            $this->output->writeln("<info>done</info> $hostname");
         }
     }
 
-    /**
-     * Print error.
-     *
-     * @param bool $nonFatal
-     */
-    public function taskError($nonFatal = true)
+    public function taskError(bool $nonFatal = true)
     {
         if ($nonFatal) {
             $this->output->writeln("<fg=yellow>✘</fg=yellow> Some errors occurred!");
@@ -106,15 +85,17 @@ class Informer
             return !empty($line);
         });
         $exceptionClass = get_class($exception);
+        array_unshift($messages, "[$exceptionClass]");
 
-        if (empty($host)) {
-            array_unshift($messages, "[$exceptionClass]");
-        } else {
-            array_unshift($messages, "[$exceptionClass] on [{$host->getHostname()}]");
+        $prefix = '';
+        if (!empty($host)) {
+            $prefix = hostnameTag($host->getHostname());
         }
 
-        $this->output->writeln($formatter->formatBlock($messages, 'error', true));
-        $this->output->writeln('');
+        $file = basename($exception->getFile());
+        $line = $exception->getLine();
+        $comment = "$prefix<comment>In $file on line $line:</comment>\n";
+        $this->output->writeln($comment . $formatter->formatBlock($messages, 'error', true) . "\n\n");
 
         if (OutputInterface::VERBOSITY_VERBOSE <= $this->output->getVerbosity()) {
             $this->output->writeln('<comment>Exception trace:</comment>', OutputInterface::VERBOSITY_QUIET);

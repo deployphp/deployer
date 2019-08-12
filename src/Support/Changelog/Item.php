@@ -25,7 +25,12 @@ class Item
             return " [#$ref]";
         }, $this->references));
 
-        return "{$this->message}$references";
+        $message = ucfirst($this->message);
+        $message = rtrim($message, '.') . '.';
+        $message = preg_replace('/^Fix /', 'Fixed ', $message);
+        $message = preg_replace('/^Add /', 'Added ', $message);
+
+        return "$message$references";
     }
 
     public function setMessage(string $message)

@@ -112,7 +112,8 @@ class Client
         return $exitCode;
     }
 
-    public function connect(Host $host) {
+    public function connect(Host $host)
+    {
         if ($host->isMultiplexing() === null ? $this->multiplexing : $host->isMultiplexing()) {
             $this->initMultiplexing($host);
         }

@@ -16,13 +16,13 @@ use Deployer\Exception\GracefulShutdownException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Storage;
+use function Deployer\hostnameTag;
 use Deployer\Ssh\Client;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use function Deployer\hostnameTag;
 
 const COLORS = [
     'fg=cyan;options=bold',
@@ -60,8 +60,7 @@ class ParallelExecutor implements ExecutorInterface
         Application $console,
         Client $client,
         Collection $config
-    )
-    {
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;

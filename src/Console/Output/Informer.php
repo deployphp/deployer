@@ -9,10 +9,10 @@ namespace Deployer\Console\Output;
 
 use Deployer\Deployer;
 use Deployer\Host\Host;
+use function Deployer\hostnameTag;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\OutputInterface;
-use function Deployer\hostnameTag;
 
 class Informer
 {

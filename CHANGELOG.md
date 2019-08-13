@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.5.0...master](https://github.com/deployphp/deployer/compare/v6.5.0...master)
+
+### Fixed
+- Parameters -f or --file now are accepted also without the equal sign [#1479]
+
+
 ## v6.5.0
 [v6.4.7...v6.5.0](https://github.com/deployphp/deployer/compare/v6.4.7...v6.5.0)
 
@@ -546,6 +553,7 @@
 [#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1480]: https://github.com/deployphp/deployer/issues/1480
+[#1479]: https://github.com/deployphp/deployer/issues/1479
 [#1476]: https://github.com/deployphp/deployer/pull/1476
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463

@@ -37,7 +37,9 @@ class Rsync
         ];
         $config = array_merge($defaults, $config);
 
-        $rsync = "rsync -azP " . implode(' ', $config['options']) . " $source $destination";
+        $escapedSource = escapeshellarg($source);
+        $escapedDestination = escapeshellarg($destination);
+        $rsync = "rsync -azP " . implode(' ', $config['options']) . " $escapedSource $escapedDestination";
 
         $this->pop->command($hostname, $rsync);
 

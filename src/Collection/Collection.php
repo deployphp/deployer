@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -10,10 +10,13 @@ namespace Deployer\Collection;
 class Collection implements CollectionInterface, \Countable
 {
     /**
-     * @var array
+     * @var mixed[]
      */
     protected $values = [];
 
+    /**
+     * @param mixed[] $collection
+     */
     public function __construct(array $collection = [])
     {
         $this->values = $collection;
@@ -21,8 +24,10 @@ class Collection implements CollectionInterface, \Countable
 
     /**
      * {@inheritdoc}
+     *
+     * @throws \InvalidArgumentException
      */
-    public function get($name)
+    public function get(string $name)
     {
         if ($this->has($name)) {
             return $this->values[$name];
@@ -34,7 +39,7 @@ class Collection implements CollectionInterface, \Countable
     /**
      * {@inheritdoc}
      */
-    public function has($name)
+    public function has(string $name): bool
     {
         return array_key_exists($name, $this->values);
     }
@@ -42,7 +47,7 @@ class Collection implements CollectionInterface, \Countable
     /**
      * {@inheritdoc}
      */
-    public function set($name, $object)
+    public function set(string $name, $object)
     {
         $this->values[$name] = $object;
     }
@@ -58,7 +63,7 @@ class Collection implements CollectionInterface, \Countable
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return $this->has($offset);
     }
@@ -90,12 +95,15 @@ class Collection implements CollectionInterface, \Countable
     /**
      * {@inheritdoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->values);
     }
 
-    public function select(callable $callback)
+    /**
+     * @return mixed[]
+     */
+    public function select(callable $callback): array
     {
         $values = [];
 
@@ -108,15 +116,23 @@ class Collection implements CollectionInterface, \Countable
         return $values;
     }
 
+    /**
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     public function first()
     {
+        if ($this->count() === 0) {
+            throw new \InvalidArgumentException("no elements found in collection.");
+        }
+
         return array_values($this->values)[0];
     }
 
     /**
-     * @return array
+     * @return mixed[]
      */
-    public function toArray()
+    public function toArray(): array
     {
         return iterator_to_array($this);
     }

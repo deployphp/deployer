@@ -13,13 +13,17 @@ use Symfony\Component\Console\Helper\Table;
 desc('Show current paths');
 task('config:current', function () {
     $rows = [];
-    $hosts = Deployer::get()->hosts;
+    $selectedStage = Deployer::get()->getInput()->getArgument('stage');
 
-    on($hosts, function (Host $host) use (&$rows) {
+    on(Deployer::get()->hosts, function (Host $host) use (&$rows, $selectedStage) {
+        if ($host->get('stage') !== $selectedStage) {
+            return;
+        }
+
         try {
             $rows[] = [
                 $host->getHostname(),
-                basename($host->getConfig()->get('current_path')),
+                basename($host->get('current_path')),
             ];
         } catch (\Throwable $e) {
             $rows[] = [

@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\Exception;
 use function Deployer\Support\str_contains;
 
 desc('Preparing host for deploy');
@@ -25,7 +26,7 @@ task('deploy:prepare', function () {
     // Check for existing /current directory (not symlink)
     $result = test('[ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]');
     if ($result) {
-        throw new \RuntimeException('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+        throw new Exception('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
     // Create metadata .dep dir.

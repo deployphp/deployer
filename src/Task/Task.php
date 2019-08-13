@@ -261,18 +261,24 @@ class Task
 
     /**
      * @param string $task
+     *
+     * @return $this
      */
     public function addBefore(string $task)
     {
         array_unshift($this->before, $task);
+        return $this;
     }
 
     /**
      * @param string $task
+     *
+     * @return $this
      */
     public function addAfter(string $task)
     {
         array_push($this->after, $task);
+        return $this;
     }
 
     /**
@@ -312,5 +318,15 @@ class Task
     public function isShallow()
     {
         return $this->shallow;
+    }
+
+    /**
+     * @internal this is used by ParallelExecutor and prevent multiple run
+     */
+    public function setHasRun()
+    {
+        if ($this->isOnce()) {
+            $this->hasRun = true;
+        }
     }
 }

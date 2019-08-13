@@ -23,8 +23,11 @@ task('deploy:writable', function () {
     }
 
     if ($httpUser === false && ! in_array($mode, ['chgrp', 'chmod'], true)) {
-        // Detect http user in process list.
-        $httpUser = run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | awk '{print $2}'");
+        // Attempt to detect http user in process list.
+        $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+        if (count($httpUserCandidates)) {
+            $httpUser = array_shift($httpUserCandidates);
+        }
 
         if (empty($httpUser)) {
             throw new \RuntimeException(
@@ -40,11 +43,13 @@ task('deploy:writable', function () {
         // Create directories if they don't exist
         run("mkdir -p $dirs");
 
+        $recursive = get('writable_recursive') ? '-R' : '';
+
         if ($mode === 'chown') {
             // Change owner.
             // -R   operate on files and directories recursively
             // -L   traverse every symbolic link to a directory encountered
-            run("$sudo chown -RL $httpUser $dirs", $runOpts);
+            run("$sudo chown -L $recursive $httpUser $dirs", $runOpts);
         } elseif ($mode === 'chgrp') {
             // Change group ownership.
             // -R   operate on files and directories recursively
@@ -53,9 +58,12 @@ task('deploy:writable', function () {
             if ($httpGroup === false) {
                 throw new \RuntimeException("Please setup `http_group` config parameter.");
             }
-            run("$sudo chgrp -RH $httpGroup $dirs", $runOpts);
+            run("$sudo chgrp -H $recursive $httpGroup $dirs", $runOpts);
         } elseif ($mode === 'chmod') {
-            $recursive = get('writable_chmod_recursive') ? '-R' : '';
+            // in chmod mode, defined `writable_chmod_recursive` has priority over common `writable_recursive`
+            if (is_bool(get('writable_chmod_recursive'))) {
+                $recursive = get('writable_chmod_recursive') ? '-R' : '';
+            }
             run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs", $runOpts);
         } elseif ($mode === 'acl') {
             if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
@@ -65,8 +73,8 @@ task('deploy:writable', function () {
                 run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs", $runOpts);
             } elseif (commandExist('setfacl')) {
                 if (!empty($sudo)) {
-                    run("$sudo setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
-                    run("$sudo setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
+                    run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
+                    run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs", $runOpts);
                 } else {
                     // When running without sudo, exception may be thrown
                     // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -78,8 +86,8 @@ task('deploy:writable', function () {
                         $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                         // Set ACL for directory if it has not been set before
                         if (!$hasfacl) {
-                            run("setfacl -RL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                            run("setfacl -dRL -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                            run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                            run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
                         }
                     }
                 }

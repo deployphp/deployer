@@ -78,6 +78,10 @@ function str_contains(string $haystack, string $needle)
  * Take array of key/value and create string of it.
  *
  * This function used for create environment string.
+ *
+ * @param array $array
+ *
+ * @return string
  */
 function array_to_string(array $array): string
 {

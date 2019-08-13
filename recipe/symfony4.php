@@ -7,11 +7,12 @@
 
 namespace Deployer;
 
-require_once 'recipe/common.php';
+require_once __DIR__ . '/common.php';
 
 set('shared_dirs', ['var/log', 'var/sessions']);
-set('shared_files', ['.env']);
+set('shared_files', ['.env.local']);
 set('writable_dirs', ['var']);
+set('migrations_config', '');
 
 set('bin/console', function () {
     return parse('{{bin/php}} {{release_path}}/bin/console --no-interaction');
@@ -19,7 +20,12 @@ set('bin/console', function () {
 
 desc('Migrate database');
 task('database:migrate', function () {
-    run('{{bin/console}} doctrine:migrations:migrate --allow-no-migration');
+    $options = '--allow-no-migration';
+    if (get('migrations_config') !== '') {
+        $options = sprintf('%s --configuration={{release_path}}/{{migrations_config}}', $options);
+    }
+
+    run(sprintf('{{bin/console}} doctrine:migrations:migrate %s', $options));
 });
 
 desc('Clear cache');

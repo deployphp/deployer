@@ -57,6 +57,9 @@ set('console_options', function () {
     return get('symfony_env') !== 'prod' ? $options : sprintf('%s --no-debug', $options);
 });
 
+// Migrations configuration file
+set('migrations_config', '');
+
 
 /**
  * Create cache dir
@@ -124,7 +127,12 @@ task('deploy:cache:warmup', function () {
  * Migrate database
  */
 task('database:migrate', function () {
-    run('{{bin/php}} {{bin/console}} doctrine:migrations:migrate {{console_options}} --allow-no-migration');
+    $options = '{{console_options}} --allow-no-migration';
+    if (get('migrations_config') !== '') {
+        $options = sprintf('%s --configuration={{release_path}}/{{migrations_config}}', $options);
+    }
+
+    run(sprintf('{{bin/php}} {{bin/console}} doctrine:migrations:migrate %s', $options));
 })->desc('Migrate database');
 
 

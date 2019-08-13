@@ -11,10 +11,15 @@ use Symfony\Component\Console\Helper\Table;
 
 desc('Print all hosts');
 task('config:hosts', function () {
-    $hosts = [];
+    $rows = [];
+    $selectedStage = Deployer::get()->getInput()->getArgument('stage');
 
     foreach (Deployer::get()->hosts as $host) {
-        $hosts[] = [
+        if ($host->get('stage') !== $selectedStage) {
+            continue;
+        }
+
+        $rows[] = [
             $host->getHostname(),
             $host->getRealHostname(),
             $host->get('stage', ''),
@@ -26,6 +31,6 @@ task('config:hosts', function () {
     $table = new Table(output());
     $table
         ->setHeaders(['Host', 'Hostname', 'Stage', 'Roles', 'Deploy path'])
-        ->setRows($hosts);
+        ->setRows($rows);
     $table->render();
 })->once();

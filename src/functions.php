@@ -12,6 +12,7 @@ use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
+use function Deployer\Support\array_to_string;
 use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
@@ -23,7 +24,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use function Deployer\Support\array_to_string;
 
 // There are two types of functions: Deployer dependent and Context dependent.
 // Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
@@ -433,13 +433,19 @@ function upload($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
+        if (!isset($config['options']) || !is_array($config['options'])) {
+            $config['options'] = [];
+        }
+
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            if (!isset($config['options']) || !is_array($config['options'])) {
-                $config['options'] = [];
-            }
             $config['options'][] = "-e 'ssh $sshArguments'";
         }
+
+        if ($host->has("become")) {
+            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+        }
+
         $rsync->call($host->getHostname(), $source, "$host:$destination", $config);
     }
 }
@@ -461,13 +467,19 @@ function download($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host->getHostname(), $source, $destination, $config);
     } else {
+        if (!isset($config['options']) || !is_array($config['options'])) {
+            $config['options'] = [];
+        }
+
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if (empty($sshArguments) === false) {
-            if (!isset($config['options']) || !is_array($config['options'])) {
-                $config['options'] = [];
-            }
             $config['options'][] = "-e 'ssh $sshArguments'";
         }
+
+        if ($host->has("become")) {
+            $config['options'][]  = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
+        }
+
         $rsync->call($host->getHostname(), "$host:$source", $destination, $config);
     }
 }
@@ -590,7 +602,7 @@ function ask($message, $default = null, $suggestedChoices = null)
  * @param string[] $availableChoices
  * @param string|null $default
  * @param bool|false $multiselect
- * @return array
+ * @return string|string[]
  * @codeCoverageIgnore
  */
 function askChoice($message, array $availableChoices, $default = null, $multiselect = false)

@@ -48,8 +48,10 @@ task('deploy:shared', function () {
     foreach (get('shared_files') as $file) {
         $dirname = dirname(parse($file));
 
-        // Create dir of shared file
-        run("mkdir -p $sharedPath/" . $dirname);
+        // Create dir of shared file if not existing
+        if (!test("[ -d {$sharedPath}/{$dirname} ]")) {
+            run("mkdir -p {$sharedPath}/{$dirname}");
+        }
 
         // Check if shared file does not exist in shared.
         // and file exist in release

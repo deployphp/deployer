@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -8,6 +8,8 @@
 namespace Deployer\Executor;
 
 use Deployer\Console\Application;
+use Deployer\Console\Input\Argument;
+use Deployer\Console\Input\Option;
 use Deployer\Console\Output\Informer;
 use Deployer\Console\Output\VerbosityString;
 use Deployer\Exception\Exception;
@@ -43,14 +45,12 @@ class ParallelExecutor implements ExecutorInterface
      */
     private $console;
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @param Informer $informer
-     * @param Application $console
-     */
-    public function __construct(InputInterface $input, OutputInterface $output, Informer $informer, Application $console)
-    {
+    public function __construct(
+        InputInterface $input,
+        OutputInterface $output,
+        Informer $informer,
+        Application $console
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->informer = $informer;
@@ -60,7 +60,7 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * {@inheritdoc}
      */
-    public function run($tasks, $hosts)
+    public function run(array $tasks, array $hosts)
     {
         $localhost = new Localhost();
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
@@ -119,10 +119,9 @@ class ParallelExecutor implements ExecutorInterface
      * Run task on hosts.
      *
      * @param Host[] $hosts
-     * @param Task $task
      * @return int
      */
-    private function runTask(array $hosts, Task $task)
+    private function runTask(array $hosts, Task $task): int
     {
         $processes = [];
 
@@ -130,14 +129,14 @@ class ParallelExecutor implements ExecutorInterface
             if ($task->shouldBePerformed($host)) {
                 $processes[$host->getHostname()] = $this->getProcess($host, $task);
                 if ($task->isOnce()) {
-                    break;
+                    $task->setHasRun();
                 }
             }
         }
 
-        $callback = function ($type, $host, $output) {
+        $callback = function (string $type, string $host, string $output) {
             $output = rtrim($output);
-            if (!empty($output)) {
+            if (strlen($output) !== 0) {
                 $this->output->writeln($output);
             }
         };
@@ -155,12 +154,8 @@ class ParallelExecutor implements ExecutorInterface
 
     /**
      * Get process for task on host.
-     *
-     * @param Host $host
-     * @param Task $task
-     * @return Process
      */
-    protected function getProcess($host, Task $task)
+    protected function getProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $options = $this->generateOptions();
@@ -204,13 +199,14 @@ class ParallelExecutor implements ExecutorInterface
      * @param Process[] $processes
      * @return bool
      */
-    protected function areRunning(array $processes)
+    protected function areRunning(array $processes): bool
     {
         foreach ($processes as $process) {
             if ($process->isRunning()) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -219,72 +215,61 @@ class ParallelExecutor implements ExecutorInterface
      *
      * @param Process[] $processes
      * @param callable $callback
+     * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
     {
         foreach ($processes as $host => $process) {
-            $methods = [
-                Process::OUT => 'getIncrementalOutput',
-                Process::ERR => 'getIncrementalErrorOutput',
-            ];
-            foreach ($methods as $type => $method) {
-                $output = $process->{$method}();
-                if (!empty($output)) {
-                    $callback($type, $host, $output);
-                }
+            $output = $process->getIncrementalOutput();
+            if (strlen($output) !== 0) {
+                $callback(Process::OUT, $host, $output);
+            }
+
+            $errorOutput = $process->getIncrementalErrorOutput();
+            if (strlen($errorOutput) !== 0) {
+                $callback(Process::ERR, $host, $errorOutput);
             }
         }
     }
 
     /**
      * Gather the cumulative exit code for the processes.
-     *
-     * @param Process[] $processes
-     * @return int
      */
-    protected function gatherExitCodes(array $processes)
+    protected function gatherExitCodes(array $processes): int
     {
-        $code = 0;
         foreach ($processes as $process) {
             if ($process->getExitCode() > 0) {
-                $code = $process->getExitCode();
+                return $process->getExitCode();
             }
         }
-        return $code;
+
+        return 0;
     }
 
     /**
      * Generate options and arguments string.
-     * @return string
      */
-    private function generateOptions()
+    private function generateOptions(): string
     {
-        $verbosity = new VerbosityString($this->output);
-        $input = $verbosity;
+        /** @var string[] $inputs */
+        $inputs = [
+            (string)(new VerbosityString($this->output)),
+        ];
 
+        $userDefinition = $this->console->getUserDefinition();
         // Get user arguments
-        foreach ($this->console->getUserDefinition()->getArguments() as $argument) {
-            $value = $this->input->getArgument($argument->getName());
-            if ($value) {
-                $input .= " $value";
-            }
+        foreach ($userDefinition->getArguments() as $argument) {
+            $inputs[] = Argument::toString($this->input, $argument);
         }
 
         // Get user options
-        foreach ($this->console->getUserDefinition()->getOptions() as $option) {
-            $name = $option->getName();
-            $value = $this->input->getOption($name);
-
-            if ($value) {
-                $input .= " --{$name}";
-
-                if ($option->acceptValue()) {
-                    $input .= " {$value}";
-                }
-            }
+        foreach ($userDefinition->getOptions() as $option) {
+            $inputs[] = Option::toString($this->input, $option);
         }
 
-        return $input;
+        return implode(' ', array_filter($inputs, static function (string $item): bool {
+            return $item !== '';
+        }));
     }
 
     private function generateArguments(): string

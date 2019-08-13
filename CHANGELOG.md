@@ -1,16 +1,109 @@
 # Changelog
 
 
-## master
-[v6.3.0...master](https://github.com/deployphp/deployer/compare/v6.3.0...master)
+## v6.5.0
+[v6.4.7...v6.5.0](https://github.com/deployphp/deployer/compare/v6.4.7...v6.5.0)
+
+### Added
+- Added `deploy:check_remote` task [#1755]
+
+
+## v6.4.7
+[v6.4.6...v6.4.7](https://github.com/deployphp/deployer/compare/v6.4.6...v6.4.7)
+
+### Added
+- A task to cache the event listeners manifest in Laravel [#1893]
+- Added `check_remote_head` option, by setting this to true, deployer will avoid unnecessary new releases by checking the remote git HEAD without cloning the repo [#1755]
+
+### Fixed
+- fixed invalid magic-property phpdoc in Deployer\Deployer class [#1899]
+- Updated `config:hosts` and `config:current` tasks to output only the selected stage
+
+
+## v6.4.6
+[v6.4.5...v6.4.6](https://github.com/deployphp/deployer/compare/v6.4.5...v6.4.6)
+
+### Added
+- Re-added the `artisan:view:clear` task
+
+### Changed
+- Change the default shared files in the Symfony4 recipe. The .env file is versionned now and not the .env.local [#1881]
+- Change the `artisan:view:cache` task to only run the `view:cache` command
+
+
+## v6.4.5
+[v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)
+
+### Fixed
+- Fixed detection of http user [#1876]
+
+
+## v6.4.4
+[v6.4.3...v6.4.4](https://github.com/deployphp/deployer/compare/v6.4.3...v6.4.4)
+
+### Added
+- Added `git_clone_dissociate` option, defaults to true; when set to false git-clone doesn't dissociate the eventual reference repository after clone, useful when using git-lfs [#1820]
+- Added `writable_recursive` option (default: true) used in all writable modes (chmod, chown, chgrp, acl) [#1822]
+- Added `artisan:optimize:clear` task for Laravel 5.7 and above
+
+### Changed
+- Add lock and unlock task to flow_framework receipe
+- Updated `artisan:optimize` to run for Laravel 5.7 and above, since [it got added back](https://github.com/laravel/framework/commit/fe1cbdf3b51ce1235b8c91f5e603f1e9306e4f6f) last year. It still doesn't run for 5.5 and below.
+- View:clear command to a new view:cache command
+
+### Fixed
+- Fix rsync upload honor become option for host [#1796]
+- Fixed bug to execute ssh command on windows [#1775]
+- Fix when recipe/deploy/writable.php resolves <defunct> as one of http users.
+- Fix deployer detects wrong version [#1842]
+- Fix crashes on including autoloader in recipe file [#1602]
+
+
+## v6.4.3
+[v6.4.2...v6.4.3](https://github.com/deployphp/deployer/compare/v6.4.2...v6.4.3)
+
+### Fixed
+- Input option handling [#1793]
+
+
+## v6.4.2
+[v6.4.1...v6.4.2](https://github.com/deployphp/deployer/compare/v6.4.1...v6.4.2)
+
+### Fixed
+- Improved ParallelExecutor::generateOptions to manage all types of InputOption [#1792]
+
+
+## v6.4.1
+[v6.4.0...v6.4.1](https://github.com/deployphp/deployer/compare/v6.4.0...v6.4.1)
+
+### Fixed
+- Fixed http_user detection [#1790]
+
+
+## v6.4.0
+[v6.3.0...v6.4.0](https://github.com/deployphp/deployer/compare/v6.3.0...v6.4.0)
+
+### Added
+- Support to define remote shell path via host-config [#1708] [#1709] [#1709]
+- Added `horizon:terminate` to the Laravel recipe
+- Added `migrations_config` option to the Symfony recipes to specify Doctrine migration configuration to use
+- Added recipe for sulu 2.0 [#1758]
+- Added recipe for sulu 1.x and improve sulu 2.0 recipe [#1764]
+- Added `become` option for rsync upload
 
 ### Changed
 - Laravel recipe should not run `artisan:cache:clear` in `deploy` task
+- Pass-through the quiet mode into the git commands for updating code
+- `deploy:writable` will no longer be able to automatically detect http_user if there are multiple candidates for the role [#1778]
 
 ### Fixed
 - Fixed Range expansion when hosts.yml is loaded. [#1671]
 - Fixed usage (only if present) of deploy_path config setting. [#1677]
-- Parameters -f or --file now are accepted also without the equal sign [#1479]
+- Fixed adding custom headers causes Httpie default header override.
+- Fixed Laravel `laravel_version` failure
+- Fixed parser errors by adding the trim function to the changelog parser tokens
+- Fixed arguments for rsync to be properly escaped
+- Prevent multiple execution of task()->once() with --parallel and --limit option [#1419]
 
 
 ## v6.3.0
@@ -414,12 +507,31 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1899]: https://github.com/deployphp/deployer/pull/1899
+[#1893]: https://github.com/deployphp/deployer/pull/1893
+[#1881]: https://github.com/deployphp/deployer/pull/1881
+[#1876]: https://github.com/deployphp/deployer/pull/1876
+[#1842]: https://github.com/deployphp/deployer/pull/1842
+[#1822]: https://github.com/deployphp/deployer/issues/1822
+[#1820]: https://github.com/deployphp/deployer/pull/1820
+[#1796]: https://github.com/deployphp/deployer/pull/1796
+[#1793]: https://github.com/deployphp/deployer/pull/1793
+[#1792]: https://github.com/deployphp/deployer/pull/1792
+[#1790]: https://github.com/deployphp/deployer/pull/1790
+[#1778]: https://github.com/deployphp/deployer/issues/1778
+[#1775]: https://github.com/deployphp/deployer/pull/1775
+[#1764]: https://github.com/deployphp/deployer/pull/1764
+[#1758]: https://github.com/deployphp/deployer/pull/1758
+[#1755]: https://github.com/deployphp/deployer/issues/1755
+[#1709]: https://github.com/deployphp/deployer/issues/1709
+[#1708]: https://github.com/deployphp/deployer/pull/1708
 [#1677]: https://github.com/deployphp/deployer/pull/1677
 [#1671]: https://github.com/deployphp/deployer/issues/1671
 [#1663]: https://github.com/deployphp/deployer/issues/1663
 [#1661]: https://github.com/deployphp/deployer/pull/1661
 [#1634]: https://github.com/deployphp/deployer/pull/1634
 [#1603]: https://github.com/deployphp/deployer/issues/1603
+[#1602]: https://github.com/deployphp/deployer/issues/1602
 [#1583]: https://github.com/deployphp/deployer/issues/1583
 [#1580]: https://github.com/deployphp/deployer/pull/1580
 [#1575]: https://github.com/deployphp/deployer/pull/1575
@@ -434,7 +546,6 @@
 [#1488]: https://github.com/deployphp/deployer/issues/1488
 [#1481]: https://github.com/deployphp/deployer/issues/1481
 [#1480]: https://github.com/deployphp/deployer/issues/1480
-[#1479]: https://github.com/deployphp/deployer/issues/1479
 [#1476]: https://github.com/deployphp/deployer/pull/1476
 [#1472]: https://github.com/deployphp/deployer/pull/1472
 [#1463]: https://github.com/deployphp/deployer/pull/1463

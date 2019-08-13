@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,43 +17,29 @@ class Configuration
     /**
      * @var Collection
      */
-    private $collection = null;
+    private $collection;
 
     public function __construct()
     {
         $this->collection = new Collection();
     }
 
-    /**
-     * @return Collection
-     */
-    public function getCollection()
+    public function getCollection(): Collection
     {
         return $this->collection;
     }
 
-    /**
-     * @param Collection $collection
-     */
     public function setCollection(Collection $collection)
     {
         $this->collection = $collection;
     }
 
-    /**
-     * @param string $name
-     * @param bool|int|string|array $value
-     */
-    public function set($name, $value)
+    public function set(string $name, $value)
     {
         $this->collection[$name] = $value;
     }
 
-    /**
-     * @param string $name
-     * @param array $array
-     */
-    public function add($name, array $array)
+    public function add(string $name, array $array)
     {
         if ($this->has($name)) {
             $config = $this->get($name);
@@ -66,12 +52,7 @@ class Configuration
         }
     }
 
-    /**
-     * @param string $name
-     * @param bool|int|string|array $default
-     * @return bool|int|string|array
-     */
-    public function get($name, $default = null)
+    public function get(string $name, $default = null)
     {
         if ($this->collection->has($name)) {
             if ($this->isClosure($this->collection[$name])) {
@@ -100,13 +81,7 @@ class Configuration
         return $this->parse($value);
     }
 
-    /**
-     * Checks if set var exists
-     *
-     * @param string $name
-     * @return bool
-     */
-    public function has($name)
+    public function has(string $name): bool
     {
         return $this->collection->has($name);
     }
@@ -114,13 +89,13 @@ class Configuration
     /**
      * Parse set values
      *
-     * @param string $value
-     * @return string
+     * @param mixed $value
+     * @return mixed
      */
     public function parse($value)
     {
         if (is_string($value)) {
-            $value = preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $value);
+            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $value);
         }
 
         return $value;
@@ -129,20 +104,16 @@ class Configuration
     /**
      * Replace set values callback for parse
      *
-     * @param array $matches
+     * @param string[] $matches
      * @return mixed
      */
-    private function parseCallback($matches)
+    private function parseCallback(array $matches)
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
-    /**
-     * @param mixed $t
-     * @return bool
-     */
-    private function isClosure($t)
+    private function isClosure($var): bool
     {
-        return is_object($t) && ($t instanceof \Closure);
+        return is_object($var) && ($var instanceof \Closure);
     }
 }

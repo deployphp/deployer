@@ -14,5 +14,8 @@ class UnixTest extends TestCase
     public function testParseHomeDir()
     {
         $this->assertStringStartsWith('/', Unix::parseHomeDir('~/path'));
+        $this->assertStringStartsWith('/', Unix::parseHomeDir('~'));
+        $this->assertStringStartsWith('~', Unix::parseHomeDir('~path'));
+        $this->assertStringEndsWith('~', Unix::parseHomeDir('path~'));
     }
 }

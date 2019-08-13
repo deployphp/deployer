@@ -31,14 +31,14 @@ if (isset($options['f'])) {
     $userSpecifiedFile = $options['file'];
 }
 
-if(empty($userSpecifiedFile)) {
+if (empty($userSpecifiedFile)) {
     $fOptIndex = array_search('-f', $argv);
     $fileOptIndex = array_search('--file', $argv);
 
-    if($fOptIndex) {
-        $userSpecifiedFile = $argv[$fOptIndex+1];
-    } elseif ($fileOptIndex) {
-        $userSpecifiedFile = $argv[$fileOptIndex+1];
+    if ($fOptIndex && $fOptIndex + 1 < count($argv)) {
+        $userSpecifiedFile = $argv[$fOptIndex + 1];
+    } elseif ($fileOptIndex && $fileOptIndex + 1 < count($argv)) {
+        $userSpecifiedFile = $argv[$fileOptIndex + 1];
     }
 }
 

@@ -37,16 +37,20 @@ class FileLoader
     }
     /**
      * @param string $file
+     * @param string|null $key
      * @return $this
      * @throws Exception
      */
-    public function load($file)
+    public function load($file, $key = null)
     {
         if (!file_exists($file) || !is_readable($file)) {
             throw new Exception("File `$file` doesn't exists or isn't readable.");
         }
 
         $data = Yaml::parse(file_get_contents($file));
+        if($key !== null && $key !== ''){
+            $data = $data[$key];
+        }
         $data = $this->expandOnLoad($data);
 
         if (!is_array($data)) {

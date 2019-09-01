@@ -49,9 +49,11 @@ class FileLoader
         }
 
         $data = Yaml::parse(file_get_contents($file));
-        if($key !== null && $key !== ''){
+
+        if ($key !== null && $key !== '') {
             $data = $data[$key];
         }
+
         $data = $this->expandOnLoad($data);
 
         if (!is_array($data)) {

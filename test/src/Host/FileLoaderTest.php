@@ -58,6 +58,45 @@ class FileLoaderTest extends TestCase
         self::assertEquals('db2.deployer.org', $db2->getHostname());
     }
 
+    public function testLoadFromCustomKey()
+    {
+        $this->hosts = (new FileLoader())
+            ->load(__DIR__ . '/../../fixture/inventory-with-custom-key.yml', 'custom-key')
+            ->getHosts();
+
+
+        // foo extends .base
+        $foo = $this->getHost('foo');
+        self::assertInstanceOf(Host::class, $foo);
+        self::assertEquals(['a', 'b', 'c'], $foo->get('roles'));
+
+        // local is Localhost
+        $local = $this->getHost('local');
+        self::assertInstanceOf(Localhost::class, $local);
+        self::assertEquals('/var/local', $local->get('deploy_to'));
+
+        // bar configured properly
+        $bar = $this->getHost('bar');
+        self::assertEquals('bar', $bar->getHostname());
+        self::assertEquals('user@bar.com', "$bar");
+        self::assertEquals('user', $bar->getUser());
+        self::assertEquals(22, $bar->getPort());
+        self::assertEquals('configFile', $bar->getConfigFile());
+        self::assertEquals('identityFile', $bar->getIdentityFile());
+        self::assertTrue($bar->isForwardAgent());
+        self::assertFalse($bar->isMultiplexing());
+        self::assertEquals('param', $bar->get('param'));
+        self::assertEquals(
+            '-f -A -someFlag value -p 22 -F configFile -i identityFile -o Option=Value',
+            $bar->getSshArguments()->getCliArguments()
+        );
+
+        $db1 = $this->getHost('db1.deployer.org');
+        self::assertEquals('db1.deployer.org', $db1->getHostname());
+        $db2 = $this->getHost('db2.deployer.org');
+        self::assertEquals('db2.deployer.org', $db2->getHostname());
+    }
+
     /**
      * @param $name
      * @return Host|null

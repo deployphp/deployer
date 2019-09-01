@@ -92,13 +92,14 @@ function localhost(...$hostnames)
  * Load list of hosts from file
  *
  * @param string $file
+ * @param string|null $key
  * @return Proxy
  */
-function inventory($file)
+function inventory($file, $key = null)
 {
     $deployer = Deployer::get();
     $fileLoader = new FileLoader();
-    $fileLoader->load($file);
+    $fileLoader->load($file, $key);
 
     $hosts = $fileLoader->getHosts();
     foreach ($hosts as $host) {

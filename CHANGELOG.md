@@ -4,9 +4,6 @@
 ## master
 [v6.5.0...master](https://github.com/deployphp/deployer/compare/v6.5.0...master)
 
-### Added
-- Functionality to get hosts form a custom key in the yaml file [#1917]
-
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]
 

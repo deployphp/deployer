@@ -33,6 +33,12 @@ task('deploy:cache:clear', function () {
     run('{{bin/console}} cache:clear --no-warmup');
 });
 
+task('doctrine:cache:clear', function () {
+    run('{{bin/console}} doctrine:cache:clear-metadata');
+    run('{{bin/console}} doctrine:cache:clear-result');
+    run('{{bin/console}} doctrine:cache:clear-query');
+});
+
 desc('Warm up cache');
 task('deploy:cache:warmup', function () {
     run('{{bin/console}} cache:warmup');

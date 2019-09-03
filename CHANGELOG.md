@@ -6,6 +6,7 @@
 
 ### Added
 - Added doc page with sample "real-world" Deployer script
+- Added `doctrine:cache:clear` task to symfony4 recipe, clearing the doctrine caches [#1918]
 
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]
@@ -519,6 +520,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1918]: https://github.com/deployphp/deployer/pull/1918
 [#1899]: https://github.com/deployphp/deployer/pull/1899
 [#1893]: https://github.com/deployphp/deployer/pull/1893
 [#1881]: https://github.com/deployphp/deployer/pull/1881

@@ -6,6 +6,7 @@
 
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]
+- When symfony_env is set to dev, require-dev are not installed and missing packages are breaking installation process
 
 
 ## v6.5.0

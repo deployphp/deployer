@@ -6,6 +6,7 @@
 
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]
+- Update symfony4 recipe
 
 
 ## v6.5.0

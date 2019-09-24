@@ -5,7 +5,9 @@
 
 # Supporters
 
-* Almost Night		 
+* Akira Kato
+* Almost Night	
+* Armin Alagic
 * Bioley Léal			 
 * Dwi Fahni Denni		 
 * Georgi				 

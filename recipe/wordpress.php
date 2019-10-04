@@ -9,10 +9,18 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+// Wordpress Shared Files
 set('shared_files', ['wp-config.php']);
+
+// Wordpress Shared Directory
 set('shared_dirs', ['wp-content/uploads']);
+
+// Wordpress writeable directory ( For any kind of uploads )
 set('writable_dirs', ['wp-content/uploads']);
 
+/**
+ * Main task
+ */
 task('deploy', [
     'deploy:info',
     'deploy:prepare',

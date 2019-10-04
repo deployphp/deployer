@@ -17,7 +17,7 @@ set('shared_dirs', [
     'storage',
 ]);
 
-// Laravel shared file
+// Laravel shared file 
 set('shared_files', [
     '.env',
 ]);

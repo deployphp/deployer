@@ -1,5 +1,8 @@
 # Changelog
 
+### Added
+- Comment of description for Wordpress Recipes
+- Adding comments to describe the things that maybe help people to understand
 
 ## master
 [v6.5.0...master](https://github.com/deployphp/deployer/compare/v6.5.0...master)

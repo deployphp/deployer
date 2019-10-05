@@ -7,6 +7,7 @@
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]
 - Update symfony4 recipe
+- Added doc page with sample "real-world" Deployer script
 
 
 ## v6.5.0

@@ -140,13 +140,13 @@ set('ssh_multiplexing', true);
 
 ### default\_stage
 
-If the hosts declaration has stages, this option allows you to select the default stage to deploy with `dep deploy`.
+This option allows you to select the default stage to deploy with `dep deploy`. Note that your Deployer script must have at least one stage and you must specify a stage, even if you are just running [local-only tasks](https://deployer.org/docs/tasks.html#local-tasks). Therefore it is recommended you use this command to always set a default stage.
 
 ~~~php
-set('default_stage', 'prod');
+set('default_stage', 'staging');
 
 host(...)
-    ->stage('prod');
+    ->stage('staging');
 ~~~
 
 You can also set callable as an argument if you need some more complex ways to determine default stage.

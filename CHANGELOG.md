@@ -4,12 +4,12 @@
 ## master
 [v6.5.0...master](https://github.com/deployphp/deployer/compare/v6.5.0...master)
 
+### Added
+- Added doc page with sample "real-world" Deployer script
+
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]
 - Update symfony4 recipe
-
-### Added
-- Added doc page with sample "real-world" Deployer script
 
 
 ## v6.5.0

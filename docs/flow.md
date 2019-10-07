@@ -37,11 +37,11 @@ The next section provides a short overview of each task.
 
 ### deploy:prepare
 
-Preparation for deployment. Checks if `deploy_path` exists, otherwise create it. Also checks for the existence of the following paths:
+Preparation for deployment. Checks if `deploy_path` exists, otherwise creates it. Also checks for the existence of the following paths:
 
-* `releases` – in this dir will be stored the releases.
-* `shared` – shared files across all releases.
-* `.dep` – metadata used by Deployer.
+* `releases` – the releases will be stored in this dir.
+* `shared` – shared files across all releases will be stored in this dir.
+* `.dep` – dir with metadata used by Deployer.
 
 ### deploy:lock
 
@@ -49,13 +49,13 @@ Locks deployment so only one concurrent deployment can be running. To lock deplo
 
 ### deploy:release
 
-Create a new release folder based on the `release_name` config parameter. Also reads `.dep/releases` to get a list of releases that were created before. 
+Creates a new release folder based on the `release_name` config parameter. Also reads `.dep/releases` to get a list of releases that were created before. 
 
 Also, if in the `deploy_path` there was a previous release symlink, it will be deleted.
 
 ### deploy:update_code
 
-Download a new version of code using Git. If you are using Git version 2.0 and `git_cache` config is turned on, this task will use files from the previous release, so only changed files will be downloaded.
+Downloads a new version of code using Git. If you are using Git version 2.0 and `git_cache` config is turned on, this task will use files from the previous release, so only changed files will be downloaded.
 
 Override this task in `deploy.php` to create your own code transfer strategy:
 
@@ -69,7 +69,7 @@ task('deploy:update_code', function () {
 
 Creates shared files and directories from the `shared` directory into the `release_path`. You can specify shared directories and files in `shared_dirs` and `shared_files` config parameters. The process is split into the following steps:
 
-* Copy dir from `release_path` to `shared` if doesn't exists,
+* Copy dir from `release_path` to `shared` if doesn't exist,
 * delete dir from `release_path`,
 * symlink dir from `shared` to `release_path`.
 
@@ -77,7 +77,7 @@ The same steps are followed for shared files. If your system supports relative s
 
 ### deploy:writable
 
-Makes the directories listed in `writable_dirs` writable using `acl` mode (using setfacl command) by default. This task will try to guess http_user name, or you can configure it yourself:
+Makes the directories listed in `writable_dirs` writable using `acl` mode (using `setfacl` command) by default. This task will try to guess http_user name, or you can configure it yourself:
 
 ~~~php
 set('http_user', 'www-data');
@@ -108,7 +108,7 @@ set('writable_use_sudo', true);
 
 ### deploy:vendors
 
-Install composer dependencies. You can configure composer options with the `composer_options` parameter. 
+Installs composer dependencies. You can configure composer options with the `composer_options` parameter. 
 
 ### deploy:clear_paths
 
@@ -116,7 +116,7 @@ Deletes dirs specified in `clear_paths`. This task can be run with sudo using th
 
 ### deploy:symlink
 
-Switch the `current` symlink to `release_path`. If target system supports atomic switching for symlinks it will used.
+Switches the `current` symlink to `release_path`. If target system supports atomic switching for symlinks it will used.
 
 ### deploy:unlock
 
@@ -128,7 +128,7 @@ dep deploy:unlock staging
 
 ### cleanup
 
-Clean up old releases using the `keep_releases` option. `-1` is treated as unlimited releases.
+Cleans up old releases using the `keep_releases` option. `-1` is treated as unlimited releases.
 
 ### success
 

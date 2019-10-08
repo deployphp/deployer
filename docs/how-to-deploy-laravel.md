@@ -19,7 +19,7 @@ dep init -t Laravel
 ```
 
 This command will create a `deploy.php` file for *deploying Laravel*. This file is called a *recipe* and based on built-in recipe *laravel.php*.
-It's contains some host configuration and example task. 
+It contains some host configuration and example task. 
 
 First, we need to configure `repository` config of our application:
 
@@ -34,7 +34,7 @@ host('domain.org')
     ->set('deploy_path', '/var/www/html');
 ```
 
-Make sure what `~/.ssh/config` contains `domain.org`, and that you can connect to host through ssh.
+Make sure that `~/.ssh/config` contains `domain.org`, and that you can connect to host through ssh.
 
 Another important parameter is your project's `deploy_path`; where your project will be located on remote host. 
 
@@ -44,7 +44,7 @@ Let's do our first deploy:
 dep deploy
 ```
 
-If every thing goes well, deployer will create the following structure on remote host in `deploy_path`:
+If everything goes well, deployer will create the following structure on remote host in `deploy_path`:
 
 ```text
 ├── .dep

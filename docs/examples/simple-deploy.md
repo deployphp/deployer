@@ -56,6 +56,11 @@ set( 'application', 'mysite' );
 // keep the most recent 10 releases
 set( 'keep_releases', 10 );
 
+// get a list of all the releases as an array
+set('releases_list', function () {
+	return explode("\n", run('ls -dt {{deploy_path}}/releases/*'));
+});
+
 // this web site pulls from two repositories - the main repo and a secondary repo with a chat client
 set( 'repo-main', 'https://github_username@github.com/github_username/my-site.git' );
 set( 'repo-chat-client', 'https://github_username@github.com/github_username/my-chat-client.git' );

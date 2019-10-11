@@ -154,7 +154,7 @@ function task($name, $body = null)
             run($body);
         });
     } else {
-        throw new \InvalidArgumentException('Task should be an closure or array of other tasks.');
+        throw new \InvalidArgumentException('Task should be a closure, string or array of other tasks.');
     }
 
     $deployer->tasks->set($name, $task);

@@ -9,6 +9,7 @@ namespace Deployer\Ssh;
 
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
+use Deployer\Support\Unix;
 
 /**
  * @author Michael Woodward <mikeymike.mw@gmail.com>
@@ -127,6 +128,9 @@ class Arguments
      */
     private function generateControlPath(Host $host)
     {
+        $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
+        $unixMaxPath = 104; // Theoretical max limit for path length
+        $homeDir = Unix::parseHomeDir('~');
         $port = empty($host->getPort()) ? '' : ':' . $host->getPort();
         $connectionData = "$host$port";
         $tryLongestPossible = 0;
@@ -134,24 +138,24 @@ class Arguments
         do {
             switch ($tryLongestPossible) {
                 case 1:
-                    $controlPath = "~/.ssh/deployer_%C";
+                    $controlPath = "$homeDir/.ssh/deployer_%C";
                     break;
                 case 2:
-                    $controlPath = "~/deployer_$connectionData";
+                    $controlPath = "$homeDir/.ssh/deployer_$connectionData";
                     break;
                 case 3:
-                    $controlPath = "~/deployer_%C";
+                    $controlPath = "$homeDir/.ssh/deployer_%C";
                     break;
                 case 4:
-                    $controlPath = "~/mux_%C";
+                    $controlPath = "$homeDir/.ssh/mux_%C";
                     break;
                 case 5:
                     throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");
                 default:
-                    $controlPath = "~/.ssh/deployer_$connectionData";
+                    $controlPath = "$homeDir/.ssh/deployer_$connectionData";
             }
             $tryLongestPossible++;
-        } while (strlen($controlPath) > 104); // Unix socket max length
+        } while (strlen($controlPath) + $connectionHashLength > $unixMaxPath); // Unix socket max length
 
         return $controlPath;
     }

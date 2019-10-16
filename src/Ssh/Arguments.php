@@ -141,15 +141,9 @@ class Arguments
                     $controlPath = "$homeDir/.ssh/deployer_%C";
                     break;
                 case 2:
-                    $controlPath = "$homeDir/.ssh/deployer_$connectionData";
-                    break;
-                case 3:
-                    $controlPath = "$homeDir/.ssh/deployer_%C";
-                    break;
-                case 4:
                     $controlPath = "$homeDir/.ssh/mux_%C";
                     break;
-                case 5:
+                case 3:
                     throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");
                 default:
                     $controlPath = "$homeDir/.ssh/deployer_$connectionData";

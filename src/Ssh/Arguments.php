@@ -155,7 +155,7 @@ class Arguments
                     $controlPath = "$homeDir/.ssh/deployer_$connectionData";
             }
             $tryLongestPossible++;
-        } while (strlen($controlPath) + $connectionHashLength > 104); // Unix socket max length
+        } while (strlen($controlPath) + $connectionHashLength > $unixMaxPath); // Unix socket max length
 
         return $controlPath;
     }

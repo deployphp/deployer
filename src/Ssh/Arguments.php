@@ -9,6 +9,7 @@ namespace Deployer\Ssh;
 
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
+use Deployer\Support\Unix;
 
 /**
  * @author Michael Woodward <mikeymike.mw@gmail.com>
@@ -129,7 +130,7 @@ class Arguments
     {
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
-        $homeDir = getenv("HOME");
+        $homeDir = Unix::parseHomeDir('~');
         $port = empty($host->getPort()) ? '' : ':' . $host->getPort();
         $connectionData = "$host$port";
         $tryLongestPossible = 0;

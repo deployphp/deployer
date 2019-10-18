@@ -99,6 +99,17 @@ set('current_path', function () {
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
+/**
+ * Return current release date.
+ */
+set('current_date', function () {
+    $releaseDate = run("find {{deploy_path}}/current -printf '%TY-%Tm-%Td %TH:%TM:%.2TS %Tz\n'");
+    if (empty($releaseDate)) {
+        return null;
+    }
+
+    return \DateTimeImmutable::createFromFormat('Y-m-d H:i:s O', $releaseDate);
+});
 
 /**
  * Custom bins

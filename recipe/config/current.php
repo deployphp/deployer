@@ -24,10 +24,12 @@ task('config:current', function () {
             $rows[] = [
                 $host->getHostname(),
                 basename($host->get('current_path')),
+                $host->get('current_date')->format('Y-m-d H:i:s O'),
             ];
         } catch (\Throwable $e) {
             $rows[] = [
                 $host->getHostname(),
+                'unknown',
                 'unknown',
             ];
         }
@@ -35,7 +37,7 @@ task('config:current', function () {
 
     $table = new Table(output());
     $table
-        ->setHeaders(['Host', 'Current',])
+        ->setHeaders(['Host', 'Current', 'Release date'])
         ->setRows($rows);
     $table->render();
 })->local();

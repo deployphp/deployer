@@ -6,6 +6,7 @@
 
 ### Added
 - Added doc page with sample "real-world" Deployer script
+- Added current_date to retrieve the current release date
 
 ### Fixed
 - Parameters -f or --file now are accepted also without the equal sign [#1479]

@@ -13,11 +13,11 @@ use Deployer\Exception\GracefulShutdownException;
 // This avoid unnecessary releases when the last commit id matches the existing one (HEAD).
 desc('Check remote head');
 task('deploy:check_remote', function () {
-    if (empty(get('repository'))) {
+    $repository = get('repository');
+    if (empty($repository)) {
         return;
     }
 
-    $repository = get('repository');
     $revision = input()->getOption('revision') ?? null;
     $remoteHead = $revision ?? run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"', get('bin/git'), $repository));
 

@@ -11,7 +11,7 @@ desc('Cleaning up old releases');
 task('cleanup', function () {
     $releases = get('releases_list');
     $keep = get('keep_releases');
-    $sudo  = get('cleanup_use_sudo') ? 'sudo' : '';
+    $sudo = get('cleanup_use_sudo') ? 'sudo' : '';
     $runOpts = [];
     if ($sudo) {
         $runOpts['tty'] = get('cleanup_tty', false);

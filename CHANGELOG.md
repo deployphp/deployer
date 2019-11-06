@@ -8,9 +8,7 @@
 - Added doc page with sample "real-world" Deployer script
 
 ### Fixed
-- Parameters -f or --file now are accepted also without the equal sign [#1479]
-- Update symfony4 recipe
-- In documentation, small clarification of `deploy_stage` variable #1866
+- Parameters `-f` or `--file` now are accepted also without the equal sign [#1479]
 
 
 ## v6.5.0

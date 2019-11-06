@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.5.0...master](https://github.com/deployphp/deployer/compare/v6.5.0...master)
+## v6.6.0
+[v6.5.0...v6.6.0](https://github.com/deployphp/deployer/compare/v6.5.0...v6.6.0)
 
 ### Added
 - Added doc page with sample "real-world" Deployer script

@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Type\Csv;
+use Deployer\Exception\GracefulShutdownException;
 
 set('release_name', function () {
     $list = get('releases_list');
@@ -102,7 +103,15 @@ task('deploy:release', function () {
     $previousReleaseExist = test('[ -h release ]');
 
     if ($previousReleaseExist) {
-        run('rm -rf "$(readlink release)"'); // Delete release
+        $releaseLink = run('readlink release');
+        $currentLink = run('readlink current');
+        // If the 'current' symlink is pointing to the same location as
+        // the 'release' symlink, ask if the user wants to remove this
+        // dir because it will make the project unavailable until the
+        // deployment is done.
+        if ($releaseLink !== $currentLink || askConfirmation('The `current` symlink is linking to `$currentLink`. Do you want to remove this dir? This will make your project temporary unavailable, if not you may have to remove it manually later.')) {
+            run('rm -rf "$(readlink release)"'); // Delete release
+        }
         run('rm release'); // Delete symlink
     }
 

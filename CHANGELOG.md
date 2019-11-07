@@ -1,5 +1,10 @@
 # Changelog
 
+## v6.6.1
+[v6.6.0...v6.6.1](https://github.com/deployphp/deployer/compare/v6.6.0...v6.6.1)
+
+### Added
+- Added check to make sure the user doesn't remove the current release folder by accident
 
 ## v6.6.0
 [v6.5.0...v6.6.0](https://github.com/deployphp/deployer/compare/v6.5.0...v6.6.0)

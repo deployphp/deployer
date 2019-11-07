@@ -8,7 +8,6 @@
 namespace Deployer;
 
 use Deployer\Type\Csv;
-use Deployer\Exception\GracefulShutdownException;
 
 set('release_name', function () {
     $list = get('releases_list');

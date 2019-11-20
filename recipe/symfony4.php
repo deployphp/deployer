@@ -28,6 +28,11 @@ task('database:migrate', function () {
     run(sprintf('{{bin/console}} doctrine:migrations:migrate %s', $options));
 });
 
+desc('Rollback database');
+task('database:rollback', function () {
+    run('{{bin/console}} doctrine:migrations:migrate prev');
+});
+
 desc('Clear cache');
 task('deploy:cache:clear', function () {
     run('{{bin/console}} cache:clear --no-warmup');

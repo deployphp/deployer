@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.6.0...master](https://github.com/deployphp/deployer/compare/v6.6.0...master)
+
+### Added
+- Added `database:rollback` to the symfony4 recipe for have the ability to rolling back the database
+
+
 ## v6.6.0
 [v6.5.0...v6.6.0](https://github.com/deployphp/deployer/compare/v6.5.0...v6.6.0)
 

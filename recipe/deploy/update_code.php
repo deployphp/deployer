@@ -60,14 +60,14 @@ task('deploy:update_code', function () {
 
     $at = '';
     if (!empty($branch)) {
-        $at = "-b $branch";
+        $at = "-b \"$branch\"";
     }
 
     // If option `tag` is set
     if (input()->hasOption('tag')) {
         $tag = input()->getOption('tag');
         if (!empty($tag)) {
-            $at = "-b $tag";
+            $at = "-b \"$tag\"";
         }
     }
 

@@ -1,6 +1,6 @@
 # How to deploy Laravel 
 
-Apparently you already have some **Laravel application** and some **server** or **shared hosting**. 
+Apparently you already have a **Laravel application** and a **server** or **shared hosting**. 
 Now you need to automate the process of **deployment**. 
 Deployer will help you with this, as it ships with some ready to use recipes for **Laravel** based applications. 
 
@@ -18,10 +18,10 @@ Next, in your projects directory run:
 dep init -t Laravel
 ```
 
-This command will create a `deploy.php` file for *deploying Laravel*. This file is called a *recipe* and based on built-in recipe *laravel.php*.
-It contains some host configuration and example task. 
+This command will create a `deploy.php` file for *deploying Laravel*. This file is called a *recipe* and is based on the built-in recipe *laravel.php*.
+It contains some host configurations and an example task. 
 
-First, we need to configure `repository` config of our application:
+First, we need to configure the `repository` config of our application:
 
 ```php
 set('repository', 'git@github.com:user/project.git');
@@ -34,9 +34,9 @@ host('domain.org')
     ->set('deploy_path', '/var/www/html');
 ```
 
-Make sure that `~/.ssh/config` contains `domain.org`, and that you can connect to host through ssh.
+Make sure that `~/.ssh/config` contains `domain.org`, and that you can connect to the host through ssh.
 
-Another important parameter is your project's `deploy_path`; where your project will be located on remote host. 
+Another important parameter is your project's `deploy_path`; where your project will be located on the remote host. 
 
 Let's do our first deploy:
 
@@ -44,7 +44,7 @@ Let's do our first deploy:
 dep deploy
 ```
 
-If everything goes well, deployer will create the following structure on remote host in `deploy_path`:
+If everything goes well, deployer will create the following structure on the remote host in `deploy_path`:
 
 ```text
 ├── .dep
@@ -56,12 +56,12 @@ If everything goes well, deployer will create the following structure on remote 
     └── storage
 ```
 
-* `releases` dir contains *deploy* releases of *Laravel* application,
+* `releases` dir contains *deploy* releases of the *Laravel* application,
 * `shared` dir contains `.env` config and `storage` which will be symlinked to each release,
-* `current` is symlink to last release,
+* `current` is symlinked to last release,
 * `.dep` dir contains special metadata for deployer (releases log, `deploy.log` file, etc).
 
-Configure your web server to serve files from the `current`. For example if you are using nginx:
+Configure your web server to serve files from the `current` symlink. For example if you are using nginx:
 
 ```config
 server {
@@ -80,12 +80,12 @@ Now you will be able to serve your **laravel project**!
 
 ![Laravel App](images/laravel.png)
 
-If you want to automatically migrate your database, *Laravel* recipe ships with `artisan:migrate` task. Add these lines to your `deploy.php`:
+If you want to automatically migrate your database, the *Laravel* recipe ships with an `artisan:migrate` task. Add these lines to your `deploy.php`:
 
 ```php
 after('deploy:update_code', 'artisan:migrate');
 ```
 
-More about configuration and task declarations in our [documentation](getting-started.md).
+See more about configuration and task declarations in our [documentation](getting-started.md).
 
 ...

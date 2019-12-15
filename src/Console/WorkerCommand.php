@@ -89,6 +89,7 @@ class WorkerCommand extends Command
             $this->deployer->informer->taskException($e, $this->host);
             return 255;
         }
+        return 0;
     }
 
     private function doExecute(InputInterface $input, OutputInterface $output)

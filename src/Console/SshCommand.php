@@ -90,5 +90,6 @@ class SshCommand extends Command
         $deployPath = $host->get('deploy_path', '~');
 
         passthru("ssh -t $options $host 'cd '''$deployPath/current'''; $shell_path'");
+        return 0;
     }
 }

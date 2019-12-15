@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.7.0...master](https://github.com/deployphp/deployer/compare/v6.7.0...master)
+## v6.7.1
+[v6.7.0...v6.7.1](https://github.com/deployphp/deployer/compare/v6.7.0...v6.7.1)
 
 ### Fixed
 - Fixed incompatibility with Symfony 5 [#1969]

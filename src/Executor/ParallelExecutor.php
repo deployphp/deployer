@@ -171,7 +171,7 @@ class ParallelExecutor implements ExecutorInterface
         }
 
         $command = "$dep $file worker $arguments $options --hostname $hostname --task $taskName --config-file $configFile";
-        $process = new Process($command);
+        $process = Process::fromShellCommandline($command);
 
         if (!defined('DEPLOYER_PARALLEL_PTY')) {
             $process->setPty(true);

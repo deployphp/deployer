@@ -157,6 +157,8 @@ class TaskCommand extends Command
                 throw $exception;
             }
         }
+
+        return 0;
     }
 
     private function parseOptions(array $options)

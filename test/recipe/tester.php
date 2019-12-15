@@ -21,7 +21,7 @@ function exec($command)
         $command = 'cd ' . DepCase::$currentPath . ' && ' . $command;
     }
 
-    $process = new Process($command);
+    $process = Process::fromShellCommandline($command);
     $process
         ->mustRun();
 
@@ -50,7 +50,7 @@ abstract class DepCase extends BaseTestCase
      */
     public static $currentPath = '';
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         // Prepare FS
         self::$tmpPath = DEPLOYER_FIXTURES . '/recipe/tmp';
@@ -67,7 +67,7 @@ abstract class DepCase extends BaseTestCase
         \exec("cd $repository && git commit -m 'init commit'");
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         self::cleanUp();
     }

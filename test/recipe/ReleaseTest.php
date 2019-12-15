@@ -7,8 +7,6 @@
 
 namespace Deployer;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 class ReleaseTest extends DepCase
 {
     protected function load()
@@ -16,7 +14,7 @@ class ReleaseTest extends DepCase
         require DEPLOYER_FIXTURES . '/recipe/release.php';
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$currentPath = self::$tmpPath . '/localhost';
     }
@@ -24,12 +22,12 @@ class ReleaseTest extends DepCase
     public function testReleaseStandard()
     {
         $output = $this->start('deploy');
-        self::assertContains('release_path', $output);
-        self::assertNotContains('previous_release', $output);
+        self::assertStringContainsString('release_path', $output);
+        self::assertStringNotContainsString('previous_release', $output);
 
         $output = $this->start('deploy');
-        self::assertContains('release_path', $output);
-        self::assertContains('previous_release', $output);
+        self::assertStringContainsString('release_path', $output);
+        self::assertStringContainsString('previous_release', $output);
 
         $releasePath = $previousRelease = '';
         if (preg_match('/release_path (.*)/', $output, $matches)) {
@@ -46,12 +44,12 @@ class ReleaseTest extends DepCase
         self::cleanUp();
 
         $output = $this->start('deploy', ['-o' => ['release_name=a']]);
-        self::assertContains('release_path', $output);
-        self::assertNotContains('previous_release', $output);
+        self::assertStringContainsString('release_path', $output);
+        self::assertStringNotContainsString('previous_release', $output);
 
         $output = $this->start('deploy', ['-o' => ['release_name=b']]);
-        self::assertContains('release_path', $output);
-        self::assertContains('previous_release', $output);
+        self::assertStringContainsString('release_path', $output);
+        self::assertStringContainsString('previous_release', $output);
 
         $releasePath = $previousRelease = '';
         if (preg_match('/release_path (.*)/', $output, $matches)) {

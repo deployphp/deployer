@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.7.0...master](https://github.com/deployphp/deployer/compare/v6.7.0...master)
+
+### Fixed
+- Fixed incompatibility with Symfony 5 [#1969]
+
+
 ## v6.7.0
 [v6.6.0...v6.7.0](https://github.com/deployphp/deployer/compare/v6.6.0...v6.7.0)
 
@@ -524,6 +531,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1969]: https://github.com/deployphp/deployer/issues/1969
 [#1899]: https://github.com/deployphp/deployer/pull/1899
 [#1893]: https://github.com/deployphp/deployer/pull/1893
 [#1881]: https://github.com/deployphp/deployer/pull/1881

@@ -33,7 +33,7 @@ class HostTest extends TestCase
         self::assertEquals(true, $host->isForwardAgent());
         self::assertEquals(true, $host->isMultiplexing());
         self::assertEquals('user@host', "$host");
-        self::assertContains(
+        self::assertStringContainsString(
             '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -o BatchMode=yes -o Compression=yes',
             $host->getSshArguments()->getCliArguments()
         );

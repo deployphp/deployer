@@ -14,7 +14,7 @@ class AutoloadTest extends DepCase
         Deployer::loadRecipe(DEPLOYER_FIXTURES . '/recipe/autoload.php');
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$currentPath = self::$tmpPath . '/localhost';
     }

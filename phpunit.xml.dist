@@ -5,7 +5,6 @@
          convertWarningsToExceptions="true"
          stopOnError="false"
          stopOnFailure="false"
-         syntaxCheck="true"
          verbose="true"
 >
     <testsuites>
@@ -20,10 +19,6 @@
         </testsuite>
     </testsuites>
     <filter>
-        <blacklist>
-            <directory suffix=".php">vendor/</directory>
-            <directory>bin/</directory>
-        </blacklist>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>src/</directory>
             <directory>recipe/common.php</directory>

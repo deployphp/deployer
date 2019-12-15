@@ -35,12 +35,12 @@
         "symfony/yaml": "~2.7|~3.0|~4.0|~5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4.3"
+        "phpunit/phpunit": "^8"
     },
     "config": {
         "sort-packages": true,
         "platform": {
-            "php": "7.0.8"
+            "php": "7.4.0"
         }
     }
 }

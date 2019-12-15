@@ -47,7 +47,7 @@ class FunctionsTest extends TestCase
      */
     private $host;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->console = new Application();
 
@@ -65,7 +65,7 @@ class FunctionsTest extends TestCase
         Context::push(new Context($this->host, $this->input, $this->output));
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         Context::pop();
         unset($this->deployer);

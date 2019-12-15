@@ -2,3 +2,4 @@
 /test/fixture/recipe/tmp/
 *.phar
 phpunit.xml
+.phpunit.result.cache

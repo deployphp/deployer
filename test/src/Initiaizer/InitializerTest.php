@@ -36,7 +36,7 @@ class InitializerTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->initializer = new Initializer();
         $this->template = $this->getMockForAbstractClass(TemplateInterface::class);
@@ -46,7 +46,7 @@ class InitializerTest extends TestCase
     /**
      * {@inheritDoc}
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         if ($this->tmpFilePath) {
             $dir = dirname($this->tmpFilePath);

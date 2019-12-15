@@ -14,7 +14,7 @@ class PartyTest extends DepCase
         require DEPLOYER_FIXTURES . '/recipe/party.php';
     }
 
-    protected function setUp()
+    protected function setUp(): void
     {
         self::$currentPath = self::$tmpPath . '/localhost';
     }
@@ -22,28 +22,28 @@ class PartyTest extends DepCase
     public function testEnvironment()
     {
         $output = $this->start('test_env');
-        self::assertContains('env value ext', $output);
-        self::assertContains('env value local', $output);
+        self::assertStringContainsString('env value ext', $output);
+        self::assertStringContainsString('env value local', $output);
     }
 
     public function testInvoke()
     {
         $output = $this->start('test_invoke');
-        self::assertContains('first', $output);
-        self::assertContains('second', $output);
+        self::assertStringContainsString('first', $output);
+        self::assertStringContainsString('second', $output);
     }
 
     public function testInvokeGroup()
     {
         $output = $this->start('test_invoke_group');
-        self::assertContains('first', $output);
-        self::assertContains('second', $output);
+        self::assertStringContainsString('first', $output);
+        self::assertStringContainsString('second', $output);
     }
 
     public function testOn()
     {
         $output = $this->start('test_on');
-        self::assertContains(
+        self::assertStringContainsString(
             "<yes:test_on01>\n" .
             "<yes:test_on02>\n" .
             "<yes:test_on03>\n" .

@@ -13,9 +13,6 @@ env:
 jobs:
   allow_failures:
     - php: 7.4
-      env:
-        matrix:
-          - COMPOSER_FLAGS="--prefer-lowest"
 
 cache:
   directories:

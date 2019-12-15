@@ -21,7 +21,11 @@ function exec($command)
         $command = 'cd ' . DepCase::$currentPath . ' && ' . $command;
     }
 
-    $process = Process::fromShellCommandline($command);
+    if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
+        $process = Process::fromShellCommandline($command);
+    } else {
+        $process = new Process($command);
+    }
     $process
         ->mustRun();
 

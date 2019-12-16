@@ -6,6 +6,7 @@
 
 ### Fixed
 - Fixed compatibility with Symfony 4.x
+- Fixed more incompatibilities with Symfony 5
 
 
 ## v6.7.1

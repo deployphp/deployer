@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.7.1...master](https://github.com/deployphp/deployer/compare/v6.7.1...master)
+
+### Fixed
+- Fixed compatibility with Symfony 4.x
+
+
 ## v6.7.1
 [v6.7.0...v6.7.1](https://github.com/deployphp/deployer/compare/v6.7.0...v6.7.1)
 

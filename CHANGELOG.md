@@ -1,12 +1,18 @@
 # Changelog
 
 
-## master
-[v6.7.1...master](https://github.com/deployphp/deployer/compare/v6.7.1...master)
+## v6.7.3
+[v6.7.2...v6.7.3](https://github.com/deployphp/deployer/compare/v6.7.2...v6.7.3)
+
+### Fixed
+- Fixed more Symfony 5 compatibility issues [#1971]
+
+
+## v6.7.2
+[v6.7.1...v6.7.2](https://github.com/deployphp/deployer/compare/v6.7.1...v6.7.2)
 
 ### Fixed
 - Fixed compatibility with Symfony 4.x
-- Fixed more incompatibilities with Symfony 5
 
 
 ## v6.7.1
@@ -539,6 +545,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1971]: https://github.com/deployphp/deployer/pull/1971
 [#1969]: https://github.com/deployphp/deployer/issues/1969
 [#1899]: https://github.com/deployphp/deployer/pull/1899
 [#1893]: https://github.com/deployphp/deployer/pull/1893

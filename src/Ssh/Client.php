@@ -180,7 +180,7 @@ class Client
         if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
             return Process::fromShellCommandline($command);
         } else {
-            return new Process($command);
+            return new Process(explode(' ', $command));
         }
     }
 }

@@ -9,15 +9,10 @@ require_once __DIR__ . '/common.php';
  */
 
 set('shared_assets', function () {
-    $paths = [
-        'assets',
-        'public/assets'
-    ];
-    foreach ($paths as $path) {
-        if (test('[ -d {{release_path}}/'.$path.' ]')) {
-            return $path;
-        }
+    if (test('[ -d {{release_path}}/public ]') || test('[ -d {{deploy_path}}/shared/public ]')) {
+        return 'public/assets';
     }
+    return 'assets';
 });
 
 

@@ -19,12 +19,13 @@ task('deploy:check_remote', function () {
     }
 
     $revision = input()->getOption('revision') ?? null;
-    $remoteHead = $revision ?? run(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"', get('bin/git'), $repository));
+    $remoteHead = $revision ?? runLocally(sprintf('%s ls-remote %s HEAD | tr -d "HEAD"', get('bin/git'), $repository));
 
     if (null == input()->getOption('tag')) {
+        // Init HEAD file if it doesn't exist, then compare
         $headPath = get('deploy_path') . '/.dep/HEAD';
-        $headContents = run(sprintf('test -e %s && cat %1$s', $headPath));
-        // Check if HEAD file is exists and then compare it.
+        run("touch $headPath");
+        $headContents = run("cat $headPath");
         if (trim($headContents) === trim($remoteHead)) {
             throw new GracefulShutdownException("Already up-to-date.");
         }

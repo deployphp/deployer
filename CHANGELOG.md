@@ -1,6 +1,17 @@
 # Changelog
 
 
+## v6.7.4
+[v6.7.3...v6.7.4](https://github.com/deployphp/deployer/compare/v6.7.3...v6.7.4)
+
+### Added
+- Documented check_remote task usage
+
+### Fixed
+- Fixed Silverstripe CMS recipe assets path
+- Fixed check_remote task errors
+
+
 ## v6.7.3
 [v6.7.2...v6.7.3](https://github.com/deployphp/deployer/compare/v6.7.2...v6.7.3)
 

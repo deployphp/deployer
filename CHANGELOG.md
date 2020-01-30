@@ -6,6 +6,7 @@
 
 ### Added
 - Documented check_remote task usage
+- Speedup deploy:clear_paths
 
 ### Fixed
 - Fixed Silverstripe CMS recipe assets path

@@ -1,16 +1,17 @@
 # Changelog
 
 
-## v6.7.4
-[v6.7.3...v6.7.4](https://github.com/deployphp/deployer/compare/v6.7.3...v6.7.4)
+## master
+[v6.7.3...master](https://github.com/deployphp/deployer/compare/v6.7.3...master)
 
 ### Added
 - Documented check_remote task usage
 - Speedup deploy:clear_paths
 
 ### Fixed
-- Fixed Silverstripe CMS recipe assets path
-- Fixed check_remote task errors
+- Fixed Silverstripe CMS recipe assets path [#1989]
+- Fixed check_remote task errors [#1990]
+- Fixed check_remote task revision resolution [#1994]
 
 
 ## v6.7.3
@@ -557,6 +558,9 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#1994]: https://github.com/deployphp/deployer/issues/1994
+[#1990]: https://github.com/deployphp/deployer/issues/1990
+[#1989]: https://github.com/deployphp/deployer/issues/1989
 [#1971]: https://github.com/deployphp/deployer/pull/1971
 [#1969]: https://github.com/deployphp/deployer/issues/1969
 [#1899]: https://github.com/deployphp/deployer/pull/1899

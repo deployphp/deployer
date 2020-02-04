@@ -763,6 +763,12 @@ function parse($value)
 
 function locateBinaryPath($name)
 {
+    // Allow configuring binaries per host without having to adjust PATH or add an alias
+    $hostCustomBinaries = Context::get()->getConfig()->get('binaries');
+    if (isset($hostCustomBinaries[$name])) {
+        return $hostCustomBinaries[$name];
+    }
+
     $nameEscaped = escapeshellarg($name);
 
     // Try `command`, should cover all Bourne-like shells

@@ -7,6 +7,7 @@
 ### Added
 - Documented check_remote task usage
 - Speedup deploy:clear_paths
+- Allow configuring binaries per host (thanks @rvanlaak)
 
 ### Fixed
 - Fixed Silverstripe CMS recipe assets path [#1989]

@@ -1,7 +1,7 @@
 # Hosts
 
 Defining a host in Deployer is necessary to deploy your application. It can be a remote machine, a local machine or Amazon EC2 instances.
-Each host contains a hostname, a stage, one or more roles and configuration parameters. 
+Each host contains a hostname, a stage, one or more roles and configuration parameters.
 
 You can define hosts with the `host` function in `deploy.php` file. Here is an example of a host definition:
 
@@ -28,6 +28,28 @@ Then to `deploy.php`:
 ~~~php
 inventory('hosts.yml');
 ~~~
+
+### Overriding binaries
+
+Deployer on-the-fly locates binaries (like `php`, `git`, `composer`) by the help of `which`. The hosts allow
+to override binary paths.
+
+In cases where it is not possible to modify PATH or set an ALIAS to binaries, telling Deployer to override binaries
+can help.
+
+~~~yaml
+domain.com:
+  binaries:
+    php: bin/php7.4
+~~~
+
+~~~php
+host('domain.com')
+    ->binary('php', 'php7.4')
+;
+~~~
+
+### Ensure the ssh agent has access to target hosts
 
 Make sure that your `~/.ssh/config` file contains information about your domains and how to connect.
 Or you can specify that information in the `deploy.php` file itself.
@@ -68,7 +90,7 @@ Inside any task, you can get host config with the `get` function, and the host o
 ~~~php
 task('...', function () {
     $deployPath = get('deploy_path');
-    
+
     $host = host('domain.com');
     $port = $host->getPort();
 });
@@ -100,7 +122,7 @@ If you have a lot of hosts following similar patterns, you can describe them lik
 host('www[01:50].domain.com');
 ~~~
 
-For numeric patterns, leading zeros can be included or removed, as desired. Ranges are inclusive. 
+For numeric patterns, leading zeros can be included or removed, as desired. Ranges are inclusive.
 
 You can also define alphabetic ranges:
 
@@ -149,10 +171,10 @@ Often you have only one server for prod and beta stages. You can easily configur
 host('production')
     ->hostname('domain.com')
     ->set('deploy_path', '~/domain.com');
-    
+
 host('beta')
     ->hostname('domain.com')
-    ->set('deploy_path', '~/beta.domain.com');    
+    ->set('deploy_path', '~/beta.domain.com');
 ~~~
 
 Now you can deploy with these commands:
@@ -192,7 +214,7 @@ domain.com:
   extra_param: "foo {{hostname}}"
 ~~~
 
-> **Note** that, as with the `host` function in the *deploy.php* file, it's better to omit information such as 
+> **Note** that, as with the `host` function in the *deploy.php* file, it's better to omit information such as
 > *user*, *port*, *identityFile*, *forwardAgent* and use it from the `~/.ssh/config` file instead.
 
 If your inventory file contains many similar host definitions, you can use YAML extend syntax:
@@ -206,16 +228,16 @@ If your inventory file contains many similar host definitions, you can use YAML 
 www1.domain.com:
   <<: *base
   stage: production
-  
+
 beta1.domain.com:
   <<: *base
   stage: beta
-    
+
 ...
 ~~~
 
 Hosts that start with `.` (*dot*) are called hidden and are not visible outside that file.
- 
+
 To define localhost in inventory files add a `local` key:
 
 ~~~yaml

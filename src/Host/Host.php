@@ -229,6 +229,22 @@ class Host
         return $this;
     }
 
+    public function binary(string $binary, string $path)
+    {
+        $binaries = $this->config->get('binaries', []);
+        $binaries[$binary] = $path;
+        $this->config->add('binaries', $binaries);
+
+        return $this;
+    }
+
+    public function getBinary(string $binary): ?string
+    {
+        $binaries = $this->config->get('binaries');
+
+        return $binaries[$binary] ?? null;
+    }
+
     public function roles(...$roles): self
     {
         $this->config->set('roles', []);

@@ -16,13 +16,15 @@ class FileLoaderTest extends TestCase
      */
     private $hosts;
 
-    public function testLoad()
+    public function setUp(): void
     {
         $this->hosts = (new FileLoader())
             ->load(__DIR__ . '/../../fixture/inventory.yml')
             ->getHosts();
+    }
 
-
+    public function testLoad()
+    {
         // .base does not exists
         self::assertNull($this->getHost('.base'), 'Hidden hosts exists in inventory');
 
@@ -56,6 +58,12 @@ class FileLoaderTest extends TestCase
         self::assertEquals('db1.deployer.org', $db1->getHostname());
         $db2 = $this->getHost('db2.deployer.org');
         self::assertEquals('db2.deployer.org', $db2->getHostname());
+    }
+
+    public function testBinaries()
+    {
+        $edge = $this->getHost('edge.deployer.org');
+        self::assertEquals('php8', $edge->getBinary('php'));
     }
 
     /**

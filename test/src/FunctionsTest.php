@@ -102,6 +102,18 @@ class FunctionsTest extends TestCase
         }
     }
 
+    public function testBinariesFromInventory()
+    {
+        inventory(__DIR__ . '/../fixture/inventory.yml');
+
+        $host = $this->deployer->hosts->get('edge.deployer.org');
+        self::assertInstanceOf(Host::class, $host);
+
+        $phpBinary = $host->getBinary('php');
+
+        self::assertStringContainsString('php8', $phpBinary);
+    }
+
     public function testTask()
     {
         task('task', 'pwd');

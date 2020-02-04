@@ -45,3 +45,8 @@ beta.deployer.org:
     - app
     - db
   deploy_path: ~/app
+
+edge.deployer.org:
+  stage: edge
+  binaries:
+    php: php8

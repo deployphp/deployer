@@ -20,7 +20,7 @@ task('deploy:check_remote', function () {
     }
 
     // Skip if there is no current deployment to compare
-    if (! test('[ -d {{deploy_path}}/current/.git ]')) {
+    if (! test('[ -d {{deploy_path}}/{{current}}/.git ]')) {
         return;
     }
 
@@ -52,7 +52,7 @@ task('deploy:check_remote', function () {
 
     // Compare commit hashes. We use strpos to support short versions.
     $targetRevision = trim($targetRevision);
-    $lastDeployedRevision = trim(run(sprintf('cd {{deploy_path}}/current && %s rev-parse HEAD', get('bin/git'))));
+    $lastDeployedRevision = trim(run(sprintf('cd {{deploy_path}}/{{current}} && %s rev-parse HEAD', get('bin/git'))));
     if ($targetRevision && strpos($lastDeployedRevision, $targetRevision) === 0) {
         throw new GracefulShutdownException("Already up-to-date.");
     }

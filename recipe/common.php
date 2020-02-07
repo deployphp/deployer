@@ -94,8 +94,9 @@ set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 /**
  * Return current release path.
  */
+set('current', 'current');
 set('current_path', function () {
-    $link = run("readlink {{deploy_path}}/current");
+    $link = run("readlink {{deploy_path}}/{{current}}");
     return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 

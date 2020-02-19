@@ -12,6 +12,7 @@
 - Fixed Silverstripe CMS recipe assets path [#1989]
 - Fixed check_remote task errors [#1990]
 - Fixed check_remote task revision resolution [#1994]
+- Fixed backward compatibility of bin/console for symfony4 recipe
 
 
 ## v6.7.3

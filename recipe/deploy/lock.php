@@ -18,7 +18,7 @@ task('deploy:lock', function () {
 
         throw new GracefulShutdownException(
             "Deploy locked.\n" .
-            sprintf('Execute "dep deploy:unlock%s" to unlock.', $stage)
+            sprintf('Execute "'.  Deployer::getCalledScript() .' deploy:unlock%s" to unlock.', $stage)
         );
     } else {
         run("touch {{deploy_path}}/.dep/deploy.lock");

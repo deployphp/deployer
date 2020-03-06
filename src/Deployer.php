@@ -396,4 +396,20 @@ class Deployer extends Container
             });
         }
     }
+
+    /**
+     * @return string
+     * @codeCoverageIgnore
+     */
+    public static function getCalledScript(): string
+    {
+        $executable = !empty($_SERVER['_']) ? $_SERVER['_'] : $_SERVER['PHP_SELF'];
+        $shortcut = false !== strpos(getenv('PATH'), dirname($executable)) ? basename($executable) : $executable;
+
+        if ($executable !== $_SERVER['PHP_SELF']) {
+            return sprintf('%s %s', $shortcut, $_SERVER['PHP_SELF']);
+        }
+
+        return $shortcut;
+    }
 }

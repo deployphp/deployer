@@ -123,9 +123,11 @@ class ParallelExecutor implements ExecutorInterface
      */
     private function runTask(array $hosts, Task $task): int
     {
-        $processes = [];
+        $processes   = [];
+        $hostIndexes = [];
 
-        foreach ($hosts as $host) {
+        foreach ($hosts as $index => $host) {
+            $hostIndexes[$host->getHostname()] = $index;
             if ($task->shouldBePerformed($host)) {
                 $processes[$host->getHostname()] = $this->getProcess($host, $task);
                 if ($task->isOnce()) {
@@ -134,9 +136,13 @@ class ParallelExecutor implements ExecutorInterface
             }
         }
 
-        $callback = function (string $type, string $host, string $output) {
-            $output = rtrim($output);
+        $callback = function (string $type, string $host, string $output) use ($hostIndexes) {
+            $hostIndex = $hostIndexes[$host];
+            $output    = trim($output);
             if (strlen($output) !== 0) {
+                $hostPrefix = "|{$hostIndex}| ";
+                $output     = str_replace(PHP_EOL, PHP_EOL . str_repeat(' ', strlen($hostPrefix)), $output);
+                $output     = $hostPrefix . $output;
                 $this->output->writeln($output);
             }
         };

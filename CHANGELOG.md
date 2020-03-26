@@ -8,6 +8,10 @@
 - Documented check_remote task usage
 - Speedup deploy:clear_paths
 
+### Changed
+- Ssh\Client does no longer use tty unless config option 'forceSshTty' is enabled
+- ParallelExecutor task output is prefixed with host index
+
 ### Fixed
 - Fixed Silverstripe CMS recipe assets path [#1989]
 - Fixed check_remote task errors [#1990]

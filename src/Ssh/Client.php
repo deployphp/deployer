@@ -49,9 +49,11 @@ class Client
     {
         $hostname = $host->getHostname();
         $defaults = [
-            'timeout' => Deployer::getDefault('default_timeout', 300),
-            'tty' => false,
+            'timeout'     => Deployer::getDefault('default_timeout', 300),
+            'tty'         => false,
+            'forceSshTty' => false,
         ];
+
         $config = array_merge($defaults, $config);
 
         $this->pop->command($hostname, $command);
@@ -69,10 +71,17 @@ class Client
 
             $ssh = "ssh $sshArguments $host $command";
             $process = $this->createProcess($ssh);
-            $process
-                ->setTimeout($config['timeout'])
-                ->setTty(true)
-                ->mustRun();
+            $process->setTimeout($config['timeout']);
+
+            if ($config['forceSshTty']) {
+                $process->setTty(true);
+            }
+
+            $process->mustRun(
+                function (string $type, string $message) {
+                    echo $message;
+                }
+            );
 
             return $process->getOutput();
         }

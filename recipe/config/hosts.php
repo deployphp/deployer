@@ -15,7 +15,7 @@ task('config:hosts', function () {
     $selectedStage = Deployer::get()->getInput()->getArgument('stage');
 
     foreach (Deployer::get()->hosts as $host) {
-        if ($host->get('stage') !== $selectedStage) {
+        if ($selectedStage && $host->get('stage', false) !== $selectedStage) {
             continue;
         }
 

@@ -15,6 +15,7 @@
 - Fixed check_remote task revision resolution [#1994]
 - Fixed backward compatibility of bin/console for symfony4 recipe
 - Keep consistency with executable naming in lock recipe
+- Unexpected exception in config:* tasks when no stage is defined for host [#1909] [#1909] [#1909]
 
 
 ## v6.7.3
@@ -566,6 +567,7 @@
 [#1989]: https://github.com/deployphp/deployer/issues/1989
 [#1971]: https://github.com/deployphp/deployer/pull/1971
 [#1969]: https://github.com/deployphp/deployer/issues/1969
+[#1909]: https://github.com/deployphp/deployer/issues/1909
 [#1899]: https://github.com/deployphp/deployer/pull/1899
 [#1893]: https://github.com/deployphp/deployer/pull/1893
 [#1881]: https://github.com/deployphp/deployer/pull/1881

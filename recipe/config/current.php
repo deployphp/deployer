@@ -16,7 +16,7 @@ task('config:current', function () {
     $selectedStage = Deployer::get()->getInput()->getArgument('stage');
 
     on(Deployer::get()->hosts, function (Host $host) use (&$rows, $selectedStage) {
-        if ($host->get('stage') !== $selectedStage) {
+        if ($selectedStage && $host->get('stage', false) !== $selectedStage) {
             return;
         }
 

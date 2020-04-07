@@ -74,7 +74,7 @@ set('writable_chmod_recursive', true); // For chmod mode only (if is boolean, it
 set('http_user', false);
 set('http_group', false);
 
-set('clear_paths', []);         // Relative path from deploy_path
+set('clear_paths', []);         // Relative path from release_path
 set('clear_use_sudo', false);    // Using sudo in clean commands?
 
 set('cleanup_use_sudo', false); // Using sudo in cleanup commands?

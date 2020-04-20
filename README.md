@@ -40,6 +40,7 @@ Development of the **Deployer** generously supported by contributions from indiv
 
 ### Top Supporters
 
+* Tony James [hyper.host](https://hyper.host)
 * Daniel Knoch from [cariba.de](https://cariba.de)
 
 See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).

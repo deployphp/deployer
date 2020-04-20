@@ -8,6 +8,7 @@
 - Documented check_remote task usage
 - Speedup deploy:clear_paths
 - Documented default_timeout config usage
+- Recipe for Joomla!
 
 ### Fixed
 - Fixed Silverstripe CMS recipe assets path [#1989]

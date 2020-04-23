@@ -5,7 +5,7 @@
 In most cases you don't need more than one production server.
 It's better to build your release files (as cache, js/css bundles) on that machine as well. 
 So your builds don't depend on your local configuration and can be deployed from everywhere.
-By default Deployer recipes are designed to fullfill these kind of deployments.  
+By default Deployer recipes are designed to fulfill these kind of deployments.  
 
 ~~~php
 desc('Deploy your project');

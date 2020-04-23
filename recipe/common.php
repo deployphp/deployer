@@ -118,10 +118,10 @@ set('bin/composer', function () {
 
     if (empty($composer)) {
         run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{release_path}}/composer.phar';
+        $composer = '{{bin/php}} {{release_path}}/composer.phar';
     }
 
-    return '{{bin/php}} ' . $composer;
+    return $composer;
 });
 
 set('bin/symlink', function () {

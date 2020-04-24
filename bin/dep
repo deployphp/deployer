@@ -106,7 +106,9 @@ $version = 'master';
 
 $installedFile = $vendorDir . '/composer/installed.json';
 if (is_readable($installedFile)) {
-    $packages = json_decode(file_get_contents($installedFile), true);
+    $installed = json_decode(file_get_contents($installedFile), true);
+    $packages = $installed['packages'] ?? $installed;
+
     foreach ($packages as $package) {
         if ($package['name'] === 'deployer/deployer') {
             $version = $package['version'];

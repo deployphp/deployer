@@ -17,6 +17,8 @@
 - Fixed backward compatibility of bin/console for symfony4 recipe
 - Keep consistency with executable naming in lock recipe
 - Unexpected exception in config:* tasks when no stage is defined for host [#1909] [#1909] [#1909]
+- Fixed parsing of installed.json by Composer version 2
+- Fixed only call bin/php on the composer.phar file
 
 
 ## v6.7.3

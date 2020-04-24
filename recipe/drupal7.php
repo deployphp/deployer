@@ -72,7 +72,7 @@ task('drupal:settings', function () {
 
         $settings = strtr($settings, $replacements);
 
-        writeln('settings.php created succesfuly');
+        writeln('settings.php created successfully');
 
         $tmpFilename = tempnam(sys_get_temp_dir(), 'tmp_settings_');
         file_put_contents($tmpFilename, $settings);

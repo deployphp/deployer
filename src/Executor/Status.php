@@ -7,16 +7,11 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\Output\OutputWatcher;
-use Deployer\Deployer;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Deployer\Task\Task;
-use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
-use function Deployer\hostTag;
 
 class Status
 {
@@ -27,7 +22,7 @@ class Status
      */
     private $startTime;
 
-    public function __construct(OutputWatcher $output)
+    public function __construct(Output $output)
     {
         $this->output = $output;
     }
@@ -37,7 +32,6 @@ class Status
         $this->startTime = round(microtime(true) * 1000);
         if (!$task->isShallow()) {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
-            $this->output->setWasWritten(false);
         }
     }
 

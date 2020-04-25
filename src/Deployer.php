@@ -77,7 +77,7 @@ class Deployer extends Container
         $this['console'] = function () use ($console) {
             $console->catchIO(function ($input, $output) {
                 $this['input'] = $input;
-                $this['output'] = new OutputWatcher($output);
+                $this['output'] = $output;
                 return [$this['input'], $this['output']];
             });
             return $console;

@@ -9,6 +9,9 @@ namespace Deployer;
 
 use Deployer\Type\Csv;
 
+/**
+ * Name of folder in releases.
+ */
 set('release_name', function () {
     $list = get('releases_list');
 
@@ -23,7 +26,7 @@ set('release_name', function () {
     }
 
     return (string)$nextReleaseNumber;
-}); // name of folder in releases
+});
 
 /**
  * Return list of releases on host.
@@ -128,7 +131,7 @@ task('deploy:release', function () {
     run("echo '$date,{{release_name}}' >> .dep/releases");
 
     // Make new release
-    run("mkdir $releasePath");
+    run("mkdir -p $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
 
     // Add to releases list

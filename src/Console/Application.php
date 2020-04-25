@@ -36,9 +36,6 @@ class Application extends Console
      */
     private $after;
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultInputDefinition()
     {
         $inputDefinition = parent::getDefaultInputDefinition();
@@ -50,9 +47,6 @@ class Application extends Console
         return $inputDefinition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
@@ -64,9 +58,6 @@ class Application extends Console
         return $commands;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function selfUpdateCommand()
     {
         $selfUpdate = new PharUpdateCommand('self-update');
@@ -75,9 +66,6 @@ class Application extends Console
         return $selfUpdate;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getDefaultHelperSet()
     {
         $helperSet = parent::getDefaultHelperSet();
@@ -88,9 +76,6 @@ class Application extends Console
         return $helperSet;
     }
 
-    /**
-     * @return InputDefinition
-     */
     public function getUserDefinition()
     {
         if (null === $this->userDefinition) {
@@ -100,26 +85,17 @@ class Application extends Console
         return $this->userDefinition;
     }
 
-    /**
-     * Add user definition arguments and options to definition.
-     */
     public function addUserArgumentsAndOptions()
     {
         $this->getDefinition()->addArguments($this->getUserDefinition()->getArguments());
         $this->getDefinition()->addOptions($this->getUserDefinition()->getOptions());
     }
 
-    /**
-     * @return bool
-     */
     public function isPharArchive()
     {
         return 'phar:' === substr(__FILE__, 0, 5);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
         $exception = null;
@@ -131,8 +107,6 @@ class Application extends Console
 
         try {
             $exitCode = parent::doRunCommand($command, $input, $output);
-        } catch (\Exception $x) {
-            $exception = $x;
         } catch (\Throwable $x) {
             $exception = $x;
         }
@@ -148,17 +122,11 @@ class Application extends Console
         return $exitCode;
     }
 
-    /**
-     * @param $callable
-     */
     public function catchIO($callable)
     {
         $this->catchIO = $callable;
     }
 
-    /**
-     * @param $callable
-     */
     public function afterRun($callable)
     {
         $this->after = $callable;

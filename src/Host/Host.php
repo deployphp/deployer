@@ -8,178 +8,102 @@
 namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
-use Deployer\Configuration\ConfigurationAccessor;
-use Deployer\Ssh\Arguments;
-use function Deployer\Support\array_flatten;
+use Deployer\Component\Ssh\Arguments;
+use Deployer\Deployer;
 
 class Host
 {
-    use ConfigurationAccessor;
-
-    private $hostname;
-    private $realHostname;
-    private $user;
-    private $port;
-    private $configFile;
-    private $identityFile;
-    private $forwardAgent = true;
-    private $multiplexing = null;
+    private $config;
     private $sshArguments;
-    private $shellCommand = 'bash -s';
 
-    /**
-     * @param string $hostname
-     */
     public function __construct(string $hostname)
     {
-        $this->hostname = $hostname;
-        $this->setRealHostname($hostname);
-        $this->config = new Configuration();
+        $parent = null;
+        if (Deployer::get()) {
+            $parent = Deployer::get()->config;
+        }
+        $this->config = new Configuration($parent);
+        $this->set('alias', $hostname);
+        $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
+        $this->set('user', '');
+        $this->set('port', '');
+        $this->set('config_file', '');
+        $this->set('identity_file', '');
+        $this->set('forward_agent', true);
+        $this->set('shell', 'bash -s');
         $this->sshArguments = new Arguments();
     }
 
-    private function initOptions()
+    public function getConfig()
     {
-        if ($this->port) {
-            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port);
-        }
-
-        if ($this->configFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile);
-        }
-
-        if ($this->identityFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
-        }
-
-        if ($this->forwardAgent) {
-            $this->sshArguments = $this->sshArguments->withFlag('-A');
-        }
+        return $this->config;
     }
 
-    /**
-     * Returns pair user/hostname
-     *
-     * @return string
-     */
-    public function __toString()
+    public function set(string $name, $value)
     {
-        $user = empty($this->user) ? '' : "{$this->user}@";
-        return "$user{$this->realHostname}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getHostname()
-    {
-        return $this->config->parse($this->hostname);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRealHostname()
-    {
-        return $this->config->parse($this->realHostname);
-    }
-
-    public function hostname(string $hostname): self
-    {
-        $this->setRealHostname($hostname);
+        $this->config->set($name, $value);
         return $this;
     }
 
-    /**
-     * @param mixed $hostname
-     */
-    private function setRealHostname(string $hostname)
+    public function add(string $name, array $value)
     {
-        $this->realHostname = preg_replace('/\/.+$/', '', $hostname);
-    }
-
-    /**
-     * @return string
-     */
-    public function getUser()
-    {
-        return $this->config->parse($this->user);
-    }
-
-    public function user(string $user): self
-    {
-        $this->user = $user;
+        $this->config->add($name, $value);
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getPort()
+    public function has(string $name): bool
     {
-        return $this->port;
+        return $this->config->has($name);
     }
 
-    public function port(int $port): self
+    public function get(string $name, $default = null)
     {
-        $this->port = $port;
-        return $this;
+        return $this->config->get($name, $default);
     }
 
-    /**
-     * @return string
-     */
-    public function getConfigFile()
+    public function alias()
     {
-        return $this->configFile;
+        return $this->config->get('alias');
     }
 
-    public function configFile(string $configFile): self
+    public function hostname()
     {
-        $this->configFile = $configFile;
-        return $this;
+        return $this->config->get('hostname');
     }
 
-    /**
-     * @return string
-     */
-    public function getIdentityFile()
+    public function user()
     {
-        return $this->config->parse($this->identityFile);
+        return $this->config->get('user');
     }
 
-    public function identityFile(string $identityFile): self
+    public function port()
     {
-        $this->identityFile = $identityFile;
-        return $this;
+        return $this->config->get('port');
     }
 
-    /**
-     * @return bool
-     */
-    public function isForwardAgent()
+    public function configFile()
     {
-        return $this->forwardAgent;
+        return $this->config->get('config_file');
     }
 
-    public function forwardAgent(bool $forwardAgent = true): self
+    public function identityFile()
     {
-        $this->forwardAgent = $forwardAgent;
-        return $this;
+        return $this->config->get('identity_file');
     }
 
-    /**
-     * @return bool
-     */
-    public function isMultiplexing()
+    public function forwardAgent()
     {
-        return $this->multiplexing;
+        return $this->config->get('forward_agent');
     }
 
-    public function multiplexing(bool $multiplexing = true): self
+    public function sshMultiplexing()
     {
-        $this->multiplexing = $multiplexing;
-        return $this;
+        return $this->config->get('ssh_multiplexing');
+    }
+
+    public function shell(): string
+    {
+        return $this->config->get('shell');
     }
 
     public function getSshArguments()
@@ -188,61 +112,124 @@ class Host
         return $this->sshArguments;
     }
 
+    // TODO: Migrate to configuration.
     public function sshOptions(array $options): self
     {
         $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
+    // TODO: Migrate to configuration.
     public function sshFlags(array $flags): self
     {
         $this->sshArguments = $this->sshArguments->withFlags($flags);
         return $this;
     }
 
-    public function addSshOption(string $option, $value): self
+    private function initOptions()
     {
-        $this->sshArguments = $this->sshArguments->withOption($option, $value);
-        return $this;
-    }
-
-    public function addSshFlag(string $flag, string $value = null): self
-    {
-        $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
-        return $this;
-    }
-
-    public function getShellCommand() : string
-    {
-        return $this->shellCommand;
-    }
-
-    public function shellCommand(string $shellCommand): self
-    {
-        $this->shellCommand = $shellCommand;
-        return $this;
-    }
-
-    public function stage(string $stage): self
-    {
-        $this->config->set('stage', $stage);
-        return $this;
-    }
-
-    public function roles(...$roles): self
-    {
-        $this->config->set('roles', []);
-
-        foreach (array_flatten($roles) as $role) {
-            $this->config->add('roles', [$role]);
+        if ($this->port()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port());
         }
 
-        return $this;
+        if ($this->configFile()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile());
+        }
+
+        if ($this->identityFile()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile());
+        }
+
+        if ($this->forwardAgent()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-A');
+        }
     }
 
-    public function become(string $user): self
+    public function tag(): string
     {
-        $this->config->set('become', $user);
-        return $this;
+        if ($this->config->has('tag')) {
+            return $this->config->get('tag');
+        }
+
+        if (defined('NO_ANSI')) {
+            return $this->alias();
+        }
+
+        if (getenv('COLORTERM') === 'truecolor') {
+            $hsv = function ($h, $s, $v) {
+                $r = $g = $b = $i = $f = $p = $q = $t = 0;
+                $i = floor($h * 6);
+                $f = $h * 6 - $i;
+                $p = $v * (1 - $s);
+                $q = $v * (1 - $f * $s);
+                $t = $v * (1 - (1 - $f) * $s);
+                switch ($i % 6) {
+                    case 0:
+                        $r = $v;
+                        $g = $t;
+                        $b = $p;
+                        break;
+                    case 1:
+                        $r = $q;
+                        $g = $v;
+                        $b = $p;
+                        break;
+                    case 2:
+                        $r = $p;
+                        $g = $v;
+                        $b = $t;
+                        break;
+                    case 3:
+                        $r = $p;
+                        $g = $q;
+                        $b = $v;
+                        break;
+                    case 4:
+                        $r = $t;
+                        $g = $p;
+                        $b = $v;
+                        break;
+                    case 5:
+                        $r = $v;
+                        $g = $p;
+                        $b = $q;
+                        break;
+                }
+                $r = round($r * 255);
+                $g = round($g * 255);
+                $b = round($b * 255);
+                return "\x1b[38;2;{$r};{$g};{$b}m";
+            };
+
+            $total = 100;
+            $colors = [];
+            for ($i = 0; $i < $total; $i++) {
+                $colors[] = $hsv($i / $total, 1, .9);
+            }
+
+            $alias = $this->alias();
+            $tag = $colors[abs(crc32($alias)) % count($colors)];
+
+            return "{$tag}{$alias}\x1b[0m";
+        }
+
+
+        $colors = [
+            'fg=cyan;options=bold',
+            'fg=green;options=bold',
+            'fg=yellow;options=bold',
+            'fg=cyan',
+            'fg=blue',
+            'fg=yellow',
+            'fg=magenta',
+            'fg=blue;options=bold',
+            'fg=green',
+            'fg=magenta;options=bold',
+            'fg=red;options=bold',
+        ];
+        $alias = $this->alias();
+        $tag = $colors[abs(crc32($alias)) % count($colors)];
+
+        return "<{$tag}>{$alias}</>";
     }
 }

@@ -47,7 +47,7 @@ after('deploy:update_code', 'deploy:clear_version');
  */
 task('deploy', [
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
@@ -56,7 +56,7 @@ task('deploy', [
     'deploy:cache:clear',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

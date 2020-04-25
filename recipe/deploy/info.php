@@ -12,22 +12,23 @@ task('deploy:info', function () {
     $branch = get('branch');
 
     if (!empty($branch)) {
-        $what = "<fg=magenta>$branch</fg=magenta>";
+        $what = "<fg=magenta;options=bold>$branch</>";
     }
 
     if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
         $tag = input()->getOption('tag');
-        $what = "tag <fg=magenta>$tag</fg=magenta>";
-    } elseif (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
+        $what = "tag <fg=magenta;options=bold>$tag</>";
+    }
+
+    if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
         $revision = input()->getOption('revision');
-        $what = "revision <fg=magenta>$revision</fg=magenta>";
+        $what = "revision <fg=magenta;options=bold>$revision</>";
     }
 
     if (empty($what)) {
-        $what = "<fg=magenta>HEAD</fg=magenta>";
+        $what = "<fg=magenta;options=bold>HEAD</>";
     }
 
-    writeln("✈︎ Deploying $what on <fg=cyan>{{hostname}}</fg=cyan>");
+    info("deploy $what on " . currentHost()->tag());
 })
-    ->shallow()
-    ->setPrivate();
+    ->shallow();

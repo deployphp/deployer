@@ -1,26 +1,14 @@
-# Deployer
+
+<h1><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/logo.png" alt="Deployer Logo" height="30"></a> Deployer</h1>
+<p>A deployment tool written in PHP with support for popular frameworks out of the box.</p>
+
+<p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>
 
 <a href="https://travis-ci.org/deployphp/deployer"><img src="https://travis-ci.org/deployphp/deployer.svg?branch=master" alt="Build Status"></a>
-<a href="https://scrutinizer-ci.com/g/deployphp/deployer/"><img src="https://img.shields.io/scrutinizer/g/deployphp/deployer.svg?style=flat" alt="Code Quality"></a>
-<a href="https://scrutinizer-ci.com/g/deployphp/deployer/code-structure/master/code-coverage"><img src="https://img.shields.io/scrutinizer/coverage/g/deployphp/deployer/master.svg?style=flat" alt="Code Quality"></a>
-<a href="https://packagist.org/packages/deployer/deployer"><img src="https://img.shields.io/packagist/dt/deployer/deployer.svg" alt="Total Downloads"></a>
 <a href="https://packagist.org/packages/deployer/deployer"><img src="https://img.shields.io/packagist/v/deployer/deployer.svg?style=flat" alt="Latest Stable Version"></a>
 <a href="https://packagist.org/packages/deployer/deployer"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat" alt="License"></a>
 
-A deployment tool written in PHP with support for popular frameworks out of the box
-
-<a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
-
 See [deployer.org](https://deployer.org) for more information and documentation.
-
-## Features
-
-* **Simple** setup process and a minimal learning curve
-* Ready to use recipes for **most frameworks**
-* **Parallel** execution without extensions
-* Something went wrong? **Rollback** to the previous release
-* **Agentless**, it's just SSH
-* **Zero downtime** deployments
 
 ## Contributing
 
@@ -28,6 +16,8 @@ Read the [contributing](https://github.com/deployphp/deployer/blob/master/.githu
 
 [![good+for+beginner](https://img.shields.io/badge/feature-good%20for%20beginner-1d76db.svg)](https://github.com/deployphp/deployer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+for+beginner%22)
 [![advanced+level](https://img.shields.io/badge/feature-advanced%20level-5319e7.svg)](https://github.com/deployphp/deployer/issues?q=is%3Aissue+is%3Aopen+label%3A%22advanced+level%22)
+
+<a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
 
 ## Maintainers
 * Anton Medvedev [@antonmedv](https://github.com/antonmedv)
@@ -46,4 +36,4 @@ Development of the **Deployer** generously supported by contributions from indiv
 See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).
 
 ## License
-Licensed under the [MIT license](https://github.com/deployphp/deployer/blob/master/LICENSE).
+[MIT](https://github.com/deployphp/deployer/blob/master/LICENSE)

@@ -7,7 +7,6 @@
 
 namespace Deployer\Task;
 
-use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
 use PHPUnit\Framework\TestCase;
@@ -44,30 +43,28 @@ class ScriptManagerTest extends TestCase
     public function testReturnsArrayOnGetTask()
     {
         $hostCollection = new HostCollection();
-        $hostCollection->set('app', (new Host('app'))->stage('prod')->roles('app'));
-        $hostCollection->set('db', (new Host('db'))->stage('prod')->roles('db'));
+        $hostCollection->set('app', (new Host('app'))->set('roles', 'app'));
+        $hostCollection->set('db', (new Host('db'))->set('roles', 'db'));
 
         $task = new Task('compile');
         $task
-            ->onStage('prod')
             ->onRoles('app');
 
         $taskCollection = new TaskCollection();
         $taskCollection->set('compile', $task);
 
-        $scriptManager = new ScriptManager($taskCollection, $hostCollection);
+        $scriptManager = new ScriptManager($taskCollection);
 
         $this->assertNotEmpty($scriptManager->getTasks("compile"));
 
         $task = new Task('dump');
         $task
-            ->onStage('prod')
             ->onRoles('db');
 
         $taskCollection = new TaskCollection();
         $taskCollection->set('dump', $task);
 
-        $scriptManager = new ScriptManager($taskCollection, $hostCollection);
+        $scriptManager = new ScriptManager($taskCollection);
 
         $this->assertNotEmpty($scriptManager->getTasks("dump"));
     }

@@ -55,7 +55,7 @@ task('silverstripe:buildflush', function () {
  */
 task('deploy', [
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
@@ -65,7 +65,7 @@ task('deploy', [
     'silverstripe:buildflush',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

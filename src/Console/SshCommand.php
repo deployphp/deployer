@@ -8,6 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
+use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
@@ -58,20 +59,27 @@ class SshCommand extends Command
         if (!empty($hostname)) {
             $host = $this->deployer->hosts->get($hostname);
         } else {
-            $hosts = $this->deployer->hosts->select(function ($host) {
-                return !($host instanceof Localhost);
-            });
+            $hostsTags = array_map(
+                function (Host $host) {
+                    return $host->tag();
+                },
+                $this->deployer->hosts->select(function ($host) {
+                    return !($host instanceof Localhost);
+                })
+            );
 
-            if (count($hosts) === 0) {
+            if (count($hostsTags) === 0) {
                 $output->writeln('No remote hosts.');
-                return; // Because there are no hosts.
-            } elseif (count($hosts) === 1) {
-                $host = array_shift($hosts);
+                return 2; // Because there are no hosts.
+            }
+
+            if (count($hostsTags) === 1) {
+                $host = $this->deployer->hosts->first();
             } else {
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(
                     'Select host:',
-                    $hosts
+                    $hostsTags
                 );
                 $question->setErrorMessage('There is no "%s" host.');
 
@@ -82,14 +90,14 @@ class SshCommand extends Command
 
         $shell_path = 'exec $SHELL -l';
         if ($host->has('shell_path')) {
-            $shell_path = 'exec '.$host->get('shell_path').' -l';
+            $shell_path = 'exec ' . $host->get('shell_path') . ' -l';
         }
 
         Context::push(new Context($host, $input, $output));
         $options = $host->getSshArguments();
         $deployPath = $host->get('deploy_path', '~');
 
-        passthru("ssh -t $options $host 'cd '''$deployPath/current'''; $shell_path'");
+        passthru("ssh -t $options {$host->hostname()} 'cd '''$deployPath/current'''; $shell_path'");
         return 0;
     }
 }

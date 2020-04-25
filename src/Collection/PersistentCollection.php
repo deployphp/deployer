@@ -19,7 +19,7 @@ class PersistentCollection extends Collection
 
     public function load()
     {
-        $this->values = unserialize(file_get_contents($this->file));
+        $this->values = json_decode(file_get_contents($this->file), true);
     }
 
     public function flush()
@@ -28,6 +28,6 @@ class PersistentCollection extends Collection
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        file_put_contents($this->file, serialize($this->values));
+        file_put_contents($this->file, json_encode($this->values));
     }
 }

@@ -35,11 +35,11 @@ class Task
     private $local = false;
 
     /**
-     * Lists of hosts, roles, stages there task should be executed.
+     * Lists of hosts, roles there task should be executed.
      *
      * @var array
      */
-    private $on = ['hosts' => [], 'roles' => [], 'stages' => []];
+    private $on = ['hosts' => [], 'roles' => []];
 
     /**
      * List of task names to run before.
@@ -116,17 +116,16 @@ class Task
         Context::pop();
     }
 
-    /**
-     * @return string
-     */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
+    public function __toString()
+    {
+        return $this->getName();
+    }
+
     public function getDescription()
     {
         return $this->description;
@@ -193,16 +192,6 @@ class Task
     }
 
     /**
-     * @param array $stages
-     * @return $this
-     */
-    public function onStage(...$stages)
-    {
-        $this->on['stages'] = array_flatten($stages);
-        return $this;
-    }
-
-    /**
      * Checks what task should be performed on one of hosts.
      *
      * @param Host[] $hosts
@@ -216,7 +205,7 @@ class Task
         }
 
         foreach ($hosts as $host) {
-            $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
+            $onHost = empty($this->on['hosts']) || in_array($host->alias(), $this->on['hosts'], true);
 
             $onRole = empty($this->on['roles']);
             foreach ((array) $host->get('roles', []) as $role) {
@@ -225,14 +214,7 @@ class Task
                 }
             }
 
-            $onStage = empty($this->on['stages']);
-            if ($host->has('stage')) {
-                if (in_array($host->get('stage'), $this->on['stages'], true)) {
-                    $onStage = true;
-                }
-            }
-
-            if ($onHost && $onRole && $onStage) {
+            if ($onHost && $onRole) {
                 return true;
             }
         }

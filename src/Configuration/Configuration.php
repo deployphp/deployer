@@ -12,15 +12,14 @@ use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use function Deployer\Support\array_merge_alternate;
 
-class Configuration
+class Configuration implements \ArrayAccess
 {
-    /**
-     * @var Collection
-     */
+    public $parent;
     private $collection;
 
-    public function __construct()
+    public function __construct(Configuration $parent = null)
     {
+        $this->parent = $parent;
         $this->collection = new Collection();
     }
 
@@ -60,21 +59,13 @@ class Configuration
             } else {
                 $value = $this->collection[$name];
             }
+        } else if ($this->parent && $this->parent->has($name)) {
+            $value = $this->collection[$name] = $this->parent->get($name, $default);
         } else {
-            $config = Deployer::get()->config;
-
-            if (isset($config[$name])) {
-                if ($this->isClosure($config[$name])) {
-                    $value = $this->collection[$name] = call_user_func($config[$name]);
-                } else {
-                    $value = $this->collection[$name] = $config[$name];
-                }
+            if (null === $default) {
+                throw new ConfigurationException("Configuration parameter `$name` does not exist.");
             } else {
-                if (null === $default) {
-                    throw new ConfigurationException("Configuration parameter `$name` does not exist.");
-                } else {
-                    $value = $default;
-                }
+                $value = $default;
             }
         }
 
@@ -86,12 +77,6 @@ class Configuration
         return $this->collection->has($name);
     }
 
-    /**
-     * Parse set values
-     *
-     * @param mixed $value
-     * @return mixed
-     */
     public function parse($value)
     {
         if (is_string($value)) {
@@ -101,18 +86,47 @@ class Configuration
         return $value;
     }
 
-    /**
-     * Replace set values callback for parse
-     *
-     * @param string[] $matches
-     * @return mixed
-     */
+    public function offsetExists($offset)
+    {
+        return $this->has($offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->set($offset, $value);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->collection[$offset]);
+    }
+
+    public function persist()
+    {
+        $values = [];
+        if ($this->parent !== null) {
+            $values = $this->parent->persist();
+        }
+        foreach ($this->collection as $key => $value) {
+            if ($this->isClosure($value)) {
+                continue;
+            }
+            $values[$key] = $value;
+        }
+        return $values;
+    }
+
     private function parseCallback(array $matches)
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
-    private function isClosure($var): bool
+    private function isClosure($var)
     {
         return is_object($var) && ($var instanceof \Closure);
     }

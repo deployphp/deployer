@@ -66,7 +66,7 @@ Add user's cli options.
 
 * `cd(string $path)`
 
-Sets the working path for the following `run` functions. 
+Sets the working path for the following `run` functions.
 Every task restores the working path to the base working path at the beginning of the task.
 
 ~~~php
@@ -82,7 +82,7 @@ Run `$callback` within `$path`.
 
 ~~~php
 within('{{release_path}}', function () {
-    run('npm run build');   
+    run('npm run build');
 });
 ~~~
 
@@ -103,19 +103,18 @@ workingPath() == '/var/www/app/releases/1';
 
 Run a command on remote host. Available options:
 
-* `timeout` — Sets the process timeout (max. runtime).  
-  To disable the timeout, set this value to null.  
+* `timeout` — Sets the process timeout (max. runtime).
+  To disable the timeout, set this value to null.
   The timeout in seconds (default: 300 sec)
-* `tty` — Enables or disables the TTY mode (default: false)
 
-For example, if your private key contains a passphrase, enable tty and you'll see git prompt for a password. 
+For example, if your private key contains a passphrase, enable tty and you'll see git prompt for a password.
 
 ~~~php
 run('git clone ...', ['timeout' => null, 'tty' => true]);
 ~~~
 
 `run` function returns the output of the command as a string:
-   
+
 ~~~php
 $path = run('readlink {{deploy_path}}/current');
 run("echo $path");
@@ -135,7 +134,7 @@ Run a command on localhost. Available options:
 * `test(string $command): bool`
 
 Run a test command.
- 
+
 ~~~php
 if (test('[ -d {{release_path}} ]')) {
     ...
@@ -183,11 +182,11 @@ Return a list of hosts by roles.
 
 * `invoke(string $task)`
 
-Run a task on the current host. 
+Run a task on the current host.
 
 ~~~php
 task('deploy', function () {
-    invoke('deploy:prepare'); 
+    invoke('deploy:setup');
     invoke('deploy:release');
     ...
 });
@@ -205,10 +204,10 @@ Upload files from `$source` to `$destination` on the remote host.
 upload('build/', '{{release_path}}/public');
 ~~~
 
-> You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command, 
+> You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command,
 > this is necessary to mean "the contents of `build`".
 >
-> The alternative, without the trailing slash, would place `build`, including the directory, within `public`. 
+> The alternative, without the trailing slash, would place `build`, including the directory, within `public`.
 > This would create a hierarchy that looks like: `{{release_path}}/public/build`
 
 Available options:
@@ -229,7 +228,7 @@ Available options:
 
 ### write
 
-Write a message in the output. 
+Write a message in the output.
 You can format the message with the tags `<info>...</info>`, `<comment></comment>` or `<error></error>` (see [Symfony Console](http://symfony.com/doc/current/console/coloring.html)).
 
 ### writeln
@@ -249,7 +248,7 @@ More at [configuration](configuration.md).
 
 * `add(string $name, array $values)`
 
-Add values to already existing config. 
+Add values to already existing config.
 
 More at [configuration](configuration.md).
 
@@ -279,8 +278,8 @@ Ask the user for input.
 
 * `askChoice(string $message, array $availableChoices, $default = null, $multiselect = false)`
 
-Ask the user to select from multiple key/value options and return an array. 
-Multiselect enables selection of multiple comma separated choices. 
+Ask the user to select from multiple key/value options and return an array.
+Multiselect enables selection of multiple comma separated choices.
 The default value will be used in quiet mode, otherwise the first available choice will be accepted.
 
 ### askConfirmation

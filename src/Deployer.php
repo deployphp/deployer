@@ -8,33 +8,31 @@
 namespace Deployer;
 
 use Deployer\Collection\Collection;
+use Deployer\Component\ProcessRunner\Printer;
+use Deployer\Component\ProcessRunner\ProcessRunner;
+use Deployer\Component\Ssh\Client;
+use Deployer\Configuration\Configuration;
 use Deployer\Console\Application;
-use Deployer\Console\AutocompleteCommand;
 use Deployer\Console\CommandEvent;
-use Deployer\Console\DebugCommand;
+use Deployer\Console\DiceCommand;
 use Deployer\Console\InitCommand;
-use Deployer\Console\Output\Informer;
-use Deployer\Console\Output\OutputWatcher;
 use Deployer\Console\RunCommand;
 use Deployer\Console\SshCommand;
 use Deployer\Console\TaskCommand;
+use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\ParallelExecutor;
-use Deployer\Executor\SeriesExecutor;
+use Deployer\Executor\Status;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
-use function Deployer\Support\array_merge_alternate;
 use Deployer\Task;
-use Deployer\Utility\ProcessOutputPrinter;
-use Deployer\Utility\ProcessRunner;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Deployer class represents DI container for configuring
@@ -42,17 +40,16 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  * @property Application $console
  * @property Task\TaskCollection|Task\Task[] $tasks
  * @property Host\HostCollection|Collection|Host\Host[] $hosts
- * @property Collection $config
+ * @property Configuration $config
  * @property Rsync $rsync
- * @property Ssh\Client $sshClient
+ * @property Client $sshClient
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Host\HostSelector $hostSelector
- * @property SeriesExecutor $seriesExecutor
- * @property ParallelExecutor $parallelExecutor
- * @property Informer $informer
- * @property Logger $logger
- * @property ProcessOutputPrinter $pop
+ * @property ParallelExecutor $executor
+ * @property Status $informer
+ * @property Status $logger
+ * @property Printer $pop
  * @property Collection $fail
  */
 class Deployer extends Container
@@ -77,7 +74,7 @@ class Deployer extends Container
         $this['console'] = function () use ($console) {
             $console->catchIO(function ($input, $output) {
                 $this['input'] = $input;
-                $this['output'] =  new OutputWatcher($output);
+                $this['output'] = $output;
                 return [$this['input'], $this['output']];
             });
             return $console;
@@ -88,7 +85,7 @@ class Deployer extends Container
          ******************************/
 
         $this['config'] = function () {
-            return new Collection();
+            return new Configuration();
         };
         $this->config['ssh_multiplexing'] = true;
         $this->config['default_stage'] = null;
@@ -98,16 +95,16 @@ class Deployer extends Container
          ******************************/
 
         $this['pop'] = function ($c) {
-            return new ProcessOutputPrinter($c['output'], $c['logger']);
+            return new Printer($c['output']);
         };
         $this['sshClient'] = function ($c) {
-            return new Ssh\Client($c['output'], $c['pop'], $c['config']['ssh_multiplexing']);
+            return new Client($c['output'], $c['pop'], $c['logger']);
         };
         $this['rsync'] = function ($c) {
             return new Rsync($c['pop']);
         };
         $this['processRunner'] = function ($c) {
-            return new ProcessRunner($c['pop']);
+            return new ProcessRunner($c['pop'], $c['logger']);
         };
         $this['tasks'] = function () {
             return new Task\TaskCollection();
@@ -129,13 +126,17 @@ class Deployer extends Container
             return new Collection();
         };
         $this['informer'] = function ($c) {
-            return new Informer($c['output']);
+            return new Status($c['input'], $c['output']);
         };
-        $this['seriesExecutor'] = function ($c) {
-            return new SeriesExecutor($c['input'], $c['output'], $c['informer']);
-        };
-        $this['parallelExecutor'] = function ($c) {
-            return new ParallelExecutor($c['input'], $c['output'], $c['informer'], $c['console']);
+        $this['executor'] = function ($c) {
+            return new ParallelExecutor(
+                $c['input'],
+                $c['output'],
+                $c['informer'],
+                $c['console'],
+                $c['sshClient'],
+                $c['config']
+            );
         };
 
         /******************************
@@ -151,15 +152,11 @@ class Deployer extends Container
             return new Logger($this['log_handler']);
         };
 
-        /******************************
-         *        Init command        *
-         ******************************/
-
-        $this['init_command'] = function () {
-            return new InitCommand();
-        };
-
         self::$instance = $this;
+
+        task('connect', function () {
+            $this['sshClient']->connect(currentHost());
+        })->desc('Connect to remote server');
     }
 
     /**
@@ -171,62 +168,17 @@ class Deployer extends Container
     }
 
     /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public static function setDefault($name, $value)
-    {
-        Deployer::get()->config[$name] = $value;
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function getDefault($name, $default = null)
-    {
-        return self::hasDefault($name) ? Deployer::get()->config[$name] : $default;
-    }
-
-    /**
-     * @param string $name
-     * @return boolean
-     */
-    public static function hasDefault($name)
-    {
-        return isset(Deployer::get()->config[$name]);
-    }
-
-    /**
-     * @param string $name
-     * @param array $array
-     */
-    public static function addDefault($name, $array)
-    {
-        if (self::hasDefault($name)) {
-            $config = self::getDefault($name);
-            if (!is_array($config)) {
-                throw new \RuntimeException("Configuration parameter `$name` isn't array.");
-            }
-            self::setDefault($name, array_merge_alternate($config, $array));
-        } else {
-            self::setDefault($name, $array);
-        }
-    }
-
-    /**
      * Init console application
      */
     public function init()
     {
         $this->addConsoleCommands();
         $this->getConsole()->add(new WorkerCommand($this));
-        $this->getConsole()->add($this['init_command']);
+        $this->getConsole()->add(new DiceCommand());
+        $this->getConsole()->add(new InitCommand());
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
-        $this->getConsole()->add(new DebugCommand($this));
-        $this->getConsole()->add(new AutocompleteCommand());
+        $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 
@@ -306,17 +258,6 @@ class Deployer extends Container
         $input = new ArgvInput();
         $output = new ConsoleOutput();
         $deployer = new self($console);
-
-        // Pretty-print uncaught exceptions in symfony-console
-        set_exception_handler(function ($e) use ($input, $output, $deployer) {
-            $io = new SymfonyStyle($input, $output);
-            $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
-            $io->block($e->getTraceAsString());
-
-            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
-            $deployer->logger->log($e->getTraceAsString());
-            exit(1);
-        });
 
         // Require deploy.php file
         self::loadRecipe($deployFile);

@@ -1,8 +1,8 @@
 # Changelog
 
 
-## master
-[v6.7.3...master](https://github.com/deployphp/deployer/compare/v6.7.3...master)
+## v6.8.0
+[v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
 
 ### Added
 - Documented check_remote task usage

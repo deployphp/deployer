@@ -19,7 +19,7 @@ class FileLoaderTest extends TestCase
     public function testLoad()
     {
         $this->hosts = (new FileLoader())
-            ->load(__DIR__ . '/../../fixture/inventory.yml')
+            ->load(__DIR__ . '/inventory.yml')
             ->getHosts();
 
 
@@ -38,14 +38,14 @@ class FileLoaderTest extends TestCase
 
         // bar configured properly
         $bar = $this->getHost('bar');
-        self::assertEquals('bar', $bar->getHostname());
-        self::assertEquals('user@bar.com', "$bar");
-        self::assertEquals('user', $bar->getUser());
+        self::assertEquals('bar', $bar->getAlias());
+        self::assertEquals('bar.com', $bar->getHostname());
+        self::assertEquals('remote_user', $bar->getRemoteUser());
         self::assertEquals(22, $bar->getPort());
         self::assertEquals('configFile', $bar->getConfigFile());
         self::assertEquals('identityFile', $bar->getIdentityFile());
-        self::assertTrue($bar->isForwardAgent());
-        self::assertFalse($bar->isMultiplexing());
+        self::assertTrue($bar->getForwardAgent());
+        self::assertFalse($bar->getSshMultiplexing());
         self::assertEquals('param', $bar->get('param'));
         self::assertEquals(
             '-f -A -someFlag value -p 22 -F configFile -i identityFile -o Option=Value',
@@ -53,9 +53,9 @@ class FileLoaderTest extends TestCase
         );
 
         $db1 = $this->getHost('db1.deployer.org');
-        self::assertEquals('db1.deployer.org', $db1->getHostname());
+        self::assertEquals('db1.deployer.org', $db1->getAlias());
         $db2 = $this->getHost('db2.deployer.org');
-        self::assertEquals('db2.deployer.org', $db2->getHostname());
+        self::assertEquals('db2.deployer.org', $db2->getAlias());
     }
 
     /**
@@ -65,7 +65,7 @@ class FileLoaderTest extends TestCase
     private function getHost($name)
     {
         foreach ($this->hosts as $host) {
-            if ($host->getHostname() === $name) {
+            if ($host->getAlias() === $name) {
                 return $host;
             }
         }

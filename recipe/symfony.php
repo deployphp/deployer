@@ -42,6 +42,12 @@ set('env', function () {
     ];
 });
 
+set('composer_options', function () {
+    $debug = get('symfony_env') === 'dev';
+    return sprintf('{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction %s --optimize-autoloader --no-suggest', (!$debug ? '--no-dev' : ''));
+});
+
+
 // Adding support for the Symfony3 directory structure
 set('bin_dir', 'app');
 set('var_dir', 'app');
@@ -141,7 +147,7 @@ task('database:migrate', function () {
  */
 task('deploy', [
     'deploy:info',
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
@@ -157,7 +163,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:symlink',
     'deploy:unlock',
-    'cleanup',
+    'deploy:cleanup',
 ])->desc('Deploy your project');
 
 // Display success message on completion

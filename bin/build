@@ -9,7 +9,7 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 define('ROOT', realpath(__DIR__ . '/..'));
-$opt = getopt('v::');
+$opt = getopt('v::', ['nozip']);
 
 $version = 'dev-master';
 if (array_key_exists('v', $opt)) {
@@ -66,7 +66,9 @@ __HALT_COMPILER();
 STUB;
 
 $phar->setStub($stub);
-$phar->compressFiles(Phar::GZ);
+if (!array_key_exists('nozip', $opt)) {
+    $phar->compressFiles(Phar::GZ);
+}
 $phar->stopBuffering();
 unset($phar);
 

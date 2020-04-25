@@ -7,135 +7,178 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Console\Application;
-use Deployer\Console\Input\Argument;
-use Deployer\Console\Input\Option;
-use Deployer\Console\Output\Informer;
-use Deployer\Console\Output\VerbosityString;
+use Deployer\Component\Ssh\Client;
+use Deployer\Configuration\Configuration;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
-use Deployer\Host\Storage;
+use Deployer\Selector\Selector;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class ParallelExecutor implements ExecutorInterface
+const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
+
+function spinner($message = '')
 {
-    /**
-     * @var InputInterface
-     */
+    $frame = FRAMES[(int)(microtime(true) * 10) % count(FRAMES)];
+    return "  $frame $message\r";
+}
+
+class ParallelExecutor
+{
     private $input;
-
-    /**
-     * @var OutputInterface
-     */
     private $output;
-
-    /**
-     * @var Informer
-     */
-    private $informer;
-
-    /**
-     * @var Application
-     */
-    private $console;
+    private $messenger;
+    private $client;
+    private $config;
 
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
-        Informer $informer,
-        Application $console
-    ) {
+        Messenger $messenger,
+        Client $client,
+        Configuration $config
+    )
+    {
         $this->input = $input;
         $this->output = $output;
-        $this->informer = $informer;
-        $this->console = $console;
+        $this->messenger = $messenger;
+        $this->client = $client;
+        $this->config = $config;
     }
 
     /**
-     * {@inheritdoc}
+     * @param Host[] $hosts
      */
-    public function run(array $tasks, array $hosts)
+    private function connect(array $hosts)
     {
-        $localhost = new Localhost();
-        $limit = (int)$this->input->getOption('limit') ?: count($hosts);
+        $callback = function (string $output) {
+            $output = preg_replace('/\n$/', '', $output);
+            if (strlen($output) !== 0) {
+                $this->output->writeln($output);
+            }
+        };
 
-        // We need contexts here for usage inside `on` function. Pass input/output to callback of it.
-        // This allows to use code like this in parallel mode:
-        //
-        //     host('prod')
-        //         ->set('branch', function () {
-        //             return input()->getOption('branch') ?: 'production';
-        //     })
-        //
-        // Otherwise `input()` wont be accessible (i.e. null)
-        //
-        Context::push(new Context($localhost, $this->input, $this->output));
-        {
-            Storage::persist($hosts);
+        // Connect to each host sequentially, to prevent getting locked.
+        foreach ($hosts as $host) {
+            if ($host instanceof Localhost) {
+                continue;
+            }
+            $process = $this->getProcess($host, new Task('connect'));
+            $process->start();
+
+            while ($process->isRunning()) {
+                $this->gatherOutput([$process], $callback);
+                $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
+                usleep(1000);
+            }
         }
-        Context::pop();
+
+        // Clear spinner.
+        $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
+    }
+
+    /**
+     * @param Task[] $tasks
+     * @param Host[] $hosts
+     * @param Planner|null $plan
+     * @return int
+     */
+    public function run(array $tasks, array $hosts, $plan = null): int
+    {
+        $plan || $this->connect($hosts);
+
+        $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
-            $success = true;
-            $this->informer->startTask($task);
+            $plan || $this->messenger->startTask($task);
 
-            if ($task->isLocal()) {
-                Storage::load($hosts);
-                {
-                    $task->run(new Context($localhost, $this->input, $this->output));
-                }
-                Storage::flush($hosts);
-            } else {
-                foreach (array_chunk($hosts, $limit) as $chunk) {
-                    $exitCode = $this->runTask($chunk, $task);
+            $plannedHosts = $hosts;
 
-                    switch ($exitCode) {
-                        case 1:
-                            throw new GracefulShutdownException();
-                        case 2:
-                            $success = false;
-                            break;
-                        case 255:
-                            throw new Exception();
+            $limit = min($globalLimit, $task->getLimit() ?? $globalLimit);
+
+            if ($task->isOnce()) {
+                $plannedHosts = [];
+                foreach ($hosts as $host) {
+                    if (Selector::apply($task->getSelector(), $host)) {
+                        $plannedHosts[] = $host;
+                        break;
                     }
                 }
             }
 
-            if ($success) {
-                $this->informer->endTask($task);
-            } else {
-                $this->informer->taskError();
+            if ($task->isLocal()) {
+                $plannedHosts = [new Localhost('localhost')];
             }
-        }
-    }
 
-    /**
-     * Run task on hosts.
-     *
-     * @param Host[] $hosts
-     * @return int
-     */
-    private function runTask(array $hosts, Task $task): int
-    {
-        $processes = [];
+            if ($limit === 1 || count($plannedHosts) === 1) {
+                foreach ($plannedHosts as $host) {
+                    if (!Selector::apply($task->getSelector(), $host)) {
+                        if ($plan) {
+                            $plan->commit([], $task);
+                        }
+                        continue;
+                    }
 
-        foreach ($hosts as $host) {
-            if ($task->shouldBePerformed($host)) {
-                $processes[$host->getHostname()] = $this->getProcess($host, $task);
-                if ($task->isOnce()) {
-                    $task->setHasRun();
+                    if ($plan) {
+                        $plan->commit([$host], $task);
+                        continue;
+                    }
+
+                    try {
+                        $host->getConfig()->load();
+                        Exception::setTaskSourceLocation($task->getSourceLocation());
+
+                        $task->run(new Context($host, $this->input, $this->output));
+
+                        $this->messenger->endOnHost($host);
+                        $host->getConfig()->save();
+                    } catch (GracefulShutdownException $exception) {
+                        $this->messenger->renderException($exception, $host);
+                        return GracefulShutdownException::EXIT_CODE;
+                    } catch (\Throwable $exception) {
+                        $this->messenger->renderException($exception, $host);
+                        return 1;
+                    }
+                }
+            } else {
+                foreach (array_chunk($hosts, $limit) as $chunk) {
+                    $exitCode = $this->runTask($chunk, $task, $plan);
+                    if ($exitCode !== 0) {
+                        return $exitCode;
+                    }
                 }
             }
+
+            $this->messenger->endTask($task);
         }
 
-        $callback = function (string $type, string $host, string $output) {
-            $output = rtrim($output);
+        return 0;
+    }
+
+    private function runTask(array $hosts, Task $task, Planner $plan = null): int
+    {
+        $processes = [];
+        $selectedHosts = [];
+        foreach ($hosts as $host) {
+            $selector = $task->getSelector();
+            if ($selector === null || Selector::apply($selector, $host)) {
+                $selectedHosts[] = $host;
+                $plan || $processes[] = $this->getProcess($host, $task);
+            }
+        }
+
+        if ($plan) {
+            $plan->commit($selectedHosts, $task);
+            return 0;
+        }
+
+        $callback = function (string $output) {
+            $output = preg_replace('/\n$/', '', $output);
             if (strlen($output) !== 0) {
                 $this->output->writeln($output);
             }
@@ -145,50 +188,34 @@ class ParallelExecutor implements ExecutorInterface
 
         while ($this->areRunning($processes)) {
             $this->gatherOutput($processes, $callback);
+            $this->output->write(spinner());
             usleep(1000);
         }
+
+        // Clear spinner.
+        $this->output->write("    \r");
+
         $this->gatherOutput($processes, $callback);
 
-        return $this->gatherExitCodes($processes);
+        return $this->cumulativeExitCode($processes);
     }
 
-    /**
-     * Get process for task on host.
-     */
     protected function getProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $options = $this->generateOptions();
-        $arguments = $this->generateArguments();
-        $hostname = $host->getHostname();
-        $taskName = $task->getName();
-        $configFile = $host->get('host_config_storage');
-        $value = $this->input->getOption('file');
-        $file = $value ? "--file='$value'" : '';
+        $configDirectory = $host->get('config_directory');
+        $decorated = $this->output->isDecorated() ? '--decorated' : '';
+        $command = "$dep worker $task {$host->getAlias()} $configDirectory {$this->input} $decorated";
 
-        if ($this->output->isDecorated()) {
-            $options .= ' --ansi';
+        if ($this->output->isDebug()) {
+            $this->output->writeln("[{$host->getTag()}] $command");
         }
 
-        $command = "$dep $file worker $arguments $options --hostname $hostname --task $taskName --config-file $configFile";
-        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
-            $process = Process::fromShellCommandline($command);
-        } else {
-            $process = new Process($command);
-        }
-
-        if (!defined('DEPLOYER_PARALLEL_PTY')) {
-            $process->setPty(true);
-        }
-
-        return $process;
+        return Process::fromShellCommandline($command);
     }
 
     /**
-     * Start all of the processes.
-     *
      * @param Process[] $processes
-     * @return void
      */
     protected function startProcesses(array $processes)
     {
@@ -198,10 +225,7 @@ class ParallelExecutor implements ExecutorInterface
     }
 
     /**
-     * Determine if any of the processes are running.
-     *
      * @param Process[] $processes
-     * @return bool
      */
     protected function areRunning(array $processes): bool
     {
@@ -215,23 +239,19 @@ class ParallelExecutor implements ExecutorInterface
     }
 
     /**
-     * Gather the output from all of the processes.
-     *
      * @param Process[] $processes
-     * @param callable $callback
-     * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
     {
-        foreach ($processes as $host => $process) {
+        foreach ($processes as $process) {
             $output = $process->getIncrementalOutput();
             if (strlen($output) !== 0) {
-                $callback(Process::OUT, $host, $output);
+                $callback($output);
             }
 
             $errorOutput = $process->getIncrementalErrorOutput();
             if (strlen($errorOutput) !== 0) {
-                $callback(Process::ERR, $host, $errorOutput);
+                $callback($errorOutput);
             }
         }
     }
@@ -239,7 +259,7 @@ class ParallelExecutor implements ExecutorInterface
     /**
      * Gather the cumulative exit code for the processes.
      */
-    protected function gatherExitCodes(array $processes): int
+    protected function cumulativeExitCode(array $processes): int
     {
         foreach ($processes as $process) {
             if ($process->getExitCode() > 0) {
@@ -248,43 +268,5 @@ class ParallelExecutor implements ExecutorInterface
         }
 
         return 0;
-    }
-
-    /**
-     * Generate options and arguments string.
-     */
-    private function generateOptions(): string
-    {
-        /** @var string[] $inputs */
-        $inputs = [
-            (string)(new VerbosityString($this->output)),
-        ];
-
-        $userDefinition = $this->console->getUserDefinition();
-        // Get user arguments
-        foreach ($userDefinition->getArguments() as $argument) {
-            $inputs[] = Argument::toString($this->input, $argument);
-        }
-
-        // Get user options
-        foreach ($userDefinition->getOptions() as $option) {
-            $inputs[] = Option::toString($this->input, $option);
-        }
-
-        return implode(' ', array_filter($inputs, static function (string $item): bool {
-            return $item !== '';
-        }));
-    }
-
-    private function generateArguments(): string
-    {
-        $arguments = '';
-
-        if ($this->input->hasArgument('stage')) {
-            // Some people rely on stage argument, so pass it to worker too.
-            $arguments .= $this->input->getArgument('stage');
-        }
-
-        return $arguments;
     }
 }

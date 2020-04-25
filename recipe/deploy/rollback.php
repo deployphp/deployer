@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Exception\Exception;
+
 desc('Rollback to previous release');
 task('rollback', function () {
     $releases = get('releases_list');
@@ -20,10 +22,9 @@ task('rollback', function () {
         // Remove release
         run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
 
-        if (isVerbose()) {
-            writeln("Rollback to `{$releases[1]}` release was successful.");
-        }
+
+        writeln("<info>rollback</info> to {$releases[1]} release was <success>successful</success>");
     } else {
-        writeln("<comment>No more releases you can revert to.</comment>");
+        throw new Exception("No more releases you can revert to.");
     }
 });

@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Exception\RunException;
+
 /**
  * Get current git HEAD branch as default branch to deploy.
  */
@@ -52,11 +54,8 @@ task('deploy:update_code', function () {
     $gitCache = get('git_cache');
     $recursive = get('git_recursive', true) ? '--recursive' : '';
     $dissociate = get('git_clone_dissociate', true) ? '--dissociate' : '';
-    $quiet = isQuiet() ? '-q' : '';
+    $quiet = output()->isQuiet() ? '-q' : '';
     $depth = $gitCache ? '' : '--depth 1';
-    $options = [
-        'tty' => get('git_tty', false),
-    ];
 
     $at = '';
     if (!empty($branch)) {
@@ -84,16 +83,27 @@ task('deploy:update_code', function () {
         cd('{{deploy_path}}');
     }
 
+    // Populate known hosts
+    preg_match('/.*(@|\/\/)([^\/:]+).*/', $repository, $match);
+    if (isset($match[2])) {
+        $repositoryHostname = $match[2];
+        try {
+            run("ssh-keygen -F $repositoryHostname");
+        } catch (RunException $exception) {
+            run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
+        }
+    }
+
     if ($gitCache && has('previous_release')) {
         try {
-            run("$git clone $at $recursive $quiet --reference {{previous_release}} $dissociate $repository  {{release_path}} 2>&1", $options);
+            run("$git clone $at $recursive $quiet --reference {{previous_release}} $dissociate $repository  {{release_path}} 2>&1");
         } catch (\Throwable $exception) {
             // If {{deploy_path}}/releases/{$releases[1]} has a failed git clone, is empty, shallow etc, git would throw error and give up. So we're forcing it to act without reference in this situation
-            run("$git clone $at $recursive $quiet $repository {{release_path}} 2>&1", $options);
+            run("$git clone $at $recursive $quiet $repository {{release_path}} 2>&1");
         }
     } else {
         // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
-        run("$git clone $at $depth $recursive $quiet $repository {{release_path}} 2>&1", $options);
+        run("$git clone $at $depth $recursive $quiet $repository {{release_path}} 2>&1");
     }
 
     if (!empty($revision)) {

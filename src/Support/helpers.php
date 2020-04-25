@@ -93,3 +93,29 @@ function array_to_string(array $array): string
         $array
     ));
 }
+
+/**
+ * Check if var is closure.
+ *
+ * @param $var
+ * @return bool
+ */
+function is_closure($var)
+{
+    return is_object($var) && ($var instanceof \Closure);
+}
+
+/**
+ * Check if all elements satisfy predicate.
+ *
+ * @param array $array
+ * @param \Closure $predicate
+ */
+function array_all(array $array, $predicate) {
+    foreach ($array as $key => $value) {
+        if (!$predicate($value, $key)) {
+            return false;
+        }
+    }
+    return true;
+}

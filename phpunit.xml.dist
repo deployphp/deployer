@@ -8,21 +8,23 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="Source">
+        <testsuite name="Unit">
             <directory>test/src/</directory>
-        </testsuite>
-        <testsuite name="Recipe">
-            <directory>test/recipe/</directory>
         </testsuite>
         <testsuite name="Misc">
             <directory>test/misc/</directory>
+        </testsuite>
+        <testsuite name="Recipe">
+            <directory>test/recipe/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>src/</directory>
-            <directory>recipe/common.php</directory>
-            <directory>recipe/deploy/</directory>
+            <exclude>
+                <directory suffix=".php">vendor/</directory>
+                <directory>bin/</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>

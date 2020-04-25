@@ -38,64 +38,11 @@ class TaskTest extends TestCase
         $task->local();
         self::assertTrue($task->isLocal());
 
-        $task->setPrivate();
-        self::assertTrue($task->isPrivate());
+        $task->hidden();
+        self::assertTrue($task->isHidden());
 
         $task->once();
         self::assertTrue($task->isOnce());
-    }
-
-    public function testShouldBePerformed()
-    {
-        $a = (new Host('a'))->stage('prod')->roles('app');
-        $b = (new Host('b'))->stage('prod')->roles('db');
-        $c = (new Host('c'))->stage('beta')->roles('app', 'db');
-
-        $task = new Task('task');
-        $task
-            ->onStage('prod')
-            ->onRoles('app');
-        self::assertEquals([true, false, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onStage('prod')
-            ->onRoles('db');
-        self::assertEquals([false, true, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onStage('beta')
-            ->onRoles('app', 'db');
-        self::assertEquals([false, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onStage('beta');
-        self::assertEquals([false, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onRoles('db');
-        self::assertEquals([false, true, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onRoles('app');
-        self::assertEquals([true, false, true], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onHosts('a', 'b');
-        self::assertEquals([true, true, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        $task = new Task('task');
-        $task
-            ->onRoles('app')
-            ->onHosts('a', 'b');
-        self::assertEquals([true, false, false], array_map([$task, 'shouldBePerformed'], [$a, $b, $c]));
-
-        self::assertTrue($task->shouldBePerformed());
     }
 
     public function testInit()
@@ -128,38 +75,6 @@ class TaskTest extends TestCase
         $task3 = new Task('task3', new StubTask());
         $task3->run($context);
         self::assertEquals(1, StubTask::$runned);
-    }
-
-    public function testOnce()
-    {
-        $a = (new Host('a'))->stage('prod')->roles('app');
-        $b = (new Host('b'))->stage('prod')->roles('app');
-
-        $context = self::getMockBuilder(Context::class)->disableOriginalConstructor()->getMock();
-
-        // Test create task with [$object, 'method']
-        $mock = self::getMockBuilder('stdClass')
-            ->setMethods(['callback'])
-            ->getMock();
-
-        $task1 = new Task('only:once', [$mock, 'callback']);
-        $task1
-            ->onHosts('a', 'b')
-            ->once();
-        self::assertTrue($task1->shouldBePerformed($a));
-        self::assertEquals([true, true], array_map([$task1, 'shouldBePerformed'], [$a, $b]));
-        $task1->run($context);
-        self::assertFalse($task1->shouldBePerformed($b));
-        self::assertEquals([false, false], array_map([$task1, 'shouldBePerformed'], [$a, $b]));
-
-        $task2 = new Task('multiple:runs', [$mock, 'callback']);
-        $task2
-            ->onHosts('a', 'b');
-        self::assertTrue($task2->shouldBePerformed($a));
-        self::assertEquals([true, true], array_map([$task2, 'shouldBePerformed'], [$a, $b]));
-        $task2->run($context);
-        self::assertTrue($task2->shouldBePerformed($b));
-        self::assertEquals([true, true], array_map([$task2, 'shouldBePerformed'], [$a, $b]));
     }
 }
 

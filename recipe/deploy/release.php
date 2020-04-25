@@ -7,8 +7,12 @@
 
 namespace Deployer;
 
-use Deployer\Type\Csv;
+use Deployer\Exception\Exception;
+use Deployer\Support\Csv;
 
+/**
+ * Name of folder in releases.
+ */
 set('release_name', function () {
     $list = get('releases_list');
 
@@ -23,7 +27,7 @@ set('release_name', function () {
     }
 
     return (string)$nextReleaseNumber;
-}); // name of folder in releases
+});
 
 /**
  * Return list of releases on host.
@@ -89,7 +93,7 @@ set('release_path', function () {
         $link = run("readlink {{deploy_path}}/release");
         return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
     } else {
-        return get('current_path');
+        throw new Exception(parse('The "release_path" ({{deploy_path}}/release) does not exist.'));
     }
 });
 
@@ -128,7 +132,7 @@ task('deploy:release', function () {
     run("echo '$date,{{release_name}}' >> .dep/releases");
 
     // Make new release
-    run("mkdir $releasePath");
+    run("mkdir -p $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
 
     // Add to releases list

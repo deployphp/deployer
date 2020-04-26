@@ -105,9 +105,17 @@ class ParallelExecutor
 
             if ($limit === 1 || count($hosts) === 1) {
                 foreach ($hosts as $host) {
-                    $host->getConfig()->getCollection()->load();
-                    $task->run(new Context($host, $this->input, $this->output));
-                    $host->getConfig()->getCollection()->flush();
+                    try {
+                        Exception::setFilepath($task->getFilepath());
+                        $host->getConfig()->getCollection()->load();
+
+                        $task->run(new Context($host, $this->input, $this->output));
+
+                        $host->getConfig()->getCollection()->flush();
+                    } catch (GracefulShutdownException $exception) {
+                        $this->messenger->renderException($exception, $host);
+                        return GracefulShutdownException::EXIT_CODE;
+                    }
                 }
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {

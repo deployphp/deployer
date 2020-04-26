@@ -122,7 +122,7 @@ class TaskCommand extends Command
         if ($exitCode === 0) {
             return 0;
         }
-        if ($exitCode === GracefulShutdownException::EXIR_CODE) {
+        if ($exitCode === GracefulShutdownException::EXIT_CODE) {
             return 1;
         }
 

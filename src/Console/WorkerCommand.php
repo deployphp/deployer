@@ -57,10 +57,10 @@ class WorkerCommand extends TaskCommand
 
             return 0;
         } catch (GracefulShutdownException $e) {
-            $this->deployer->messenger->printException($e, $host);
-            return GracefulShutdownException::EXIR_CODE;
+            $this->deployer->messenger->renderException($e, $host);
+            return GracefulShutdownException::EXIT_CODE;
         } catch (\Throwable $e) {
-            $this->deployer->messenger->printException($e, $host);
+            $this->deployer->messenger->renderException($e, $host);
             return 255;
         }
     }

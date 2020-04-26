@@ -20,5 +20,5 @@ namespace Deployer\Exception;
  */
 class GracefulShutdownException extends Exception
 {
-    const EXIR_CODE = 42;
+    const EXIT_CODE = 42;
 }

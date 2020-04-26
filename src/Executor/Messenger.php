@@ -72,7 +72,7 @@ class Messenger
         }
     }
 
-    public function printException(Throwable $exception, Host $host)
+    public function renderException(Throwable $exception, Host $host)
     {
         if ($exception instanceof RunException) {
 
@@ -120,7 +120,7 @@ class Messenger
         }
 
         if ($exception->getPrevious()) {
-            $this->printException($exception->getPrevious(), $host);
+            $this->renderException($exception->getPrevious(), $host);
         }
     }
 }

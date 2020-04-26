@@ -137,7 +137,6 @@ function desc($title = null)
  */
 function task($name, $body = null)
 {
-    Exception::await();
     $deployer = Deployer::get();
 
     if (empty($body)) {
@@ -158,6 +157,7 @@ function task($name, $body = null)
         throw new \InvalidArgumentException('Task should be a closure, string or array of other tasks.');
     }
 
+    $task->setFilepath(Exception::await());
     $deployer->tasks->set($name, $task);
 
     if (!empty(desc())) {

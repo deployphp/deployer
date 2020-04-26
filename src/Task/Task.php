@@ -85,6 +85,13 @@ class Task
     private $shallow = false;
 
     /**
+     * Task filepath location.
+     *
+     * @var string
+     */
+    private $filepath = '';
+
+    /**
      * @param string $name Tasks name
      * @param callable $callback Task code
      */
@@ -310,5 +317,21 @@ class Task
         if ($this->isOnce()) {
             $this->hasRun = true;
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilepath(): string
+    {
+        return $this->filepath;
+    }
+
+    /**
+     * @param string $filepath
+     */
+    public function setFilepath(string $filepath): void
+    {
+        $this->filepath = $filepath;
     }
 }

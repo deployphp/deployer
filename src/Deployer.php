@@ -33,6 +33,7 @@ use Pimple\Container;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Whoops;
 
 /**
  * Deployer class represents DI container for configuring

@@ -11,7 +11,7 @@ use Throwable;
 
 class Exception extends \Exception
 {
-    private static $recipeFile;
+    private static $awaitFilepath;
     private $filename;
     private $lineNumber;
 
@@ -20,7 +20,7 @@ class Exception extends \Exception
         if (function_exists('debug_backtrace')) {
             $trace = debug_backtrace();
             foreach ($trace as $t) {
-                if (!empty($t['file']) && $t['file'] === self::$recipeFile) {
+                if (!empty($t['file']) && $t['file'] === self::$awaitFilepath) {
                     $this->filename = basename($t['file']);
                     $this->lineNumber = $t['line'];
                     break;
@@ -30,12 +30,18 @@ class Exception extends \Exception
         parent::__construct($message, $code, $previous);
     }
 
+    public static function setFilepath($awaitFilepath): void
+    {
+        self::$awaitFilepath = $awaitFilepath;
+    }
+
     public static function await()
     {
         if (function_exists('debug_backtrace')) {
             $trace = debug_backtrace();
-            self::$recipeFile = $trace[1]['file'];
+            return self::$awaitFilepath = $trace[1]['file'];
         }
+        return '';
     }
 
     public function getFilename()

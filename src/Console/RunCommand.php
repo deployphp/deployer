@@ -81,7 +81,7 @@ class RunCommand extends Command
             try {
                 $task->run(new Context($host, $input, $output));
             } catch (\Throwable $exception) {
-                $this->deployer->messenger->printException($exception, $host);
+                $this->deployer->messenger->renderException($exception, $host);
             }
         }
 

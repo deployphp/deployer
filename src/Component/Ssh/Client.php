@@ -41,6 +41,7 @@ class Client
             $sshArguments = $this->initMultiplexing($host);
         }
 
+        $become = '';
         if ($host->has('become')) {
             $become = sprintf('sudo -H -u %s', $host->get('become'));
         }

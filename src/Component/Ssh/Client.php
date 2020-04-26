@@ -37,10 +37,12 @@ class Client
 
         $config = array_merge($defaults, $config);
         $sshArguments = $host->getSshArguments();
-        $become = $host->has('become') ? 'sudo -H -u ' . $host->get('become') : '';
-
         if ($host->sshMultiplexing()) {
             $sshArguments = $this->initMultiplexing($host);
+        }
+
+        if ($host->has('become')) {
+            $become = sprintf('sudo -H -u %s', $host->get('become'));
         }
 
         $shellCommand = $host->shell();

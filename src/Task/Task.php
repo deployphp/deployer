@@ -60,7 +60,7 @@ class Task
      *
      * @var bool
      */
-    private $private = false;
+    private $hidden = false;
 
     /**
      * Mark task to run only once, of the first node from the pool
@@ -225,19 +225,19 @@ class Task
     /**
      * @return boolean
      */
-    public function isPrivate()
+    public function isHidden()
     {
-        return $this->private;
+        return $this->hidden;
     }
 
     /**
-     * Mark task as private
+     * Mark task as hidden
      *
      * @return $this
      */
-    public function setPrivate()
+    public function hidden()
     {
-        $this->private = true;
+        $this->hidden = true;
         return $this;
     }
 

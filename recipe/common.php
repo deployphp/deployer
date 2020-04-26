@@ -124,6 +124,13 @@ set('bin/symlink', function () {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
 
+set('sudo_askpass', function () {
+    if (test('[ -d {{deploy_path}}/.dep ]')) {
+        return '{{deploy_path}}/.dep/sudo_pass';
+    } else {
+        return '/tmp/dep_sudo_pass';
+    }
+});
 
 /**
  * Default options
@@ -157,14 +164,14 @@ task('deploy:success', function () {
     info(currentHost()->tag() . ' successfully deployed!');
 })
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 
 /**
  * Deploy failure
  */
 task('deploy:failed', function () {
-})->setPrivate();
+})->hidden();
 
 fail('deploy', 'deploy:failed');
 

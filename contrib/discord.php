@@ -55,7 +55,7 @@ task('discord:notify', function () {
 })
     ->once()
     ->shallow()
-    ->isPrivate();
+    ->isHidden();
 
 desc('Notify Discord about deploy finish');
 task('discord:notify:success', function () {
@@ -64,7 +64,7 @@ task('discord:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->isPrivate();
+    ->isHidden();
 
 desc('Notify Discord about deploy failure');
 task('discord:notify:failure', function () {
@@ -73,4 +73,4 @@ task('discord:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->isPrivate();
+    ->isHidden();

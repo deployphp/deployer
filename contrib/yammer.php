@@ -39,7 +39,7 @@ task('yammer:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Yammer about deploy finish');
 task('yammer:notify:success', function () {
@@ -59,7 +59,7 @@ task('yammer:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Yammer about deploy failure');
 task('yammer:notify:failure', function () {
@@ -79,4 +79,4 @@ task('yammer:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

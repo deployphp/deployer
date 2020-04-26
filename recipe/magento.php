@@ -37,7 +37,7 @@ task('deploy:clear_version', function () {
     run("rm -f {{release_path}}/LICENSE.txt");
     run("rm -f {{release_path}}/LICENSE_AFL.txt");
     run("rm -f {{release_path}}/RELEASE_NOTES.txt");
-})->setPrivate();
+})->hidden();
 
 after('deploy:update_code', 'deploy:clear_version');
 

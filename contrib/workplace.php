@@ -40,7 +40,7 @@ task('workplace:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Workplace about deploy finish');
 task('workplace:notify:success', function () {
@@ -52,7 +52,7 @@ task('workplace:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Workplace about deploy failure');
 task('workplace:notify:failure', function () {
@@ -64,4 +64,4 @@ task('workplace:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

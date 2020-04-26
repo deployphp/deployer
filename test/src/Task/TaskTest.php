@@ -38,8 +38,8 @@ class TaskTest extends TestCase
         $task->local();
         self::assertTrue($task->isLocal());
 
-        $task->setPrivate();
-        self::assertTrue($task->isPrivate());
+        $task->hidden();
+        self::assertTrue($task->isHidden());
 
         $task->once();
         self::assertTrue($task->isOnce());

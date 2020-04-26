@@ -190,7 +190,7 @@ class Deployer extends Container
         $this->getConsole()->addUserArgumentsAndOptions();
 
         foreach ($this->tasks as $name => $task) {
-            if ($task->isPrivate()) {
+            if ($task->isHidden()) {
                 continue;
             }
 

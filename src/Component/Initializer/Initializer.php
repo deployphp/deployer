@@ -12,7 +12,7 @@ class Initializer
     public function getRecipes()
     {
         $recipes = [];
-        $dir = new \DirectoryIterator(DEPLOYER_INCLUDE_PATH . '/recipe');
+        $dir = new \DirectoryIterator(__DIR__ . '/../../../recipe');
         foreach ($dir as $fileinfo) {
             if ($fileinfo->isDot()) {
                 continue;

@@ -25,7 +25,7 @@ class Host
         $this->config = new Configuration($parent);
         $this->set('alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
-        $this->set('user', '');
+        $this->set('remote_user', '');
         $this->set('port', '');
         $this->set('config_file', '');
         $this->set('identity_file', '');
@@ -106,6 +106,14 @@ class Host
         return $this->config->get('shell');
     }
 
+    public function getConnectionString(): string
+    {
+        if ($this->get('remote_user') !== '') {
+            return $this->get('remote_user') . '@' . $this->get('hostname');
+        }
+        return $this->get('hostname');
+    }
+
     public function getSshArguments()
     {
         $this->initOptions();
@@ -152,6 +160,10 @@ class Host
         }
 
         if (defined('NO_ANSI')) {
+            return $this->alias();
+        }
+
+        if ($this->alias() === 'localhost') {
             return $this->alias();
         }
 

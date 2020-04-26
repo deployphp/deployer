@@ -7,8 +7,8 @@
 
 namespace Deployer\Component\ProcessRunner;
 
+use Deployer\Host\Localhost;
 use PHPUnit\Framework\TestCase;
-use function Deployer\localhost;
 
 class PrinterTest extends TestCase
 {
@@ -16,6 +16,6 @@ class PrinterTest extends TestCase
     {
         $pop = $this->createMock(Printer::class);
         $pr = new ProcessRunner($pop);
-        self::assertEquals('true', $pr->run(localhost(), 'printf "true"'));
+        self::assertEquals('true', $pr->run(new Localhost(), 'printf "true"'));
     }
 }

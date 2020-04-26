@@ -54,7 +54,7 @@ task('deploy:update_code', function () {
     $gitCache = get('git_cache');
     $recursive = get('git_recursive', true) ? '--recursive' : '';
     $dissociate = get('git_clone_dissociate', true) ? '--dissociate' : '';
-    $quiet = isQuiet() ? '-q' : '';
+    $quiet = output()->isQuiet() ? '-q' : '';
     $depth = $gitCache ? '' : '--depth 1';
 
     $at = '';
@@ -84,12 +84,14 @@ task('deploy:update_code', function () {
     }
 
     // Populate known hosts
-    preg_match('/.*(@|\/\/)([^\/:]+).*/', $repository, $m);
-    $repositoryHostname = $m[2];
-    try {
-        run("ssh-keygen -F $repositoryHostname");
-    } catch (RunException $exception) {
-        run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
+    preg_match('/.*(@|\/\/)([^\/:]+).*/', $repository, $match);
+    if (isset($match[2])) {
+        $repositoryHostname = $match[2];
+        try {
+            run("ssh-keygen -F $repositoryHostname");
+        } catch (RunException $exception) {
+            run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
+        }
     }
 
     if ($gitCache && has('previous_release')) {

@@ -40,6 +40,8 @@ class ProcessRunner
     {
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),
+            'idle_timeout' => null,
+            'cwd' => defined('DEPLOYER_ROOT') ? DEPLOYER_ROOT : null,
             'tty' => false,
         ];
         $config = array_merge($defaults, $config);
@@ -52,20 +54,21 @@ class ProcessRunner
             $terminalOutput($type, $buffer);
         };
 
-        try {
-            $process = Process::fromShellCommandline($command);
-            $process
-                ->setTimeout($config['timeout'])
-                ->setTty($config['tty'])
-                ->mustRun($callback);
+        $process = Process::fromShellCommandline(str_replace('%secret%', $config['secret'] ?? '', $command))
+            ->setTimeout($config['timeout'])
+            ->setIdleTimeout($config['idle_timeout'])
+            ->setTty($config['tty']);
 
+        if ($config['cwd'] !== null) {
+            $process->setWorkingDirectory($config['cwd']);
+        }
+
+        try {
+            $process->mustRun($callback);
             return $process->getOutput();
         } catch (ProcessFailedException $exception) {
-            $trace = debug_backtrace();
             throw new RunException(
-                basename($trace[1]['file']),
-                $trace[1]['line'],
-                $host->alias(),
+                $host,
                 $command,
                 $process->getExitCode(),
                 $process->getOutput(),

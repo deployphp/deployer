@@ -64,7 +64,7 @@ task('chat:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Google Hangouts Chat about deploy finish');
 task('chat:notify:success', function () {
@@ -107,7 +107,7 @@ task('chat:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
     desc('Notifying Google Hangouts Chat about deploy failure');
 task('chat:notify:failure', function () {
@@ -151,4 +151,4 @@ task('chat:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

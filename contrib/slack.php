@@ -41,7 +41,7 @@ task('slack:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Slack about deploy finish');
 task('slack:notify:success', function () {
@@ -60,7 +60,7 @@ task('slack:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Slack about deploy failure');
 task('slack:notify:failure', function () {
@@ -79,4 +79,4 @@ task('slack:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

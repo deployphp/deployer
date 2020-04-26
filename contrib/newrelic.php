@@ -38,4 +38,4 @@ task('newrelic:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

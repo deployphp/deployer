@@ -28,5 +28,4 @@ task('deploy:cleanup', function () {
     }
 
     run("cd {{deploy_path}} && if [ -e release ]; then rm release; fi", $runOpts);
-    run("cd {{deploy_path}} && if [ -h release ]; then rm release; fi", $runOpts);
 });

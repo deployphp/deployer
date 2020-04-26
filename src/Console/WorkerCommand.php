@@ -9,6 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Collection\PersistentCollection;
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
 use Deployer\Task\Context;
@@ -17,50 +18,56 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WorkerCommand extends TaskCommand
+class WorkerCommand extends MainCommand
 {
     public function __construct(Deployer $deployer)
     {
         parent::__construct('worker', null, $deployer);
-        $this->deployer = $deployer;
         $this->setHidden(true);
+    }
+
+    protected function configure()
+    {
         $this->addArgument('worker-task', InputArgument::REQUIRED);
         $this->addArgument('worker-host', InputArgument::REQUIRED);
-        $this->addArgument('worker-config', InputArgument::REQUIRED);
+        $this->addArgument('config-directory', InputArgument::REQUIRED);
         $this->addArgument('original-task', InputArgument::REQUIRED);
         $this->addOption('decorated', null, Option::VALUE_NONE);
+        parent::configure();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->deployer->input = $input;
+        $this->deployer->output = $output;
+
         $output->setDecorated($input->getOption('decorated'));
-        if (!$output->isDecorated()) {
+        if (!$output->isDecorated() && !defined('NO_ANSI')) {
             define('NO_ANSI', 'true');
         }
 
         $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
         $task = $this->deployer->tasks->get($input->getArgument('worker-task'));
 
-        $persistentCollection = new PersistentCollection($input->getArgument('worker-config'));
-        $persistentCollection->load();
+        $this->deployer->config->set('config_directory', $input->getArgument('config-directory'));
+        $host->getConfig()->load();
 
-        $host->getConfig()->setCollection($persistentCollection);
-        foreach ($persistentCollection as $name => $value) {
+        foreach ($host->getConfig() as $name => $value) {
             $this->deployer->config->set($name, $value);
         }
 
         try {
+            Exception::setTaskSourceLocation($task->getSourceLocation());
             $task->run(new Context($host, $input, $output));
-            $this->deployer->informer->endOnHost($host);
 
-            $persistentCollection->flush();
-
+            $this->deployer->messenger->endOnHost($host);
+            $host->getConfig()->save();
             return 0;
         } catch (GracefulShutdownException $e) {
-            $this->deployer->informer->taskException($e, $host);
-            return GracefulShutdownException::EXIR_CODE;
+            $this->deployer->messenger->renderException($e, $host);
+            return GracefulShutdownException::EXIT_CODE;
         } catch (\Throwable $e) {
-            $this->deployer->informer->taskException($e, $host);
+            $this->deployer->messenger->renderException($e, $host);
             return 255;
         }
     }

@@ -11,11 +11,12 @@ use Deployer\Collection\Collection;
 
 /**
  * @method Host get($name)
+ * @method Host[] getIterator()
  */
 class HostCollection extends Collection
 {
     protected function throwNotFound(string $name)
     {
-        throw new \InvalidArgumentException("Host `$name` not found");
+        throw new \InvalidArgumentException("Host \"$name\" not found.");
     }
 }

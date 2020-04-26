@@ -24,29 +24,26 @@ if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
     exit(1);
 }
 
+// Errors to exception
+
+set_error_handler(function ($severity, $message, $filename, $lineno) {
+    if (error_reporting() == 0) {
+        return;
+    }
+    if (error_reporting() & $severity) {
+        throw new ErrorException($message, 0, $severity, $filename, $lineno);
+    }
+});
+
 // Detect deploy.php script
 
-$options = getopt('f::', ['file::']);
-$userSpecifiedFile = null;
+$deployFile = null;
 
-if (isset($options['f'])) {
-    $userSpecifiedFile = $options['f'];
-} elseif (isset($options['file'])) {
-    $userSpecifiedFile = $options['file'];
+if (preg_match('/(^|\s) --? (f|file) (=|\s) (?<file>.+?) (\s|$)/x', implode(' ', $argv), $match)) {
+    $deployFile = $match['file'];
 }
 
-if (empty($userSpecifiedFile)) {
-    $fOptIndex = array_search('-f', $argv);
-    $fileOptIndex = array_search('--file', $argv);
-
-    if ($fOptIndex && $fOptIndex + 1 < count($argv)) {
-        $userSpecifiedFile = $argv[$fOptIndex + 1];
-    } elseif ($fileOptIndex && $fileOptIndex + 1 < count($argv)) {
-        $userSpecifiedFile = $argv[$fileOptIndex + 1];
-    }
-}
-
-if (empty($userSpecifiedFile)) {
+if (empty($deployFile)) {
     $deployFile = getcwd() . '/deploy.php';
 
     if (!is_readable($deployFile)) {
@@ -59,59 +56,41 @@ if (empty($userSpecifiedFile)) {
         } while (!is_readable($deployFile) && $count < 100);
     }
 } else {
-    $deployFile = ($userSpecifiedFile[0] === '/' ? '' : getcwd() . '/') . $userSpecifiedFile;
+    $deployFile = ($deployFile[0] === '/' ? '' : getcwd() . '/') . $deployFile;
 }
-
-$deployFilePath = dirname($deployFile);
 
 // Detect autoload location
 
 $autoload = [
-    $deployFilePath . '/vendor/autoload.php',
+    dirname($deployFile) . '/vendor/autoload.php',
     __DIR__ . '/../../../autoload.php',
     __DIR__ . '/../vendor/autoload.php'
 ];
 
 $includes = [
-    $deployFilePath . '/vendor/deployer/deployer',
+    dirname($deployFile) . '/vendor/deployer/deployer',
     __DIR__ . '/../../../deployer/deployer',
     __DIR__ . '/../'
 ];
 
-$loaded = false;
 $includePath = false;
-$vendorDir = false;
-
 for ($i = 0; $i < count($autoload); $i++) {
     if (file_exists($autoload[$i]) && file_exists($includes[$i])) {
         require $autoload[$i];
-        $vendorDir = dirname($autoload[$i]);
         $includePath = $includes[$i];
-        $loaded = true;
-        break;
+        goto run;
     }
 }
 
-if (!$loaded) {
-    fwrite(
-        STDERR,
-        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
-        'wget http://getcomposer.org/composer.phar' . PHP_EOL .
-        'php composer.phar install' . PHP_EOL
-    );
-    exit(1);
-}
+fwrite(
+    STDERR,
+    'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+    'wget http://getcomposer.org/composer.phar' . PHP_EOL .
+    'php composer.phar install' . PHP_EOL
+);
+exit(1);
 
-define('DEPLOYER_INCLUDE_PATH', $includePath);
+run:
 set_include_path($includePath . PATH_SEPARATOR . get_include_path());
-
-set_error_handler(function ($severity, $message, $filename, $lineno) {
-    if (error_reporting() == 0) {
-        return;
-    }
-    if (error_reporting() & $severity) {
-        throw new ErrorException($message, 0, $severity, $filename, $lineno);
-    }
-});
-
+define('DEPLOYER_ROOT', dirname($deployFile));
 \Deployer\Deployer::run(DEPLOYER_VERSION, $deployFile);

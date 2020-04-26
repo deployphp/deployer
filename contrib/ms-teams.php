@@ -56,7 +56,7 @@ task('teams:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Teams about deploy finish');
 task('teams:notify:success', function () {
@@ -71,7 +71,7 @@ task('teams:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying Teams about deploy failure');
 task('teams:notify:failure', function () {
@@ -86,4 +86,4 @@ task('teams:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

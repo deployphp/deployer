@@ -8,36 +8,46 @@
 namespace Deployer;
 
 use Deployer\Collection\Collection;
+use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
+use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Component\ProcessRunner\ProcessRunner;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
-use Deployer\Console\Application;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\DiceCommand;
 use Deployer\Console\InitCommand;
+use Deployer\Console\MainCommand;
 use Deployer\Console\RunCommand;
 use Deployer\Console\SshCommand;
-use Deployer\Console\TaskCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
+use Deployer\Executor\Messenger;
 use Deployer\Executor\ParallelExecutor;
-use Deployer\Executor\Status;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
+use Deployer\Selector\Selector;
 use Deployer\Task;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
 use Symfony\Component\Console;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 /**
  * Deployer class represents DI container for configuring
  *
  * @property Application $console
+ * @property InputInterface $input
+ * @property OutputInterface $output
  * @property Task\TaskCollection|Task\Task[] $tasks
  * @property Host\HostCollection|Collection|Host\Host[] $hosts
  * @property Configuration $config
@@ -45,12 +55,13 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @property Client $sshClient
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
- * @property Host\HostSelector $hostSelector
+ * @property Selector $selector
  * @property ParallelExecutor $executor
- * @property Status $informer
- * @property Status $logger
+ * @property Messenger $messenger
+ * @property Messenger $logger
  * @property Printer $pop
  * @property Collection $fail
+ * @property InputDefinition $inputDefinition
  */
 class Deployer extends Container
 {
@@ -60,9 +71,6 @@ class Deployer extends Container
      */
     private static $instance;
 
-    /**
-     * @param Application $console
-     */
     public function __construct(Application $console)
     {
         parent::__construct();
@@ -71,13 +79,21 @@ class Deployer extends Container
          *           Console          *
          ******************************/
 
+        $console->getDefinition()->addOption(
+            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Specify Deployer file')
+        );
+
         $this['console'] = function () use ($console) {
-            $console->catchIO(function ($input, $output) {
-                $this['input'] = $input;
-                $this['output'] = $output;
-                return [$this['input'], $this['output']];
-            });
             return $console;
+        };
+        $this['input'] = function () {
+            throw new \RuntimeException('Uninitialized "input" in Deployer container.');
+        };
+        $this['output'] = function () {
+            throw new \RuntimeException('Uninitialized "output" in Deployer container.');
+        };
+        $this['inputDefinition'] = function () {
+            return new InputDefinition();
         };
 
         /******************************
@@ -101,7 +117,7 @@ class Deployer extends Container
             return new Client($c['output'], $c['pop'], $c['logger']);
         };
         $this['rsync'] = function ($c) {
-            return new Rsync($c['pop']);
+            return new Rsync($c['pop'], $c['output']);
         };
         $this['processRunner'] = function ($c) {
             return new ProcessRunner($c['pop'], $c['logger']);
@@ -115,25 +131,20 @@ class Deployer extends Container
         $this['scriptManager'] = function ($c) {
             return new Task\ScriptManager($c['tasks']);
         };
-        $this['hostSelector'] = function ($c) {
-            $defaultStage = $c['config']['default_stage'];
-            if (is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
-                $defaultStage = call_user_func($defaultStage);
-            }
-            return new Host\HostSelector($c['hosts'], $defaultStage);
+        $this['selector'] = function ($c) {
+            return new Selector($c['hosts']);
         };
         $this['fail'] = function () {
             return new Collection();
         };
-        $this['informer'] = function ($c) {
-            return new Status($c['input'], $c['output']);
+        $this['messenger'] = function ($c) {
+            return new Messenger($c['input'], $c['output']);
         };
         $this['executor'] = function ($c) {
             return new ParallelExecutor(
                 $c['input'],
                 $c['output'],
-                $c['informer'],
-                $c['console'],
+                $c['messenger'],
                 $c['sshClient'],
                 $c['config']
             );
@@ -172,29 +183,32 @@ class Deployer extends Container
      */
     public function init()
     {
-        $this->addConsoleCommands();
+        $this->addTaskCommands();
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());
         $this->getConsole()->add(new InitCommand());
+        $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
-        $this->getConsole()->add(new TreeCommand($this));
-        $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
+        if (self::isPharArchive()) {
+            $selfUpdate = new PharUpdateCommand('self-update');
+            $selfUpdate->setDescription('Updates deployer.phar to the latest version');
+            $selfUpdate->setManifestUri('https://deployer.org/manifest.json');
+            $this->getConsole()->add($selfUpdate);
+            $this->getConsole()->getHelperSet()->set(new PharUpdateHelper());
+        }
     }
 
     /**
      * Transform tasks to console commands.
      */
-    public function addConsoleCommands()
+    public function addTaskCommands()
     {
-        $this->getConsole()->addUserArgumentsAndOptions();
-
         foreach ($this->tasks as $name => $task) {
-            if ($task->isPrivate()) {
-                continue;
-            }
+            $command = new MainCommand($name, $task->getDescription(), $this);
+            $command->setHidden($task->isHidden());
 
-            $this->getConsole()->add(new TaskCommand($name, $task->getDescription(), $this));
+            $this->getConsole()->add($command);
         }
     }
 
@@ -213,27 +227,20 @@ class Deployer extends Container
     }
 
     /**
+     * @param string $name
+     * @param mixed $value
+     */
+    public function __set($name, $value)
+    {
+        $this[$name] = $value;
+    }
+
+    /**
      * @return Application
      */
     public function getConsole()
     {
         return $this['console'];
-    }
-
-    /**
-     * @return Console\Input\InputInterface
-     */
-    public function getInput()
-    {
-        return $this['input'];
-    }
-
-    /**
-     * @return Console\Output\OutputInterface
-     */
-    public function getOutput()
-    {
-        return $this['output'];
     }
 
     /**
@@ -253,18 +260,61 @@ class Deployer extends Container
      */
     public static function run($version, $deployFile)
     {
-        // Init Deployer
-        $console = new Application('Deployer', $version);
         $input = new ArgvInput();
         $output = new ConsoleOutput();
-        $deployer = new self($console);
 
-        // Require deploy.php file
-        self::loadRecipe($deployFile);
+        try {
+            // Init Deployer
+            $console = new Application('Deployer', $version);
+            $deployer = new self($console);
 
-        // Run Deployer
-        $deployer->init();
-        $console->run($input, $output);
+            // Require deploy.php file
+            self::load($deployFile);
+
+            // Run Deployer
+            $deployer->init();
+            $console->run($input, $output);
+
+        } catch (Throwable $exception) {
+            self::printException($output, $exception);
+        }
+    }
+
+    public static function load(string $deployFile)
+    {
+        if (is_readable($deployFile)) {
+            // Prevent variable leak into deploy.php file
+            call_user_func(function () use ($deployFile) {
+                // Reorder autoload stack
+                $originStack = spl_autoload_functions();
+
+                require $deployFile;
+
+                $newStack = spl_autoload_functions();
+                if ($originStack[0] !== $newStack[0]) {
+                    foreach (array_reverse($originStack) as $loader) {
+                        spl_autoload_unregister($loader);
+                        spl_autoload_register($loader, true, true);
+                    }
+                }
+            });
+        }
+    }
+
+    private static function printException(OutputInterface $output, Throwable $exception)
+    {
+        $class = get_class($exception);
+        $file = basename($exception->getFile());
+        $output->writeln([
+            "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
+            "",
+            implode("\n", array_map(function ($line) {
+                return "  " . $line;
+            }, explode("\n", $exception->getMessage()))),
+            "",
+        ]);
+        $output->writeln($exception->getTraceAsString());
+        return;
     }
 
     /**
@@ -287,7 +337,7 @@ class Deployer extends Container
             'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
             'hosts_count' => $this->hosts->count(),
             'deployer_version' => $this->getConsole()->getVersion(),
-            'deployer_phar' => $this->getConsole()->isPharArchive(),
+            'deployer_phar' => self::isPharArchive(),
             'php_version' => phpversion(),
             'extension_pcntl' => extension_loaded('pcntl'),
             'extension_curl' => extension_loaded('curl'),
@@ -311,46 +361,8 @@ class Deployer extends Container
         Reporter::report($stats);
     }
 
-    /**
-     * Load recipe file
-     *
-     * @param string $deployFile
-     *
-     * @return void
-     * @codeCoverageIgnore
-     */
-    public static function loadRecipe($deployFile)
+    public static function isPharArchive()
     {
-        if (is_readable($deployFile)) {
-            // Prevent variable leak into deploy.php file
-            call_user_func(function () use ($deployFile) {
-                // reorder autoload stack.
-                $originStack = spl_autoload_functions();
-                require $deployFile;
-                $newStack = spl_autoload_functions();
-                if ($originStack[0] !== $newStack[0]) {
-                    foreach (array_reverse($originStack) as $loader) {
-                        spl_autoload_unregister($loader);
-                        spl_autoload_register($loader, true, true);
-                    }
-                }
-            });
-        }
-    }
-
-    /**
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public static function getCalledScript(): string
-    {
-        $executable = !empty($_SERVER['_']) ? $_SERVER['_'] : $_SERVER['PHP_SELF'];
-        $shortcut = false !== strpos(getenv('PATH'), dirname($executable)) ? basename($executable) : $executable;
-
-        if ($executable !== $_SERVER['PHP_SELF']) {
-            return sprintf('%s %s', $shortcut, $_SERVER['PHP_SELF']);
-        }
-
-        return $shortcut;
+        return 'phar:' === substr(__FILE__, 0, 5);
     }
 }

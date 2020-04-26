@@ -8,13 +8,13 @@
 namespace Deployer;
 
 use Deployer\Configuration\Configuration;
-use Deployer\Console\Application;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\Output;
@@ -27,42 +27,22 @@ class FunctionsTest extends TestCase
      */
     private $deployer;
 
-    /**
-     * @var Application
-     */
-    private $console;
-
-    /**
-     * @var InputInterface
-     */
-    private $input;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
-     * @var Host
-     */
-    private $host;
-
     protected function setUp(): void
     {
-        $this->console = new Application();
+        $console = new Application();
 
-        $this->input = $this->createMock(Input::class);
-        $this->output = $this->createMock(Output::class);
-        $this->host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
-        $this->host
+        $input = $this->createMock(Input::class);
+        $output = $this->createMock(Output::class);
+        $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
+        $host
             ->expects($this->any())
             ->method('getConfig')
             ->willReturn(new Configuration());
 
-        $this->deployer = new Deployer($this->console);
-        $this->deployer['input'] = $this->input;
-        $this->deployer['output'] = $this->output;
-        Context::push(new Context($this->host, $this->input, $this->output));
+        $this->deployer = new Deployer($console);
+        $this->deployer['input'] = $input;
+        $this->deployer['output'] = $output;
+        Context::push(new Context($host, $input, $output));
     }
 
     protected function tearDown(): void
@@ -76,7 +56,7 @@ class FunctionsTest extends TestCase
     {
         host('domain.com');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
-        self::assertInstanceOf(Host::class, host('domain.com'));
+        self::assertInstanceOf(Host::class, getHost('domain.com'));
 
         host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
@@ -95,7 +75,8 @@ class FunctionsTest extends TestCase
 
     public function testTask()
     {
-        task('task', 'pwd');
+        task('task', function () {
+        });
 
         $task = $this->deployer->tasks->get('task');
         self::assertInstanceOf(Task::class, $task);
@@ -113,22 +94,24 @@ class FunctionsTest extends TestCase
 
     public function testBefore()
     {
-        task('main', 'pwd');
-        task('before', 'ls');
+        task('main', function () {});
+        task('before', function () {});
         before('main', 'before');
+        before('before', function () {});
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        self::assertEquals(['before', 'main'], $names);
+        self::assertEquals(['before:before', 'before', 'main'], $names);
     }
 
     public function testAfter()
     {
-        task('main', 'pwd');
-        task('after', 'ls');
+        task('main', function () {});
+        task('after', function () {});
         after('main', 'after');
+        after('after', function () {});
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        self::assertEquals(['main', 'after'], $names);
+        self::assertEquals(['main', 'after', 'after:after'], $names);
     }
 
     public function testRunLocally()

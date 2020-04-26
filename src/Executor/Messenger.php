@@ -7,6 +7,7 @@
 
 namespace Deployer\Executor;
 
+use Deployer\Exception\Exception;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Deployer\Task\Task;
@@ -14,7 +15,7 @@ use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Output\Output;
 use Throwable;
 
-class Status
+class Messenger
 {
     private $input;
     private $output;
@@ -71,11 +72,12 @@ class Status
         }
     }
 
-    public function taskException(Throwable $exception, Host $host)
+    public function renderException(Throwable $exception, Host $host)
     {
         if ($exception instanceof RunException) {
+
             $message = "";
-            $message .= "[{$host->tag()}] <fg=white;bg=red> error </> <comment>in {$exception->getFilename()} on line {$exception->getLineNumber()}:</>\n";
+            $message .= "[{$host->tag()}] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
             if ($this->output->getVerbosity() === Output::VERBOSITY_NORMAL) {
                 $message .= "[{$host->tag()}] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
                 foreach (explode("\n", $exception->getErrorOutput()) as $line) {
@@ -93,22 +95,38 @@ class Status
             }
             $message .= "[{$host->tag()}] <fg=red>exit code</> {$exception->getExitCode()} ({$exception->getExitCodeText()})\n";
             $this->output->write($message);
-            return;
+
+        } else {
+            $message = "";
+            $class = get_class($exception);
+            $file = basename($exception->getFile());
+            $line = $exception->getLine();
+            if ($exception instanceof Exception) {
+                $file = $exception->getTaskFilename();
+                $line = $exception->getTaskLineNumber();
+            }
+            $message .= "[{$host->tag()}] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
+            $message .= "[{$host->tag()}]\n";
+            foreach (explode("\n", $exception->getMessage()) as $line) {
+                $line = trim($line);
+                if ($line !== "") {
+                    $message .= "[{$host->tag()}]   <comment>$line</comment>\n";
+                }
+            }
+            $message .= "[{$host->tag()}]\n";
+            if ($this->output->isDebug()) {
+                foreach (explode("\n", $exception->getTraceAsString()) as $line) {
+                    $line = trim($line);
+                    if ($line !== "") {
+                        $message .= "[{$host->tag()}] $line\n";
+                    }
+                }
+            }
+            $this->output->write($message);
         }
 
-        $message = "";
-        $class = get_class($exception);
-        $file = basename($exception->getFile());
-        $line = $exception->getLine();
-        $message .= "[{$host->tag()}] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
-        $message .= "[{$host->tag()}]\n";
-        foreach (explode("\n", $exception->getMessage()) as $line) {
-            $line = trim($line);
-            if ($line !== "") {
-                $message .= "[{$host->tag()}]   <comment>$line</comment>\n";
-            }
+        if ($exception->getPrevious()) {
+            $this->renderException($exception->getPrevious(), $host);
         }
-        $message .= "[{$host->tag()}]\n";
-        $this->output->write($message);
     }
 }

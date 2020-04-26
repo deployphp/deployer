@@ -59,27 +59,26 @@ class SshCommand extends Command
         if (!empty($hostname)) {
             $host = $this->deployer->hosts->get($hostname);
         } else {
-            $hostsTags = array_map(
-                function (Host $host) {
-                    return $host->tag();
-                },
-                $this->deployer->hosts->select(function ($host) {
-                    return !($host instanceof Localhost);
-                })
-            );
+            $hostsAliases = [];
+            foreach ($this->deployer->hosts as $host) {
+                if ($host instanceof Localhost) {
+                    continue;
+                }
+                $hostsAliases[] = $host->alias();
+            }
 
-            if (count($hostsTags) === 0) {
+            if (count($hostsAliases) === 0) {
                 $output->writeln('No remote hosts.');
                 return 2; // Because there are no hosts.
             }
 
-            if (count($hostsTags) === 1) {
-                $host = $this->deployer->hosts->first();
+            if (count($hostsAliases) === 1) {
+                $host = $this->deployer->hosts->all()[0];
             } else {
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(
-                    'Select host:',
-                    $hostsTags
+                    '<question>Select host:</question>',
+                    $hostsAliases
                 );
                 $question->setErrorMessage('There is no "%s" host.');
 

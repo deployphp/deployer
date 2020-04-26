@@ -31,24 +31,29 @@ class Client
     public function run(Host $host, string $command, array $config = [])
     {
         $hostname = $host->hostname();
+        $connectionString = $host->getConnectionString();
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),
+            'idle_timeout' => null,
         ];
 
         $config = array_merge($defaults, $config);
         $sshArguments = $host->getSshArguments();
-        $become = $host->has('become') ? 'sudo -H -u ' . $host->get('become') : '';
-
         if ($host->sshMultiplexing()) {
             $sshArguments = $this->initMultiplexing($host);
+        }
+
+        $become = '';
+        if ($host->has('become')) {
+            $become = sprintf('sudo -H -u %s', $host->get('become'));
         }
 
         $shellCommand = $host->shell();
 
         if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $ssh = "ssh $sshArguments $hostname $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
+            $ssh = "ssh $sshArguments $connectionString $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
         } else {
-            $ssh = "ssh $sshArguments $hostname $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
+            $ssh = "ssh $sshArguments $connectionString $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
         }
 
         // -vvv for ssh command
@@ -65,12 +70,11 @@ class Client
             $terminalOutput($type, $buffer);
         };
 
-
         $process = $this->createProcess($ssh);
         $process
-            ->setInput($command)
-            ->setTimeout($config['timeout']);
-
+            ->setInput(str_replace('%secret%', $config['secret'] ?? '', $command))
+            ->setTimeout($config['timeout'])
+            ->setIdleTimeout($config['idle_timeout']);
 
         $process->run($callback);
 
@@ -78,11 +82,8 @@ class Client
         $exitCode = $this->parseExitStatus($process);
 
         if ($exitCode !== 0) {
-            $trace = debug_backtrace();
             throw new RunException(
-                basename($trace[1]['file']),
-                $trace[1]['line'],
-                $hostname,
+                $host,
                 $command,
                 $exitCode,
                 $output,
@@ -118,14 +119,15 @@ class Client
         $sshArguments = $host->getSshArguments()->withMultiplexing($host);
 
         if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
-            $hostname = $host->hostname();
+            $connectionString = $host->getConnectionString();
+            $command = "ssh -N $sshArguments $connectionString";
 
             if ($this->output->isDebug()) {
                 $this->pop->writeln(Process::OUT, $host, '<info>ssh multiplexing initialization</info>');
-                $this->pop->writeln(Process::OUT, $host, "ssh -N $sshArguments $hostname");
+                $this->pop->writeln(Process::OUT, $host, $command);
             }
 
-            $output = $this->exec("ssh -N $sshArguments $hostname");
+            $output = $this->exec($command);
 
             if ($this->output->isDebug()) {
                 $this->pop->printBuffer(Process::OUT, $host, $output);
@@ -137,9 +139,19 @@ class Client
 
     private function isMultiplexingInitialized(Host $host, Arguments $sshArguments)
     {
-        $process = $this->createProcess("ssh -O check $sshArguments {$host->alias()} 2>&1");
+        $command = "ssh -O check $sshArguments echo 2>&1";
+        if ($this->output->isDebug()) {
+            $this->pop->printBuffer(Process::OUT, $host, $command);
+        }
+
+        $process = $this->createProcess($command);
         $process->run();
-        return (bool)preg_match('/Master running/', $process->getOutput());
+        $output = $process->getOutput();
+
+        if ($this->output->isDebug()) {
+            $this->pop->printBuffer(Process::OUT, $host, $output);
+        }
+        return (bool)preg_match('/Master running/', $output);
     }
 
     private function exec($command, &$exitCode = null)

@@ -94,7 +94,7 @@ class Context
      */
     public static function required($callerName)
     {
-        if (!self::get()) {
+        if (empty(self::$contexts)) {
             throw new Exception("'$callerName' can only be used within a task.");
         }
     }

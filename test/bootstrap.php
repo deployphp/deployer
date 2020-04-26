@@ -15,3 +15,8 @@ if (!$loaded) {
         'composer install' . PHP_EOL
     );
 }
+
+require_once __DIR__ . '/recipe/AbstractTest.php';
+
+define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
+define('__TEMP_DIR__', sys_get_temp_dir() . '/deployer');

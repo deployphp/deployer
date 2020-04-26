@@ -40,14 +40,14 @@ task('telegram:notify', function () {
     if (!get('telegram_token', false)) {
         return;
     }
-    
+
     if (!get('telegram_chat_id', false)) {
         return;
     }
-    
+
     $telegramUrl = get('telegram_url') . '?' . http_build_query (
         Array (
-            'chat_id' => get('telegram_chat_id'), 
+            'chat_id' => get('telegram_chat_id'),
             'text' => get('telegram_text'),
             'parse_mode' => 'Markdown',
         )
@@ -63,18 +63,18 @@ task('telegram:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
   desc('Notifying Telegram about deploy finish');
   task('telegram:notify:success', function () {
       if (!get('telegram_token', false)) {
           return;
       }
-      
+
       if (!get('telegram_chat_id', false)) {
           return;
       }
-    
+
       $telegramUrl = get('telegram_url') . '?' . http_build_query (
           Array (
               'chat_id' => get('telegram_chat_id'),
@@ -93,18 +93,18 @@ task('telegram:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
   desc('Notifying Telegram about deploy failure');
   task('telegram:notify:failure', function () {
       if (!get('telegram_token', false)) {
           return;
       }
-      
+
       if (!get('telegram_chat_id', false)) {
           return;
       }
-    
+
       $telegramUrl = get('telegram_url') . '?' . http_build_query (
           Array (
               'chat_id' => get('telegram_chat_id'),
@@ -123,4 +123,4 @@ task('telegram:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();

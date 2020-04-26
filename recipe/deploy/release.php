@@ -7,7 +7,8 @@
 
 namespace Deployer;
 
-use Deployer\Type\Csv;
+use Deployer\Exception\Exception;
+use Deployer\Support\Csv;
 
 /**
  * Name of folder in releases.
@@ -92,7 +93,7 @@ set('release_path', function () {
         $link = run("readlink {{deploy_path}}/release");
         return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
     } else {
-        return get('current_path');
+        throw new Exception(parse('The "release_path" ({{deploy_path}}/release) does not exist.'));
     }
 });
 

@@ -59,7 +59,7 @@ task('cimonitor:notify', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying CIMonitor about deploy finish');
 task('cimonitor:notify:success', function () {
@@ -88,7 +88,7 @@ task('cimonitor:notify:success', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 
 desc('Notifying CIMonitor about deploy failure');
 task('cimonitor:notify:failure', function () {
@@ -115,5 +115,5 @@ task('cimonitor:notify:failure', function () {
 })
     ->once()
     ->shallow()
-    ->setPrivate();
+    ->hidden();
 

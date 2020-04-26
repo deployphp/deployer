@@ -51,16 +51,16 @@ class WorkerCommand extends TaskCommand
 
         try {
             $task->run(new Context($host, $input, $output));
-            $this->deployer->informer->endOnHost($host);
+            $this->deployer->messenger->endOnHost($host);
 
             $persistentCollection->flush();
 
             return 0;
         } catch (GracefulShutdownException $e) {
-            $this->deployer->informer->taskException($e, $host);
+            $this->deployer->messenger->printException($e, $host);
             return GracefulShutdownException::EXIR_CODE;
         } catch (\Throwable $e) {
-            $this->deployer->informer->taskException($e, $host);
+            $this->deployer->messenger->printException($e, $host);
             return 255;
         }
     }

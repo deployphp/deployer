@@ -22,7 +22,7 @@ use Deployer\Console\TaskCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\ParallelExecutor;
-use Deployer\Executor\Status;
+use Deployer\Executor\Messenger;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
@@ -47,8 +47,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @property Task\ScriptManager $scriptManager
  * @property Host\HostSelector $hostSelector
  * @property ParallelExecutor $executor
- * @property Status $informer
- * @property Status $logger
+ * @property Messenger $messenger
+ * @property Messenger $logger
  * @property Printer $pop
  * @property Collection $fail
  */
@@ -125,14 +125,14 @@ class Deployer extends Container
         $this['fail'] = function () {
             return new Collection();
         };
-        $this['informer'] = function ($c) {
-            return new Status($c['input'], $c['output']);
+        $this['messenger'] = function ($c) {
+            return new Messenger($c['input'], $c['output']);
         };
         $this['executor'] = function ($c) {
             return new ParallelExecutor(
                 $c['input'],
                 $c['output'],
-                $c['informer'],
+                $c['messenger'],
                 $c['console'],
                 $c['sshClient'],
                 $c['config']

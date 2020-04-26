@@ -54,7 +54,7 @@ task('deploy:update_code', function () {
     $gitCache = get('git_cache');
     $recursive = get('git_recursive', true) ? '--recursive' : '';
     $dissociate = get('git_clone_dissociate', true) ? '--dissociate' : '';
-    $quiet = isQuiet() ? '-q' : '';
+    $quiet = output()->isQuiet() ? '-q' : '';
     $depth = $gitCache ? '' : '--depth 1';
 
     $at = '';

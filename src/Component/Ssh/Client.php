@@ -65,10 +65,9 @@ class Client
             $terminalOutput($type, $buffer);
         };
 
-
         $process = $this->createProcess($ssh);
         $process
-            ->setInput($command)
+            ->setInput(str_replace('%secret%', $config['secret'] ?? '', $command))
             ->setTimeout($config['timeout']);
 
 
@@ -78,10 +77,7 @@ class Client
         $exitCode = $this->parseExitStatus($process);
 
         if ($exitCode !== 0) {
-            $trace = debug_backtrace();
             throw new RunException(
-                basename($trace[1]['file']),
-                $trace[1]['line'],
                 $hostname,
                 $command,
                 $exitCode,

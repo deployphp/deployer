@@ -11,8 +11,6 @@ use Symfony\Component\Process\Process;
 
 class RunException extends Exception
 {
-    private $filename;
-    private $lineNumber;
     private $hostname;
     private $command;
     private $exitCode;
@@ -20,16 +18,12 @@ class RunException extends Exception
     private $errorOutput;
 
     public function __construct(
-        string $filename,
-        int $lineNumber,
         string $hostname,
         string $command,
         int $exitCode,
         string $output,
         string $errorOutput
     ) {
-        $this->filename = $filename;
-        $this->lineNumber = $lineNumber;
         $this->hostname = $hostname;
         $this->command = $command;
         $this->exitCode = $exitCode;
@@ -38,16 +32,6 @@ class RunException extends Exception
 
         $message = sprintf('The command "%s" failed.', $command);
         parent::__construct($message, $exitCode);
-    }
-
-    public function getFilename()
-    {
-        return $this->filename;
-    }
-
-    public function getLineNumber()
-    {
-        return $this->lineNumber;
     }
 
     public function getHostname(): string

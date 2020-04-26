@@ -53,7 +53,7 @@ class ProcessRunner
         };
 
         try {
-            $process = Process::fromShellCommandline($command);
+            $process = Process::fromShellCommandline(str_replace('%secret%', $config['secret'] ?? '', $command));
             $process
                 ->setTimeout($config['timeout'])
                 ->setTty($config['tty'])
@@ -61,10 +61,7 @@ class ProcessRunner
 
             return $process->getOutput();
         } catch (ProcessFailedException $exception) {
-            $trace = debug_backtrace();
             throw new RunException(
-                basename($trace[1]['file']),
-                $trace[1]['line'],
                 $host->alias(),
                 $command,
                 $process->getExitCode(),

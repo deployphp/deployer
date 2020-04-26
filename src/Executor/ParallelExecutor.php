@@ -35,7 +35,7 @@ class ParallelExecutor
 {
     private $input;
     private $output;
-    private $informer;
+    private $messenger;
     private $console;
     private $client;
     private $config;
@@ -43,7 +43,7 @@ class ParallelExecutor
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
-        Status $informer,
+        Messenger $messenger,
         Application $console,
         Client $client,
         Configuration $config
@@ -51,7 +51,7 @@ class ParallelExecutor
     {
         $this->input = $input;
         $this->output = $output;
-        $this->informer = $informer;
+        $this->messenger = $messenger;
         $this->console = $console;
         $this->client = $client;
         $this->config = $config;
@@ -101,24 +101,24 @@ class ParallelExecutor
         $limit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
-            $this->informer->startTask($task);
+            $this->messenger->startTask($task);
 
-//            if ($task->isLocal()) {
-//                Storage::load(...$hosts);
-//                {
-//                    $task->run(new Context($localhost, $this->input, $this->output));
-//                }
-//                Storage::flush(...$hosts);
-//            } else {
+            if ($limit === 1 || count($hosts) === 1) {
+                foreach ($hosts as $host) {
+                    $host->getConfig()->getCollection()->load();
+                    $task->run(new Context($host, $this->input, $this->output));
+                    $host->getConfig()->getCollection()->flush();
+                }
+            } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
                     $exitCode = $this->runTask($chunk, $task);
                     if ($exitCode !== 0) {
                         return $exitCode;
                     }
                 }
-//            }
+            }
 
-            $this->informer->endTask($task);
+            $this->messenger->endTask($task);
         }
 
         return 0;

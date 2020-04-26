@@ -17,6 +17,9 @@ use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
+use Symfony\Component\Console\Exception\MissingInputException;
+use Symfony\Component\Console\Helper\Helper;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -135,6 +138,7 @@ function desc($title = null)
  */
 function task($name, $body = null)
 {
+    Exception::await();
     $deployer = Deployer::get();
 
     if (empty($body)) {
@@ -571,33 +575,33 @@ function has($name)
 /**
  * @param string $message
  * @param string|null $default
- * @param string[]|null $suggestedChoices
+ * @param string[]|null $autocomplete
  * @return string
- * @codeCoverageIgnore
  */
-function ask($message, $default = null, $suggestedChoices = null)
+function ask($message, $default = null, $autocomplete = null)
 {
     Context::required(__FUNCTION__);
 
-    if (($suggestedChoices !== null) && (empty($suggestedChoices))) {
-        throw new \InvalidArgumentException('Suggested choices should not be empty');
-    }
-
-    if (isQuiet()) {
+    if (output()->isQuiet()) {
         return $default;
     }
 
+    /** @var QuestionHelper $helper */
     $helper = Deployer::get()->getHelper('question');
 
-    $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
+    $tag = currentHost()->tag();
+    $message = "[$tag] <question>$message</question> " . (($default === null) ? "" : "(default: $default) ");
 
     $question = new Question($message, $default);
-
-    if (empty($suggestedChoices) === false) {
-        $question->setAutocompleterValues($suggestedChoices);
+    if (!empty($autocomplete)) {
+        $question->setAutocompleterValues($autocomplete);
     }
 
-    return $helper->ask(input(), output(), $question);
+    try {
+        return $helper->ask(input(), output(), $question);
+    } catch (MissingInputException $exception) {
+        throw new Exception("Failed to read input from stdin.\nMake sure what you are asking for input not from parallel task.", $exception->getCode(), $exception);
+    }
 }
 
 /**
@@ -606,7 +610,6 @@ function ask($message, $default = null, $suggestedChoices = null)
  * @param string|null $default
  * @param bool|false $multiselect
  * @return string|string[]
- * @codeCoverageIgnore
  */
 function askChoice($message, array $availableChoices, $default = null, $multiselect = false)
 {
@@ -620,7 +623,7 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
         throw new \InvalidArgumentException('Default choice is not available');
     }
 
-    if (isQuiet()) {
+    if (output()->isQuiet()) {
         if ($default === null) {
             $default = key($availableChoices);
         }
@@ -629,7 +632,8 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
 
     $helper = Deployer::get()->getHelper('question');
 
-    $message = "<question>$message" . (($default === null) ? "" : " [$default]") . "</question> ";
+    $tag = currentHost()->tag();
+    $message = "[$tag] <question>$message</question> " . (($default === null) ? "" : "(default: $default) ");
 
     $question = new ChoiceQuestion($message, $availableChoices, $default);
     $question->setMultiselect($multiselect);
@@ -641,20 +645,20 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
  * @param string $message
  * @param bool $default
  * @return bool
- * @codeCoverageIgnore
  */
 function askConfirmation($message, $default = false)
 {
     Context::required(__FUNCTION__);
 
-    if (isQuiet()) {
+    if (output()->isQuiet()) {
         return $default;
     }
 
     $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
-    $message = "<question>$message [$yesOrNo]</question> ";
+    $tag = currentHost()->tag();
+    $message = "[$tag] <question>$message</question> [$yesOrNo] ";
 
     $question = new ConfirmationQuestion($message, $default);
 
@@ -664,19 +668,19 @@ function askConfirmation($message, $default = false)
 /**
  * @param string $message
  * @return string
- * @codeCoverageIgnore
  */
 function askHiddenResponse($message)
 {
     Context::required(__FUNCTION__);
 
-    if (isQuiet()) {
+    if (output()->isQuiet()) {
         return '';
     }
 
     $helper = Deployer::get()->getHelper('question');
 
-    $message = "<question>$message</question> ";
+    $tag = currentHost()->tag();
+    $message = "[$tag] <question>$message</question> ";
 
     $question = new Question($message);
     $question->setHidden(true);
@@ -700,41 +704,6 @@ function input()
 function output()
 {
     return Context::get()->getOutput();
-}
-
-/**
- * @return bool
- */
-function isQuiet()
-{
-    return OutputInterface::VERBOSITY_QUIET === output()->getVerbosity();
-}
-
-
-/**
- * @return bool
- */
-function isVerbose()
-{
-    return OutputInterface::VERBOSITY_VERBOSE <= output()->getVerbosity();
-}
-
-
-/**
- * @return bool
- */
-function isVeryVerbose()
-{
-    return OutputInterface::VERBOSITY_VERY_VERBOSE <= output()->getVerbosity();
-}
-
-
-/**
- * @return bool
- */
-function isDebug()
-{
-    return OutputInterface::VERBOSITY_DEBUG <= output()->getVerbosity();
 }
 
 /**

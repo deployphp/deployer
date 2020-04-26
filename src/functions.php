@@ -18,7 +18,6 @@ use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
 use Symfony\Component\Console\Exception\MissingInputException;
-use Symfony\Component\Console\Helper\Helper;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -261,31 +260,53 @@ function within($path, $callback)
  */
 function run($command, $options = [])
 {
-    $host = Context::get()->getHost();
+    $run = function ($command, $options) {
+        $host = Context::get()->getHost();
 
-    $command = parse($command);
-    $workingPath = get('working_path', '');
+        $command = parse($command);
+        $workingPath = get('working_path', '');
 
-    if (!empty($workingPath)) {
-        $command = "cd $workingPath && ($command)";
-    }
+        if (!empty($workingPath)) {
+            $command = "cd $workingPath && ($command)";
+        }
 
-    $env = get('env', []) + ($options['env'] ?? []);
-    if (!empty($env)) {
-        $env = array_to_string($env);
-        $command = "export $env; $command";
-    }
+        $env = get('env', []) + ($options['env'] ?? []);
+        if (!empty($env)) {
+            $env = array_to_string($env);
+            $command = "export $env; $command";
+        }
 
-    if ($host instanceof Localhost) {
-        $process = Deployer::get()->processRunner;
-        $output = $process->run($host, $command, $options);
+        if ($host instanceof Localhost) {
+            $process = Deployer::get()->processRunner;
+            $output = $process->run($host, $command, $options);
+        } else {
+            $client = Deployer::get()->sshClient;
+            $output = $client->run($host, $command, $options);
+        }
+
+        return rtrim($output);
+    };
+
+    if (preg_match('/^sudo\b/', $command)) {
+        try {
+            return $run($command, $options);
+        } catch (RunException $exception) {
+            $askpass = get('sudo_askpass', '/tmp/dep_sudo_pass');
+            $password = get('sudo_pass', false);
+            if ($password === false) {
+                writeln("<fg=green;options=bold>run</> $command");
+                $password = askHiddenResponse('Password:');
+            }
+            $run("echo -e '#!/bin/sh\necho \"%secret%\"' > $askpass", array_merge($options, ['secret' => $password]));
+            $run("chmod a+x $askpass", $options);
+            $run(sprintf('export SUDO_ASKPASS=%s; %s', $askpass, preg_replace('/^sudo\b/', 'sudo -A', $command)), $options);
+            $run("rm $askpass", $options);
+        }
     } else {
-        $client = Deployer::get()->sshClient;
-        $output = $client->run($host, $command, $options);
+        return $run($command, $options);
     }
-
-    return rtrim($output);
 }
+
 
 /**
  * Execute commands on local machine

@@ -5,7 +5,7 @@
 [v6.8.0...master](https://github.com/deployphp/deployer/compare/v6.8.0...master)
 
 ### Fixed
-- Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. By default it's using `en_US`. To change that, simply put i. e. `set('static-content-locales', 'en_US de_DE');` in you deployer script.
+- Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. By default it's using `en_US`. To change that, simply put i. e. `set('static-content-locales', 'en_US de_DE');` in you deployer script. [#2040]
 - When symfony_env is set to dev, require-dev are not installed and missing packages are breaking installation process. [#2035]
 
 

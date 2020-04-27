@@ -4,6 +4,8 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 // Configuration
+set('static-content-locales', 'en_US');
+
 set('shared_files', [
     'app/etc/env.php',
     'var/.maintenance.ip',
@@ -46,7 +48,7 @@ task('magento:compile', function () {
 
 desc('Deploy assets');
 task('magento:deploy:assets', function () {
-    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy");
+    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy {{static-content-locales}}");
 });
 
 desc('Enable maintenance mode');

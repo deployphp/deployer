@@ -6,7 +6,7 @@ Each host contains a hostname, a stage, one or more roles and configuration para
 You can define hosts with the `host` function in `deploy.php` file. Here is an example of a host definition:
 
 ~~~php
-host('domain.com')
+host('production.example.com')
     ->stage('production')
     ->roles('app')
     ->set('deploy_path', '~/app');
@@ -17,7 +17,7 @@ Host *domain.com* has stage `production`, one role `app` and a configuration par
 Hosts can also be described by using yaml syntax. Write this in a `hosts.yml` file:
 
 ~~~yaml
-domain.com:
+production.example.com:
   stage: production
   roles: app
   deploy_path: ~/app
@@ -33,7 +33,7 @@ Make sure that your `~/.ssh/config` file contains information about your domains
 Or you can specify that information in the `deploy.php` file itself.
 
 ~~~php
-host('domain.com')
+host('production.example.com')
     ->user('name')
     ->port(22)
     ->configFile('~/.ssh/config')
@@ -69,7 +69,7 @@ Inside any task, you can get host config with the `get` function, and the host o
 task('...', function () {
     $deployPath = get('deploy_path');
     
-    $host = host('domain.com');
+    $host = host('example.com');
     $port = $host->getPort();
 });
 ~~~

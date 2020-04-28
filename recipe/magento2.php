@@ -4,6 +4,12 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 // Configuration
+
+// By default setup:static-content:deploy uses `en_US`. 
+// To change that, simply put set('static_content_locales', 'en_US de_DE');` 
+// in you deployer script.
+set('static_content_locales', 'en_US');
+
 set('shared_files', [
     'app/etc/env.php',
     'var/.maintenance.ip',
@@ -46,7 +52,7 @@ task('magento:compile', function () {
 
 desc('Deploy assets');
 task('magento:deploy:assets', function () {
-    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy");
+    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy {{static_content_locales}}");
 });
 
 desc('Enable maintenance mode');

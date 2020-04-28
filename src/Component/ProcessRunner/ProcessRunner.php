@@ -52,17 +52,16 @@ class ProcessRunner
             $terminalOutput($type, $buffer);
         };
 
-        try {
-            $process = Process::fromShellCommandline(str_replace('%secret%', $config['secret'] ?? '', $command));
-            $process
-                ->setTimeout($config['timeout'])
-                ->setTty($config['tty'])
-                ->mustRun($callback);
+        $process = Process::fromShellCommandline(str_replace('%secret%', $config['secret'] ?? '', $command))
+            ->setTimeout($config['timeout'])
+            ->setTty($config['tty']);
 
+        try {
+            $process->mustRun($callback);
             return $process->getOutput();
         } catch (ProcessFailedException $exception) {
             throw new RunException(
-                $host->alias(),
+                $host,
                 $command,
                 $process->getExitCode(),
                 $process->getOutput(),

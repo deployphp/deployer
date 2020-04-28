@@ -18,7 +18,7 @@ use Deployer\Console\DiceCommand;
 use Deployer\Console\InitCommand;
 use Deployer\Console\RunCommand;
 use Deployer\Console\SshCommand;
-use Deployer\Console\TaskCommand;
+use Deployer\Console\MainCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\ParallelExecutor;
@@ -32,8 +32,9 @@ use Deployer\Utility\Rsync;
 use Pimple\Container;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Whoops;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Deployer class represents DI container for configuring
@@ -64,7 +65,7 @@ class Deployer extends Container
     /**
      * @param Application $console
      */
-    public function __construct(Application $console)
+    public function __construct(Application $console, InputInterface $input, OutputInterface $output)
     {
         parent::__construct();
 
@@ -73,12 +74,15 @@ class Deployer extends Container
          ******************************/
 
         $this['console'] = function () use ($console) {
-            $console->catchIO(function ($input, $output) {
-                $this['input'] = $input;
-                $this['output'] = $output;
-                return [$this['input'], $this['output']];
-            });
             return $console;
+        };
+
+        $this['input'] = function () use ($input) {
+            return $input;
+        };
+
+        $this['output'] = function () use ($output) {
+            return $output;
         };
 
         /******************************
@@ -102,7 +106,7 @@ class Deployer extends Container
             return new Client($c['output'], $c['pop'], $c['logger']);
         };
         $this['rsync'] = function ($c) {
-            return new Rsync($c['pop']);
+            return new Rsync($c['pop'], $c['output']);
         };
         $this['processRunner'] = function ($c) {
             return new ProcessRunner($c['pop'], $c['logger']);
@@ -190,12 +194,12 @@ class Deployer extends Container
     {
         $this->getConsole()->addUserArgumentsAndOptions();
 
-        foreach ($this->tasks as $name => $task) {
+        foreach ($this->tasks->all() as $name => $task) {
             if ($task->isHidden()) {
                 continue;
             }
 
-            $this->getConsole()->add(new TaskCommand($name, $task->getDescription(), $this));
+            $this->getConsole()->add(new MainCommand($name, $task->getDescription(), $this));
         }
     }
 
@@ -258,10 +262,25 @@ class Deployer extends Container
         $console = new Application('Deployer', $version);
         $input = new ArgvInput();
         $output = new ConsoleOutput();
-        $deployer = new self($console);
+        $deployer = new self($console, $input, $output);
 
-        // Require deploy.php file
-        self::loadRecipe($deployFile);
+        try {
+            // Require deploy.php file
+            self::load($deployFile);
+        } catch (\Throwable $exception) {
+            $class = get_class($exception);
+            $file = basename($exception->getFile());
+            $output->writeln([
+                "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
+                "",
+                implode("\n", array_map(function ($line) {
+                    return "  " . $line;
+                }, explode("\n", $exception->getMessage()))),
+                "",
+            ]);
+            $output->writeln($exception->getTraceAsString());
+            return;
+        }
 
         // Run Deployer
         $deployer->init();
@@ -313,21 +332,20 @@ class Deployer extends Container
     }
 
     /**
-     * Load recipe file
+     * Load recipe file.
      *
      * @param string $deployFile
-     *
-     * @return void
-     * @codeCoverageIgnore
      */
-    public static function loadRecipe($deployFile)
+    public static function load(string $deployFile)
     {
         if (is_readable($deployFile)) {
             // Prevent variable leak into deploy.php file
             call_user_func(function () use ($deployFile) {
-                // reorder autoload stack.
+                // Reorder autoload stack
                 $originStack = spl_autoload_functions();
+
                 require $deployFile;
+
                 $newStack = spl_autoload_functions();
                 if ($originStack[0] !== $newStack[0]) {
                     foreach (array_reverse($originStack) as $loader) {
@@ -337,21 +355,5 @@ class Deployer extends Container
                 }
             });
         }
-    }
-
-    /**
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public static function getCalledScript(): string
-    {
-        $executable = !empty($_SERVER['_']) ? $_SERVER['_'] : $_SERVER['PHP_SELF'];
-        $shortcut = false !== strpos(getenv('PATH'), dirname($executable)) ? basename($executable) : $executable;
-
-        if ($executable !== $_SERVER['PHP_SELF']) {
-            return sprintf('%s %s', $shortcut, $_SERVER['PHP_SELF']);
-        }
-
-        return $shortcut;
     }
 }

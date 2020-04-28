@@ -94,7 +94,6 @@ class ParallelExecutor
      */
     public function run(array $tasks, array $hosts): int
     {
-        $this->persistHosts($hosts);
         $this->connect($hosts);
 
         $localhost = new Localhost();
@@ -107,14 +106,17 @@ class ParallelExecutor
                 foreach ($hosts as $host) {
                     try {
                         Exception::setFilepath($task->getFilepath());
-                        $host->getConfig()->getCollection()->load();
+                        $host->getConfig()->load();
 
                         $task->run(new Context($host, $this->input, $this->output));
 
-                        $host->getConfig()->getCollection()->flush();
+                        $host->getConfig()->save();
                     } catch (GracefulShutdownException $exception) {
                         $this->messenger->renderException($exception, $host);
                         return GracefulShutdownException::EXIT_CODE;
+                    } catch (\Throwable $exception) {
+                        $this->messenger->renderException($exception, $host);
+                        return 1;
                     }
                 }
             } else {
@@ -170,9 +172,9 @@ class ParallelExecutor
     protected function getProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $configFile = $host->get('worker-config');
+        $configDirectory = $host->get('config_directory');
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
-        $command = "$dep worker $task {$host->alias()} $configFile {$this->input} $decorated";
+        $command = "$dep worker $task {$host->alias()} $configDirectory {$this->input} $decorated";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->tag()}] $command");
@@ -245,25 +247,5 @@ class ParallelExecutor
         }
 
         return 0;
-    }
-
-    /**
-     * @param Host[] $hosts
-     */
-    private function persistHosts(array $hosts)
-    {
-        foreach ($hosts as $host) {
-            Context::push(new Context($host, $this->input, $this->output));
-
-            $values = $host->getConfig()->persist();
-            $workerConfig = sys_get_temp_dir() . '/' . uniqid('deployer-') . '-' . $host->alias() . '.dep';
-            $values['worker-config'] = $workerConfig;
-
-            $persistentCollection = new PersistentCollection($workerConfig, $values);
-            $persistentCollection->flush();
-            $host->getConfig()->setCollection($persistentCollection);
-
-            Context::pop();
-        }
     }
 }

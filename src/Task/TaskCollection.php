@@ -16,6 +16,6 @@ class TaskCollection extends Collection
 {
     protected function throwNotFound(string $name)
     {
-        throw new \InvalidArgumentException("Task `$name` not found");
+        throw new \InvalidArgumentException("Task `$name` not found.");
     }
 }

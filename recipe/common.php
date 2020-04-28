@@ -22,6 +22,7 @@ require __DIR__ . '/deploy/update_code.php';
 require __DIR__ . '/deploy/vendors.php';
 require __DIR__ . '/deploy/writable.php';
 
+use Deployer\Exception\RunException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
 
@@ -33,15 +34,23 @@ set('hostname', function () {
     return currentHost()->hostname();
 });
 
+set('remote_user', function () {
+    return currentHost()->get('remote_user');
+});
+
 set('user', function () {
+    if (getenv('CI') !== false) {
+        return 'ci';
+    }
+
     try {
         return runLocally('git config --get user.name');
-    } catch (\Throwable $exception) {
-        if (false !== getenv('CI')) {
-            return 'ci';
+    } catch (RunException $exception) {
+        try {
+            return runLocally('whoami');
+        } catch (RunException $exception) {
+            return 'no_user';
         }
-
-        return 'no_user';
     }
 });
 
@@ -178,6 +187,7 @@ fail('deploy', 'deploy:failed');
 /**
  * Follow latest application logs.
  */
+desc('Follow latest application logs.');
 task('logs', function () {
     if (!has('log_files')) {
         warning("Please, specify \"log_files\" option.");

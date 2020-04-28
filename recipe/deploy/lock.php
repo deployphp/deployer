@@ -19,8 +19,7 @@ task('deploy:lock', function () {
             sprintf("Execute \"deploy:unlock\" task to unlock.")
         );
     } else {
-        $whoami = runLocally('whoami');
-        run("echo \"$whoami\" > {{deploy_path}}/.dep/deploy.lock");
+        run("echo \"{{user}}\" > {{deploy_path}}/.dep/deploy.lock");
     }
 });
 

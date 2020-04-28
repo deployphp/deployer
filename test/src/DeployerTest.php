@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Collection\Collection;
 use Deployer\Collection\CollectionInterface;
 use Deployer\Console\Application;
 use PHPUnit\Framework\TestCase;
@@ -48,7 +49,7 @@ class DeployerTest extends TestCase
      */
     public function testCollections($collection)
     {
-        $this->assertInstanceOf(CollectionInterface::class, $this->deployer->{$collection});
+        $this->assertInstanceOf(Collection::class, $this->deployer->{$collection});
     }
 
     public function testCollectionsE()

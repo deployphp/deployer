@@ -11,31 +11,33 @@ use Deployer\Collection\Collection;
 use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use function Deployer\Support\array_merge_alternate;
+use function Deployer\Support\is_closure;
 
 class Configuration implements \ArrayAccess
 {
-    public $parent;
-    private $collection;
+    private $parent;
+    private $values = [];
 
     public function __construct(Configuration $parent = null)
     {
         $this->parent = $parent;
-        $this->collection = new Collection();
-    }
-
-    public function getCollection(): Collection
-    {
-        return $this->collection;
-    }
-
-    public function setCollection(Collection $collection)
-    {
-        $this->collection = $collection;
     }
 
     public function set(string $name, $value)
     {
-        $this->collection[$name] = $value;
+        $this->values[$name] = $value;
+    }
+
+    public function has(string $name): bool
+    {
+        $ok = array_key_exists($name, $this->values);
+        if ($ok) {
+            return true;
+        }
+        if ($this->parent) {
+            return $this->parent->has($name);
+        }
+        return false;
     }
 
     public function add(string $name, array $array)
@@ -43,7 +45,7 @@ class Configuration implements \ArrayAccess
         if ($this->has($name)) {
             $config = $this->get($name);
             if (!is_array($config)) {
-                throw new ConfigurationException("Configuration parameter `$name` isn't array.");
+                throw new ConfigurationException("Config option \"$name\" isn't array.");
             }
             $this->set($name, array_merge_alternate($config, $array));
         } else {
@@ -53,28 +55,41 @@ class Configuration implements \ArrayAccess
 
     public function get(string $name, $default = null)
     {
-        if ($this->collection->has($name)) {
-            if ($this->isClosure($this->collection[$name])) {
-                $value = $this->collection[$name] = call_user_func($this->collection[$name]);
+        if (array_key_exists($name, $this->values)) {
+            if (is_closure($this->values[$name])) {
+                return $this->values[$name] = $this->parse(call_user_func($this->values[$name]));
             } else {
-                $value = $this->collection[$name];
-            }
-        } else if ($this->parent && $this->parent->has($name)) {
-            $value = $this->collection[$name] = $this->parent->get($name, $default);
-        } else {
-            if (null === $default) {
-                throw new ConfigurationException("Configuration parameter `$name` does not exist.");
-            } else {
-                $value = $default;
+                return $this->parse($this->values[$name]);
             }
         }
 
-        return $this->parse($value);
+        if ($this->parent) {
+            $rawValue = $this->parent->fetch($name);
+            if ($rawValue !== null) {
+                if (is_closure($rawValue)) {
+                    return $this->values[$name] = $this->parse(call_user_func($rawValue));
+                } else {
+                    return $this->values[$name]= $this->parse($rawValue);
+                }
+            }
+        }
+
+        if ($default !== null) {
+            return $this->parse($default);
+        }
+
+        throw new ConfigurationException("Config option \"$name\" does not exist.");
     }
 
-    public function has(string $name): bool
+    protected function fetch($name)
     {
-        return $this->collection->has($name);
+        if (array_key_exists($name, $this->values)) {
+            return $this->values[$name];
+        }
+        if ($this->parent) {
+            return $this->parent->fetch($name);
+        }
+        return null;
     }
 
     public function parse($value)
@@ -84,6 +99,11 @@ class Configuration implements \ArrayAccess
         }
 
         return $value;
+    }
+
+    private function parseCallback(array $matches)
+    {
+        return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
     public function offsetExists($offset)
@@ -103,7 +123,7 @@ class Configuration implements \ArrayAccess
 
     public function offsetUnset($offset)
     {
-        unset($this->collection[$offset]);
+        unset($this->values[$offset]);
     }
 
     public function persist()
@@ -112,8 +132,8 @@ class Configuration implements \ArrayAccess
         if ($this->parent !== null) {
             $values = $this->parent->persist();
         }
-        foreach ($this->collection as $key => $value) {
-            if ($this->isClosure($value)) {
+        foreach ($this->values as $key => $value) {
+            if (is_closure($value)) {
                 continue;
             }
             $values[$key] = $value;
@@ -121,13 +141,17 @@ class Configuration implements \ArrayAccess
         return $values;
     }
 
-    private function parseCallback(array $matches)
+    public function load()
     {
-        return isset($matches[1]) ? $this->get($matches[1]) : null;
+        $this->values = json_decode(file_get_contents($this->configFile()), true);
     }
 
-    private function isClosure($var)
+    public function save()
     {
-        return is_object($var) && ($var instanceof \Closure);
+        file_put_contents($this->configFile(), json_encode($this->persist()));
+    }
+
+    private function configFile() {
+        return sprintf('%s/%s.dep', $this->get('config_directory'), $this->get('alias'));
     }
 }

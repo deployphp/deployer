@@ -24,15 +24,6 @@ class Application extends Console
      * @var InputDefinition
      */
     private $userDefinition;
-
-    /**
-     * @var callable
-     */
-    private $catchIO;
-
-    /**
-     * @var callable
-     */
     private $after;
 
     protected function getDefaultInputDefinition()
@@ -100,10 +91,6 @@ class Application extends Console
         $exception = null;
         $exitCode = 0;
 
-        if (!empty($this->catchIO)) {
-            list($input, $output) = call_user_func($this->catchIO, $input, $output);
-        }
-
         try {
             $exitCode = parent::doRunCommand($command, $input, $output);
         } catch (\Throwable $x) {
@@ -119,11 +106,6 @@ class Application extends Console
         }
 
         return $exitCode;
-    }
-
-    public function catchIO($callable)
-    {
-        $this->catchIO = $callable;
     }
 
     public function afterRun($callable)

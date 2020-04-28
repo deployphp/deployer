@@ -97,7 +97,6 @@ class Messenger
             $this->output->write($message);
 
         } else {
-
             $message = "";
             $class = get_class($exception);
             $file = basename($exception->getFile());
@@ -115,8 +114,15 @@ class Messenger
                 }
             }
             $message .= "[{$host->tag()}]\n";
+            if ($this->output->isDebug()) {
+                foreach (explode("\n", $exception->getTraceAsString()) as $line) {
+                    $line = trim($line);
+                    if ($line !== "") {
+                        $message .= "[{$host->tag()}] $line\n";
+                    }
+                }
+            }
             $this->output->write($message);
-
         }
 
         if ($exception->getPrevious()) {

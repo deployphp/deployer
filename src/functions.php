@@ -8,6 +8,7 @@
 namespace Deployer;
 
 use Deployer\Exception\Exception;
+use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
@@ -27,42 +28,60 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use function Deployer\Support\array_to_string;
 
-// There are two types of functions: Deployer dependent and Context dependent.
-// Deployer dependent function uses in definition stage of recipe and may require Deployer::get() method.
-// Context dependent function uses while task execution and must require only Context::get() method.
-// But there is also a third type of functions: mixed. Mixed function uses in definition stage and in task
-// execution stage. They are acts like two different function, but have same name. Example of such function
-// is set() func. This function determine in which stage it was called by Context::get() method.
-
 /**
- * @param string|array ...$hostnames
+ * @param string|array ...$hostname
  * @return Host|Host[]|Proxy
  */
-function host(...$hostnames)
+function host(...$hostname)
 {
     $deployer = Deployer::get();
-    $hostnames = Range::expand($hostnames);
+    $aliases = Range::expand($hostname);
 
-    if ($deployer->hosts->has($hostnames[0])) {
-        if (count($hostnames) === 1) {
-            return $deployer->hosts->get($hostnames[0]);
-        } else {
-            return array_map([$deployer->hosts, 'get'], $hostnames);
+    foreach ($aliases as $alias) {
+        if ($deployer->hosts->has($alias)) {
+            $host = $deployer->hosts->get($alias);
+            throw new \InvalidArgumentException(
+                "Host \"{$host->tag()}\" already exists.\n" .
+                "If you want to override configuration options, get host with <fg=yellow>getHost</> function.\n" .
+                "\n" .
+                "    <fg=yellow>getHost</>(<fg=green>'{$alias}'</>);" .
+                "\n"
+            );
         }
     }
 
-    if (count($hostnames) === 1) {
-        $host = new Host($hostnames[0]);
-        $deployer->hosts->set($hostnames[0], $host);
+    if (count($aliases) === 1) {
+        $host = new Host($aliases[0]);
+        $deployer->hosts->set($aliases[0], $host);
         return $host;
     } else {
         $hosts = array_map(function ($hostname) use ($deployer) {
             $host = new Host($hostname);
             $deployer->hosts->set($hostname, $host);
             return $host;
-        }, $hostnames);
+        }, $aliases);
         return new Proxy($hosts);
     }
+}
+
+/**
+ * Get host by host alias.
+ *
+ * @param string $alias
+ * @return Host
+ */
+function getHost(string $alias) {
+    return Deployer::get()->hosts->get($alias);
+}
+
+/**
+ * Get current host.
+ *
+ * @return Host
+ */
+function currentHost()
+{
+    return Context::get()->getHost();
 }
 
 /**
@@ -133,28 +152,21 @@ function desc($title = null)
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
  * @return Task\Task
- * @throws \InvalidArgumentException
  */
 function task($name, $body = null)
 {
     $deployer = Deployer::get();
 
     if (empty($body)) {
-        $task = $deployer->tasks->get($name);
-        return $task;
+        return $deployer->tasks->get($name);
     }
 
     if (is_callable($body)) {
         $task = new T($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
-    } elseif (is_string($body)) {
-        $task = new T($name, function () use ($body) {
-            cd('{{release_path}}');
-            run($body);
-        });
     } else {
-        throw new \InvalidArgumentException('Task should be a closure, string or array of other tasks.');
+        throw new \InvalidArgumentException('Task should be a closure or array of other tasks.');
     }
 
     $task->setFilepath(Exception::await());
@@ -211,17 +223,20 @@ function fail($it, $that)
 /**
  * Add users options.
  *
- * @param string $name
- * @param string $shortcut
- * @param int $mode
- * @param string $description
- * @param mixed $default
+ * @param string $name The option name
+ * @param string|array|null $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+ * @param int|null $mode The option mode: One of the VALUE_* constants
+ * @param string $description A description text
+ * @param string|string[]|int|bool|null $default The default value (must be null for self::VALUE_NONE)
  */
 function option($name, $shortcut = null, $mode = null, $description = '', $default = null)
 {
-    Deployer::get()->getConsole()->getUserDefinition()->addOption(
+    Deployer::get()->getConsole()->getDefinition()->addOption(
         new InputOption($name, $shortcut, $mode, $description, $default)
     );
+//    Deployer::get()->getConsole()->getUserDefinition()->addOption(
+//        new InputOption($name, $shortcut, $mode, $description, $default)
+//    );
 }
 
 /**
@@ -360,15 +375,6 @@ function testLocally($command)
 }
 
 /**
- * @return Host
- * @throws Exception
- */
-function currentHost()
-{
-    return Context::get()->getHost();
-}
-
-/**
  * Iterate other hosts, allowing to call run func in callback.
  *
  * @experimental
@@ -377,8 +383,7 @@ function currentHost()
  */
 function on($hosts, callable $callback)
 {
-    $input = Context::has() ? input() : null;
-    $output = Context::has() ? output() : null;
+    $deployer = Deployer::get();
 
     if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
         $hosts = [$hosts];
@@ -386,9 +391,13 @@ function on($hosts, callable $callback)
 
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
-            Context::push(new Context($host, $input, $output));
+            $host->getConfig()->load();
+            Context::push(new Context($host, input(), output()));
             try {
                 $callback($host);
+                $host->getConfig()->save();
+            } catch (GracefulShutdownException $e) {
+                $deployer->messenger->renderException($e, $host);
             } finally {
                 Context::pop();
             }
@@ -425,14 +434,10 @@ function invoke($task)
     $executor->run($tasks, $hosts);
 }
 
-/**
- * Upload file or directory to host
- *
- * @param string $source
- * @param string $destination
- * @param array $config
+/*
+ * Upload file or directory to host.
  */
-function upload($source, $destination, array $config = [])
+function upload(string $source, string $destination, $config = [])
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
@@ -442,31 +447,14 @@ function upload($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host, $source, $destination, $config);
     } else {
-        if (!isset($config['options']) || !is_array($config['options'])) {
-            $config['options'] = [];
-        }
-
-        $sshArguments = $host->getSshArguments()->getCliArguments();
-        if (empty($sshArguments) === false) {
-            $config['options'][] = "-e 'ssh $sshArguments'";
-        }
-
-        if ($host->has("become")) {
-            $config['options'][] = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
-        }
-
         $rsync->call($host, $source, "{$host->hostname()}:$destination", $config);
     }
 }
 
-/**
+/*
  * Download file or directory from host
- *
- * @param string $destination
- * @param string $source
- * @param array $config
  */
-function download($source, $destination, array $config = [])
+function download(string $source, string $destination, $config = [])
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
@@ -476,19 +464,6 @@ function download($source, $destination, array $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host, $source, $destination, $config);
     } else {
-        if (!isset($config['options']) || !is_array($config['options'])) {
-            $config['options'] = [];
-        }
-
-        $sshArguments = $host->getSshArguments()->getCliArguments();
-        if (empty($sshArguments) === false) {
-            $config['options'][] = "-e 'ssh $sshArguments'";
-        }
-
-        if ($host->has("become")) {
-            $config['options'][] = "--rsync-path='sudo -H -u " . $host->get('become') . " rsync'";
-        }
-
         $rsync->call($host, "{$host->hostname()}:$source", $destination, $config);
     }
 }

@@ -93,3 +93,14 @@ function array_to_string(array $array): string
         $array
     ));
 }
+
+/**
+ * Check if var is closure.
+ *
+ * @param $var
+ * @return bool
+ */
+function is_closure($var)
+{
+    return is_object($var) && ($var instanceof \Closure);
+}

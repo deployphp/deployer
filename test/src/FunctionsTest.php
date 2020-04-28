@@ -59,9 +59,7 @@ class FunctionsTest extends TestCase
             ->method('getConfig')
             ->willReturn(new Configuration());
 
-        $this->deployer = new Deployer($this->console);
-        $this->deployer['input'] = $this->input;
-        $this->deployer['output'] = $this->output;
+        $this->deployer = new Deployer($this->console, $this->input, $this->output);
         Context::push(new Context($this->host, $this->input, $this->output));
     }
 
@@ -76,7 +74,7 @@ class FunctionsTest extends TestCase
     {
         host('domain.com');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
-        self::assertInstanceOf(Host::class, host('domain.com'));
+        self::assertInstanceOf(Host::class, getHost('domain.com'));
 
         host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
@@ -95,7 +93,8 @@ class FunctionsTest extends TestCase
 
     public function testTask()
     {
-        task('task', 'pwd');
+        task('task', function () {
+        });
 
         $task = $this->deployer->tasks->get('task');
         self::assertInstanceOf(Task::class, $task);
@@ -113,8 +112,8 @@ class FunctionsTest extends TestCase
 
     public function testBefore()
     {
-        task('main', 'pwd');
-        task('before', 'ls');
+        task('main', function () {});
+        task('before', function () {});
         before('main', 'before');
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
@@ -123,8 +122,8 @@ class FunctionsTest extends TestCase
 
     public function testAfter()
     {
-        task('main', 'pwd');
-        task('after', 'ls');
+        task('main', function () {});
+        task('after', function () {});
         after('main', 'after');
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));

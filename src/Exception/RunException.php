@@ -7,24 +7,25 @@
 
 namespace Deployer\Exception;
 
+use Deployer\Host\Host;
 use Symfony\Component\Process\Process;
 
 class RunException extends Exception
 {
-    private $hostname;
+    private $host;
     private $command;
     private $exitCode;
     private $output;
     private $errorOutput;
 
     public function __construct(
-        string $hostname,
+        Host $host,
         string $command,
         int $exitCode,
         string $output,
         string $errorOutput
     ) {
-        $this->hostname = $hostname;
+        $this->host = $host;
         $this->command = $command;
         $this->exitCode = $exitCode;
         $this->output = $output;
@@ -34,9 +35,9 @@ class RunException extends Exception
         parent::__construct($message, $exitCode);
     }
 
-    public function getHostname(): string
+    public function getHost(): Host
     {
-        return $this->hostname;
+        return $this->host;
     }
 
     public function getCommand(): string

@@ -17,7 +17,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class WorkerCommand extends TaskCommand
+class WorkerCommand extends MainCommand
 {
     public function __construct(Deployer $deployer)
     {
@@ -26,7 +26,7 @@ class WorkerCommand extends TaskCommand
         $this->setHidden(true);
         $this->addArgument('worker-task', InputArgument::REQUIRED);
         $this->addArgument('worker-host', InputArgument::REQUIRED);
-        $this->addArgument('worker-config', InputArgument::REQUIRED);
+        $this->addArgument('config-directory', InputArgument::REQUIRED);
         $this->addArgument('original-task', InputArgument::REQUIRED);
         $this->addOption('decorated', null, Option::VALUE_NONE);
     }
@@ -41,20 +41,17 @@ class WorkerCommand extends TaskCommand
         $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
         $task = $this->deployer->tasks->get($input->getArgument('worker-task'));
 
-        $persistentCollection = new PersistentCollection($input->getArgument('worker-config'));
-        $persistentCollection->load();
+        $this->deployer->config->set('config_directory', $input->getArgument('config-directory'));
+        $host->getConfig()->load();
 
-        $host->getConfig()->setCollection($persistentCollection);
-        foreach ($persistentCollection as $name => $value) {
+        foreach ($host->getConfig() as $name => $value) {
             $this->deployer->config->set($name, $value);
         }
 
         try {
             $task->run(new Context($host, $input, $output));
             $this->deployer->messenger->endOnHost($host);
-
-            $persistentCollection->flush();
-
+            $host->getConfig()->save();
             return 0;
         } catch (GracefulShutdownException $e) {
             $this->deployer->messenger->renderException($e, $host);

@@ -38,19 +38,18 @@ class HostSelector
     public function getAll()
     {
         $hosts = [];
-        foreach ($this->hosts as $host) {
+        foreach ($this->hosts->all() as $host) {
             $hosts[] = $host;
         }
         return $hosts;
     }
 
     /**
-     * @param string $hostnames
      * @return Host[]
      */
-    public function getByHostnames(string $hostnames)
+    public function getByHostnames(array $hostnames)
     {
-        $hostnames = Range::expand(array_map('trim', explode(',', $hostnames)));
+        $hostnames = Range::expand(array_map('trim', $hostnames));
         return array_map([$this->hosts, 'get'], $hostnames);
     }
 
@@ -65,7 +64,7 @@ class HostSelector
         }
 
         $hosts = [];
-        foreach ($this->hosts as $host) {
+        foreach ($this->hosts->all() as $host) {
             foreach ($host->get('roles', []) as $role) {
                 if (in_array($role, $roles, true)) {
                     $hosts[] = $host;

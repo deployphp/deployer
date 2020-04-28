@@ -30,7 +30,7 @@ class HostSelectorTest extends TestCase
         $hostSelector = new HostSelector($hostCollection);
         $hosts = $hostSelector->getAll(null);
 
-        $this->assertSame(count($hosts), 100);
+        $this->assertSame(100, count($hosts));
     }
 
     public function testGetByHostnameReturnsArrayWithHostsAndCorrectLength()
@@ -40,7 +40,7 @@ class HostSelectorTest extends TestCase
         $hostCollection->set('app', new Host('app'));
         $hostCollection->set('db', new Host('db'));
         $hostSelector = new HostSelector($hostCollection);
-        $hosts = $hostSelector->getByHostnames('server, app, db');
+        $hosts = $hostSelector->getByHostnames(['server', 'app', 'db']);
 
         $this->assertSame(count($hosts), 3);
         $this->assertSame('server', $hosts[0]->alias());

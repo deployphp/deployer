@@ -11,6 +11,7 @@ use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Host\Localhost;
+use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface as Input;
@@ -18,7 +19,7 @@ use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use function Deployer\localhost;
 
-class TaskCommand extends Command
+class MainCommand extends Command
 {
     protected $deployer;
 
@@ -34,10 +35,10 @@ class TaskCommand extends Command
     protected function configure()
     {
         $this->addOption(
-            'hosts',
+            'host',
             null,
-            Option::VALUE_REQUIRED,
-            'Hosts to deploy, comma separated, supports ranges [:]'
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Hosts to deploy'
         );
         $this->addOption(
             'roles',
@@ -85,7 +86,7 @@ class TaskCommand extends Command
         }
 
         $roles = $input->getOption('roles');
-        $hosts = $input->getOption('hosts');
+        $hosts = $input->getOption('host');
         $logFile = $input->getOption('log');
         $hooksEnabled = !$input->getOption('no-hooks');
 
@@ -107,6 +108,16 @@ class TaskCommand extends Command
             if ($this->deployer->hosts->count() > 0) {
                 throw new Exception('No host selected');
             }
+        }
+
+        $configDirectory = sprintf('%s/%s', sys_get_temp_dir(), uniqid());
+        if (!is_dir($configDirectory)) {
+            mkdir($configDirectory, 0700, true);
+        }
+        $this->deployer->config->set('config_directory', $configDirectory);
+
+        foreach ($selectedHosts as $alias => $host) {
+            $host->getConfig()->save();
         }
 
         $tasks = $this->deployer->scriptManager->getTasks(

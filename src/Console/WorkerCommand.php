@@ -9,6 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Collection\PersistentCollection;
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\NonFatalException;
 use Deployer\Task\Context;
@@ -22,13 +23,17 @@ class WorkerCommand extends MainCommand
     public function __construct(Deployer $deployer)
     {
         parent::__construct('worker', null, $deployer);
-        $this->deployer = $deployer;
         $this->setHidden(true);
+    }
+
+    protected function configure()
+    {
         $this->addArgument('worker-task', InputArgument::REQUIRED);
         $this->addArgument('worker-host', InputArgument::REQUIRED);
         $this->addArgument('config-directory', InputArgument::REQUIRED);
         $this->addArgument('original-task', InputArgument::REQUIRED);
         $this->addOption('decorated', null, Option::VALUE_NONE);
+        parent::configure();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -49,7 +54,9 @@ class WorkerCommand extends MainCommand
         }
 
         try {
+            Exception::setTaskSourceLocation($task->getSourceLocation());
             $task->run(new Context($host, $input, $output));
+
             $this->deployer->messenger->endOnHost($host);
             $host->getConfig()->save();
             return 0;

@@ -11,6 +11,7 @@ use Deployer\Collection\Collection;
 
 /**
  * @method Host get($name)
+ * @method Host[] getIterator()
  */
 class HostCollection extends Collection
 {

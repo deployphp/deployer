@@ -77,7 +77,7 @@ class Messenger
         if ($exception instanceof RunException) {
 
             $message = "";
-            $message .= "[{$host->tag()}] <fg=white;bg=red> error </> <comment>in {$exception->getFilename()} on line {$exception->getLineNumber()}:</>\n";
+            $message .= "[{$host->tag()}] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
             if ($this->output->getVerbosity() === Output::VERBOSITY_NORMAL) {
                 $message .= "[{$host->tag()}] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
                 foreach (explode("\n", $exception->getErrorOutput()) as $line) {
@@ -102,8 +102,8 @@ class Messenger
             $file = basename($exception->getFile());
             $line = $exception->getLine();
             if ($exception instanceof Exception) {
-                $file = $exception->getFilename();
-                $line = $exception->getLineNumber();
+                $file = $exception->getTaskFilename();
+                $line = $exception->getTaskLineNumber();
             }
             $message .= "[{$host->tag()}] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
             $message .= "[{$host->tag()}]\n";

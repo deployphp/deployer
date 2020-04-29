@@ -16,25 +16,28 @@ use Deployer\Console\Application;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\DiceCommand;
 use Deployer\Console\InitCommand;
+use Deployer\Console\MainCommand;
 use Deployer\Console\RunCommand;
 use Deployer\Console\SshCommand;
-use Deployer\Console\MainCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
-use Deployer\Executor\ParallelExecutor;
 use Deployer\Executor\Messenger;
+use Deployer\Executor\ParallelExecutor;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
+use Deployer\Selector\Selector;
 use Deployer\Task;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
 use Symfony\Component\Console;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 /**
  * Deployer class represents DI container for configuring
@@ -47,12 +50,13 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @property Client $sshClient
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
- * @property Host\HostSelector $hostSelector
+ * @property Selector $selector
  * @property ParallelExecutor $executor
  * @property Messenger $messenger
  * @property Messenger $logger
  * @property Printer $pop
  * @property Collection $fail
+ * @property InputDefinition $inputDefinition
  */
 class Deployer extends Container
 {
@@ -76,13 +80,14 @@ class Deployer extends Container
         $this['console'] = function () use ($console) {
             return $console;
         };
-
         $this['input'] = function () use ($input) {
             return $input;
         };
-
         $this['output'] = function () use ($output) {
             return $output;
+        };
+        $this['inputDefinition'] = function () {
+            return new InputDefinition();
         };
 
         /******************************
@@ -120,12 +125,8 @@ class Deployer extends Container
         $this['scriptManager'] = function ($c) {
             return new Task\ScriptManager($c['tasks']);
         };
-        $this['hostSelector'] = function ($c) {
-            $defaultStage = $c['config']['default_stage'];
-            if (is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
-                $defaultStage = call_user_func($defaultStage);
-            }
-            return new Host\HostSelector($c['hosts'], $defaultStage);
+        $this['selector'] = function ($c) {
+            return new Selector($c['hosts']);
         };
         $this['fail'] = function () {
             return new Collection();
@@ -177,24 +178,22 @@ class Deployer extends Container
      */
     public function init()
     {
-        $this->addConsoleCommands();
+        $this->addTaskCommands();
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());
         $this->getConsole()->add(new InitCommand());
+        $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
-        $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
     }
 
     /**
      * Transform tasks to console commands.
      */
-    public function addConsoleCommands()
+    public function addTaskCommands()
     {
-        $this->getConsole()->addUserArgumentsAndOptions();
-
-        foreach ($this->tasks->all() as $name => $task) {
+        foreach ($this->tasks as $name => $task) {
             if ($task->isHidden()) {
                 continue;
             }
@@ -226,22 +225,6 @@ class Deployer extends Container
     }
 
     /**
-     * @return Console\Input\InputInterface
-     */
-    public function getInput()
-    {
-        return $this['input'];
-    }
-
-    /**
-     * @return Console\Output\OutputInterface
-     */
-    public function getOutput()
-    {
-        return $this['output'];
-    }
-
-    /**
      * @param string $name
      * @return Console\Helper\HelperInterface
      */
@@ -265,26 +248,54 @@ class Deployer extends Container
         $deployer = new self($console, $input, $output);
 
         try {
+
             // Require deploy.php file
             self::load($deployFile);
-        } catch (\Throwable $exception) {
-            $class = get_class($exception);
-            $file = basename($exception->getFile());
-            $output->writeln([
-                "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
-                "",
-                implode("\n", array_map(function ($line) {
-                    return "  " . $line;
-                }, explode("\n", $exception->getMessage()))),
-                "",
-            ]);
-            $output->writeln($exception->getTraceAsString());
-            return;
-        }
 
-        // Run Deployer
-        $deployer->init();
-        $console->run($input, $output);
+            // Run Deployer
+            $deployer->init();
+            $console->run($input, $output);
+
+        } catch (Throwable $exception) {
+            self::printException($output, $exception);
+        }
+    }
+
+    public static function load(string $deployFile)
+    {
+        if (is_readable($deployFile)) {
+            // Prevent variable leak into deploy.php file
+            call_user_func(function () use ($deployFile) {
+                // Reorder autoload stack
+                $originStack = spl_autoload_functions();
+
+                require $deployFile;
+
+                $newStack = spl_autoload_functions();
+                if ($originStack[0] !== $newStack[0]) {
+                    foreach (array_reverse($originStack) as $loader) {
+                        spl_autoload_unregister($loader);
+                        spl_autoload_register($loader, true, true);
+                    }
+                }
+            });
+        }
+    }
+
+    private static function printException(OutputInterface $output, Throwable $exception)
+    {
+        $class = get_class($exception);
+        $file = basename($exception->getFile());
+        $output->writeln([
+            "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
+            "",
+            implode("\n", array_map(function ($line) {
+                return "  " . $line;
+            }, explode("\n", $exception->getMessage()))),
+            "",
+        ]);
+        $output->writeln($exception->getTraceAsString());
+        return;
     }
 
     /**
@@ -329,31 +340,5 @@ class Deployer extends Container
         }
 
         Reporter::report($stats);
-    }
-
-    /**
-     * Load recipe file.
-     *
-     * @param string $deployFile
-     */
-    public static function load(string $deployFile)
-    {
-        if (is_readable($deployFile)) {
-            // Prevent variable leak into deploy.php file
-            call_user_func(function () use ($deployFile) {
-                // Reorder autoload stack
-                $originStack = spl_autoload_functions();
-
-                require $deployFile;
-
-                $newStack = spl_autoload_functions();
-                if ($originStack[0] !== $newStack[0]) {
-                    foreach (array_reverse($originStack) as $loader) {
-                        spl_autoload_unregister($loader);
-                        spl_autoload_register($loader, true, true);
-                    }
-                }
-            });
-        }
     }
 }

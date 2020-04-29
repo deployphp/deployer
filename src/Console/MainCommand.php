@@ -10,65 +10,55 @@ namespace Deployer\Console;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
+use Deployer\Executor\Planner;
+use Deployer\Host\Host;
 use Deployer\Host\Localhost;
-use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
-use function Deployer\localhost;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 
-class MainCommand extends Command
+class MainCommand extends SelectCommand
 {
-    protected $deployer;
-
     public function __construct(string $name, ?string $description, Deployer $deployer)
     {
-        parent::__construct($name);
+        parent::__construct($name, $deployer);
         if ($description) {
             $this->setDescription($description);
         }
-        $this->deployer = $deployer;
     }
 
     protected function configure()
     {
-        $this->addOption(
-            'host',
-            null,
-            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Hosts to deploy'
-        );
-        $this->addOption(
-            'roles',
-            null,
-            Option::VALUE_REQUIRED,
-            'Roles to deploy'
-        );
+        parent::configure();
         $this->addOption(
             'limit',
             'l',
             Option::VALUE_REQUIRED,
-            'How many host to run in parallel?'
+            'How many tasks to run in parallel?'
         );
         $this->addOption(
             'no-hooks',
             null,
             Option::VALUE_NONE,
-            'Run task without after/before hooks'
+            'Run tasks without after/before hooks'
+        );
+        $this->addOption(
+            'plan',
+            null,
+            Option::VALUE_NONE,
+            'Show execution plan'
         );
         $this->addOption(
             'log',
             null,
             Option::VALUE_REQUIRED,
             'Log to file'
-        );
-        $this->addOption(
-            'option',
-            'o',
-            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Sets configuration option'
         );
         $this->addOption(
             'profile',
@@ -80,56 +70,36 @@ class MainCommand extends Command
 
     protected function execute(Input $input, Output $output)
     {
-        $output->getFormatter()->setStyle('success', new OutputFormatterStyle('green'));
-        if (!$output->isDecorated()) {
-            define('NO_ANSI', 'true');
-        }
-
-        $roles = $input->getOption('roles');
-        $hosts = $input->getOption('host');
-        $logFile = $input->getOption('log');
         $hooksEnabled = !$input->getOption('no-hooks');
+        $this->deployer->config['log_file'] = $input->getOption('log');
+        $hosts = $this->selectHosts($input, $output);
+        $plan = $input->getOption('plan') ? new Planner($output, $hosts) : null;
 
-        foreach ($this->deployer->console->getUserDefinition()->getOptions() as $option) {
-            if (!empty($input->getOption($option->getName()))) {
-                $this->deployer->config[$option->getName()] = $input->getOption($option->getName());
+        if ($plan === null) {
+            // Materialize hosts configs
+            $configDirectory = sprintf('%s/%s', sys_get_temp_dir(), uniqid());
+            if (!is_dir($configDirectory)) {
+                mkdir($configDirectory, 0700, true);
+            }
+            $this->deployer->config->set('config_directory', $configDirectory);
+            foreach ($hosts as $alias => $host) {
+                $host->getConfig()->save();
             }
         }
 
-        $this->parseOptions($input->getOption('option'));
-        $this->deployer->config['log_file'] = $logFile;
-
-        if (empty($hosts) && empty($roles) && $this->deployer->config->has('default_roles')) {
-            $roles = $this->deployer->config->get('default_roles');
-        }
-
-        $selectedHosts = $this->deployer->hostSelector->select($hosts, $roles);
-        if (empty($selectedHosts)) {
-            if ($this->deployer->hosts->count() > 0) {
-                throw new Exception('No host selected');
-            }
-        }
-
-        $configDirectory = sprintf('%s/%s', sys_get_temp_dir(), uniqid());
-        if (!is_dir($configDirectory)) {
-            mkdir($configDirectory, 0700, true);
-        }
-        $this->deployer->config->set('config_directory', $configDirectory);
-
-        foreach ($selectedHosts as $alias => $host) {
-            $host->getConfig()->save();
-        }
-
-        $tasks = $this->deployer->scriptManager->getTasks(
-            $this->getName(),
-            $selectedHosts,
-            $hooksEnabled
-        );
+        $this->deployer->scriptManager->setHooksEnabled($hooksEnabled);
+        $tasks = $this->deployer->scriptManager->getTasks($this->getName());
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
 
-        $exitCode = $this->deployer->executor->run($tasks, $selectedHosts);
+        $exitCode = $this->deployer->executor->run($tasks, $hosts, $plan);
+
+        if ($plan) {
+            $plan->render();
+            return 0;
+        }
+
         if ($exitCode === 0) {
             return 0;
         }
@@ -140,12 +110,8 @@ class MainCommand extends Command
         // Check if we have tasks to execute on failure.
         if ($this->deployer['fail']->has($this->getName())) {
             $taskName = $this->deployer['fail']->get($this->getName());
-            $tasks = $this->deployer->scriptManager->getTasks(
-                $taskName,
-                $selectedHosts,
-                $hooksEnabled
-            );
-            $this->deployer->executor->run($tasks, $selectedHosts);
+            $tasks = $this->deployer->scriptManager->getTasks($taskName);
+            $this->deployer->executor->run($tasks, $hosts);
         }
 
         return $exitCode;

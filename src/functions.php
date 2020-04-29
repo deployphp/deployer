@@ -169,7 +169,7 @@ function task($name, $body = null)
         throw new \InvalidArgumentException('Task should be a closure or array of other tasks.');
     }
 
-    $task->setFilepath(Exception::await());
+    $task->saveSourceLocation();
     $deployer->tasks->set($name, $task);
 
     if (!empty(desc())) {
@@ -231,12 +231,9 @@ function fail($it, $that)
  */
 function option($name, $shortcut = null, $mode = null, $description = '', $default = null)
 {
-    Deployer::get()->getConsole()->getDefinition()->addOption(
+    Deployer::get()->inputDefinition->addOption(
         new InputOption($name, $shortcut, $mode, $description, $default)
     );
-//    Deployer::get()->getConsole()->getUserDefinition()->addOption(
-//        new InputOption($name, $shortcut, $mode, $description, $default)
-//    );
 }
 
 /**
@@ -405,18 +402,6 @@ function on($hosts, callable $callback)
             throw new \InvalidArgumentException("Function on can iterate only on Host instances.");
         }
     }
-}
-
-/**
- * Return hosts based on roles.
- *
- * @experimental
- * @param string[] $roles
- * @return Host[]
- */
-function roles(...$roles)
-{
-    return Deployer::get()->hostSelector->getByRoles($roles);
 }
 
 /**

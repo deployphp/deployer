@@ -11,18 +11,18 @@ use Throwable;
 
 class Exception extends \Exception
 {
-    private static $awaitFilepath;
-    private $filename;
-    private $lineNumber;
+    private static $taskSourceLocation;
+    private $taskFilename;
+    private $taskLineNumber;
 
     public function __construct($message = "", $code = 0, Throwable $previous = null)
     {
         if (function_exists('debug_backtrace')) {
             $trace = debug_backtrace();
             foreach ($trace as $t) {
-                if (!empty($t['file']) && $t['file'] === self::$awaitFilepath) {
-                    $this->filename = basename($t['file']);
-                    $this->lineNumber = $t['line'];
+                if (!empty($t['file']) && $t['file'] === self::$taskSourceLocation) {
+                    $this->taskFilename = basename($t['file']);
+                    $this->taskLineNumber = $t['line'];
                     break;
                 }
             }
@@ -30,28 +30,19 @@ class Exception extends \Exception
         parent::__construct($message, $code, $previous);
     }
 
-    public static function setFilepath($awaitFilepath): void
+    public static function setTaskSourceLocation(string $filepath): void
     {
-        self::$awaitFilepath = $awaitFilepath;
+        self::$taskSourceLocation = $filepath;
     }
 
-    public static function await()
+    public function getTaskFilename()
     {
-        if (function_exists('debug_backtrace')) {
-            $trace = debug_backtrace();
-            return self::$awaitFilepath = $trace[1]['file'];
-        }
-        return '';
+        return $this->taskFilename;
     }
 
-    public function getFilename()
+    public function getTaskLineNumber()
     {
-        return $this->filename;
-    }
-
-    public function getLineNumber()
-    {
-        return $this->lineNumber;
+        return $this->taskLineNumber;
     }
 }
 

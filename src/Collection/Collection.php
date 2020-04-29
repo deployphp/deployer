@@ -7,10 +7,10 @@
 
 namespace Deployer\Collection;
 
-use Exception;
-use Traversable;
+use Countable;
+use IteratorAggregate;
 
-class Collection implements \Countable, \IteratorAggregate
+class Collection implements Countable, IteratorAggregate
 {
     protected $values = [];
 

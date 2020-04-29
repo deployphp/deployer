@@ -7,20 +7,18 @@
 
 namespace Deployer\Task;
 
-use Deployer\Exception\Exception;
-
 class GroupTask extends Task
 {
     /**
-     * List of tasks
+     * List of tasks.
      *
-     * @var array
+     * @var string[]
      */
     private $group;
 
     /**
      * @param string $name
-     * @param array $group
+     * @param string[] $group
      */
     public function __construct($name, $group)
     {
@@ -28,26 +26,18 @@ class GroupTask extends Task
         $this->group = $group;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(Context $context)
     {
-        throw new \RuntimeException("Can't run group task.");
+        // TODO: implement;
     }
 
     /**
      * List of dependent tasks names
      *
-     * @return array
+     * @return string[]
      */
     public function getGroup()
     {
         return $this->group;
-    }
-
-    public function local()
-    {
-        throw new Exception('Group tasks can\'t be local.');
     }
 }

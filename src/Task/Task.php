@@ -7,25 +7,20 @@
 
 namespace Deployer\Task;
 
-use Deployer\Host\Host;
-use function Deployer\Support\array_flatten;
+use Deployer\Selector\Selector;
 
 class Task
 {
-    /**
-     * @var string
-     */
     private $name;
-
-    /**
-     * @var callable
-     */
     private $callback;
+    private $description;
 
     /**
+     * Task source file location.
+     *
      * @var string
      */
-    private $description;
+    private $sourceLocation = '';
 
     /**
      * Should we run this task locally?
@@ -35,23 +30,16 @@ class Task
     private $local = false;
 
     /**
-     * Lists of hosts, roles there task should be executed.
-     *
-     * @var array
-     */
-    private $on = ['hosts' => [], 'roles' => []];
-
-    /**
      * List of task names to run before.
      *
-     * @var array
+     * @var string[]
      */
     private $before = [];
 
     /**
      * List of task names to run after.
      *
-     * @var array
+     * @var string[]
      */
     private $after = [];
 
@@ -63,18 +51,11 @@ class Task
     private $hidden = false;
 
     /**
-     * Mark task to run only once, of the first node from the pool
+     * Run task only once on one of hosts.
      *
      * @var bool
      */
     private $once = false;
-
-    /**
-     * Mark if the task has run at least once
-     *
-     * @var bool
-     */
-    private $hasRun = false;
 
     /**
      * Shallow task will not print execution message/finish messages.
@@ -85,25 +66,23 @@ class Task
     private $shallow = false;
 
     /**
-     * Task filepath location.
+     * Limit parallel execution of the task.
      *
-     * @var string
+     * @var int|null
      */
-    private $filepath = '';
+    private $limit = null;
 
     /**
-     * @param string $name Tasks name
-     * @param callable $callback Task code
+     * @var array|null
      */
+    private $selector = null;
+
     public function __construct($name, callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;
     }
 
-    /**
-     * @param Context $context
-     */
     public function run(Context $context)
     {
         Context::push($context);
@@ -111,13 +90,9 @@ class Task
         // Call task
         call_user_func($this->callback);
 
-        if ($this->once) {
-            $this->hasRun = true;
-        }
-
         // Clear working_path
         if ($context->getConfig() !== null) {
-            $context->getConfig()->set('working_path', false);
+            $context->getConfig()->set('working_path', null);
         }
 
         Context::pop();
@@ -138,20 +113,27 @@ class Task
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return $this
-     */
-    public function desc($description)
+    public function desc(string $description)
     {
         $this->description = $description;
         return $this;
     }
 
+    public function getSourceLocation(): string
+    {
+        return $this->sourceLocation;
+    }
+
+    public function saveSourceLocation()
+    {
+        if (function_exists('debug_backtrace')) {
+            $trace = debug_backtrace();
+            $this->sourceLocation = $trace[1]['file'];
+        }
+    }
+
     /**
-     * Mark this task local
-     *
-     * @return $this
+     * Mark this task local.
      */
     public function local()
     {
@@ -159,14 +141,14 @@ class Task
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isLocal()
     {
         return $this->local;
     }
 
+    /**
+     * Mark this task to run only once on one of hosts.
+     */
     public function once()
     {
         $this->once = true;
@@ -179,66 +161,7 @@ class Task
     }
 
     /**
-     * @param array $hosts
-     * @return $this
-     */
-    public function onHosts(...$hosts)
-    {
-        $this->on['hosts'] = array_flatten($hosts);
-        return $this;
-    }
-
-    /**
-     * @param array $roles
-     * @return $this
-     */
-    public function onRoles(...$roles)
-    {
-        $this->on['roles'] = array_flatten($roles);
-        return $this;
-    }
-
-    /**
-     * Checks what task should be performed on one of hosts.
-     *
-     * @param Host[] $hosts
-     * @return bool
-     */
-    public function shouldBePerformed(...$hosts)
-    {
-        // don't allow to run again it the task has been marked to run only once
-        if ($this->once && $this->hasRun) {
-            return false;
-        }
-
-        foreach ($hosts as $host) {
-            $onHost = empty($this->on['hosts']) || in_array($host->alias(), $this->on['hosts'], true);
-
-            $onRole = empty($this->on['roles']);
-            foreach ((array) $host->get('roles', []) as $role) {
-                if (in_array($role, $this->on['roles'], true)) {
-                    $onRole = true;
-                }
-            }
-
-            if ($onHost && $onRole) {
-                return true;
-            }
-        }
-
-        return empty($hosts);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isHidden()
-    {
-        return $this->hidden;
-    }
-
-    /**
-     * Mark task as hidden
+     * Mark task as hidden and not accessible from CLI.
      *
      * @return $this
      */
@@ -248,52 +171,35 @@ class Task
         return $this;
     }
 
-    /**
-     * @param string $task
-     *
-     * @return $this
-     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
     public function addBefore(string $task)
     {
         array_unshift($this->before, $task);
         return $this;
     }
 
-    /**
-     * @param string $task
-     *
-     * @return $this
-     */
     public function addAfter(string $task)
     {
         array_push($this->after, $task);
         return $this;
     }
 
-    /**
-     * Get before tasks names.
-     * @return string[]
-     */
     public function getBefore()
     {
         return $this->before;
     }
 
-    /**
-     * Get after tasks names.
-     * @return string[]
-     */
     public function getAfter()
     {
         return $this->after;
     }
 
     /**
-     * Sets task shallow.
-     *
-     * Shallow task will not print execution message/finish messages.
-     *
-     * @return $this
+     * Sets task as shallow. Shallow task will not print execution message/finish messages.
      */
     public function shallow()
     {
@@ -301,37 +207,50 @@ class Task
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isShallow()
     {
         return $this->shallow;
     }
 
     /**
-     * @internal this is used by ParallelExecutor and prevent multiple run
+     * @return int|null
      */
-    public function setHasRun()
+    public function getLimit(): ?int
     {
-        if ($this->isOnce()) {
-            $this->hasRun = true;
+        return $this->limit;
+    }
+
+    /**
+     * @param int|null $limit
+     * @return Task
+     */
+    public function limit(?int $limit)
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
+    public function select(string $selector)
+    {
+        $this->selector = Selector::parse($selector);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getSelector(): ?array
+    {
+        return $this->selector;
+    }
+
+    public function addSelector(?array $newSelector)
+    {
+        if ($newSelector !== null) {
+            if ($this->selector === null) {
+                $this->selector = $newSelector;
+            } else {
+                $this->selector = array_merge($this->selector, $newSelector);
+            }
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilepath(): string
-    {
-        return $this->filepath;
-    }
-
-    /**
-     * @param string $filepath
-     */
-    public function setFilepath(string $filepath): void
-    {
-        $this->filepath = $filepath;
     }
 }

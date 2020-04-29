@@ -152,6 +152,6 @@ class Configuration implements \ArrayAccess
     }
 
     private function configFile() {
-        return sprintf('%s/%s.dep', $this->get('config_directory'), $this->get('alias'));
+        return sprintf('%s/%s.dep', $this->get('config_directory'), str_replace(DIRECTORY_SEPARATOR, "_", $this->get('alias')));
     }
 }

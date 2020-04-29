@@ -17,8 +17,10 @@ use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Storage;
 use Deployer\Component\Ssh\Client;
+use Deployer\Selector\Selector;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
@@ -92,21 +94,28 @@ class ParallelExecutor
      * @param Task[] $tasks
      * @param Host[] $hosts
      */
-    public function run(array $tasks, array $hosts): int
+    public function run(array $tasks, array $hosts, $plan = null): int
     {
-        $this->connect($hosts);
+        $plan || $this->connect($hosts);
 
         $localhost = new Localhost();
-        $limit = (int)$this->input->getOption('limit') ?: count($hosts);
+        $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
-            $this->messenger->startTask($task);
+            $plan || $this->messenger->startTask($task);
+
+            $limit = min($globalLimit, $task->getLimit() ?? $globalLimit);
 
             if ($limit === 1 || count($hosts) === 1) {
                 foreach ($hosts as $host) {
+                    if ($plan) {
+                        $plan->commit([$host], $task);
+                        continue;
+                    }
+
                     try {
-                        Exception::setFilepath($task->getFilepath());
                         $host->getConfig()->load();
+                        Exception::setTaskSourceLocation($task->getSourceLocation());
 
                         $task->run(new Context($host, $this->input, $this->output));
 
@@ -121,7 +130,7 @@ class ParallelExecutor
                 }
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
-                    $exitCode = $this->runTask($chunk, $task);
+                    $exitCode = $this->runTask($chunk, $task, $plan);
                     if ($exitCode !== 0) {
                         return $exitCode;
                     }
@@ -134,16 +143,21 @@ class ParallelExecutor
         return 0;
     }
 
-    private function runTask(array $hosts, Task $task): int
+    private function runTask(array $hosts, Task $task, Planner $plan = null): int
     {
         $processes = [];
+        $selectedHosts = [];
         foreach ($hosts as $host) {
-            if ($task->shouldBePerformed($host)) {
-                $processes[] = $this->getProcess($host, $task);
-                if ($task->isOnce()) {
-                    $task->setHasRun();
-                }
+            $selector = $task->getSelector();
+            if ($selector === null || Selector::apply($selector, $host)) {
+                $selectedHosts[] = $host;
+                $plan || $processes[] = $this->getProcess($host, $task);
             }
+        }
+
+        if ($plan) {
+            $plan->commit($selectedHosts, $task);
+            return 0;
         }
 
         $callback = function (string $output) {
@@ -166,7 +180,7 @@ class ParallelExecutor
 
         $this->gatherOutput($processes, $callback);
 
-        return $this->gatherExitCodes($processes);
+        return $this->cumulativeExitCode($processes);
     }
 
     protected function getProcess(Host $host, Task $task): Process
@@ -184,10 +198,7 @@ class ParallelExecutor
     }
 
     /**
-     * Start all of the processes.
-     *
      * @param Process[] $processes
-     * @return void
      */
     protected function startProcesses(array $processes)
     {
@@ -197,10 +208,7 @@ class ParallelExecutor
     }
 
     /**
-     * Determine if any of the processes are running.
-     *
      * @param Process[] $processes
-     * @return bool
      */
     protected function areRunning(array $processes): bool
     {
@@ -214,11 +222,7 @@ class ParallelExecutor
     }
 
     /**
-     * Gather the output from all of the processes.
-     *
      * @param Process[] $processes
-     * @param callable $callback
-     * @return void
      */
     protected function gatherOutput(array $processes, callable $callback)
     {
@@ -238,7 +242,7 @@ class ParallelExecutor
     /**
      * Gather the cumulative exit code for the processes.
      */
-    protected function gatherExitCodes(array $processes): int
+    protected function cumulativeExitCode(array $processes): int
     {
         foreach ($processes as $process) {
             if ($process->getExitCode() > 0) {

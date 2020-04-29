@@ -7,64 +7,59 @@
 
 namespace Deployer\Task;
 
-use Deployer\Host\Host;
 use function Deployer\Support\array_flatten;
 
 class ScriptManager
 {
-    /**
-     * @var TaskCollection
-     */
     private $tasks;
+    private $hooksEnabled = true;
 
-    /**
-     * @param TaskCollection $tasks
-     */
     public function __construct(TaskCollection $tasks)
     {
         $this->tasks = $tasks;
     }
 
     /**
-     * Return tasks to run
+     * Return tasks to run.
      *
-     * @param string $name
-     * @param Host[] $hosts
-     * @param bool $hooksEnabled
      * @return Task[]
      */
-    public function getTasks($name, array $hosts = [], $hooksEnabled = true)
+    public function getTasks(string $name)
     {
-        $collect = function ($name) use (&$collect, $hosts, $hooksEnabled) {
-            $task = $this->tasks->get($name);
+        $tasks = [];
 
-            if (!$task->shouldBePerformed(...array_values($hosts))) {
-                return [];
+        $task = $this->tasks->get($name);
+
+        if ($this->hooksEnabled) {
+            $tasks = array_merge(array_map([$this, 'getTasks'], $task->getBefore()), $tasks);
+        }
+
+        if ($task instanceof GroupTask) {
+            foreach ($task->getGroup() as $taskName) {
+                $subTasks = $this->getTasks($taskName);
+                foreach ($subTasks as $subTask) {
+                    $subTask->addSelector($task->getSelector());
+                    $tasks[] = $subTask;
+                }
             }
+        } else {
+            $tasks[] = $task;
+        }
 
-            $relatedTasks = [];
+        if ($this->hooksEnabled) {
+            $tasks = array_merge($tasks, array_map([$this, 'getTasks'], $task->getAfter()));
+        }
 
-            if ($hooksEnabled) {
-                $relatedTasks = array_merge(array_map($collect, $task->getBefore()), $relatedTasks);
-            }
+        return array_flatten($tasks);
+    }
 
-            if ($task instanceof GroupTask) {
-                $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getGroup()));
-            } else {
-                $relatedTasks = array_merge($relatedTasks, [$task->getName()]);
-            }
+    public function getHooksEnabled()
+    {
+        return $this->hooksEnabled;
+    }
 
-            if ($hooksEnabled) {
-                $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getAfter()));
-            }
-
-            return $relatedTasks;
-        };
-
-        $script = $collect($name);
-        $tasks = array_flatten($script);
-
-        // Convert names to real tasks
-        return array_map([$this->tasks, 'get'], $tasks);
+    public function setHooksEnabled($hooksEnabled): void
+    {
+        $this->hooksEnabled = $hooksEnabled;
     }
 }

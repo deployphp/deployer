@@ -58,8 +58,6 @@ set('user', function () {
  * Configuration
  */
 
-set('default_roles', null);
-
 set('keep_releases', 5);
 
 set('repository', ''); // Repository to deploy.

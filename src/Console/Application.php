@@ -11,19 +11,12 @@ use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
 use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Symfony\Component\Console\Application as Console;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Application extends Console
 {
-    /**
-     * Input definition for user specific arguments and options.
-     *
-     * @var InputDefinition
-     */
-    private $userDefinition;
     private $after;
 
     protected function getDefaultInputDefinition()
@@ -48,6 +41,11 @@ class Application extends Console
         return $commands;
     }
 
+    public function isPharArchive()
+    {
+        return 'phar:' === substr(__FILE__, 0, 5);
+    }
+
     private function selfUpdateCommand()
     {
         $selfUpdate = new PharUpdateCommand('self-update');
@@ -64,26 +62,6 @@ class Application extends Console
             $helperSet->set(new PharUpdateHelper());
         }
         return $helperSet;
-    }
-
-    public function getUserDefinition()
-    {
-        if (null === $this->userDefinition) {
-            $this->userDefinition = new InputDefinition();
-        }
-
-        return $this->userDefinition;
-    }
-
-    public function addUserArgumentsAndOptions()
-    {
-        $this->getDefinition()->addArguments($this->getUserDefinition()->getArguments());
-        $this->getDefinition()->addOptions($this->getUserDefinition()->getOptions());
-    }
-
-    public function isPharArchive()
-    {
-        return 'phar:' === substr(__FILE__, 0, 5);
     }
 
     protected function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)

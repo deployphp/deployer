@@ -58,23 +58,27 @@ abstract class SelectCommand extends Command
         $this->parseOptions($input->getOption('option'));
 
         if (empty($selectExpression)) {
-            $hostsAliases = [];
-            foreach ($this->deployer->hosts as $host) {
-                $hostsAliases[] = $host->alias();
+            if (count($this->deployer->hosts) === 1) {
+                $hosts = $this->deployer->hosts->all();
+            } else {
+                $hostsAliases = [];
+                foreach ($this->deployer->hosts as $host) {
+                    $hostsAliases[] = $host->alias();
+                }
+                /** @var QuestionHelper $helper */
+                $helper = $this->getHelper('question');
+                $question = new ChoiceQuestion(
+                    '<question>Select hosts:</question> (comma separated)',
+                    $hostsAliases
+                );
+                $question->setMultiselect(true);
+                $question->setErrorMessage('There is no "%s" host.');
+                $answer = $helper->ask($input, $output, $question);
+                $answer = array_unique($answer);
+                $hosts = $this->deployer->hosts->select(function (Host $host) use ($answer) {
+                    return in_array($host->alias(), $answer, true);
+                });
             }
-            /** @var QuestionHelper $helper */
-            $helper = $this->getHelper('question');
-            $question = new ChoiceQuestion(
-                '<question>Select hosts:</question> (comma separated)',
-                $hostsAliases
-            );
-            $question->setMultiselect(true);
-            $question->setErrorMessage('There is no "%s" host.');
-            $answer = $helper->ask($input, $output, $question);
-            $answer = array_unique($answer);
-            $hosts = $this->deployer->hosts->select(function (Host $host) use ($answer) {
-                return in_array($host->alias(), $answer, true);
-            });
         } else {
             $hosts = $this->deployer->selector->selectHosts($selectExpression);
         }

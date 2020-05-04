@@ -6,6 +6,7 @@
 
 ### Added
 - Added a recipe file for Contao. [#2043]
+- Added a Slack Notification task on rollback.
 
 ### Fixed
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]

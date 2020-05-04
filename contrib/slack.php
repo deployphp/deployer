@@ -18,11 +18,13 @@ set('slack_title', function () {
 set('slack_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
 set('slack_success_text', 'Deploy to *{{target}}* successful');
 set('slack_failure_text', 'Deploy to *{{target}}* failed');
+set('slack_rollback_text', '_{{user}}_ rolled back changes on *{{target}}*');
 
 // Color of attachment
 set('slack_color', '#4d91f7');
 set('slack_success_color', '#00c100');
 set('slack_failure_color', '#ff0909');
+set('slack_rollback_color', '#eba211');
 
 desc('Notifying Slack');
 task('slack:notify', function () {
@@ -72,6 +74,25 @@ task('slack:notify:failure', function () {
         'title' => get('slack_title'),
         'text' => get('slack_failure_text'),
         'color' => get('slack_failure_color'),
+        'mrkdwn_in' => ['text'],
+    ];
+
+    Httpie::post(get('slack_webhook'))->body(['attachments' => [$attachment]])->send();
+})
+    ->once()
+    ->shallow()
+    ->hidden();
+
+desc('Notifying Slack about rollback');
+task('slack:notify:rollback', function () {
+    if (!get('slack_webhook', false)) {
+        return;
+    }
+
+    $attachment = [
+        'title' => get('slack_title'),
+        'text' => get('slack_rollback_text'),
+        'color' => get('slack_rollback_color'),
         'mrkdwn_in' => ['text'],
     ];
 

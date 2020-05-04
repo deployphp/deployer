@@ -116,26 +116,27 @@ class InitCommand extends Command
             $hosts = explode(',', $io->ask('Hosts (comma separated)', 'deployer.org'));
 
             // Privacy
-            $io->text([
-                'Contribute to the Deployer Development',
-                '',
-                'In order to help development and improve the features in Deployer,',
-                'Deployer has a setting for usage data collection. This function',
-                'collects anonymous usage data and sends it to Deployer. The data is',
-                'used in Deployer development to get reliable statistics on which',
-                'features are used (or not used). The information is not traceable',
-                'to any individual or organization. Participation is voluntary,',
-                'and you can change your mind at any time.',
-                '',
-                'Anonymous usage data contains Deployer version, php version, os type,',
-                'name of the command being executed and whether it was successful or not,',
-                'exception class name, count of hosts and anonymized project hash.',
-                '',
-                'This function will not affect the performance of Deployer as',
-                'the data is insignificant and transmitted in a separate process.',
-                '',
-                'We appreciate your involvement!',
-            ]);
+            $io->text(<<<TEXT
+    <info>Contribute to the Deployer Development</info>
+
+Help development and improve features of Deployer by 
+an optional usage data collection program. This program
+collects anonymous usage data and sends it to Deployer. 
+The data is used in Deployer development to get reliable
+statistics on which features are used (or not used). The
+information is not traceable to any individual or 
+organization. Participation is voluntary, and you can 
+change your mind at any time.
+
+Anonymous usage data contains Deployer version, PHP version, 
+OS type, name of the command being executed and whether 
+it was successful or not, count of hosts and anonymized 
+project hash. This program will not affect the performance 
+of Deployer as the data is insignificant and transmitted 
+in a separate process.
+
+We appreciate your involvement!
+TEXT);
 
             $allow = $io->confirm('Do you confirm?');
         }

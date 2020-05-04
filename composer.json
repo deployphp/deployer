@@ -23,6 +23,9 @@
             "src/functions.php"
         ]
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "bin": [
         "bin/dep"
     ],

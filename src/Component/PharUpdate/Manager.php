@@ -3,8 +3,8 @@
 namespace Deployer\Component\PharUpdate;
 
 use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
-use Deployer\Component\Version\Parser;
-use Deployer\Component\Version\Version;
+use Deployer\Component\PharUpdate\Version\Parser;
+use Deployer\Component\PharUpdate\Version\Version;
 
 /**
  * Manages the Phar update process.

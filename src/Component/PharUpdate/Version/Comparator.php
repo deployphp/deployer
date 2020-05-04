@@ -1,6 +1,6 @@
 <?php
 
-namespace Deployer\Component\Version;
+namespace Deployer\Component\PharUpdate\Version;
 
 /**
  * Compares two Version instances.

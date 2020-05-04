@@ -4,8 +4,8 @@ namespace Deployer\Component\PharUpdate;
 
 use Deployer\Component\PharUpdate\Exception\FileException;
 use Deployer\Component\PharUpdate\Exception\LogicException;
-use Deployer\Component\Version\Comparator;
-use Deployer\Component\Version\Version;
+use Deployer\Component\PharUpdate\Version\Comparator;
+use Deployer\Component\PharUpdate\Version\Version;
 use Phar;
 use SplFileObject;
 use UnexpectedValueException;

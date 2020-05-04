@@ -1,9 +1,9 @@
 <?php
 
-namespace Deployer\Component\Version;
+namespace Deployer\Component\PharUpdate\Version;
 
-use Deployer\Component\Version\Exception\InvalidIdentifierException;
-use Deployer\Component\Version\Exception\InvalidNumberException;
+use Deployer\Component\PharUpdate\Version\Exception\InvalidIdentifierException;
+use Deployer\Component\PharUpdate\Version\Exception\InvalidNumberException;
 
 /**
  * Builds a new version number.

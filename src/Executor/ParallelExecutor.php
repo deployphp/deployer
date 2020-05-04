@@ -97,8 +97,10 @@ class ParallelExecutor
         foreach ($tasks as $task) {
             $plan || $this->messenger->startTask($task);
 
-            $limit = min($globalLimit, $task->getLimit() ?? $globalLimit);
             $plannedHosts = $hosts;
+
+            $limit = min($globalLimit, $task->getLimit() ?? $globalLimit);
+
             if ($task->isOnce()) {
                 $plannedHosts = [];
                 foreach ($hosts as $host) {
@@ -107,6 +109,10 @@ class ParallelExecutor
                         break;
                     }
                 }
+            }
+
+            if ($task->isLocal()) {
+                $plannedHosts = [new Localhost('localhost')];
             }
 
             if ($limit === 1 || count($plannedHosts) === 1) {
@@ -129,6 +135,7 @@ class ParallelExecutor
 
                         $task->run(new Context($host, $this->input, $this->output));
 
+                        $this->messenger->endOnHost($host);
                         $host->getConfig()->save();
                     } catch (GracefulShutdownException $exception) {
                         $this->messenger->renderException($exception, $host);

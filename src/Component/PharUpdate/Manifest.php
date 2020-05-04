@@ -2,9 +2,9 @@
 
 namespace Deployer\Component\PharUpdate;
 
-use Deployer\Component\Version\Comparator;
-use Deployer\Component\Version\Parser;
-use Deployer\Component\Version\Version;
+use Deployer\Component\PharUpdate\Version\Comparator;
+use Deployer\Component\PharUpdate\Version\Parser;
+use Deployer\Component\PharUpdate\Version\Version;
 
 /**
  * Manages the contents of an updates manifest file.

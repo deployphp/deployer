@@ -1,6 +1,6 @@
 <?php
 
-namespace Deployer\Component\Version\Exception;
+namespace Deployer\Component\PharUpdate\Version\Exception;
 
 /**
  * Thrown if an invalid version number is used.

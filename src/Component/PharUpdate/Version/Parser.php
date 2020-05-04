@@ -1,8 +1,8 @@
 <?php
 
-namespace Deployer\Component\Version;
+namespace Deployer\Component\PharUpdate\Version;
 
-use Deployer\Component\Version\Exception\InvalidStringRepresentationException;
+use Deployer\Component\PharUpdate\Version\Exception\InvalidStringRepresentationException;
 
 /**
  * Parses the string representation of a version number.

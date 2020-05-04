@@ -60,7 +60,9 @@ class WorkerCommand extends MainCommand
             Exception::setTaskSourceLocation($task->getSourceLocation());
             $task->run(new Context($host, $input, $output));
 
-            $this->deployer->messenger->endOnHost($host);
+            if ($task->getName() !== 'connect') {
+                $this->deployer->messenger->endOnHost($host);
+            }
             $host->getConfig()->save();
             return 0;
         } catch (GracefulShutdownException $e) {

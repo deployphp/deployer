@@ -1,6 +1,6 @@
 <?php
 
-namespace Deployer\Component\Version;
+namespace Deployer\Component\PharUpdate\Version;
 
 /**
  * Dumps the Version instance to a variety of formats.

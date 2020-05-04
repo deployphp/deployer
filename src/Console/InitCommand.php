@@ -50,10 +50,10 @@ class InitCommand extends Command
 
         if (file_exists($filepath)) {
             $output->writeln([
-                $formatter->formatBlock(sprintf(
-                    'The file "%s" already exist.',
-                    $filepath,
-                ), 'bg=red;fg=white', true),
+                $formatter->formatBlock(
+                    sprintf('The file "%s" already exist.', $filepath),
+                    'bg=red;fg=white', true
+                ),
             ]);
             return 2;
         }

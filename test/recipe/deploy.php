@@ -43,3 +43,9 @@ task('echo', function () {
     run('echo {{deploy_path}}');
 });
 
+task('once', function () {
+    info('should be run only once');
+})->once();
+
+after('deploy', 'once');
+

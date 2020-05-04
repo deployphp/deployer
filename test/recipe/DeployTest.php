@@ -23,7 +23,7 @@ class DeployTest extends AbstractTest
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertStringContainsString();
+        self::assertEquals(1, substr_count($display, 'should be run only once'), $display);
 
         foreach ($deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');

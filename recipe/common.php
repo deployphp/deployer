@@ -113,7 +113,7 @@ set('bin/git', function () {
 
 set('bin/composer', function () {
     if (commandExist('composer')) {
-        $composer = locateBinaryPath('composer');
+        $composer = '{{bin/php}} ' . locateBinaryPath('composer');
     }
 
     if (empty($composer)) {

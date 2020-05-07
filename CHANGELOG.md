@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.8.1...master](https://github.com/deployphp/deployer/compare/v6.8.1...master)
+
+### Fixed
+- When the composer binary is found at /usr/bin/composer the php binary prefix was missing
+
+
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
 

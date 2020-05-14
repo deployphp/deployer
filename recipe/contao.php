@@ -12,7 +12,3 @@
  set('bin/console', function () {
      return parse('{{release_path}}/vendor/bin/contao-console');
  });
-
- set('console_options', function () {
-     return '--no-interaction';
- });

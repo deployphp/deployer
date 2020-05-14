@@ -14,5 +14,5 @@
  });
 
  set('console_options', function () {
-     return '--no-interaction --env={{symfony_env}}';
+     return '--no-interaction';
  });

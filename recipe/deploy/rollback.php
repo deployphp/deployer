@@ -7,6 +7,8 @@
 
 namespace Deployer;
 
+use Deployer\Exception\Exception;
+
 desc('Rollback to previous release');
 task('rollback', function () {
     $releases = get('releases_list');
@@ -23,6 +25,6 @@ task('rollback', function () {
 
         writeln("<info>rollback</info> to {$releases[1]} release was <success>successful</success>");
     } else {
-        writeln("<error>no more releases you can revert to</error>");
+        throw new Exception("No more releases you can revert to.");
     }
 });

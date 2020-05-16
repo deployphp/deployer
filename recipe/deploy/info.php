@@ -29,6 +29,6 @@ task('deploy:info', function () {
         $what = "<fg=magenta;options=bold>HEAD</>";
     }
 
-    info("deploy $what on " . currentHost()->tag());
+    info("deploy $what on " . currentHost()->getTag());
 })
     ->shallow();

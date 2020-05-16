@@ -38,8 +38,8 @@ class Planner
         $headers = [];
         $this->template = [];
         foreach ($hosts as $host) {
-            $headers[] = $host->tag();
-            $this->template[] = $host->alias();
+            $headers[] = $host->getTag();
+            $this->template[] = $host->getAlias();
         }
         $this->table = new Table($output);
         $this->table->setHeaders($headers);
@@ -52,7 +52,7 @@ class Planner
      */
     public function commit(array $hosts, Task $task)
     {
-        if (count($hosts) === 1 && $hosts[0]->alias() === 'localhost') {
+        if (count($hosts) === 1 && $hosts[0]->getAlias() === 'localhost') {
             $row = [];
             foreach ($this->template as $alias) {
                 $row[] = "-";
@@ -65,7 +65,7 @@ class Planner
         foreach ($this->template as $alias) {
             $on = "-";
             foreach ($hosts as $host) {
-                if ($alias === $host->alias()) {
+                if ($alias === $host->getAlias()) {
                     $on = $task->getName();
                     break;
                 }

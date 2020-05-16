@@ -30,7 +30,7 @@ class Client
 
     public function run(Host $host, string $command, array $config = [])
     {
-        $hostname = $host->hostname();
+        $hostname = $host->getHostname();
         $connectionString = $host->getConnectionString();
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),
@@ -39,7 +39,7 @@ class Client
 
         $config = array_merge($defaults, $config);
         $sshArguments = $host->getSshArguments();
-        if ($host->sshMultiplexing()) {
+        if ($host->getSshMultiplexing()) {
             $sshArguments = $this->initMultiplexing($host);
         }
 
@@ -48,7 +48,7 @@ class Client
             $become = sprintf('sudo -H -u %s', $host->get('become'));
         }
 
-        $shellCommand = $host->shell();
+        $shellCommand = $host->getShell();
 
         if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
             $ssh = "ssh $sshArguments $connectionString $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
@@ -62,7 +62,7 @@ class Client
         }
 
         $this->pop->command($host, $command);
-        $this->logger->log("[{$host->alias()}] run $command");
+        $this->logger->log("[{$host->getAlias()}] run $command");
 
         $terminalOutput = $this->pop->callback($host);
         $callback = function ($type, $buffer) use ($host, $terminalOutput) {
@@ -109,7 +109,7 @@ class Client
 
     public function connect(Host $host)
     {
-        if ($host->sshMultiplexing()) {
+        if ($host->getSshMultiplexing()) {
             $this->initMultiplexing($host);
         }
     }

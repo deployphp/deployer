@@ -73,7 +73,7 @@ class ParallelExecutor
 
             while ($process->isRunning()) {
                 $this->gatherOutput([$process], $callback);
-                $this->output->write(spinner(str_pad("connect {$host->tag()}", intval(getenv('COLUMNS')) - 1)));
+                $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
                 usleep(1000);
             }
         }
@@ -205,10 +205,10 @@ class ParallelExecutor
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $configDirectory = $host->get('config_directory');
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
-        $command = "$dep worker $task {$host->alias()} $configDirectory {$this->input} $decorated";
+        $command = "$dep worker $task {$host->getAlias()} $configDirectory {$this->input} $decorated";
 
         if ($this->output->isDebug()) {
-            $this->output->writeln("[{$host->tag()}] $command");
+            $this->output->writeln("[{$host->getTag()}] $command");
         }
 
         return Process::fromShellCommandline($command);

@@ -71,7 +71,7 @@ class Rsync
                         $max = intval($match[3]);
                         $step = $max - intval($match[2]);
                         $progressBar->setMaxSteps($max);
-                        $progressBar->setFormat("[{$host->tag()}] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+                        $progressBar->setFormat("[{$host->getTag()}] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
                         $progressBar->setProgress($step);
                     }
                 }

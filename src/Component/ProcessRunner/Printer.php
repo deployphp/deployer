@@ -26,7 +26,7 @@ class Printer
     {
         // -v for run command
         if ($this->output->isVerbose()) {
-            $this->output->writeln("[{$host->tag()}] <fg=green;options=bold>run</> $command");
+            $this->output->writeln("[{$host->getTag()}] <fg=green;options=bold>run</> $command");
         }
     }
 
@@ -72,9 +72,9 @@ class Printer
         }
 
         if ($type === Process::ERR) {
-            $line = "[{$host->tag()}] <fg=red>err</> $line";
+            $line = "[{$host->getTag()}] <fg=red>err</> $line";
         } else {
-            $line = "[{$host->tag()}] $line";
+            $line = "[{$host->getTag()}] $line";
         }
 
         $this->output->writeln($line);

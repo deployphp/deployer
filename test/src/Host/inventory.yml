@@ -12,7 +12,7 @@ foo:
 
 bar:
   hostname: bar.com
-  user: user
+  remote_user: remote_user
   port: 22
   config_file: configFile
   identity_file: identityFile

@@ -128,7 +128,7 @@ class Arguments
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
         $homeDir = Unix::parseHomeDir('~');
-        $port = empty($host->port()) ? '' : ':' . $host->port();
+        $port = empty($host->getPort()) ? '' : ':' . $host->getPort();
 
         // TODO: Reuse connection to same host.
         // If a few host point to same hostname, we get with a few connections.
@@ -139,7 +139,7 @@ class Arguments
         //
         // If simple change $connectionData to "{$host->getHostname()}$port" then
         // only first host be able to perform runs.
-        $connectionData = "{$host->alias()}$port";
+        $connectionData = "{$host->getAlias()}$port";
 
         $tryLongestPossible = 0;
         $controlPath = '';

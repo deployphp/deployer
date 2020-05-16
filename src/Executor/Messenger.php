@@ -68,7 +68,7 @@ class Messenger
     public function endOnHost(Host $host)
     {
         if ($this->output->isVeryVerbose()) {
-            $this->output->writeln("[{$host->tag()}] <info>ok</info>");
+            $this->output->writeln("[{$host->getTag()}] <info>ok</info>");
         }
     }
 
@@ -77,23 +77,23 @@ class Messenger
         if ($exception instanceof RunException) {
 
             $message = "";
-            $message .= "[{$host->tag()}] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
+            $message .= "[{$host->getTag()}] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
             if ($this->output->getVerbosity() === Output::VERBOSITY_NORMAL) {
-                $message .= "[{$host->tag()}] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
+                $message .= "[{$host->getTag()}] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
                 foreach (explode("\n", $exception->getErrorOutput()) as $line) {
                     $line = trim($line);
                     if ($line !== "") {
-                        $message .= "[{$host->tag()}] <fg=red>err</> $line\n";
+                        $message .= "[{$host->getTag()}] <fg=red>err</> $line\n";
                     }
                 }
                 foreach (explode("\n", $exception->getOutput()) as $line) {
                     $line = trim($line);
                     if ($line !== "") {
-                        $message .= "[{$host->tag()}] $line\n";
+                        $message .= "[{$host->getTag()}] $line\n";
                     }
                 }
             }
-            $message .= "[{$host->tag()}] <fg=red>exit code</> {$exception->getExitCode()} ({$exception->getExitCodeText()})\n";
+            $message .= "[{$host->getTag()}] <fg=red>exit code</> {$exception->getExitCode()} ({$exception->getExitCodeText()})\n";
             $this->output->write($message);
 
         } else {
@@ -105,20 +105,20 @@ class Messenger
                 $file = $exception->getTaskFilename();
                 $line = $exception->getTaskLineNumber();
             }
-            $message .= "[{$host->tag()}] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
-            $message .= "[{$host->tag()}]\n";
+            $message .= "[{$host->getTag()}] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
+            $message .= "[{$host->getTag()}]\n";
             foreach (explode("\n", $exception->getMessage()) as $line) {
                 $line = trim($line);
                 if ($line !== "") {
-                    $message .= "[{$host->tag()}]   <comment>$line</comment>\n";
+                    $message .= "[{$host->getTag()}]   <comment>$line</comment>\n";
                 }
             }
-            $message .= "[{$host->tag()}]\n";
+            $message .= "[{$host->getTag()}]\n";
             if ($this->output->isDebug()) {
                 foreach (explode("\n", $exception->getTraceAsString()) as $line) {
                     $line = trim($line);
                     if ($line !== "") {
-                        $message .= "[{$host->tag()}] $line\n";
+                        $message .= "[{$host->getTag()}] $line\n";
                     }
                 }
             }

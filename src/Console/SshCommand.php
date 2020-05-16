@@ -64,7 +64,7 @@ class SshCommand extends Command
                 if ($host instanceof Localhost) {
                     continue;
                 }
-                $hostsAliases[] = $host->alias();
+                $hostsAliases[] = $host->getAlias();
             }
 
             if (count($hostsAliases) === 0) {
@@ -96,7 +96,7 @@ class SshCommand extends Command
         $options = $host->getSshArguments();
         $deployPath = $host->get('deploy_path', '~');
 
-        passthru("ssh -t $options {$host->hostname()} 'cd '''$deployPath/current'''; $shell_path'");
+        passthru("ssh -t $options {$host->getHostname()} 'cd '''$deployPath/current'''; $shell_path'");
         return 0;
     }
 }

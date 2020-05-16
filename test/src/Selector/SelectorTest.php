@@ -15,9 +15,9 @@ class SelectorTest extends TestCase
         $beta = (new Host('beta'))->set('labels', ['stage' => 'beta']);
 
         $hosts = new HostCollection();
-        $hosts->set($prod->alias(), $prod);
-        $hosts->set($front->alias(), $front);
-        $hosts->set($beta->alias(), $beta);
+        $hosts->set($prod->getAlias(), $prod);
+        $hosts->set($front->getAlias(), $front);
+        $hosts->set($beta->getAlias(), $beta);
 
         $selectedHosts = (new Selector($hosts))->selectHosts('stage=prod');
         self::assertEquals([$prod, $front], $selectedHosts);

@@ -52,7 +52,7 @@ abstract class SelectCommand extends Command
             } else if ($input->isInteractive()) {
                 $hostsAliases = [];
                 foreach ($this->deployer->hosts as $host) {
-                    $hostsAliases[] = $host->alias();
+                    $hostsAliases[] = $host->getAlias();
                 }
                 /** @var QuestionHelper $helper */
                 $helper = $this->getHelper('question');
@@ -65,7 +65,7 @@ abstract class SelectCommand extends Command
                 $answer = $helper->ask($input, $output, $question);
                 $answer = array_unique($answer);
                 $hosts = $this->deployer->hosts->select(function (Host $host) use ($answer) {
-                    return in_array($host->alias(), $answer, true);
+                    return in_array($host->getAlias(), $answer, true);
                 });
             }
         } else {

@@ -136,10 +136,10 @@ task('rsync', function() {
         return;
     }
 
-    $host = $server->hostname();
-    $port = $server->port() ? ' -p' . $server->port() : '';
+    $host = $server->getHostname();
+    $port = $server->getPort() ? ' -p' . $server->getPort() : '';
     $sshArguments = $server->getSshArguments();
-    $user = !$server->user() ? '' : $server->user() . '@';
+    $user = !$server->getRemoteUser() ? '' : $server->getRemoteUser() . '@';
 
     runLocally("rsync -{$config['flags']} -e 'ssh$port $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$user$host:$dst/'", $config);
 });

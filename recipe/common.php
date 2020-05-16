@@ -31,11 +31,11 @@ use Symfony\Component\Console\Output\Output;
  */
 
 set('hostname', function () {
-    return currentHost()->hostname();
+    return currentHost()->getHostname();
 });
 
 set('remote_user', function () {
-    return currentHost()->get('remote_user');
+    return currentHost()->getRemoteUser();
 });
 
 set('user', function () {
@@ -168,7 +168,7 @@ task('deploy:publish', [
  * Success message
  */
 task('deploy:success', function () {
-    info(currentHost()->tag() . ' successfully deployed!');
+    info(currentHost()->getTag() . ' successfully deployed!');
 })
     ->shallow()
     ->hidden();

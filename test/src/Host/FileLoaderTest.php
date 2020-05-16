@@ -38,14 +38,14 @@ class FileLoaderTest extends TestCase
 
         // bar configured properly
         $bar = $this->getHost('bar');
-        self::assertEquals('bar', $bar->alias());
-        self::assertEquals('bar.com', $bar->hostname());
-        self::assertEquals('user', $bar->user());
-        self::assertEquals(22, $bar->port());
-        self::assertEquals('configFile', $bar->configFile());
-        self::assertEquals('identityFile', $bar->identityFile());
-        self::assertTrue($bar->forwardAgent());
-        self::assertFalse($bar->sshMultiplexing());
+        self::assertEquals('bar', $bar->getAlias());
+        self::assertEquals('bar.com', $bar->getHostname());
+        self::assertEquals('remote_user', $bar->getRemoteUser());
+        self::assertEquals(22, $bar->getPort());
+        self::assertEquals('configFile', $bar->getConfigFile());
+        self::assertEquals('identityFile', $bar->getIdentityFile());
+        self::assertTrue($bar->getForwardAgent());
+        self::assertFalse($bar->getSshMultiplexing());
         self::assertEquals('param', $bar->get('param'));
         self::assertEquals(
             '-f -A -someFlag value -p 22 -F configFile -i identityFile -o Option=Value',
@@ -53,9 +53,9 @@ class FileLoaderTest extends TestCase
         );
 
         $db1 = $this->getHost('db1.deployer.org');
-        self::assertEquals('db1.deployer.org', $db1->alias());
+        self::assertEquals('db1.deployer.org', $db1->getAlias());
         $db2 = $this->getHost('db2.deployer.org');
-        self::assertEquals('db2.deployer.org', $db2->alias());
+        self::assertEquals('db2.deployer.org', $db2->getAlias());
     }
 
     /**
@@ -65,7 +65,7 @@ class FileLoaderTest extends TestCase
     private function getHost($name)
     {
         foreach ($this->hosts as $host) {
-            if ($host->alias() === $name) {
+            if ($host->getAlias() === $name) {
                 return $host;
             }
         }

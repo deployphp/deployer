@@ -63,13 +63,14 @@ class FileLoader
             } else {
                 $host = new Host($hostname);
                 $methods = [
-                    'sshOptions',
-                    'sshFlags',
+                    'sshOptions' => 'setSshOptions',
+                    'sshFlags' => 'setSshFlags',
                 ];
 
-                foreach ($methods as $method) {
+                foreach (array_keys($methods) as $method) {
                     if (isset($config[$method])) {
-                        $host->$method($config[$method]);
+                        $set = $methods[$method];
+                        $host->$set($config[$method]);
                     }
                 }
             }

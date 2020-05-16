@@ -15,23 +15,25 @@ class HostTest extends TestCase
     {
         $host = new Host('host');
         $host
-            ->set('hostname', 'hostname')
-            ->set('user', 'user')
-            ->set('port', 22)
-            ->set('config_file', '~/.ssh/config')
-            ->set('identity_file', '~/.ssh/id_rsa')
-            ->set('forward_agent', true)
-            ->set('ssh_multiplexing', true)
-            ->sshOptions(['BatchMode' => 'yes', 'Compression' => 'yes']);
+            ->setHostname('hostname')
+            ->setRemoteUser('remote_user')
+            ->setPort(22)
+            ->setConfigFile('~/.ssh/config')
+            ->setIdentityFile('~/.ssh/id_rsa')
+            ->setForwardAgent(true)
+            ->setSshMultiplexing(true)
+            ->setSshOptions(['BatchMode' => 'yes', 'Compression' => 'yes'])
+            ->setSshFlags(['-A']);
 
-        self::assertEquals('host', $host->alias());
-        self::assertEquals('hostname', $host->hostname());
-        self::assertEquals('user', $host->user());
-        self::assertEquals(22, $host->port());
-        self::assertEquals('~/.ssh/config', $host->configFile());
-        self::assertEquals('~/.ssh/id_rsa', $host->identityFile());
-        self::assertEquals(true, $host->forwardAgent());
-        self::assertEquals(true, $host->sshMultiplexing());
+        self::assertEquals('host', $host->getAlias());
+        self::assertStringContainsString('host', $host->getTag());
+        self::assertEquals('hostname', $host->getHostname());
+        self::assertEquals('remote_user', $host->getRemoteUser());
+        self::assertEquals(22, $host->getPort());
+        self::assertEquals('~/.ssh/config', $host->getConfigFile());
+        self::assertEquals('~/.ssh/id_rsa', $host->getIdentityFile());
+        self::assertEquals(true, $host->getForwardAgent());
+        self::assertEquals(true, $host->getSshMultiplexing());
         self::assertStringContainsString(
             '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -o BatchMode=yes -o Compression=yes',
             $host->getSshArguments()->getCliArguments()
@@ -66,8 +68,8 @@ class HostTest extends TestCase
     public function testHostAlias()
     {
         $host = new Host('host/alias');
-        self::assertEquals('host/alias', $host->alias());
-        self::assertEquals('host', $host->hostname());
+        self::assertEquals('host/alias', $host->getAlias());
+        self::assertEquals('host', $host->getHostname());
     }
 
     public function testHostWithParams()
@@ -78,6 +80,6 @@ class HostTest extends TestCase
             ->set('env', $value)
             ->set('identity_file', '{{env}}');
 
-        self::assertEquals($value, $host->identityFile());
+        self::assertEquals($value, $host->getIdentityFile());
     }
 }

@@ -49,7 +49,7 @@ class Selector
                 continue;
             }
             if ($var === 'host') {
-                $ok[] = self::compare($op, $host->alias(), $value);
+                $ok[] = self::compare($op, $host->getAlias(), $value);
             } else {
                 $ok[] = self::compare($op, $labels[$var] ?? null, $value);
             }

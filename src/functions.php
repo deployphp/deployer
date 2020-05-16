@@ -42,7 +42,7 @@ function host(...$hostname)
         if ($deployer->hosts->has($alias)) {
             $host = $deployer->hosts->get($alias);
             throw new \InvalidArgumentException(
-                "Host \"{$host->tag()}\" already exists.\n" .
+                "Host \"{$host->getTag()}\" already exists.\n" .
                 "If you want to override configuration options, get host with <fg=yellow>getHost</> function.\n" .
                 "\n" .
                 "    <fg=yellow>getHost</>(<fg=green>'{$alias}'</>);" .
@@ -76,12 +76,12 @@ function localhost(...$hostnames)
 
     if (count($hostnames) <= 1) {
         $host = count($hostnames) === 1 ? new Localhost($hostnames[0]) : new Localhost();
-        $deployer->hosts->set($host->alias(), $host);
+        $deployer->hosts->set($host->getAlias(), $host);
         return $host;
     } else {
         $hosts = array_map(function ($hostname) use ($deployer) {
             $host = new Localhost($hostname);
-            $deployer->hosts->set($host->alias(), $host);
+            $deployer->hosts->set($host->getAlias(), $host);
             return $host;
         }, $hostnames);
         return new Proxy($hosts);
@@ -124,7 +124,7 @@ function inventory($file)
 
     $hosts = $fileLoader->getHosts();
     foreach ($hosts as $host) {
-        $deployer->hosts->set($host->alias(), $host);
+        $deployer->hosts->set($host->getAlias(), $host);
     }
 
     return new Proxy($hosts);
@@ -447,7 +447,7 @@ function upload(string $source, string $destination, $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host, $source, $destination, $config);
     } else {
-        $rsync->call($host, $source, "{$host->hostname()}:$destination", $config);
+        $rsync->call($host, $source, "{$host->getHostname()}:$destination", $config);
     }
 }
 
@@ -464,7 +464,7 @@ function download(string $source, string $destination, $config = [])
     if ($host instanceof Localhost) {
         $rsync->call($host, $source, $destination, $config);
     } else {
-        $rsync->call($host, "{$host->hostname()}:$source", $destination, $config);
+        $rsync->call($host, "{$host->getHostname()}:$source", $destination, $config);
     }
 }
 
@@ -494,7 +494,7 @@ function warning($message)
 function writeln($message, $options = 0)
 {
     $host = currentHost();
-    output()->writeln("[{$host->tag()}] " . parse($message), $options);
+    output()->writeln("[{$host->getTag()}] " . parse($message), $options);
 }
 
 /**
@@ -596,7 +596,7 @@ function ask($message, $default = null, $autocomplete = null)
     /** @var QuestionHelper $helper */
     $helper = Deployer::get()->getHelper('question');
 
-    $tag = currentHost()->tag();
+    $tag = currentHost()->getTag();
     $message = "[$tag] <question>$message</question> " . (($default === null) ? "" : "(default: $default) ");
 
     $question = new Question($message, $default);
@@ -639,7 +639,7 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
 
     $helper = Deployer::get()->getHelper('question');
 
-    $tag = currentHost()->tag();
+    $tag = currentHost()->getTag();
     $message = "[$tag] <question>$message</question> " . (($default === null) ? "" : "(default: $default) ");
 
     $question = new ChoiceQuestion($message, $availableChoices, $default);
@@ -664,7 +664,7 @@ function askConfirmation($message, $default = false)
     $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
-    $tag = currentHost()->tag();
+    $tag = currentHost()->getTag();
     $message = "[$tag] <question>$message</question> [$yesOrNo] ";
 
     $question = new ConfirmationQuestion($message, $default);
@@ -686,7 +686,7 @@ function askHiddenResponse($message)
 
     $helper = Deployer::get()->getHelper('question');
 
-    $tag = currentHost()->tag();
+    $tag = currentHost()->getTag();
     $message = "[$tag] <question>$message</question> ";
 
     $question = new Question($message);

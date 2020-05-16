@@ -80,7 +80,7 @@ set( 'allow_anonymous_stats', true );
 
 // note that staging server uses a non-standard port for SSH so I have to specify it here
 host( 'staging.example.com' )
-	->user( 'eric' )
+	->getRemoteUser( 'eric' )
 	->stage( 'staging' )
 	->port( 30122 )
 	->set( 'deploy_path', '/usr/share/nginx/staging.example.com' )
@@ -88,7 +88,7 @@ host( 'staging.example.com' )
 
 // note that live server also uses a non-standard port for SSH
 host( 'example.com' )
-	->user( 'eric' )
+	->getRemoteUser( 'eric' )
 	->stage( 'production' )
 	->port( 30122 )
 	->set( 'deploy_path', '/usr/share/nginx/example.com' )

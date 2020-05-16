@@ -61,47 +61,106 @@ class Host
         return $this->config->get($name, $default);
     }
 
-    public function alias()
+    public function getAlias()
     {
         return $this->config->get('alias');
     }
 
-    public function hostname()
+    public function setTag(string $tag)
+    {
+        $this->config->set('tag', $tag);
+        return $this;
+    }
+
+    public function getTag(): string
+    {
+        return $this->config->get('tag', $this->generateTag());
+    }
+
+    public function setHostname(string $hostname)
+    {
+        $this->config->set('hostname', $hostname);
+        return $this;
+    }
+
+    public function getHostname()
     {
         return $this->config->get('hostname');
     }
 
-    public function user()
+    public function setRemoteUser($user)
     {
-        return $this->config->get('user');
+        $this->config->set('remote_user', $user);
+        return $this;
     }
 
-    public function port()
+    public function getRemoteUser()
+    {
+        return $this->config->get('remote_user');
+    }
+
+    public function setPort(int $port)
+    {
+        $this->config->set('port', $port);
+        return $this;
+    }
+
+    public function getPort()
     {
         return $this->config->get('port');
     }
 
-    public function configFile()
+    public function setConfigFile(string $file)
+    {
+        $this->config->set('config_file', $file);
+        return $this;
+    }
+
+    public function getConfigFile()
     {
         return $this->config->get('config_file');
     }
 
-    public function identityFile()
+    public function setIdentityFile($file)
+    {
+        $this->config->set('identity_file', $file);
+        return $this;
+    }
+
+    public function getIdentityFile()
     {
         return $this->config->get('identity_file');
     }
 
-    public function forwardAgent()
+    public function setForwardAgent(bool $on)
+    {
+        $this->config->set('forward_agent', $on);
+        return $this;
+    }
+
+    public function getForwardAgent()
     {
         return $this->config->get('forward_agent');
     }
 
-    public function sshMultiplexing()
+    public function setSshMultiplexing(bool $on)
+    {
+        $this->config->set('ssh_multiplexing', $on);
+        return $this;
+    }
+
+    public function getSshMultiplexing()
     {
         return $this->config->get('ssh_multiplexing');
     }
 
-    public function shell(): string
+    public function setShell(string $command)
+    {
+        $this->config->set('shell', $command);
+        return $this;
+    }
+
+    public function getShell(): string
     {
         return $this->config->get('shell');
     }
@@ -121,14 +180,16 @@ class Host
     }
 
     // TODO: Migrate to configuration.
-    public function sshOptions(array $options): self
+
+    public function setSshOptions(array $options)
     {
         $this->sshArguments = $this->sshArguments->withOptions($options);
         return $this;
     }
 
     // TODO: Migrate to configuration.
-    public function sshFlags(array $flags): self
+
+    public function setSshFlags(array $flags)
     {
         $this->sshArguments = $this->sshArguments->withFlags($flags);
         return $this;
@@ -136,35 +197,31 @@ class Host
 
     private function initOptions()
     {
-        if ($this->port()) {
-            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port());
+        if ($this->getPort()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->getPort());
         }
 
-        if ($this->configFile()) {
-            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile());
+        if ($this->getConfigFile()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->getConfigFile());
         }
 
-        if ($this->identityFile()) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->identityFile());
+        if ($this->getIdentityFile()) {
+            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
         }
 
-        if ($this->forwardAgent()) {
+        if ($this->getForwardAgent()) {
             $this->sshArguments = $this->sshArguments->withFlag('-A');
         }
     }
 
-    public function tag(): string
+    private function generateTag()
     {
-        if ($this->config->has('tag')) {
-            return $this->config->get('tag');
-        }
-
         if (defined('NO_ANSI')) {
-            return $this->alias();
+            return $this->getAlias();
         }
 
-        if ($this->alias() === 'localhost') {
-            return $this->alias();
+        if ($this->getAlias() === 'localhost') {
+            return $this->getAlias();
         }
 
         if (getenv('COLORTERM') === 'truecolor') {
@@ -219,7 +276,7 @@ class Host
                 $colors[] = $hsv($i / $total, 1, .9);
             }
 
-            $alias = $this->alias();
+            $alias = $this->getAlias();
             $tag = $colors[abs(crc32($alias)) % count($colors)];
 
             return "{$tag}{$alias}\x1b[0m";
@@ -239,7 +296,7 @@ class Host
             'fg=magenta;options=bold',
             'fg=red;options=bold',
         ];
-        $alias = $this->alias();
+        $alias = $this->getAlias();
         $tag = $colors[abs(crc32($alias)) % count($colors)];
 
         return "<{$tag}>{$alias}</>";

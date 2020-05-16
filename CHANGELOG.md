@@ -11,6 +11,7 @@
 ### Fixed
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
 - When symfony_env is set to dev, require-dev are not installed and missing packages are breaking installation process. [#2035]
+- Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
 
 
 ## v6.8.0
@@ -577,6 +578,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2052]: https://github.com/deployphp/deployer/issues/2052
 [#2043]: https://github.com/deployphp/deployer/pull/2043
 [#2040]: https://github.com/deployphp/deployer/issues/2040
 [#2035]: https://github.com/deployphp/deployer/issues/2035

@@ -3,14 +3,14 @@
 ### Single server
 
 In most cases you don't need more than one production server.
-It's better to build your release files (as cache, js/css bundles) on that machine as well. 
+It's better to build your release files (as cache, js/css bundles) on that machine as well.
 So your builds don't depend on your local configuration and can be deployed from everywhere.
-By default Deployer recipes are designed to fulfill these kind of deployments.  
+By default Deployer recipes are designed to fullfill these kind of deployments.
 
 ~~~php
 desc('Deploy your project');
 task('deploy', [
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:release',
     'deploy:update_code',
     'deploy:shared',
@@ -40,8 +40,8 @@ task('build', function () {
 > task('build', '
 >     composer install
 >     npm install
->     npm run build    
->     ...        
+>     npm run build
+>     ...
 > ');
 > ~~~
 
@@ -58,7 +58,7 @@ Next, create release and deploy tasks:
 
 ~~~php
 task('release', [
-    'deploy:prepare',
+    'deploy:setup',
     'deploy:release',
     'upload',
     'deploy:shared',
@@ -69,7 +69,7 @@ task('release', [
 task('deploy', [
     'build',
     'release',
-    'cleanup',
+    'deploy:cleanup',
     'success'
 ]);
 ~~~
@@ -84,7 +84,7 @@ All common recipe tasks rely on this parameter.
 ~~~php
 task('build', function () {
     set('deploy_path', __DIR__ . '/.build');
-    invoke('deploy:prepare');
+    invoke('deploy:setup');
     invoke('deploy:release');
     invoke('deploy:update_code');
     invoke('deploy:vendors');
@@ -110,5 +110,5 @@ This task takes content from the current symlink of `deploy_path` from the build
 If your deployment goal is only to pull down the latest changes from your git repo, you can prevent redundant deployments with the `deploy:check_remote` task. This will compare your remote head with the last deployed and cancel the deployment if they match. This can provide a helpful hint if you've forgotten to push your latest commits.
 
 ~~~php
-after('deploy:prepare', 'deploy:check_remote');
+after('deploy:setup', 'deploy:check_remote');
 ~~~

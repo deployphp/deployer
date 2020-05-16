@@ -80,7 +80,7 @@ set( 'allow_anonymous_stats', true );
 
 // note that staging server uses a non-standard port for SSH so I have to specify it here
 host( 'staging.example.com' )
-	->user( 'eric' )
+	->getRemoteUser( 'eric' )
 	->stage( 'staging' )
 	->port( 30122 )
 	->set( 'deploy_path', '/usr/share/nginx/staging.example.com' )
@@ -88,7 +88,7 @@ host( 'staging.example.com' )
 
 // note that live server also uses a non-standard port for SSH
 host( 'example.com' )
-	->user( 'eric' )
+	->getRemoteUser( 'eric' )
 	->stage( 'production' )
 	->port( 30122 )
 	->set( 'deploy_path', '/usr/share/nginx/example.com' )
@@ -205,7 +205,7 @@ task( 'update:restart_chat_client_server', function () {
 } );
 
 // erase any extra old releases
-task( 'cleanup', function () {
+task( 'deploy:cleanup', function () {
 	$releases = get( 'releases_list' );
 	$keep     = get( 'keep_releases' );     // how many to keep?
 
@@ -261,7 +261,7 @@ task( 'deploy', [
 	'update:vendors',
 	'update:release_symlinks',
 	'update:restart_chat_client_server',
-	'cleanup',
+	'deploy:cleanup',
 	'notify:done',
 ] );
 

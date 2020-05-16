@@ -1,0 +1,47 @@
+.base: &base
+  deploy_path: path
+  roles:
+    - a
+    - b
+    - c
+  param: param
+
+foo:
+  <<: *base
+  extra: extra
+
+bar:
+  hostname: bar.com
+  remote_user: remote_user
+  port: 22
+  config_file: configFile
+  identity_file: identityFile
+  forward_agent: true
+  ssh_multiplexing: false
+  sshOptions:
+    Option: Value
+  sshFlags:
+    -f:
+    -someFlag: value
+  param: param
+
+local:
+  local: ""
+  deploy_to: /var/local
+  param: local
+
+app.deployer.org:
+  stage: production
+  roles: app
+  deploy_path: ~/app
+
+db[1:2].deployer.org:
+  stage: production
+  roles: db
+
+beta.deployer.org:
+  stage: beta
+  roles:
+    - app
+    - db
+  deploy_path: ~/app

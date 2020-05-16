@@ -4,9 +4,9 @@
     "license": "MIT",
     "homepage": "https://deployer.org",
     "support": {
-        "issues": "https://github.com/deployphp/deployer/issues",
+        "docs": "https://deployer.org/docs",
         "source": "https://github.com/deployphp/deployer",
-        "docs": "https://deployer.org/docs"
+        "issues": "https://github.com/deployphp/deployer/issues"
     },
     "authors": [
         {
@@ -23,24 +23,23 @@
             "src/functions.php"
         ]
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "bin": [
         "bin/dep"
     ],
     "require": {
-        "php": "^7.2",
-        "deployer/phar-update": "~2.2",
-        "pimple/pimple": "~3.0",
-        "symfony/console": "~2.7|~3.0|~4.0|~5.0",
-        "symfony/process": "~2.7|~3.0|~4.0|~5.0",
-        "symfony/yaml": "~2.7|~3.0|~4.0|~5.0"
+        "php": "^7.3",
+        "pimple/pimple": "^3",
+        "symfony/console": "^5",
+        "symfony/process": "^5",
+        "symfony/yaml": "^5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8"
+        "phpunit/phpunit": "^8.3"
     },
     "config": {
-        "sort-packages": true,
-        "platform": {
-            "php": "7.2.25"
-        }
+        "sort-packages": true
     }
 }

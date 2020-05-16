@@ -49,6 +49,8 @@ Your newly created `deploy.php` file should contain a `host` declaration like th
 host('domain.com')
     ->stage('production')    
     ->set('deploy_path', '/var/www/domain.com');
+    
+set('default_stage', 'production');
 ```
 
 > Also it's possible to declare hosts in a separate yaml file. Find out more about the [inventory](hosts.md#inventory-file).

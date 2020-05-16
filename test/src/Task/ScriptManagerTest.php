@@ -7,68 +7,48 @@
 
 namespace Deployer\Task;
 
-use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
 use PHPUnit\Framework\TestCase;
 
 class ScriptManagerTest extends TestCase
 {
-    public function testConstructorReturnsScriptManagerInstance()
+    public function testGetTasks()
     {
-        $scriptManager = new ScriptManager(new TaskCollection());
-        $classname = 'Deployer\Task\ScriptManager';
+        $notify = new Task('notify');
+        $info = new GroupTask('info', ['notify']);
+        $deploy = new GroupTask('deploy', ['deploy:setup', 'deploy:release']);
+        $deploy->addBefore($info);
+        $setup = new Task('deploy:setup');
+        $release = new Task('deploy:release');
 
-        $this->assertInstanceOf($classname, $scriptManager);
+        $taskCollection = new TaskCollection();
+        $taskCollection->set($notify->getName(), $notify);
+        $taskCollection->set($info->getName(), $info);
+        $taskCollection->set($deploy->getName(), $deploy);
+        $taskCollection->set($setup->getName(), $setup);
+        $taskCollection->set($release->getName(), $release);
+
+        $scriptManager = new ScriptManager($taskCollection);
+        self::assertEquals([$notify, $setup, $release], $scriptManager->getTasks('deploy'));
     }
 
     public function testThrowsExceptionIfTaskCollectionEmpty()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
 
         $scriptManager = new ScriptManager(new TaskCollection());
-        $scriptManager->getTasks("");
+        $scriptManager->getTasks('');
     }
 
     public function testThrowsExceptionIfTaskDontExists()
     {
-        $this->expectException(\InvalidArgumentException::class);
+        self::expectException(\InvalidArgumentException::class);
 
         $taskCollection = new TaskCollection();
         $taskCollection->set('testTask', new Task('testTask'));
 
         $scriptManager = new ScriptManager($taskCollection);
-        $scriptManager->getTasks("testTask2");
-    }
-
-    public function testReturnsArrayOnGetTask()
-    {
-        $hostCollection = new HostCollection();
-        $hostCollection->set('app', (new Host('app'))->stage('prod')->roles('app'));
-        $hostCollection->set('db', (new Host('db'))->stage('prod')->roles('db'));
-
-        $task = new Task('compile');
-        $task
-            ->onStage('prod')
-            ->onRoles('app');
-
-        $taskCollection = new TaskCollection();
-        $taskCollection->set('compile', $task);
-
-        $scriptManager = new ScriptManager($taskCollection, $hostCollection);
-
-        $this->assertNotEmpty($scriptManager->getTasks("compile"));
-
-        $task = new Task('dump');
-        $task
-            ->onStage('prod')
-            ->onRoles('db');
-
-        $taskCollection = new TaskCollection();
-        $taskCollection->set('dump', $task);
-
-        $scriptManager = new ScriptManager($taskCollection, $hostCollection);
-
-        $this->assertNotEmpty($scriptManager->getTasks("dump"));
+        $scriptManager->getTasks('testTask2');
     }
 }

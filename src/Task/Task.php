@@ -231,9 +231,14 @@ class Task
         return $this;
     }
 
+    /**
+     * @param string $selector
+     * @return Task
+     */
     public function select(string $selector)
     {
         $this->selector = Selector::parse($selector);
+        return $this;
     }
 
     /**

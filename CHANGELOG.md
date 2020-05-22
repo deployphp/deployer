@@ -26,6 +26,7 @@
 - When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
 - Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
 - Fixed unit tests on non-master branches. [#2181]
+- Shared folder creation. [#1982]
 
 
 ## v6.8.0
@@ -607,6 +608,7 @@
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990
 [#1989]: https://github.com/deployphp/deployer/issues/1989
+[#1982]: https://github.com/deployphp/deployer/issues/1982
 [#1971]: https://github.com/deployphp/deployer/pull/1971
 [#1969]: https://github.com/deployphp/deployer/issues/1969
 [#1909]: https://github.com/deployphp/deployer/issues/1909

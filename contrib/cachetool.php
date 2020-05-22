@@ -10,11 +10,7 @@ namespace Deployer;
 set('cachetool', '');
 set('cachetool_args', '');
 set('cachetool_binary', function () {
-    return run("{{bin/php}} -r \"echo (PHP_VERSION_ID <= 50640) 
-        ? 'cachetool-3.2.1.phar' 
-        : ((PHP_VERSION_ID <= 70133) 
-            ? 'cachetool-4.1.1.phar' 
-            : 'cachetool.phar');\"");
+    return run("{{bin/php}} -r \"echo (PHP_VERSION_ID <= 50640) ? 'cachetool-3.2.1.phar' : ((PHP_VERSION_ID <= 70133) ? 'cachetool-4.1.1.phar' : 'cachetool.phar');\"");
 });
 set('bin/cachetool', function () {
     $cachetool_binary = get('cachetool_binary');

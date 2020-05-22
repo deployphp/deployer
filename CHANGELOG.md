@@ -6,6 +6,7 @@
 
 ### Added
 - Added a Slack notification task on rollback.
+- Cachetool contrib recipe, add stat:clear command.
 
 ### Fixed
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]

@@ -10,7 +10,11 @@ namespace Deployer;
 set('cachetool', '');
 set('cachetool_args', '');
 set('cachetool_binary', function () {
-    return run("{{bin/php}} -r \"echo (PHP_VERSION_ID <= 50640) ? 'cachetool-3.2.1.phar' : ((PHP_VERSION_ID <= 70133) ? 'cachetool-4.1.1.phar' : 'cachetool.phar');\"");
+    return run("{{bin/php}} -r \"echo (PHP_VERSION_ID <= 50640) 
+        ? 'cachetool-3.2.1.phar' 
+        : ((PHP_VERSION_ID <= 70133) 
+            ? 'cachetool-4.1.1.phar' 
+            : 'cachetool.phar');\"");
 });
 set('bin/cachetool', function () {
     $cachetool_binary = get('cachetool_binary');
@@ -55,4 +59,12 @@ task('cachetool:clear:opcache', function () {
 desc('Clearing APCu system cache');
 task('cachetool:clear:apcu', function () {
     run("cd {{release_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
+});
+
+/** 
+ * Clear file status cache, including the realpath cache 
+ */
+desc('Clearing file status and realpath caches');
+task('cachetool:clear:stat', function () {
+    run("cd {{release_path}} && {{bin/php}} {{bin/cachetool}} stat:clear {{cachetool_options}}");
 });

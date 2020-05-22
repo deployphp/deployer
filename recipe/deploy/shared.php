@@ -32,7 +32,7 @@ task('deploy:shared', function () {
 
         // Create path to shared dir in release dir if it does not exist.
         // Symlink will not create the path and will fail otherwise.
-        run("mkdir -p `dirname {{release_path}}/$dir`");
+        run("mkdir -p {{release_path}}/$dir");
 
         // Symlink shared dir to release dir
         run("{{bin/symlink}} $sharedPath/$dir {{release_path}}/$dir");

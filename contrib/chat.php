@@ -33,7 +33,7 @@ task('chat:notify', function () {
         'header' => [
             'title'      => get('chat_title'),
             'subtitle'   => get('chat_subtitle'),
-            'imageUrl'   => (get('favicon') ? 'http://' . get('hostname') . '/favicon.png' : ''),
+            'imageUrl'   => get('favicon'),
             'imageStyle' => 'IMAGE'
         ],
         'sections' => [
@@ -76,7 +76,7 @@ task('chat:notify:success', function () {
         'header' => [
             'title'      => get('chat_title'),
             'subtitle'   => get('chat_subtitle'),
-            'imageUrl'   => (get('favicon') ? 'http://' . get('hostname') . '/favicon.png' : ''),
+            'imageUrl'   => get('favicon'),
             'imageStyle' => 'IMAGE'
         ],
         'sections' => [

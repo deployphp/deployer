@@ -7,6 +7,9 @@
 ### Added
 - Added a Slack notification task on rollback.
 
+### Changed
+- Google hangout chat notification favicon handling.
+
 ### Fixed
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
 - When symfony_env is set to dev, require-dev are not installed and missing packages are breaking installation process. [#2035]

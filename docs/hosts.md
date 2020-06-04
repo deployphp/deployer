@@ -59,7 +59,7 @@ host('prod')
     ->set('branch', 'production');
 ~~~
 
-Now onthe  _prod_ host the branch is set to `production`, on others to `master`.
+Now on the _prod_ host the branch is set to `production`, on others to `master`.
 
 ### Gathering host info
 

@@ -6,6 +6,7 @@
 
 ### Added
 - Added a Slack notification task on rollback.
+- Ability to upload shared files from deploy server at first time deploy of project.
 
 ### Fixed
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]

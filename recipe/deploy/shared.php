@@ -59,6 +59,12 @@ task('deploy:shared', function () {
             // Copy file in shared dir if not present
             run("cp -rv {{release_path}}/$file $sharedPath/$file");
         }
+        else {
+            $sharedBootstrapDir = get('shared_use_bootstrap') ? 'shared' : '';
+            if ($sharedBootstrapDir != '') {
+                upload($sharedBootstrapDir . '/' . $file, $sharedPath . '/' . $file);
+            }
+        }
 
         // Remove from source.
         run("if [ -f $(echo {{release_path}}/$file) ]; then rm -rf {{release_path}}/$file; fi");

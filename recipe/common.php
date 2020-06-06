@@ -64,6 +64,7 @@ set('repository', ''); // Repository to deploy.
 
 set('shared_dirs', []);
 set('shared_files', []);
+set('shared_use_bootstrap', false);
 
 set('copy_dirs', []);
 

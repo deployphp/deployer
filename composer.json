@@ -32,9 +32,9 @@
     "require": {
         "php": "^7.3",
         "pimple/pimple": "^3",
-        "symfony/console": "^5",
-        "symfony/process": "^5",
-        "symfony/yaml": "^5"
+        "symfony/console": "^4.4 || ^5.0",
+        "symfony/process": "^4.4 || ^5.0",
+        "symfony/yaml": "^4.4 || ^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.3"

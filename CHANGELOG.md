@@ -6,6 +6,7 @@
 
 ### Added
 - Added a Slack notification task on rollback.
+- Recipe for crontab tasks.
 
 ### Fixed
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]

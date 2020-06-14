@@ -32,7 +32,7 @@ set('telegram_url', function () {
 set('telegram_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
 set('telegram_success_text', 'Deploy to *{{target}}* successful');
 set('telegram_failure_text', 'Deploy to *{{target}}* failed');
-
+set('telegram_custom_text', '');
 
 desc('Notifying Telegram');
 
@@ -120,6 +120,40 @@ task('telegram:notify', function () {
       }
 
       $httpie->send();
+})
+    ->once()
+    ->shallow()
+    ->hidden();
+
+desc('Send custom Telegram message');
+task('telegram:notify:custom', function () {
+    if (!get('telegram_token', false)) {
+        return;
+    }
+
+    if (!get('telegram_chat_id', false)) {
+        return;
+    }
+
+    if (get('telegram_custom_text', '') == '') {
+        return;
+    }
+
+    $telegramUrl = get('telegram_url') . '?' . http_build_query (
+            Array (
+                'chat_id' => get('telegram_chat_id'),
+                'text' => get('telegram_custom_text'),
+                'parse_mode' => 'Markdown',
+            )
+        );
+
+    $httpie = Httpie::get($telegramUrl);
+
+    if (get('telegram_proxy', '') !== '') {
+        $httpie = $httpie->setopt(CURLOPT_PROXY, get('telegram_proxy'));
+    }
+
+    $httpie->send();
 })
     ->once()
     ->shallow()

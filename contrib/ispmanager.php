@@ -1,9 +1,6 @@
 <?php
 /* (c) Asafov Sergey <asafov@newleaf.ru>
- * Recipe for ISPManager
- * This recipe is for create all needed resources (At first deploy for example)
- * Configuration:
-
+ * This recipe for work with ISPManager Lite panel by API.
  */
 namespace Deployer;
 use Deployer\Exception\Exception;
@@ -73,16 +70,14 @@ task('ispmanager:init', function () {
         invoke('ispmanager:domain-list');
     }
 
+    if (!is_null ($config['phpSelect'])) {
+        invoke('ispmanager:domain-list');
+        invoke('ispmanager:get-php-list');
+    }
+
     if (!is_null ($config['createAlias']) || !is_null ($config['deleteAlias'])) {
         invoke('ispmanager:domain-list');
     }
-
-    if (!is_null ($config['phpSelect'])) {
-        invoke('ispmanager:domain-list');
-        invoke('ispmanager:php-list');
-    }
-
-
 });
 
 desc('Take database servers list');
@@ -337,12 +332,12 @@ task('ispmanager:domain-create', function () {
 });
 
 desc('Get allowed PHP modes and versions');
-task('ispmanager:php-list', function () {
+task('ispmanager:get-php-list', function () {
     // Get www-root settings for fpm version
     $response = ispmanagerRequest('get', [
         'func' => 'user.edit',
-        'elid' => 'www-root',
-        'elname' => 'www-root',
+        'elid' => get('ispmanager_owner'),
+        'elname' => get('ispmanager_owner'),
     ]);
 
     $userFPMVersion = isset ($response['doc']['limit_php_fpm_version']['$']) ? $response['doc']['limit_php_fpm_version']['$'] : NULL;
@@ -380,6 +375,48 @@ task('ispmanager:php-list', function () {
     }
 
     add('ispmanager_phplist', $versions);
+});
+
+desc('Print allowed PHP modes and versions');
+task('ispmanager:print-php-list', function () {
+    invoke('ispmanager:get-php-list');
+
+    $versions = get('ispmanager_phplist');
+    writeln ("PHP versions: ");
+    writeln(str_repeat('*', 32));
+    foreach ($versions as $versionKey => $versionData) {
+        writeln('PHP ' . $versionData['name'] . ' (ID: ' . $versionKey . ')');
+        writeln(str_repeat('*', 32));
+        if (!$versionData['php_mode_mod']) {
+            writeln('Apache module support (php_mode_mod) - <fg=red;options=bold>NO</>');
+        }
+        else {
+            writeln('Apache module support (php_mode_mod) - <fg=green;options=bold>YES</>');
+        }
+
+        if (!$versionData['php_mode_cgi']) {
+            writeln('CGI support (php_mode_cgi) - <fg=red;options=bold>NO</>');
+        }
+        else {
+            writeln('CGI support (php_mode_cgi) - <fg=green;options=bold>YES</>');
+        }
+
+        if (!$versionData['php_mode_fcgi_apache']) {
+            writeln('Apache fast-cgi support (php_mode_fcgi_apache) - <fg=red;options=bold>NO</>');
+        }
+        else {
+            writeln('Apache fast-cgi support (php_mode_fcgi_apache) - <fg=green;options=bold>YES</>');
+        }
+
+        if (!$versionData['php_mode_fcgi_nginxfpm']) {
+            writeln('nginx fast-cgi support (php_mode_fcgi_nginxfpm) - <fg=red;options=bold>NO</>');
+        }
+        else {
+            writeln('nginx fast-cgi support (php_mode_fcgi_nginxfpm) - <fg=green;options=bold>YES</>');
+        }
+
+        writeln(str_repeat('*', 32));
+    }
 });
 
 desc('Switch PHP version for domain');
@@ -649,6 +686,38 @@ task('ispmanager:domain-delete', function () {
     }
 });
 
+desc('Auto task processing');
+task('ispmanager:process', function () {
+    $config = get ('ispmanager');
+
+    if (!is_null ($config['createDatabase'])) {
+        invoke('ispmanager:db-create');
+    }
+
+    if (!is_null ($config['deleteDatabase'])) {
+        invoke('ispmanager:db-delete');
+    }
+
+    if (!is_null ($config['createDomain'])) {
+        invoke('ispmanager:domain-create');
+    }
+
+    if (!is_null ($config['deleteDomain'])) {
+        invoke('ispmanager:domain-delete');
+    }
+
+    if (!is_null ($config['phpSelect'])) {
+        invoke('ispmanager:domain-php-select');
+    }
+
+    if (!is_null ($config['createAlias'])) {
+        invoke('ispmanager:domain-alias-create');
+    }
+
+    if (!is_null ($config['deleteAlias'])) {
+        invoke('ispmanager:domain-alias-delete');
+    }
+});
 
 function ispmanagerRequest ($method, $requestData) {
     $config = get ('ispmanager');

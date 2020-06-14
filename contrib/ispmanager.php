@@ -24,6 +24,8 @@ set('ispmanager', [
     'createDatabase' => NULL,
     'deleteDatabase' => NULL,
     'phpSelect' => NULL,
+    'createAlias' => NULL,
+    'deleteAlias' => NULL,
 ]);
 
 // Vhost default configuration
@@ -164,7 +166,7 @@ task('ispmanager:db-create', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['createDatabase'])) {
-        info ('Action for database create is not active');
+        warning ('Action for database create is not active');
         return;
     }
 
@@ -193,7 +195,7 @@ task('ispmanager:db-create', function () {
             throw new Exception('Database already exists!');
         }
         else {
-            info ('Database already exists - skipping');
+            warning ('Database already exists - skipping');
             return true;
         }
     }
@@ -212,7 +214,7 @@ task('ispmanager:db-create', function () {
         $dbCreateRequest['username'] = $dbName;
 
         if ($dsnData['pass'] == '*') {
-            $dbCreateRequest['password'] = generate_password (8);
+            $dbCreateRequest['password'] = generatePassword (8);
         }
         else {
             $dbCreateRequest['password'] = $dsnData['pass'];
@@ -228,6 +230,9 @@ task('ispmanager:db-create', function () {
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
     }
+    else {
+        info ('Database successfully created');
+    }
 });
 
 desc('Delete database');
@@ -235,7 +240,7 @@ task('ispmanager:db-delete', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['deleteDatabase'])) {
-        info ('Action for database delete is not active');
+        warning ('Action for database delete is not active');
         return;
     }
 
@@ -263,7 +268,7 @@ task('ispmanager:db-delete', function () {
             throw new Exception('Database not exist!');
         }
         else {
-            info ('Database not exist - skipping');
+            warning ('Database not exist - skipping');
             return true;
         }
     }
@@ -278,6 +283,9 @@ task('ispmanager:db-delete', function () {
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
     }
+    else {
+        info ('Database successfully deleted');
+    }
 });
 
 desc('Create new domain');
@@ -285,7 +293,7 @@ task('ispmanager:domain-create', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['createDomain'])) {
-        info ('Action for domain create is not active');
+        warning ('Action for domain create is not active');
         return;
     }
 
@@ -301,7 +309,7 @@ task('ispmanager:domain-create', function () {
             throw new Exception('Domain already exists!');
         }
         else {
-            info ('Domain already exists - skipping');
+            warning1 ('Domain already exists - skipping');
             return true;
         }
     }
@@ -322,6 +330,9 @@ task('ispmanager:domain-create', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
+    }
+    else {
+        info ('Domain successfully created');
     }
 });
 
@@ -376,7 +387,7 @@ task('ispmanager:domain-php-select', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['phpSelect'])) {
-        info ('Action for domain update is not active');
+        warning ('Action for domain update is not active');
         return;
     }
 
@@ -442,6 +453,9 @@ task('ispmanager:domain-php-select', function () {
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
     }
+    else {
+        info ('PHP successfully selected');
+    }
 });
 
 desc('Create new domain alias');
@@ -449,7 +463,7 @@ task('ispmanager:domain-alias-create', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['createAlias'])) {
-        info ('Action for alias create is not active');
+        warning ('Action for alias create is not active');
         return;
     }
 
@@ -487,7 +501,7 @@ task('ispmanager:domain-alias-create', function () {
                 throw new Exception('Alias already exists!');
             }
             else {
-                info ('Alias ' . $createAlias . ' already exists - skipping');
+                warning ('Alias ' . $createAlias . ' already exists - skipping');
                 continue;
             }
         }
@@ -510,6 +524,9 @@ task('ispmanager:domain-alias-create', function () {
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
     }
+    else {
+        info ('Alias successfully created');
+    }
 });
 
 desc('Delete domain alias');
@@ -517,7 +534,7 @@ task('ispmanager:domain-alias-delete', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['deleteAlias'])) {
-        info ('Action for alias create is not active');
+        warning ('Action for alias create is not active');
         return;
     }
 
@@ -554,7 +571,7 @@ task('ispmanager:domain-alias-delete', function () {
                 throw new Exception('Alias not exist!');
             }
             else {
-                info ('Alias ' . $deleteAlias . ' not exist - skipping');
+                warning ('Alias ' . $deleteAlias . ' not exist - skipping');
                 continue;
             }
         }
@@ -577,6 +594,9 @@ task('ispmanager:domain-alias-delete', function () {
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
     }
+    else {
+        info ('Alias successfully deleted');
+    }
 });
 
 desc('Delete domain');
@@ -584,7 +604,7 @@ task('ispmanager:domain-delete', function () {
     $config = get ('ispmanager');
 
     if (is_null ($config['deleteDomain'])) {
-        info ('Action for domain delete is not active');
+        warning ('Action for domain delete is not active');
         return;
     }
 
@@ -600,7 +620,7 @@ task('ispmanager:domain-delete', function () {
             throw new Exception('Domain not exist!');
         }
         else {
-            info ('Domain not exist - skipping');
+            warning ('Domain not exist - skipping');
             return true;
         }
     }
@@ -623,6 +643,9 @@ task('ispmanager:domain-delete', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
+    }
+    else {
+        info ('Domain successfully deleted');
     }
 });
 

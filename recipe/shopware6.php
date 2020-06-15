@@ -19,7 +19,7 @@ set('writable_dirs', [
     'custom/plugins',
     'config/jwt',
     'files',
-    'var/log',
+    'var',
     'public/media',
     'public/thumbnail',
     'public/sitemap'

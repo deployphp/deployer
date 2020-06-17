@@ -17,7 +17,7 @@ if (PHP_VERSION_ID < 70300) {
     fwrite(
         STDERR,
         'Upgrade to php 7.3' . PHP_EOL .
-        'Deployer 7. supports only php 7.3 and above.' . PHP_EOL .
+        'Deployer supports only php 7.3 and above.' . PHP_EOL .
         'If you want to use older php versions you should use older Deployer versions' . PHP_EOL
     );
     exit(1);

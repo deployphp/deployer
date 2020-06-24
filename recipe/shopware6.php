@@ -7,9 +7,11 @@ set('shared_files', [
     '.env'
 ]);
 set('shared_dirs', [
-    'var',
+    'config/jwt',
+    'config/secrets',
     'public/media',
-    'public/thumbnail'
+    'public/thumbnail',
+    'public/sitemap'
 ]);
 set('writable_dirs', [
     'var',
@@ -17,24 +19,35 @@ set('writable_dirs', [
     'public/thumbnail'
 ]);
 set('static_folders', []);
-set('writable_dirs', [
-    'public'
-]);
 
 task('sw:update_code', function(){
     run('git clone {{repository}} {{release_path}};');
 });
-task('sw:deploy','
-    cd {{release_path}};
-    composer install;
-    ');
 
+task('sw:system:install', function(){
+    run('cd {{release_path}} && bin/console system:install;');
+});
+task('sw:storefront:build', function(){
+    run('cd {{release_path}} && bin/build.sh;');
+});
+task('sw:system:setup', function(){
+    run('cd {{release_path}} && bin/console system:setup;');
+});
 task('sw:theme:compile', function(){
     run('cd {{release_path}} && bin/console theme:compile;');
 });
 task('sw:cache:clear', function(){
     run('cd {{release_path}} && bin/console cache:clear;');
 });
+task('sw:assets:install', function(){
+    run('cd {{release_path}} && bin/console assets:install;');
+});
+
+task('sw:deploy',[
+    'sw:storefront:build',
+    'sw:theme:compile',
+    'sw:cache:clear'
+]);
 /**
  * Main task
  */
@@ -43,11 +56,9 @@ task('deploy', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
-    'sw:deploy',
     'deploy:shared',
+    'sw:deploy',
     'deploy:writable',
-    'sw:theme:compile',
-    'sw:cache:clear',
     'deploy:clear_paths',
     'deploy:symlink',
     'deploy:unlock',

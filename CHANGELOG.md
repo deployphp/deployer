@@ -5,6 +5,7 @@
 [v6.8.0...master](https://github.com/deployphp/deployer/compare/v6.8.0...master)
 
 ### Added
+- Added composer version selection
 - Added a Slack notification task on rollback.
 - Recipe for crontab tasks.
 - ISPManager recipe and docs.

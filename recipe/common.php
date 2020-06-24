@@ -114,13 +114,24 @@ set('bin/git', function () {
     return locateBinaryPath('git');
 });
 
+// Composer custom version
+set('composer_version', false);
+
 set('bin/composer', function () {
     if (commandExist('composer')) {
         $composer = '{{bin/php}} ' . locateBinaryPath('composer');
     }
 
     if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
+        $installCommand = "cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}";
+        
+        $composerVersion = get('composer_version', false);
+        if ($composerVersion) {
+            $installCommand.= " -- --version=" . get('composer_version');
+        }
+        
+        run($installCommand);
+        
         $composer = '{{bin/php}} {{release_path}}/composer.phar';
     }
 

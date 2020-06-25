@@ -91,11 +91,21 @@ class Configuration implements \ArrayAccess
         }
         return null;
     }
+    
+    public function normalize($string)
+    {
+        //cleanup CRLF new line endings, issue #2111
+        $normalizeStep1 = str_replace(array("\r\n", "\r"), "\n", $string);
+        $normalized = $normalizeStep1;
+        
+        return $normalized;
+    }
 
     public function parse($value)
     {
         if (is_string($value)) {
-            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $value);
+            $normalizedValue = $this->normalize($value);
+            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
         }
 
         return $value;

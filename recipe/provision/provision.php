@@ -14,7 +14,7 @@ set('php_version', '7.4');
 set('sudo_password', 'TODO');
 set('env', ['DEBIAN_FRONTEND' => 'noninteractive']);
 
-desc('Provision server with Nginx, PHP, PHP-FPM, MySQL or Postgres');
+desc('Provision server with nginx, php, php-fpm');
 task('provision', [
     'provision:check',
     'provision:upgrade',

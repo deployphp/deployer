@@ -125,6 +125,7 @@ class Arguments
      */
     private function generateControlPath(Host $host)
     {
+        // TODO: ->addSshOption('ControlPath', '/dev/shm/deployer-%C')
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
         $homeDir = Unix::parseHomeDir('~');

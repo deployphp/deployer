@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class MainCommand extends SelectCommand
 {
+    use CustomOption;
+
     public function __construct(string $name, ?string $description, Deployer $deployer)
     {
         parent::__construct($name, $deployer);
@@ -31,11 +33,12 @@ class MainCommand extends SelectCommand
 
         // Add global options defined with `option()` func.
         $this->getDefinition()->addOptions($this->deployer->inputDefinition->getOptions());
+
         $this->addOption(
             'option',
             'o',
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Sets configuration option'
+            'Set configuration option'
         );
         $this->addOption(
             'limit',
@@ -54,6 +57,12 @@ class MainCommand extends SelectCommand
             null,
             Option::VALUE_NONE,
             'Show execution plan'
+        );
+        $this->addOption(
+            'start-from',
+            null,
+            Option::VALUE_REQUIRED,
+            'Task name to start execution from'
         );
         $this->addOption(
             'log',
@@ -92,7 +101,15 @@ class MainCommand extends SelectCommand
         }
 
         $this->deployer->scriptManager->setHooksEnabled(!$input->getOption('no-hooks'));
+        $startFrom = $input->getOption('start-from');
+        if ($startFrom) {
+            if (!$this->deployer->tasks->has($startFrom)) {
+                throw new Exception("Task ${startFrom} does not exist.");
+            }
+            $this->deployer->scriptManager->setStartFrom($startFrom);
+        }
         $tasks = $this->deployer->scriptManager->getTasks($this->getName());
+
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
@@ -119,26 +136,5 @@ class MainCommand extends SelectCommand
         }
 
         return $exitCode;
-    }
-
-    protected function parseOptions(array $options)
-    {
-        foreach ($options as $option) {
-            list($name, $value) = explode('=', $option);
-            $value = $this->castValueToPhpType(trim($value));
-            $this->deployer->config->set(trim($name), $value);
-        }
-    }
-
-    protected function castValueToPhpType($value)
-    {
-        switch ($value) {
-            case 'true':
-                return true;
-            case 'false':
-                return false;
-            default:
-                return $value;
-        }
     }
 }

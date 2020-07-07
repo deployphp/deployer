@@ -22,6 +22,8 @@ require __DIR__ . '/deploy/update_code.php';
 require __DIR__ . '/deploy/vendors.php';
 require __DIR__ . '/deploy/writable.php';
 
+require __DIR__ . '/provision/provision.php';
+
 use Deployer\Exception\RunException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
@@ -29,14 +31,6 @@ use Symfony\Component\Console\Output\Output;
 /**
  * Facts
  */
-
-set('hostname', function () {
-    return currentHost()->getHostname();
-});
-
-set('remote_user', function () {
-    return currentHost()->getRemoteUser();
-});
 
 set('user', function () {
     if (getenv('CI') !== false) {

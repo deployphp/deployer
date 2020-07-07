@@ -25,12 +25,6 @@ class Host
         $this->config = new Configuration($parent);
         $this->set('alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
-        $this->set('remote_user', '');
-        $this->set('port', '');
-        $this->set('config_file', '');
-        $this->set('identity_file', '');
-        $this->set('forward_agent', true);
-        $this->set('shell', 'bash -s');
         $this->sshArguments = new Arguments();
     }
 
@@ -163,6 +157,17 @@ class Host
     public function getShell(): string
     {
         return $this->config->get('shell');
+    }
+
+    public function setDeployPath(string $path)
+    {
+        $this->config->set('deploy_path', $path);
+        return $this;
+    }
+
+    public function getDeployPath()
+    {
+        return $this->config->get('deploy_path');
     }
 
     public function getConnectionString(): string

@@ -154,7 +154,9 @@ class ParallelExecutor
                 }
             }
 
-            $this->messenger->endTask($task);
+            if (!$plan) {
+                $this->messenger->endTask($task);
+            }
         }
 
         return 0;

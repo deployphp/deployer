@@ -22,6 +22,8 @@ use function Deployer\writeln;
 
 class RunCommand extends SelectCommand
 {
+    use CustomOption;
+
     public function __construct(Deployer $deployer)
     {
         parent::__construct('run', $deployer);
@@ -36,12 +38,19 @@ class RunCommand extends SelectCommand
             InputArgument::IS_ARRAY,
             'Command to run'
         );
+        $this->addOption(
+            'option',
+            'o',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Set configuration option'
+        );
     }
 
     protected function execute(Input $input, Output $output)
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
+        $this->parseOptions($input->getOption('option'));
 
         if ($output->getVerbosity() === Output::VERBOSITY_NORMAL) {
             $output->setVerbosity(Output::VERBOSITY_VERBOSE);

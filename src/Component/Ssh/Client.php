@@ -30,7 +30,6 @@ class Client
 
     public function run(Host $host, string $command, array $config = [])
     {
-        $hostname = $host->getHostname();
         $connectionString = $host->getConnectionString();
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),

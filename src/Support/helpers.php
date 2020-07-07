@@ -75,6 +75,19 @@ function str_contains(string $haystack, string $needle)
 }
 
 /**
+ * Checks if string stars with given prefix.
+ *
+ * @param string $string
+ * @param string $startString
+ * @return bool
+ */
+function starts_with(string $string, string $startString)
+{
+    $len = strlen($startString);
+    return (substr($string, 0, $len) === $startString);
+}
+
+/**
  * Take array of key/value and create string of it.
  *
  * This function used for create environment string.
@@ -111,7 +124,8 @@ function is_closure($var)
  * @param array $array
  * @param \Closure $predicate
  */
-function array_all(array $array, $predicate) {
+function array_all(array $array, $predicate)
+{
     foreach ($array as $key => $value) {
         if (!$predicate($value, $key)) {
             return false;

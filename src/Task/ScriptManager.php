@@ -7,12 +7,14 @@
 
 namespace Deployer\Task;
 
+use Deployer\Exception\Exception;
 use function Deployer\Support\array_flatten;
 
 class ScriptManager
 {
     private $tasks;
     private $hooksEnabled = true;
+    private $startFrom = null;
 
     public function __construct(TaskCollection $tasks)
     {
@@ -27,16 +29,46 @@ class ScriptManager
     public function getTasks(string $name)
     {
         $tasks = [];
+        $allTasks = $this->doGetTasks($name);
+
+        if ($this->startFrom === null) {
+            $tasks = $allTasks;
+        } else {
+            $skip = true;
+            foreach ($allTasks as $task) {
+                if ($skip) {
+                    if ($task->getName() === $this->startFrom) {
+                        $skip = false;
+                    } else {
+                        continue;
+                    }
+                }
+                $tasks[] = $task;
+            }
+            if (count($tasks) === 0) {
+                throw new Exception('All tasks skipped via --start-from option. Nothing to run.');
+            }
+        }
+        return $tasks;
+    }
+
+    /**
+     * @param string $name
+     * @return Task[]
+     */
+    public function doGetTasks(string $name)
+    {
+        $tasks = [];
 
         $task = $this->tasks->get($name);
 
         if ($this->hooksEnabled) {
-            $tasks = array_merge(array_map([$this, 'getTasks'], $task->getBefore()), $tasks);
+            $tasks = array_merge(array_map([$this, 'doGetTasks'], $task->getBefore()), $tasks);
         }
 
         if ($task instanceof GroupTask) {
             foreach ($task->getGroup() as $taskName) {
-                $subTasks = $this->getTasks($taskName);
+                $subTasks = $this->doGetTasks($taskName);
                 foreach ($subTasks as $subTask) {
                     $subTask->addSelector($task->getSelector());
                     $tasks[] = $subTask;
@@ -47,7 +79,7 @@ class ScriptManager
         }
 
         if ($this->hooksEnabled) {
-            $tasks = array_merge($tasks, array_map([$this, 'getTasks'], $task->getAfter()));
+            $tasks = array_merge($tasks, array_map([$this, 'doGetTasks'], $task->getAfter()));
         }
 
         return array_flatten($tasks);
@@ -61,5 +93,15 @@ class ScriptManager
     public function setHooksEnabled($hooksEnabled): void
     {
         $this->hooksEnabled = $hooksEnabled;
+    }
+
+    public function getStartFrom()
+    {
+        return $this->startFrom;
+    }
+
+    public function setStartFrom(string $startFrom): void
+    {
+        $this->startFrom = $startFrom;
     }
 }

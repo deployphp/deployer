@@ -474,7 +474,7 @@ function download(string $source, string $destination, $config = [])
  */
 function info($message)
 {
-    output()->writeln("<fg=green;options=bold>info</> " . parse($message));
+    writeln("<fg=green;options=bold>info</> " . parse($message));
 }
 
 /**

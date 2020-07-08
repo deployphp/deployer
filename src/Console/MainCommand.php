@@ -83,9 +83,9 @@ class MainCommand extends SelectCommand
         $this->deployer->input = $input;
         $this->deployer->output = $output;
         $this->deployer->config['log_file'] = $input->getOption('log');
-        $this->parseOptions($input->getOption('option'));
 
         $hosts = $this->selectHosts($input, $output);
+        $this->applyOverrides($hosts, $input->getOption('option'));
 
         $plan = $input->getOption('plan') ? new Planner($output, $hosts) : null;
         if ($plan === null) {

@@ -7,15 +7,27 @@
 
 namespace Deployer\Console;
 
+use Deployer\Host\Host;
 
 trait CustomOption
 {
-    protected function parseOptions(array $options)
+    /**
+     * @param Host[] $hosts
+     * @param string[] $options
+     */
+    protected function applyOverrides(array $hosts, array $options)
     {
+        $override = [];
         foreach ($options as $option) {
             list($name, $value) = explode('=', $option);
             $value = $this->castValueToPhpType(trim($value));
-            $this->deployer->config->set(trim($name), $value);
+            $override[trim($name)] = $value;
+        }
+
+        foreach ($hosts as $host) {
+            foreach ($override as $key => $value) {
+                $host->set($key, $value);
+            }
         }
     }
 

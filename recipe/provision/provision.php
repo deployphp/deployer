@@ -49,6 +49,11 @@ task('provision:check', function () {
         warning('Only Ubuntu 20.04 LTS supported for now.');
     }
 
+    if (get('remote_user') !== 'root') {
+        $ok = false;
+        warning('Provision should be running by root user. Add this option: -o remote_user=root');
+    }
+
     if (!$ok) {
         throw new GracefulShutdownException('Missing some pre-required state. Please check warnings.');
     }
@@ -99,35 +104,37 @@ task('provision:ssh', function () {
 
 desc('Setup deployer user');
 task('provision:user:deployer', function () {
-    if (!test('id deployer >/dev/null 2>&1')) {
+    if (test('id deployer >/dev/null 2>&1')) {
+        info('deployer user already exist');
+    } else {
         run('useradd deployer');
+        run('mkdir -p /home/deployer/.ssh');
+        run('mkdir -p /home/deployer/.deployer');
+        run('adduser deployer sudo');
+
+        run('chsh -s /bin/bash deployer');
+        run('cp /root/.profile /home/deployer/.profile');
+        run('cp /root/.bashrc /home/deployer/.bashrc');
+
+        $password = run('mkpasswd -m sha-512 {{sudo_password}}');
+        run("usermod --password $password deployer");
+
+        // TODO: Copy current ssh-key.
+        run('echo >> /root/.ssh/authorized_keys');
+        run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
+
+        run('ssh-keygen -f /home/deployer/.ssh/id_rsa -t rsa -N ""');
+
+        run('chown -R deployer:deployer /home/deployer');
+        run('chmod -R 755 /home/deployer');
+        run('chmod 700 /home/deployer/.ssh/id_rsa');
+
+        run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php-fpm reload" > /etc/sudoers.d/php-fpm');
+
+        run('usermod -a -G www-data deployer');
+        run('id deployer');
+        run('groups deployer');
     }
-    run('mkdir -p /home/deployer/.ssh');
-    run('mkdir -p /home/deployer/.deployer');
-    run('adduser deployer sudo');
-
-    run('chsh -s /bin/bash deployer');
-    run('cp /root/.profile /home/deployer/.profile');
-    run('cp /root/.bashrc /home/deployer/.bashrc');
-
-    $password = run('mkpasswd -m sha-512 {{sudo_password}}');
-    run("usermod --password $password deployer");
-
-    // TODO: Copy current ssh-key.
-    run('echo >> /root/.ssh/authorized_keys');
-    run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
-
-    run('ssh-keygen -f /home/deployer/.ssh/id_rsa -t rsa -N ""');
-
-    run('chown -R deployer:deployer /home/deployer');
-    run('chmod -R 755 /home/deployer');
-    run('chmod 700 /home/deployer/.ssh/id_rsa');
-
-    run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php-fpm reload" > /etc/sudoers.d/php-fpm');
-
-    run('usermod -a -G www-data deployer');
-    run('id deployer');
-    run('groups deployer');
 });
 
 desc('Setup firewall');
@@ -202,11 +209,15 @@ task('provision:config:php:sessions', function () {
     run('chmod +t /var/lib/php/sessions');
 });
 
-desc('Generating DH parameters');
+desc('Generating DH (Diffie Hellman) key');
 task('provision:nginx:dhparam', function () {
-    writeln('Generating DH parameters, 2048 bit long safe prime, generator 2');
-    writeln('This is going to take a long time');
-    run('openssl dhparam -out /etc/nginx/dhparams.pem 2048 2>/dev/null');
+    if (test('[ -f /etc/nginx/dhparams.pem ]')) {
+        info('/etc/nginx/dhparams.pem already exist');
+    } else {
+        info('Generating DH key, 2048 bit long safe prime');
+        info('This is going to take a long time');
+        run('openssl dhparam -out /etc/nginx/dhparams.pem 2048 2>/dev/null');
+    }
 });
 
 desc('Install nginx & php-fpm');

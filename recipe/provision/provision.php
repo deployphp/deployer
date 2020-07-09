@@ -33,6 +33,15 @@ task('provision', [
     'provision:nginx',
 ]);
 
+desc('Ensure what provision run as root');
+task('provision:switch-user', function () {
+    run('whoami');
+    if (get('remote_user') !== 'root') {
+        set('remote_user', 'root');
+    }
+    run('whoami');
+});
+
 desc('Check pre-required state');
 task('provision:check', function () {
     $ok = true;
@@ -47,11 +56,6 @@ task('provision:check', function () {
     if ($name !== 'Ubuntu' || !starts_with($version, '20.04 LTS')) {
         $ok = false;
         warning('Only Ubuntu 20.04 LTS supported for now.');
-    }
-
-    if (get('remote_user') !== 'root') {
-        $ok = false;
-        warning('Provision should be running by root user. Add this option: -o remote_user=root');
     }
 
     if (!$ok) {

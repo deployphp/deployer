@@ -172,7 +172,7 @@ class Host
 
     public function getConnectionString(): string
     {
-        if ($this->get('remote_user') !== '') {
+        if ($this->get('remote_user', '') !== '') {
             return $this->get('remote_user') . '@' . $this->get('hostname');
         }
         return $this->get('hostname');

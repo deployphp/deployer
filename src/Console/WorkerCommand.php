@@ -58,6 +58,7 @@ class WorkerCommand extends MainCommand
 
         try {
             Exception::setTaskSourceLocation($task->getSourceLocation());
+
             $task->run(new Context($host, $input, $output));
 
             if ($task->getName() !== 'connect') {

@@ -129,7 +129,7 @@ class Arguments
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
         $homeDir = Unix::parseHomeDir('~');
-        $port = empty($host->getPort()) ? '' : ':' . $host->getPort();
+        $port = empty($host->get('port', '')) ? '' : ':' . $host->getPort();
         $connectionData = "{$host->getConnectionString()}$port";
 
         $tryLongestPossible = 0;

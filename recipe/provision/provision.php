@@ -39,8 +39,9 @@ task('provision:switch-user', function () {
     if (get('remote_user') !== 'root') {
         set('remote_user', 'root');
     }
-    run('whoami');
 });
+
+//Deployer::get()->preTask->add('provision:*', 'provision:switch-user');
 
 desc('Check pre-required state');
 task('provision:check', function () {

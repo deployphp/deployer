@@ -164,6 +164,8 @@ task('deploy:update_code', function () {
 });
 ```
 
+> Note that overriding a task will remove defined configurations like before and after.
+
 ### Using input options
 
 You can define additional input options and arguments, before defining tasks:

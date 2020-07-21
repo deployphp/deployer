@@ -4,7 +4,7 @@ namespace Deployer;
 
 require_once __DIR__ . '/symfony4.php';
 
-add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/uploads']);
+add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/uploads', 'var/images-cache']);
 
 add('writable_dirs', ['public/uploads']);
 

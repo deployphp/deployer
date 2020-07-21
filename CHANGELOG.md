@@ -1,5 +1,10 @@
 # Changelog
 
+## 6.x
+
+### Added
+- Add sulu images cache folder to shared_dirs
+
 
 ## v6.4.5
 [v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)

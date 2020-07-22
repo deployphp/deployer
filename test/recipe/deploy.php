@@ -34,7 +34,7 @@ task('deploy:fail', [
 ]);
 
 task('fail', function () {
-    run('¯\_(ツ)_/¯');
+    run('false');
 });
 
 fail('deploy:fail', 'deploy:unlock');

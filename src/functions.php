@@ -187,52 +187,52 @@ function task($name, $body = null)
  * Call that task before specified task runs.
  *
  * @param string $task The task before $that should be run.
- * @param string|callable $todo The task to be run.
+ * @param string|callable $do The task to be run.
  * @return T|void
  */
-function before($task, $todo)
+function before($task, $do)
 {
-    if (is_callable($todo)) {
-        $newTask = task("before:$task", $todo);
+    if (is_callable($do)) {
+        $newTask = task("before:$task", $do);
         before($task, "before:$task");
         return $newTask;
     }
-    task($task)->addBefore($todo);
+    task($task)->addBefore($do);
 }
 
 /**
  * Call that task after specified task runs.
  *
  * @param string $task The task after $that should be run.
- * @param string|callable $todo The task to be run.
+ * @param string|callable $do The task to be run.
  * @return T|void
  */
-function after($task, $todo)
+function after($task, $do)
 {
-    if (is_callable($todo)) {
-        $newTask = task("after:$task", $todo);
+    if (is_callable($do)) {
+        $newTask = task("after:$task", $do);
         after($task, "after:$task");
         return $newTask;
     }
-    task($task)->addAfter($todo);
+    task($task)->addAfter($do);
 }
 
 /**
  * Setup which task run on failure of first.
  *
  * @param string $task The task which need to fail so $that should be run.
- * @param string $todo The task to be run.
+ * @param string $do The task to be run.
  * @return T|void
  */
-function fail($task, $todo)
+function fail($task, $do)
 {
-    if (is_callable($todo)) {
-        $newTask = task("fail:$task", $todo);
+    if (is_callable($do)) {
+        $newTask = task("fail:$task", $do);
         fail($task, "fail:$task");
         return $newTask;
     }
     $deployer = Deployer::get();
-    $deployer->fail->set($task, $todo);
+    $deployer->fail->set($task, $do);
 }
 
 /**

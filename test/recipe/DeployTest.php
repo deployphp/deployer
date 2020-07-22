@@ -16,7 +16,11 @@ class DeployTest extends AbstractTest
         $recipe = __DIR__ . '/deploy.php';
         $deployer = $this->init($recipe);
 
-        $this->tester->run(['deploy', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run([
+            'deploy',
+            '-s' => 'all',
+            '-f' => $recipe
+        ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
             'interactive' => false,
         ]);
@@ -40,15 +44,24 @@ class DeployTest extends AbstractTest
         }
     }
 
-    public function testDeployParallel()
+    public function testWorker()
     {
+        // Allow to start workers. Don't forget to disable it later.
+        putenv('DEPLOYER_LOCAL_WORKER=FALSE');
+
         $recipe = __DIR__ . '/deploy.php';
         $this->init($recipe);
 
-        $this->tester->run(['deploy', '-f' => $recipe, '-s' => 'all'], [
+        $this->tester->run([
+            'deploy',
+            '-f' => $recipe,
+            '-s' => 'all'
+        ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
         ]);
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
+
+        putenv('DEPLOYER_LOCAL_WORKER=true');
     }
 
     public function testDeploySelectHosts()

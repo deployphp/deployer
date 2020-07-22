@@ -9,17 +9,15 @@ namespace Deployer\Executor;
 
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
-use Deployer\Exception\Exception;
-use Deployer\Exception\GracefulShutdownException;
+use Deployer\Console\WorkerCommand;
+use Deployer\Deployer;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
-use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use function Deployer\Support\str_contains;
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
@@ -29,7 +27,7 @@ function spinner($message = '')
     return "  $frame $message\r";
 }
 
-class ParallelExecutor
+class Master
 {
     private $input;
     private $output;
@@ -69,7 +67,7 @@ class ParallelExecutor
             if ($host instanceof Localhost) {
                 continue;
             }
-            $process = $this->getProcess($host, new Task('connect'), true);
+            $process = $this->getProcess($host, new Task('connect'));
             $process->start();
 
             while ($process->isRunning()) {
@@ -130,7 +128,7 @@ class ParallelExecutor
                         continue;
                     }
 
-                    $exitCode = $this->runTask($task, [$currentHost], true);
+                    $exitCode = $this->runTask($task, [$currentHost]);
                     if ($exitCode !== 0) {
                         return $exitCode;
                     }
@@ -151,7 +149,7 @@ class ParallelExecutor
                         continue;
                     }
 
-                    $exitCode = $this->runTask($task, $selectedHosts, false);
+                    $exitCode = $this->runTask($task, $selectedHosts);
                     if ($exitCode !== 0) {
                         return $exitCode;
                     }
@@ -169,14 +167,29 @@ class ParallelExecutor
     /**
      * @param Task $task
      * @param Host[] $hosts
-     * @param bool $tty
      * @return int
      */
-    private function runTask(Task $task, array $hosts, bool $tty): int
+    private function runTask(Task $task, array $hosts): int
     {
+        if (getenv('DEPLOYER_LOCAL_WORKER') === 'true') {
+            // This allows to code coverage all recipe,
+            // as well as speedup tests by not spawning
+            // lots of processes. Also there is a few tests
+            // what runs with workers for tests subprocess
+            // communications.
+            foreach ($hosts as $host) {
+                $worker = new Worker(Deployer::get());
+                $exitCode = $worker->execute($task, $host);
+                if ($exitCode !== 0) {
+                    return $exitCode;
+                }
+            }
+            return 0;
+        }
+
         $processes = [];
         foreach ($hosts as $host) {
-            $processes[] = $this->getProcess($host, $task, $tty);
+            $processes[] = $this->getProcess($host, $task);
         }
 
         $callback = function (string $output) use (&$showSpinner) {
@@ -202,7 +215,7 @@ class ParallelExecutor
         return $this->cumulativeExitCode($processes);
     }
 
-    protected function getProcess(Host $host, Task $task, bool $tty): Process
+    protected function getProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $configDirectory = $host->get('config_directory');
@@ -213,9 +226,7 @@ class ParallelExecutor
             $this->output->writeln("[{$host->getTag()}] $command");
         }
 
-        $process = Process::fromShellCommandline($command);
-        $process->setTty($tty);
-        return $process;
+        return Process::fromShellCommandline($command);
     }
 
     /**

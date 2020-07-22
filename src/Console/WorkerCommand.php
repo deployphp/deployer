@@ -7,11 +7,11 @@
 
 namespace Deployer\Console;
 
-use Deployer\Collection\PersistentCollection;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
-use Deployer\Exception\NonFatalException;
+use Deployer\Exception\RunException;
+use Deployer\Executor\Worker;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -46,8 +46,8 @@ class WorkerCommand extends MainCommand
             define('NO_ANSI', 'true');
         }
 
-        $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
         $task = $this->deployer->tasks->get($input->getArgument('worker-task'));
+        $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
 
         $this->deployer->config->set('config_directory', $input->getArgument('config-directory'));
         $host->getConfig()->load();
@@ -56,22 +56,10 @@ class WorkerCommand extends MainCommand
             $this->deployer->config->set($name, $value);
         }
 
-        try {
-            Exception::setTaskSourceLocation($task->getSourceLocation());
+        $worker = new Worker($this->deployer);
+        $exitCode = $worker->execute($task, $host);
 
-            $task->run(new Context($host, $input, $output));
-
-            if ($task->getName() !== 'connect') {
-                $this->deployer->messenger->endOnHost($host);
-            }
-            $host->getConfig()->save();
-            return 0;
-        } catch (GracefulShutdownException $e) {
-            $this->deployer->messenger->renderException($e, $host);
-            return GracefulShutdownException::EXIT_CODE;
-        } catch (\Throwable $e) {
-            $this->deployer->messenger->renderException($e, $host);
-            return 255;
-        }
+        $host->getConfig()->save();
+        return $exitCode;
     }
 }

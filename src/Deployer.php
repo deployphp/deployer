@@ -23,7 +23,7 @@ use Deployer\Console\SshCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\Messenger;
-use Deployer\Executor\ParallelExecutor;
+use Deployer\Executor\Master;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
@@ -56,7 +56,7 @@ use Throwable;
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
- * @property ParallelExecutor $executor
+ * @property Master $executor
  * @property Messenger $messenger
  * @property Messenger $logger
  * @property Printer $pop
@@ -146,7 +146,7 @@ class Deployer extends Container
             return new Messenger($c['input'], $c['output']);
         };
         $this['executor'] = function ($c) {
-            return new ParallelExecutor(
+            return new Master(
                 $c['input'],
                 $c['output'],
                 $c['messenger'],

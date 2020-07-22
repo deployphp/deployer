@@ -604,10 +604,13 @@ function ask($message, $default = null, $autocomplete = null)
         $question->setAutocompleterValues($autocomplete);
     }
 
+    // Master process will stop spinner when this env variable is true.
+
     try {
         return $helper->ask(input(), output(), $question);
     } catch (MissingInputException $exception) {
         throw new Exception("Failed to read input from stdin.\nMake sure what you are asking for input not from parallel task.", $exception->getCode(), $exception);
+    } finally {
     }
 }
 

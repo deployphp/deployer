@@ -19,6 +19,7 @@ use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use function Deployer\Support\str_contains;
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
@@ -68,7 +69,7 @@ class ParallelExecutor
             if ($host instanceof Localhost) {
                 continue;
             }
-            $process = $this->getProcess($host, new Task('connect'));
+            $process = $this->getProcess($host, new Task('connect'), true);
             $process->start();
 
             while ($process->isRunning()) {
@@ -103,9 +104,9 @@ class ParallelExecutor
 
             if ($task->isOnce()) {
                 $plannedHosts = [];
-                foreach ($hosts as $host) {
-                    if (Selector::apply($task->getSelector(), $host)) {
-                        $plannedHosts[] = $host;
+                foreach ($hosts as $currentHost) {
+                    if (Selector::apply($task->getSelector(), $currentHost)) {
+                        $plannedHosts[] = $currentHost;
                         break;
                     }
                 }
@@ -116,8 +117,8 @@ class ParallelExecutor
             }
 
             if ($limit === 1 || count($plannedHosts) === 1) {
-                foreach ($plannedHosts as $host) {
-                    if (!Selector::apply($task->getSelector(), $host)) {
+                foreach ($plannedHosts as $currentHost) {
+                    if (!Selector::apply($task->getSelector(), $currentHost)) {
                         if ($plan) {
                             $plan->commit([], $task);
                         }
@@ -125,29 +126,32 @@ class ParallelExecutor
                     }
 
                     if ($plan) {
-                        $plan->commit([$host], $task);
+                        $plan->commit([$currentHost], $task);
                         continue;
                     }
 
-                    try {
-                        $host->getConfig()->load();
-                        Exception::setTaskSourceLocation($task->getSourceLocation());
-
-                        $task->run(new Context($host, $this->input, $this->output));
-
-                        $this->messenger->endOnHost($host);
-                        $host->getConfig()->save();
-                    } catch (GracefulShutdownException $exception) {
-                        $this->messenger->renderException($exception, $host);
-                        return GracefulShutdownException::EXIT_CODE;
-                    } catch (\Throwable $exception) {
-                        $this->messenger->renderException($exception, $host);
-                        return 1;
+                    $exitCode = $this->runTask($task, [$currentHost], true);
+                    if ($exitCode !== 0) {
+                        return $exitCode;
                     }
                 }
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
-                    $exitCode = $this->runTask($chunk, $task, $plan);
+                    $selector = $task->getSelector();
+                    $selectedHosts = [];
+                    foreach ($chunk as $currentHost) {
+                        if ($selector === null || Selector::apply($selector, $currentHost)) {
+                            $selectedHosts[] = $currentHost;
+                        }
+                    }
+
+
+                    if ($plan) {
+                        $plan->commit($selectedHosts, $task);
+                        continue;
+                    }
+
+                    $exitCode = $this->runTask($task, $selectedHosts, false);
                     if ($exitCode !== 0) {
                         return $exitCode;
                     }
@@ -162,24 +166,20 @@ class ParallelExecutor
         return 0;
     }
 
-    private function runTask(array $hosts, Task $task, Planner $plan = null): int
+    /**
+     * @param Task $task
+     * @param Host[] $hosts
+     * @param bool $tty
+     * @return int
+     */
+    private function runTask(Task $task, array $hosts, bool $tty): int
     {
         $processes = [];
-        $selectedHosts = [];
         foreach ($hosts as $host) {
-            $selector = $task->getSelector();
-            if ($selector === null || Selector::apply($selector, $host)) {
-                $selectedHosts[] = $host;
-                $plan || $processes[] = $this->getProcess($host, $task);
-            }
+            $processes[] = $this->getProcess($host, $task, $tty);
         }
 
-        if ($plan) {
-            $plan->commit($selectedHosts, $task);
-            return 0;
-        }
-
-        $callback = function (string $output) {
+        $callback = function (string $output) use (&$showSpinner) {
             $output = preg_replace('/\n$/', '', $output);
             if (strlen($output) !== 0) {
                 $this->output->writeln($output);
@@ -202,7 +202,7 @@ class ParallelExecutor
         return $this->cumulativeExitCode($processes);
     }
 
-    protected function getProcess(Host $host, Task $task): Process
+    protected function getProcess(Host $host, Task $task, bool $tty): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $configDirectory = $host->get('config_directory');
@@ -213,7 +213,9 @@ class ParallelExecutor
             $this->output->writeln("[{$host->getTag()}] $command");
         }
 
-        return Process::fromShellCommandline($command);
+        $process = Process::fromShellCommandline($command);
+        $process->setTty($tty);
+        return $process;
     }
 
     /**
@@ -260,6 +262,8 @@ class ParallelExecutor
 
     /**
      * Gather the cumulative exit code for the processes.
+     * @param Process[] $processes
+     * @return int
      */
     protected function cumulativeExitCode(array $processes): int
     {

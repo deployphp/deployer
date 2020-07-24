@@ -45,7 +45,7 @@ task('deploy:cache:warmup', function () {
 desc('Deploy project');
 task('deploy', [
     'deploy:info',
-    'deploy:setup',
+    'deploy:prepare',
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
@@ -56,7 +56,7 @@ task('deploy', [
     'deploy:cache:warmup',
     'deploy:symlink',
     'deploy:unlock',
-    'deploy:cleanup',
+    'cleanup',
 ]);
 
 after('deploy', 'success');

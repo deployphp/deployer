@@ -430,8 +430,8 @@ function invoke($task)
     $hosts = [Context::get()->getHost()];
     $tasks = Deployer::get()->scriptManager->getTasks($task, $hosts);
 
-    $executor = Deployer::get()->executor;
-    $executor->run($tasks, $hosts);
+    $master = Deployer::get()->master;
+    $master->run($tasks, $hosts);
 }
 
 /*

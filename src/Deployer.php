@@ -56,7 +56,7 @@ use Throwable;
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
- * @property Master $executor
+ * @property Master $master
  * @property Messenger $messenger
  * @property Messenger $logger
  * @property Printer $pop
@@ -145,7 +145,7 @@ class Deployer extends Container
         $this['messenger'] = function ($c) {
             return new Messenger($c['input'], $c['output']);
         };
-        $this['executor'] = function ($c) {
+        $this['master'] = function ($c) {
             return new Master(
                 $c['input'],
                 $c['output'],

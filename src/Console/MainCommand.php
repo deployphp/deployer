@@ -114,7 +114,7 @@ class MainCommand extends SelectCommand
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
 
-        $exitCode = $this->deployer->executor->run($tasks, $hosts, $plan);
+        $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);
 
         if ($plan) {
             $plan->render();
@@ -132,7 +132,7 @@ class MainCommand extends SelectCommand
         if ($this->deployer['fail']->has($this->getName())) {
             $taskName = $this->deployer['fail']->get($this->getName());
             $tasks = $this->deployer->scriptManager->getTasks($taskName);
-            $this->deployer->executor->run($tasks, $hosts);
+            $this->deployer->master->run($tasks, $hosts);
         }
 
         return $exitCode;

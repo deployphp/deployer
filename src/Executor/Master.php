@@ -9,7 +9,6 @@ namespace Deployer\Executor;
 
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
-use Deployer\Console\WorkerCommand;
 use Deployer\Deployer;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -48,37 +47,6 @@ class Master
         $this->messenger = $messenger;
         $this->client = $client;
         $this->config = $config;
-    }
-
-    /**
-     * @param Host[] $hosts
-     */
-    private function connect(array $hosts)
-    {
-        $callback = function (string $output) {
-            $output = preg_replace('/\n$/', '', $output);
-            if (strlen($output) !== 0) {
-                $this->output->writeln($output);
-            }
-        };
-
-        // Connect to each host sequentially, to prevent getting locked.
-        foreach ($hosts as $host) {
-            if ($host instanceof Localhost) {
-                continue;
-            }
-            $process = $this->getProcess($host, new Task('connect'));
-            $process->start();
-
-            while ($process->isRunning()) {
-                $this->gatherOutput([$process], $callback);
-                $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
-                usleep(1000);
-            }
-        }
-
-        // Clear spinner.
-        $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
     }
 
     /**
@@ -165,6 +133,37 @@ class Master
     }
 
     /**
+     * @param Host[] $hosts
+     */
+    private function connect(array $hosts)
+    {
+        $callback = function (string $output) {
+            $output = preg_replace('/\n$/', '', $output);
+            if (strlen($output) !== 0) {
+                $this->output->writeln($output);
+            }
+        };
+
+        // Connect to each host sequentially, to prevent getting locked.
+        foreach ($hosts as $host) {
+            if ($host instanceof Localhost) {
+                continue;
+            }
+            $process = $this->getProcess($host, new Task('connect'));
+            $process->start();
+
+            while ($process->isRunning()) {
+                $this->gatherOutput([$process], $callback);
+                $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
+                usleep(1000);
+            }
+        }
+
+        // Clear spinner.
+        $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
+    }
+
+    /**
      * @param Task $task
      * @param Host[] $hosts
      * @return int
@@ -199,7 +198,9 @@ class Master
             }
         };
 
-        $this->startProcesses($processes);
+        foreach ($processes as $process) {
+            $process->start();
+        }
 
         while ($this->areRunning($processes)) {
             $this->gatherOutput($processes, $callback);
@@ -207,11 +208,8 @@ class Master
             usleep(1000);
         }
 
-        // Clear spinner.
-        $this->output->write("    \r");
-
+        $this->output->write("    \r"); // clear spinner
         $this->gatherOutput($processes, $callback);
-
         return $this->cumulativeExitCode($processes);
     }
 
@@ -231,16 +229,7 @@ class Master
 
     /**
      * @param Process[] $processes
-     */
-    protected function startProcesses(array $processes)
-    {
-        foreach ($processes as $process) {
-            $process->start();
-        }
-    }
-
-    /**
-     * @param Process[] $processes
+     * @return bool
      */
     protected function areRunning(array $processes): bool
     {
@@ -249,12 +238,12 @@ class Master
                 return true;
             }
         }
-
         return false;
     }
 
     /**
      * @param Process[] $processes
+     * @param callable $callback
      */
     protected function gatherOutput(array $processes, callable $callback)
     {
@@ -272,7 +261,6 @@ class Master
     }
 
     /**
-     * Gather the cumulative exit code for the processes.
      * @param Process[] $processes
      * @return int
      */
@@ -283,7 +271,6 @@ class Master
                 return $process->getExitCode();
             }
         }
-
         return 0;
     }
 }

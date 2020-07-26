@@ -47,7 +47,7 @@ class DeployTest extends AbstractTest
     public function testWorker()
     {
         // Allow to start workers. Don't forget to disable it later.
-        putenv('DEPLOYER_LOCAL_WORKER=FALSE');
+        putenv('DEPLOYER_LOCAL_WORKER=false');
 
         $recipe = __DIR__ . '/deploy.php';
         $this->init($recipe);

@@ -14,9 +14,11 @@ use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
 use Deployer\Task\Task;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use React;
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
@@ -33,6 +35,11 @@ class Master
     private $messenger;
     private $client;
     private $config;
+    private $port;
+    /**
+     * @var React\EventLoop\LoopInterface
+     */
+    private $loop;
 
     public function __construct(
         InputInterface $input,
@@ -191,26 +198,49 @@ class Master
             $processes[] = $this->getProcess($host, $task);
         }
 
-        $callback = function (string $output) use (&$showSpinner) {
+        foreach ($processes as $process) {
+            $process->start();
+        }
+
+        $this->createServer();
+
+        $callback = function (string $output) {
             $output = preg_replace('/\n$/', '', $output);
             if (strlen($output) !== 0) {
                 $this->output->writeln($output);
             }
         };
 
-        foreach ($processes as $process) {
-            $process->start();
-        }
-
-        while ($this->areRunning($processes)) {
+        $this->loop->addPeriodicTimer(0.03, function () use ($processes, $callback) {
             $this->gatherOutput($processes, $callback);
             $this->output->write(spinner());
-            usleep(1000);
-        }
+            if (!$this->areRunning($processes)) {
+                $this->loop->stop();
+            }
+        });
 
+        $this->loop->run();
         $this->output->write("    \r"); // clear spinner
         $this->gatherOutput($processes, $callback);
         return $this->cumulativeExitCode($processes);
+    }
+
+    protected function createServer()
+    {
+        $this->loop = React\EventLoop\Factory::create();
+        $server = new React\Http\Server($this->loop, function (ServerRequestInterface $request) {
+            return new React\Http\Message\Response(
+                200,
+                array(
+                    'Content-Type' => 'text/plain'
+                ),
+                "Hello World!\n"
+            );
+        });
+        $socket = new React\Socket\Server(0, $this->loop);
+        $server->listen($socket);
+        $address = $socket->getAddress();
+        $this->port = parse_url($address, PHP_URL_PORT);
     }
 
     protected function getProcess(Host $host, Task $task): Process

@@ -162,7 +162,7 @@ task('deploy:publish', [
  * Success message
  */
 task('deploy:success', function () {
-    info(currentHost()->getTag() . ' successfully deployed!');
+    info('successfully deployed!');
 })
     ->shallow()
     ->hidden();

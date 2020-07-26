@@ -30,6 +30,6 @@ class WorkerTest extends AbstractTest
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertStringContainsString('info prod successfully deployed!', $display);
+        self::assertStringContainsString('info successfully deployed!', $display);
     }
 }

@@ -504,7 +504,7 @@ function writeln($message, $options = 0)
  */
 function write($message, $options = 0)
 {
-    output()->write(parse($message), $options);
+    output()->write(parse($message), false, $options);
 }
 
 /**

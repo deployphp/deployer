@@ -8,16 +8,22 @@ set('shared_files', [
     '.psh.yaml.override'
 ]);
 set('shared_dirs', [
+    'custom/plugins',
     'config/jwt',
-    'config/secrets',
+    'files',
+    'var/log',
+    'public/media',
+    'public/thumbnail',
+    'public/sitemap',
+]);
+set('writable_dirs', [
+    'custom/plugins',
+    'config/jwt',
+    'files',
+    'var',
     'public/media',
     'public/thumbnail',
     'public/sitemap'
-]);
-set('writable_dirs', [
-    'var',
-    'public/media',
-    'public/thumbnail'
 ]);
 set('static_folders', []);
 
@@ -49,7 +55,8 @@ task('sw:cache:warmup', function(){
     run('cd {{release_path}} && bin/console cache:warmup');
     run('cd {{release_path}} && bin/console http:cache:warm:up');
 });
-task('sw:assets:install', function(){
+task(
+    function(){
     run('cd {{release_path}} && bin/console assets:install');
 });
 task('sw:database:migrate', function(){
@@ -63,6 +70,7 @@ task('sw:deploy',[
     'composer:install',
     'sw:administration:build',
     'sw:storefront:build',
+    'sw:assets:install',
     'sw:database:migrate',
     'sw:theme:compile',
     'sw:cache:clear'

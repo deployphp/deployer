@@ -15,9 +15,9 @@ set('shared_dirs', [
     'public/sitemap'
 ]);
 set('writable_dirs', [
-//    'var',
-//    'public/media',
-//    'public/thumbnail'
+    'var',
+    'public/media',
+    'public/thumbnail'
 ]);
 set('static_folders', []);
 

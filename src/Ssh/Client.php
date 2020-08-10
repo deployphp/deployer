@@ -83,10 +83,12 @@ class Client
 
         $shellCommand = $host->getShellCommand();
 
+        $exitCodeToken = $host->getConfig()->get('ssh/exit_code_token', '$?');
+
         if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $ssh = "ssh $sshArguments $host $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
+            $ssh = "ssh $sshArguments $host $become \"$shellCommand; printf '[exit_code:%s]' $exitCodeToken;\"";
         } else {
-            $ssh = "ssh $sshArguments $host $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
+            $ssh = "ssh $sshArguments $host $become '$shellCommand; printf \"[exit_code:%s]\" $exitCodeToken;'";
         }
 
         $process = $this->createProcess($ssh);

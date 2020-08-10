@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.8.0...master](https://github.com/deployphp/deployer/compare/v6.8.0...master)
+
+### Added
+- Possibility to set exit code getter
+
+
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
 

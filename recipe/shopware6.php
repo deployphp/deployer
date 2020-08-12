@@ -55,8 +55,7 @@ task('sw:cache:warmup', function(){
     run('cd {{release_path}} && bin/console cache:warmup');
     run('cd {{release_path}} && bin/console http:cache:warm:up');
 });
-task(
-    function(){
+task('sw:assets:install', function(){
     run('cd {{release_path}} && bin/console assets:install');
 });
 task('sw:database:migrate', function(){

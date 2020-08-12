@@ -70,8 +70,8 @@ task('sw:deploy',[
     'composer:install',
     'sw:administration:build',
     'sw:storefront:build',
-    'sw:assets:install',
     'sw:database:migrate',
+    'sw:assets:install',
     'sw:theme:compile',
     'sw:cache:clear'
 ]);

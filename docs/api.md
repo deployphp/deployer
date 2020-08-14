@@ -1,30 +1,30 @@
 # API Reference
 
-### host
+## host
 
 * `host(string ...$hostname): Host`
 
 Define a host or group of hosts. Read more at [hosts](hosts.md).
 
-### localhost
+## localhost
 
 * `localhost(string ...$alias = 'localhost'): Host`
 
 Define a localhost.
 
-### inventory
+## inventory
 
 * `inventory(string $file): Host[]`
 
 Load a list of hosts from a file.
 
-### desc
+## desc
 
 * `desc(string $description)`
 
 Set a task description.
 
-### task
+## task
 
 * `task(string $name, string $script)`
 * `task(string $name, callable $callable)`
@@ -32,37 +32,37 @@ Set a task description.
 
 Define a task or get a task. More at [tasks](tasks.md).
 
-### before
+## before
 
 * `before(string $when, string $that)`
 
 Call before `$when` task, `$that` task.
 
-### after
+## after
 
 * `after(string $when, string $that)`
 
 Call after `$when` task, `$that` task.
 
-### fail
+## fail
 
 * `fail(string $what, string $that)`
 
 If task `$what` fails, run `$that` task.
 
-### argument
+## argument
 
 * `argument($name, $mode = null, $description = '', $default = null)`
 
 Add user's cli arguments.
 
-### option
+## option
 
 * `option($name, $shortcut=null, $mode=null, $description='', $default=null)`
 
 Add user's cli options.
 
-### cd
+## cd
 
 * `cd(string $path)`
 
@@ -74,7 +74,7 @@ cd('{{release_path}}');
 run('npm run build');
 ~~~
 
-### within
+## within
 
 * `within(string $path, callable $callback)`
 
@@ -86,7 +86,7 @@ within('{{release_path}}', function () {
 });
 ~~~
 
-### workingPath
+## workingPath
 
 * `workingPath(): string`
 
@@ -97,7 +97,7 @@ cd('{{release_path}}');
 workingPath() == '/var/www/app/releases/1';
 ~~~
 
-### run
+## run
 
 * `run(string $command, $options = []): string`
 
@@ -120,7 +120,7 @@ $path = run('readlink {{deploy_path}}/current');
 run("echo $path");
 ~~~
 
-### runLocally
+## runLocally
 
 * `runLocally($command, $options = []): string`
 
@@ -129,7 +129,7 @@ Run a command on localhost. Available options:
 * `timeout` — The timeout in seconds (default: 300 sec)
 * `tty` — The TTY mode (default: false)
 
-### test
+## test
 
 * `test(string $command): bool`
 
@@ -141,13 +141,13 @@ if (test('[ -d {{release_path}} ]')) {
 }
 ~~~
 
-### testLocally
+## testLocally
 
 * `testLocally(string $command): bool`
 
 Run a test command locally.
 
-### on
+## on
 
 * `on(Host $host, callable $callback)`
 * `on(Host[] $host, callable $callback)`
@@ -172,13 +172,13 @@ on(Deployer::get()->hosts, function ($host) {
 });
 ~~~
 
-### roles
+## roles
 
 * `roles(string ...$role): Host[]`
 
 Return a list of hosts by roles.
 
-### invoke
+## invoke
 
 * `invoke(string $task)`
 
@@ -194,7 +194,7 @@ task('deploy', function () {
 
 > **Note** this is experimental functionality.
 
-### upload
+## upload
 
 * `upload(string $source, string $destination, $config = [])`
 
@@ -215,7 +215,7 @@ Available options:
 * `timeout` — The timeout in seconds (default: null)
 * `options` — `rsync` options.
 
-### download
+## download
 
 * `download(string $source, string $destination, $config = [])`
 
@@ -226,16 +226,16 @@ Available options:
 * `timeout` — The timeout in seconds (default: null)
 * `options` — `rsync` options.
 
-### write
+## write
 
 Write a message in the output.
 You can format the message with the tags `<info>...</info>`, `<comment></comment>` or `<error></error>` (see [Symfony Console](http://symfony.com/doc/current/console/coloring.html)).
 
-### writeln
+## writeln
 
 Same as the `write` function, but also writes a new line.
 
-### set
+## set
 
 * `set(string $name, string|int|bool|array $value)`
 * `set(string $name, callable $value)`
@@ -244,7 +244,7 @@ Setup a global configuration parameter. If callable is passed as `$value` it wil
 
 More at [configuration](configuration.md).
 
-### add
+## add
 
 * `add(string $name, array $values)`
 
@@ -252,7 +252,7 @@ Add values to already existing config.
 
 More at [configuration](configuration.md).
 
-### get
+## get
 
 * `get(string $name, $default = null): string|int|bool|array`
 
@@ -260,7 +260,7 @@ Get a configuration value.
 
 More at [configuration](configuration.md).
 
-### has
+## has
 
 * `has(string $name): bool`
 
@@ -268,13 +268,13 @@ Check if a config option exists.
 
 More at [configuration](configuration.md).
 
-### ask
+## ask
 
 * `ask(string $message, $default = null, $suggestedChoices = null)`
 
 Ask the user for input.
 
-### askChoice
+## askChoice
 
 * `askChoice(string $message, array $availableChoices, $default = null, $multiselect = false)`
 
@@ -282,55 +282,55 @@ Ask the user to select from multiple key/value options and return an array.
 Multiselect enables selection of multiple comma separated choices.
 The default value will be used in quiet mode, otherwise the first available choice will be accepted.
 
-### askConfirmation
+## askConfirmation
 
 * `askConfirmation(string $message, bool $default = false)`
 
 Ask the user a yes or no question.
 
-### askHiddenResponse
+## askHiddenResponse
 
 * `askHiddenResponse(string $message)`
 
 Ask the user for a password.
 
-### input
+## input
 
 * `input(): Input`
 
 Get the current console input.
 
-### output
+## output
 
 * `output(): Output`
 
 Get the current console output.
 
-### isQuiet
+## isQuiet
 
 * `isQuiet(): bool`
 
 Check if th `dep` command was started with the `-q` option.
 
-### isVerbose
+## isVerbose
 
 * `isVerbose(): bool`
 
 Check if the `dep` command was started with the `-v` option.
 
-### isVeryVerbose
+## isVeryVerbose
 
 * `isVeryVerbose(): bool`
 
 Check if th `dep` command was started with the `-vv` option.
 
-### isDebug
+## isDebug
 
 * `isDebug(): bool`
 
 Check if the `dep` command was started with the `-vvv` option.
 
-### commandExist
+## commandExist
 
 * `commandExist(string $command): bool`
 
@@ -342,7 +342,7 @@ if (commandExist('composer')) {
 }
 ~~~
 
-### parse
+## parse
 
 * `parse(string $line): string`
 

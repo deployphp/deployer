@@ -330,7 +330,6 @@ Check if th `dep` command was started with the `-vv` option.
 
 Check if the `dep` command was started with the `-vvv` option.
 
-
 ### commandExist
 
 * `commandExist(string $command): bool`

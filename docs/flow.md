@@ -55,7 +55,7 @@ Also, if in the `deploy_path` there was a previous release symlink, it will be d
 
 ### deploy:update_code
 
-Downloads a new version of code using Git. If you are using Git version 2.0 and `git_cache` config is turned on, this task will use files from the previous release, so only changed files will be downloaded.
+Downloads a new version of code using Git. If you are using Git version 2.3 and `git_cache` config isn't turned off, this task will use files from the previous release (using `reference` option for `git clone`), so only changed files will be downloaded.
 
 Override this task in `deploy.php` to create your own code transfer strategy:
 

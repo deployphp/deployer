@@ -8,6 +8,7 @@
 - Added a Slack notification task on rollback.
 - Recipe for crontab tasks.
 - ISPManager recipe and docs.
+- Symfony 5 recipe.
 
 ### Fixed
 - Normalize CRLF to LF new line endings. [#2111]

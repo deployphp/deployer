@@ -3,9 +3,12 @@ namespace Deployer;
 
 set('repository', 'git@github.com:shopware/production.git');
 
+set('release_name', function () {
+    return date('YmdHis');
+});
+
 set('shared_files', [
-    '.env',
-    '.psh.yaml.override'
+    '.env'
 ]);
 set('shared_dirs', [
     'custom/plugins',
@@ -30,17 +33,11 @@ set('static_folders', []);
 task('sw:update_code', function(){
     run('git clone {{repository}} {{release_path}}');
 });
-
 task('sw:system:install', function(){
     run('cd {{release_path}} && bin/console system:install');
 });
-task('sw:storefront:build', function(){
-    run('cd {{release_path}} && ./psh.phar storefront:install-dependencies');
-    run('cd {{release_path}} && ./psh.phar storefront:build');
-});
-task('sw:administration:build', function(){
-    run('cd {{release_path}} && ./psh.phar administration:install-dependencies');
-    run('cd {{release_path}} && ./psh.phar administration:build');
+task('sw:build', function(){
+    run('cd {{release_path}}/bin && sh build.sh');
 });
 task('sw:system:setup', function(){
     run('cd {{release_path}} && bin/console system:setup');
@@ -55,26 +52,20 @@ task('sw:cache:warmup', function(){
     run('cd {{release_path}} && bin/console cache:warmup');
     run('cd {{release_path}} && bin/console http:cache:warm:up');
 });
-task(
-    function(){
-    run('cd {{release_path}} && bin/console assets:install');
-});
 task('sw:database:migrate', function(){
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
-task('composer:install', function() {
-   run ('cd {{release_path}} && composer install --no-dev');
-});
 
+/**
+ * Grouped SW deploy tasks
+ */
 task('sw:deploy',[
-    'composer:install',
-    'sw:administration:build',
-    'sw:storefront:build',
-    'sw:assets:install',
+    'sw:build',
     'sw:database:migrate',
     'sw:theme:compile',
     'sw:cache:clear'
 ]);
+
 /**
  * Main task
  */

@@ -38,7 +38,7 @@ task('sw:system:install', static function () {
     run('cd {{release_path}} && bin/console system:install');
 });
 task('sw:build', static function () {
-    run('cd {{release_path}}/bin && sh build.sh');
+    run('cd {{release_path}}/bin && bash build.sh');
 });
 task('sw:system:setup', static function () {
     run('cd {{release_path}} && bin/console system:setup');

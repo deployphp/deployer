@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2e67c28a78b6dee35dc11cbad0193e1f",
+    "content-hash": "c9638d21944c99f7015768873739a38b",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -1881,6 +1881,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2019-09-17T06:23:10+00:00"
         },
         {

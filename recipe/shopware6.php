@@ -1,14 +1,15 @@
 <?php
+
 namespace Deployer;
 
 set('repository', 'git@github.com:shopware/production.git');
 
-set('release_name', function () {
+set('release_name', static function () {
     return date('YmdHis');
 });
 
 set('shared_files', [
-    '.env'
+    '.env',
 ]);
 set('shared_dirs', [
     'custom/plugins',
@@ -26,44 +27,44 @@ set('writable_dirs', [
     'var',
     'public/media',
     'public/thumbnail',
-    'public/sitemap'
+    'public/sitemap',
 ]);
 set('static_folders', []);
 
-task('sw:update_code', function(){
+task('sw:update_code', static function () {
     run('git clone {{repository}} {{release_path}}');
 });
-task('sw:system:install', function(){
+task('sw:system:install', static function () {
     run('cd {{release_path}} && bin/console system:install');
 });
-task('sw:build', function(){
+task('sw:build', static function () {
     run('cd {{release_path}}/bin && sh build.sh');
 });
-task('sw:system:setup', function(){
+task('sw:system:setup', static function () {
     run('cd {{release_path}} && bin/console system:setup');
 });
-task('sw:theme:compile', function(){
+task('sw:theme:compile', static function () {
     run('cd {{release_path}} && bin/console theme:compile');
 });
-task('sw:cache:clear', function(){
+task('sw:cache:clear', static function () {
     run('cd {{release_path}} && bin/console cache:clear');
 });
-task('sw:cache:warmup', function(){
+task('sw:cache:warmup', static function () {
     run('cd {{release_path}} && bin/console cache:warmup');
     run('cd {{release_path}} && bin/console http:cache:warm:up');
 });
-task('sw:database:migrate', function(){
+task('sw:database:migrate', static function () {
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
 
 /**
  * Grouped SW deploy tasks
  */
-task('sw:deploy',[
+task('sw:deploy', [
     'sw:build',
     'sw:database:migrate',
     'sw:theme:compile',
-    'sw:cache:clear'
+    'sw:cache:clear',
 ]);
 
 /**
@@ -82,7 +83,7 @@ task('deploy', [
     'deploy:unlock',
     'sw:cache:warmup',
     'cleanup',
-    'success'
+    'success',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

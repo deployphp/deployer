@@ -12,19 +12,19 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 
 ## Contributing
 
-Read the [contributing](https://github.com/deployphp/deployer/blob/master/.github/CONTRIBUTING.md) guide, join the [discussions](https://deployer.org/discuss), take a look on open [issues](https://github.com/deployphp/deployer/issues)
+Do you want to contribute to this project? Start working on one of those issues:
 
-[![good+for+beginner](https://img.shields.io/badge/feature-good%20for%20beginner-1d76db.svg)](https://github.com/deployphp/deployer/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+for+beginner%22)
-[![advanced+level](https://img.shields.io/badge/feature-advanced%20level-5319e7.svg)](https://github.com/deployphp/deployer/issues?q=is%3Aissue+is%3Aopen+label%3A%22advanced+level%22)
+- [ ] [Implement host selector](https://github.com/deployphp/deployer/issues/2154) – you need to write a simple parser and selector class, this will be a core of new Deployer.
+- [ ] [Implement docs generator](https://github.com/deployphp/deployer/issues/2155) – a cli command for generating documentation for recipes, website will be built on this feature later.
 
-<a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
-
-## Maintainers
+## Maintainer
 * Anton Medvedev [@antonmedv](https://github.com/antonmedv)
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 
 ## Sponsorship
+
+<a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
 
 Development of the **Deployer** generously supported by contributions from individuals and corporations. If you are benefiting from **Deployer** and would like to help keep the project financially sustainable, please visit Anton Medvedev's [Patreon page](https://www.patreon.com/deployer) or contact him [via email](mailto:anton@medv.io)
 

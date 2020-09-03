@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.5...master](https://github.com/deployphp/deployer/compare/v6.4.5...master)
+
+### Added
+- Command for checking if a deploy is unlocked [#2150]
+
+
 ## v6.4.5
 [v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)
 
@@ -479,6 +486,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#2150]: https://github.com/deployphp/deployer/issues/2150
 [#1876]: https://github.com/deployphp/deployer/pull/1876
 [#1842]: https://github.com/deployphp/deployer/pull/1842
 [#1822]: https://github.com/deployphp/deployer/issues/1822

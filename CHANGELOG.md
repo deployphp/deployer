@@ -9,6 +9,7 @@
 - Recipe for crontab tasks.
 - ISPManager recipe and docs.
 - Symfony 5 recipe.
+- Command for checking if a deploy is unlocked. [#2150] [#2150]
 
 ### Fixed
 - Normalize CRLF to LF new line endings. [#2111]
@@ -581,6 +582,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2150]: https://github.com/deployphp/deployer/issues/2150
 [#2111]: https://github.com/deployphp/deployer/pull/2111
 [#2052]: https://github.com/deployphp/deployer/issues/2052
 [#2043]: https://github.com/deployphp/deployer/pull/2043

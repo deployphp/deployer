@@ -186,4 +186,48 @@ class DeployTest extends AbstractTest
         self::assertStringContainsString('[prod] /new/deploy/path', $display);
         self::assertStringContainsString('[beta] /new/deploy/path', $display);
     }
+
+    public function testIsUnlockedExitsWithOneWhenDeployIsLocked()
+    {
+        $recipe = __DIR__ . '/deploy.php';
+
+        $this->init($recipe);
+
+        $this->tester->run(['deploy:lock', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+            'verbosity' => Output::VERBOSITY_VERBOSE,
+            'interactive' => false,
+        ]);
+
+        $this->tester->run(['deploy:is-unlocked', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+            'verbosity' => Output::VERBOSITY_VERBOSE,
+            'interactive' => false,
+        ]);
+
+        $display = $this->tester->getDisplay();
+
+        self::assertStringContainsString('Deploy is currently locked.', $display);
+        self::assertSame(1, $this->tester->getStatusCode());
+    }
+
+    public function testIsUnlockedExitsWithZeroWhenDeployIsNotLocked()
+    {
+        $recipe = __DIR__ . '/deploy.php';
+
+        $this->init($recipe);
+
+        $this->tester->run(['deploy:unlock', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+            'verbosity' => Output::VERBOSITY_VERBOSE,
+            'interactive' => false,
+        ]);
+
+        $this->tester->run(['deploy:is-unlocked', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+            'verbosity' => Output::VERBOSITY_VERBOSE,
+            'interactive' => false,
+        ]);
+
+        $display = $this->tester->getDisplay();
+
+        self::assertStringContainsString('Deploy is currently unlocked.', $display);
+        self::assertSame(0, $this->tester->getStatusCode());
+    }
 }

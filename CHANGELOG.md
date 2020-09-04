@@ -16,7 +16,7 @@
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
 - When symfony_env is set to dev, require-dev are not installed. [#2035]
 - Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
-
+- composer install now respects {{bin/php}} config
 
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)

@@ -56,7 +56,7 @@ task('sw:cache:warmup', static function () {
 task('sw:database:migrate', static function () {
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
-task('sw:plugins:installActivateUpgrade', function () {
+task('sw:plugins:installActivateUpgrade', static function () {
     $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
 
 // take line over headlines and count "-" to get the size of the cells

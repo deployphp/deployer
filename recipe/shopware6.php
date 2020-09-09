@@ -56,11 +56,50 @@ task('sw:cache:warmup', static function () {
 task('sw:database:migrate', static function () {
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
+task('sw:plugins:installActivateUpgrade', static function () {
+    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
+
+// take line over headlines and count "-" to get the size of the cells
+    $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
+
+// ignore first seven lines (headline, title, table, ...)
+    $plugins = array_slice($plugins, 7, -3);
+    foreach ($plugins as $plugin) {
+// PayonePayment   PAYONE Payment   2.0.0                       PAYONE GmbH, Kellerkinder Pluginwerk GmbH   No          No       No
+
+        $pluginParts = [];
+        foreach ($lengths as $length) {
+            $pluginParts[] = trim(substr($plugin, 0, $length));
+            $plugin = substr($plugin, $length + 1);
+        }
+
+        [
+            $plugin,
+            $label,
+            $version,
+            $upgrade,
+            $version,
+            $author,
+            $installed,
+            $active,
+            $upgradeable,
+        ] = $pluginParts;
+
+        if ($installed === 'No' || $active === 'No') {
+            run("cd {{release_path}} && bin/console plugin:install --activate $plugin");
+        }
+
+        if ($upgradeable === 'Yes') {
+            run("cd {{release_path}} && bin/console plugin:update -c $plugin");
+        }
+    }
+});
 
 /**
  * Grouped SW deploy tasks
  */
 task('sw:deploy', [
+//    'sw:plugins:installActivateUpgrade',
     'sw:build',
     'sw:database:migrate',
     'sw:theme:compile',

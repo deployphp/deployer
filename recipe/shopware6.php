@@ -120,7 +120,7 @@ task('sw:plugin:migrate:all', static function(){
         ] = $pluginParts;
 
         if ($installed === 'Yes' || $active === 'Yes') {
-            run("cd {{release_path}} && bin/console database:migrate --all $plugin");
+            run("cd {{release_path}} && bin/console database:migrate --all $plugin || true");
         }
     }
 });

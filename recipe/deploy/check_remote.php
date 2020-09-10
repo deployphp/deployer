@@ -3,6 +3,7 @@ namespace Deployer;
 
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
+use Deployer\Task\Context;
 
 // Cancel deployment if there would be no change to the codebase.
 // This avoids unnecessary releases if the latest commit has already been deployed.
@@ -53,6 +54,11 @@ task('deploy:check_remote', function () {
     $targetRevision = trim($targetRevision);
     $lastDeployedRevision = trim(run(sprintf('cd {{deploy_path}}/current && %s rev-parse HEAD', get('bin/git'))));
     if ($targetRevision && strpos($lastDeployedRevision, $targetRevision) === 0) {
-        throw new GracefulShutdownException("Already up-to-date.");
+        $targetHost = Context::get()->getHost();
+
+        $hostname = $targetHost->getHostname();
+        $realHostname = $targetHost->getRealHostname();
+
+        throw new GracefulShutdownException("$hostname ($realHostname) is already up-to-date.");
     }
 });

@@ -11,6 +11,9 @@
 - Symfony 5 recipe.
 - Command for checking if a deploy is unlocked. [#2150] [#2150]
 
+### Changed
+- Make deploy:check_remote command less vague in its output. [#2160]
+
 ### Fixed
 - Normalize CRLF to LF new line endings. [#2111]
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
@@ -586,6 +589,7 @@
 
 [#2170]: https://github.com/deployphp/deployer/issues/2170
 [#2165]: https://github.com/deployphp/deployer/issues/2165
+[#2160]: https://github.com/deployphp/deployer/issues/2160
 [#2150]: https://github.com/deployphp/deployer/issues/2150
 [#2111]: https://github.com/deployphp/deployer/pull/2111
 [#2052]: https://github.com/deployphp/deployer/issues/2052

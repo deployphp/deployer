@@ -56,17 +56,19 @@ task('sw:cache:warmup', static function () {
 task('sw:database:migrate', static function () {
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
-task('sw:plugins:installActivateUpgrade', static function () {
+task('sw:plugin:refresh', function (){
+    run('cd {{release_path}} && bin/console plugin:refresh');
+});
+task('sw:plugin:activate:all', static function () {
+    task('sw:plugin:refresh');
     $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
 
-// take line over headlines and count "-" to get the size of the cells
+    // take line over headlines and count "-" to get the size of the cells
     $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
 
-// ignore first seven lines (headline, title, table, ...)
+    // ignore first seven lines (headline, title, table, ...)
     $plugins = array_slice($plugins, 7, -3);
     foreach ($plugins as $plugin) {
-// PayonePayment   PAYONE Payment   2.0.0                       PAYONE GmbH, Kellerkinder Pluginwerk GmbH   No          No       No
-
         $pluginParts = [];
         foreach ($lengths as $length) {
             $pluginParts[] = trim(substr($plugin, 0, $length));
@@ -88,9 +90,37 @@ task('sw:plugins:installActivateUpgrade', static function () {
         if ($installed === 'No' || $active === 'No') {
             run("cd {{release_path}} && bin/console plugin:install --activate $plugin");
         }
+    }
+});
+task('sw:plugin:migrate:all', static function(){
+    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
 
-        if ($upgradeable === 'Yes') {
-            run("cd {{release_path}} && bin/console plugin:update -c $plugin");
+    // take line over headlines and count "-" to get the size of the cells
+    $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
+
+    // ignore first seven lines (headline, title, table, ...)
+    $plugins = array_slice($plugins, 7, -3);
+    foreach ($plugins as $plugin) {
+        $pluginParts = [];
+        foreach ($lengths as $length) {
+            $pluginParts[] = trim(substr($plugin, 0, $length));
+            $plugin = substr($plugin, $length + 1);
+        }
+
+        [
+            $plugin,
+            $label,
+            $version,
+            $upgrade,
+            $version,
+            $author,
+            $installed,
+            $active,
+            $upgradeable,
+        ] = $pluginParts;
+
+        if ($installed === 'Yes' || $active === 'Yes') {
+            run("cd {{release_path}} && bin/console database:migrate --all $plugin || true");
         }
     }
 });
@@ -99,9 +129,10 @@ task('sw:plugins:installActivateUpgrade', static function () {
  * Grouped SW deploy tasks
  */
 task('sw:deploy', [
-//    'sw:plugins:installActivateUpgrade',
     'sw:build',
+    'sw:plugin:activate:all',
     'sw:database:migrate',
+    'sw:plugin:migrate:all',
     'sw:theme:compile',
     'sw:cache:clear',
 ]);

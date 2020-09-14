@@ -185,6 +185,7 @@ domain.com:
     UserKnownHostsFile: /dev/null
     StrictHostKeyChecking: no
   stage: production
+  branch: master
   roles:
     - app
     - db

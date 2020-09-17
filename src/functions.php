@@ -26,6 +26,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\array_to_string;
 use function Deployer\Support\str_contains;
 
@@ -297,7 +298,7 @@ function run($command, $options = [])
             $command = "cd $workingPath && ($command)";
         }
 
-        $env = get('env', []) + ($options['env'] ?? []);
+        $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
         if (!empty($env)) {
             $env = array_to_string($env);
             $command = "export $env; $command";
@@ -347,7 +348,7 @@ function runLocally($command, $options = [])
     $process = Deployer::get()->processRunner;
     $command = parse($command);
 
-    $env = get('env', []) + ($options['env'] ?? []);
+    $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
     if (!empty($env)) {
         $env = array_to_string($env);
         $command = "export $env; $command";

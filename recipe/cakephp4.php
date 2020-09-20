@@ -13,7 +13,7 @@ set('shared_dirs', [
     'tmp',
 ]);
 
-// CakePHP 3 Project Template shared files
+// CakePHP 4 Project Template shared files
 set('shared_files', [
     'config/.env',
     'config/app.php',

@@ -88,7 +88,7 @@ desc('Enable maintenance mode');
 task('artisan:down', artisan('down', ['runInCurrent', 'showOutput']));
 
 desc('Execute artisan migrate');
-task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']));
+task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']))->once();
 
 desc('Execute artisan migrate:fresh');
 task('artisan:migrate:fresh', artisan('migrate:fresh --force'));

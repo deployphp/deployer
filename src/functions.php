@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Closure;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
@@ -339,24 +340,43 @@ function run($command, $options = [])
 /**
  * Execute commands on local machine
  *
- * @param string $command Command to run locally.
+ * @param string|Closure $command Command to run locally, or a closure that will be executed in local machine context
  * @param array $options
  * @return string Output of command.
  */
 function runLocally($command, $options = [])
 {
-    $process = Deployer::get()->processRunner;
-    $command = parse($command);
+    if ($command instanceof Closure) {
+        $input = Context::has() ? input() : null;
+        $output = Context::has() ? output() : null;
 
-    $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
-    if (!empty($env)) {
-        $env = array_to_string($env);
-        $command = "export $env; $command";
+        $localhostContext = new Context(new Localhost(), $input, $output);
+        Context::push($localhostContext);
+        try {
+            $output = $command();
+            if (!is_string($output)) {
+                $output = '';
+            }
+        } finally {
+            Context::pop();
+        }
+
+        $output = rtrim($output);
+        return $output;
+    } else {
+        $command = parse($command);
+        $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
+
+        return runLocally(function () use ($command, $options, $env) {
+            if (!empty($env)) {
+                $env = array_to_string($env);
+                $command = "export $env; $command";
+            }
+
+            $output = run($command, $options);
+            return $output;
+        });
     }
-
-    $output = $process->run(new Localhost(), $command, $options);
-
-    return rtrim($output);
 }
 
 /**

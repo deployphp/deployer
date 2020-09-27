@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
+use function foo\func;
 
 class FunctionsTest extends TestCase
 {
@@ -38,6 +39,10 @@ class FunctionsTest extends TestCase
             ->expects($this->any())
             ->method('getConfig')
             ->willReturn(new Configuration());
+
+        $host->expects($this->any())
+            ->method('getHostname')
+            ->willReturn('test');
 
         $this->deployer = new Deployer($console);
         $this->deployer['input'] = $input;
@@ -133,6 +138,63 @@ class FunctionsTest extends TestCase
         self::assertEquals('default', $output);
         $output = runLocally('echo $DEPLOYER_ENV_TMP', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
         self::assertEquals('overwritten', $output);
+    }
+
+    public function testRunLocallyUsingClosure()
+    {
+        $output = runLocally(function () {
+            return run('echo "hello"');
+        });
+
+        self::assertEquals('hello', $output);
+    }
+
+    public function testRunLocallyUsingClosureWithNoReturn()
+    {
+        $output = runLocally(function () {
+           run('echo "no-op"');
+        });
+
+        self::assertIsString($output);
+        self::assertEmpty($output);
+    }
+
+    public function testRunLocallyUsingClosureRestorePreviousContext()
+    {
+        $originalHost = Context::get()->getHost();
+
+        runLocally(function () {
+            run('echo "no-op"');
+        });
+
+        $actualHost = Context::get()->getHost();
+        Context::pop();
+
+        self::assertEquals($originalHost->getHostname(), $actualHost->getHostname());
+    }
+
+    public function testRonLocallyUsingClosureUsesLocalhostContext()
+    {
+        runLocally(function () {
+            TestCase::assertInstanceOf(Localhost::class, Context::get()->getHost());
+        });
+    }
+
+    public function testRunLocallyUsingClosureRestoreContextOnException()
+    {
+        $originalHost = Context::get()->getHost();
+
+        try {
+            runLocally(function () {
+                throw new \Exception('I am a test exception');
+            });
+        } catch (\Exception $e) {
+            // no-op
+        }
+
+        $actualHost = Context::get()->getHost();
+
+        self::assertEquals($originalHost->getHostname(), $actualHost->getHostname());
     }
 
     private function taskToNames($tasks)

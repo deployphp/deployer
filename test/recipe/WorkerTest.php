@@ -20,6 +20,7 @@ class WorkerTest extends AbstractTest
             'worker-task' => 'deploy:success',
             'worker-host' => 'prod',
             'config-directory' => sys_get_temp_dir(),
+            'master-port' => '1234',
             'original-task' => 'deploy',
             '-s' => 'all',
             '-f' => $recipe,

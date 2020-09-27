@@ -14,11 +14,9 @@ use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
 use Deployer\Task\Task;
-use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use React;
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
@@ -32,18 +30,15 @@ class Master
 {
     private $input;
     private $output;
+    private $server;
     private $messenger;
     private $client;
     private $config;
-    private $port;
-    /**
-     * @var React\EventLoop\LoopInterface
-     */
-    private $loop;
 
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
+        Server $server,
         Messenger $messenger,
         Client $client,
         Configuration $config
@@ -51,6 +46,7 @@ class Master
     {
         $this->input = $input;
         $this->output = $output;
+        $this->server = $server;
         $this->messenger = $messenger;
         $this->client = $client;
         $this->config = $config;
@@ -64,6 +60,7 @@ class Master
      */
     public function run(array $tasks, array $hosts, $plan = null): int
     {
+        $plan || $this->server->start();
         $plan || $this->connect($hosts);
 
         $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
@@ -156,7 +153,7 @@ class Master
             if ($host instanceof Localhost) {
                 continue;
             }
-            $process = $this->getProcess($host, new Task('connect'));
+            $process = $this->createProcess($host, new Task('connect'));
             $process->start();
 
             while ($process->isRunning()) {
@@ -195,14 +192,12 @@ class Master
 
         $processes = [];
         foreach ($hosts as $host) {
-            $processes[] = $this->getProcess($host, $task);
+            $processes[] = $this->createProcess($host, $task);
         }
 
         foreach ($processes as $process) {
             $process->start();
         }
-
-        $this->createServer();
 
         $callback = function (string $output) {
             $output = preg_replace('/\n$/', '', $output);
@@ -211,44 +206,27 @@ class Master
             }
         };
 
-        $this->loop->addPeriodicTimer(0.03, function () use ($processes, $callback) {
+        $this->server->addPeriodicTimer(0.03, function () use ($processes, $callback) {
             $this->gatherOutput($processes, $callback);
             $this->output->write(spinner());
             if (!$this->areRunning($processes)) {
-                $this->loop->stop();
+                $this->server->stop();
             }
         });
+        $this->server->run();
 
-        $this->loop->run();
         $this->output->write("    \r"); // clear spinner
         $this->gatherOutput($processes, $callback);
+
         return $this->cumulativeExitCode($processes);
     }
 
-    protected function createServer()
-    {
-        $this->loop = React\EventLoop\Factory::create();
-        $server = new React\Http\Server($this->loop, function (ServerRequestInterface $request) {
-            return new React\Http\Message\Response(
-                200,
-                array(
-                    'Content-Type' => 'text/plain'
-                ),
-                "Hello World!\n"
-            );
-        });
-        $socket = new React\Socket\Server(0, $this->loop);
-        $server->listen($socket);
-        $address = $socket->getAddress();
-        $this->port = parse_url($address, PHP_URL_PORT);
-    }
-
-    protected function getProcess(Host $host, Task $task): Process
+    protected function createProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $configDirectory = $host->get('config_directory');
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
-        $command = "$dep worker $task {$host->getAlias()} $configDirectory {$this->input} $decorated";
+        $command = "$dep worker $task {$host->getAlias()} $configDirectory {$this->server->getPort()} {$this->input} $decorated";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->getTag()}] $command");

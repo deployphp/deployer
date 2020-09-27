@@ -8,11 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Exception\Exception;
-use Deployer\Exception\GracefulShutdownException;
-use Deployer\Exception\RunException;
 use Deployer\Executor\Worker;
-use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -31,6 +27,7 @@ class WorkerCommand extends MainCommand
         $this->addArgument('worker-task', InputArgument::REQUIRED);
         $this->addArgument('worker-host', InputArgument::REQUIRED);
         $this->addArgument('config-directory', InputArgument::REQUIRED);
+        $this->addArgument('master-port', InputArgument::REQUIRED);
         $this->addArgument('original-task', InputArgument::REQUIRED);
         $this->addOption('decorated', null, Option::VALUE_NONE);
         parent::configure();
@@ -50,6 +47,7 @@ class WorkerCommand extends MainCommand
         $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
 
         $this->deployer->config->set('config_directory', $input->getArgument('config-directory'));
+        $this->deployer->config->set('master_url', 'http://localhost:' . $input->getArgument('master-port'));
         $host->getConfig()->load();
 
         foreach ($host->getConfig() as $name => $value) {

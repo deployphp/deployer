@@ -18,6 +18,7 @@ use Deployer\Support\Proxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
+use Deployer\Utility\Httpie;
 use Symfony\Component\Console\Exception\MissingInputException;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -325,7 +326,7 @@ function run($command, $options = [])
                 writeln("<fg=green;options=bold>run</> $command");
                 $password = askHiddenResponse('Password:');
             }
-            $run("echo -e '#!/bin/sh\necho \"%secret%\"' > $askpass", array_merge($options, ['secret' => $password]));
+            $run("echo -e '#!/bin/sh\necho \"%sudo_pass%\"' > $askpass", array_merge($options, ['sudo_pass' => $password]));
             $run("chmod a+x $askpass", $options);
             $run(sprintf('export SUDO_ASKPASS=%s; %s', $askpass, preg_replace('/^sudo\b/', 'sudo -A', $command)), $options);
             $run("rm $askpass", $options);
@@ -594,6 +595,10 @@ function ask($message, $default = null, $autocomplete = null)
         return $default;
     }
 
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+    }
+
     /** @var QuestionHelper $helper */
     $helper = Deployer::get()->getHelper('question');
 
@@ -605,14 +610,7 @@ function ask($message, $default = null, $autocomplete = null)
         $question->setAutocompleterValues($autocomplete);
     }
 
-    // Master process will stop spinner when this env variable is true.
-
-    try {
-        return $helper->ask(input(), output(), $question);
-    } catch (MissingInputException $exception) {
-        throw new Exception("Failed to read input from stdin.\nMake sure what you are asking for input not from parallel task.", $exception->getCode(), $exception);
-    } finally {
-    }
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
@@ -641,6 +639,10 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
         return [$default => $availableChoices[$default]];
     }
 
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+    }
+
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
@@ -665,6 +667,10 @@ function askConfirmation($message, $default = false)
         return $default;
     }
 
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+    }
+
     $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
@@ -680,12 +686,16 @@ function askConfirmation($message, $default = false)
  * @param string $message
  * @return string
  */
-function askHiddenResponse($message)
+function askHiddenResponse(string $message)
 {
     Context::required(__FUNCTION__);
 
     if (output()->isQuiet()) {
         return '';
+    }
+
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
     }
 
     $helper = Deployer::get()->getHelper('question');

@@ -24,11 +24,13 @@ use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
 use Deployer\Executor\Messenger;
 use Deployer\Executor\Master;
+use Deployer\Executor\Server;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
 use Deployer\Selector\Selector;
 use Deployer\Task;
+use Deployer\Utility\Httpie;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
@@ -95,6 +97,9 @@ class Deployer extends Container
         $this['inputDefinition'] = function () {
             return new InputDefinition();
         };
+        $this['questionHelper'] = function () {
+            return $this->getHelper('question');
+        };
 
         /******************************
          *           Config           *
@@ -145,10 +150,18 @@ class Deployer extends Container
         $this['messenger'] = function ($c) {
             return new Messenger($c['input'], $c['output']);
         };
+        $this['server'] = function ($c) {
+            return new Server(
+                $c['input'],
+                $c['output'],
+                $c['questionHelper'],
+            );
+        };
         $this['master'] = function ($c) {
             return new Master(
                 $c['input'],
                 $c['output'],
+                $c['server'],
                 $c['messenger'],
                 $c['sshClient'],
                 $c['config']
@@ -306,7 +319,7 @@ class Deployer extends Container
         }
     }
 
-    private static function printException(OutputInterface $output, Throwable $exception)
+    public static function printException(OutputInterface $output, Throwable $exception)
     {
         $class = get_class($exception);
         $file = basename($exception->getFile());
@@ -318,8 +331,24 @@ class Deployer extends Container
             }, explode("\n", $exception->getMessage()))),
             "",
         ]);
-        $output->writeln($exception->getTraceAsString());
-        return;
+        if ($output->isDebug()) {
+            $output->writeln($exception->getTraceAsString());
+        }
+    }
+
+    public static function isWorker() {
+        return Deployer::get()->config->has('master_url');
+    }
+
+    public static function proxyCallToMaster($func, ...$arguments) {
+        return Httpie::get(get('master_url') . '/proxy')
+            ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
+            ->body([
+                'host' => currentHost()->getAlias(),
+                'func' => $func,
+                'arguments' => $arguments,
+            ])
+            ->getJson();
     }
 
     /**

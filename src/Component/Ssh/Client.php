@@ -70,9 +70,12 @@ class Client
             $terminalOutput($type, $buffer);
         };
 
+        $command = str_replace('%secret%', $config['secret'] ?? '', $command);
+        $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
+
         $process = Process::fromShellCommandline($ssh);
         $process
-            ->setInput(str_replace('%secret%', $config['secret'] ?? '', $command))
+            ->setInput($command)
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);
 

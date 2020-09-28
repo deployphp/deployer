@@ -49,3 +49,8 @@ task('once', function () {
 
 after('deploy', 'once');
 
+task('ask', function () {
+    $answer = ask('Question: What kind of bear is best?');
+    writeln($answer);
+});
+

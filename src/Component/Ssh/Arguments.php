@@ -10,6 +10,7 @@ namespace Deployer\Component\Ssh;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Support\Unix;
+use function Deployer\Support\parse_home_dir;
 
 class Arguments
 {
@@ -128,7 +129,7 @@ class Arguments
         // TODO: ->addSshOption('ControlPath', '/dev/shm/deployer-%C')
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
-        $homeDir = Unix::parseHomeDir('~');
+        $homeDir = parse_home_dir('~');
         $port = empty($host->get('port', '')) ? '' : ':' . $host->getPort();
         $connectionData = "{$host->getConnectionString()}$port";
 

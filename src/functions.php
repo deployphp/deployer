@@ -14,7 +14,7 @@ use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
-use Deployer\Support\Proxy;
+use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task as T;
@@ -33,7 +33,7 @@ use function Deployer\Support\str_contains;
 
 /**
  * @param string ...$hostname
- * @return Host|Host[]|Proxy
+ * @return Host|Host[]|ObjectProxy
  */
 function host(...$hostname)
 {
@@ -63,13 +63,13 @@ function host(...$hostname)
             $deployer->hosts->set($hostname, $host);
             return $host;
         }, $aliases);
-        return new Proxy($hosts);
+        return new ObjectProxy($hosts);
     }
 }
 
 /**
  * @param string ...$hostnames
- * @return Localhost|Localhost[]|Proxy
+ * @return Localhost|Localhost[]|ObjectProxy
  */
 function localhost(...$hostnames)
 {
@@ -86,7 +86,7 @@ function localhost(...$hostnames)
             $deployer->hosts->set($host->getAlias(), $host);
             return $host;
         }, $hostnames);
-        return new Proxy($hosts);
+        return new ObjectProxy($hosts);
     }
 }
 
@@ -116,7 +116,7 @@ function currentHost()
  * Load list of hosts from file
  *
  * @param string $file
- * @return Proxy
+ * @return ObjectProxy
  */
 function inventory($file)
 {
@@ -129,7 +129,7 @@ function inventory($file)
         $deployer->hosts->set($host->getAlias(), $host);
     }
 
-    return new Proxy($hosts);
+    return new ObjectProxy($hosts);
 }
 
 /**
@@ -405,11 +405,11 @@ function on($hosts, callable $callback)
 
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
-            $host->getConfig()->load();
+            $host->config()->load();
             Context::push(new Context($host, input(), output()));
             try {
                 $callback($host);
-                $host->getConfig()->save();
+                $host->config()->save();
             } catch (GracefulShutdownException $e) {
                 $deployer->messenger->renderException($e, $host);
             } finally {
@@ -596,7 +596,7 @@ function ask($message, $default = null, $autocomplete = null)
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper $helper */
@@ -640,7 +640,7 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     $helper = Deployer::get()->getHelper('question');
@@ -668,7 +668,7 @@ function askConfirmation($message, $default = false)
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     $helper = Deployer::get()->getHelper('question');
@@ -695,7 +695,7 @@ function askHiddenResponse(string $message)
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(__FUNCTION__, ...func_get_args());
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     $helper = Deployer::get()->getHelper('question');

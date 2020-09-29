@@ -7,11 +7,12 @@
 
 namespace Deployer\Configuration;
 
-use Deployer\Collection\Collection;
-use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
+use Deployer\Utility\Httpie;
+use function Deployer\get;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
+use function Deployer\Support\normalize_line_endings;
 
 class Configuration implements \ArrayAccess
 {
@@ -21,6 +22,11 @@ class Configuration implements \ArrayAccess
     public function __construct(Configuration $parent = null)
     {
         $this->parent = $parent;
+    }
+
+    public function update($values)
+    {
+        $this->values = $values;
     }
 
     public function set(string $name, $value)
@@ -91,20 +97,11 @@ class Configuration implements \ArrayAccess
         }
         return null;
     }
-    
-    public function normalize($string)
-    {
-        //cleanup CRLF new line endings, issue #2111
-        $normalizeStep1 = str_replace(array("\r\n", "\r"), "\n", $string);
-        $normalized = $normalizeStep1;
-        
-        return $normalized;
-    }
 
     public function parse($value)
     {
         if (is_string($value)) {
-            $normalizedValue = $this->normalize($value);
+            $normalizedValue = normalize_line_endings($value);
             return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
         }
 
@@ -136,6 +133,26 @@ class Configuration implements \ArrayAccess
         unset($this->values[$offset]);
     }
 
+    public function load()
+    {
+        $values = Httpie::get($this->get('master_url') . '/load')
+            ->body([
+                'host' => $this->get('alias'),
+            ])
+            ->getJson();
+        $this->update($values);
+    }
+
+    public function save()
+    {
+        Httpie::get($this->get('master_url') . '/save')
+            ->body([
+                'host' => $this->get('alias'),
+                'config' => $this->persist(),
+            ])
+            ->getJson();
+    }
+
     public function persist()
     {
         $values = [];
@@ -149,22 +166,5 @@ class Configuration implements \ArrayAccess
             $values[$key] = $value;
         }
         return $values;
-    }
-
-    public function load()
-    {
-        $file = $this->configFile();
-        if (file_exists($file)) {
-            $this->values = json_decode(file_get_contents($file), true);
-        }
-    }
-
-    public function save()
-    {
-        file_put_contents($this->configFile(), json_encode($this->persist()));
-    }
-
-    private function configFile() {
-        return sprintf('%s/%s.dep', $this->get('config_directory'), str_replace(DIRECTORY_SEPARATOR, "_", $this->get('alias')));
     }
 }

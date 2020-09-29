@@ -44,50 +44,6 @@ class DeployTest extends AbstractTest
         }
     }
 
-    public function testWorker()
-    {
-        // Allow to start workers. Don't forget to disable it later.
-        putenv('DEPLOYER_LOCAL_WORKER=false');
-
-        $recipe = __DIR__ . '/deploy.php';
-        $this->init($recipe);
-
-        $this->tester->run([
-            'deploy',
-            '-f' => $recipe,
-            '-s' => 'all'
-        ], [
-            'verbosity' => Output::VERBOSITY_NORMAL,
-        ]);
-        self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
-
-        putenv('DEPLOYER_LOCAL_WORKER=true');
-    }
-
-    public function testServer()
-    {
-        // Allow to start workers. Don't forget to disable it later.
-        putenv('DEPLOYER_LOCAL_WORKER=false');
-
-        $recipe = __DIR__ . '/deploy.php';
-        $this->init($recipe);
-
-        $this->tester->setInputs(['prod', 'Black bear']);
-        $this->tester->run([
-            'ask',
-            '-f' => $recipe,
-        ], [
-            'verbosity' => Output::VERBOSITY_NORMAL,
-            'interactive' => true,
-        ]);
-        $display = $this->tester->getDisplay();
-        self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertStringContainsString('[prod] Question: What kind of bear is best?', $display);
-        self::assertStringContainsString('[prod] Black bear', $display);
-
-        putenv('DEPLOYER_LOCAL_WORKER=true');
-    }
-
     public function testDeploySelectHosts()
     {
         $recipe = __DIR__ . '/deploy.php';
@@ -184,31 +140,6 @@ class DeployTest extends AbstractTest
 
             self::assertFileNotExists($deployPath . '/release');
         }
-    }
-
-    public function testOption()
-    {
-        $recipe = __DIR__ . '/deploy.php';
-        $deployer = $this->init($recipe);
-
-        $this->tester->run(
-            [
-                'echo',
-                '-s' => 'all',
-                '-o' => ['deploy_path=/new/deploy/path'],
-                '-f' => $recipe,
-                '-l' => 1
-            ],
-            [
-                'verbosity' => Output::VERBOSITY_VERBOSE,
-                'interactive' => false,
-            ]
-        );
-
-        $display = $this->tester->getDisplay();
-        self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertStringContainsString('[prod] /new/deploy/path', $display);
-        self::assertStringContainsString('[beta] /new/deploy/path', $display);
     }
 
     public function testIsUnlockedExitsWithOneWhenDeployIsLocked()

@@ -15,6 +15,7 @@ use Deployer\Component\ProcessRunner\ProcessRunner;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
 use Deployer\Console\CommandEvent;
+use Deployer\Console\ConnectCommand;
 use Deployer\Console\DiceCommand;
 use Deployer\Console\InitCommand;
 use Deployer\Console\MainCommand;
@@ -22,14 +23,18 @@ use Deployer\Console\RunCommand;
 use Deployer\Console\SshCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
-use Deployer\Executor\Messenger;
 use Deployer\Executor\Master;
+use Deployer\Executor\Messenger;
 use Deployer\Executor\Server;
+use Deployer\Host\Host;
+use Deployer\Host\HostCollection;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
 use Deployer\Selector\Selector;
 use Deployer\Task;
+use Deployer\Task\ScriptManager;
+use Deployer\Task\TaskCollection;
 use Deployer\Utility\Httpie;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
@@ -51,7 +56,7 @@ use Throwable;
  * @property InputInterface $input
  * @property OutputInterface $output
  * @property Task\TaskCollection|Task\Task[] $tasks
- * @property Host\HostCollection|Collection|Host\Host[] $hosts
+ * @property HostCollection|Host[] $hosts
  * @property Configuration $config
  * @property Rsync $rsync
  * @property Client $sshClient
@@ -133,13 +138,13 @@ class Deployer extends Container
             return new ProcessRunner($c['pop'], $c['logger']);
         };
         $this['tasks'] = function () {
-            return new Task\TaskCollection();
+            return new TaskCollection();
         };
         $this['hosts'] = function () {
-            return new Host\HostCollection();
+            return new HostCollection();
         };
         $this['scriptManager'] = function ($c) {
-            return new Task\ScriptManager($c['tasks']);
+            return new ScriptManager($c['tasks']);
         };
         $this['selector'] = function ($c) {
             return new Selector($c['hosts']);
@@ -182,10 +187,6 @@ class Deployer extends Container
         };
 
         self::$instance = $this;
-
-        task('connect', function () {
-            $this['sshClient']->connect(currentHost());
-        })->desc('Connect to remote server');
     }
 
     /**
@@ -202,6 +203,7 @@ class Deployer extends Container
     public function init()
     {
         $this->addTaskCommands();
+        $this->getConsole()->add(new ConnectCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());
         $this->getConsole()->add(new InitCommand());
@@ -340,11 +342,11 @@ class Deployer extends Container
         return Deployer::get()->config->has('master_url');
     }
 
-    public static function proxyCallToMaster($func, ...$arguments) {
+    public static function proxyCallToMaster(Host $host, $func, ...$arguments) {
         return Httpie::get(get('master_url') . '/proxy')
             ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
             ->body([
-                'host' => currentHost()->getAlias(),
+                'host' => $host->getAlias(),
                 'func' => $func,
                 'arguments' => $arguments,
             ])

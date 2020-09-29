@@ -20,6 +20,9 @@ class Server
     private $input;
     private $output;
     private $questionHelper;
+    /**
+     * @var React\EventLoop\LoopInterface
+     */
     private $loop;
     private $port;
 
@@ -53,17 +56,32 @@ class Server
 
     private function router(ServerRequestInterface $request): Response
     {
-        switch ($request->getUri()->getPath()) {
+        $path = $request->getUri()->getPath();
+        switch ($path) {
+            case '/load':
+                ['host' => $host] = json_decode($request->getBody(), true);
+
+                $host = getHost($host);
+                $config = json_encode($host->config()->persist());
+
+                return new Response(200, ['Content-Type' => 'application/json'], $config);
+
+            case '/save':
+                ['host' => $host, 'config' => $config] = json_decode($request->getBody(), true);
+
+                $host = getHost($host);
+                $host->config()->update($config);
+
+                return new Response(200, ['Content-Type' => 'application/json'], 'true');
+
             case '/proxy':
-                $body = $request->getBody();
-                ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($body, true);
+                ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($request->getBody(), true);
 
                 Context::push(new Context(getHost($host), $this->input, $this->output));
                 $answer = call_user_func($func, ...$arguments);
                 Context::pop();
 
                 return new Response(200, ['Content-Type' => 'application/json'], json_encode($answer));
-                break;
 
             default:
                 throw new Exception('Server path not found: ' . $request->getUri()->getPath());
@@ -73,6 +91,16 @@ class Server
     public function addPeriodicTimer($interval, $callback)
     {
         $this->loop->addPeriodicTimer($interval, $callback);
+    }
+
+    public function addTimer($interval, $callback)
+    {
+        $this->loop->addTimer($interval, $callback);
+    }
+
+    public function cancelTimer($timer)
+    {
+        $this->loop->cancelTimer($timer);
     }
 
     public function run()

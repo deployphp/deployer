@@ -9,9 +9,9 @@ namespace Deployer\Support;
 
 use PHPUnit\Framework\TestCase;
 
-class ProxyTest extends TestCase
+class ObjectProxyTest extends TestCase
 {
-    public function testProxy()
+    public function testObjectProxy()
     {
         $mock = self::getMockBuilder('stdClass')
             ->setMethods(['foo'])
@@ -21,7 +21,7 @@ class ProxyTest extends TestCase
             ->method('foo')
             ->with('a', 'b');
 
-        $proxy = new Proxy([$mock]);
+        $proxy = new ObjectProxy([$mock]);
         $proxy->foo('a', 'b');
     }
 }

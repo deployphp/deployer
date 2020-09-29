@@ -10,6 +10,7 @@ namespace Deployer\Executor;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
@@ -115,7 +116,6 @@ class Master
                         }
                     }
 
-
                     if ($plan) {
                         $plan->commit($selectedHosts, $task);
                         continue;
@@ -153,12 +153,14 @@ class Master
             if ($host instanceof Localhost) {
                 continue;
             }
-            $process = $this->createProcess($host, new Task('connect'));
+            $process = $this->createConnectProcess($host);
             $process->start();
 
             while ($process->isRunning()) {
                 $this->gatherOutput([$process], $callback);
-                $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
+                if ($this->output->isDecorated()) {
+                    $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
+                }
                 usleep(1000);
             }
         }
@@ -190,15 +192,6 @@ class Master
             return 0;
         }
 
-        $processes = [];
-        foreach ($hosts as $host) {
-            $processes[] = $this->createProcess($host, $task);
-        }
-
-        foreach ($processes as $process) {
-            $process->start();
-        }
-
         $callback = function (string $output) {
             $output = preg_replace('/\n$/', '', $output);
             if (strlen($output) !== 0) {
@@ -206,13 +199,28 @@ class Master
             }
         };
 
-        $this->server->addPeriodicTimer(0.03, function () use ($processes, $callback) {
-            $this->gatherOutput($processes, $callback);
-            $this->output->write(spinner());
-            if (!$this->areRunning($processes)) {
-                $this->server->stop();
+        /** @var Process[] $processes */
+        $processes = [];
+
+        $this->server->addTimer(0, function () use(&$processes, $hosts, $task) {
+            foreach ($hosts as $host) {
+                $processes[] = $this->createProcess($host, $task);
+            }
+
+            foreach ($processes as $process) {
+                $process->start();
             }
         });
+
+        $this->server->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback) {
+            $this->gatherOutput($processes, $callback);
+            $this->output->write(spinner());
+            if ($this->allFinished($processes)) {
+                $this->server->stop();
+                $this->server->cancelTimer($timer);
+            }
+        });
+
         $this->server->run();
 
         $this->output->write("    \r"); // clear spinner
@@ -224,9 +232,23 @@ class Master
     protected function createProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $configDirectory = $host->get('config_directory');
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
-        $command = "$dep worker $task {$host->getAlias()} $configDirectory {$this->server->getPort()} {$this->input} $decorated";
+        $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
+        $command = "$dep worker $task {$host->getAlias()} {$this->server->getPort()} {$this->input} $decorated $verbosity";
+
+        if ($this->output->isDebug()) {
+            $this->output->writeln("[{$host->getTag()}] $command");
+        }
+
+        return Process::fromShellCommandline($command);
+    }
+
+    protected function createConnectProcess(Host $host): Process
+    {
+        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
+        $decorated = $this->output->isDecorated() ? '--decorated' : '';
+        $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
+        $command = "$dep connect {$host->getAlias()} $decorated $verbosity";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->getTag()}] $command");
@@ -239,14 +261,14 @@ class Master
      * @param Process[] $processes
      * @return bool
      */
-    protected function areRunning(array $processes): bool
+    protected function allFinished(array $processes): bool
     {
         foreach ($processes as $process) {
-            if ($process->isRunning()) {
-                return true;
+            if (!$process->isTerminated()) {
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -280,5 +302,23 @@ class Master
             }
         }
         return 0;
+    }
+
+    private static function stringifyVerbosity(int $verbosity): string
+    {
+        switch ($verbosity) {
+            case OutputInterface::VERBOSITY_QUIET:
+                return '-q';
+            case OutputInterface::VERBOSITY_NORMAL:
+                return '';
+            case OutputInterface::VERBOSITY_VERBOSE:
+                return '-v';
+            case OutputInterface::VERBOSITY_VERY_VERBOSE:
+                return '-vv';
+            case OutputInterface::VERBOSITY_DEBUG:
+                return '-vvv';
+            default:
+                throw new Exception('Unknown verbosity level: ' . $verbosity);
+        }
     }
 }

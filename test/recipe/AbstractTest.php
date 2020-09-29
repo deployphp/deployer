@@ -58,7 +58,6 @@ abstract class AbstractTest extends TestCase
         $this->tester = new ApplicationTester($console);
 
         $deployer = new Deployer($console);
-        $recipe = __DIR__ . '/deploy.php';
         Deployer::load($recipe);
         $deployer->init();
         $deployer->config->set('deploy_path', __TEMP_DIR__ . '/{{hostname}}');

@@ -36,7 +36,7 @@ class FunctionsTest extends TestCase
         $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
         $host
             ->expects($this->any())
-            ->method('getConfig')
+            ->method('config')
             ->willReturn(new Configuration());
 
         $this->deployer = new Deployer($console);

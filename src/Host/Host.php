@@ -9,6 +9,7 @@ namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
 use Deployer\Component\Ssh\Arguments;
+use Deployer\Configuration\ProxyConfig;
 use Deployer\Deployer;
 
 class Host
@@ -28,7 +29,7 @@ class Host
         $this->sshArguments = new Arguments();
     }
 
-    public function getConfig()
+    public function config()
     {
         return $this->config;
     }

@@ -88,17 +88,6 @@ class MainCommand extends SelectCommand
         $this->applyOverrides($hosts, $input->getOption('option'));
 
         $plan = $input->getOption('plan') ? new Planner($output, $hosts) : null;
-        if ($plan === null) {
-            // Materialize hosts configs
-            $configDirectory = sprintf('%s/deployer/%s/%s', sys_get_temp_dir(), uniqid(), time());
-            if (!is_dir($configDirectory)) {
-                mkdir($configDirectory, 0700, true);
-            }
-            $this->deployer->config->set('config_directory', $configDirectory);
-            foreach ($hosts as $alias => $host) {
-                $host->getConfig()->save();
-            }
-        }
 
         $this->deployer->scriptManager->setHooksEnabled(!$input->getOption('no-hooks'));
         $startFrom = $input->getOption('start-from');

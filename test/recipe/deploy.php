@@ -39,18 +39,8 @@ task('fail', function () {
 
 fail('deploy:fail', 'deploy:unlock');
 
-task('echo', function () {
-    run('echo {{deploy_path}}');
-});
-
 task('once', function () {
     info('should be run only once');
 })->once();
 
 after('deploy', 'once');
-
-task('ask', function () {
-    $answer = ask('Question: What kind of bear is best?');
-    writeln($answer);
-});
-

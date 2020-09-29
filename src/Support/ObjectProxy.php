@@ -7,7 +7,7 @@
 
 namespace Deployer\Support;
 
-class Proxy
+class ObjectProxy
 {
     private $objects;
 

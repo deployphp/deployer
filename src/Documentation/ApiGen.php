@@ -56,7 +56,13 @@ class ApiGen
 
     public function markdown()
     {
-        $output = "# API Reference\n\n";
+        $output = <<<MD
+<!-- DO NOT EDIT. Run bin/docgen to update. -->
+
+# API Reference
+
+
+MD;
 
         foreach ($this->fns as $fn) {
             ['funcName' => $funcName] = $fn;

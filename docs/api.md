@@ -1,3 +1,5 @@
+<!-- DO NOT EDIT. Run bin/docgen to update. -->
+
 # API Reference
 
  * [`host()`](#host)
@@ -398,6 +400,5 @@ commandSupportsOption($command, $option)
 ```php
 locateBinaryPath($name)
 ```
-
 
 

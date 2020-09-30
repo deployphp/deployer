@@ -24,11 +24,14 @@ $output = new ConsoleOutput();
 $app = new Application('DocGen', '1.0.0');
 $io = new SymfonyStyle($input, $output);
 
-$app->setDefaultCommand('generate');
-$app->register('generate')->setCode(function () use ($output) {
+$app->setDefaultCommand('api');
+
+$app->register('api')->setCode(function () use ($io) {
     $parser = new ApiGen();
     $parser->parse(file_get_contents(__DIR__ . '/../src/functions.php'));
-    $output->writeln($parser->markdown());
+    $md = $parser->markdown();
+    file_put_contents(__DIR__ . '/../docs/api.md', $md);
+    $io->block('API Reference documentation is updated.');
 });
 
 $app->run($input, $output);

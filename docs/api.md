@@ -1,349 +1,403 @@
-# API Reference
+API Reference
 
-## add
+ * [`host()`](#host)
+ * [`localhost()`](#localhost)
+ * [`getHost()`](#getHost)
+ * [`currentHost()`](#currentHost)
+ * [`inventory()`](#inventory)
+ * [`desc()`](#desc)
+ * [`task()`](#task)
+ * [`before()`](#before)
+ * [`after()`](#after)
+ * [`fail()`](#fail)
+ * [`option()`](#option)
+ * [`cd()`](#cd)
+ * [`within()`](#within)
+ * [`run()`](#run)
+ * [`runLocally()`](#runLocally)
+ * [`test()`](#test)
+ * [`testLocally()`](#testLocally)
+ * [`on()`](#on)
+ * [`invoke()`](#invoke)
+ * [`upload()`](#upload)
+ * [`download()`](#download)
+ * [`info()`](#info)
+ * [`warning()`](#warning)
+ * [`writeln()`](#writeln)
+ * [`write()`](#write)
+ * [`parse()`](#parse)
+ * [`set()`](#set)
+ * [`add()`](#add)
+ * [`get()`](#get)
+ * [`has()`](#has)
+ * [`ask()`](#ask)
+ * [`askChoice()`](#askChoice)
+ * [`askConfirmation()`](#askConfirmation)
+ * [`askHiddenResponse()`](#askHiddenResponse)
+ * [`input()`](#input)
+ * [`output()`](#output)
+ * [`commandExist()`](#commandExist)
+ * [`commandSupportsOption()`](#commandSupportsOption)
+ * [`locateBinaryPath()`](#locateBinaryPath)
 
-* `add(string $name, array $values)`
+## host()
 
-Add values to already existing config.
+```php
+host(...$hostname)
+```
 
-More at [configuration](configuration.md).
 
-## after
+## localhost()
 
-* `after(string $when, string $that)`
+```php
+localhost(...$hostnames)
+```
 
-Call after `$when` task, `$that` task.
 
-## argument
+## getHost()
 
-* `argument($name, $mode = null, $description = '', $default = null)`
+```php
+getHost(string $alias)
+```
 
-Add user's cli arguments.
+Get host by host alias.
 
-## ask
 
-* `ask(string $message, $default = null, $suggestedChoices = null)`
+## currentHost()
 
-Ask the user for input.
+```php
+currentHost()
+```
 
-## askChoice
+Get current host.
 
-* `askChoice(string $message, array $availableChoices, $default = null, $multiselect = false)`
 
-Ask the user to select from multiple key/value options and return an array.
-Multiselect enables selection of multiple comma separated choices.
-The default value will be used in quiet mode, otherwise the first available choice will be accepted.
+## inventory()
 
-## askConfirmation
+```php
+inventory($file)
+```
 
-* `askConfirmation(string $message, bool $default = false)`
+Load list of hosts from file
 
-Ask the user a yes or no question.
 
-## askHiddenResponse
+## desc()
 
-* `askHiddenResponse(string $message)`
+```php
+desc($title = null)
+```
 
-Ask the user for a password.
+Set task description.
 
-## before
 
-* `before(string $when, string $that)`
+## task()
 
-Call before `$when` task, `$that` task.
+```php
+task($name, $body = null)
+```
 
-## cd
+Define a new task and save to tasks list.
 
-* `cd(string $path)`
+Alternatively get a defined task.
 
-Sets the working path for the following `run` functions.
-Every task restores the working path to the base working path at the beginning of the task.
 
-~~~php
-cd('{{release_path}}');
-run('npm run build');
-~~~
+## before()
 
-## commandExist
+```php
+before($task, $do)
+```
 
-* `commandExist(string $command): bool`
+Call that task before specified task runs.
 
-Check if a command exists.
 
-~~~php
-if (commandExist('composer')) {
-    ...
-}
-~~~
+## after()
 
-## desc
+```php
+after($task, $do)
+```
 
-* `desc(string $description)`
+Call that task after specified task runs.
 
-Set a task description.
 
-## download
+## fail()
 
-* `download(string $source, string $destination, $config = [])`
+```php
+fail($task, $do)
+```
 
-Download files from the remote host `$source` to `$destination` on the local machine.
+Setup which task run on failure of first.
 
-Available options:
 
-* `timeout` — The timeout in seconds (default: null)
-* `options` — `rsync` options.
+## option()
 
-## fail
+```php
+option($name, $shortcut = null, $mode = null, $description = '', $default = null)
+```
 
-* `fail(string $what, string $that)`
+Add users options.
 
-If task `$what` fails, run `$that` task.
 
-## get
+## cd()
 
-* `get(string $name, $default = null): string|int|bool|array`
+```php
+cd($path)
+```
 
-Get a configuration value.
+Change the current working directory.
 
-More at [configuration](configuration.md).
 
-## has
+## within()
 
-* `has(string $name): bool`
+```php
+within($path, $callback)
+```
 
-Check if a config option exists.
+Execute a callback within a specific directory and revert back to the initial working directory.
 
-More at [configuration](configuration.md).
 
-## host
+## run()
 
-* `host(string ...$hostname): Host`
+```php
+run($command, $options = [])
+```
 
-Define a host or group of hosts. Read more at [hosts](hosts.md).
+Executes given command on remote host.
 
-## input
+Options:
+- `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
+- `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
 
-* `input(): Input`
+Examples:
 
-Get the current console input.
+```php
+run('echo hello world');
+run('cd {{deploy_path}} && git status');
+run('password %secret%', ['secret' => getenv('CI_SECRET')]);
+```
 
-## inventory
-
-* `inventory(string $file): Host[]`
-
-Load a list of hosts from a file.
-
-## invoke
-
-* `invoke(string $task)`
-
-Run a task on the current host.
-
-~~~php
-task('deploy', function () {
-    invoke('deploy:setup');
-    invoke('deploy:release');
-    ...
-});
-~~~
-
-> **Note** this is experimental functionality.
-
-## isDebug
-
-* `isDebug(): bool`
-
-Check if the `dep` command was started with the `-vvv` option.
-
-## isQuiet
-
-* `isQuiet(): bool`
-
-Check if th `dep` command was started with the `-q` option.
-
-## isVerbose
-
-* `isVerbose(): bool`
-
-Check if the `dep` command was started with the `-v` option.
-
-## isVeryVerbose
-
-* `isVeryVerbose(): bool`
-
-Check if th `dep` command was started with the `-vv` option.
-
-## localhost
-
-* `localhost(string ...$alias = 'localhost'): Host`
-
-Define a localhost.
-
-## on
-
-* `on(Host $host, callable $callback)`
-* `on(Host[] $host, callable $callback)`
-
-Execute a `$callback` on the specified hosts.
-
-~~~php
-on(host('domain.com'), function ($host) {
-   ...
-});
-~~~
-
-~~~php
-on(roles('app'), function ($host) {
-   ...
-});
-~~~
-
-~~~php
-on(Deployer::get()->hosts, function ($host) {
-   ...
-});
-~~~
-
-## option
-
-* `option($name, $shortcut=null, $mode=null, $description='', $default=null)`
-
-Add user's cli options.
-
-## output
-
-* `output(): Output`
-
-Get the current console output.
-
-## parse
-
-* `parse(string $line): string`
-
-Parse config occurrence `{{` `}}` in `$line`.
-
-## roles
-
-* `roles(string ...$role): Host[]`
-
-Return a list of hosts by roles.
-
-## run
-
-* `run(string $command, $options = []): string`
-
-Run a command on remote host. Available options:
-
-* `timeout` — Sets the process timeout (max. runtime).
-  To disable the timeout, set this value to null.
-  The timeout in seconds (default: 300 sec)
-
-For example, if your private key contains a passphrase, enable tty and you'll see git prompt for a password.
-
-~~~php
-run('git clone ...', ['timeout' => null, 'tty' => true]);
-~~~
-
-`run` function returns the output of the command as a string:
-
-~~~php
+```php
 $path = run('readlink {{deploy_path}}/current');
 run("echo $path");
-~~~
+```
 
-## runLocally
 
-* `runLocally($command, $options = []): string`
+## runLocally()
 
-Run a command on localhost. Available options:
+```php
+runLocally($command, $options = [])
+```
 
-* `timeout` — The timeout in seconds (default: 300 sec)
-* `tty` — The TTY mode (default: false)
+Execute commands on local machine
 
-## set
 
-* `set(string $name, string|int|bool|array $value)`
-* `set(string $name, callable $value)`
+## test()
 
-Setup a global configuration parameter. If callable is passed as `$value` it will be triggered on the first get of this config.
+```php
+test($command)
+```
 
-More at [configuration](configuration.md).
+Run test command.
+Example:
 
-## task
-
-* `task(string $name, string $script)`
-* `task(string $name, callable $callable)`
-* `task(string $name): Task`
-
-Define a task or get a task. More at [tasks](tasks.md).
-
-## test
-
-* `test(string $command): bool`
-
-Run a test command.
-
-~~~php
+```php
 if (test('[ -d {{release_path}} ]')) {
-    ...
+...
 }
-~~~
+```
 
-## testLocally
 
-* `testLocally(string $command): bool`
+## testLocally()
 
-Run a test command locally.
+```php
+testLocally($command)
+```
 
-## upload
+Run test command locally.
+Example:
 
-* `upload(string $source, string $destination, $config = [])`
+    testLocally('[ -d {{local_release_path}} ]')
 
-Upload files from `$source` to `$destination` on the remote host.
 
-~~~php
-upload('build/', '{{release_path}}/public');
-~~~
+## on()
 
-> You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command,
-> this is necessary to mean "the contents of `build`".
+```php
+on($hosts, callable $callback)
+```
+
+Iterate other hosts, allowing to call run func in callback.
+
+
+## invoke()
+
+```php
+invoke($task)
+```
+
+Run task
+
+
+## upload()
+
+```php
+upload(string $source, string $destination, $config = [])
+```
+
+Upload file or directory to host.
+
+> You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command, this is necessary to mean “the contents of build“.
 >
-> The alternative, without the trailing slash, would place `build`, including the directory, within `public`.
-> This would create a hierarchy that looks like: `{{release_path}}/public/build`
+> The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
 
-Available options:
 
-* `timeout` — The timeout in seconds (default: null)
-* `options` — `rsync` options.
+## download()
 
-## within
+```php
+download(string $source, string $destination, $config = [])
+```
 
-* `within(string $path, callable $callback)`
+Download file or directory from host
 
-Run `$callback` within `$path`.
 
-~~~php
-within('{{release_path}}', function () {
-    run('npm run build');
-});
-~~~
+## info()
 
-## workingPath
+```php
+info($message)
+```
 
-* `workingPath(): string`
+Writes an info message.
 
-Return the current working path.
+## warning()
 
-~~~php
-cd('{{release_path}}');
-workingPath() == '/var/www/app/releases/1';
-~~~
+```php
+warning($message)
+```
 
-## write
+Writes an warning message.
 
-Write a message in the output.
-You can format the message with the tags `<info>...</info>`, `<comment></comment>` or `<error></error>` (see [Symfony Console](http://symfony.com/doc/current/console/coloring.html)).
+## writeln()
 
-## writeln
+```php
+writeln($message, $options = 0)
+```
 
-Same as the `write` function, but also writes a new line.
+Writes a message to the output and adds a newline at the end.
+
+## write()
+
+```php
+write($message, $options = 0)
+```
+
+Writes a message to the output.
+
+## parse()
+
+```php
+parse($value)
+```
+
+Parse set values.
+
+
+## set()
+
+```php
+set($name, $value)
+```
+
+Setup configuration option.
+
+
+## add()
+
+```php
+add($name, $array)
+```
+
+Merge new config params to existing config array.
+
+
+## get()
+
+```php
+get($name, $default = null)
+```
+
+Get configuration value.
+
+
+## has()
+
+```php
+has($name)
+```
+
+Check if there is such configuration option.
+
+
+## ask()
+
+```php
+ask($message, $default = null, $autocomplete = null)
+```
+
+
+## askChoice()
+
+```php
+askChoice($message, array $availableChoices, $default = null, $multiselect = false)
+```
+
+
+## askConfirmation()
+
+```php
+askConfirmation($message, $default = false)
+```
+
+
+## askHiddenResponse()
+
+```php
+askHiddenResponse(string $message)
+```
+
+
+## input()
+
+```php
+input()
+```
+
+
+## output()
+
+```php
+output()
+```
+
+
+## commandExist()
+
+```php
+commandExist($command)
+```
+
+Check if command exists
+
+
+## commandSupportsOption()
+
+```php
+commandSupportsOption($command, $option)
+```
+
+
+## locateBinaryPath()
+
+```php
+locateBinaryPath($name)
+```
+
+
+

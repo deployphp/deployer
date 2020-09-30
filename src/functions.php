@@ -7,7 +7,6 @@
 
 namespace Deployer;
 
-use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\FileLoader;
@@ -17,9 +16,7 @@ use Deployer\Host\Range;
 use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
-use Deployer\Task\Task as T;
-use Deployer\Utility\Httpie;
-use Symfony\Component\Console\Exception\MissingInputException;
+use Deployer\Task\Task;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -156,7 +153,7 @@ function desc($title = null)
  *
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
- * @return Task\Task
+ * @return Task
  */
 function task($name, $body = null)
 {
@@ -167,7 +164,7 @@ function task($name, $body = null)
     }
 
     if (is_callable($body)) {
-        $task = new T($name, $body);
+        $task = new Task($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
     } else {
@@ -190,7 +187,7 @@ function task($name, $body = null)
  *
  * @param string $task The task before $that should be run.
  * @param string|callable $do The task to be run.
- * @return T|void
+ * @return Task|void
  */
 function before($task, $do)
 {
@@ -207,7 +204,7 @@ function before($task, $do)
  *
  * @param string $task The task after $that should be run.
  * @param string|callable $do The task to be run.
- * @return T|void
+ * @return Task|void
  */
 function after($task, $do)
 {
@@ -224,7 +221,7 @@ function after($task, $do)
  *
  * @param string $task The task which need to fail so $that should be run.
  * @param string $do The task to be run.
- * @return T|void
+ * @return Task|void
  */
 function fail($task, $do)
 {
@@ -281,7 +278,24 @@ function within($path, $callback)
 }
 
 /**
- * Run command.
+ * Executes given command on remote host.
+ *
+ * Options:
+ * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
+ * - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ *
+ * Examples:
+ *
+ * ```php
+ * run('echo hello world');
+ * run('cd {{deploy_path}} && git status');
+ * run('password %secret%', ['secret' => getenv('CI_SECRET')]);
+ * ```
+ *
+ * ```php
+ * $path = run('readlink {{deploy_path}}/current');
+ * run("echo $path");
+ * ```
  *
  * @param string $command
  * @param array $options
@@ -364,7 +378,11 @@ function runLocally($command, $options = [])
  * Run test command.
  * Example:
  *
- *     test('[ -d {{release_path}} ]')
+ * ```php
+ * if (test('[ -d {{release_path}} ]')) {
+ * ...
+ * }
+ * ```
  *
  * @param string $command
  * @return bool
@@ -436,8 +454,17 @@ function invoke($task)
     $master->run($tasks, $hosts);
 }
 
-/*
+/**
  * Upload file or directory to host.
+ *
+ * > You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command, this is necessary to mean “the contents of build“.
+ * >
+ * > The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
+ *
+ * @param string $source
+ * @param string $destination
+ * @param array $config
+ * @throws RunException
  */
 function upload(string $source, string $destination, $config = [])
 {
@@ -453,8 +480,13 @@ function upload(string $source, string $destination, $config = [])
     }
 }
 
-/*
+/**
  * Download file or directory from host
+ *
+ * @param string $source
+ * @param string $destination
+ * @param array $config
+ * @throws RunException
  */
 function download(string $source, string $destination, $config = [])
 {

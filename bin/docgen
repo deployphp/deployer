@@ -1,0 +1,34 @@
+#!/usr/bin/env php
+<?php
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Deployer;
+
+use Deployer\Documentation\ApiGen;
+use Deployer\Support\Changelog\Parser;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+chdir(realpath(__DIR__ . '/..'));
+
+$input = new ArgvInput();
+$output = new ConsoleOutput();
+$app = new Application('DocGen', '1.0.0');
+$io = new SymfonyStyle($input, $output);
+
+$app->setDefaultCommand('generate');
+$app->register('generate')->setCode(function () use ($output) {
+    $parser = new ApiGen();
+    $parser->parse(file_get_contents(__DIR__ . '/../src/functions.php'));
+    $output->writeln($parser->markdown());
+});
+
+$app->run($input, $output);

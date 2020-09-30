@@ -203,19 +203,19 @@ class Host
 
     private function initOptions()
     {
-        if ($this->getPort()) {
+        if ($this->has('port')) {
             $this->sshArguments = $this->sshArguments->withFlag('-p', $this->getPort());
         }
 
-        if ($this->getConfigFile()) {
+        if ($this->has('config_file')) {
             $this->sshArguments = $this->sshArguments->withFlag('-F', $this->getConfigFile());
         }
 
-        if ($this->getIdentityFile()) {
+        if ($this->has('identity_file')) {
             $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
         }
 
-        if ($this->getForwardAgent()) {
+        if ($this->has('forward_agent') && $this->getForwardAgent()) {
             $this->sshArguments = $this->sshArguments->withFlag('-A');
         }
     }

@@ -29,6 +29,11 @@ class Configuration implements \ArrayAccess
         $this->values = $values;
     }
 
+    public function bind(Configuration $parent)
+    {
+        $this->parent = $parent;
+    }
+
     public function set(string $name, $value)
     {
         $this->values[$name] = $value;

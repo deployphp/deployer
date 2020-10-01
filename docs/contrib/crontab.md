@@ -21,14 +21,10 @@ Configuration:
 ### crontab:load
 [Source](/contrib/crontab.php#L15)
 
-Load crontab
-
 
 
 ### crontab:sync
 [Source](/contrib/crontab.php#L40)
-
-Sync crontab jobs
 
 
 

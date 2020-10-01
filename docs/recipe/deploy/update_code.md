@@ -40,7 +40,5 @@ Faster cloning by borrowing objects from existing clones.
 ### deploy:update_code
 [Source](/recipe/deploy/update_code.php#L57)
 
-Update code
-
 Update code at {{release_path}} on host.
 

@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:cloudflare
 [Source](/contrib/cloudflare.php#L11)
 
-Clearing Cloudflare Cache
-
 
 

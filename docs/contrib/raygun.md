@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### raygun:notify
 [Source](/contrib/raygun.php#L13)
 
-Notifying Raygun of deployment
-
 
 

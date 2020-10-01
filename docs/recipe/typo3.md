@@ -48,7 +48,5 @@ Writeable directories
 ### deploy
 [Source](/recipe/typo3.php#L20)
 
-
-
 Main TYPO3 task
 

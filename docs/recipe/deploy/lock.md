@@ -21,14 +21,10 @@ file that was distributed with this source code.
 ### deploy:lock
 [Source](/recipe/deploy/lock.php#L14)
 
-Lock deploy
-
 
 
 ### deploy:unlock
 [Source](/recipe/deploy/lock.php#L28)
-
-Unlock deploy
 
 
 

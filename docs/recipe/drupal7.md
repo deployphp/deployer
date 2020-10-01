@@ -52,19 +52,13 @@ file that was distributed with this source code.
 
 
 
-
-
 ### drupal:settings
 [Source](/recipe/drupal7.php#L45)
-
-
 
 //Create and upload Drupal 7 settings.php using values from secrets
 
 ### drupal:upload_files
 [Source](/recipe/drupal7.php#L87)
-
-
 
 //Upload Drupal 7 files folder
 

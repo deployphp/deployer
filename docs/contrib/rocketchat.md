@@ -102,21 +102,15 @@ file that was distributed with this source code.
 ### rocketchat:notify
 [Source](/contrib/rocketchat.php#L32)
 
-Notify RocketChat
-
 
 
 ### rocketchat:notify:success
 [Source](/contrib/rocketchat.php#L62)
 
-Notifying RocketChat about deploy finish
-
 
 
 ### rocketchat:notify:failure
 [Source](/contrib/rocketchat.php#L92)
-
-Notifying RocketChat about deploy failure
 
 
 

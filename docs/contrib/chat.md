@@ -54,21 +54,15 @@ Deploy messages
 ### chat:notify
 [Source](/contrib/chat.php#L27)
 
-Notifying Google Hangouts Chat
-
 
 
 ### chat:notify:success
 [Source](/contrib/chat.php#L70)
 
-Notifying Google Hangouts Chat about deploy finish
-
 
 
 ### chat:notify:failure
 [Source](/contrib/chat.php#L113)
-
-
 
 
 

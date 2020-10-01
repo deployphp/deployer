@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### bugsnag:notify
 [Source](/contrib/bugsnag.php#L13)
 
-Notifying Bugsnag of deployment
-
 
 

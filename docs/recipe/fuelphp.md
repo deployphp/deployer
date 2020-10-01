@@ -30,7 +30,5 @@ FuelPHP 1.x shared dirs
 ### deploy
 [Source](/recipe/fuelphp.php#L20)
 
-
-
 Main task
 

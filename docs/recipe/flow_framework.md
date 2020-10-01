@@ -44,21 +44,15 @@ Flow-Framework shared directories
 ### deploy:run_migrations
 [Source](/recipe/flow_framework.php#L28)
 
-
-
 Apply database migrations
 
 ### deploy:publish_resources
 [Source](/recipe/flow_framework.php#L35)
 
-
-
 Publish resources
 
 ### deploy
 [Source](/recipe/flow_framework.php#L42)
-
-
 
 Main task
 

@@ -48,21 +48,15 @@ file that was distributed with this source code.
 ### cachetool:clear:apc
 [Source](/contrib/cachetool.php#L40)
 
-Clearing APC system cache
-
 
 
 ### cachetool:clear:opcache
 [Source](/contrib/cachetool.php#L48)
 
-Clearing OPcode cache
-
 Clear opcache cache
 
 ### cachetool:clear:apcu
 [Source](/contrib/cachetool.php#L56)
-
-Clearing APCu system cache
 
 Clear APCU cache
 

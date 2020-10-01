@@ -190,33 +190,23 @@ sudo command executed.
 
 
 
-
-
 ### deploy:publish
 [Source](/recipe/common.php#L157)
-
-
 
 
 
 ### deploy:success
 [Source](/recipe/common.php#L167)
 
-
-
 Success message
 
 ### deploy:failed
 [Source](/recipe/common.php#L177)
 
-
-
 Deploy failure
 
 ### logs
 [Source](/recipe/common.php#L186)
-
-Follow latest application logs.
 
 Follow latest application logs.
 

@@ -20,8 +20,6 @@ file that was distributed with this source code.
 ### deploy:check_remote
 [Source](/recipe/deploy/check_remote.php#L16)
 
-Check remote head
-
 Cancel deployment if there would be no change to the codebase.
 This avoids unnecessary releases if the latest commit has already been deployed.
 

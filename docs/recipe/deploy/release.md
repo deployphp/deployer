@@ -40,7 +40,5 @@ Return release path.
 ### deploy:release
 [Source](/recipe/deploy/release.php#L102)
 
-Prepare release. Clean up unfinished releases and prepare next release
-
 
 

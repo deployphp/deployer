@@ -96,21 +96,15 @@ CI monitor status states and job states
 ### cimonitor:notify
 [Source](/contrib/cimonitor.php#L38)
 
-Notifying CIMonitor
-
 
 
 ### cimonitor:notify:success
 [Source](/contrib/cimonitor.php#L65)
 
-Notifying CIMonitor about deploy finish
-
 
 
 ### cimonitor:notify:failure
 [Source](/contrib/cimonitor.php#L94)
-
-Notifying CIMonitor about deploy failure
 
 
 

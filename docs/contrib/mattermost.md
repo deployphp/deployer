@@ -78,21 +78,15 @@ file that was distributed with this source code.
 ### mattermost:notify
 [Source](/contrib/mattermost.php#L25)
 
-Notify mattermost
-
 
 
 ### mattermost:notify:success
 [Source](/contrib/mattermost.php#L46)
 
-Notifying mattermost about deploy finish
-
 
 
 ### mattermost:notify:failure
 [Source](/contrib/mattermost.php#L67)
-
-Notifying mattermost about deploy failure
 
 
 

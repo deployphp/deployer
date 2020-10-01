@@ -36,21 +36,15 @@ CakePHP 4 Project Template shared files
 ### deploy:init
 [Source](/recipe/cakephp4.php#L25)
 
-
-
 Create plugins' symlinks
 
 ### deploy:run_migrations
 [Source](/recipe/cakephp4.php#L32)
 
-
-
 Run migrations
 
 ### deploy
 [Source](/recipe/cakephp4.php#L41)
-
-
 
 Main task
 

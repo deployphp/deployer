@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:shared
 [Source](/recipe/deploy/shared.php#L13)
 
-Creating symlinks for shared files and dirs
-
 
 

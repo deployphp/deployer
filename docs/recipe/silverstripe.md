@@ -48,8 +48,6 @@ Silverstripe cli script
 ### silverstripe:build
 [Source](/recipe/silverstripe.php#L45)
 
-
-
 Helper tasks
 
 ### silverstripe:buildflush
@@ -57,12 +55,8 @@ Helper tasks
 
 
 
-
-
 ### deploy
 [Source](/recipe/silverstripe.php#L56)
-
-
 
 Main task
 

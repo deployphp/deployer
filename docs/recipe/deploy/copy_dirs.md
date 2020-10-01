@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:copy_dirs
 [Source](/recipe/deploy/copy_dirs.php#L11)
 
-Copy directories
-
 
 

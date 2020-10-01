@@ -85,21 +85,15 @@ Color of attachment
 ### teams:notify
 [Source](/contrib/ms-teams.php#L47)
 
-Notifying Teams
-
 
 
 ### teams:notify:success
 [Source](/contrib/ms-teams.php#L62)
 
-Notifying Teams about deploy finish
-
 
 
 ### teams:notify:failure
 [Source](/contrib/ms-teams.php#L77)
-
-Notifying Teams about deploy failure
 
 
 

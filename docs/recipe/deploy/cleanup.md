@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:cleanup
 [Source](/recipe/deploy/cleanup.php#L11)
 
-Cleaning up old releases
-
 
 

@@ -60,56 +60,40 @@ in you deployer script.
 ### magento:compile
 [Source](/recipe/magento2.php#L48)
 
-Compile magento di
-
 Tasks
 
 ### magento:deploy:assets
 [Source](/recipe/magento2.php#L54)
-
-Deploy assets
 
 
 
 ### magento:maintenance:enable
 [Source](/recipe/magento2.php#L59)
 
-Enable maintenance mode
-
 
 
 ### magento:maintenance:disable
 [Source](/recipe/magento2.php#L64)
-
-Disable maintenance mode
 
 
 
 ### magento:upgrade:db
 [Source](/recipe/magento2.php#L69)
 
-Upgrade magento database
-
 
 
 ### magento:cache:flush
 [Source](/recipe/magento2.php#L74)
-
-Flush Magento Cache
 
 
 
 ### deploy:magento
 [Source](/recipe/magento2.php#L79)
 
-Magento2 deployment operations
-
 
 
 ### deploy
 [Source](/recipe/magento2.php#L89)
-
-Deploy your project
 
 
 

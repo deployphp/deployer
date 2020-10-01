@@ -28,7 +28,5 @@ file that was distributed with this source code.
 ### rollbar:notify
 [Source](/contrib/rollbar.php#L15)
 
-Notifying Rollbar of deployment
-
 
 

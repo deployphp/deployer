@@ -21,14 +21,10 @@ file that was distributed with this source code.
 ### npm:install
 [Source](/contrib/npm.php#L15)
 
-Install npm packages
-
 
 
 ### npm:ci
 [Source](/contrib/npm.php#L31)
-
-Install npm packages with a clean slate
 
 
 

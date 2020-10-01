@@ -22,7 +22,5 @@ file that was distributed with this source code.
 ### deploy
 [Source](/recipe/composer.php#L13)
 
-Deploy your project
-
 
 

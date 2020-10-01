@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:symlink
 [Source](/recipe/deploy/symlink.php#L11)
 
-Creating symlink to release
-
 
 

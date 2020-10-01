@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:rabbit
 [Source](/contrib/rabbit.php#L16)
 
-Notifying RabbitMQ channel about deployment
-
 
 

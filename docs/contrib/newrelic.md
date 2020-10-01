@@ -40,7 +40,5 @@ file that was distributed with this source code.
 ### newrelic:notify
 [Source](/contrib/newrelic.php#L25)
 
-Notifying New Relic of deployment
-
 
 

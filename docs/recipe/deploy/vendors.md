@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:vendors
 [Source](/recipe/deploy/vendors.php#L11)
 
-Installing vendors
-
 
 

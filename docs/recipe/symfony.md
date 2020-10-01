@@ -109,56 +109,40 @@ Migrations configuration file
 ### deploy:create_cache_dir
 [Source](/recipe/symfony.php#L73)
 
-
-
 Create cache dir
 
 ### deploy:assets
 [Source](/recipe/symfony.php#L91)
-
-
 
 Normalize asset timestamps
 
 ### deploy:assets:install
 [Source](/recipe/symfony.php#L103)
 
-
-
 Install assets from public dir of bundles
 
 ### deploy:assetic:dump
 [Source](/recipe/symfony.php#L111)
-
-
 
 Dump all assets to the filesystem
 
 ### deploy:cache:clear
 [Source](/recipe/symfony.php#L120)
 
-
-
 Clear Cache
 
 ### deploy:cache:warmup
 [Source](/recipe/symfony.php#L127)
-
-
 
 Warm up cache
 
 ### database:migrate
 [Source](/recipe/symfony.php#L135)
 
-
-
 Migrate database
 
 ### deploy
 [Source](/recipe/symfony.php#L148)
-
-
 
 Main task
 

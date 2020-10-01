@@ -19,14 +19,10 @@
 ### deploy:website:cache:clear
 [Source](/recipe/sulu.php#L24)
 
-Clear cache
-
 
 
 ### deploy:website:cache:warmup
 [Source](/recipe/sulu.php#L29)
-
-Warm up cache
 
 
 

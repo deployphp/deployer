@@ -38,21 +38,15 @@ Yii 2 Advanced Project Template shared files
 ### deploy:init
 [Source](/recipe/yii2-app-advanced.php#L38)
 
-
-
 Initialization
 
 ### deploy:run_migrations
 [Source](/recipe/yii2-app-advanced.php#L45)
 
-
-
 Run migrations
 
 ### deploy
 [Source](/recipe/yii2-app-advanced.php#L52)
-
-
 
 Main task
 

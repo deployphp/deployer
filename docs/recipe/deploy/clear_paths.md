@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:clear_paths
 [Source](/recipe/deploy/clear_paths.php#L11)
 
-Cleaning up files and/or directories
-
 
 

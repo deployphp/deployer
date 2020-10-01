@@ -68,12 +68,8 @@
 
 
 
-
-
 ### sw:system:install
 [Source](/recipe/shopware6.php#L37)
-
-
 
 
 
@@ -82,12 +78,8 @@
 
 
 
-
-
 ### sw:system:setup
 [Source](/recipe/shopware6.php#L43)
-
-
 
 
 
@@ -96,12 +88,8 @@
 
 
 
-
-
 ### sw:cache:clear
 [Source](/recipe/shopware6.php#L49)
-
-
 
 
 
@@ -110,12 +98,8 @@
 
 
 
-
-
 ### sw:database:migrate
 [Source](/recipe/shopware6.php#L56)
-
-
 
 
 
@@ -124,12 +108,8 @@
 
 
 
-
-
 ### sw:plugin:activate:all
 [Source](/recipe/shopware6.php#L62)
-
-
 
 
 
@@ -138,19 +118,13 @@
 
 
 
-
-
 ### sw:deploy
 [Source](/recipe/shopware6.php#L131)
-
-
 
 Grouped SW deploy tasks
 
 ### deploy
 [Source](/recipe/shopware6.php#L143)
-
-
 
 Main task
 

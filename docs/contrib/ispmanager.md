@@ -75,14 +75,10 @@ Storage
 ### ispmanager:init
 [Source](/contrib/ispmanager.php#L61)
 
-Initialisation
-
 
 
 ### ispmanager:process
 [Source](/contrib/ispmanager.php#L690)
-
-Auto task processing
 
 
 

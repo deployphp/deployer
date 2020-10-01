@@ -52,35 +52,25 @@ The message
 ### discord_send_message
 [Source](/contrib/discord.php#L32)
 
-
-
 Helpers
 
 ### discord:test
 [Source](/contrib/discord.php#L40)
-
-Just notify your Discord channel with all messages, without deploying
 
 Tasks
 
 ### discord:notify
 [Source](/contrib/discord.php#L52)
 
-Notify Discord
-
 
 
 ### discord:notify:success
 [Source](/contrib/discord.php#L61)
 
-Notify Discord about deploy finish
-
 
 
 ### discord:notify:failure
 [Source](/contrib/discord.php#L70)
-
-Notify Discord about deploy failure
 
 
 

@@ -79,28 +79,20 @@ Color of attachment
 ### slack:notify
 [Source](/contrib/slack.php#L30)
 
-Notifying Slack
-
 
 
 ### slack:notify:success
 [Source](/contrib/slack.php#L49)
-
-Notifying Slack about deploy finish
 
 
 
 ### slack:notify:failure
 [Source](/contrib/slack.php#L68)
 
-Notifying Slack about deploy failure
-
 
 
 ### slack:notify:rollback
 [Source](/contrib/slack.php#L87)
-
-Notifying Slack about rollback
 
 
 

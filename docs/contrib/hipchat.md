@@ -46,7 +46,5 @@ file that was distributed with this source code.
 ### hipchat:notify
 [Source](/contrib/hipchat.php#L18)
 
-Notifying Hipchat channel of deployment
-
 
 

@@ -54,21 +54,15 @@ Deploy message
 ### yammer:notify
 [Source](/contrib/yammer.php#L25)
 
-Notifying Yammer
-
 
 
 ### yammer:notify:success
 [Source](/contrib/yammer.php#L45)
 
-Notifying Yammer about deploy finish
-
 
 
 ### yammer:notify:failure
 [Source](/contrib/yammer.php#L65)
-
-Notifying Yammer about deploy failure
 
 
 

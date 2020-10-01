@@ -71,8 +71,6 @@ class DocGen
                     $toc .= "  * [`{$t->name}`](#{$t->name}) — {$t->desc}\n";
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
-                    $tasks .= $t->desc;
-                    $tasks .= "\n\n";
                     $tasks .= ($t->comment);
                     $tasks .= "\n\n";
                 }

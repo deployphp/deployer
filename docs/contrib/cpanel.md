@@ -21,21 +21,15 @@
 ### cpanel:createdb
 [Source](/contrib/cpanel.php#L62)
 
-Creating database though CPanel API
-
 
 
 ### cpanel:createaddondomain
 [Source](/contrib/cpanel.php#L90)
 
-Creating addon domain though CPanel API
-
 
 
 ### cpanel:deleteaddondomain
 [Source](/contrib/cpanel.php#L113)
-
-Delete addon domain though CPanel API
 
 
 

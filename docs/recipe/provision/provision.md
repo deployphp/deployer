@@ -51,84 +51,60 @@ file that was distributed with this source code.
 ### provision
 [Source](/recipe/provision/provision.php#L18)
 
-Provision server with nginx, php, php-fpm
-
 
 
 ### provision:check
 [Source](/recipe/provision/provision.php#L47)
-
-Check pre-required state
 
 
 
 ### provision:upgrade
 [Source](/recipe/provision/provision.php#L68)
 
-Upgrade all packages
-
 
 
 ### provision:install
 [Source](/recipe/provision/provision.php#L74)
-
-Install base packages
 
 
 
 ### provision:ssh
 [Source](/recipe/provision/provision.php#L97)
 
-Configure SSH
-
 
 
 ### provision:user:deployer
 [Source](/recipe/provision/provision.php#L111)
-
-Setup deployer user
 
 
 
 ### provision:firewall
 [Source](/recipe/provision/provision.php#L146)
 
-Setup firewall
-
 
 
 ### provision:install:php
 [Source](/recipe/provision/provision.php#L154)
-
-Install PHP packages
 
 
 
 ### provision:install:composer
 [Source](/recipe/provision/provision.php#L179)
 
-Install Composer
-
 
 
 ### provision:config:php:sessions
 [Source](/recipe/provision/provision.php#L212)
-
-Configure php sessions directory
 
 
 
 ### provision:nginx:dhparam
 [Source](/recipe/provision/provision.php#L218)
 
-Generating DH (Diffie Hellman) key
-
 
 
 ### provision:nginx
 [Source](/recipe/provision/provision.php#L229)
-
-Install nginx & php-fpm
 
 
 

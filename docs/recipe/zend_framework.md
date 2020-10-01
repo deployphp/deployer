@@ -22,7 +22,5 @@ file that was distributed with this source code.
 ### deploy
 [Source](/recipe/zend_framework.php#L15)
 
-
-
 Main task
 

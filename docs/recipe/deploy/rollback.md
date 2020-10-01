@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### rollback
 [Source](/recipe/deploy/rollback.php#L13)
 
-Rollback to previous release
-
 
 

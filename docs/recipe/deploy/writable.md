@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:writable
 [Source](/recipe/deploy/writable.php#L11)
 
-Make writable dirs
-
 
 

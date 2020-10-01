@@ -44,21 +44,15 @@ Magento writable dirs
 ### deploy:cache:clear
 [Source](/recipe/magento.php#L28)
 
-
-
 Clear cache
 
 ### deploy:clear_version
 [Source](/recipe/magento.php#L35)
 
-
-
 Remove files that can be used to compromise Magento
 
 ### deploy
 [Source](/recipe/magento.php#L48)
-
-
 
 Main task
 

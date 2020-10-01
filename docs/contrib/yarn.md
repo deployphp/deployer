@@ -21,7 +21,5 @@ file that was distributed with this source code.
 ### yarn:install
 [Source](/contrib/yarn.php#L16)
 
-Install Yarn packages
-
 
 

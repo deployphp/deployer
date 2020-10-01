@@ -36,7 +36,5 @@ CodeIgniter writable dirs
 ### deploy
 [Source](/recipe/codeigniter.php#L21)
 
-
-
 Main task
 

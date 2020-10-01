@@ -57,28 +57,20 @@ file that was distributed with this source code.
 ### database:migrate
 [Source](/recipe/symfony5.php#L26)
 
-Migrate database
-
 
 
 ### deploy:cache:clear
 [Source](/recipe/symfony5.php#L36)
-
-Clear cache
 
 
 
 ### deploy:cache:warmup
 [Source](/recipe/symfony5.php#L41)
 
-Warm up cache
-
 
 
 ### deploy
 [Source](/recipe/symfony5.php#L46)
-
-Deploy project
 
 
 

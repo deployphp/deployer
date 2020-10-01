@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### grafana:annotation
 [Source](/contrib/grafana.php#L14)
 
-Create Grafana annotation of deployment
-
 
 

@@ -36,7 +36,5 @@ Yii writable dirs
 ### deploy
 [Source](/recipe/yii.php#L21)
 
-
-
 Main task
 

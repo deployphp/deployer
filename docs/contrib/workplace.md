@@ -48,21 +48,15 @@ By default, create a new post for every message
 ### workplace:notify
 [Source](/contrib/workplace.php#L21)
 
-Notifying Workplace
-
 
 
 ### workplace:notify:success
 [Source](/contrib/workplace.php#L46)
 
-Notifying Workplace about deploy finish
-
 
 
 ### workplace:notify:failure
 [Source](/contrib/workplace.php#L58)
-
-Notifying Workplace about deploy failure
 
 
 

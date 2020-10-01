@@ -31,14 +31,10 @@ Yii 2 Basic Project Template shared dirs
 ### deploy:run_migrations
 [Source](/recipe/yii2-app-basic.php#L22)
 
-
-
 Run migrations
 
 ### deploy
 [Source](/recipe/yii2-app-basic.php#L29)
-
-
 
 Main task
 

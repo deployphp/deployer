@@ -38,21 +38,15 @@ CakePHP 3 Project Template shared files
 ### deploy:init
 [Source](/recipe/cakephp.php#L30)
 
-
-
 Create plugins' symlinks
 
 ### deploy:run_migrations
 [Source](/recipe/cakephp.php#L37)
 
-
-
 Run migrations
 
 ### deploy
 [Source](/recipe/cakephp.php#L46)
-
-
 
 Main task
 

@@ -67,14 +67,10 @@ file that was distributed with this source code.
 ### rsync:warmup
 [Source](/contrib/rsync.php#L91)
 
-Warmup remote Rsync target
-
 
 
 ### rsync
 [Source](/contrib/rsync.php#L106)
-
-Rsync local->remote
 
 
 

@@ -20,7 +20,5 @@ file that was distributed with this source code.
 ### deploy:setup
 [Source](/recipe/deploy/setup.php#L14)
 
-Preparing host for deploy
-
 
 

@@ -42,7 +42,7 @@ class DocGen
     public function gen(string $destination)
     {
         foreach ($this->recipes as $recipe) {
-            $filePath = "$destination/" . preg_replace('#\.php$#', '.md', $recipe->recipePath);
+            $filePath = "$destination/" . php_to_md($recipe->recipePath);
 
             $toc = '';
             $config = '';
@@ -50,7 +50,8 @@ class DocGen
             if (count($recipe->require) > 0) {
                 $toc .= "* Require\n";
                 foreach ($recipe->require as $r) {
-                    $toc .= "  * [`{$r}`](/{$r})\n";
+                    $md = php_to_md($r);
+                    $toc .= "  * [`{$r}`](/docs/{$md})\n";
                 }
             }
             if (count($recipe->config) > 0) {
@@ -110,4 +111,9 @@ function indent($text)
     return implode("\n", array_map(function ($line) {
         return "  " . $line;
     }, explode("\n", $text)));
+}
+
+function php_to_md($file)
+{
+    return preg_replace('#\.php$#', '.md', $file);
 }

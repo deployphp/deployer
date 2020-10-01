@@ -9,7 +9,7 @@
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`flow_context`](#flow_context)
   * [`flow_command`](#flow_command)

@@ -11,7 +11,7 @@ Symfony 3 Configuration
 
 
 * Require
-  * [`recipe/symfony.php`](/recipe/symfony.php)
+  * [`recipe/symfony.php`](/docs/recipe/symfony.md)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)

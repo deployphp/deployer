@@ -10,7 +10,7 @@ Configuration
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`static_content_locales`](#static_content_locales)
   * [`shared_files`](#shared_files)

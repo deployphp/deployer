@@ -9,7 +9,7 @@
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Tasks
   * [`deploy`](#deploy) — 
 

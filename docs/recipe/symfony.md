@@ -11,7 +11,7 @@ Symfony Configuration
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`symfony_env`](#symfony_env)
   * [`shared_dirs`](#shared_dirs)

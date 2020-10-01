@@ -9,7 +9,7 @@
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`typo3_webroot`](#typo3_webroot)
   * [`shared_dirs`](#shared_dirs)

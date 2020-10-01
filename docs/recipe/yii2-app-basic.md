@@ -11,7 +11,7 @@ Yii 2 Basic Project Template configuration
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks

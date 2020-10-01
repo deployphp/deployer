@@ -11,7 +11,7 @@ Silverstripe configuration
 
 
 * Require
-  * [`recipe/common.php`](/recipe/common.php)
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`shared_assets`](#shared_assets)
   * [`shared_dirs`](#shared_dirs)

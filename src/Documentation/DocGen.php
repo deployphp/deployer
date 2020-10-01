@@ -153,6 +153,7 @@ class DocGen
                     $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= $replaceLinks($t->comment);
                     if (is_array($t->group)) {
+                        $tasks .= "\n\n";
                         $tasks .= "This task is group task which contains next tasks:\n";
                         foreach ($t->group as $taskName) {
                             $t = $findTask($taskName);

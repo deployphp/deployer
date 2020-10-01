@@ -152,7 +152,9 @@ Migrate database
 ### deploy
 [Source](/recipe/symfony.php#L142)
 
-Main taskThis task is group task which contains next tasks:
+Main task
+
+This task is group task which contains next tasks:
 * [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
 * [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
 * [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)

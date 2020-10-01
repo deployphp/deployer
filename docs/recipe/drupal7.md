@@ -52,6 +52,8 @@ Drupal 7 writable dirs
 ### deploy
 [Source](/recipe/drupal7.php#L6)
 
+
+
 This task is group task which contains next tasks:
 * [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
 * [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)

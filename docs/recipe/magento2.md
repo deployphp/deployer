@@ -97,6 +97,8 @@ Tasks
 ### deploy:magento
 [Source](/recipe/magento2.php#L79)
 
+
+
 This task is group task which contains next tasks:
 * [`magento:compile`](/docs/recipe/magento2.md#magentocompile)
 * [`magento:deploy:assets`](/docs/recipe/magento2.md#magentodeployassets)
@@ -107,6 +109,8 @@ This task is group task which contains next tasks:
 
 ### deploy
 [Source](/recipe/magento2.php#L89)
+
+
 
 This task is group task which contains next tasks:
 * [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)

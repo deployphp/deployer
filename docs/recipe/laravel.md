@@ -223,7 +223,9 @@ To run this task automatically, please add below line to your deploy.php file
 ### deploy
 [Source](/recipe/laravel.php#L180)
 
-Main deploy task.This task is group task which contains next tasks:
+Main deploy task.
+
+This task is group task which contains next tasks:
 * [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
 * [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
 * [`artisan:storage:link`](/docs/recipe/laravel.md#artisanstoragelink)

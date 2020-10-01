@@ -121,7 +121,9 @@
 ### sw:deploy
 [Source](/recipe/shopware6.php#L130)
 
-Grouped SW deploy tasksThis task is group task which contains next tasks:
+Grouped SW deploy tasks
+
+This task is group task which contains next tasks:
 * [`sw:build`](/docs/recipe/shopware6.md#swbuild)
 * [`sw:plugin:activate:all`](/docs/recipe/shopware6.md#swpluginactivateall)
 * [`sw:database:migrate`](/docs/recipe/shopware6.md#swdatabasemigrate)
@@ -133,7 +135,9 @@ Grouped SW deploy tasksThis task is group task which contains next tasks:
 ### deploy
 [Source](/recipe/shopware6.php#L142)
 
-Main taskThis task is group task which contains next tasks:
+Main task
+
+This task is group task which contains next tasks:
 * [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
 * [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
 * [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)

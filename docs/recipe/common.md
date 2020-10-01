@@ -184,6 +184,8 @@ sudo command executed.
 ### deploy:prepare
 [Source](/recipe/common.php#L141)
 
+
+
 This task is group task which contains next tasks:
 * [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
 * [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
@@ -196,6 +198,8 @@ This task is group task which contains next tasks:
 
 ### deploy:publish
 [Source](/recipe/common.php#L151)
+
+
 
 This task is group task which contains next tasks:
 * [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)

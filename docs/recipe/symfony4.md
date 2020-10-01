@@ -74,6 +74,8 @@
 ### deploy
 [Source](/recipe/symfony4.php#L40)
 
+
+
 This task is group task which contains next tasks:
 * [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
 * [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)

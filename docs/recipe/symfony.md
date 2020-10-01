@@ -43,20 +43,32 @@ Symfony build set
 ### shared_dirs
 [Source](/recipe/symfony.php#L15)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 Symfony shared dirs
 
 ### shared_files
 [Source](/recipe/symfony.php#L18)
+
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
 
 Symfony shared files
 
 ### writable_dirs
 [Source](/recipe/symfony.php#L21)
 
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
+
 Symfony writable dirs
 
 ### clear_paths
 [Source](/recipe/symfony.php#L24)
+
+Overrides
+* [`clear_paths`](/docs/recipe/common.md#clear_paths)
 
 Clear paths
 
@@ -73,10 +85,16 @@ Requires non symfony-core package `kriswallsmith/assetic` to be installed
 ### env
 [Source](/recipe/symfony.php#L33)
 
+Overrides
+* [`env`](/docs/recipe/common.md#env)
+
 Environment vars
 
 ### composer_options
 [Source](/recipe/symfony.php#L39)
+
+Overrides
+* [`composer_options`](/docs/recipe/common.md#composer_options)
 
 
 

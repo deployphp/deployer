@@ -22,10 +22,16 @@
 ### shared_dirs
 [Source](/recipe/cakephp.php#L11)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 CakePHP 3 Project Template shared dirs
 
 ### shared_files
 [Source](/recipe/cakephp.php#L17)
+
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
 
 CakePHP 3 Project Template shared files
 

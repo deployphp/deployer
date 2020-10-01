@@ -50,15 +50,24 @@
 ### shared_dirs
 [Source](/recipe/laravel.php#L6)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 
 
 ### shared_files
 [Source](/recipe/laravel.php#L7)
 
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
+
 
 
 ### writable_dirs
 [Source](/recipe/laravel.php#L8)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 
 

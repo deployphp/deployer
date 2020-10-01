@@ -68,10 +68,26 @@ class DocGen
                     $config = $find($name);
                     if ($config !== null) {
                         $md = php_to_md($config->recipePath);
-                        return "[$name](/docs/$md#$name)";
+                        $anchor = anchor($name);
+                        return "[$name](/docs/$md#$anchor)";
                     }
                     return "{{" . $name . "}}";
                 }, $comment);
+            };
+            $findOverride = function (DocRecipe $recipe, string $name) use (&$findOverride): ?DocConfig {
+                foreach ($recipe->require as $r) {
+                    if (array_key_exists($r, $this->recipes)) {
+                        if (array_key_exists($name, $this->recipes[$r]->config)) {
+                            return $this->recipes[$r]->config[$name];
+                        }
+                    }
+                }
+                foreach ($recipe->require as $r) {
+                    if (array_key_exists($r, $this->recipes)) {
+                        return $findOverride($this->recipes[$r], $name);
+                    }
+                }
+                return null;
             };
 
 
@@ -95,6 +111,12 @@ class DocGen
                     $toc .= "  * [`{$c->name}`](#{$anchor})\n";
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](/{$c->recipePath}#L{$c->lineNumber})\n\n";
+                    $o = $findOverride($recipe, $c->name);
+                    if ($o !== null) {
+                        $md = php_to_md($o->recipePath);
+                        $anchor = anchor($c->name);
+                        $config .= "Overrides\n* [`{$c->name}`](/docs/$md#$anchor)\n\n";
+                    }
                     $config .= $replaceLinks($c->comment);
                     $config .= "\n\n";
                 }

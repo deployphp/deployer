@@ -23,15 +23,24 @@
 ### shared_dirs
 [Source](/recipe/magento.php#L11)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 Magento shared dirs
 
 ### shared_files
 [Source](/recipe/magento.php#L14)
 
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
+
 Magento shared files
 
 ### writable_dirs
 [Source](/recipe/magento.php#L17)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 Magento writable dirs
 

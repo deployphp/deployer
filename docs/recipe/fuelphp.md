@@ -19,6 +19,9 @@
 ### shared_dirs
 [Source](/recipe/fuelphp.php#L7)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 FuelPHP 1.x shared dirs
 
 

@@ -20,10 +20,16 @@
 ### shared_dirs
 [Source](/recipe/codeigniter.php#L7)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 CodeIgniter shared dirs
 
 ### writable_dirs
 [Source](/recipe/codeigniter.php#L10)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 CodeIgniter writable dirs
 

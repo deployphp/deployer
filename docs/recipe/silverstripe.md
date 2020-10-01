@@ -29,10 +29,16 @@
 ### shared_dirs
 [Source](/recipe/silverstripe.php#L19)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 Silverstripe shared dirs
 
 ### writable_dirs
 [Source](/recipe/silverstripe.php#L24)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 Silverstripe writable dirs
 

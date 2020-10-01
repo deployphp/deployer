@@ -21,15 +21,24 @@
 ### shared_files
 [Source](/recipe/prestashop.php#L6)
 
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
+
 
 
 ### shared_dirs
 [Source](/recipe/prestashop.php#L7)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 
 
 ### writable_dirs
 [Source](/recipe/prestashop.php#L19)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 
 

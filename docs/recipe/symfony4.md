@@ -26,15 +26,24 @@
 ### shared_dirs
 [Source](/recipe/symfony4.php#L6)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 
 
 ### shared_files
 [Source](/recipe/symfony4.php#L7)
 
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
+
 
 
 ### writable_dirs
 [Source](/recipe/symfony4.php#L8)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 
 

@@ -20,20 +20,32 @@
 ### shared_dirs
 [Source](/recipe/symfony3.php#L11)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/symfony.md#shared_dirs)
+
 Symfony shared dirs
 
 ### writable_dirs
 [Source](/recipe/symfony3.php#L14)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/symfony.md#writable_dirs)
 
 Symfony writable dirs
 
 ### bin_dir
 [Source](/recipe/symfony3.php#L17)
 
+Overrides
+* [`bin_dir`](/docs/recipe/symfony.md#bin_dir)
+
 Symfony executable and variable directories
 
 ### var_dir
 [Source](/recipe/symfony3.php#L18)
+
+Overrides
+* [`var_dir`](/docs/recipe/symfony.md#var_dir)
 
 
 

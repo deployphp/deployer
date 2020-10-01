@@ -20,10 +20,16 @@
 ### shared_dirs
 [Source](/recipe/yii.php#L7)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 Yii shared dirs
 
 ### writable_dirs
 [Source](/recipe/yii.php#L10)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 Yii writable dirs
 

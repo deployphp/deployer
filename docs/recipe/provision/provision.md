@@ -11,7 +11,6 @@
 * Config
   * [`php_version`](#php_version)
   * [`sudo_password`](#sudo_password)
-  * [`env`](#env)
 * Tasks
   * [`provision`](#provision) — Provision server with nginx, php, php-fpm
   * [`provision:check`](#provisioncheck) — Check pre-required state
@@ -28,16 +27,11 @@
 
 ## Config
 ### php_version
-[Source](/recipe/provision/provision.php#L7)
-
-
-
-### sudo_password
 [Source](/recipe/provision/provision.php#L8)
 
 
 
-### env
+### sudo_password
 [Source](/recipe/provision/provision.php#L9)
 
 

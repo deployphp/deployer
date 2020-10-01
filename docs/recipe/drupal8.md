@@ -27,15 +27,24 @@ Set drupal site. Change if you use different site
 ### shared_dirs
 [Source](/recipe/drupal8.php#L24)
 
+Overrides
+* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+
 Drupal 8 shared dirs
 
 ### shared_files
 [Source](/recipe/drupal8.php#L29)
 
+Overrides
+* [`shared_files`](/docs/recipe/common.md#shared_files)
+
 Drupal 8 shared files
 
 ### writable_dirs
 [Source](/recipe/drupal8.php#L35)
+
+Overrides
+* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
 
 Drupal 8 Writable dirs
 

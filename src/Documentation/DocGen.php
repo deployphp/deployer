@@ -138,7 +138,7 @@ MD;
 
 function trimComment($line)
 {
-    return preg_replace('#^(/\*\*?\s?|\s\*\s?|//\s)#', '', $line);
+    return preg_replace('#^(/\*\*?\s?|\s\*\s?|//\s?)#', '', $line);
 }
 
 function indent($text)

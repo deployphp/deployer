@@ -22,22 +22,22 @@
 ### drupal_site
 [Source](/recipe/drupal8.php#L20)
 
-//Set drupal site. Change if you use different site
+Set drupal site. Change if you use different site
 
 ### shared_dirs
 [Source](/recipe/drupal8.php#L24)
 
-//Drupal 8 shared dirs
+Drupal 8 shared dirs
 
 ### shared_files
 [Source](/recipe/drupal8.php#L29)
 
-//Drupal 8 shared files
+Drupal 8 shared files
 
 ### writable_dirs
 [Source](/recipe/drupal8.php#L35)
 
-//Drupal 8 Writable dirs
+Drupal 8 Writable dirs
 
 
 ## Tasks

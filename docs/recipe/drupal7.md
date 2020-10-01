@@ -24,22 +24,22 @@
 ### drupal_site
 [Source](/recipe/drupal7.php#L20)
 
-//Set Drupal 7 site. Change if you use different site
+Set Drupal 7 site. Change if you use different site
 
 ### shared_dirs
 [Source](/recipe/drupal7.php#L23)
 
-//Drupal 7 shared dirs
+Drupal 7 shared dirs
 
 ### shared_files
 [Source](/recipe/drupal7.php#L28)
 
-//Drupal 7 shared files
+Drupal 7 shared files
 
 ### writable_dirs
 [Source](/recipe/drupal7.php#L33)
 
-//Drupal 7 writable dirs
+Drupal 7 writable dirs
 
 
 ## Tasks
@@ -51,10 +51,10 @@
 ### drupal:settings
 [Source](/recipe/drupal7.php#L39)
 
-//Create and upload Drupal 7 settings.php using values from secrets
+Create and upload Drupal 7 settings.php using values from secrets
 
 ### drupal:upload_files
 [Source](/recipe/drupal7.php#L81)
 
-//Upload Drupal 7 files folder
+Upload Drupal 7 files folder
 

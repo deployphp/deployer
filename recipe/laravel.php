@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -165,7 +159,7 @@ task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
  *
  *     before('deploy:symlink', 'deploy:public_disk');
  *
- * @see https://laravel.com/docs/5.2/filesystem#configuration
+ * [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
  */
 desc('Make symlink for public disk');
 task('deploy:public_disk', function () {

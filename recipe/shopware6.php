@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 set('repository', 'git@github.com:shopware/production.git');

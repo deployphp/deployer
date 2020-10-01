@@ -131,9 +131,6 @@ function inventory($file)
 
 /**
  * Set task description.
- *
- * @param string $title
- * @return string
  */
 function desc($title = null)
 {

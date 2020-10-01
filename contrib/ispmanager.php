@@ -1,5 +1,5 @@
 <?php
-/* (c) Asafov Sergey <asafov@newleaf.ru>
+/* 
  * This recipe for work with ISPManager Lite panel by API.
  */
 namespace Deployer;

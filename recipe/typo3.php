@@ -1,10 +1,4 @@
 <?php
-/* (c) Frank Naegler <frank.naegler@typo3.org>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';

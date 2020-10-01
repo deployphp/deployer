@@ -1,9 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Deployer;
 
@@ -12,7 +7,6 @@ use function Deployer\Support\starts_with;
 
 set('php_version', '7.4');
 set('sudo_password', 'TODO');
-set('env', ['DEBIAN_FRONTEND' => 'noninteractive']);
 
 desc('Provision server with nginx, php, php-fpm');
 task('provision', [
@@ -66,8 +60,8 @@ task('provision:check', function () {
 
 desc('Upgrade all packages');
 task('provision:upgrade', function () {
-    run('apt-get update');
-    run('apt-get upgrade -y');
+    run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
 desc('Install base packages');
@@ -90,7 +84,7 @@ task('provision:install', function () {
         'uuid-runtime',
         'whois',
     ];
-    run('apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ' . implode(' ', $packages));
+    run('apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
 desc('Configure SSH');
@@ -171,7 +165,7 @@ task('provision:install:php', function () {
         "php-xml",
         "php-zip",
     ];
-    run('apt-get install -y --force-yes ' . implode(' ', $packages));
+    run('apt-get install -y --force-yes ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
 

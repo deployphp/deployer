@@ -32,7 +32,7 @@ after('deploy:update_code', 'yarn:install');
 
 ## Tasks
 ### yarn:install
-[Source](/contrib/yarn.php#L28)
+[Source](/contrib/yarn.php#L29)
 
-
+In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
 

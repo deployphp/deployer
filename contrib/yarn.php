@@ -24,6 +24,7 @@ set('bin/yarn', function () {
     return run('which yarn');
 });
 
+// In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
 desc('Install Yarn packages');
 task('yarn:install', function () {
     if (has('previous_release')) {

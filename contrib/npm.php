@@ -30,6 +30,7 @@ set('bin/npm', function () {
     return run('which npm');
 });
 
+// In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
 desc('Install npm packages');
 task('npm:install', function () {
     if (has('previous_release')) {

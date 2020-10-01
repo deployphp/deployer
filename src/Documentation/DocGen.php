@@ -42,6 +42,39 @@ class DocGen
     public function gen(string $destination)
     {
         foreach ($this->recipes as $recipe) {
+            // $find will try to return DocConfig for a given config $name.
+            $find = function (string $name) use ($recipe): ?DocConfig {
+                if (array_key_exists($name, $recipe->config)) {
+                    return $recipe->config[$name];
+                }
+                foreach ($recipe->require as $r) {
+                    if (array_key_exists($r, $this->recipes)) {
+                        if (array_key_exists($name, $this->recipes[$r]->config)) {
+                            return $this->recipes[$r]->config[$name];
+                        }
+                    }
+                }
+                foreach ($this->recipes as $r) {
+                    if (array_key_exists($name, $r->config)) {
+                        return $r->config[$name];
+                    }
+                }
+                return null;
+            };
+            // Replace all {{name}} with link to correct config declaration.
+            $link = function (string $comment) use ($find): string {
+                return preg_replace_callback('#(\{\{(?<name>[\w_:]+)\}\})#', function ($m) use ($find) {
+                    $name = $m['name'];
+                    $config = $find($name);
+                    if ($config !== null) {
+                        $md = php_to_md($config->recipePath);
+                        return "[$name](/docs/$md#$name)";
+                    }
+                    return "{{" . $name. "}}";
+                }, $comment);
+            };
+
+
             $filePath = "$destination/" . php_to_md($recipe->recipePath);
 
             $toc = '';
@@ -61,7 +94,7 @@ class DocGen
                     $toc .= "  * [`{$c->name}`](#{$c->name})\n";
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](/{$c->recipePath}#L{$c->lineNumber})\n\n";
-                    $config .= ($c->comment);
+                    $config .= $link($c->comment);
                     $config .= "\n\n";
                 }
             }
@@ -72,7 +105,7 @@ class DocGen
                     $toc .= "  * [`{$t->name}`](#{$t->name}) — {$t->desc}\n";
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
-                    $tasks .= ($t->comment);
+                    $tasks .= $link($t->comment);
                     $tasks .= "\n\n";
                 }
             }

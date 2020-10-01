@@ -39,12 +39,12 @@ after('deploy:update_code', 'npm:ci');
 
 ## Tasks
 ### npm:install
-[Source](/contrib/npm.php#L34)
+[Source](/contrib/npm.php#L35)
 
-
+In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
 
 ### npm:ci
-[Source](/contrib/npm.php#L50)
+[Source](/contrib/npm.php#L51)
 
 
 

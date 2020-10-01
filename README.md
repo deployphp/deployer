@@ -16,8 +16,7 @@ Do you want to contribute to this project? Start working on one of those issues:
 
 - [ ] [Implement host selector](https://github.com/deployphp/deployer/issues/2154) ⭐️⭐️⭐️⭐️⭐️
   > You need to write a simple parser and selector class, this will be a core of new Deployer.
-- [ ] [Implement docs generator](https://github.com/deployphp/deployer/issues/2155) ⭐️⭐️⭐️⭐️
-  > A cli command for generating documentation for recipes, website will be built on this feature later.
+- [ ] Improve recipe docs. Add comments to config options, tasks. Clear contrib recipes.
   
 [Other issues from v7 milestone](https://github.com/deployphp/deployer/milestone/7)
 

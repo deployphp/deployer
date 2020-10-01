@@ -98,10 +98,10 @@ task('deploy', [
 
 
 * Tasks
-  * [`directadmin:createdb`](#directadmin:createdb) — Create a database on DirectAdmin
-  * [`directadmin:deletedb`](#directadmin:deletedb) — Delete a database on DirectAdmin
-  * [`directadmin:createdomain`](#directadmin:createdomain) — Create a domain on DirectAdmin
-  * [`directadmin:deletedomain`](#directadmin:deletedomain) — Delete a domain on DirectAdmin
+  * [`directadmin:createdb`](#directadmincreatedb) — Create a database on DirectAdmin
+  * [`directadmin:deletedb`](#directadmindeletedb) — Delete a database on DirectAdmin
+  * [`directadmin:createdomain`](#directadmincreatedomain) — Create a domain on DirectAdmin
+  * [`directadmin:deletedomain`](#directadmindeletedomain) — Delete a domain on DirectAdmin
 
 
 ## Tasks

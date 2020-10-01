@@ -40,7 +40,7 @@ after('deploy', 'hipchat:notify');
   * [`hipchat_message`](#hipchat_message)
   * [`hipchat_url`](#hipchat_url)
 * Tasks
-  * [`hipchat:notify`](#hipchat:notify) — Notifying Hipchat channel of deployment
+  * [`hipchat:notify`](#hipchatnotify) — Notifying Hipchat channel of deployment
 
 ## Config
 ### hipchat_color

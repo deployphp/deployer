@@ -17,8 +17,8 @@
   * [`writable_dirs`](#writable_dirs)
 * Tasks
   * [`deploy`](#deploy) — 
-  * [`drupal:settings`](#drupal:settings) — 
-  * [`drupal:upload_files`](#drupal:upload_files) — 
+  * [`drupal:settings`](#drupalsettings) — 
+  * [`drupal:upload_files`](#drupalupload_files) — 
 
 ## Config
 ### drupal_site

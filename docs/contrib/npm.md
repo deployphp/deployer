@@ -33,8 +33,8 @@ after('deploy:update_code', 'npm:ci');
 
 
 * Tasks
-  * [`npm:install`](#npm:install) — Install npm packages
-  * [`npm:ci`](#npm:ci) — Install npm packages with a clean slate
+  * [`npm:install`](#npminstall) — Install npm packages
+  * [`npm:ci`](#npmci) — Install npm packages with a clean slate
 
 
 ## Tasks

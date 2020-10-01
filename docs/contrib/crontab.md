@@ -12,8 +12,8 @@ Configuration: You need no specify only crontab:jobs, which must be array of str
 
 
 * Tasks
-  * [`crontab:load`](#crontab:load) — Load crontab
-  * [`crontab:sync`](#crontab:sync) — Sync crontab jobs
+  * [`crontab:load`](#crontabload) — Load crontab
+  * [`crontab:sync`](#crontabsync) — Sync crontab jobs
 
 
 ## Tasks

@@ -86,9 +86,9 @@ after('deploy:failed', 'rocketchat:notify:failure');
   * [`rocketchat_success_text`](#rocketchat_success_text)
   * [`rocketchat_failure_text`](#rocketchat_failure_text)
 * Tasks
-  * [`rocketchat:notify`](#rocketchat:notify) — Notify RocketChat
-  * [`rocketchat:notify:success`](#rocketchat:notify:success) — Notifying RocketChat about deploy finish
-  * [`rocketchat:notify:failure`](#rocketchat:notify:failure) — Notifying RocketChat about deploy failure
+  * [`rocketchat:notify`](#rocketchatnotify) — Notify RocketChat
+  * [`rocketchat:notify:success`](#rocketchatnotifysuccess) — Notifying RocketChat about deploy finish
+  * [`rocketchat:notify:failure`](#rocketchatnotifyfailure) — Notifying RocketChat about deploy failure
 
 ## Config
 ### rockchat_title

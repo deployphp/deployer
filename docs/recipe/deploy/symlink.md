@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:symlink`](#deploy:symlink) — Creating symlink to release
+  * [`deploy:symlink`](#deploysymlink) — Creating symlink to release
 
 
 ## Tasks

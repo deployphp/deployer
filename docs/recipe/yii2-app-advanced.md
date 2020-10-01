@@ -16,8 +16,8 @@ Yii 2 Advanced Project Template configuration
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
 * Tasks
-  * [`deploy:init`](#deploy:init) — 
-  * [`deploy:run_migrations`](#deploy:run_migrations) — 
+  * [`deploy:init`](#deployinit) — 
+  * [`deploy:run_migrations`](#deployrun_migrations) — 
   * [`deploy`](#deploy) — 
 
 ## Config

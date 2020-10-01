@@ -132,7 +132,7 @@ host('hostname')
   * [`rsync_filter`](#rsync_filter)
   * [`rsync_options`](#rsync_options)
 * Tasks
-  * [`rsync:warmup`](#rsync:warmup) — Warmup remote Rsync target
+  * [`rsync:warmup`](#rsyncwarmup) — Warmup remote Rsync target
   * [`rsync`](#rsync) — Rsync local->remote
 
 ## Config

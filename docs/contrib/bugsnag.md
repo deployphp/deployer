@@ -29,7 +29,7 @@ after('deploy', 'bugsnag:notify');
 
 
 * Tasks
-  * [`bugsnag:notify`](#bugsnag:notify) — Notifying Bugsnag of deployment
+  * [`bugsnag:notify`](#bugsnagnotify) — Notifying Bugsnag of deployment
 
 
 ## Tasks

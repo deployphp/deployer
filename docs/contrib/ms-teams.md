@@ -87,9 +87,9 @@ after('deploy:failed', 'teams:notify:failure');
   * [`teams_success_color`](#teams_success_color)
   * [`teams_failure_color`](#teams_failure_color)
 * Tasks
-  * [`teams:notify`](#teams:notify) — Notifying Teams
-  * [`teams:notify:success`](#teams:notify:success) — Notifying Teams about deploy finish
-  * [`teams:notify:failure`](#teams:notify:failure) — Notifying Teams about deploy failure
+  * [`teams:notify`](#teamsnotify) — Notifying Teams
+  * [`teams:notify:success`](#teamsnotifysuccess) — Notifying Teams about deploy finish
+  * [`teams:notify:failure`](#teamsnotifyfailure) — Notifying Teams about deploy failure
 
 ## Config
 ### teams_title

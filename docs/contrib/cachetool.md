@@ -58,9 +58,9 @@ http://gordalina.github.io/cachetool/
   * [`cachetool_binary`](#cachetool_binary)
   * [`cachetool_options`](#cachetool_options)
 * Tasks
-  * [`cachetool:clear:apc`](#cachetool:clear:apc) — Clearing APC system cache
-  * [`cachetool:clear:opcache`](#cachetool:clear:opcache) — Clearing OPcode cache
-  * [`cachetool:clear:apcu`](#cachetool:clear:apcu) — Clearing APCu system cache
+  * [`cachetool:clear:apc`](#cachetoolclearapc) — Clearing APC system cache
+  * [`cachetool:clear:opcache`](#cachetoolclearopcache) — Clearing OPcode cache
+  * [`cachetool:clear:apcu`](#cachetoolclearapcu) — Clearing APCu system cache
 
 ## Config
 ### cachetool

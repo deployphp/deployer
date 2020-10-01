@@ -80,10 +80,10 @@ after('deploy:failed', 'slack:notify:failure');
   * [`slack_failure_color`](#slack_failure_color)
   * [`slack_rollback_color`](#slack_rollback_color)
 * Tasks
-  * [`slack:notify`](#slack:notify) — Notifying Slack
-  * [`slack:notify:success`](#slack:notify:success) — Notifying Slack about deploy finish
-  * [`slack:notify:failure`](#slack:notify:failure) — Notifying Slack about deploy failure
-  * [`slack:notify:rollback`](#slack:notify:rollback) — Notifying Slack about rollback
+  * [`slack:notify`](#slacknotify) — Notifying Slack
+  * [`slack:notify:success`](#slacknotifysuccess) — Notifying Slack about deploy finish
+  * [`slack:notify:failure`](#slacknotifyfailure) — Notifying Slack about deploy failure
+  * [`slack:notify:rollback`](#slacknotifyrollback) — Notifying Slack about rollback
 
 ## Config
 ### slack_title

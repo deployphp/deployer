@@ -83,9 +83,9 @@ after('deploy:failed', 'workplace:notify:failure');
   * [`workplace_failure_text`](#workplace_failure_text)
   * [`workplace_edit_post`](#workplace_edit_post)
 * Tasks
-  * [`workplace:notify`](#workplace:notify) — Notifying Workplace
-  * [`workplace:notify:success`](#workplace:notify:success) — Notifying Workplace about deploy finish
-  * [`workplace:notify:failure`](#workplace:notify:failure) — Notifying Workplace about deploy failure
+  * [`workplace:notify`](#workplacenotify) — Notifying Workplace
+  * [`workplace:notify:success`](#workplacenotifysuccess) — Notifying Workplace about deploy finish
+  * [`workplace:notify:failure`](#workplacenotifyfailure) — Notifying Workplace about deploy failure
 
 ## Config
 ### workplace_text

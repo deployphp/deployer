@@ -31,7 +31,7 @@ if not the, last tasks before cleanup
 
 
 * Tasks
-  * [`deploy:cloudflare`](#deploy:cloudflare) — Clearing Cloudflare Cache
+  * [`deploy:cloudflare`](#deploycloudflare) — Clearing Cloudflare Cache
 
 
 ## Tasks

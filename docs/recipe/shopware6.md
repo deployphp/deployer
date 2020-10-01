@@ -16,18 +16,18 @@
   * [`writable_dirs`](#writable_dirs)
   * [`static_folders`](#static_folders)
 * Tasks
-  * [`sw:update_code`](#sw:update_code) — 
-  * [`sw:system:install`](#sw:system:install) — 
-  * [`sw:build`](#sw:build) — 
-  * [`sw:system:setup`](#sw:system:setup) — 
-  * [`sw:theme:compile`](#sw:theme:compile) — 
-  * [`sw:cache:clear`](#sw:cache:clear) — 
-  * [`sw:cache:warmup`](#sw:cache:warmup) — 
-  * [`sw:database:migrate`](#sw:database:migrate) — 
-  * [`sw:plugin:refresh`](#sw:plugin:refresh) — 
-  * [`sw:plugin:activate:all`](#sw:plugin:activate:all) — 
-  * [`sw:plugin:migrate:all`](#sw:plugin:migrate:all) — 
-  * [`sw:deploy`](#sw:deploy) — 
+  * [`sw:update_code`](#swupdate_code) — 
+  * [`sw:system:install`](#swsysteminstall) — 
+  * [`sw:build`](#swbuild) — 
+  * [`sw:system:setup`](#swsystemsetup) — 
+  * [`sw:theme:compile`](#swthemecompile) — 
+  * [`sw:cache:clear`](#swcacheclear) — 
+  * [`sw:cache:warmup`](#swcachewarmup) — 
+  * [`sw:database:migrate`](#swdatabasemigrate) — 
+  * [`sw:plugin:refresh`](#swpluginrefresh) — 
+  * [`sw:plugin:activate:all`](#swpluginactivateall) — 
+  * [`sw:plugin:migrate:all`](#swpluginmigrateall) — 
+  * [`sw:deploy`](#swdeploy) — 
   * [`deploy`](#deploy) — 
 
 ## Config

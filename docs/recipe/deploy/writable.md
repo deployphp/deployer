@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:writable`](#deploy:writable) — Make writable dirs
+  * [`deploy:writable`](#deploywritable) — Make writable dirs
 
 
 ## Tasks

@@ -15,17 +15,17 @@
   * [`env`](#env)
 * Tasks
   * [`provision`](#provision) — Provision server with nginx, php, php-fpm
-  * [`provision:check`](#provision:check) — Check pre-required state
-  * [`provision:upgrade`](#provision:upgrade) — Upgrade all packages
-  * [`provision:install`](#provision:install) — Install base packages
-  * [`provision:ssh`](#provision:ssh) — Configure SSH
-  * [`provision:user:deployer`](#provision:user:deployer) — Setup deployer user
-  * [`provision:firewall`](#provision:firewall) — Setup firewall
-  * [`provision:install:php`](#provision:install:php) — Install PHP packages
-  * [`provision:install:composer`](#provision:install:composer) — Install Composer
-  * [`provision:config:php:sessions`](#provision:config:php:sessions) — Configure php sessions directory
-  * [`provision:nginx:dhparam`](#provision:nginx:dhparam) — Generating DH (Diffie Hellman) key
-  * [`provision:nginx`](#provision:nginx) — Install nginx & php-fpm
+  * [`provision:check`](#provisioncheck) — Check pre-required state
+  * [`provision:upgrade`](#provisionupgrade) — Upgrade all packages
+  * [`provision:install`](#provisioninstall) — Install base packages
+  * [`provision:ssh`](#provisionssh) — Configure SSH
+  * [`provision:user:deployer`](#provisionuserdeployer) — Setup deployer user
+  * [`provision:firewall`](#provisionfirewall) — Setup firewall
+  * [`provision:install:php`](#provisioninstallphp) — Install PHP packages
+  * [`provision:install:composer`](#provisioninstallcomposer) — Install Composer
+  * [`provision:config:php:sessions`](#provisionconfigphpsessions) — Configure php sessions directory
+  * [`provision:nginx:dhparam`](#provisionnginxdhparam) — Generating DH (Diffie Hellman) key
+  * [`provision:nginx`](#provisionnginx) — Install nginx & php-fpm
 
 ## Config
 ### php_version

@@ -18,13 +18,13 @@ Configuration
   * [`writable_dirs`](#writable_dirs)
   * [`clear_paths`](#clear_paths)
 * Tasks
-  * [`magento:compile`](#magento:compile) — Compile magento di
-  * [`magento:deploy:assets`](#magento:deploy:assets) — Deploy assets
-  * [`magento:maintenance:enable`](#magento:maintenance:enable) — Enable maintenance mode
-  * [`magento:maintenance:disable`](#magento:maintenance:disable) — Disable maintenance mode
-  * [`magento:upgrade:db`](#magento:upgrade:db) — Upgrade magento database
-  * [`magento:cache:flush`](#magento:cache:flush) — Flush Magento Cache
-  * [`deploy:magento`](#deploy:magento) — Magento2 deployment operations
+  * [`magento:compile`](#magentocompile) — Compile magento di
+  * [`magento:deploy:assets`](#magentodeployassets) — Deploy assets
+  * [`magento:maintenance:enable`](#magentomaintenanceenable) — Enable maintenance mode
+  * [`magento:maintenance:disable`](#magentomaintenancedisable) — Disable maintenance mode
+  * [`magento:upgrade:db`](#magentoupgradedb) — Upgrade magento database
+  * [`magento:cache:flush`](#magentocacheflush) — Flush Magento Cache
+  * [`deploy:magento`](#deploymagento) — Magento2 deployment operations
   * [`deploy`](#deploy) — Deploy your project
 
 ## Config

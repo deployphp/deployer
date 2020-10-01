@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:shared`](#deploy:shared) — Creating symlinks for shared files and dirs
+  * [`deploy:shared`](#deployshared) — Creating symlinks for shared files and dirs
 
 
 ## Tasks

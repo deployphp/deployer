@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:info`](#deploy:info) — 
+  * [`deploy:info`](#deployinfo) — 
 
 
 ## Tasks

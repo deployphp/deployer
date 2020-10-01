@@ -15,7 +15,7 @@ Yii 2 Basic Project Template configuration
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks
-  * [`deploy:run_migrations`](#deploy:run_migrations) — 
+  * [`deploy:run_migrations`](#deployrun_migrations) — 
   * [`deploy`](#deploy) — 
 
 ## Config

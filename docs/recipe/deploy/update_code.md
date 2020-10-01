@@ -12,7 +12,7 @@
   * [`branch`](#branch)
   * [`git_cache`](#git_cache)
 * Tasks
-  * [`deploy:update_code`](#deploy:update_code) — Update code
+  * [`deploy:update_code`](#deployupdate_code) — Update code
 
 ## Config
 ### branch

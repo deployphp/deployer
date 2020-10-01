@@ -17,8 +17,8 @@ Magento Configuration
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy:cache:clear`](#deploy:cache:clear) — 
-  * [`deploy:clear_version`](#deploy:clear_version) — 
+  * [`deploy:cache:clear`](#deploycacheclear) — 
+  * [`deploy:clear_version`](#deployclear_version) — 
   * [`deploy`](#deploy) — 
 
 ## Config

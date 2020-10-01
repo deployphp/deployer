@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:copy_dirs`](#deploy:copy_dirs) — Copy directories
+  * [`deploy:copy_dirs`](#deploycopy_dirs) — Copy directories
 
 
 ## Tasks

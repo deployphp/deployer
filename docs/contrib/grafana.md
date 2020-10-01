@@ -45,7 +45,7 @@ after('success', 'grafana:annotation');
 
 
 * Tasks
-  * [`grafana:annotation`](#grafana:annotation) — Create Grafana annotation of deployment
+  * [`grafana:annotation`](#grafanaannotation) — Create Grafana annotation of deployment
 
 
 ## Tasks

@@ -31,33 +31,33 @@ Supported options:
   * [`log_files`](#log_files)
   * [`laravel_version`](#laravel_version)
 * Tasks
-  * [`artisan:up`](#artisan:up) — Disable maintenance mode
-  * [`artisan:down`](#artisan:down) — Enable maintenance mode
-  * [`artisan:migrate`](#artisan:migrate) — Execute artisan migrate
-  * [`artisan:migrate:fresh`](#artisan:migrate:fresh) — Execute artisan migrate:fresh
-  * [`artisan:migrate:rollback`](#artisan:migrate:rollback) — Execute artisan migrate:rollback
-  * [`artisan:migrate:status`](#artisan:migrate:status) — Execute artisan migrate:status
-  * [`artisan:db:seed`](#artisan:db:seed) — Execute artisan db:seed
-  * [`artisan:cache:clear`](#artisan:cache:clear) — Execute artisan cache:clear
-  * [`artisan:config:clear`](#artisan:config:clear) — Execute artisan config:clear
-  * [`artisan:config:cache`](#artisan:config:cache) — Execute artisan config:cache
-  * [`artisan:route:cache`](#artisan:route:cache) — Execute artisan route:cache
-  * [`artisan:view:clear`](#artisan:view:clear) — Execute artisan view:clear
-  * [`artisan:view:cache`](#artisan:view:cache) — Execute artisan view:cache
-  * [`artisan:optimize`](#artisan:optimize) — Execute artisan optimize
-  * [`artisan:optimize:clear`](#artisan:optimize:clear) — Execute artisan optimize:clear
-  * [`artisan:queue:restart`](#artisan:queue:restart) — Execute artisan queue:restart
-  * [`artisan:storage:link`](#artisan:storage:link) — Execute artisan storage:link
-  * [`artisan:horizon:assets`](#artisan:horizon:assets) — Execute artisan horizon:assets
-  * [`artisan:horizon:publish`](#artisan:horizon:publish) — Execute artisan horizon:publish
-  * [`artisan:horizon:terminate`](#artisan:horizon:terminate) — Execute artisan horizon:terminate
-  * [`artisan:telescope:clear`](#artisan:telescope:clear) — Execute artisan telescope:clear
-  * [`artisan:telescope:prune`](#artisan:telescope:prune) — Execute artisan telescope:prune
-  * [`artisan:telescope:publish`](#artisan:telescope:publish) — Execute artisan telescope:publish
-  * [`artisan:nova:publish`](#artisan:nova:publish) — Execute artisan nova:publish
-  * [`artisan:event:clear`](#artisan:event:clear) — Execute artisan event:clear
-  * [`artisan:event:cache`](#artisan:event:cache) — Execute artisan event:cache
-  * [`deploy:public_disk`](#deploy:public_disk) — Make symlink for public disk
+  * [`artisan:up`](#artisanup) — Disable maintenance mode
+  * [`artisan:down`](#artisandown) — Enable maintenance mode
+  * [`artisan:migrate`](#artisanmigrate) — Execute artisan migrate
+  * [`artisan:migrate:fresh`](#artisanmigratefresh) — Execute artisan migrate:fresh
+  * [`artisan:migrate:rollback`](#artisanmigraterollback) — Execute artisan migrate:rollback
+  * [`artisan:migrate:status`](#artisanmigratestatus) — Execute artisan migrate:status
+  * [`artisan:db:seed`](#artisandbseed) — Execute artisan db:seed
+  * [`artisan:cache:clear`](#artisancacheclear) — Execute artisan cache:clear
+  * [`artisan:config:clear`](#artisanconfigclear) — Execute artisan config:clear
+  * [`artisan:config:cache`](#artisanconfigcache) — Execute artisan config:cache
+  * [`artisan:route:cache`](#artisanroutecache) — Execute artisan route:cache
+  * [`artisan:view:clear`](#artisanviewclear) — Execute artisan view:clear
+  * [`artisan:view:cache`](#artisanviewcache) — Execute artisan view:cache
+  * [`artisan:optimize`](#artisanoptimize) — Execute artisan optimize
+  * [`artisan:optimize:clear`](#artisanoptimizeclear) — Execute artisan optimize:clear
+  * [`artisan:queue:restart`](#artisanqueuerestart) — Execute artisan queue:restart
+  * [`artisan:storage:link`](#artisanstoragelink) — Execute artisan storage:link
+  * [`artisan:horizon:assets`](#artisanhorizonassets) — Execute artisan horizon:assets
+  * [`artisan:horizon:publish`](#artisanhorizonpublish) — Execute artisan horizon:publish
+  * [`artisan:horizon:terminate`](#artisanhorizonterminate) — Execute artisan horizon:terminate
+  * [`artisan:telescope:clear`](#artisantelescopeclear) — Execute artisan telescope:clear
+  * [`artisan:telescope:prune`](#artisantelescopeprune) — Execute artisan telescope:prune
+  * [`artisan:telescope:publish`](#artisantelescopepublish) — Execute artisan telescope:publish
+  * [`artisan:nova:publish`](#artisannovapublish) — Execute artisan nova:publish
+  * [`artisan:event:clear`](#artisaneventclear) — Execute artisan event:clear
+  * [`artisan:event:cache`](#artisaneventcache) — Execute artisan event:cache
+  * [`deploy:public_disk`](#deploypublic_disk) — Make symlink for public disk
   * [`deploy`](#deploy) — Deploy your project
 
 ## Config

@@ -15,8 +15,8 @@
   * [`flow_command`](#flow_command)
   * [`shared_dirs`](#shared_dirs)
 * Tasks
-  * [`deploy:run_migrations`](#deploy:run_migrations) — 
-  * [`deploy:publish_resources`](#deploy:publish_resources) — 
+  * [`deploy:run_migrations`](#deployrun_migrations) — 
+  * [`deploy:publish_resources`](#deploypublish_resources) — 
   * [`deploy`](#deploy) — 
 
 ## Config

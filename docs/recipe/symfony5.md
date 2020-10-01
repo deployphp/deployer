@@ -17,9 +17,9 @@
   * [`migrations_config`](#migrations_config)
   * [`console_options`](#console_options)
 * Tasks
-  * [`database:migrate`](#database:migrate) — Migrate database
-  * [`deploy:cache:clear`](#deploy:cache:clear) — Clear cache
-  * [`deploy:cache:warmup`](#deploy:cache:warmup) — Warm up cache
+  * [`database:migrate`](#databasemigrate) — Migrate database
+  * [`deploy:cache:clear`](#deploycacheclear) — Clear cache
+  * [`deploy:cache:warmup`](#deploycachewarmup) — Warm up cache
   * [`deploy`](#deploy) — Deploy project
 
 ## Config

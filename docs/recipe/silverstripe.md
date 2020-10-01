@@ -18,8 +18,8 @@ Silverstripe configuration
   * [`writable_dirs`](#writable_dirs)
   * [`silverstripe_cli_script`](#silverstripe_cli_script)
 * Tasks
-  * [`silverstripe:build`](#silverstripe:build) — 
-  * [`silverstripe:buildflush`](#silverstripe:buildflush) — 
+  * [`silverstripe:build`](#silverstripebuild) — 
+  * [`silverstripe:buildflush`](#silverstripebuildflush) — 
   * [`deploy`](#deploy) — 
 
 ## Config

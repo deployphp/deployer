@@ -77,7 +77,7 @@ after('deploy:failed', 'telegram:notify:failure');
   * [`telegram_success_text`](#telegram_success_text)
   * [`telegram_failure_text`](#telegram_failure_text)
 * Tasks
-  * [`telegram:notify`](#telegram:notify) — 
+  * [`telegram:notify`](#telegramnotify) — 
 
 ## Config
 ### telegram_title

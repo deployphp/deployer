@@ -37,7 +37,7 @@ after('deploy', 'rollbar:notify');
 * Config
   * [`rollbar_comment`](#rollbar_comment)
 * Tasks
-  * [`rollbar:notify`](#rollbar:notify) — Notifying Rollbar of deployment
+  * [`rollbar:notify`](#rollbarnotify) — Notifying Rollbar of deployment
 
 ## Config
 ### rollbar_comment

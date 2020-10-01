@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:clear_paths`](#deploy:clear_paths) — Cleaning up files and/or directories
+  * [`deploy:clear_paths`](#deployclear_paths) — Cleaning up files and/or directories
 
 
 ## Tasks

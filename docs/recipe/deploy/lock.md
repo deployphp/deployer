@@ -9,8 +9,8 @@
 
 
 * Tasks
-  * [`deploy:lock`](#deploy:lock) — Lock deploy
-  * [`deploy:unlock`](#deploy:unlock) — Unlock deploy
+  * [`deploy:lock`](#deploylock) — Lock deploy
+  * [`deploy:unlock`](#deployunlock) — Unlock deploy
 
 
 ## Tasks

@@ -36,7 +36,7 @@ after('deploy', 'newrelic:notify');
   * [`newrelic_description`](#newrelic_description)
   * [`newrelic_revision`](#newrelic_revision)
 * Tasks
-  * [`newrelic:notify`](#newrelic:notify) — Notifying New Relic of deployment
+  * [`newrelic:notify`](#newrelicnotify) — Notifying New Relic of deployment
 
 ## Config
 ### newrelic_app_id

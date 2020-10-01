@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:setup`](#deploy:setup) — Preparing host for deploy
+  * [`deploy:setup`](#deploysetup) — Preparing host for deploy
 
 
 ## Tasks

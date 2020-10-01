@@ -150,9 +150,9 @@ after('deploy:prepare', 'cpanel:createdb');
 
 
 * Tasks
-  * [`cpanel:createdb`](#cpanel:createdb) — Creating database though CPanel API
-  * [`cpanel:createaddondomain`](#cpanel:createaddondomain) — Creating addon domain though CPanel API
-  * [`cpanel:deleteaddondomain`](#cpanel:deleteaddondomain) — Delete addon domain though CPanel API
+  * [`cpanel:createdb`](#cpanelcreatedb) — Creating database though CPanel API
+  * [`cpanel:createaddondomain`](#cpanelcreateaddondomain) — Creating addon domain though CPanel API
+  * [`cpanel:deleteaddondomain`](#cpaneldeleteaddondomain) — Delete addon domain though CPanel API
 
 
 ## Tasks

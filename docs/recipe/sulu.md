@@ -11,8 +11,8 @@
 * Require
   * [`recipe/symfony3.php`](/docs/recipe/symfony3.md)
 * Tasks
-  * [`deploy:website:cache:clear`](#deploy:website:cache:clear) — Clear cache
-  * [`deploy:website:cache:warmup`](#deploy:website:cache:warmup) — Warm up cache
+  * [`deploy:website:cache:clear`](#deploywebsitecacheclear) — Clear cache
+  * [`deploy:website:cache:warmup`](#deploywebsitecachewarmup) — Warm up cache
 
 
 ## Tasks

@@ -71,9 +71,9 @@ after('deploy:failed', 'yammer:notify:failure');
   * [`yammer_success_body`](#yammer_success_body)
   * [`yammer_failure_body`](#yammer_failure_body)
 * Tasks
-  * [`yammer:notify`](#yammer:notify) — Notifying Yammer
-  * [`yammer:notify:success`](#yammer:notify:success) — Notifying Yammer about deploy finish
-  * [`yammer:notify:failure`](#yammer:notify:failure) — Notifying Yammer about deploy failure
+  * [`yammer:notify`](#yammernotify) — Notifying Yammer
+  * [`yammer:notify:success`](#yammernotifysuccess) — Notifying Yammer about deploy finish
+  * [`yammer:notify:failure`](#yammernotifyfailure) — Notifying Yammer about deploy failure
 
 ## Config
 ### yammer_url

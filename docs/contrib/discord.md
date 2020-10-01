@@ -67,10 +67,10 @@ after('deploy:failed', 'discord:notify:failure');
   * [`discord_message`](#discord_message)
 * Tasks
   * [`discord_send_message`](#discord_send_message) — 
-  * [`discord:test`](#discord:test) — Just notify your Discord channel with all messages, without deploying
-  * [`discord:notify`](#discord:notify) — Notify Discord
-  * [`discord:notify:success`](#discord:notify:success) — Notify Discord about deploy finish
-  * [`discord:notify:failure`](#discord:notify:failure) — Notify Discord about deploy failure
+  * [`discord:test`](#discordtest) — Just notify your Discord channel with all messages, without deploying
+  * [`discord:notify`](#discordnotify) — Notify Discord
+  * [`discord:notify:success`](#discordnotifysuccess) — Notify Discord about deploy finish
+  * [`discord:notify:failure`](#discordnotifyfailure) — Notify Discord about deploy failure
 
 ## Config
 ### discord_webhook

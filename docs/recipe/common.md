@@ -52,10 +52,10 @@ Facts
   * [`current_path`](#current_path)
   * [`sudo_askpass`](#sudo_askpass)
 * Tasks
-  * [`deploy:prepare`](#deploy:prepare) — 
-  * [`deploy:publish`](#deploy:publish) — 
-  * [`deploy:success`](#deploy:success) — 
-  * [`deploy:failed`](#deploy:failed) — 
+  * [`deploy:prepare`](#deployprepare) — 
+  * [`deploy:publish`](#deploypublish) — 
+  * [`deploy:success`](#deploysuccess) — 
+  * [`deploy:failed`](#deployfailed) — 
   * [`logs`](#logs) — Follow latest application logs.
 
 ## Config

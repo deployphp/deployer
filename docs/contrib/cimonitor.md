@@ -84,9 +84,9 @@ after('deploy:failed', 'cimonitor:notify:failure');
   * [`cimonitor_job_state_error`](#cimonitor_job_state_error)
   * [`cimonitor_job_state_success`](#cimonitor_job_state_success)
 * Tasks
-  * [`cimonitor:notify`](#cimonitor:notify) — Notifying CIMonitor
-  * [`cimonitor:notify:success`](#cimonitor:notify:success) — Notifying CIMonitor about deploy finish
-  * [`cimonitor:notify:failure`](#cimonitor:notify:failure) — Notifying CIMonitor about deploy failure
+  * [`cimonitor:notify`](#cimonitornotify) — Notifying CIMonitor
+  * [`cimonitor:notify:success`](#cimonitornotifysuccess) — Notifying CIMonitor about deploy finish
+  * [`cimonitor:notify:failure`](#cimonitornotifyfailure) — Notifying CIMonitor about deploy failure
 
 ## Config
 ### cimonitor_title

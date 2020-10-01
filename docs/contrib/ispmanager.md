@@ -21,8 +21,8 @@ This recipe for work with ISPManager Lite panel by API.
   * [`ispmanager_phplist`](#ispmanager_phplist)
   * [`ispmanager_aliaslist`](#ispmanager_aliaslist)
 * Tasks
-  * [`ispmanager:init`](#ispmanager:init) — Initialisation
-  * [`ispmanager:process`](#ispmanager:process) — Auto task processing
+  * [`ispmanager:init`](#ispmanagerinit) — Initialisation
+  * [`ispmanager:process`](#ispmanagerprocess) — Auto task processing
 
 ## Config
 ### ispmanager_owner

@@ -72,10 +72,10 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 * Tasks
-  * [`phinx:migrate`](#phinx:migrate) — Migrating database with phinx
-  * [`phinx:rollback`](#phinx:rollback) — Rollback database migrations with phinx
-  * [`phinx:seed`](#phinx:seed) — Seed database with phinx
-  * [`phinx:breakpoint`](#phinx:breakpoint) — Set a migrations breakpoint with phinx
+  * [`phinx:migrate`](#phinxmigrate) — Migrating database with phinx
+  * [`phinx:rollback`](#phinxrollback) — Rollback database migrations with phinx
+  * [`phinx:seed`](#phinxseed) — Seed database with phinx
+  * [`phinx:breakpoint`](#phinxbreakpoint) — Set a migrations breakpoint with phinx
 
 
 ## Tasks

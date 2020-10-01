@@ -56,7 +56,7 @@ before('deploy:end', 'deploy:rabbit');
 
 
 * Tasks
-  * [`deploy:rabbit`](#deploy:rabbit) — Notifying RabbitMQ channel about deployment
+  * [`deploy:rabbit`](#deployrabbit) — Notifying RabbitMQ channel about deployment
 
 
 ## Tasks

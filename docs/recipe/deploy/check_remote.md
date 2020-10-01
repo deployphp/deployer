@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:check_remote`](#deploy:check_remote) — Check remote head
+  * [`deploy:check_remote`](#deploycheck_remote) — Check remote head
 
 
 ## Tasks

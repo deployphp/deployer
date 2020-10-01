@@ -35,7 +35,7 @@ after('deploy', 'raygun:notify');
 
 
 * Tasks
-  * [`raygun:notify`](#raygun:notify) — Notifying Raygun of deployment
+  * [`raygun:notify`](#raygunnotify) — Notifying Raygun of deployment
 
 
 ## Tasks

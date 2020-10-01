@@ -62,7 +62,7 @@ class DocGen
                 return null;
             };
             // Replace all {{name}} with link to correct config declaration.
-            $link = function (string $comment) use ($find): string {
+            $replaceLinks = function (string $comment) use ($find): string {
                 return preg_replace_callback('#(\{\{(?<name>[\w_:]+)\}\})#', function ($m) use ($find) {
                     $name = $m['name'];
                     $config = $find($name);
@@ -70,7 +70,7 @@ class DocGen
                         $md = php_to_md($config->recipePath);
                         return "[$name](/docs/$md#$name)";
                     }
-                    return "{{" . $name. "}}";
+                    return "{{" . $name . "}}";
                 }, $comment);
             };
 
@@ -91,10 +91,11 @@ class DocGen
                 $toc .= "* Config\n";
                 $config .= "## Config\n";
                 foreach ($recipe->config as $c) {
-                    $toc .= "  * [`{$c->name}`](#{$c->name})\n";
+                    $anchor = anchor($c->name);
+                    $toc .= "  * [`{$c->name}`](#{$anchor})\n";
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](/{$c->recipePath}#L{$c->lineNumber})\n\n";
-                    $config .= $link($c->comment);
+                    $config .= $replaceLinks($c->comment);
                     $config .= "\n\n";
                 }
             }
@@ -102,10 +103,11 @@ class DocGen
                 $toc .= "* Tasks\n";
                 $tasks .= "## Tasks\n";
                 foreach ($recipe->tasks as $t) {
-                    $toc .= "  * [`{$t->name}`](#{$t->name}) — {$t->desc}\n";
+                    $anchor = anchor($t->name);
+                    $toc .= "  * [`{$t->name}`](#{$anchor}) — {$t->desc}\n";
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
-                    $tasks .= $link($t->comment);
+                    $tasks .= $replaceLinks($t->comment);
                     $tasks .= "\n\n";
                 }
             }
@@ -149,4 +151,9 @@ function indent($text)
 function php_to_md($file)
 {
     return preg_replace('#\.php$#', '.md', $file);
+}
+
+function anchor($s)
+{
+    return str_replace(':', '', $s);
 }

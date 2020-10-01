@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:vendors`](#deploy:vendors) — Installing vendors
+  * [`deploy:vendors`](#deployvendors) — Installing vendors
 
 
 ## Tasks

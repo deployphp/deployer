@@ -13,7 +13,7 @@
   * [`releases_list`](#releases_list)
   * [`release_path`](#release_path)
 * Tasks
-  * [`deploy:release`](#deploy:release) — Prepare release. Clean up unfinished releases and prepare next release
+  * [`deploy:release`](#deployrelease) — Prepare release. Clean up unfinished releases and prepare next release
 
 ## Config
 ### release_name

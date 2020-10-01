@@ -98,9 +98,9 @@ after('deploy:failed', 'mattermost:notify:failure');
   * [`mattermost_success_text`](#mattermost_success_text)
   * [`mattermost_failure_text`](#mattermost_failure_text)
 * Tasks
-  * [`mattermost:notify`](#mattermost:notify) — Notify mattermost
-  * [`mattermost:notify:success`](#mattermost:notify:success) — Notifying mattermost about deploy finish
-  * [`mattermost:notify:failure`](#mattermost:notify:failure) — Notifying mattermost about deploy failure
+  * [`mattermost:notify`](#mattermostnotify) — Notify mattermost
+  * [`mattermost:notify:success`](#mattermostnotifysuccess) — Notifying mattermost about deploy finish
+  * [`mattermost:notify:failure`](#mattermostnotifyfailure) — Notifying mattermost about deploy failure
 
 ## Config
 ### mattermost_webhook

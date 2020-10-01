@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:cleanup`](#deploy:cleanup) — Cleaning up old releases
+  * [`deploy:cleanup`](#deploycleanup) — Cleaning up old releases
 
 
 ## Tasks

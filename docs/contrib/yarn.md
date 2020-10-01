@@ -27,7 +27,7 @@ after('deploy:update_code', 'yarn:install');
 
 
 * Tasks
-  * [`yarn:install`](#yarn:install) — Install Yarn packages
+  * [`yarn:install`](#yarninstall) — Install Yarn packages
 
 
 ## Tasks

@@ -6,10 +6,28 @@
 
 [Source](/contrib/cloudflare.php)
 
-(c) David Jordan / CyberDuck <david@cyber-duck.co.uk>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+### Installing
+
+Add to your _deploy.php_
+
+```php
+require 'contrib/cloudflare.php';
+```
+
+### Configuration
+
+- `cloudflare` – array with configuration for cloudflare
+    - `service_key` – Cloudflare Service Key. If this is not provided, use api_key and email.
+    - `api_key` – Cloudflare API key generated on the "My Account" page.
+    - `email` – Cloudflare Email address associated with your account.
+    - `domain` – The domain you want to clear
+
+### Usage
+
+Since the website should be built and some load is likely about to be applied to your server, this should be one of,
+if not the, last tasks before cleanup
+
 
 
 * Tasks
@@ -18,7 +36,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:cloudflare
-[Source](/contrib/cloudflare.php#L11)
+[Source](/contrib/cloudflare.php#L28)
 
 
 

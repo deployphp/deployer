@@ -6,10 +6,62 @@
 
 [Source](/contrib/yammer.php)
 
-(c) beeete2 <beeete2@gmail.com>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+# Yammer recipe
+
+## Installing
+
+Require yammer recipe in your `deploy.php` file:
+
+```php
+require 'contrib/yammer.php';
+```
+
+Add hook on deploy:
+
+```php
+before('deploy', 'yammer:notify');
+```
+
+## Configuration
+
+- `yammer_url` – The URL to the message endpoint, default is https://www.yammer.com/api/v1/messages.json
+- `yammer_token` *(required)* – Yammer auth token
+- `yammer_group_id` *(required)* - Group ID
+- `yammer_title` – the title of application, default `{{application}}`
+- `yammer_body` – notification message template, default:
+  ```
+  <em>{{user}}</em> deploying {{branch}} to <strong>{{target}}</strong>
+  ```
+- `yammer_success_body` – success template, default:
+  ```
+  Deploy to <strong>{{target}}</strong> successful
+  ```
+- `yammer_failure_body` – failure template, default:
+  ```
+  Deploy to <strong>{{target}}</strong> failed
+  ```
+
+## Usage
+
+If you want to notify only about beginning of deployment add this line only:
+
+```php
+before('deploy', 'yammer:notify');
+```
+
+If you want to notify about successful end of deployment add this too:
+
+```php
+after('success', 'yammer:notify:success');
+```
+
+If you want to notify about failed deployment add this too:
+
+```php
+after('deploy:failed', 'yammer:notify:failure');
+```
+
 
 
 * Config
@@ -25,44 +77,44 @@ file that was distributed with this source code.
 
 ## Config
 ### yammer_url
-[Source](/contrib/yammer.php#L12)
+[Source](/contrib/yammer.php#L63)
 
 
 
 ### yammer_title
-[Source](/contrib/yammer.php#L15)
+[Source](/contrib/yammer.php#L66)
 
 Title of project
 
 ### yammer_body
-[Source](/contrib/yammer.php#L20)
+[Source](/contrib/yammer.php#L71)
 
 Deploy message
 
 ### yammer_success_body
-[Source](/contrib/yammer.php#L21)
+[Source](/contrib/yammer.php#L72)
 
 
 
 ### yammer_failure_body
-[Source](/contrib/yammer.php#L22)
+[Source](/contrib/yammer.php#L73)
 
 
 
 
 ## Tasks
 ### yammer:notify
-[Source](/contrib/yammer.php#L25)
+[Source](/contrib/yammer.php#L76)
 
 
 
 ### yammer:notify:success
-[Source](/contrib/yammer.php#L45)
+[Source](/contrib/yammer.php#L96)
 
 
 
 ### yammer:notify:failure
-[Source](/contrib/yammer.php#L65)
+[Source](/contrib/yammer.php#L116)
 
 
 

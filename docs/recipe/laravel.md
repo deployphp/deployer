@@ -6,10 +6,20 @@
 
 [Source](/recipe/laravel.php)
 
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+Run an artisan command.
+
+Supported options:
+- 'min' => #.#: The minimum Laravel version required (included).
+- 'max' => #.#: The maximum Laravel version required (included).
+- 'skipIfNoEnv': Skip and warn the user if `.env` file is inexistant or empty.
+- 'failIfNoEnv': Fail the command if `.env` file is inexistant or empty.
+- 'runInCurrent': Run the artisan command in the current directory.
+- 'showOutput': Show the output of the command if given.
+
+@param string $command The artisan command (with cli options if any).
+@param array $options The options that define the behaviour of the command.
+@return callable A function that can be used as a task.
 
 
 * Require
@@ -52,164 +62,164 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/laravel.php#L12)
+[Source](/recipe/laravel.php#L6)
 
 
 
 ### shared_files
-[Source](/recipe/laravel.php#L13)
+[Source](/recipe/laravel.php#L7)
 
 
 
 ### writable_dirs
-[Source](/recipe/laravel.php#L14)
+[Source](/recipe/laravel.php#L8)
 
 
 
 ### log_files
-[Source](/recipe/laravel.php#L25)
+[Source](/recipe/laravel.php#L19)
 
 
 
 ### laravel_version
-[Source](/recipe/laravel.php#L26)
+[Source](/recipe/laravel.php#L20)
 
 
 
 
 ## Tasks
 ### artisan:up
-[Source](/recipe/laravel.php#L85)
+[Source](/recipe/laravel.php#L79)
 
 
 
 ### artisan:down
-[Source](/recipe/laravel.php#L88)
+[Source](/recipe/laravel.php#L82)
 
 
 
 ### artisan:migrate
-[Source](/recipe/laravel.php#L91)
+[Source](/recipe/laravel.php#L85)
 
 
 
 ### artisan:migrate:fresh
-[Source](/recipe/laravel.php#L94)
+[Source](/recipe/laravel.php#L88)
 
 
 
 ### artisan:migrate:rollback
-[Source](/recipe/laravel.php#L97)
+[Source](/recipe/laravel.php#L91)
 
 
 
 ### artisan:migrate:status
-[Source](/recipe/laravel.php#L100)
+[Source](/recipe/laravel.php#L94)
 
 
 
 ### artisan:db:seed
-[Source](/recipe/laravel.php#L103)
+[Source](/recipe/laravel.php#L97)
 
 
 
 ### artisan:cache:clear
-[Source](/recipe/laravel.php#L106)
+[Source](/recipe/laravel.php#L100)
 
 
 
 ### artisan:config:clear
-[Source](/recipe/laravel.php#L109)
+[Source](/recipe/laravel.php#L103)
 
 
 
 ### artisan:config:cache
-[Source](/recipe/laravel.php#L112)
+[Source](/recipe/laravel.php#L106)
 
 
 
 ### artisan:route:cache
-[Source](/recipe/laravel.php#L115)
+[Source](/recipe/laravel.php#L109)
 
 
 
 ### artisan:view:clear
-[Source](/recipe/laravel.php#L118)
+[Source](/recipe/laravel.php#L112)
 
 
 
 ### artisan:view:cache
-[Source](/recipe/laravel.php#L121)
+[Source](/recipe/laravel.php#L115)
 
 
 
 ### artisan:optimize
-[Source](/recipe/laravel.php#L124)
+[Source](/recipe/laravel.php#L118)
 
 
 
 ### artisan:optimize:clear
-[Source](/recipe/laravel.php#L127)
+[Source](/recipe/laravel.php#L121)
 
 
 
 ### artisan:queue:restart
-[Source](/recipe/laravel.php#L130)
+[Source](/recipe/laravel.php#L124)
 
 
 
 ### artisan:storage:link
-[Source](/recipe/laravel.php#L133)
+[Source](/recipe/laravel.php#L127)
 
 
 
 ### artisan:horizon:assets
-[Source](/recipe/laravel.php#L136)
+[Source](/recipe/laravel.php#L130)
 
 
 
 ### artisan:horizon:publish
-[Source](/recipe/laravel.php#L139)
+[Source](/recipe/laravel.php#L133)
 
 
 
 ### artisan:horizon:terminate
-[Source](/recipe/laravel.php#L142)
+[Source](/recipe/laravel.php#L136)
 
 
 
 ### artisan:telescope:clear
-[Source](/recipe/laravel.php#L145)
+[Source](/recipe/laravel.php#L139)
 
 
 
 ### artisan:telescope:prune
-[Source](/recipe/laravel.php#L148)
+[Source](/recipe/laravel.php#L142)
 
 
 
 ### artisan:telescope:publish
-[Source](/recipe/laravel.php#L151)
+[Source](/recipe/laravel.php#L145)
 
 
 
 ### artisan:nova:publish
-[Source](/recipe/laravel.php#L154)
+[Source](/recipe/laravel.php#L148)
 
 
 
 ### artisan:event:clear
-[Source](/recipe/laravel.php#L157)
+[Source](/recipe/laravel.php#L151)
 
 
 
 ### artisan:event:cache
-[Source](/recipe/laravel.php#L160)
+[Source](/recipe/laravel.php#L154)
 
 
 
 ### deploy:public_disk
-[Source](/recipe/laravel.php#L171)
+[Source](/recipe/laravel.php#L165)
 
 Task deploy:public_disk support the public disk.
 To run this task automatically, please add below line to your deploy.php file
@@ -219,7 +229,7 @@ To run this task automatically, please add below line to your deploy.php file
 [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
 
 ### deploy
-[Source](/recipe/laravel.php#L186)
+[Source](/recipe/laravel.php#L180)
 
 Main deploy task.
 

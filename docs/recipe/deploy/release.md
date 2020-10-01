@@ -6,10 +6,6 @@
 
 [Source](/recipe/deploy/release.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Config
@@ -21,24 +17,24 @@ file that was distributed with this source code.
 
 ## Config
 ### release_name
-[Source](/recipe/deploy/release.php#L16)
+[Source](/recipe/deploy/release.php#L10)
 
 Name of folder in releases.
 
 ### releases_list
-[Source](/recipe/deploy/release.php#L35)
+[Source](/recipe/deploy/release.php#L29)
 
 Return list of releases on host.
 
 ### release_path
-[Source](/recipe/deploy/release.php#L90)
+[Source](/recipe/deploy/release.php#L84)
 
 Return release path.
 
 
 ## Tasks
 ### deploy:release
-[Source](/recipe/deploy/release.php#L102)
+[Source](/recipe/deploy/release.php#L96)
 
 
 

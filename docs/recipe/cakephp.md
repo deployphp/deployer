@@ -6,10 +6,8 @@
 
 [Source](/recipe/cakephp.php)
 
-(c) Jad Bitar <jadb@cakephp.org>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+CakePHP 3 Project Template configuration
 
 
 * Require
@@ -24,29 +22,29 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/cakephp.php#L17)
+[Source](/recipe/cakephp.php#L11)
 
 CakePHP 3 Project Template shared dirs
 
 ### shared_files
-[Source](/recipe/cakephp.php#L23)
+[Source](/recipe/cakephp.php#L17)
 
 CakePHP 3 Project Template shared files
 
 
 ## Tasks
 ### deploy:init
-[Source](/recipe/cakephp.php#L30)
+[Source](/recipe/cakephp.php#L24)
 
 Create plugins' symlinks
 
 ### deploy:run_migrations
-[Source](/recipe/cakephp.php#L37)
+[Source](/recipe/cakephp.php#L31)
 
 Run migrations
 
 ### deploy
-[Source](/recipe/cakephp.php#L46)
+[Source](/recipe/cakephp.php#L40)
 
 Main task
 

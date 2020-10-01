@@ -6,10 +6,6 @@
 
 [Source](/recipe/fuelphp.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -21,14 +17,14 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/fuelphp.php#L13)
+[Source](/recipe/fuelphp.php#L7)
 
 FuelPHP 1.x shared dirs
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/fuelphp.php#L20)
+[Source](/recipe/fuelphp.php#L14)
 
 Main task
 

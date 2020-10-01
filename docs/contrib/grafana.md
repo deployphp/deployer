@@ -6,10 +6,42 @@
 
 [Source](/contrib/grafana.php)
 
-(c) beeete2 <beeete2@gmail.com>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Add to your _deploy.php_
+
+```php
+require 'contrib/grafana.php';
+```
+
+## Configuration options
+
+- **url** *(required)*: the URL to the creates annotation api endpoint.
+- **token** *(required)*: authentication token. Can be created at Grafana Console.
+- **time** *(optional)* – set deploy time of annotation. specify epoch milliseconds. (Defaults is set to the current time in epoch milliseconds.)
+- **tags** *(optional)* – set tag of annotation.
+- **text** *(optional)* – set text of annotation. (Defaults is set to "Deployed " + git log -n 1 --format="%h")
+
+```php
+deploy.php
+
+set('grafana', [
+    'token' => 'eyJrIj...',
+    'url' => 'http://grafana/api/annotations',
+    'tags' => ['deploy', 'production'],
+]);
+
+```
+
+## Usage
+
+If you want to create annotation about successful end of deployment.
+
+```php
+after('success', 'grafana:annotation');
+```
+
 
 
 * Tasks
@@ -18,7 +50,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### grafana:annotation
-[Source](/contrib/grafana.php#L14)
+[Source](/contrib/grafana.php#L45)
 
 
 

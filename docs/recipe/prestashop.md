@@ -6,10 +6,6 @@
 
 [Source](/recipe/prestashop.php)
 
-(c) Leopold Jacquot <leopold.jacquot@gmail.com>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -23,24 +19,24 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_files
-[Source](/recipe/prestashop.php#L12)
+[Source](/recipe/prestashop.php#L6)
 
 
 
 ### shared_dirs
-[Source](/recipe/prestashop.php#L13)
+[Source](/recipe/prestashop.php#L7)
 
 
 
 ### writable_dirs
-[Source](/recipe/prestashop.php#L25)
+[Source](/recipe/prestashop.php#L19)
 
 
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/prestashop.php#L40)
+[Source](/recipe/prestashop.php#L34)
 
 
 

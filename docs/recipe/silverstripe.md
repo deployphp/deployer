@@ -24,39 +24,39 @@ Silverstripe configuration
 
 ## Config
 ### shared_assets
-[Source](/recipe/silverstripe.php#L11)
+[Source](/recipe/silverstripe.php#L10)
 
 
 
 ### shared_dirs
-[Source](/recipe/silverstripe.php#L20)
+[Source](/recipe/silverstripe.php#L19)
 
 Silverstripe shared dirs
 
 ### writable_dirs
-[Source](/recipe/silverstripe.php#L25)
+[Source](/recipe/silverstripe.php#L24)
 
 Silverstripe writable dirs
 
 ### silverstripe_cli_script
-[Source](/recipe/silverstripe.php#L30)
+[Source](/recipe/silverstripe.php#L29)
 
 Silverstripe cli script
 
 
 ## Tasks
 ### silverstripe:build
-[Source](/recipe/silverstripe.php#L45)
+[Source](/recipe/silverstripe.php#L44)
 
 Helper tasks
 
 ### silverstripe:buildflush
-[Source](/recipe/silverstripe.php#L49)
+[Source](/recipe/silverstripe.php#L48)
 
 
 
 ### deploy
-[Source](/recipe/silverstripe.php#L56)
+[Source](/recipe/silverstripe.php#L55)
 
 Main task
 

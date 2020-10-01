@@ -6,10 +6,6 @@
 
 [Source](/recipe/drupal7.php)
 
-(c) Sergio Carracedo <info@sergiocarraedo.es>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -26,39 +22,39 @@ file that was distributed with this source code.
 
 ## Config
 ### drupal_site
-[Source](/recipe/drupal7.php#L26)
+[Source](/recipe/drupal7.php#L20)
 
 //Set Drupal 7 site. Change if you use different site
 
 ### shared_dirs
-[Source](/recipe/drupal7.php#L29)
+[Source](/recipe/drupal7.php#L23)
 
 //Drupal 7 shared dirs
 
 ### shared_files
-[Source](/recipe/drupal7.php#L34)
+[Source](/recipe/drupal7.php#L28)
 
 //Drupal 7 shared files
 
 ### writable_dirs
-[Source](/recipe/drupal7.php#L39)
+[Source](/recipe/drupal7.php#L33)
 
 //Drupal 7 writable dirs
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/drupal7.php#L12)
+[Source](/recipe/drupal7.php#L6)
 
 
 
 ### drupal:settings
-[Source](/recipe/drupal7.php#L45)
+[Source](/recipe/drupal7.php#L39)
 
 //Create and upload Drupal 7 settings.php using values from secrets
 
 ### drupal:upload_files
-[Source](/recipe/drupal7.php#L87)
+[Source](/recipe/drupal7.php#L81)
 
 //Upload Drupal 7 files folder
 

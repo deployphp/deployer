@@ -6,10 +6,6 @@
 
 [Source](/recipe/deploy/writable.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Tasks
@@ -18,7 +14,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:writable
-[Source](/recipe/deploy/writable.php#L11)
+[Source](/recipe/deploy/writable.php#L5)
 
 
 

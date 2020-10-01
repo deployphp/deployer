@@ -6,10 +6,69 @@
 
 [Source](/contrib/rocketchat.php)
 
-(c) Markus Bachmann <markus.bachmann@bachi.biz>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Create a RocketChat incoming webhook, through the administration panel.
+
+Require the new recipe into your `deploy.php`
+
+```php
+require 'contrib/rocketchat.php';
+```
+
+Add hook on deploy:
+
+```
+before('deploy', 'rocketchat:notify');
+```
+
+## Configuration
+
+ - `rocketchat_webhook` - incoming rocketchat webook **required**
+   ```
+   set('rocketchat_webook', 'https://rocketchat.yourcompany.com/hooks/XXXXX');
+   ```
+
+ - `rocketchat_title` - the title of the application, defaults to `{{application}}`
+ - `rocketchat_text` - notification message
+   ```
+   set('rocketchat_text', '_{{user}}_ deploying {{branch}} to {{target}}');
+   ```
+
+ - `rocketchat_success_text` – success template, default:
+  ```
+  set('rocketchat_success_text', 'Deploy to *{{target}}* successful');
+  ```
+ - `rocketchat_failure_text` – failure template, default:
+  ```
+  set('rocketchat_failure_text', 'Deploy to *{{target}}* failed');
+  ```
+
+ - `rocketchat_color` – color's attachment
+ - `rocketchat_success_color` – success color's attachment
+ - `rocketchat_failure_color` – failure color's attachment
+
+## Usage
+
+If you want to notify only about beginning of deployment add this line only:
+
+```php
+before('deploy', 'rocketchat:notify');
+```
+
+If you want to notify about successful end of deployment add this too:
+
+```php
+after('success', 'rocketchat:notify:success');
+```
+
+If you want to notify about failed deployment add this too:
+
+```php
+after('deploy:failed', 'rocketchat:notify:failure');
+```
+
 
 
 * Config
@@ -33,84 +92,84 @@ file that was distributed with this source code.
 
 ## Config
 ### rockchat_title
-[Source](/contrib/rocketchat.php#L11)
+[Source](/contrib/rocketchat.php#L70)
 
 
 
 ### rocketchat_icon_emoji
-[Source](/contrib/rocketchat.php#L15)
+[Source](/contrib/rocketchat.php#L74)
 
 
 
 ### rocketchat_icon_url
-[Source](/contrib/rocketchat.php#L16)
+[Source](/contrib/rocketchat.php#L75)
 
 
 
 ### rocketchat_channel
-[Source](/contrib/rocketchat.php#L18)
+[Source](/contrib/rocketchat.php#L77)
 
 
 
 ### rocketchat_room_id
-[Source](/contrib/rocketchat.php#L19)
+[Source](/contrib/rocketchat.php#L78)
 
 
 
 ### rocketchat_username
-[Source](/contrib/rocketchat.php#L20)
+[Source](/contrib/rocketchat.php#L79)
 
 
 
 ### rocketchat_webhook
-[Source](/contrib/rocketchat.php#L21)
+[Source](/contrib/rocketchat.php#L80)
 
 
 
 ### rocketchat_color
-[Source](/contrib/rocketchat.php#L23)
+[Source](/contrib/rocketchat.php#L82)
 
 
 
 ### rocketchat_success_color
-[Source](/contrib/rocketchat.php#L24)
+[Source](/contrib/rocketchat.php#L83)
 
 
 
 ### rocketchat_failure_color
-[Source](/contrib/rocketchat.php#L25)
+[Source](/contrib/rocketchat.php#L84)
 
 
 
 ### rocketchat_text
-[Source](/contrib/rocketchat.php#L27)
+[Source](/contrib/rocketchat.php#L86)
 
 
 
 ### rocketchat_success_text
-[Source](/contrib/rocketchat.php#L28)
+[Source](/contrib/rocketchat.php#L87)
 
 
 
 ### rocketchat_failure_text
-[Source](/contrib/rocketchat.php#L29)
+[Source](/contrib/rocketchat.php#L88)
 
 
 
 
 ## Tasks
 ### rocketchat:notify
-[Source](/contrib/rocketchat.php#L32)
+[Source](/contrib/rocketchat.php#L91)
 
 
 
 ### rocketchat:notify:success
-[Source](/contrib/rocketchat.php#L62)
+[Source](/contrib/rocketchat.php#L121)
 
 
 
 ### rocketchat:notify:failure
-[Source](/contrib/rocketchat.php#L92)
+[Source](/contrib/rocketchat.php#L151)
 
 
 

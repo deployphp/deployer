@@ -6,10 +6,7 @@
 
 [Source](/recipe/provision/provision.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+//Deployer::get()->preTask->add('provision:*', 'provision:switch-user');
 
 
 * Config
@@ -32,79 +29,79 @@ file that was distributed with this source code.
 
 ## Config
 ### php_version
-[Source](/recipe/provision/provision.php#L13)
+[Source](/recipe/provision/provision.php#L7)
 
 
 
 ### sudo_password
-[Source](/recipe/provision/provision.php#L14)
+[Source](/recipe/provision/provision.php#L8)
 
 
 
 ### env
-[Source](/recipe/provision/provision.php#L15)
+[Source](/recipe/provision/provision.php#L9)
 
 
 
 
 ## Tasks
 ### provision
-[Source](/recipe/provision/provision.php#L18)
+[Source](/recipe/provision/provision.php#L12)
 
 
 
 ### provision:check
-[Source](/recipe/provision/provision.php#L47)
+[Source](/recipe/provision/provision.php#L41)
 
 
 
 ### provision:upgrade
-[Source](/recipe/provision/provision.php#L68)
+[Source](/recipe/provision/provision.php#L62)
 
 
 
 ### provision:install
-[Source](/recipe/provision/provision.php#L74)
+[Source](/recipe/provision/provision.php#L68)
 
 
 
 ### provision:ssh
-[Source](/recipe/provision/provision.php#L97)
+[Source](/recipe/provision/provision.php#L91)
 
 
 
 ### provision:user:deployer
-[Source](/recipe/provision/provision.php#L111)
+[Source](/recipe/provision/provision.php#L105)
 
 
 
 ### provision:firewall
-[Source](/recipe/provision/provision.php#L146)
+[Source](/recipe/provision/provision.php#L140)
 
 
 
 ### provision:install:php
-[Source](/recipe/provision/provision.php#L154)
+[Source](/recipe/provision/provision.php#L148)
 
 
 
 ### provision:install:composer
-[Source](/recipe/provision/provision.php#L179)
+[Source](/recipe/provision/provision.php#L173)
 
 
 
 ### provision:config:php:sessions
-[Source](/recipe/provision/provision.php#L212)
+[Source](/recipe/provision/provision.php#L206)
 
 
 
 ### provision:nginx:dhparam
-[Source](/recipe/provision/provision.php#L218)
+[Source](/recipe/provision/provision.php#L212)
 
 
 
 ### provision:nginx
-[Source](/recipe/provision/provision.php#L229)
+[Source](/recipe/provision/provision.php#L223)
 
 
 

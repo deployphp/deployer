@@ -6,29 +6,76 @@
 
 [Source](/contrib/ms-teams.php)
 
-(c) Neven Kajić
-Based on Slack notifier recipe by Anton Medvedev
+
+## Installing
+
+Require ms-teams recipe in your `deploy.php` file:
 
 Setup:
-  1.) Open MS Teams
-  2.) Navigate to Teams section
-  3.) Select existing or create new team
-  4.) Select existing or create new channel
-  5.) Hover over channel to get tree dots, click, in menu select "Connectors"
-  6.) Search for and configure "Incoming Webhook"
-  7.) Confirm/create and copy your Webhook URL
-  8.) Setup deploy.php
-      Add in header:
-       require 'vendor/deployer/recipes/recipe/ms-teams.php';
-       set('teams_webhook', '<YOUR_WEBHOOK_URL>');
-      Add in content:
-       before('deploy', 'teams:notify');
-       after('success', 'teams:notify:success');
-       after('deploy:failed', 'teams:notify:failure');
-  9.) Sip your coffee
+1. Open MS Teams
+2. Navigate to Teams section
+3. Select existing or create new team
+4. Select existing or create new channel
+5. Hover over channel to get tree dots, click, in menu select "Connectors"
+6. Search for and configure "Incoming Webhook"
+7. Confirm/create and copy your Webhook URL
+8. Setup deploy.php
+    Add in header:
+```php
+require 'contrib/ms-teams.php';
+set('teams_webhook', 'https://outlook.office.com/webhook/...');
+```
+Add in content:
+```php
+before('deploy', 'teams:notify');
+after('success', 'teams:notify:success');
+after('deploy:failed', 'teams:notify:failure');
+```
+9.) Sip your coffee
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Configuration
+
+- `teams_webhook` – teams incoming webhook url, **required**
+  ```
+  set('teams_webhook', 'https://outlook.office.com/webhook/...');
+  ```
+- `teams_title` – the title of application, default `{{application}}`
+- `teams_text` – notification message template, markdown supported
+  ```
+  set('teams_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  ```
+- `teams_success_text` – success template, default:
+  ```
+  set('teams_success_text', 'Deploy to *{{target}}* successful');
+  ```
+- `teams_failure_text` – failure template, default:
+  ```
+  set('teams_failure_text', 'Deploy to *{{target}}* failed');
+  ```
+
+- `teams_color` – color's attachment
+- `teams_success_color` – success color's attachment
+- `teams_failure_color` – failure color's attachment
+
+## Usage
+
+If you want to notify only about beginning of deployment add this line only:
+
+```php
+before('deploy', 'teams:notify');
+```
+
+If you want to notify about successful end of deployment add this too:
+
+```php
+after('success', 'teams:notify:success');
+```
+
+If you want to notify about failed deployment add this too:
+
+```php
+after('deploy:failed', 'teams:notify:failure');
+```
 
 
 * Config
@@ -46,54 +93,54 @@ file that was distributed with this source code.
 
 ## Config
 ### teams_title
-[Source](/contrib/ms-teams.php#L32)
+[Source](/contrib/ms-teams.php#L78)
 
 Title of project
 
 ### teams_text
-[Source](/contrib/ms-teams.php#L37)
+[Source](/contrib/ms-teams.php#L83)
 
 Deploy message
 
 ### teams_success_text
-[Source](/contrib/ms-teams.php#L38)
+[Source](/contrib/ms-teams.php#L84)
 
 
 
 ### teams_failure_text
-[Source](/contrib/ms-teams.php#L39)
+[Source](/contrib/ms-teams.php#L85)
 
 
 
 ### teams_color
-[Source](/contrib/ms-teams.php#L42)
+[Source](/contrib/ms-teams.php#L88)
 
 Color of attachment
 
 ### teams_success_color
-[Source](/contrib/ms-teams.php#L43)
+[Source](/contrib/ms-teams.php#L89)
 
 
 
 ### teams_failure_color
-[Source](/contrib/ms-teams.php#L44)
+[Source](/contrib/ms-teams.php#L90)
 
 
 
 
 ## Tasks
 ### teams:notify
-[Source](/contrib/ms-teams.php#L47)
+[Source](/contrib/ms-teams.php#L93)
 
 
 
 ### teams:notify:success
-[Source](/contrib/ms-teams.php#L62)
+[Source](/contrib/ms-teams.php#L108)
 
 
 
 ### teams:notify:failure
-[Source](/contrib/ms-teams.php#L77)
+[Source](/contrib/ms-teams.php#L123)
 
 
 

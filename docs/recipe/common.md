@@ -6,10 +6,8 @@
 
 [Source](/recipe/common.php)
 
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+Facts
 
 
 * Require
@@ -62,122 +60,122 @@ file that was distributed with this source code.
 
 ## Config
 ### user
-[Source](/recipe/common.php#L35)
+[Source](/recipe/common.php#L29)
 
 
 
 ### keep_releases
-[Source](/recipe/common.php#L55)
+[Source](/recipe/common.php#L49)
 
 
 
 ### repository
-[Source](/recipe/common.php#L57)
+[Source](/recipe/common.php#L51)
 
 
 
 ### shared_dirs
-[Source](/recipe/common.php#L59)
+[Source](/recipe/common.php#L53)
 
 
 
 ### shared_files
-[Source](/recipe/common.php#L60)
+[Source](/recipe/common.php#L54)
 
 
 
 ### copy_dirs
-[Source](/recipe/common.php#L62)
+[Source](/recipe/common.php#L56)
 
 
 
 ### writable_dirs
-[Source](/recipe/common.php#L64)
+[Source](/recipe/common.php#L58)
 
 
 
 ### writable_mode
-[Source](/recipe/common.php#L65)
+[Source](/recipe/common.php#L59)
 
 
 
 ### writable_use_sudo
-[Source](/recipe/common.php#L66)
+[Source](/recipe/common.php#L60)
 
 
 
 ### writable_recursive
-[Source](/recipe/common.php#L67)
+[Source](/recipe/common.php#L61)
 
 
 
 ### writable_chmod_mode
-[Source](/recipe/common.php#L68)
+[Source](/recipe/common.php#L62)
 
 
 
 ### writable_chmod_recursive
-[Source](/recipe/common.php#L69)
+[Source](/recipe/common.php#L63)
 
 
 
 ### http_user
-[Source](/recipe/common.php#L71)
+[Source](/recipe/common.php#L65)
 
 
 
 ### http_group
-[Source](/recipe/common.php#L72)
+[Source](/recipe/common.php#L66)
 
 
 
 ### clear_paths
-[Source](/recipe/common.php#L74)
+[Source](/recipe/common.php#L68)
 
 
 
 ### clear_use_sudo
-[Source](/recipe/common.php#L75)
+[Source](/recipe/common.php#L69)
 
 
 
 ### cleanup_use_sudo
-[Source](/recipe/common.php#L77)
+[Source](/recipe/common.php#L71)
 
 
 
 ### use_relative_symlink
-[Source](/recipe/common.php#L79)
+[Source](/recipe/common.php#L73)
 
 
 
 ### use_atomic_symlink
-[Source](/recipe/common.php#L82)
+[Source](/recipe/common.php#L76)
 
 
 
 ### composer_action
-[Source](/recipe/common.php#L86)
+[Source](/recipe/common.php#L80)
 
 
 
 ### composer_options
-[Source](/recipe/common.php#L87)
+[Source](/recipe/common.php#L81)
 
 
 
 ### env
-[Source](/recipe/common.php#L89)
+[Source](/recipe/common.php#L83)
 
 
 
 ### current_path
-[Source](/recipe/common.php#L94)
+[Source](/recipe/common.php#L88)
 
 Return current release path.
 
 ### sudo_askpass
-[Source](/recipe/common.php#L131)
+[Source](/recipe/common.php#L125)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -186,27 +184,27 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L147)
+[Source](/recipe/common.php#L141)
 
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L157)
+[Source](/recipe/common.php#L151)
 
 
 
 ### deploy:success
-[Source](/recipe/common.php#L167)
+[Source](/recipe/common.php#L161)
 
 Success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L177)
+[Source](/recipe/common.php#L171)
 
 Deploy failure
 
 ### logs
-[Source](/recipe/common.php#L186)
+[Source](/recipe/common.php#L180)
 
 Follow latest application logs.
 

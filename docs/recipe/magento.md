@@ -6,10 +6,8 @@
 
 [Source](/recipe/magento.php)
 
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+Magento Configuration
 
 
 * Require
@@ -25,34 +23,34 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/magento.php#L17)
+[Source](/recipe/magento.php#L11)
 
 Magento shared dirs
 
 ### shared_files
-[Source](/recipe/magento.php#L20)
+[Source](/recipe/magento.php#L14)
 
 Magento shared files
 
 ### writable_dirs
-[Source](/recipe/magento.php#L23)
+[Source](/recipe/magento.php#L17)
 
 Magento writable dirs
 
 
 ## Tasks
 ### deploy:cache:clear
-[Source](/recipe/magento.php#L28)
+[Source](/recipe/magento.php#L22)
 
 Clear cache
 
 ### deploy:clear_version
-[Source](/recipe/magento.php#L35)
+[Source](/recipe/magento.php#L29)
 
 Remove files that can be used to compromise Magento
 
 ### deploy
-[Source](/recipe/magento.php#L48)
+[Source](/recipe/magento.php#L42)
 
 Main task
 

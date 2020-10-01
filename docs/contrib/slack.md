@@ -6,10 +6,67 @@
 
 [Source](/contrib/slack.php)
 
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+<a href="https://slack.com/oauth/authorize?&client_id=113734341365.225973502034&scope=incoming-webhook"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
+
+Require slack recipe in your `deploy.php` file:
+
+```php
+require 'contrib/slack.php';
+```
+
+Add hook on deploy:
+
+```php
+before('deploy', 'slack:notify');
+```
+
+## Configuration
+
+- `slack_webhook` – slack incoming webhook url, **required**
+  ```
+  set('slack_webhook', 'https://hooks.slack.com/...');
+  ```
+- `slack_title` – the title of application, default `{{application}}`
+- `slack_text` – notification message template, markdown supported
+  ```
+  set('slack_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  ```
+- `slack_success_text` – success template, default:
+  ```
+  set('slack_success_text', 'Deploy to *{{target}}* successful');
+  ```
+- `slack_failure_text` – failure template, default:
+  ```
+  set('slack_failure_text', 'Deploy to *{{target}}* failed');
+  ```
+
+- `slack_color` – color's attachment
+- `slack_success_color` – success color's attachment
+- `slack_failure_color` – failure color's attachment
+
+## Usage
+
+If you want to notify only about beginning of deployment add this line only:
+
+```php
+before('deploy', 'slack:notify');
+```
+
+If you want to notify about successful end of deployment add this too:
+
+```php
+after('success', 'slack:notify:success');
+```
+
+If you want to notify about failed deployment add this too:
+
+```php
+after('deploy:failed', 'slack:notify:failure');
+```
+
 
 
 * Config
@@ -30,69 +87,69 @@ file that was distributed with this source code.
 
 ## Config
 ### slack_title
-[Source](/contrib/slack.php#L13)
+[Source](/contrib/slack.php#L69)
 
 Title of project
 
 ### slack_text
-[Source](/contrib/slack.php#L18)
+[Source](/contrib/slack.php#L74)
 
 Deploy message
 
 ### slack_success_text
-[Source](/contrib/slack.php#L19)
+[Source](/contrib/slack.php#L75)
 
 
 
 ### slack_failure_text
-[Source](/contrib/slack.php#L20)
+[Source](/contrib/slack.php#L76)
 
 
 
 ### slack_rollback_text
-[Source](/contrib/slack.php#L21)
+[Source](/contrib/slack.php#L77)
 
 
 
 ### slack_color
-[Source](/contrib/slack.php#L24)
+[Source](/contrib/slack.php#L80)
 
 Color of attachment
 
 ### slack_success_color
-[Source](/contrib/slack.php#L25)
+[Source](/contrib/slack.php#L81)
 
 
 
 ### slack_failure_color
-[Source](/contrib/slack.php#L26)
+[Source](/contrib/slack.php#L82)
 
 
 
 ### slack_rollback_color
-[Source](/contrib/slack.php#L27)
+[Source](/contrib/slack.php#L83)
 
 
 
 
 ## Tasks
 ### slack:notify
-[Source](/contrib/slack.php#L30)
+[Source](/contrib/slack.php#L86)
 
 
 
 ### slack:notify:success
-[Source](/contrib/slack.php#L49)
+[Source](/contrib/slack.php#L105)
 
 
 
 ### slack:notify:failure
-[Source](/contrib/slack.php#L68)
+[Source](/contrib/slack.php#L124)
 
 
 
 ### slack:notify:rollback
-[Source](/contrib/slack.php#L87)
+[Source](/contrib/slack.php#L143)
 
 
 

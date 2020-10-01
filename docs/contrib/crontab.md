@@ -6,10 +6,9 @@
 
 [Source](/contrib/crontab.php)
 
-(c) Asafov Sergey <asafov@newleaf.ru>
+
 Recipe for crontab jobs deploy
-Configuration:
-    You need no specify only crontab:jobs, which must be array of strings
+Configuration: You need no specify only crontab:jobs, which must be array of strings
 
 
 * Tasks
@@ -19,12 +18,12 @@ Configuration:
 
 ## Tasks
 ### crontab:load
-[Source](/contrib/crontab.php#L15)
+[Source](/contrib/crontab.php#L14)
 
 
 
 ### crontab:sync
-[Source](/contrib/crontab.php#L40)
+[Source](/contrib/crontab.php#L39)
 
 
 

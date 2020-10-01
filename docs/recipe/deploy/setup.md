@@ -6,10 +6,6 @@
 
 [Source](/recipe/deploy/setup.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Tasks
@@ -18,7 +14,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:setup
-[Source](/recipe/deploy/setup.php#L14)
+[Source](/recipe/deploy/setup.php#L8)
 
 
 

@@ -7,6 +7,57 @@
 [Source](/contrib/discord.php)
 
 
+## Installing
+
+Require discord recipe in your `deploy.php` file:
+
+```php
+require 'contrib/discord.php';
+```
+
+Add hook on deploy:
+
+```php
+before('deploy', 'discord:notify');
+```
+
+## Configuration
+
+- `discord_channel` – Discord channel ID, **required**
+- `discord_token` – Discord channel token, **required**
+
+- `discord_notify_text` – notification message template, markdown supported, default:
+  ```markdown
+  :information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_
+  ```
+- `discord_success_text` – success template, default:
+  ```markdown
+  :white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully
+  ```
+- `discord_failure_text` – failure template, default:
+  ```markdown
+  :no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_
+
+## Usage
+
+If you want to notify only about beginning of deployment add this line only:
+
+```php
+before('deploy', 'discord:notify');
+```
+
+If you want to notify about successful end of deployment add this too:
+
+```php
+after('success', 'discord:notify:success');
+```
+
+If you want to notify about failed deployment add this too:
+
+```php
+after('deploy:failed', 'discord:notify:failure');
+```
+
 
 * Config
   * [`discord_webhook`](#discord_webhook)
@@ -23,54 +74,54 @@
 
 ## Config
 ### discord_webhook
-[Source](/contrib/discord.php#L7)
+[Source](/contrib/discord.php#L59)
 
 
 
 ### discord_notify_text
-[Source](/contrib/discord.php#L12)
+[Source](/contrib/discord.php#L64)
 
 Deploy messages
 
 ### discord_success_text
-[Source](/contrib/discord.php#L17)
+[Source](/contrib/discord.php#L69)
 
 
 
 ### discord_failure_text
-[Source](/contrib/discord.php#L22)
+[Source](/contrib/discord.php#L74)
 
 
 
 ### discord_message
-[Source](/contrib/discord.php#L29)
+[Source](/contrib/discord.php#L81)
 
 The message
 
 
 ## Tasks
 ### discord_send_message
-[Source](/contrib/discord.php#L32)
+[Source](/contrib/discord.php#L84)
 
 Helpers
 
 ### discord:test
-[Source](/contrib/discord.php#L40)
+[Source](/contrib/discord.php#L92)
 
 Tasks
 
 ### discord:notify
-[Source](/contrib/discord.php#L52)
+[Source](/contrib/discord.php#L104)
 
 
 
 ### discord:notify:success
-[Source](/contrib/discord.php#L61)
+[Source](/contrib/discord.php#L113)
 
 
 
 ### discord:notify:failure
-[Source](/contrib/discord.php#L70)
+[Source](/contrib/discord.php#L122)
 
 
 

@@ -6,10 +6,6 @@
 
 [Source](/recipe/yii.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -22,19 +18,19 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/yii.php#L13)
+[Source](/recipe/yii.php#L7)
 
 Yii shared dirs
 
 ### writable_dirs
-[Source](/recipe/yii.php#L16)
+[Source](/recipe/yii.php#L10)
 
 Yii writable dirs
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/yii.php#L21)
+[Source](/recipe/yii.php#L15)
 
 Main task
 

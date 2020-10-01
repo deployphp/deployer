@@ -1,10 +1,28 @@
 <?php
-/* (c) Samuel Gordalina <samuel.gordalina@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+/*
+## Installing
 
+Add to your _deploy.php_
+
+```php
+require 'contrib/newrelic.php';
+```
+
+## Configuration
+
+- `newrelic_app_id` – newrelic's app id
+- `newrelic_api_key` – newrelic's api key
+- `newrelic_description` – message to send
+
+## Usage
+
+Since you should only notify New Relic of a successful deployment, the `newrelic:notify` task should be executed right at the end.
+
+```php
+after('deploy', 'newrelic:notify');
+```
+
+ */
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

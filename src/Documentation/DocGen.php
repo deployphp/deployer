@@ -42,7 +42,7 @@ class DocGen
     public function gen(string $destination)
     {
         foreach ($this->recipes as $recipe) {
-            $filePath = realpath("$destination/" . preg_replace('#\.php$#', '.md', $recipe->recipePath));
+            $filePath = "$destination/" . preg_replace('#\.php$#', '.md', $recipe->recipePath);
 
             $toc = '';
             $config = '';
@@ -91,7 +91,6 @@ class DocGen
 {$config}
 {$tasks}
 MD;
-
 
             if (!file_exists(dirname($filePath))) {
                 mkdir(dirname($filePath), 0755, true);

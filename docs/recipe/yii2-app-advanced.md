@@ -6,10 +6,8 @@
 
 [Source](/recipe/yii2-app-advanced.php)
 
-(c) Alexey Rogachev <arogachev90@gmail.com>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+Yii 2 Advanced Project Template configuration
 
 
 * Require
@@ -24,29 +22,29 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/yii2-app-advanced.php#L17)
+[Source](/recipe/yii2-app-advanced.php#L11)
 
 Yii 2 Advanced Project Template shared dirs
 
 ### shared_files
-[Source](/recipe/yii2-app-advanced.php#L24)
+[Source](/recipe/yii2-app-advanced.php#L18)
 
 Yii 2 Advanced Project Template shared files
 
 
 ## Tasks
 ### deploy:init
-[Source](/recipe/yii2-app-advanced.php#L38)
+[Source](/recipe/yii2-app-advanced.php#L32)
 
 Initialization
 
 ### deploy:run_migrations
-[Source](/recipe/yii2-app-advanced.php#L45)
+[Source](/recipe/yii2-app-advanced.php#L39)
 
 Run migrations
 
 ### deploy
-[Source](/recipe/yii2-app-advanced.php#L52)
+[Source](/recipe/yii2-app-advanced.php#L46)
 
 Main task
 

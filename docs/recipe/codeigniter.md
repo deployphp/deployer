@@ -6,10 +6,6 @@
 
 [Source](/recipe/codeigniter.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -22,19 +18,19 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/codeigniter.php#L13)
+[Source](/recipe/codeigniter.php#L7)
 
 CodeIgniter shared dirs
 
 ### writable_dirs
-[Source](/recipe/codeigniter.php#L16)
+[Source](/recipe/codeigniter.php#L10)
 
 CodeIgniter writable dirs
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/codeigniter.php#L21)
+[Source](/recipe/codeigniter.php#L15)
 
 Main task
 

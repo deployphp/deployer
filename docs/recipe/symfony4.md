@@ -6,10 +6,6 @@
 
 [Source](/recipe/symfony4.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -28,49 +24,49 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/symfony4.php#L12)
+[Source](/recipe/symfony4.php#L6)
 
 
 
 ### shared_files
-[Source](/recipe/symfony4.php#L13)
+[Source](/recipe/symfony4.php#L7)
 
 
 
 ### writable_dirs
-[Source](/recipe/symfony4.php#L14)
+[Source](/recipe/symfony4.php#L8)
 
 
 
 ### migrations_config
-[Source](/recipe/symfony4.php#L15)
+[Source](/recipe/symfony4.php#L9)
 
 
 
 ### console_options
-[Source](/recipe/symfony4.php#L21)
+[Source](/recipe/symfony4.php#L15)
 
 
 
 
 ## Tasks
 ### database:migrate
-[Source](/recipe/symfony4.php#L26)
+[Source](/recipe/symfony4.php#L20)
 
 
 
 ### deploy:cache:clear
-[Source](/recipe/symfony4.php#L36)
+[Source](/recipe/symfony4.php#L30)
 
 
 
 ### deploy:cache:warmup
-[Source](/recipe/symfony4.php#L41)
+[Source](/recipe/symfony4.php#L35)
 
 
 
 ### deploy
-[Source](/recipe/symfony4.php#L46)
+[Source](/recipe/symfony4.php#L40)
 
 
 

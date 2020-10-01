@@ -6,10 +6,85 @@
 
 [Source](/contrib/mattermost.php)
 
-(c) Marek Grudzinski <mail@marek-grudzinski.de>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Create a Mattermost incoming webhook, through the administration panel.
+
+Require the new recipe into your `deploy.php`
+
+```php
+require 'contrib/mattermost.php';
+```
+
+Add hook on deploy:
+
+```
+before('deploy', 'mattermost:notify');
+```
+
+## Configuration
+
+ - `mattermost_webhook` - incoming mattermost webook **required**
+   ```
+   set('mattermost_webook', 'https://{your-mattermost-site}/hooks/xxx-generatedkey-xxx');
+   ```
+
+ - `mattermost_channel` - overrides the channel the message posts in
+   ```
+   set('mattermost_channel', 'town-square');
+   ```
+
+ - `mattermost_username` - overrides the username the message posts as
+   ```
+   set('mattermost_username', 'deployer');
+   ```
+
+ - `mattermost_icon_url` - overrides the profile picture the message posts with
+   ```
+   set('mattermost_icon_url', 'https://domain.com/your-icon.png');
+   ```
+
+ - `mattermost_text` - notification message
+   ```
+   set('mattermost_text', '_{{user}}_ deploying `{{branch}}` to **{{target}}**');
+   ```
+
+ - `mattermost_success_text` – success template, default:
+   ```
+   set('mattermost_success_text', 'Deploy to **{{target}}** successful {{mattermost_success_emoji}}');
+   ```
+
+ - `mattermost_failure_text` – failure template, default:
+   ```
+   set('mattermost_failure_text', 'Deploy to **{{target}}** failed {{mattermost_failure_emoji}}');
+   ```
+
+ - `mattermost_success_emoji` – emoji added at the end of success text
+ - `mattermost_failure_emoji` – emoji added at the end of failure text
+
+ For detailed information about Mattermost hooks see: https://developers.mattermost.com/integrate/incoming-webhooks/
+
+## Usage
+
+If you want to notify only about beginning of deployment add this line only:
+
+```php
+before('deploy', 'mattermost:notify');
+```
+
+If you want to notify about successful end of deployment add this too:
+
+```php
+after('success', 'mattermost:notify:success');
+```
+
+If you want to notify about failed deployment add this too:
+
+```php
+after('deploy:failed', 'mattermost:notify:failure');
+```
+
 
 
 * Config
@@ -29,64 +104,64 @@ file that was distributed with this source code.
 
 ## Config
 ### mattermost_webhook
-[Source](/contrib/mattermost.php#L12)
+[Source](/contrib/mattermost.php#L86)
 
 
 
 ### mattermost_channel
-[Source](/contrib/mattermost.php#L13)
+[Source](/contrib/mattermost.php#L87)
 
 
 
 ### mattermost_username
-[Source](/contrib/mattermost.php#L14)
+[Source](/contrib/mattermost.php#L88)
 
 
 
 ### mattermost_icon_url
-[Source](/contrib/mattermost.php#L15)
+[Source](/contrib/mattermost.php#L89)
 
 
 
 ### mattermost_success_emoji
-[Source](/contrib/mattermost.php#L17)
+[Source](/contrib/mattermost.php#L91)
 
 
 
 ### mattermost_failure_emoji
-[Source](/contrib/mattermost.php#L18)
+[Source](/contrib/mattermost.php#L92)
 
 
 
 ### mattermost_text
-[Source](/contrib/mattermost.php#L20)
+[Source](/contrib/mattermost.php#L94)
 
 
 
 ### mattermost_success_text
-[Source](/contrib/mattermost.php#L21)
+[Source](/contrib/mattermost.php#L95)
 
 
 
 ### mattermost_failure_text
-[Source](/contrib/mattermost.php#L22)
+[Source](/contrib/mattermost.php#L96)
 
 
 
 
 ## Tasks
 ### mattermost:notify
-[Source](/contrib/mattermost.php#L25)
+[Source](/contrib/mattermost.php#L99)
 
 
 
 ### mattermost:notify:success
-[Source](/contrib/mattermost.php#L46)
+[Source](/contrib/mattermost.php#L120)
 
 
 
 ### mattermost:notify:failure
-[Source](/contrib/mattermost.php#L67)
+[Source](/contrib/mattermost.php#L141)
 
 
 

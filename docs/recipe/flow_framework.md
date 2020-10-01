@@ -6,10 +6,6 @@
 
 [Source](/recipe/flow_framework.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -25,34 +21,34 @@ file that was distributed with this source code.
 
 ## Config
 ### flow_context
-[Source](/recipe/flow_framework.php#L13)
+[Source](/recipe/flow_framework.php#L7)
 
 Flow-Framework application-context
 
 ### flow_command
-[Source](/recipe/flow_framework.php#L16)
+[Source](/recipe/flow_framework.php#L10)
 
 Flow-Framework cli-command
 
 ### shared_dirs
-[Source](/recipe/flow_framework.php#L19)
+[Source](/recipe/flow_framework.php#L13)
 
 Flow-Framework shared directories
 
 
 ## Tasks
 ### deploy:run_migrations
-[Source](/recipe/flow_framework.php#L28)
+[Source](/recipe/flow_framework.php#L22)
 
 Apply database migrations
 
 ### deploy:publish_resources
-[Source](/recipe/flow_framework.php#L35)
+[Source](/recipe/flow_framework.php#L29)
 
 Publish resources
 
 ### deploy
-[Source](/recipe/flow_framework.php#L42)
+[Source](/recipe/flow_framework.php#L36)
 
 Main task
 

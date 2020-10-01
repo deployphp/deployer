@@ -6,10 +6,30 @@
 
 [Source](/contrib/npm.php)
 
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Add to your _deploy.php_
+
+~~~php
+require 'contrib/npm.php';
+~~~
+
+## Configuration
+
+- `bin/npm` *(optional)*: set npm binary, automatically detected otherwise.
+
+## Usage
+
+~~~php
+after('deploy:update_code', 'npm:install');
+~~~
+
+or if you want use `npm ci` command
+~~~php
+after('deploy:update_code', 'npm:ci');
+~~~
+
 
 
 * Tasks
@@ -19,12 +39,12 @@ file that was distributed with this source code.
 
 ## Tasks
 ### npm:install
-[Source](/contrib/npm.php#L15)
+[Source](/contrib/npm.php#L34)
 
 
 
 ### npm:ci
-[Source](/contrib/npm.php#L31)
+[Source](/contrib/npm.php#L50)
 
 
 

@@ -6,10 +6,32 @@
 
 [Source](/contrib/rollbar.php)
 
-(c) Laurent Goussard <loranger@free.fr>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Add to your _deploy.php_
+
+```php
+require 'contrib/rollbar.php';
+```
+
+## Configuration
+
+- `rollbar_token` – access token to rollbar api
+- `rollbar_comment` – comment about deploy, default to
+  ```php
+  set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  ```
+- `rollbar_username` – rollbar user name
+
+## Usage
+
+Since you should only notify Rollbar channel of a successful deployment, the `rollbar:notify` task should be executed right at the end.
+
+```php
+after('deploy', 'rollbar:notify');
+```
+
 
 
 * Config
@@ -19,14 +41,14 @@ file that was distributed with this source code.
 
 ## Config
 ### rollbar_comment
-[Source](/contrib/rollbar.php#L12)
+[Source](/contrib/rollbar.php#L33)
 
 
 
 
 ## Tasks
 ### rollbar:notify
-[Source](/contrib/rollbar.php#L15)
+[Source](/contrib/rollbar.php#L36)
 
 
 

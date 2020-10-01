@@ -6,10 +6,6 @@
 
 [Source](/recipe/deploy/clear_paths.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Tasks
@@ -18,7 +14,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:clear_paths
-[Source](/recipe/deploy/clear_paths.php#L11)
+[Source](/recipe/deploy/clear_paths.php#L5)
 
 
 

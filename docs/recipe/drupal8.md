@@ -6,10 +6,6 @@
 
 [Source](/recipe/drupal8.php)
 
-(c) Sergio Carracedo <info@sergiocarraedo.es>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -24,29 +20,29 @@ file that was distributed with this source code.
 
 ## Config
 ### drupal_site
-[Source](/recipe/drupal8.php#L26)
+[Source](/recipe/drupal8.php#L20)
 
 //Set drupal site. Change if you use different site
 
 ### shared_dirs
-[Source](/recipe/drupal8.php#L30)
+[Source](/recipe/drupal8.php#L24)
 
 //Drupal 8 shared dirs
 
 ### shared_files
-[Source](/recipe/drupal8.php#L35)
+[Source](/recipe/drupal8.php#L29)
 
 //Drupal 8 shared files
 
 ### writable_dirs
-[Source](/recipe/drupal8.php#L41)
+[Source](/recipe/drupal8.php#L35)
 
 //Drupal 8 Writable dirs
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/drupal8.php#L12)
+[Source](/recipe/drupal8.php#L6)
 
 
 

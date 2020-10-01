@@ -6,10 +6,6 @@
 
 [Source](/recipe/wordpress.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -23,24 +19,24 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_files
-[Source](/recipe/wordpress.php#L12)
+[Source](/recipe/wordpress.php#L6)
 
 
 
 ### shared_dirs
-[Source](/recipe/wordpress.php#L13)
+[Source](/recipe/wordpress.php#L7)
 
 
 
 ### writable_dirs
-[Source](/recipe/wordpress.php#L14)
+[Source](/recipe/wordpress.php#L8)
 
 
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/wordpress.php#L16)
+[Source](/recipe/wordpress.php#L10)
 
 
 

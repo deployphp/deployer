@@ -6,10 +6,8 @@
 
 [Source](/recipe/symfony3.php)
 
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+Symfony 3 Configuration
 
 
 * Require
@@ -22,22 +20,22 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/symfony3.php#L17)
+[Source](/recipe/symfony3.php#L11)
 
 Symfony shared dirs
 
 ### writable_dirs
-[Source](/recipe/symfony3.php#L20)
+[Source](/recipe/symfony3.php#L14)
 
 Symfony writable dirs
 
 ### bin_dir
-[Source](/recipe/symfony3.php#L23)
+[Source](/recipe/symfony3.php#L17)
 
 Symfony executable and variable directories
 
 ### var_dir
-[Source](/recipe/symfony3.php#L24)
+[Source](/recipe/symfony3.php#L18)
 
 
 

@@ -6,10 +6,6 @@
 
 [Source](/recipe/composer.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -20,7 +16,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy
-[Source](/recipe/composer.php#L13)
+[Source](/recipe/composer.php#L7)
 
 
 

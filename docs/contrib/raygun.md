@@ -6,10 +6,32 @@
 
 [Source](/contrib/raygun.php)
 
-(c) Matt Byers <matt@raygun.com>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Add to your _deploy.php_
+
+```php
+require 'contrib/raygun.php';
+```
+
+## Configuration
+
+- `raygun_api_key` – the API key of your Raygun application
+- `raygun_version` – the version of your application that this deployment is releasing
+- `raygun_owner_name` – the name of the person creating this deployment
+- `raygun_email` – the email of the person creating this deployment
+- `raygun_comment` – the deployment notes
+- `raygun_scm_identifier` – the commit that this deployment was built off
+- `raygun_scm_type` - the source control system you use
+
+## Usage
+
+To notify Raygun of a successful deployment, you can use the 'raygun:notify' task after a deployment.
+
+```php
+after('deploy', 'raygun:notify');
+```
 
 
 * Tasks
@@ -18,7 +40,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### raygun:notify
-[Source](/contrib/raygun.php#L13)
+[Source](/contrib/raygun.php#L34)
 
 
 

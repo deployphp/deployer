@@ -6,11 +6,24 @@
 
 [Source](/contrib/yarn.php)
 
-(c) Nick DeNardis <nick.denardis@gmail.com>
-(c) Anton Medvedev <anton@medv.io>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+## Installing
+
+Add to your _deploy.php_
+
+```php
+require 'contrib/yarn.php';
+```
+
+## Configuration
+
+- **bin/yarn** *(optional)*: set Yarn binary, automatically detected otherwise.
+
+## Usage
+
+```php
+after('deploy:update_code', 'yarn:install');
+```
 
 
 * Tasks
@@ -19,7 +32,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### yarn:install
-[Source](/contrib/yarn.php#L16)
+[Source](/contrib/yarn.php#L28)
 
 
 

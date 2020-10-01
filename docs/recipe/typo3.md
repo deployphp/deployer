@@ -6,10 +6,6 @@
 
 [Source](/recipe/typo3.php)
 
-(c) Frank Naegler <frank.naegler@typo3.org>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -24,29 +20,29 @@ file that was distributed with this source code.
 
 ## Config
 ### typo3_webroot
-[Source](/recipe/typo3.php#L15)
+[Source](/recipe/typo3.php#L9)
 
 DocumentRoot / WebRoot for the TYPO3 installation
 
 ### shared_dirs
-[Source](/recipe/typo3.php#L38)
+[Source](/recipe/typo3.php#L32)
 
 Shared directories
 
 ### shared_files
-[Source](/recipe/typo3.php#L47)
+[Source](/recipe/typo3.php#L41)
 
 Shared files
 
 ### writable_dirs
-[Source](/recipe/typo3.php#L54)
+[Source](/recipe/typo3.php#L48)
 
 Writeable directories
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/typo3.php#L20)
+[Source](/recipe/typo3.php#L14)
 
 Main TYPO3 task
 

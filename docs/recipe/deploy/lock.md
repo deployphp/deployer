@@ -6,10 +6,6 @@
 
 [Source](/recipe/deploy/lock.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Tasks
@@ -19,12 +15,12 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:lock
-[Source](/recipe/deploy/lock.php#L14)
+[Source](/recipe/deploy/lock.php#L8)
 
 
 
 ### deploy:unlock
-[Source](/recipe/deploy/lock.php#L28)
+[Source](/recipe/deploy/lock.php#L22)
 
 
 

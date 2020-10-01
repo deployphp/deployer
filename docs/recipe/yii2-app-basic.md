@@ -6,10 +6,8 @@
 
 [Source](/recipe/yii2-app-basic.php)
 
-(c) Alexey Rogachev <arogachev90@gmail.com>
 
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
+Yii 2 Basic Project Template configuration
 
 
 * Require
@@ -22,19 +20,19 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](/recipe/yii2-app-basic.php#L17)
+[Source](/recipe/yii2-app-basic.php#L11)
 
 Yii 2 Basic Project Template shared dirs
 
 
 ## Tasks
 ### deploy:run_migrations
-[Source](/recipe/yii2-app-basic.php#L22)
+[Source](/recipe/yii2-app-basic.php#L16)
 
 Run migrations
 
 ### deploy
-[Source](/recipe/yii2-app-basic.php#L29)
+[Source](/recipe/yii2-app-basic.php#L23)
 
 Main task
 

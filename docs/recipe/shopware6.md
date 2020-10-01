@@ -32,99 +32,99 @@
 
 ## Config
 ### repository
-[Source](/recipe/shopware6.php#L5)
+[Source](/recipe/shopware6.php#L4)
 
 
 
 ### release_name
-[Source](/recipe/shopware6.php#L7)
+[Source](/recipe/shopware6.php#L6)
 
 
 
 ### shared_files
-[Source](/recipe/shopware6.php#L11)
+[Source](/recipe/shopware6.php#L10)
 
 
 
 ### shared_dirs
-[Source](/recipe/shopware6.php#L14)
+[Source](/recipe/shopware6.php#L13)
 
 
 
 ### writable_dirs
-[Source](/recipe/shopware6.php#L23)
+[Source](/recipe/shopware6.php#L22)
 
 
 
 ### static_folders
-[Source](/recipe/shopware6.php#L32)
+[Source](/recipe/shopware6.php#L31)
 
 
 
 
 ## Tasks
 ### sw:update_code
-[Source](/recipe/shopware6.php#L34)
+[Source](/recipe/shopware6.php#L33)
 
 
 
 ### sw:system:install
-[Source](/recipe/shopware6.php#L37)
+[Source](/recipe/shopware6.php#L36)
 
 
 
 ### sw:build
-[Source](/recipe/shopware6.php#L40)
+[Source](/recipe/shopware6.php#L39)
 
 
 
 ### sw:system:setup
-[Source](/recipe/shopware6.php#L43)
+[Source](/recipe/shopware6.php#L42)
 
 
 
 ### sw:theme:compile
-[Source](/recipe/shopware6.php#L46)
+[Source](/recipe/shopware6.php#L45)
 
 
 
 ### sw:cache:clear
-[Source](/recipe/shopware6.php#L49)
+[Source](/recipe/shopware6.php#L48)
 
 
 
 ### sw:cache:warmup
-[Source](/recipe/shopware6.php#L52)
+[Source](/recipe/shopware6.php#L51)
 
 
 
 ### sw:database:migrate
-[Source](/recipe/shopware6.php#L56)
+[Source](/recipe/shopware6.php#L55)
 
 
 
 ### sw:plugin:refresh
-[Source](/recipe/shopware6.php#L59)
+[Source](/recipe/shopware6.php#L58)
 
 
 
 ### sw:plugin:activate:all
-[Source](/recipe/shopware6.php#L62)
+[Source](/recipe/shopware6.php#L61)
 
 
 
 ### sw:plugin:migrate:all
-[Source](/recipe/shopware6.php#L95)
+[Source](/recipe/shopware6.php#L94)
 
 
 
 ### sw:deploy
-[Source](/recipe/shopware6.php#L131)
+[Source](/recipe/shopware6.php#L130)
 
 Grouped SW deploy tasks
 
 ### deploy
-[Source](/recipe/shopware6.php#L143)
+[Source](/recipe/shopware6.php#L142)
 
 Main task
 

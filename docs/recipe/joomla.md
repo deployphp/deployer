@@ -6,10 +6,6 @@
 
 [Source](/recipe/joomla.php)
 
-(c) Anton Medvedev <anton@medv.io>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
 
 
 * Require
@@ -23,24 +19,24 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_files
-[Source](/recipe/joomla.php#L12)
+[Source](/recipe/joomla.php#L8)
 
 
 
 ### shared_dirs
-[Source](/recipe/joomla.php#L13)
+[Source](/recipe/joomla.php#L9)
 
 
 
 ### writable_dirs
-[Source](/recipe/joomla.php#L14)
+[Source](/recipe/joomla.php#L10)
 
 
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/joomla.php#L16)
+[Source](/recipe/joomla.php#L12)
 
 
 

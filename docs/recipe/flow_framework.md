@@ -33,8 +33,7 @@ Flow-Framework cli-command
 ### shared_dirs
 [Source](/recipe/flow_framework.php#L13)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Flow-Framework shared directories
 

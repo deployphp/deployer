@@ -37,32 +37,28 @@ in you deployer script.
 ### shared_files
 [Source](/recipe/magento2.php#L13)
 
-Overrides
-* [`shared_files`](/docs/recipe/common.md#shared_files)
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
 [Source](/recipe/magento2.php#L17)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
 [Source](/recipe/magento2.php#L31)
 
-Overrides
-* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
+* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
 
 
 
 ### clear_paths
 [Source](/recipe/magento2.php#L37)
 
-Overrides
-* [`clear_paths`](/docs/recipe/common.md#clear_paths)
+* Overrides [`clear_paths`](/docs/recipe/common.md#clear_paths) from `recipe/common.php`
 
 
 

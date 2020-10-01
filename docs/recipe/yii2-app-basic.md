@@ -20,8 +20,7 @@
 ### shared_dirs
 [Source](/recipe/yii2-app-basic.php#L11)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Yii 2 Basic Project Template shared dirs
 

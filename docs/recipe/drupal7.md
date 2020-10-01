@@ -29,24 +29,21 @@ Set Drupal 7 site. Change if you use different site
 ### shared_dirs
 [Source](/recipe/drupal7.php#L23)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Drupal 7 shared dirs
 
 ### shared_files
 [Source](/recipe/drupal7.php#L28)
 
-Overrides
-* [`shared_files`](/docs/recipe/common.md#shared_files)
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Drupal 7 shared files
 
 ### writable_dirs
 [Source](/recipe/drupal7.php#L33)
 
-Overrides
-* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
+* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
 
 Drupal 7 writable dirs
 

@@ -115,7 +115,7 @@ class DocGen
                     if ($o !== null) {
                         $md = php_to_md($o->recipePath);
                         $anchor = anchor($c->name);
-                        $config .= "Overrides\n* [`{$c->name}`](/docs/$md#$anchor)\n\n";
+                        $config .= "* Overrides [`{$c->name}`](/docs/$md#$anchor) from `$o->recipePath`\n\n";
                     }
                     $config .= $replaceLinks($c->comment);
                     $config .= "\n\n";

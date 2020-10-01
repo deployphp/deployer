@@ -22,16 +22,14 @@
 ### shared_dirs
 [Source](/recipe/cakephp4.php#L11)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 CakePHP 4 Project Template shared dirs
 
 ### shared_files
 [Source](/recipe/cakephp4.php#L17)
 
-Overrides
-* [`shared_files`](/docs/recipe/common.md#shared_files)
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 CakePHP 4 Project Template shared files
 

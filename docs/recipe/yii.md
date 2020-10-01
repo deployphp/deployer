@@ -20,16 +20,14 @@
 ### shared_dirs
 [Source](/recipe/yii.php#L7)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Yii shared dirs
 
 ### writable_dirs
 [Source](/recipe/yii.php#L10)
 
-Overrides
-* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
+* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
 
 Yii writable dirs
 

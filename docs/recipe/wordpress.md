@@ -21,24 +21,21 @@
 ### shared_files
 [Source](/recipe/wordpress.php#L6)
 
-Overrides
-* [`shared_files`](/docs/recipe/common.md#shared_files)
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
 [Source](/recipe/wordpress.php#L7)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
 [Source](/recipe/wordpress.php#L8)
 
-Overrides
-* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
+* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
 
 
 

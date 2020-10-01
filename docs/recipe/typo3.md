@@ -27,24 +27,21 @@ DocumentRoot / WebRoot for the TYPO3 installation
 ### shared_dirs
 [Source](/recipe/typo3.php#L32)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Shared directories
 
 ### shared_files
 [Source](/recipe/typo3.php#L41)
 
-Overrides
-* [`shared_files`](/docs/recipe/common.md#shared_files)
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Shared files
 
 ### writable_dirs
 [Source](/recipe/typo3.php#L48)
 
-Overrides
-* [`writable_dirs`](/docs/recipe/common.md#writable_dirs)
+* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
 
 Writeable directories
 

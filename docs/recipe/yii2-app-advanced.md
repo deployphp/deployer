@@ -22,16 +22,14 @@
 ### shared_dirs
 [Source](/recipe/yii2-app-advanced.php#L11)
 
-Overrides
-* [`shared_dirs`](/docs/recipe/common.md#shared_dirs)
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Yii 2 Advanced Project Template shared dirs
 
 ### shared_files
 [Source](/recipe/yii2-app-advanced.php#L18)
 
-Overrides
-* [`shared_files`](/docs/recipe/common.md#shared_files)
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Yii 2 Advanced Project Template shared files
 

@@ -16,9 +16,9 @@
   * [`writable_dirs`](#writable_dirs)
   * [`silverstripe_cli_script`](#silverstripe_cli_script)
 * Tasks
-  * [`silverstripe:build`](#silverstripebuild) — 
-  * [`silverstripe:buildflush`](#silverstripebuildflush) — 
-  * [`deploy`](#deploy) — 
+  * [`silverstripe:build`](#silverstripebuild)
+  * [`silverstripe:buildflush`](#silverstripebuildflush)
+  * [`deploy`](#deploy)
 
 ## Config
 ### shared_assets

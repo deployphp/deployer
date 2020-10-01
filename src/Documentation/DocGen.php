@@ -126,7 +126,11 @@ class DocGen
                 $tasks .= "## Tasks\n";
                 foreach ($recipe->tasks as $t) {
                     $anchor = anchor($t->name);
-                    $toc .= "  * [`{$t->name}`](#{$anchor}) — {$t->desc}\n";
+                    $desc = "";
+                    if ($t->desc !== "") {
+                        $desc = " — {$t->desc}";
+                    }
+                    $toc .= "  * [`{$t->name}`](#{$anchor}){$desc}\n";
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= $replaceLinks($t->comment);

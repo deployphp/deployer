@@ -59,7 +59,7 @@ after('deploy:failed', 'chat:notify:failure');
 * Tasks
   * [`chat:notify`](#chatnotify) — Notifying Google Hangouts Chat
   * [`chat:notify:success`](#chatnotifysuccess) — Notifying Google Hangouts Chat about deploy finish
-  * [`chat:notify:failure`](#chatnotifyfailure) — 
+  * [`chat:notify:failure`](#chatnotifyfailure)
 
 ## Config
 ### chat_title

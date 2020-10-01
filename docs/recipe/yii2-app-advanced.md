@@ -14,9 +14,9 @@
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
 * Tasks
-  * [`deploy:init`](#deployinit) — 
-  * [`deploy:run_migrations`](#deployrun_migrations) — 
-  * [`deploy`](#deploy) — 
+  * [`deploy:init`](#deployinit)
+  * [`deploy:run_migrations`](#deployrun_migrations)
+  * [`deploy`](#deploy)
 
 ## Config
 ### shared_dirs

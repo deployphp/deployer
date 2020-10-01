@@ -15,9 +15,9 @@
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy:cache:clear`](#deploycacheclear) — 
-  * [`deploy:clear_version`](#deployclear_version) — 
-  * [`deploy`](#deploy) — 
+  * [`deploy:cache:clear`](#deploycacheclear)
+  * [`deploy:clear_version`](#deployclear_version)
+  * [`deploy`](#deploy)
 
 ## Config
 ### shared_dirs

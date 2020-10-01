@@ -11,7 +11,7 @@
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)
 * Tasks
-  * [`deploy`](#deploy) — 
+  * [`deploy`](#deploy)
 
 
 ## Tasks

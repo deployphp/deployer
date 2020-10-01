@@ -15,7 +15,7 @@
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy) — 
+  * [`deploy`](#deploy)
 
 ## Config
 ### shared_files

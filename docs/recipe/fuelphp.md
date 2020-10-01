@@ -13,7 +13,7 @@
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks
-  * [`deploy`](#deploy) — 
+  * [`deploy`](#deploy)
 
 ## Config
 ### shared_dirs

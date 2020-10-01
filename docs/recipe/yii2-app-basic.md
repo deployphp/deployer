@@ -13,8 +13,8 @@
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks
-  * [`deploy:run_migrations`](#deployrun_migrations) — 
-  * [`deploy`](#deploy) — 
+  * [`deploy:run_migrations`](#deployrun_migrations)
+  * [`deploy`](#deploy)
 
 ## Config
 ### shared_dirs

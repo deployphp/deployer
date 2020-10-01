@@ -50,10 +50,10 @@
   * [`current_path`](#current_path)
   * [`sudo_askpass`](#sudo_askpass)
 * Tasks
-  * [`deploy:prepare`](#deployprepare) — 
-  * [`deploy:publish`](#deploypublish) — 
-  * [`deploy:success`](#deploysuccess) — 
-  * [`deploy:failed`](#deployfailed) — 
+  * [`deploy:prepare`](#deployprepare)
+  * [`deploy:publish`](#deploypublish)
+  * [`deploy:success`](#deploysuccess)
+  * [`deploy:failed`](#deployfailed)
   * [`logs`](#logs) — Follow latest application logs.
 
 ## Config

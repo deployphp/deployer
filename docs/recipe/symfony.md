@@ -25,14 +25,14 @@
   * [`console_options`](#console_options)
   * [`migrations_config`](#migrations_config)
 * Tasks
-  * [`deploy:create_cache_dir`](#deploycreate_cache_dir) — 
-  * [`deploy:assets`](#deployassets) — 
-  * [`deploy:assets:install`](#deployassetsinstall) — 
-  * [`deploy:assetic:dump`](#deployasseticdump) — 
-  * [`deploy:cache:clear`](#deploycacheclear) — 
-  * [`deploy:cache:warmup`](#deploycachewarmup) — 
-  * [`database:migrate`](#databasemigrate) — 
-  * [`deploy`](#deploy) — 
+  * [`deploy:create_cache_dir`](#deploycreate_cache_dir)
+  * [`deploy:assets`](#deployassets)
+  * [`deploy:assets:install`](#deployassetsinstall)
+  * [`deploy:assetic:dump`](#deployasseticdump)
+  * [`deploy:cache:clear`](#deploycacheclear)
+  * [`deploy:cache:warmup`](#deploycachewarmup)
+  * [`database:migrate`](#databasemigrate)
+  * [`deploy`](#deploy)
 
 ## Config
 ### symfony_env

@@ -66,7 +66,7 @@ after('deploy:failed', 'discord:notify:failure');
   * [`discord_failure_text`](#discord_failure_text)
   * [`discord_message`](#discord_message)
 * Tasks
-  * [`discord_send_message`](#discord_send_message) — 
+  * [`discord_send_message`](#discord_send_message)
   * [`discord:test`](#discordtest) — Just notify your Discord channel with all messages, without deploying
   * [`discord:notify`](#discordnotify) — Notify Discord
   * [`discord:notify:success`](#discordnotifysuccess) — Notify Discord about deploy finish

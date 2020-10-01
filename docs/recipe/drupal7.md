@@ -16,9 +16,9 @@
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy) — 
-  * [`drupal:settings`](#drupalsettings) — 
-  * [`drupal:upload_files`](#drupalupload_files) — 
+  * [`deploy`](#deploy)
+  * [`drupal:settings`](#drupalsettings)
+  * [`drupal:upload_files`](#drupalupload_files)
 
 ## Config
 ### drupal_site

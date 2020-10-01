@@ -10,7 +10,8 @@ namespace Deployer;
 use Deployer\Exception\RunException;
 
 /**
- * Get current git HEAD branch as default branch to deploy.
+ * Determines which branch to deploy. Can be overridden with cli option `--branch`.
+ * If not specified, will get current git HEAD branch as default branch to deploy.
  */
 set('branch', function () {
     try {
@@ -31,7 +32,10 @@ set('branch', function () {
 });
 
 /**
- * Whether to use git cache.
+ * This config option will if set to true will instructs git to use previous release files,
+ * and download only changed files from server.
+ *
+ * You don't need to set this option, it will automatically detect if your git supports this feature.
  *
  * Faster cloning by borrowing objects from existing clones.
  */
@@ -46,6 +50,9 @@ set('git_cache', function () {
     return version_compare($version, '2.3', '>=');
 });
 
+/**
+ * Update code at {{release_path}} on host.
+ */
 desc('Update code');
 task('deploy:update_code', function () {
     $repository = get('repository');

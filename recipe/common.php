@@ -125,6 +125,9 @@ set('bin/symlink', function () {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
 
+// Path to a file which will store temp script with sudo password.
+// Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
+// sudo command executed.
 set('sudo_askpass', function () {
     if (test('[ -d {{deploy_path}}/.dep ]')) {
         return '{{deploy_path}}/.dep/sudo_pass';

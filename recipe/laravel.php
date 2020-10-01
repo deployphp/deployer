@@ -165,7 +165,7 @@ task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
  *
  *     before('deploy:symlink', 'deploy:public_disk');
  *
- * @see https://laravel.com/docs/5.2/filesystem#configuration
+ * [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
  */
 desc('Make symlink for public disk');
 task('deploy:public_disk', function () {

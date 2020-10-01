@@ -17,6 +17,7 @@
 - When symfony_env is set to dev, require-dev are not installed. [#2035]
 - Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
 - When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
+- Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
 
 
 ## v6.8.0
@@ -583,6 +584,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2170]: https://github.com/deployphp/deployer/issues/2170
 [#2165]: https://github.com/deployphp/deployer/issues/2165
 [#2150]: https://github.com/deployphp/deployer/issues/2150
 [#2111]: https://github.com/deployphp/deployer/pull/2111

@@ -97,10 +97,30 @@ Tasks
 ### deploy:magento
 [Source](/recipe/magento2.php#L79)
 
+This task is group task which contains next tasks:
+* [`magento:compile`](/docs/recipe/magento2.md#magentocompile)
+* [`magento:deploy:assets`](/docs/recipe/magento2.md#magentodeployassets)
+* [`magento:maintenance:enable`](/docs/recipe/magento2.md#magentomaintenanceenable)
+* [`magento:upgrade:db`](/docs/recipe/magento2.md#magentoupgradedb)
+* [`magento:cache:flush`](/docs/recipe/magento2.md#magentocacheflush)
 
 
 ### deploy
 [Source](/recipe/magento2.php#L89)
 
+This task is group task which contains next tasks:
+* [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
+* [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
+* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
+* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
+* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
+* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
+* [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
+* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
+* [`deploy:clear_paths`](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
+* [`deploy:magento`](/docs/recipe/magento2.md#deploymagento)
+* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
+* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
+* [`deploy:cleanup`](/docs/recipe/deploy/cleanup.md#deploycleanup)
 
 

@@ -121,10 +121,31 @@
 ### sw:deploy
 [Source](/recipe/shopware6.php#L130)
 
-Grouped SW deploy tasks
+Grouped SW deploy tasksThis task is group task which contains next tasks:
+* [`sw:build`](/docs/recipe/shopware6.md#swbuild)
+* [`sw:plugin:activate:all`](/docs/recipe/shopware6.md#swpluginactivateall)
+* [`sw:database:migrate`](/docs/recipe/shopware6.md#swdatabasemigrate)
+* [`sw:plugin:migrate:all`](/docs/recipe/shopware6.md#swpluginmigrateall)
+* [`sw:theme:compile`](/docs/recipe/shopware6.md#swthemecompile)
+* [`sw:cache:clear`](/docs/recipe/shopware6.md#swcacheclear)
+
 
 ### deploy
 [Source](/recipe/shopware6.php#L142)
 
-Main task
+Main taskThis task is group task which contains next tasks:
+* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
+* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
+* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
+* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
+* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
+* [`sw:deploy`](/docs/recipe/shopware6.md#swdeploy)
+* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
+* [`deploy:clear_paths`](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
+* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
+* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
+* [`sw:cache:warmup`](/docs/recipe/shopware6.md#swcachewarmup)
+* `cleanup`
+* `success`
+
 

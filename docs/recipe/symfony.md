@@ -152,5 +152,24 @@ Migrate database
 ### deploy
 [Source](/recipe/symfony.php#L142)
 
-Main task
+Main taskThis task is group task which contains next tasks:
+* [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
+* [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
+* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
+* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
+* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
+* [`deploy:clear_paths`](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
+* [`deploy:create_cache_dir`](/docs/recipe/symfony.md#deploycreate_cache_dir)
+* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
+* [`deploy:assets`](/docs/recipe/symfony.md#deployassets)
+* [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
+* [`deploy:assets:install`](/docs/recipe/symfony.md#deployassetsinstall)
+* [`deploy:assetic:dump`](/docs/recipe/symfony.md#deployasseticdump)
+* [`deploy:cache:clear`](/docs/recipe/symfony.md#deploycacheclear)
+* [`deploy:cache:warmup`](/docs/recipe/symfony.md#deploycachewarmup)
+* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
+* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
+* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
+* [`deploy:cleanup`](/docs/recipe/deploy/cleanup.md#deploycleanup)
+
 

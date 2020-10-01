@@ -43,7 +43,7 @@ class DocGen
     {
         foreach ($this->recipes as $recipe) {
             // $find will try to return DocConfig for a given config $name.
-            $find = function (string $name) use ($recipe): ?DocConfig {
+            $findConfig = function (string $name) use ($recipe): ?DocConfig {
                 if (array_key_exists($name, $recipe->config)) {
                     return $recipe->config[$name];
                 }
@@ -61,20 +61,7 @@ class DocGen
                 }
                 return null;
             };
-            // Replace all {{name}} with link to correct config declaration.
-            $replaceLinks = function (string $comment) use ($find): string {
-                return preg_replace_callback('#(\{\{(?<name>[\w_:]+)\}\})#', function ($m) use ($find) {
-                    $name = $m['name'];
-                    $config = $find($name);
-                    if ($config !== null) {
-                        $md = php_to_md($config->recipePath);
-                        $anchor = anchor($name);
-                        return "[$name](/docs/$md#$anchor)";
-                    }
-                    return "{{" . $name . "}}";
-                }, $comment);
-            };
-            $findOverride = function (DocRecipe $recipe, string $name) use (&$findOverride): ?DocConfig {
+            $findConfigOverride = function (DocRecipe $recipe, string $name) use (&$findConfigOverride): ?DocConfig {
                 foreach ($recipe->require as $r) {
                     if (array_key_exists($r, $this->recipes)) {
                         if (array_key_exists($name, $this->recipes[$r]->config)) {
@@ -84,7 +71,38 @@ class DocGen
                 }
                 foreach ($recipe->require as $r) {
                     if (array_key_exists($r, $this->recipes)) {
-                        return $findOverride($this->recipes[$r], $name);
+                        return $findConfigOverride($this->recipes[$r], $name);
+                    }
+                }
+                return null;
+            };
+            // Replace all {{name}} with link to correct config declaration.
+            $replaceLinks = function (string $comment) use ($findConfig): string {
+                return preg_replace_callback('#(\{\{(?<name>[\w_:]+)\}\})#', function ($m) use ($findConfig) {
+                    $name = $m['name'];
+                    $config = $findConfig($name);
+                    if ($config !== null) {
+                        $md = php_to_md($config->recipePath);
+                        $anchor = anchor($name);
+                        return "[$name](/docs/$md#$anchor)";
+                    }
+                    return "{{" . $name . "}}";
+                }, $comment);
+            };
+            $findTask = function (string $name) use ($recipe): ?DocTask {
+                if (array_key_exists($name, $recipe->tasks)) {
+                    return $recipe->tasks[$name];
+                }
+                foreach ($recipe->require as $r) {
+                    if (array_key_exists($r, $this->recipes)) {
+                        if (array_key_exists($name, $this->recipes[$r]->tasks)) {
+                            return $this->recipes[$r]->tasks[$name];
+                        }
+                    }
+                }
+                foreach ($this->recipes as $r) {
+                    if (array_key_exists($name, $r->tasks)) {
+                        return $r->tasks[$name];
                     }
                 }
                 return null;
@@ -111,7 +129,7 @@ class DocGen
                     $toc .= "  * [`{$c->name}`](#{$anchor})\n";
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](/{$c->recipePath}#L{$c->lineNumber})\n\n";
-                    $o = $findOverride($recipe, $c->name);
+                    $o = $findConfigOverride($recipe, $c->name);
                     if ($o !== null) {
                         $md = php_to_md($o->recipePath);
                         $anchor = anchor($c->name);
@@ -134,6 +152,19 @@ class DocGen
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= $replaceLinks($t->comment);
+                    if (is_array($t->group)) {
+                        $tasks .= "This task is group task which contains next tasks:\n";
+                        foreach ($t->group as $taskName) {
+                            $t = $findTask($taskName);
+                            if ($t !== null) {
+                                $md = php_to_md($t->recipePath);
+                                $anchor = anchor($t->name);
+                                $tasks .= "* [`$taskName`](/docs/$md#$anchor)\n";
+                            } else {
+                                $tasks .= "* `$taskName`\n";
+                            }
+                        }
+                    }
                     $tasks .= "\n\n";
                 }
             }

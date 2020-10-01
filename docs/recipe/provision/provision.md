@@ -41,6 +41,16 @@
 ### provision
 [Source](/recipe/provision/provision.php#L12)
 
+This task is group task which contains next tasks:
+* [`provision:check`](/docs/recipe/provision/provision.md#provisioncheck)
+* [`provision:upgrade`](/docs/recipe/provision/provision.md#provisionupgrade)
+* [`provision:install`](/docs/recipe/provision/provision.md#provisioninstall)
+* [`provision:ssh`](/docs/recipe/provision/provision.md#provisionssh)
+* [`provision:ssh`](/docs/recipe/provision/provision.md#provisionssh)
+* [`provision:user:deployer`](/docs/recipe/provision/provision.md#provisionuserdeployer)
+* [`provision:firewall`](/docs/recipe/provision/provision.md#provisionfirewall)
+* [`provision:install:php`](/docs/recipe/provision/provision.md#provisioninstallphp)
+* [`provision:install:composer`](/docs/recipe/provision/provision.md#provisioninstallcomposer)
 
 
 ### provision:check

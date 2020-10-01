@@ -7,20 +7,6 @@
 [Source](/recipe/laravel.php)
 
 
-Run an artisan command.
-
-Supported options:
-- 'min' => #.#: The minimum Laravel version required (included).
-- 'max' => #.#: The maximum Laravel version required (included).
-- 'skipIfNoEnv': Skip and warn the user if `.env` file is inexistant or empty.
-- 'failIfNoEnv': Fail the command if `.env` file is inexistant or empty.
-- 'runInCurrent': Run the artisan command in the current directory.
-- 'showOutput': Show the output of the command if given.
-
-@param string $command The artisan command (with cli options if any).
-@param array $options The options that define the behaviour of the command.
-@return callable A function that can be used as a task.
-
 
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)

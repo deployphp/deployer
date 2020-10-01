@@ -7,8 +7,6 @@
 [Source](/recipe/symfony3.php)
 
 
-Symfony 3 Configuration
-
 
 * Require
   * [`recipe/symfony.php`](/docs/recipe/symfony.md)

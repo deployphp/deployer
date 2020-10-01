@@ -19,24 +19,24 @@
 
 ## Config
 ### shared_files
-[Source](/recipe/joomla.php#L8)
+[Source](/recipe/joomla.php#L6)
 
 
 
 ### shared_dirs
-[Source](/recipe/joomla.php#L9)
+[Source](/recipe/joomla.php#L7)
 
 
 
 ### writable_dirs
-[Source](/recipe/joomla.php#L10)
+[Source](/recipe/joomla.php#L8)
 
 
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/joomla.php#L12)
+[Source](/recipe/joomla.php#L10)
 
 
 

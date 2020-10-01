@@ -7,8 +7,6 @@
 [Source](/recipe/magento.php)
 
 
-Magento Configuration
-
 
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)

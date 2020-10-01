@@ -6,7 +6,6 @@
 
 [Source](/recipe/provision/provision.php)
 
-Deployer::get()->preTask->add('provision:*', 'provision:switch-user');
 
 
 * Config

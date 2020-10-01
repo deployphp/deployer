@@ -7,8 +7,6 @@
 [Source](/recipe/cakephp4.php)
 
 
-CakePHP 4 Project Template configuration
-
 
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)

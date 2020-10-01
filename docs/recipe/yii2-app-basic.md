@@ -7,8 +7,6 @@
 [Source](/recipe/yii2-app-basic.php)
 
 
-Yii 2 Basic Project Template configuration
-
 
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)

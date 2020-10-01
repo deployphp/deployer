@@ -7,8 +7,6 @@
 [Source](/recipe/yii2-app-advanced.php)
 
 
-Yii 2 Advanced Project Template configuration
-
 
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)

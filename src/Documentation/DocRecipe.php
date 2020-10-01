@@ -36,7 +36,7 @@ class DocRecipe
     public function parse($content)
     {
         $comment = '';
-        $firstComment = true;
+        $first = true;
         $desc = '';
         $currentTask = null;
 
@@ -105,10 +105,10 @@ class DocRecipe
                     }
 
                     $desc = '';
-                    if($firstComment && $comment !== '') {
+                    if($first && $comment !== '') {
                         $this->comment = $comment;
-                        $firstComment = false;
                     }
+                    $first = false;
                     $comment = '';
                     break;
 

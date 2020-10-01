@@ -7,8 +7,6 @@
 [Source](/recipe/silverstripe.php)
 
 
-Silverstripe configuration
-
 
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)

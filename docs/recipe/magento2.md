@@ -6,7 +6,6 @@
 
 [Source](/recipe/magento2.php)
 
-Configuration
 
 
 * Require

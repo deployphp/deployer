@@ -7,8 +7,6 @@
 [Source](/recipe/common.php)
 
 
-Facts
-
 
 * Require
   * [`recipe/deploy/check_remote.php`](/docs/recipe/deploy/check_remote.md)

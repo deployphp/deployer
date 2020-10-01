@@ -4,7 +4,7 @@
 
 # vendors
 
-[Source](recipe/deploy/vendors.php)
+[Source](/recipe/deploy/vendors.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:vendors
-[Source](recipe/deploy/vendors.php#L11)
+[Source](/recipe/deploy/vendors.php#L11)
 
 Installing vendors
 

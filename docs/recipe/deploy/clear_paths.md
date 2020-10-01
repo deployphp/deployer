@@ -4,7 +4,7 @@
 
 # clear_paths
 
-[Source](recipe/deploy/clear_paths.php)
+[Source](/recipe/deploy/clear_paths.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:clear_paths
-[Source](recipe/deploy/clear_paths.php#L11)
+[Source](/recipe/deploy/clear_paths.php#L11)
 
 Cleaning up files and/or directories
 

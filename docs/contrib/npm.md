@@ -4,7 +4,7 @@
 
 # npm
 
-[Source](contrib/npm.php)
+[Source](/contrib/npm.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -19,14 +19,14 @@ file that was distributed with this source code.
 
 ## Tasks
 ### npm:install
-[Source](contrib/npm.php#L15)
+[Source](/contrib/npm.php#L15)
 
 Install npm packages
 
 
 
 ### npm:ci
-[Source](contrib/npm.php#L31)
+[Source](/contrib/npm.php#L31)
 
 Install npm packages with a clean slate
 

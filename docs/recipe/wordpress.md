@@ -4,7 +4,7 @@
 
 # wordpress
 
-[Source](recipe/wordpress.php)
+[Source](/recipe/wordpress.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_files`](#shared_files)
   * [`shared_dirs`](#shared_dirs)
@@ -23,24 +23,24 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_files
-[Source](recipe/wordpress.php#L12)
+[Source](/recipe/wordpress.php#L12)
 
 
 
 ### shared_dirs
-[Source](recipe/wordpress.php#L13)
+[Source](/recipe/wordpress.php#L13)
 
 
 
 ### writable_dirs
-[Source](recipe/wordpress.php#L14)
+[Source](/recipe/wordpress.php#L14)
 
 
 
 
 ## Tasks
 ### deploy
-[Source](recipe/wordpress.php#L16)
+[Source](/recipe/wordpress.php#L16)
 
 
 

@@ -4,7 +4,7 @@
 
 # grafana
 
-[Source](contrib/grafana.php)
+[Source](/contrib/grafana.php)
 
 (c) beeete2 <beeete2@gmail.com>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### grafana:annotation
-[Source](contrib/grafana.php#L14)
+[Source](/contrib/grafana.php#L14)
 
 Create Grafana annotation of deployment
 

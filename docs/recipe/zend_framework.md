@@ -4,7 +4,7 @@
 
 # zend_framework
 
-[Source](recipe/zend_framework.php)
+[Source](/recipe/zend_framework.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,14 +13,14 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Tasks
   * [`deploy`](#deploy) — 
 
 
 ## Tasks
 ### deploy
-[Source](recipe/zend_framework.php#L15)
+[Source](/recipe/zend_framework.php#L15)
 
 
 

@@ -4,7 +4,7 @@
 
 # yammer
 
-[Source](contrib/yammer.php)
+[Source](/contrib/yammer.php)
 
 (c) beeete2 <beeete2@gmail.com>
 
@@ -25,48 +25,48 @@ file that was distributed with this source code.
 
 ## Config
 ### yammer_url
-[Source](contrib/yammer.php#L12)
+[Source](/contrib/yammer.php#L12)
 
 
 
 ### yammer_title
-[Source](contrib/yammer.php#L15)
+[Source](/contrib/yammer.php#L15)
 
 Title of project
 
 ### yammer_body
-[Source](contrib/yammer.php#L20)
+[Source](/contrib/yammer.php#L20)
 
 Deploy message
 
 ### yammer_success_body
-[Source](contrib/yammer.php#L21)
+[Source](/contrib/yammer.php#L21)
 
 
 
 ### yammer_failure_body
-[Source](contrib/yammer.php#L22)
+[Source](/contrib/yammer.php#L22)
 
 
 
 
 ## Tasks
 ### yammer:notify
-[Source](contrib/yammer.php#L25)
+[Source](/contrib/yammer.php#L25)
 
 Notifying Yammer
 
 
 
 ### yammer:notify:success
-[Source](contrib/yammer.php#L45)
+[Source](/contrib/yammer.php#L45)
 
 Notifying Yammer about deploy finish
 
 
 
 ### yammer:notify:failure
-[Source](contrib/yammer.php#L65)
+[Source](/contrib/yammer.php#L65)
 
 Notifying Yammer about deploy failure
 

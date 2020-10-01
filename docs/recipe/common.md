@@ -4,7 +4,7 @@
 
 # common
 
-[Source](recipe/common.php)
+[Source](/recipe/common.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,21 +13,21 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/deploy/check_remote.php`](#recipe/deploy/check_remote.php)
-  * [`recipe/deploy/cleanup.php`](#recipe/deploy/cleanup.php)
-  * [`recipe/deploy/clear_paths.php`](#recipe/deploy/clear_paths.php)
-  * [`recipe/deploy/copy_dirs.php`](#recipe/deploy/copy_dirs.php)
-  * [`recipe/deploy/info.php`](#recipe/deploy/info.php)
-  * [`recipe/deploy/lock.php`](#recipe/deploy/lock.php)
-  * [`recipe/deploy/release.php`](#recipe/deploy/release.php)
-  * [`recipe/deploy/rollback.php`](#recipe/deploy/rollback.php)
-  * [`recipe/deploy/setup.php`](#recipe/deploy/setup.php)
-  * [`recipe/deploy/shared.php`](#recipe/deploy/shared.php)
-  * [`recipe/deploy/symlink.php`](#recipe/deploy/symlink.php)
-  * [`recipe/deploy/update_code.php`](#recipe/deploy/update_code.php)
-  * [`recipe/deploy/vendors.php`](#recipe/deploy/vendors.php)
-  * [`recipe/deploy/writable.php`](#recipe/deploy/writable.php)
-  * [`recipe/provision/provision.php`](#recipe/provision/provision.php)
+  * [`recipe/deploy/check_remote.php`](/recipe/deploy/check_remote.php)
+  * [`recipe/deploy/cleanup.php`](/recipe/deploy/cleanup.php)
+  * [`recipe/deploy/clear_paths.php`](/recipe/deploy/clear_paths.php)
+  * [`recipe/deploy/copy_dirs.php`](/recipe/deploy/copy_dirs.php)
+  * [`recipe/deploy/info.php`](/recipe/deploy/info.php)
+  * [`recipe/deploy/lock.php`](/recipe/deploy/lock.php)
+  * [`recipe/deploy/release.php`](/recipe/deploy/release.php)
+  * [`recipe/deploy/rollback.php`](/recipe/deploy/rollback.php)
+  * [`recipe/deploy/setup.php`](/recipe/deploy/setup.php)
+  * [`recipe/deploy/shared.php`](/recipe/deploy/shared.php)
+  * [`recipe/deploy/symlink.php`](/recipe/deploy/symlink.php)
+  * [`recipe/deploy/update_code.php`](/recipe/deploy/update_code.php)
+  * [`recipe/deploy/vendors.php`](/recipe/deploy/vendors.php)
+  * [`recipe/deploy/writable.php`](/recipe/deploy/writable.php)
+  * [`recipe/provision/provision.php`](/recipe/provision/provision.php)
 * Config
   * [`user`](#user)
   * [`keep_releases`](#keep_releases)
@@ -62,122 +62,122 @@ file that was distributed with this source code.
 
 ## Config
 ### user
-[Source](recipe/common.php#L35)
+[Source](/recipe/common.php#L35)
 
 
 
 ### keep_releases
-[Source](recipe/common.php#L55)
+[Source](/recipe/common.php#L55)
 
 
 
 ### repository
-[Source](recipe/common.php#L57)
+[Source](/recipe/common.php#L57)
 
 
 
 ### shared_dirs
-[Source](recipe/common.php#L59)
+[Source](/recipe/common.php#L59)
 
 
 
 ### shared_files
-[Source](recipe/common.php#L60)
+[Source](/recipe/common.php#L60)
 
 
 
 ### copy_dirs
-[Source](recipe/common.php#L62)
+[Source](/recipe/common.php#L62)
 
 
 
 ### writable_dirs
-[Source](recipe/common.php#L64)
+[Source](/recipe/common.php#L64)
 
 
 
 ### writable_mode
-[Source](recipe/common.php#L65)
+[Source](/recipe/common.php#L65)
 
 
 
 ### writable_use_sudo
-[Source](recipe/common.php#L66)
+[Source](/recipe/common.php#L66)
 
 
 
 ### writable_recursive
-[Source](recipe/common.php#L67)
+[Source](/recipe/common.php#L67)
 
 
 
 ### writable_chmod_mode
-[Source](recipe/common.php#L68)
+[Source](/recipe/common.php#L68)
 
 
 
 ### writable_chmod_recursive
-[Source](recipe/common.php#L69)
+[Source](/recipe/common.php#L69)
 
 
 
 ### http_user
-[Source](recipe/common.php#L71)
+[Source](/recipe/common.php#L71)
 
 
 
 ### http_group
-[Source](recipe/common.php#L72)
+[Source](/recipe/common.php#L72)
 
 
 
 ### clear_paths
-[Source](recipe/common.php#L74)
+[Source](/recipe/common.php#L74)
 
 
 
 ### clear_use_sudo
-[Source](recipe/common.php#L75)
+[Source](/recipe/common.php#L75)
 
 
 
 ### cleanup_use_sudo
-[Source](recipe/common.php#L77)
+[Source](/recipe/common.php#L77)
 
 
 
 ### use_relative_symlink
-[Source](recipe/common.php#L79)
+[Source](/recipe/common.php#L79)
 
 
 
 ### use_atomic_symlink
-[Source](recipe/common.php#L82)
+[Source](/recipe/common.php#L82)
 
 
 
 ### composer_action
-[Source](recipe/common.php#L86)
+[Source](/recipe/common.php#L86)
 
 
 
 ### composer_options
-[Source](recipe/common.php#L87)
+[Source](/recipe/common.php#L87)
 
 
 
 ### env
-[Source](recipe/common.php#L89)
+[Source](/recipe/common.php#L89)
 
 
 
 ### current_path
-[Source](recipe/common.php#L94)
+[Source](/recipe/common.php#L94)
 
 Return current release path.
 
 ### sudo_askpass
-[Source](recipe/common.php#L131)
+[Source](/recipe/common.php#L131)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -186,35 +186,35 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](recipe/common.php#L147)
+[Source](/recipe/common.php#L147)
 
 
 
 
 
 ### deploy:publish
-[Source](recipe/common.php#L157)
+[Source](/recipe/common.php#L157)
 
 
 
 
 
 ### deploy:success
-[Source](recipe/common.php#L167)
+[Source](/recipe/common.php#L167)
 
 
 
 Success message
 
 ### deploy:failed
-[Source](recipe/common.php#L177)
+[Source](/recipe/common.php#L177)
 
 
 
 Deploy failure
 
 ### logs
-[Source](recipe/common.php#L186)
+[Source](/recipe/common.php#L186)
 
 Follow latest application logs.
 

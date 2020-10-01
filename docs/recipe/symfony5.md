@@ -4,7 +4,7 @@
 
 # symfony5
 
-[Source](recipe/symfony5.php)
+[Source](/recipe/symfony5.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
@@ -28,55 +28,55 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/symfony5.php#L12)
+[Source](/recipe/symfony5.php#L12)
 
 
 
 ### shared_files
-[Source](recipe/symfony5.php#L13)
+[Source](/recipe/symfony5.php#L13)
 
 
 
 ### writable_dirs
-[Source](recipe/symfony5.php#L14)
+[Source](/recipe/symfony5.php#L14)
 
 
 
 ### migrations_config
-[Source](recipe/symfony5.php#L15)
+[Source](/recipe/symfony5.php#L15)
 
 
 
 ### console_options
-[Source](recipe/symfony5.php#L21)
+[Source](/recipe/symfony5.php#L21)
 
 
 
 
 ## Tasks
 ### database:migrate
-[Source](recipe/symfony5.php#L26)
+[Source](/recipe/symfony5.php#L26)
 
 Migrate database
 
 
 
 ### deploy:cache:clear
-[Source](recipe/symfony5.php#L36)
+[Source](/recipe/symfony5.php#L36)
 
 Clear cache
 
 
 
 ### deploy:cache:warmup
-[Source](recipe/symfony5.php#L41)
+[Source](/recipe/symfony5.php#L41)
 
 Warm up cache
 
 
 
 ### deploy
-[Source](recipe/symfony5.php#L46)
+[Source](/recipe/symfony5.php#L46)
 
 Deploy project
 

@@ -4,7 +4,7 @@
 
 # sentry
 
-[Source](contrib/sentry.php)
+[Source](/contrib/sentry.php)
 
 (c) Viacheslav Ostrovskiy <chelout@gmail.com>
 

@@ -4,7 +4,7 @@
 
 # writable
 
-[Source](recipe/deploy/writable.php)
+[Source](/recipe/deploy/writable.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:writable
-[Source](recipe/deploy/writable.php#L11)
+[Source](/recipe/deploy/writable.php#L11)
 
 Make writable dirs
 

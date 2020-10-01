@@ -4,7 +4,7 @@
 
 # mattermost
 
-[Source](contrib/mattermost.php)
+[Source](/contrib/mattermost.php)
 
 (c) Marek Grudzinski <mail@marek-grudzinski.de>
 
@@ -29,68 +29,68 @@ file that was distributed with this source code.
 
 ## Config
 ### mattermost_webhook
-[Source](contrib/mattermost.php#L12)
+[Source](/contrib/mattermost.php#L12)
 
 
 
 ### mattermost_channel
-[Source](contrib/mattermost.php#L13)
+[Source](/contrib/mattermost.php#L13)
 
 
 
 ### mattermost_username
-[Source](contrib/mattermost.php#L14)
+[Source](/contrib/mattermost.php#L14)
 
 
 
 ### mattermost_icon_url
-[Source](contrib/mattermost.php#L15)
+[Source](/contrib/mattermost.php#L15)
 
 
 
 ### mattermost_success_emoji
-[Source](contrib/mattermost.php#L17)
+[Source](/contrib/mattermost.php#L17)
 
 
 
 ### mattermost_failure_emoji
-[Source](contrib/mattermost.php#L18)
+[Source](/contrib/mattermost.php#L18)
 
 
 
 ### mattermost_text
-[Source](contrib/mattermost.php#L20)
+[Source](/contrib/mattermost.php#L20)
 
 
 
 ### mattermost_success_text
-[Source](contrib/mattermost.php#L21)
+[Source](/contrib/mattermost.php#L21)
 
 
 
 ### mattermost_failure_text
-[Source](contrib/mattermost.php#L22)
+[Source](/contrib/mattermost.php#L22)
 
 
 
 
 ## Tasks
 ### mattermost:notify
-[Source](contrib/mattermost.php#L25)
+[Source](/contrib/mattermost.php#L25)
 
 Notify mattermost
 
 
 
 ### mattermost:notify:success
-[Source](contrib/mattermost.php#L46)
+[Source](/contrib/mattermost.php#L46)
 
 Notifying mattermost about deploy finish
 
 
 
 ### mattermost:notify:failure
-[Source](contrib/mattermost.php#L67)
+[Source](/contrib/mattermost.php#L67)
 
 Notifying mattermost about deploy failure
 

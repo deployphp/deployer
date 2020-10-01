@@ -4,7 +4,7 @@
 
 # check_remote
 
-[Source](recipe/deploy/check_remote.php)
+[Source](/recipe/deploy/check_remote.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:check_remote
-[Source](recipe/deploy/check_remote.php#L16)
+[Source](/recipe/deploy/check_remote.php#L16)
 
 Check remote head
 

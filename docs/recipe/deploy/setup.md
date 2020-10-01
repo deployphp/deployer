@@ -4,7 +4,7 @@
 
 # setup
 
-[Source](recipe/deploy/setup.php)
+[Source](/recipe/deploy/setup.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:setup
-[Source](recipe/deploy/setup.php#L14)
+[Source](/recipe/deploy/setup.php#L14)
 
 Preparing host for deploy
 

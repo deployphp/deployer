@@ -4,7 +4,7 @@
 
 # symfony3
 
-[Source](recipe/symfony3.php)
+[Source](/recipe/symfony3.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/symfony.php`](#recipe/symfony.php)
+  * [`recipe/symfony.php`](/recipe/symfony.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
@@ -22,22 +22,22 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/symfony3.php#L17)
+[Source](/recipe/symfony3.php#L17)
 
 Symfony shared dirs
 
 ### writable_dirs
-[Source](recipe/symfony3.php#L20)
+[Source](/recipe/symfony3.php#L20)
 
 Symfony writable dirs
 
 ### bin_dir
-[Source](recipe/symfony3.php#L23)
+[Source](/recipe/symfony3.php#L23)
 
 Symfony executable and variable directories
 
 ### var_dir
-[Source](recipe/symfony3.php#L24)
+[Source](/recipe/symfony3.php#L24)
 
 
 

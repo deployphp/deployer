@@ -4,7 +4,7 @@
 
 # release
 
-[Source](recipe/deploy/release.php)
+[Source](/recipe/deploy/release.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -21,24 +21,24 @@ file that was distributed with this source code.
 
 ## Config
 ### release_name
-[Source](recipe/deploy/release.php#L16)
+[Source](/recipe/deploy/release.php#L16)
 
 Name of folder in releases.
 
 ### releases_list
-[Source](recipe/deploy/release.php#L35)
+[Source](/recipe/deploy/release.php#L35)
 
 Return list of releases on host.
 
 ### release_path
-[Source](recipe/deploy/release.php#L90)
+[Source](/recipe/deploy/release.php#L90)
 
 Return release path.
 
 
 ## Tasks
 ### deploy:release
-[Source](recipe/deploy/release.php#L102)
+[Source](/recipe/deploy/release.php#L102)
 
 Prepare release. Clean up unfinished releases and prepare next release
 

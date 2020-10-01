@@ -4,7 +4,7 @@
 
 # slack
 
-[Source](contrib/slack.php)
+[Source](/contrib/slack.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -30,75 +30,75 @@ file that was distributed with this source code.
 
 ## Config
 ### slack_title
-[Source](contrib/slack.php#L13)
+[Source](/contrib/slack.php#L13)
 
 Title of project
 
 ### slack_text
-[Source](contrib/slack.php#L18)
+[Source](/contrib/slack.php#L18)
 
 Deploy message
 
 ### slack_success_text
-[Source](contrib/slack.php#L19)
+[Source](/contrib/slack.php#L19)
 
 
 
 ### slack_failure_text
-[Source](contrib/slack.php#L20)
+[Source](/contrib/slack.php#L20)
 
 
 
 ### slack_rollback_text
-[Source](contrib/slack.php#L21)
+[Source](/contrib/slack.php#L21)
 
 
 
 ### slack_color
-[Source](contrib/slack.php#L24)
+[Source](/contrib/slack.php#L24)
 
 Color of attachment
 
 ### slack_success_color
-[Source](contrib/slack.php#L25)
+[Source](/contrib/slack.php#L25)
 
 
 
 ### slack_failure_color
-[Source](contrib/slack.php#L26)
+[Source](/contrib/slack.php#L26)
 
 
 
 ### slack_rollback_color
-[Source](contrib/slack.php#L27)
+[Source](/contrib/slack.php#L27)
 
 
 
 
 ## Tasks
 ### slack:notify
-[Source](contrib/slack.php#L30)
+[Source](/contrib/slack.php#L30)
 
 Notifying Slack
 
 
 
 ### slack:notify:success
-[Source](contrib/slack.php#L49)
+[Source](/contrib/slack.php#L49)
 
 Notifying Slack about deploy finish
 
 
 
 ### slack:notify:failure
-[Source](contrib/slack.php#L68)
+[Source](/contrib/slack.php#L68)
 
 Notifying Slack about deploy failure
 
 
 
 ### slack:notify:rollback
-[Source](contrib/slack.php#L87)
+[Source](/contrib/slack.php#L87)
 
 Notifying Slack about rollback
 

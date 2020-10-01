@@ -4,14 +4,14 @@
 
 # cakephp4
 
-[Source](recipe/cakephp4.php)
+[Source](/recipe/cakephp4.php)
 
 
 CakePHP 4 Project Template configuration
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
@@ -22,33 +22,33 @@ CakePHP 4 Project Template configuration
 
 ## Config
 ### shared_dirs
-[Source](recipe/cakephp4.php#L11)
+[Source](/recipe/cakephp4.php#L11)
 
 CakePHP 4 Project Template shared dirs
 
 ### shared_files
-[Source](recipe/cakephp4.php#L17)
+[Source](/recipe/cakephp4.php#L17)
 
 CakePHP 4 Project Template shared files
 
 
 ## Tasks
 ### deploy:init
-[Source](recipe/cakephp4.php#L25)
+[Source](/recipe/cakephp4.php#L25)
 
 
 
 Create plugins' symlinks
 
 ### deploy:run_migrations
-[Source](recipe/cakephp4.php#L32)
+[Source](/recipe/cakephp4.php#L32)
 
 
 
 Run migrations
 
 ### deploy
-[Source](recipe/cakephp4.php#L41)
+[Source](/recipe/cakephp4.php#L41)
 
 
 

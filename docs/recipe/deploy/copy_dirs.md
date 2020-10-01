@@ -4,7 +4,7 @@
 
 # copy_dirs
 
-[Source](recipe/deploy/copy_dirs.php)
+[Source](/recipe/deploy/copy_dirs.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:copy_dirs
-[Source](recipe/deploy/copy_dirs.php#L11)
+[Source](/recipe/deploy/copy_dirs.php#L11)
 
 Copy directories
 

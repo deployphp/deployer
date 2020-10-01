@@ -4,7 +4,7 @@
 
 # raygun
 
-[Source](contrib/raygun.php)
+[Source](/contrib/raygun.php)
 
 (c) Matt Byers <matt@raygun.com>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### raygun:notify
-[Source](contrib/raygun.php#L13)
+[Source](/contrib/raygun.php#L13)
 
 Notifying Raygun of deployment
 

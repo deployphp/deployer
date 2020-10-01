@@ -4,7 +4,7 @@
 
 # yii2-app-basic
 
-[Source](recipe/yii2-app-basic.php)
+[Source](/recipe/yii2-app-basic.php)
 
 (c) Alexey Rogachev <arogachev90@gmail.com>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks
@@ -22,21 +22,21 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/yii2-app-basic.php#L17)
+[Source](/recipe/yii2-app-basic.php#L17)
 
 Yii 2 Basic Project Template shared dirs
 
 
 ## Tasks
 ### deploy:run_migrations
-[Source](recipe/yii2-app-basic.php#L22)
+[Source](/recipe/yii2-app-basic.php#L22)
 
 
 
 Run migrations
 
 ### deploy
-[Source](recipe/yii2-app-basic.php#L29)
+[Source](/recipe/yii2-app-basic.php#L29)
 
 
 

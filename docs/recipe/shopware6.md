@@ -4,7 +4,7 @@
 
 # shopware6
 
-[Source](recipe/shopware6.php)
+[Source](/recipe/shopware6.php)
 
 
 
@@ -32,123 +32,123 @@
 
 ## Config
 ### repository
-[Source](recipe/shopware6.php#L5)
+[Source](/recipe/shopware6.php#L5)
 
 
 
 ### release_name
-[Source](recipe/shopware6.php#L7)
+[Source](/recipe/shopware6.php#L7)
 
 
 
 ### shared_files
-[Source](recipe/shopware6.php#L11)
+[Source](/recipe/shopware6.php#L11)
 
 
 
 ### shared_dirs
-[Source](recipe/shopware6.php#L14)
+[Source](/recipe/shopware6.php#L14)
 
 
 
 ### writable_dirs
-[Source](recipe/shopware6.php#L23)
+[Source](/recipe/shopware6.php#L23)
 
 
 
 ### static_folders
-[Source](recipe/shopware6.php#L32)
+[Source](/recipe/shopware6.php#L32)
 
 
 
 
 ## Tasks
 ### sw:update_code
-[Source](recipe/shopware6.php#L34)
+[Source](/recipe/shopware6.php#L34)
 
 
 
 
 
 ### sw:system:install
-[Source](recipe/shopware6.php#L37)
+[Source](/recipe/shopware6.php#L37)
 
 
 
 
 
 ### sw:build
-[Source](recipe/shopware6.php#L40)
+[Source](/recipe/shopware6.php#L40)
 
 
 
 
 
 ### sw:system:setup
-[Source](recipe/shopware6.php#L43)
+[Source](/recipe/shopware6.php#L43)
 
 
 
 
 
 ### sw:theme:compile
-[Source](recipe/shopware6.php#L46)
+[Source](/recipe/shopware6.php#L46)
 
 
 
 
 
 ### sw:cache:clear
-[Source](recipe/shopware6.php#L49)
+[Source](/recipe/shopware6.php#L49)
 
 
 
 
 
 ### sw:cache:warmup
-[Source](recipe/shopware6.php#L52)
+[Source](/recipe/shopware6.php#L52)
 
 
 
 
 
 ### sw:database:migrate
-[Source](recipe/shopware6.php#L56)
+[Source](/recipe/shopware6.php#L56)
 
 
 
 
 
 ### sw:plugin:refresh
-[Source](recipe/shopware6.php#L59)
+[Source](/recipe/shopware6.php#L59)
 
 
 
 
 
 ### sw:plugin:activate:all
-[Source](recipe/shopware6.php#L62)
+[Source](/recipe/shopware6.php#L62)
 
 
 
 
 
 ### sw:plugin:migrate:all
-[Source](recipe/shopware6.php#L95)
+[Source](/recipe/shopware6.php#L95)
 
 
 
 
 
 ### sw:deploy
-[Source](recipe/shopware6.php#L131)
+[Source](/recipe/shopware6.php#L131)
 
 
 
 Grouped SW deploy tasks
 
 ### deploy
-[Source](recipe/shopware6.php#L143)
+[Source](/recipe/shopware6.php#L143)
 
 
 

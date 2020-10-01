@@ -4,7 +4,7 @@
 
 # cimonitor
 
-[Source](contrib/cimonitor.php)
+[Source](/contrib/cimonitor.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -32,83 +32,83 @@ file that was distributed with this source code.
 
 ## Config
 ### cimonitor_title
-[Source](contrib/cimonitor.php#L13)
+[Source](/contrib/cimonitor.php#L13)
 
 Title of project based on git repo
 
 ### cimonitor_user
-[Source](contrib/cimonitor.php#L18)
+[Source](/contrib/cimonitor.php#L18)
 
 
 
 ### cimonitor_status_info
-[Source](contrib/cimonitor.php#L26)
+[Source](/contrib/cimonitor.php#L26)
 
 CI monitor status states and job states
 
 ### cimonitor_status_warning
-[Source](contrib/cimonitor.php#L27)
+[Source](/contrib/cimonitor.php#L27)
 
 
 
 ### cimonitor_status_error
-[Source](contrib/cimonitor.php#L28)
+[Source](/contrib/cimonitor.php#L28)
 
 
 
 ### cimonitor_status_success
-[Source](contrib/cimonitor.php#L29)
+[Source](/contrib/cimonitor.php#L29)
 
 
 
 ### cimonitor_job_state_info
-[Source](contrib/cimonitor.php#L30)
+[Source](/contrib/cimonitor.php#L30)
 
 
 
 ### cimonitor_job_state_pending
-[Source](contrib/cimonitor.php#L31)
+[Source](/contrib/cimonitor.php#L31)
 
 
 
 ### cimonitor_job_state_running
-[Source](contrib/cimonitor.php#L32)
+[Source](/contrib/cimonitor.php#L32)
 
 
 
 ### cimonitor_job_state_warning
-[Source](contrib/cimonitor.php#L33)
+[Source](/contrib/cimonitor.php#L33)
 
 
 
 ### cimonitor_job_state_error
-[Source](contrib/cimonitor.php#L34)
+[Source](/contrib/cimonitor.php#L34)
 
 
 
 ### cimonitor_job_state_success
-[Source](contrib/cimonitor.php#L35)
+[Source](/contrib/cimonitor.php#L35)
 
 
 
 
 ## Tasks
 ### cimonitor:notify
-[Source](contrib/cimonitor.php#L38)
+[Source](/contrib/cimonitor.php#L38)
 
 Notifying CIMonitor
 
 
 
 ### cimonitor:notify:success
-[Source](contrib/cimonitor.php#L65)
+[Source](/contrib/cimonitor.php#L65)
 
 Notifying CIMonitor about deploy finish
 
 
 
 ### cimonitor:notify:failure
-[Source](contrib/cimonitor.php#L94)
+[Source](/contrib/cimonitor.php#L94)
 
 Notifying CIMonitor about deploy failure
 

@@ -4,7 +4,7 @@
 
 # directadmin
 
-[Source](contrib/directadmin.php)
+[Source](/contrib/directadmin.php)
 
 
 getDirectAdminConfig
@@ -21,28 +21,28 @@ getDirectAdminConfig
 
 ## Tasks
 ### directadmin:createdb
-[Source](contrib/directadmin.php#L56)
+[Source](/contrib/directadmin.php#L56)
 
 Create a database on DirectAdmin
 
 
 
 ### directadmin:deletedb
-[Source](contrib/directadmin.php#L76)
+[Source](/contrib/directadmin.php#L76)
 
 Delete a database on DirectAdmin
 
 
 
 ### directadmin:createdomain
-[Source](contrib/directadmin.php#L91)
+[Source](/contrib/directadmin.php#L91)
 
 Create a domain on DirectAdmin
 
 
 
 ### directadmin:deletedomain
-[Source](contrib/directadmin.php#L109)
+[Source](/contrib/directadmin.php#L109)
 
 Delete a domain on DirectAdmin
 

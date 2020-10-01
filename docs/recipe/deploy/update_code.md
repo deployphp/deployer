@@ -4,7 +4,7 @@
 
 # update_code
 
-[Source](recipe/deploy/update_code.php)
+[Source](/recipe/deploy/update_code.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -20,13 +20,13 @@ file that was distributed with this source code.
 
 ## Config
 ### branch
-[Source](recipe/deploy/update_code.php#L16)
+[Source](/recipe/deploy/update_code.php#L16)
 
 Determines which branch to deploy. Can be overridden with cli option `--branch`.
 If not specified, will get current git HEAD branch as default branch to deploy.
 
 ### git_cache
-[Source](recipe/deploy/update_code.php#L42)
+[Source](/recipe/deploy/update_code.php#L42)
 
 This config option will if set to true will instructs git to use previous release files,
 and download only changed files from server.
@@ -38,7 +38,7 @@ Faster cloning by borrowing objects from existing clones.
 
 ## Tasks
 ### deploy:update_code
-[Source](recipe/deploy/update_code.php#L57)
+[Source](/recipe/deploy/update_code.php#L57)
 
 Update code
 

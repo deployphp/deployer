@@ -4,7 +4,7 @@
 
 # phinx
 
-[Source](contrib/phinx.php)
+[Source](/contrib/phinx.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -21,28 +21,28 @@ file that was distributed with this source code.
 
 ## Tasks
 ### phinx:migrate
-[Source](contrib/phinx.php#L96)
+[Source](/contrib/phinx.php#L96)
 
 Migrating database with phinx
 
 
 
 ### phinx:rollback
-[Source](contrib/phinx.php#L118)
+[Source](/contrib/phinx.php#L118)
 
 Rollback database migrations with phinx
 
 
 
 ### phinx:seed
-[Source](contrib/phinx.php#L140)
+[Source](/contrib/phinx.php#L140)
 
 Seed database with phinx
 
 
 
 ### phinx:breakpoint
-[Source](contrib/phinx.php#L161)
+[Source](/contrib/phinx.php#L161)
 
 Set a migrations breakpoint with phinx
 

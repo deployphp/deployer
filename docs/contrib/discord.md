@@ -4,7 +4,7 @@
 
 # discord
 
-[Source](contrib/discord.php)
+[Source](/contrib/discord.php)
 
 
 
@@ -23,62 +23,62 @@
 
 ## Config
 ### discord_webhook
-[Source](contrib/discord.php#L7)
+[Source](/contrib/discord.php#L7)
 
 
 
 ### discord_notify_text
-[Source](contrib/discord.php#L12)
+[Source](/contrib/discord.php#L12)
 
 Deploy messages
 
 ### discord_success_text
-[Source](contrib/discord.php#L17)
+[Source](/contrib/discord.php#L17)
 
 
 
 ### discord_failure_text
-[Source](contrib/discord.php#L22)
+[Source](/contrib/discord.php#L22)
 
 
 
 ### discord_message
-[Source](contrib/discord.php#L29)
+[Source](/contrib/discord.php#L29)
 
 The message
 
 
 ## Tasks
 ### discord_send_message
-[Source](contrib/discord.php#L32)
+[Source](/contrib/discord.php#L32)
 
 
 
 Helpers
 
 ### discord:test
-[Source](contrib/discord.php#L40)
+[Source](/contrib/discord.php#L40)
 
 Just notify your Discord channel with all messages, without deploying
 
 Tasks
 
 ### discord:notify
-[Source](contrib/discord.php#L52)
+[Source](/contrib/discord.php#L52)
 
 Notify Discord
 
 
 
 ### discord:notify:success
-[Source](contrib/discord.php#L61)
+[Source](/contrib/discord.php#L61)
 
 Notify Discord about deploy finish
 
 
 
 ### discord:notify:failure
-[Source](contrib/discord.php#L70)
+[Source](/contrib/discord.php#L70)
 
 Notify Discord about deploy failure
 

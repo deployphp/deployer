@@ -4,7 +4,7 @@
 
 # yarn
 
-[Source](contrib/yarn.php)
+[Source](/contrib/yarn.php)
 
 (c) Nick DeNardis <nick.denardis@gmail.com>
 (c) Anton Medvedev <anton@medv.io>
@@ -19,7 +19,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### yarn:install
-[Source](contrib/yarn.php#L16)
+[Source](/contrib/yarn.php#L16)
 
 Install Yarn packages
 

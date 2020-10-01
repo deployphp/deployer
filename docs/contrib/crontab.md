@@ -4,7 +4,7 @@
 
 # crontab
 
-[Source](contrib/crontab.php)
+[Source](/contrib/crontab.php)
 
 (c) Asafov Sergey <asafov@newleaf.ru>
 Recipe for crontab jobs deploy
@@ -19,14 +19,14 @@ Configuration:
 
 ## Tasks
 ### crontab:load
-[Source](contrib/crontab.php#L15)
+[Source](/contrib/crontab.php#L15)
 
 Load crontab
 
 
 
 ### crontab:sync
-[Source](contrib/crontab.php#L40)
+[Source](/contrib/crontab.php#L40)
 
 Sync crontab jobs
 

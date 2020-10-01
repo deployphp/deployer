@@ -4,7 +4,7 @@
 
 # codeigniter
 
-[Source](recipe/codeigniter.php)
+[Source](/recipe/codeigniter.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
@@ -22,19 +22,19 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/codeigniter.php#L13)
+[Source](/recipe/codeigniter.php#L13)
 
 CodeIgniter shared dirs
 
 ### writable_dirs
-[Source](recipe/codeigniter.php#L16)
+[Source](/recipe/codeigniter.php#L16)
 
 CodeIgniter writable dirs
 
 
 ## Tasks
 ### deploy
-[Source](recipe/codeigniter.php#L21)
+[Source](/recipe/codeigniter.php#L21)
 
 
 

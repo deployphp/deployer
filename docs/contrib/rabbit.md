@@ -4,7 +4,7 @@
 
 # rabbit
 
-[Source](contrib/rabbit.php)
+[Source](/contrib/rabbit.php)
 
 (c) Tomas Majer <tomasmajer@gmail.com>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:rabbit
-[Source](contrib/rabbit.php#L16)
+[Source](/contrib/rabbit.php#L16)
 
 Notifying RabbitMQ channel about deployment
 

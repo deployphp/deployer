@@ -4,7 +4,7 @@
 
 # newrelic
 
-[Source](contrib/newrelic.php)
+[Source](/contrib/newrelic.php)
 
 (c) Samuel Gordalina <samuel.gordalina@gmail.com>
 
@@ -21,24 +21,24 @@ file that was distributed with this source code.
 
 ## Config
 ### newrelic_app_id
-[Source](contrib/newrelic.php#L12)
+[Source](/contrib/newrelic.php#L12)
 
 
 
 ### newrelic_description
-[Source](contrib/newrelic.php#L16)
+[Source](/contrib/newrelic.php#L16)
 
 
 
 ### newrelic_revision
-[Source](contrib/newrelic.php#L20)
+[Source](/contrib/newrelic.php#L20)
 
 
 
 
 ## Tasks
 ### newrelic:notify
-[Source](contrib/newrelic.php#L25)
+[Source](/contrib/newrelic.php#L25)
 
 Notifying New Relic of deployment
 

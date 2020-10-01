@@ -4,7 +4,7 @@
 
 # composer
 
-[Source](recipe/composer.php)
+[Source](/recipe/composer.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,14 +13,14 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Tasks
   * [`deploy`](#deploy) — Deploy your project
 
 
 ## Tasks
 ### deploy
-[Source](recipe/composer.php#L13)
+[Source](/recipe/composer.php#L13)
 
 Deploy your project
 

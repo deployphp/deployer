@@ -4,7 +4,7 @@
 
 # lock
 
-[Source](recipe/deploy/lock.php)
+[Source](/recipe/deploy/lock.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -19,14 +19,14 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:lock
-[Source](recipe/deploy/lock.php#L14)
+[Source](/recipe/deploy/lock.php#L14)
 
 Lock deploy
 
 
 
 ### deploy:unlock
-[Source](recipe/deploy/lock.php#L28)
+[Source](/recipe/deploy/lock.php#L28)
 
 Unlock deploy
 

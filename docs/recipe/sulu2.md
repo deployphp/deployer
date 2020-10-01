@@ -4,12 +4,12 @@
 
 # sulu2
 
-[Source](recipe/sulu2.php)
+[Source](/recipe/sulu2.php)
 
 
 
 * Require
-  * [`recipe/symfony4.php`](#recipe/symfony4.php)
+  * [`recipe/symfony4.php`](/recipe/symfony4.php)
 * Tasks
   * [`deploy:website:cache:clear`](#deploy:website:cache:clear) — Clear cache
   * [`deploy:website:cache:warmup`](#deploy:website:cache:warmup) — Warm up cache
@@ -17,14 +17,14 @@
 
 ## Tasks
 ### deploy:website:cache:clear
-[Source](recipe/sulu2.php#L24)
+[Source](/recipe/sulu2.php#L24)
 
 Clear cache
 
 
 
 ### deploy:website:cache:warmup
-[Source](recipe/sulu2.php#L29)
+[Source](/recipe/sulu2.php#L29)
 
 Warm up cache
 

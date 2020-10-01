@@ -4,7 +4,7 @@
 
 # typo3
 
-[Source](recipe/typo3.php)
+[Source](/recipe/typo3.php)
 
 (c) Frank Naegler <frank.naegler@typo3.org>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`typo3_webroot`](#typo3_webroot)
   * [`shared_dirs`](#shared_dirs)
@@ -24,29 +24,29 @@ file that was distributed with this source code.
 
 ## Config
 ### typo3_webroot
-[Source](recipe/typo3.php#L15)
+[Source](/recipe/typo3.php#L15)
 
 DocumentRoot / WebRoot for the TYPO3 installation
 
 ### shared_dirs
-[Source](recipe/typo3.php#L38)
+[Source](/recipe/typo3.php#L38)
 
 Shared directories
 
 ### shared_files
-[Source](recipe/typo3.php#L47)
+[Source](/recipe/typo3.php#L47)
 
 Shared files
 
 ### writable_dirs
-[Source](recipe/typo3.php#L54)
+[Source](/recipe/typo3.php#L54)
 
 Writeable directories
 
 
 ## Tasks
 ### deploy
-[Source](recipe/typo3.php#L20)
+[Source](/recipe/typo3.php#L20)
 
 
 

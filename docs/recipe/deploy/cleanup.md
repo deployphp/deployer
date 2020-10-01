@@ -4,7 +4,7 @@
 
 # cleanup
 
-[Source](recipe/deploy/cleanup.php)
+[Source](/recipe/deploy/cleanup.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:cleanup
-[Source](recipe/deploy/cleanup.php#L11)
+[Source](/recipe/deploy/cleanup.php#L11)
 
 Cleaning up old releases
 

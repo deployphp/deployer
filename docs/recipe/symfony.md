@@ -4,7 +4,7 @@
 
 # symfony
 
-[Source](recipe/symfony.php)
+[Source](/recipe/symfony.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`symfony_env`](#symfony_env)
   * [`shared_dirs`](#shared_dirs)
@@ -40,123 +40,123 @@ file that was distributed with this source code.
 
 ## Config
 ### symfony_env
-[Source](recipe/symfony.php#L18)
+[Source](/recipe/symfony.php#L18)
 
 Symfony build set
 
 ### shared_dirs
-[Source](recipe/symfony.php#L21)
+[Source](/recipe/symfony.php#L21)
 
 Symfony shared dirs
 
 ### shared_files
-[Source](recipe/symfony.php#L24)
+[Source](/recipe/symfony.php#L24)
 
 Symfony shared files
 
 ### writable_dirs
-[Source](recipe/symfony.php#L27)
+[Source](/recipe/symfony.php#L27)
 
 Symfony writable dirs
 
 ### clear_paths
-[Source](recipe/symfony.php#L30)
+[Source](/recipe/symfony.php#L30)
 
 Clear paths
 
 ### assets
-[Source](recipe/symfony.php#L33)
+[Source](/recipe/symfony.php#L33)
 
 Assets
 
 ### dump_assets
-[Source](recipe/symfony.php#L36)
+[Source](/recipe/symfony.php#L36)
 
 Requires non symfony-core package `kriswallsmith/assetic` to be installed
 
 ### env
-[Source](recipe/symfony.php#L39)
+[Source](/recipe/symfony.php#L39)
 
 Environment vars
 
 ### composer_options
-[Source](recipe/symfony.php#L45)
+[Source](/recipe/symfony.php#L45)
 
 
 
 ### bin_dir
-[Source](recipe/symfony.php#L52)
+[Source](/recipe/symfony.php#L52)
 
 Adding support for the Symfony3 directory structure
 
 ### var_dir
-[Source](recipe/symfony.php#L53)
+[Source](/recipe/symfony.php#L53)
 
 
 
 ### console_options
-[Source](recipe/symfony.php#L61)
+[Source](/recipe/symfony.php#L61)
 
 Symfony console opts
 
 ### migrations_config
-[Source](recipe/symfony.php#L67)
+[Source](/recipe/symfony.php#L67)
 
 Migrations configuration file
 
 
 ## Tasks
 ### deploy:create_cache_dir
-[Source](recipe/symfony.php#L73)
+[Source](/recipe/symfony.php#L73)
 
 
 
 Create cache dir
 
 ### deploy:assets
-[Source](recipe/symfony.php#L91)
+[Source](/recipe/symfony.php#L91)
 
 
 
 Normalize asset timestamps
 
 ### deploy:assets:install
-[Source](recipe/symfony.php#L103)
+[Source](/recipe/symfony.php#L103)
 
 
 
 Install assets from public dir of bundles
 
 ### deploy:assetic:dump
-[Source](recipe/symfony.php#L111)
+[Source](/recipe/symfony.php#L111)
 
 
 
 Dump all assets to the filesystem
 
 ### deploy:cache:clear
-[Source](recipe/symfony.php#L120)
+[Source](/recipe/symfony.php#L120)
 
 
 
 Clear Cache
 
 ### deploy:cache:warmup
-[Source](recipe/symfony.php#L127)
+[Source](/recipe/symfony.php#L127)
 
 
 
 Warm up cache
 
 ### database:migrate
-[Source](recipe/symfony.php#L135)
+[Source](/recipe/symfony.php#L135)
 
 
 
 Migrate database
 
 ### deploy
-[Source](recipe/symfony.php#L148)
+[Source](/recipe/symfony.php#L148)
 
 
 

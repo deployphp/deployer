@@ -4,7 +4,7 @@
 
 # bugsnag
 
-[Source](contrib/bugsnag.php)
+[Source](/contrib/bugsnag.php)
 
 (c) Tim Robertson <funkjedi@gmail.com>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### bugsnag:notify
-[Source](contrib/bugsnag.php#L13)
+[Source](/contrib/bugsnag.php#L13)
 
 Notifying Bugsnag of deployment
 

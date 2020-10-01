@@ -4,7 +4,7 @@
 
 # cachetool
 
-[Source](contrib/cachetool.php)
+[Source](/contrib/cachetool.php)
 
 (c) Samuel Gordalina <samuel.gordalina@gmail.com>
 
@@ -24,43 +24,43 @@ file that was distributed with this source code.
 
 ## Config
 ### cachetool
-[Source](contrib/cachetool.php#L10)
+[Source](/contrib/cachetool.php#L10)
 
 
 
 ### cachetool_args
-[Source](contrib/cachetool.php#L11)
+[Source](/contrib/cachetool.php#L11)
 
 
 
 ### cachetool_binary
-[Source](contrib/cachetool.php#L12)
+[Source](/contrib/cachetool.php#L12)
 
 
 
 ### cachetool_options
-[Source](contrib/cachetool.php#L26)
+[Source](/contrib/cachetool.php#L26)
 
 
 
 
 ## Tasks
 ### cachetool:clear:apc
-[Source](contrib/cachetool.php#L40)
+[Source](/contrib/cachetool.php#L40)
 
 Clearing APC system cache
 
 
 
 ### cachetool:clear:opcache
-[Source](contrib/cachetool.php#L48)
+[Source](/contrib/cachetool.php#L48)
 
 Clearing OPcode cache
 
 Clear opcache cache
 
 ### cachetool:clear:apcu
-[Source](contrib/cachetool.php#L56)
+[Source](/contrib/cachetool.php#L56)
 
 Clearing APCu system cache
 

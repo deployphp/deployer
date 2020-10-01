@@ -4,7 +4,7 @@
 
 # ms-teams
 
-[Source](contrib/ms-teams.php)
+[Source](/contrib/ms-teams.php)
 
 (c) Neven Kajić
 Based on Slack notifier recipe by Anton Medvedev
@@ -46,58 +46,58 @@ file that was distributed with this source code.
 
 ## Config
 ### teams_title
-[Source](contrib/ms-teams.php#L32)
+[Source](/contrib/ms-teams.php#L32)
 
 Title of project
 
 ### teams_text
-[Source](contrib/ms-teams.php#L37)
+[Source](/contrib/ms-teams.php#L37)
 
 Deploy message
 
 ### teams_success_text
-[Source](contrib/ms-teams.php#L38)
+[Source](/contrib/ms-teams.php#L38)
 
 
 
 ### teams_failure_text
-[Source](contrib/ms-teams.php#L39)
+[Source](/contrib/ms-teams.php#L39)
 
 
 
 ### teams_color
-[Source](contrib/ms-teams.php#L42)
+[Source](/contrib/ms-teams.php#L42)
 
 Color of attachment
 
 ### teams_success_color
-[Source](contrib/ms-teams.php#L43)
+[Source](/contrib/ms-teams.php#L43)
 
 
 
 ### teams_failure_color
-[Source](contrib/ms-teams.php#L44)
+[Source](/contrib/ms-teams.php#L44)
 
 
 
 
 ## Tasks
 ### teams:notify
-[Source](contrib/ms-teams.php#L47)
+[Source](/contrib/ms-teams.php#L47)
 
 Notifying Teams
 
 
 
 ### teams:notify:success
-[Source](contrib/ms-teams.php#L62)
+[Source](/contrib/ms-teams.php#L62)
 
 Notifying Teams about deploy finish
 
 
 
 ### teams:notify:failure
-[Source](contrib/ms-teams.php#L77)
+[Source](/contrib/ms-teams.php#L77)
 
 Notifying Teams about deploy failure
 

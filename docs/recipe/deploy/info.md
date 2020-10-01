@@ -4,7 +4,7 @@
 
 # info
 
-[Source](recipe/deploy/info.php)
+[Source](/recipe/deploy/info.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:info
-[Source](recipe/deploy/info.php#L10)
+[Source](/recipe/deploy/info.php#L10)
 
 
 

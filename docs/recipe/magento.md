@@ -4,7 +4,7 @@
 
 # magento
 
-[Source](recipe/magento.php)
+[Source](/recipe/magento.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
@@ -25,38 +25,38 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/magento.php#L17)
+[Source](/recipe/magento.php#L17)
 
 Magento shared dirs
 
 ### shared_files
-[Source](recipe/magento.php#L20)
+[Source](/recipe/magento.php#L20)
 
 Magento shared files
 
 ### writable_dirs
-[Source](recipe/magento.php#L23)
+[Source](/recipe/magento.php#L23)
 
 Magento writable dirs
 
 
 ## Tasks
 ### deploy:cache:clear
-[Source](recipe/magento.php#L28)
+[Source](/recipe/magento.php#L28)
 
 
 
 Clear cache
 
 ### deploy:clear_version
-[Source](recipe/magento.php#L35)
+[Source](/recipe/magento.php#L35)
 
 
 
 Remove files that can be used to compromise Magento
 
 ### deploy
-[Source](recipe/magento.php#L48)
+[Source](/recipe/magento.php#L48)
 
 
 

@@ -4,13 +4,13 @@
 
 # magento2
 
-[Source](recipe/magento2.php)
+[Source](/recipe/magento2.php)
 
 Configuration
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`static_content_locales`](#static_content_locales)
   * [`shared_files`](#shared_files)
@@ -29,85 +29,85 @@ Configuration
 
 ## Config
 ### static_content_locales
-[Source](recipe/magento2.php#L11)
+[Source](/recipe/magento2.php#L11)
 
 By default setup:static-content:deploy uses `en_US`. 
 To change that, simply put set('static_content_locales', 'en_US de_DE');` 
 in you deployer script.
 
 ### shared_files
-[Source](recipe/magento2.php#L13)
+[Source](/recipe/magento2.php#L13)
 
 
 
 ### shared_dirs
-[Source](recipe/magento2.php#L17)
+[Source](/recipe/magento2.php#L17)
 
 
 
 ### writable_dirs
-[Source](recipe/magento2.php#L31)
+[Source](/recipe/magento2.php#L31)
 
 
 
 ### clear_paths
-[Source](recipe/magento2.php#L37)
+[Source](/recipe/magento2.php#L37)
 
 
 
 
 ## Tasks
 ### magento:compile
-[Source](recipe/magento2.php#L48)
+[Source](/recipe/magento2.php#L48)
 
 Compile magento di
 
 Tasks
 
 ### magento:deploy:assets
-[Source](recipe/magento2.php#L54)
+[Source](/recipe/magento2.php#L54)
 
 Deploy assets
 
 
 
 ### magento:maintenance:enable
-[Source](recipe/magento2.php#L59)
+[Source](/recipe/magento2.php#L59)
 
 Enable maintenance mode
 
 
 
 ### magento:maintenance:disable
-[Source](recipe/magento2.php#L64)
+[Source](/recipe/magento2.php#L64)
 
 Disable maintenance mode
 
 
 
 ### magento:upgrade:db
-[Source](recipe/magento2.php#L69)
+[Source](/recipe/magento2.php#L69)
 
 Upgrade magento database
 
 
 
 ### magento:cache:flush
-[Source](recipe/magento2.php#L74)
+[Source](/recipe/magento2.php#L74)
 
 Flush Magento Cache
 
 
 
 ### deploy:magento
-[Source](recipe/magento2.php#L79)
+[Source](/recipe/magento2.php#L79)
 
 Magento2 deployment operations
 
 
 
 ### deploy
-[Source](recipe/magento2.php#L89)
+[Source](/recipe/magento2.php#L89)
 
 Deploy your project
 

@@ -4,7 +4,7 @@
 
 # yii
 
-[Source](recipe/yii.php)
+[Source](/recipe/yii.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
@@ -22,19 +22,19 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/yii.php#L13)
+[Source](/recipe/yii.php#L13)
 
 Yii shared dirs
 
 ### writable_dirs
-[Source](recipe/yii.php#L16)
+[Source](/recipe/yii.php#L16)
 
 Yii writable dirs
 
 
 ## Tasks
 ### deploy
-[Source](recipe/yii.php#L21)
+[Source](/recipe/yii.php#L21)
 
 
 

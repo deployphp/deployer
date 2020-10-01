@@ -4,7 +4,7 @@
 
 # flow_framework
 
-[Source](recipe/flow_framework.php)
+[Source](/recipe/flow_framework.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`flow_context`](#flow_context)
   * [`flow_command`](#flow_command)
@@ -25,38 +25,38 @@ file that was distributed with this source code.
 
 ## Config
 ### flow_context
-[Source](recipe/flow_framework.php#L13)
+[Source](/recipe/flow_framework.php#L13)
 
 Flow-Framework application-context
 
 ### flow_command
-[Source](recipe/flow_framework.php#L16)
+[Source](/recipe/flow_framework.php#L16)
 
 Flow-Framework cli-command
 
 ### shared_dirs
-[Source](recipe/flow_framework.php#L19)
+[Source](/recipe/flow_framework.php#L19)
 
 Flow-Framework shared directories
 
 
 ## Tasks
 ### deploy:run_migrations
-[Source](recipe/flow_framework.php#L28)
+[Source](/recipe/flow_framework.php#L28)
 
 
 
 Apply database migrations
 
 ### deploy:publish_resources
-[Source](recipe/flow_framework.php#L35)
+[Source](/recipe/flow_framework.php#L35)
 
 
 
 Publish resources
 
 ### deploy
-[Source](recipe/flow_framework.php#L42)
+[Source](/recipe/flow_framework.php#L42)
 
 
 

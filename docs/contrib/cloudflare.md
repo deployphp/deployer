@@ -4,7 +4,7 @@
 
 # cloudflare
 
-[Source](contrib/cloudflare.php)
+[Source](/contrib/cloudflare.php)
 
 (c) David Jordan / CyberDuck <david@cyber-duck.co.uk>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:cloudflare
-[Source](contrib/cloudflare.php#L11)
+[Source](/contrib/cloudflare.php#L11)
 
 Clearing Cloudflare Cache
 

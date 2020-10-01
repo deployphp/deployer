@@ -4,7 +4,7 @@
 
 # rsync
 
-[Source](contrib/rsync.php)
+[Source](/contrib/rsync.php)
 
 (c) HAKGER[hakger.pl] Hubert Kowalski <h.kowalski@hakger.pl>
 
@@ -28,51 +28,51 @@ file that was distributed with this source code.
 
 ## Config
 ### rsync
-[Source](contrib/rsync.php#L12)
+[Source](/contrib/rsync.php#L12)
 
 
 
 ### rsync_src
-[Source](contrib/rsync.php#L28)
+[Source](/contrib/rsync.php#L28)
 
 
 
 ### rsync_dest
-[Source](contrib/rsync.php#L29)
+[Source](/contrib/rsync.php#L29)
 
 
 
 ### rsync_excludes
-[Source](contrib/rsync.php#L31)
+[Source](/contrib/rsync.php#L31)
 
 
 
 ### rsync_includes
-[Source](contrib/rsync.php#L46)
+[Source](/contrib/rsync.php#L46)
 
 
 
 ### rsync_filter
-[Source](contrib/rsync.php#L61)
+[Source](/contrib/rsync.php#L61)
 
 
 
 ### rsync_options
-[Source](contrib/rsync.php#L79)
+[Source](/contrib/rsync.php#L79)
 
 
 
 
 ## Tasks
 ### rsync:warmup
-[Source](contrib/rsync.php#L91)
+[Source](/contrib/rsync.php#L91)
 
 Warmup remote Rsync target
 
 
 
 ### rsync
-[Source](contrib/rsync.php#L106)
+[Source](/contrib/rsync.php#L106)
 
 Rsync local->remote
 

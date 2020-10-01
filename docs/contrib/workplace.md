@@ -4,7 +4,7 @@
 
 # workplace
 
-[Source](contrib/workplace.php)
+[Source](/contrib/workplace.php)
 
 (c) Gonçalo Queirós <mail@goncaloqueiros.net>
 
@@ -24,43 +24,43 @@ file that was distributed with this source code.
 
 ## Config
 ### workplace_text
-[Source](contrib/workplace.php#L13)
+[Source](/contrib/workplace.php#L13)
 
 Deploy message
 
 ### workplace_success_text
-[Source](contrib/workplace.php#L14)
+[Source](/contrib/workplace.php#L14)
 
 
 
 ### workplace_failure_text
-[Source](contrib/workplace.php#L15)
+[Source](/contrib/workplace.php#L15)
 
 
 
 ### workplace_edit_post
-[Source](contrib/workplace.php#L18)
+[Source](/contrib/workplace.php#L18)
 
 By default, create a new post for every message
 
 
 ## Tasks
 ### workplace:notify
-[Source](contrib/workplace.php#L21)
+[Source](/contrib/workplace.php#L21)
 
 Notifying Workplace
 
 
 
 ### workplace:notify:success
-[Source](contrib/workplace.php#L46)
+[Source](/contrib/workplace.php#L46)
 
 Notifying Workplace about deploy finish
 
 
 
 ### workplace:notify:failure
-[Source](contrib/workplace.php#L58)
+[Source](/contrib/workplace.php#L58)
 
 Notifying Workplace about deploy failure
 

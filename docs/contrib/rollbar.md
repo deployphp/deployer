@@ -4,7 +4,7 @@
 
 # rollbar
 
-[Source](contrib/rollbar.php)
+[Source](/contrib/rollbar.php)
 
 (c) Laurent Goussard <loranger@free.fr>
 
@@ -19,14 +19,14 @@ file that was distributed with this source code.
 
 ## Config
 ### rollbar_comment
-[Source](contrib/rollbar.php#L12)
+[Source](/contrib/rollbar.php#L12)
 
 
 
 
 ## Tasks
 ### rollbar:notify
-[Source](contrib/rollbar.php#L15)
+[Source](/contrib/rollbar.php#L15)
 
 Notifying Rollbar of deployment
 

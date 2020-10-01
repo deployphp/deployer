@@ -4,7 +4,7 @@
 
 # chat
 
-[Source](contrib/chat.php)
+[Source](/contrib/chat.php)
 
 (c) Daniel Roe <daniel@concision.co.uk>
 
@@ -25,48 +25,48 @@ file that was distributed with this source code.
 
 ## Config
 ### chat_title
-[Source](contrib/chat.php#L13)
+[Source](/contrib/chat.php#L13)
 
 Title of project
 
 ### chat_subtitle
-[Source](contrib/chat.php#L17)
+[Source](/contrib/chat.php#L17)
 
 
 
 ### favicon
-[Source](contrib/chat.php#L20)
+[Source](/contrib/chat.php#L20)
 
 If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
 ### chat_line1
-[Source](contrib/chat.php#L23)
+[Source](/contrib/chat.php#L23)
 
 Deploy messages
 
 ### chat_line2
-[Source](contrib/chat.php#L24)
+[Source](/contrib/chat.php#L24)
 
 
 
 
 ## Tasks
 ### chat:notify
-[Source](contrib/chat.php#L27)
+[Source](/contrib/chat.php#L27)
 
 Notifying Google Hangouts Chat
 
 
 
 ### chat:notify:success
-[Source](contrib/chat.php#L70)
+[Source](/contrib/chat.php#L70)
 
 Notifying Google Hangouts Chat about deploy finish
 
 
 
 ### chat:notify:failure
-[Source](contrib/chat.php#L113)
+[Source](/contrib/chat.php#L113)
 
 
 

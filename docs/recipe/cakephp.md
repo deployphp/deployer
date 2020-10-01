@@ -4,7 +4,7 @@
 
 # cakephp
 
-[Source](recipe/cakephp.php)
+[Source](/recipe/cakephp.php)
 
 (c) Jad Bitar <jadb@cakephp.org>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
@@ -24,33 +24,33 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/cakephp.php#L17)
+[Source](/recipe/cakephp.php#L17)
 
 CakePHP 3 Project Template shared dirs
 
 ### shared_files
-[Source](recipe/cakephp.php#L23)
+[Source](/recipe/cakephp.php#L23)
 
 CakePHP 3 Project Template shared files
 
 
 ## Tasks
 ### deploy:init
-[Source](recipe/cakephp.php#L30)
+[Source](/recipe/cakephp.php#L30)
 
 
 
 Create plugins' symlinks
 
 ### deploy:run_migrations
-[Source](recipe/cakephp.php#L37)
+[Source](/recipe/cakephp.php#L37)
 
 
 
 Run migrations
 
 ### deploy
-[Source](recipe/cakephp.php#L46)
+[Source](/recipe/cakephp.php#L46)
 
 
 

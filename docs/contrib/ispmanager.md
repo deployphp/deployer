@@ -4,7 +4,7 @@
 
 # ispmanager
 
-[Source](contrib/ispmanager.php)
+[Source](/contrib/ispmanager.php)
 
 (c) Asafov Sergey <asafov@newleaf.ru>
 This recipe for work with ISPManager Lite panel by API.
@@ -26,61 +26,61 @@ This recipe for work with ISPManager Lite panel by API.
 
 ## Config
 ### ispmanager_owner
-[Source](contrib/ispmanager.php#L9)
+[Source](/contrib/ispmanager.php#L9)
 
 
 
 ### ispmanager_doc_root
-[Source](contrib/ispmanager.php#L10)
+[Source](/contrib/ispmanager.php#L10)
 
 
 
 ### ispmanager
-[Source](contrib/ispmanager.php#L13)
+[Source](/contrib/ispmanager.php#L13)
 
 ISPManager default configuration
 
 ### vhost
-[Source](contrib/ispmanager.php#L29)
+[Source](/contrib/ispmanager.php#L29)
 
 Vhost default configuration
 
 ### ispmanager_session
-[Source](contrib/ispmanager.php#L49)
+[Source](/contrib/ispmanager.php#L49)
 
 Storage
 
 ### ispmanager_databases
-[Source](contrib/ispmanager.php#L50)
+[Source](/contrib/ispmanager.php#L50)
 
 
 
 ### ispmanager_domains
-[Source](contrib/ispmanager.php#L56)
+[Source](/contrib/ispmanager.php#L56)
 
 
 
 ### ispmanager_phplist
-[Source](contrib/ispmanager.php#L57)
+[Source](/contrib/ispmanager.php#L57)
 
 
 
 ### ispmanager_aliaslist
-[Source](contrib/ispmanager.php#L58)
+[Source](/contrib/ispmanager.php#L58)
 
 
 
 
 ## Tasks
 ### ispmanager:init
-[Source](contrib/ispmanager.php#L61)
+[Source](/contrib/ispmanager.php#L61)
 
 Initialisation
 
 
 
 ### ispmanager:process
-[Source](contrib/ispmanager.php#L690)
+[Source](/contrib/ispmanager.php#L690)
 
 Auto task processing
 

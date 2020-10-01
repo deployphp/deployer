@@ -4,7 +4,7 @@
 
 # prestashop
 
-[Source](recipe/prestashop.php)
+[Source](/recipe/prestashop.php)
 
 (c) Leopold Jacquot <leopold.jacquot@gmail.com>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_files`](#shared_files)
   * [`shared_dirs`](#shared_dirs)
@@ -23,24 +23,24 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_files
-[Source](recipe/prestashop.php#L12)
+[Source](/recipe/prestashop.php#L12)
 
 
 
 ### shared_dirs
-[Source](recipe/prestashop.php#L13)
+[Source](/recipe/prestashop.php#L13)
 
 
 
 ### writable_dirs
-[Source](recipe/prestashop.php#L25)
+[Source](/recipe/prestashop.php#L25)
 
 
 
 
 ## Tasks
 ### deploy
-[Source](recipe/prestashop.php#L40)
+[Source](/recipe/prestashop.php#L40)
 
 
 

@@ -4,7 +4,7 @@
 
 # laravel
 
-[Source](recipe/laravel.php)
+[Source](/recipe/laravel.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
@@ -52,216 +52,216 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/laravel.php#L12)
+[Source](/recipe/laravel.php#L12)
 
 
 
 ### shared_files
-[Source](recipe/laravel.php#L13)
+[Source](/recipe/laravel.php#L13)
 
 
 
 ### writable_dirs
-[Source](recipe/laravel.php#L14)
+[Source](/recipe/laravel.php#L14)
 
 
 
 ### log_files
-[Source](recipe/laravel.php#L25)
+[Source](/recipe/laravel.php#L25)
 
 
 
 ### laravel_version
-[Source](recipe/laravel.php#L26)
+[Source](/recipe/laravel.php#L26)
 
 
 
 
 ## Tasks
 ### artisan:up
-[Source](recipe/laravel.php#L85)
+[Source](/recipe/laravel.php#L85)
 
 Disable maintenance mode
 
 
 
 ### artisan:down
-[Source](recipe/laravel.php#L88)
+[Source](/recipe/laravel.php#L88)
 
 Enable maintenance mode
 
 
 
 ### artisan:migrate
-[Source](recipe/laravel.php#L91)
+[Source](/recipe/laravel.php#L91)
 
 Execute artisan migrate
 
 
 
 ### artisan:migrate:fresh
-[Source](recipe/laravel.php#L94)
+[Source](/recipe/laravel.php#L94)
 
 Execute artisan migrate:fresh
 
 
 
 ### artisan:migrate:rollback
-[Source](recipe/laravel.php#L97)
+[Source](/recipe/laravel.php#L97)
 
 Execute artisan migrate:rollback
 
 
 
 ### artisan:migrate:status
-[Source](recipe/laravel.php#L100)
+[Source](/recipe/laravel.php#L100)
 
 Execute artisan migrate:status
 
 
 
 ### artisan:db:seed
-[Source](recipe/laravel.php#L103)
+[Source](/recipe/laravel.php#L103)
 
 Execute artisan db:seed
 
 
 
 ### artisan:cache:clear
-[Source](recipe/laravel.php#L106)
+[Source](/recipe/laravel.php#L106)
 
 Execute artisan cache:clear
 
 
 
 ### artisan:config:clear
-[Source](recipe/laravel.php#L109)
+[Source](/recipe/laravel.php#L109)
 
 Execute artisan config:clear
 
 
 
 ### artisan:config:cache
-[Source](recipe/laravel.php#L112)
+[Source](/recipe/laravel.php#L112)
 
 Execute artisan config:cache
 
 
 
 ### artisan:route:cache
-[Source](recipe/laravel.php#L115)
+[Source](/recipe/laravel.php#L115)
 
 Execute artisan route:cache
 
 
 
 ### artisan:view:clear
-[Source](recipe/laravel.php#L118)
+[Source](/recipe/laravel.php#L118)
 
 Execute artisan view:clear
 
 
 
 ### artisan:view:cache
-[Source](recipe/laravel.php#L121)
+[Source](/recipe/laravel.php#L121)
 
 Execute artisan view:cache
 
 
 
 ### artisan:optimize
-[Source](recipe/laravel.php#L124)
+[Source](/recipe/laravel.php#L124)
 
 Execute artisan optimize
 
 
 
 ### artisan:optimize:clear
-[Source](recipe/laravel.php#L127)
+[Source](/recipe/laravel.php#L127)
 
 Execute artisan optimize:clear
 
 
 
 ### artisan:queue:restart
-[Source](recipe/laravel.php#L130)
+[Source](/recipe/laravel.php#L130)
 
 Execute artisan queue:restart
 
 
 
 ### artisan:storage:link
-[Source](recipe/laravel.php#L133)
+[Source](/recipe/laravel.php#L133)
 
 Execute artisan storage:link
 
 
 
 ### artisan:horizon:assets
-[Source](recipe/laravel.php#L136)
+[Source](/recipe/laravel.php#L136)
 
 Execute artisan horizon:assets
 
 
 
 ### artisan:horizon:publish
-[Source](recipe/laravel.php#L139)
+[Source](/recipe/laravel.php#L139)
 
 Execute artisan horizon:publish
 
 
 
 ### artisan:horizon:terminate
-[Source](recipe/laravel.php#L142)
+[Source](/recipe/laravel.php#L142)
 
 Execute artisan horizon:terminate
 
 
 
 ### artisan:telescope:clear
-[Source](recipe/laravel.php#L145)
+[Source](/recipe/laravel.php#L145)
 
 Execute artisan telescope:clear
 
 
 
 ### artisan:telescope:prune
-[Source](recipe/laravel.php#L148)
+[Source](/recipe/laravel.php#L148)
 
 Execute artisan telescope:prune
 
 
 
 ### artisan:telescope:publish
-[Source](recipe/laravel.php#L151)
+[Source](/recipe/laravel.php#L151)
 
 Execute artisan telescope:publish
 
 
 
 ### artisan:nova:publish
-[Source](recipe/laravel.php#L154)
+[Source](/recipe/laravel.php#L154)
 
 Execute artisan nova:publish
 
 
 
 ### artisan:event:clear
-[Source](recipe/laravel.php#L157)
+[Source](/recipe/laravel.php#L157)
 
 Execute artisan event:clear
 
 
 
 ### artisan:event:cache
-[Source](recipe/laravel.php#L160)
+[Source](/recipe/laravel.php#L160)
 
 Execute artisan event:cache
 
 
 
 ### deploy:public_disk
-[Source](recipe/laravel.php#L171)
+[Source](/recipe/laravel.php#L171)
 
 Make symlink for public disk
 
@@ -273,7 +273,7 @@ To run this task automatically, please add below line to your deploy.php file
 [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
 
 ### deploy
-[Source](recipe/laravel.php#L186)
+[Source](/recipe/laravel.php#L186)
 
 Deploy your project
 

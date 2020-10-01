@@ -4,7 +4,7 @@
 
 # rollback
 
-[Source](recipe/deploy/rollback.php)
+[Source](/recipe/deploy/rollback.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### rollback
-[Source](recipe/deploy/rollback.php#L13)
+[Source](/recipe/deploy/rollback.php#L13)
 
 Rollback to previous release
 

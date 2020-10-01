@@ -4,7 +4,7 @@
 
 # shared
 
-[Source](recipe/deploy/shared.php)
+[Source](/recipe/deploy/shared.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:shared
-[Source](recipe/deploy/shared.php#L13)
+[Source](/recipe/deploy/shared.php#L13)
 
 Creating symlinks for shared files and dirs
 

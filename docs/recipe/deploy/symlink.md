@@ -4,7 +4,7 @@
 
 # symlink
 
-[Source](recipe/deploy/symlink.php)
+[Source](/recipe/deploy/symlink.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -18,7 +18,7 @@ file that was distributed with this source code.
 
 ## Tasks
 ### deploy:symlink
-[Source](recipe/deploy/symlink.php#L11)
+[Source](/recipe/deploy/symlink.php#L11)
 
 Creating symlink to release
 

@@ -4,7 +4,7 @@
 
 # fuelphp
 
-[Source](recipe/fuelphp.php)
+[Source](/recipe/fuelphp.php)
 
 (c) Anton Medvedev <anton@medv.io>
 
@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks
@@ -21,14 +21,14 @@ file that was distributed with this source code.
 
 ## Config
 ### shared_dirs
-[Source](recipe/fuelphp.php#L13)
+[Source](/recipe/fuelphp.php#L13)
 
 FuelPHP 1.x shared dirs
 
 
 ## Tasks
 ### deploy
-[Source](recipe/fuelphp.php#L20)
+[Source](/recipe/fuelphp.php#L20)
 
 
 

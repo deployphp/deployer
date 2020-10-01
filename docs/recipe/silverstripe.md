@@ -4,14 +4,14 @@
 
 # silverstripe
 
-[Source](recipe/silverstripe.php)
+[Source](/recipe/silverstripe.php)
 
 
 Silverstripe configuration
 
 
 * Require
-  * [`recipe/common.php`](#recipe/common.php)
+  * [`recipe/common.php`](/recipe/common.php)
 * Config
   * [`shared_assets`](#shared_assets)
   * [`shared_dirs`](#shared_dirs)
@@ -24,43 +24,43 @@ Silverstripe configuration
 
 ## Config
 ### shared_assets
-[Source](recipe/silverstripe.php#L11)
+[Source](/recipe/silverstripe.php#L11)
 
 
 
 ### shared_dirs
-[Source](recipe/silverstripe.php#L20)
+[Source](/recipe/silverstripe.php#L20)
 
 Silverstripe shared dirs
 
 ### writable_dirs
-[Source](recipe/silverstripe.php#L25)
+[Source](/recipe/silverstripe.php#L25)
 
 Silverstripe writable dirs
 
 ### silverstripe_cli_script
-[Source](recipe/silverstripe.php#L30)
+[Source](/recipe/silverstripe.php#L30)
 
 Silverstripe cli script
 
 
 ## Tasks
 ### silverstripe:build
-[Source](recipe/silverstripe.php#L45)
+[Source](/recipe/silverstripe.php#L45)
 
 
 
 Helper tasks
 
 ### silverstripe:buildflush
-[Source](recipe/silverstripe.php#L49)
+[Source](/recipe/silverstripe.php#L49)
 
 
 
 
 
 ### deploy
-[Source](recipe/silverstripe.php#L56)
+[Source](/recipe/silverstripe.php#L56)
 
 
 

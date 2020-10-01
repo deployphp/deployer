@@ -4,7 +4,7 @@
 
 # telegram
 
-[Source](contrib/telegram.php)
+[Source](/contrib/telegram.php)
 
 (c) Raz <raz@eviladmin.xyz>
 Based on Slack nofifier recipe by Anton Medvedev
@@ -30,44 +30,44 @@ Configuration:
 
 ## Config
 ### telegram_title
-[Source](contrib/telegram.php#L16)
+[Source](/contrib/telegram.php#L16)
 
 Title of project
 
 ### telegram_token
-[Source](contrib/telegram.php#L21)
+[Source](/contrib/telegram.php#L21)
 
 Telegram settings
 
 ### telegram_chat_id
-[Source](contrib/telegram.php#L24)
+[Source](/contrib/telegram.php#L24)
 
 
 
 ### telegram_url
-[Source](contrib/telegram.php#L27)
+[Source](/contrib/telegram.php#L27)
 
 
 
 ### telegram_text
-[Source](contrib/telegram.php#L32)
+[Source](/contrib/telegram.php#L32)
 
 Deploy message
 
 ### telegram_success_text
-[Source](contrib/telegram.php#L33)
+[Source](/contrib/telegram.php#L33)
 
 
 
 ### telegram_failure_text
-[Source](contrib/telegram.php#L34)
+[Source](/contrib/telegram.php#L34)
 
 
 
 
 ## Tasks
 ### telegram:notify
-[Source](contrib/telegram.php#L39)
+[Source](/contrib/telegram.php#L39)
 
 
 

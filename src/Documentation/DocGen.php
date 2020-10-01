@@ -50,7 +50,7 @@ class DocGen
             if (count($recipe->require) > 0) {
                 $toc .= "* Require\n";
                 foreach ($recipe->require as $r) {
-                    $toc .= "  * [`{$r}`](#{$r})\n";
+                    $toc .= "  * [`{$r}`](/{$r})\n";
                 }
             }
             if (count($recipe->config) > 0) {
@@ -59,7 +59,7 @@ class DocGen
                 foreach ($recipe->config as $c) {
                     $toc .= "  * [`{$c->name}`](#{$c->name})\n";
                     $config .= "### {$c->name}\n";
-                    $config .= "[Source]({$c->recipePath}#L{$c->lineNumber})\n\n";
+                    $config .= "[Source](/{$c->recipePath}#L{$c->lineNumber})\n\n";
                     $config .= ($c->comment);
                     $config .= "\n\n";
                 }
@@ -70,7 +70,7 @@ class DocGen
                 foreach ($recipe->tasks as $t) {
                     $toc .= "  * [`{$t->name}`](#{$t->name}) — {$t->desc}\n";
                     $tasks .= "### {$t->name}\n";
-                    $tasks .= "[Source]({$t->recipePath}#L{$t->lineNumber})\n\n";
+                    $tasks .= "[Source](/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= $t->desc;
                     $tasks .= "\n\n";
                     $tasks .= ($t->comment);
@@ -85,7 +85,7 @@ class DocGen
 
 # {$recipe->recipeName}
 
-[Source]({$recipe->recipePath})
+[Source](/{$recipe->recipePath})
 
 {$recipe->comment}
 

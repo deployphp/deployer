@@ -4,7 +4,7 @@
 
 # hipchat
 
-[Source](contrib/hipchat.php)
+[Source](/contrib/hipchat.php)
 
 (c) Stephan Wentz <stephan@wentz.it>
 
@@ -22,29 +22,29 @@ file that was distributed with this source code.
 
 ## Config
 ### hipchat_color
-[Source](contrib/hipchat.php#L12)
+[Source](/contrib/hipchat.php#L12)
 
 
 
 ### hipchat_from
-[Source](contrib/hipchat.php#L13)
+[Source](/contrib/hipchat.php#L13)
 
 
 
 ### hipchat_message
-[Source](contrib/hipchat.php#L14)
+[Source](/contrib/hipchat.php#L14)
 
 
 
 ### hipchat_url
-[Source](contrib/hipchat.php#L15)
+[Source](/contrib/hipchat.php#L15)
 
 
 
 
 ## Tasks
 ### hipchat:notify
-[Source](contrib/hipchat.php#L18)
+[Source](/contrib/hipchat.php#L18)
 
 Notifying Hipchat channel of deployment
 

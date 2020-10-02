@@ -551,6 +551,30 @@ function parse($value)
 }
 
 /**
+ * Escapes value so it won't be parsed by @see parse()
+ *
+ * @param string $value value to be escaped
+ * @return string escaped value
+ */
+function escape($value)
+{
+    $output = str_replace(['{{', '}}'], ['\\{\\{', '\\}\\}'], $value);
+    return $output;
+}
+
+/**
+ * Removes escape characters from the string that was processed with @see escape()
+ *
+ * @param string $value that has been previous escaped
+ * @return string value with escape characters removed
+ */
+function unescape($value)
+{
+    $output = str_replace(['\\{\\{', '\\}\\}'], ['{{', '}}'], $value);
+    return $output;
+}
+
+/**
  * Setup configuration option.
  *
  * @param string $name

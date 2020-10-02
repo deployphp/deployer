@@ -16,6 +16,32 @@ class ConfigurationTest extends TestCase
         self::assertEquals('a b', $config->parse('{{foo}} {{bar}}'));
     }
 
+    public function parseWithRawDataProvider()
+    {
+        return [
+            'string with only raw value' => [ '\\{\\{foo\\}\\}', '{{foo}}', [] ],
+            'string with raw and parsed value' => ['\\{\\{foo\\}\\} {{foo}}', '{{foo}} bar', [ 'foo' => 'bar' ] ],
+            'string with multiple raw values' => ['\\{\\{foo\\}\\} {{foo}} \\{\\{baz\\}\\}', '{{foo}} bar {{baz}}', [ 'foo' => 'bar' ] ],
+        ];
+    }
+
+    /**
+     * @dataProvider parseWithRawDataProvider
+     * @param string $input
+     * @param string $expected
+     * @param array $configValues
+     */
+    public function testParseWithRaw($input, $expected, $configValues)
+    {
+        $config = new Configuration();
+        foreach ($configValues as $key => $value) {
+            $config->set($key, $value);
+        }
+
+        $output = $config->parse($input);
+        self::assertEquals($expected, $output);
+    }
+
     public function testUnset()
     {
         $config = new Configuration();

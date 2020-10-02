@@ -10,6 +10,7 @@
 - ISPManager recipe and docs.
 - Symfony 5 recipe.
 - Command for checking if a deploy is unlocked. [#2150] [#2150]
+- Added `escape` and `unescape` method to ignore certain values from being parsing. [#2176]
 
 ### Changed
 - `within` passess through `$callback` return value. [#2178]
@@ -590,6 +591,7 @@
 
 [#2181]: https://github.com/deployphp/deployer/issues/2181
 [#2178]: https://github.com/deployphp/deployer/issues/2178
+[#2176]: https://github.com/deployphp/deployer/issues/2176
 [#2170]: https://github.com/deployphp/deployer/issues/2170
 [#2165]: https://github.com/deployphp/deployer/issues/2165
 [#2150]: https://github.com/deployphp/deployer/issues/2150

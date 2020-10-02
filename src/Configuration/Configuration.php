@@ -13,6 +13,7 @@ use function Deployer\get;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;
+use function Deployer\unescape;
 
 class Configuration implements \ArrayAccess
 {
@@ -107,7 +108,8 @@ class Configuration implements \ArrayAccess
     {
         if (is_string($value)) {
             $normalizedValue = normalize_line_endings($value);
-            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
+            $parsed = preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
+            return unescape($parsed);
         }
 
         return $value;

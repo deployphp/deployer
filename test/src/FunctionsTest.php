@@ -182,6 +182,50 @@ class FunctionsTest extends TestCase
         self::assertNull($output);
     }
 
+    public function escapeValueDataProvider()
+    {
+        return [
+            'escape whole string' => [ '{{foo}}', '\\{\\{foo\\}\\}' ],
+            'escape part of string' => [ 'foo {{bar}}', 'foo \\{\\{bar\\}\\}' ],
+            'escape multiple times' => [ '{{foo}} {{bar}}', '\\{\\{foo\\}\\} \\{\\{bar\\}\\}' ],
+            'do nothing' => [ 'foo', 'foo' ],
+        ];
+    }
+
+    public function unescapeValueDataProvider()
+    {
+        return [
+            'unescape whole string' => [ '\\{\\{foo\\}\\}', '{{foo}}' ],
+            'unescape part of string' => [ 'foo \\{\\{bar\\}\\}', 'foo {{bar}}' ],
+            'unescape multiple times' => [ '\\{\\{foo\\}\\} \\{\\{bar\\}\\}', '{{foo}} {{bar}}' ],
+            'do nothing' => [ 'foo', 'foo' ],
+        ];
+    }
+
+    /**
+     * @dataProvider escapeValueDataProvider
+     *
+     * @param string $input
+     * @param string $expected
+     */
+    public function testEscapeValue($input, $expected)
+    {
+        $output = escape($input);
+        self::assertEquals($expected, $output);
+    }
+
+    /**
+     * @dataProvider unescapeValueDataProvider
+     *
+     * @param string $input
+     * @param string $expected
+     */
+    public function testUnescapeValue($input, $expected)
+    {
+        $output = unescape($input);
+        self::assertEquals($expected, $output);
+    }
+
     private function taskToNames($tasks)
     {
         return array_map(function (Task $task) {

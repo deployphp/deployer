@@ -11,6 +11,9 @@
 - Symfony 5 recipe.
 - Command for checking if a deploy is unlocked. [#2150] [#2150]
 
+### Changed
+- `within` passess through `$callback` return value. [#2178]
+
 ### Fixed
 - Normalize CRLF to LF new line endings. [#2111]
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
@@ -586,6 +589,7 @@
 
 
 [#2181]: https://github.com/deployphp/deployer/issues/2181
+[#2178]: https://github.com/deployphp/deployer/issues/2178
 [#2170]: https://github.com/deployphp/deployer/issues/2170
 [#2165]: https://github.com/deployphp/deployer/issues/2165
 [#2150]: https://github.com/deployphp/deployer/issues/2150

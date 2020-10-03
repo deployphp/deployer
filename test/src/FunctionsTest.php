@@ -135,6 +135,53 @@ class FunctionsTest extends TestCase
         self::assertEquals('overwritten', $output);
     }
 
+    public function testWithinSetsWorkingPaths()
+    {
+        Context::get()->getConfig()->set('working_path', '/foo');
+
+        within('/bar', function () {
+            $withinWorkingPath = Context::get()->getConfig()->get('working_path');
+            self::assertEquals('/bar', $withinWorkingPath);
+        });
+
+        $originalWorkingPath = Context::get()->getConfig()->get('working_path');
+        self::assertEquals('/foo', $originalWorkingPath);
+    }
+
+    public function testWithinRestoresWorkingPathInCaseOfException()
+    {
+        Context::get()->getConfig()->set('working_path', '/foo');
+
+        try {
+            within('/bar', function () {
+                throw new \Exception('Dummy exception');
+            });
+        } catch (\Exception $exception) {
+            // noop
+        }
+
+        $originalWorkingPath = Context::get()->getConfig()->get('working_path');
+        self::assertEquals('/foo', $originalWorkingPath);
+    }
+
+    public function testWithinReturningValue()
+    {
+        $output = within('/foo', function () {
+           return 'bar';
+        });
+
+        self::assertEquals('bar', $output);
+    }
+
+    public function testWithinWithVoidFunction()
+    {
+        $output = within('/foo', function () {
+            // noop
+        });
+
+        self::assertNull($output);
+    }
+
     private function taskToNames($tasks)
     {
         return array_map(function (Task $task) {

@@ -262,13 +262,14 @@ function cd($path)
  *
  * @param string $path
  * @param callable $callback
+ * @return mixed|void Return value of the $callback function or void if callback doesn't return anything
  */
 function within($path, $callback)
 {
     $lastWorkingPath = get('working_path', '');
     try {
         set('working_path', parse($path));
-        $callback();
+        return $callback();
     } finally {
         set('working_path', $lastWorkingPath);
     }

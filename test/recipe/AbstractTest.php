@@ -29,6 +29,11 @@ abstract class AbstractTest extends TestCase
         $repository = __DIR__ . '/repository';
 
         exec("cd $repository && git init");
+
+        // Switch the mock repo to Deployer's current branch
+        $currentRepoBranch = trim(shell_exec('git rev-parse --abbrev-ref HEAD'));
+        exec("cd $repository && git checkout -B $currentRepoBranch 2>&1");
+
         exec("cd $repository && git add .");
         exec("cd $repository && git config user.name 'Anton Medvedev'");
         exec("cd $repository && git config user.email 'anton.medv@example.com'");

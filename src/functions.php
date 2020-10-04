@@ -578,12 +578,12 @@ function parse($value)
  * @param string $name
  * @param mixed $value
  */
-function set($name, $value)
+function set($name, $value, $callback = null)
 {
     if (!Context::has()) {
-        Deployer::get()->config->set($name, $value);
+        Deployer::get()->config->set($name, $value, $callback);
     } else {
-        Context::get()->getConfig()->set($name, $value);
+        Context::get()->getConfig()->set($name, $value, $callback);
     }
 }
 

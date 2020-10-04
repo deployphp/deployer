@@ -7,9 +7,9 @@
 
 namespace Deployer\Configuration;
 
-use Deployer\Exception\ConfigurationException;
 use Deployer\Utility\Httpie;
 use function Deployer\get;
+use Deployer\Exception\ConfigurationException;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;
@@ -18,6 +18,7 @@ class Configuration implements \ArrayAccess
 {
     private $parent;
     private $values = [];
+    private $validations = [];
 
     public function __construct(Configuration $parent = null)
     {
@@ -36,9 +37,18 @@ class Configuration implements \ArrayAccess
 
     /**
      * @param mixed $value
+     * @param callable $callback
      */
-    public function set(string $name, $value): void
+    public function set(string $name, $value, callable $callback = null): void
     {
+        if (is_callable($callback)) {
+            $this->validations[$name] = $callback;
+        }
+        if (array_key_exists($name, $this->validations) 
+            && !call_user_func($this->validations[$name], $value)
+        ) {
+            throw new ConfigurationException("Config option \"$name\" has an invalid value.");
+        }
         $this->values[$name] = $value;
     }
 

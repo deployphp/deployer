@@ -19,6 +19,7 @@ require __DIR__ . '/deploy/vendors.php';
 require __DIR__ . '/deploy/writable.php';
 
 use Deployer\Exception\RunException;
+use Deployer\Exception\ConfigurationException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
 
@@ -43,41 +44,80 @@ set('user', function () {
 });
 
 // Number of releases to preserve in releases folder.
-set('keep_releases', 5);
+set('keep_releases', 5, function ($value) {
+    return is_integer($value) && $value >= -1;
+});
 
 // Repository to deploy.
-set('repository', '');
+set('repository', '', 'is_string');
 
 // List of dirs what will be shared between releases.
 // Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
 // ```php
 // set('shared_dirs', ['storage']);
 // ```
-set('shared_dirs', []);
+set('shared_dirs', [], 'is_array');
 
 // List of files what will be shared between releases.
 // Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
 // ```php
 // set('shared_files', ['.env']);
 // ```
-set('shared_files', []);
+set('shared_files', [], 'is_array');
 
 // List of dirs to copy between releases.
 // For example you can copy `node_modules` to speedup npm install.
-set('copy_dirs', []);
+set('copy_dirs', [], 'is_array');
 
 // List of paths to remove from {{release_path}}.
-set('clear_paths', []);
+set('clear_paths', [], 'is_array');
 
 // Use sudo for deploy:clear_path task?
-set('clear_use_sudo', false);
+set('clear_use_sudo', false, 'is_bool');
+
+// NOT IN THE NEW COMMON.PHP FILE
+/* set('writable_dirs', [], 'is_array'); */
+/* set('writable_mode', 'acl', function ($value) { */
+/*     return $value === 'chmod' */
+/*         || $value === 'chown' */
+/*         || $value === 'chgrp' */
+/*         || $value === 'acl'; */ 
+/* }); // chmod, chown, chgrp or acl. */
+/* set('writable_use_sudo', false, 'is_bool'); // Using sudo in writable commands? */
+/* set('writable_recursive', true, 'is_bool'); // Common for all modes */
+/* set('writable_chmod_mode', '0755', function ($value) { */
+/*     $chmodPattern = '/^[ugoa]*([-+=]([rwxXst]*|[ugo]))+|[-+=]?[0-7]+$/'; */
+/*     return preg_match($chmodPattern, $value); */
+/* }); // For chmod mode */
+/* set('writable_chmod_recursive', true, 'is_bool'); // For chmod mode only (if is boolean, it has priority over `writable_recursive`) */
+/* set('http_user', false, 'is_bool'); */
+/* set('http_group', false, 'is_bool'); */
+// END: NOT IN THE NEW COMMON.PHP FILE
 
 set('use_relative_symlink', function () {
     return commandSupportsOption('ln', '--relative');
 });
+
 set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
+
+// NOT IN THE NEW COMMON.PHP FILE
+/* set('composer_action', 'install', function ($value) { */
+/*     switch ($value) { */
+/*     case 'install': */
+/*     case 'i': */
+/*     case 'require': */
+/*     case 'u': */
+/*     case 'update': */
+/*     case 'upgrade': */
+/*         return true; */
+/*     } */
+/*     return false; */
+/* }); */
+
+/* set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest', 'is_string'); */
+// END: NOT IN THE NEW COMMON.PHP FILE
 
 /**
  * Remote environment variables.
@@ -93,7 +133,7 @@ set('use_atomic_symlink', function () {
  * run('echo $KEY', ['env' => ['KEY' => 'over']]
  * ```
  */
-set('env', []);
+set('env', [], 'is_array');
 
 /**
  * Path to `.env` file which will be used as environment variables for each command per `run()`.

@@ -87,7 +87,7 @@ class Deployer extends Container
          ******************************/
 
         $console->getDefinition()->addOption(
-            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Specify Deployer file')
+            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Recipe file path')
         );
 
         $this['console'] = function () use ($console) {

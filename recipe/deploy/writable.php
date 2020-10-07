@@ -1,30 +1,54 @@
 <?php
+
 namespace Deployer;
+
+// Attempts automatically to detect http user in process list.
+set('http_user', function () {
+    $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+    if (count($httpUserCandidates)) {
+        $httpUser = array_shift($httpUserCandidates);
+    }
+
+    if (empty($httpUser)) {
+        throw new \RuntimeException(
+            "Can't detect http user name.\n" .
+            "Please setup `http_user` config parameter."
+        );
+    }
+
+    return $httpUser;
+});
+
+set('http_group', false);
+
+// List of writable dirs.
+set('writable_dirs', []);
+
+// chmod, chown, chgrp or acl.
+set('writable_mode', 'acl');
+
+// Using sudo in writable commands?
+set('writable_use_sudo', false);
+
+// Common for all modes
+set('writable_recursive', true);
+
+// For chmod mode
+set('writable_chmod_mode', '0755');
+
+// For chmod mode only (if is boolean, it has priority over `writable_recursive`)
+set('writable_chmod_recursive', true);
+
 
 desc('Make writable dirs');
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $mode = get('writable_mode');
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
-    $httpUser = get('http_user', false);
+    $httpUser = get('http_user');
 
     if (empty($dirs)) {
         return;
-    }
-
-    if ($httpUser === false && !in_array($mode, ['chgrp', 'chmod'], true)) {
-        // Attempt to detect http user in process list.
-        $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
-        if (count($httpUserCandidates)) {
-            $httpUser = array_shift($httpUserCandidates);
-        }
-
-        if (empty($httpUser)) {
-            throw new \RuntimeException(
-                "Can't detect http user name.\n" .
-                "Please setup `http_user` config parameter."
-            );
-        }
     }
 
     cd('{{release_path}}');

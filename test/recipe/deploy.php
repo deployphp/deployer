@@ -9,6 +9,7 @@ set('repository', __DIR__ . '/repository');
 set('shared_dirs', ['uploads']);
 set('shared_files', ['.env']);
 set('keep_releases', 3);
+set('http_user', false);
 
 localhost('prod');
 

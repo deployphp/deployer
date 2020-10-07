@@ -6,7 +6,9 @@ use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\starts_with;
 
 set('php_version', '7.4');
-set('sudo_password', 'TODO');
+set('sudo_password', function () {
+    return askHiddenResponse('Type new password:');
+});
 
 desc('Provision server with nginx, php, php-fpm');
 task('provision', [
@@ -27,16 +29,6 @@ task('provision', [
     'provision:nginx',
 ]);
 
-desc('Ensure what provision run as root');
-task('provision:switch-user', function () {
-    run('whoami');
-    if (get('remote_user') !== 'root') {
-        set('remote_user', 'root');
-    }
-});
-
-//Deployer::get()->preTask->add('provision:*', 'provision:switch-user');
-
 desc('Check pre-required state');
 task('provision:check', function () {
     $ok = true;
@@ -46,9 +38,9 @@ task('provision:check', function () {
     }
 
     $release = run('cat /etc/os-release');
-    ['NAME' => $name, 'VERSION' => $version] = parse_ini_string($release);
+    ['NAME' => $name, 'VERSION_ID' => $version] = parse_ini_string($release);
 
-    if ($name !== 'Ubuntu' || !starts_with($version, '20.04 LTS')) {
+    if ($name !== 'Ubuntu' || $version !== '20.04') {
         $ok = false;
         warning('Only Ubuntu 20.04 LTS supported for now.');
     }
@@ -115,8 +107,8 @@ task('provision:user:deployer', function () {
         run('cp /root/.profile /home/deployer/.profile');
         run('cp /root/.bashrc /home/deployer/.bashrc');
 
-        $password = run('mkpasswd -m sha-512 {{sudo_password}}');
-        run("usermod --password $password deployer");
+        $password = run("mkpasswd -m sha-512 '%secret%'", ['secret' => get('sudo_password')]);
+        run("usermod --password '%secret%' deployer", ['secret' => $password]);
 
         // TODO: Copy current ssh-key.
         run('echo >> /root/.ssh/authorized_keys');

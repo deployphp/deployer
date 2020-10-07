@@ -17,6 +17,8 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ConnectCommand extends Command
 {
+    use CustomOption;
+
     protected $deployer;
 
     public function __construct(Deployer $deployer)
@@ -29,7 +31,14 @@ class ConnectCommand extends Command
     protected function configure()
     {
         $this->addArgument('connect-host', InputArgument::REQUIRED);
+        $this->addArgument('_', InputArgument::IS_ARRAY);
         $this->addOption('decorated', null, Option::VALUE_NONE);
+        $this->addOption(
+            'option',
+            'o',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Set configuration option'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -40,7 +49,10 @@ class ConnectCommand extends Command
         if (!$output->isDecorated() && !defined('NO_ANSI')) {
             define('NO_ANSI', 'true');
         }
+
         $host = $this->deployer->hosts->get($input->getArgument('connect-host'));
+        $this->applyOverrides([$host], $input->getOption('option'));
+
         try {
             $this->deployer->sshClient->connect($host);
         } catch (ProcessFailedException $exception) {

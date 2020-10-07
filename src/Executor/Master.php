@@ -250,7 +250,7 @@ class Master
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
         $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
-        $command = "$dep connect {$host->getAlias()} $decorated $verbosity";
+        $command = "$dep connect {$host->getAlias()} {$this->input} $decorated $verbosity";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->getTag()}] $command");

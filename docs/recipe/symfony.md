@@ -88,7 +88,7 @@ Environment vars
 ### composer_options
 [Source](/recipe/symfony.php#L39)
 
-* Overrides [`composer_options`](/docs/recipe/common.md#composer_options) from `recipe/common.php`
+* Overrides [`composer_options`](/docs/recipe/deploy/vendors.md#composer_options) from `recipe/deploy/vendors.php`
 
 
 

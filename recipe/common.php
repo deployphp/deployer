@@ -67,9 +67,6 @@ set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
 
-set('composer_action', 'install');
-set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest');
-
 set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 
 /**
@@ -90,19 +87,6 @@ set('bin/php', function () {
 
 set('bin/git', function () {
     return locateBinaryPath('git');
-});
-
-set('bin/composer', function () {
-    if (commandExist('composer')) {
-        $composer = '{{bin/php}} ' . locateBinaryPath('composer');
-    }
-
-    if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{bin/php}} {{release_path}}/composer.phar';
-    }
-
-    return $composer;
 });
 
 set('bin/symlink', function () {

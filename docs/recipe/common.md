@@ -36,8 +36,6 @@
   * [`cleanup_use_sudo`](#cleanup_use_sudo)
   * [`use_relative_symlink`](#use_relative_symlink)
   * [`use_atomic_symlink`](#use_atomic_symlink)
-  * [`composer_action`](#composer_action)
-  * [`composer_options`](#composer_options)
   * [`env`](#env)
   * [`current_path`](#current_path)
   * [`sudo_askpass`](#sudo_askpass)
@@ -104,28 +102,18 @@
 
 
 
-### composer_action
+### env
 [Source](/recipe/common.php#L70)
 
 
 
-### composer_options
-[Source](/recipe/common.php#L71)
-
-
-
-### env
-[Source](/recipe/common.php#L73)
-
-
-
 ### current_path
-[Source](/recipe/common.php#L78)
+[Source](/recipe/common.php#L75)
 
 Return current release path.
 
 ### sudo_askpass
-[Source](/recipe/common.php#L115)
+[Source](/recipe/common.php#L99)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -134,7 +122,7 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L131)
+[Source](/recipe/common.php#L115)
 
 
 
@@ -149,7 +137,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L141)
+[Source](/recipe/common.php#L125)
 
 
 
@@ -161,17 +149,17 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](/recipe/common.php#L151)
+[Source](/recipe/common.php#L135)
 
 Success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L161)
+[Source](/recipe/common.php#L145)
 
 Deploy failure
 
 ### logs
-[Source](/recipe/common.php#L170)
+[Source](/recipe/common.php#L154)
 
 Follow latest application logs.
 

@@ -8,13 +8,27 @@
 
 
 
+* Config
+  * [`composer_action`](#composer_action)
+  * [`composer_options`](#composer_options)
 * Tasks
   * [`deploy:vendors`](#deployvendors) — Installing vendors
+
+## Config
+### composer_action
+[Source](/recipe/deploy/vendors.php#L5)
+
+
+
+### composer_options
+[Source](/recipe/deploy/vendors.php#L7)
+
+
 
 
 ## Tasks
 ### deploy:vendors
-[Source](/recipe/deploy/vendors.php#L5)
+[Source](/recipe/deploy/vendors.php#L24)
 
 
 

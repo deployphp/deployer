@@ -128,6 +128,14 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * @return array
+     */
+    public function ownValues()
+    {
+        return $this->values;
+    }
+
+    /**
      * @param array $matches
      * @return mixed|null
      */

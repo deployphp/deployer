@@ -171,6 +171,17 @@ class Host
         return $this->config->get('deploy_path');
     }
 
+    public function setLabels(array $labels)
+    {
+        $this->config->set('labels', $labels);
+        return $this;
+    }
+
+    public function getLabels()
+    {
+        return $this->config->get('labels');
+    }
+
     public function getConnectionString(): string
     {
         if ($this->get('remote_user', '') !== '') {

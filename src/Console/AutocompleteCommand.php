@@ -40,7 +40,7 @@ class AutocompleteCommand extends Command
         return <<<'BASH'
 _dep()
 {
-    local cur script com opts
+    local cur script com opts hosts
     COMPREPLY=()
     _get_comp_words_by_ref -n : cur words
 
@@ -80,6 +80,13 @@ _dep()
 
         return 0;
     fi
+    
+    # completing for a host
+    hosts=$($script hosts --format txt)
+    [[ $? -eq 0 ]] || return 0;
+    COMPREPLY=($(compgen -W "${hosts}" -- ${cur}))
+    __ltrim_colon_completions "$cur"
+    return 0;
 }
 
 complete -o default -F _dep dep
@@ -92,7 +99,7 @@ BASH;
         return <<<'ZSH'
 _dep()
 {
-    local state com cur commands options
+    local state com cur commands options hosts
 
     cur=${words[${#words[@]}]}
 
@@ -105,8 +112,8 @@ _dep()
     done
 
     [[ ${cur} == --* ]] && state="option"
-
     [[ $cur == $com ]] && state="command"
+    state="hosts" 
 
     case $state in
         command)
@@ -117,6 +124,9 @@ _dep()
             options=("${(@f)$(${words[1]} -h ${words[2]} --no-ansi 2>/dev/null | sed -n '/Options/,/^$/p' | sed -e '1d;$d' | sed 's/[^--]*\(--.*\)/\1/' | sed -En 's/[^ ]*(-(-[[:alnum:]]+){1,})[[:space:]]+(.*)/\1:\3/p' | awk '{$1=$1};1')}")
             _describe 'option' options
         ;;
+        hosts)
+            hosts=("${(@f)$(${words[1]} hosts --format txt)}")
+            _describe 'hosts' hosts
         *)
             # fallback to file completion
             _arguments '*:file:_files'

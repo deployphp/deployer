@@ -18,6 +18,7 @@ use Deployer\Console\AutocompleteCommand;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\ConnectCommand;
 use Deployer\Console\DiceCommand;
+use Deployer\Console\HostsCommand;
 use Deployer\Console\InitCommand;
 use Deployer\Console\MainCommand;
 use Deployer\Console\RunCommand;
@@ -208,6 +209,7 @@ class Deployer extends Container
         $this->getConsole()->add(new ConnectCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());
+        $this->getConsole()->add(new HostsCommand($this));
         $this->getConsole()->add(new InitCommand());
         $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));

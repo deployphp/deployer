@@ -12,11 +12,11 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 
 ## Contributing
 
-Do you want to contribute to this project? Start working on one of those issues:
+Do you want to contribute to this project? Start working on one of those:
 
-- [ ] [Implement host selector](https://github.com/deployphp/deployer/issues/2154) ⭐️⭐️⭐️⭐️⭐️
-  > You need to write a simple parser and selector class, this will be a core of new Deployer.
-- [ ] Improve recipe docs. Add comments to config options, tasks. Clear contrib recipes.
+- Improve docs of [recipes](recipe) or [contrib](contrib) 
+- Fix one of [bugs](http://bit.ly/deployer-bugs)
+- Add new features!
   
 [Other issues from v7 milestone](https://github.com/deployphp/deployer/milestone/7)
 

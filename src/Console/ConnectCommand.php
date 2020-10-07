@@ -8,12 +8,12 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Executor\Worker;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 class ConnectCommand extends Command
 {
@@ -41,7 +41,12 @@ class ConnectCommand extends Command
             define('NO_ANSI', 'true');
         }
         $host = $this->deployer->hosts->get($input->getArgument('connect-host'));
-        $this->deployer->sshClient->connect($host);
+        try {
+            $this->deployer->sshClient->connect($host);
+        } catch (ProcessFailedException $exception) {
+            $output->writeln($exception->getProcess()->getErrorOutput());
+            return 1;
+        }
         return 0;
     }
 }

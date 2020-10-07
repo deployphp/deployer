@@ -10,6 +10,7 @@ namespace Deployer\Executor;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
+use Deployer\Exception\ConnectException;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -162,6 +163,10 @@ class Master
                     $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
                 }
                 usleep(1000);
+            }
+
+            if ($process->getExitCode() !== 0) {
+                throw new ConnectException($process->getOutput());
             }
         }
 

@@ -21,16 +21,15 @@ class Selector
     }
 
     /**
-     * @param string $selectExpression
      * @return Host[]
      */
-    public function selectHosts(string $selectExpression)
+    public function select(string $selectExpression)
     {
-        $selector = self::parse($selectExpression);
+        $conditions = self::parse($selectExpression);
 
         $hosts = [];
         foreach ($this->hosts as $host) {
-            if (self::apply($selector, $host)) {
+            if (self::apply($conditions, $host)) {
                 $hosts[] = $host;
             }
         }
@@ -38,26 +37,25 @@ class Selector
         return $hosts;
     }
 
-    public static function apply($selector, Host $host)
+    public static function apply($conditions, Host $host)
     {
         $labels = $host->get('labels', []);
+        $labels['__host__'] = $host->getAlias();
+        $labels['__all__'] = 'yes';
+        $isTrue = function ($value) {
+            return $value;
+        };
 
-        $ok = [];
-        foreach ($selector as list($op, $var, $value)) {
-            if ($op === 'all') {
-                $ok[] = true;
-                continue;
-            }
-            if ($var === 'host') {
-                $ok[] = self::compare($op, $host->getAlias(), $value);
-            } else {
+        foreach ($conditions as $hmm) {
+            $ok = [];
+            foreach ($hmm as list($op, $var, $value)) {
                 $ok[] = self::compare($op, $labels[$var] ?? null, $value);
             }
+            if (count($ok) > 0 && array_all($ok, $isTrue)) {
+                return true;
+            }
         }
-
-        return count($ok) > 0 && array_all($ok, function ($value) {
-                return $value;
-            });
+        return false;
     }
 
     private static function compare(string $op, $a, $b): bool
@@ -71,23 +69,25 @@ class Selector
         return false;
     }
 
-    public static function parse(string $selectExpression)
+    public static function parse(string $expression)
     {
-        $actions = [];
-        // TODO: Implement correct parser and maybe add extra features.
-        $parts = explode(',', $selectExpression);
-        foreach ($parts as $part) {
-            $part = trim($part);
-            if ($part === 'all') {
-                $actions[] = ['all', null, null];
-                continue;
+        $all = [];
+        foreach (explode(',', $expression) as $sub) {
+            $conditions = [];
+            foreach (explode('&', $sub) as $part) {
+                $part = trim($part);
+                if ($part === 'all') {
+                    $conditions[] = ['=', '__all__', 'yes'];
+                    continue;
+                }
+                if (preg_match('/(?<var>.+?)(?<op>!?=)(?<value>.+)/', $part, $match)) {
+                    $conditions[] = [$match['op'], trim($match['var']), trim($match['value'])];
+                } else {
+                    $conditions[] = ['=', '__host__', trim($part)];
+                }
             }
-            if (preg_match('/(?<var>.+?)(?<op>!?=)(?<value>.+)/', $part, $match)) {
-                $actions[] = [$match['op'], trim($match['var']), trim($match['value'])];
-            } else {
-                throw new \InvalidArgumentException("Invalid selector \"$part\".");
-            }
+            $all[] = $conditions;
         }
-        return $actions;
+        return $all;
     }
 }

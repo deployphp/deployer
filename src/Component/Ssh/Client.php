@@ -13,6 +13,7 @@ use Deployer\Host\Host;
 use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 class Client
@@ -30,7 +31,6 @@ class Client
 
     public function run(Host $host, string $command, array $config = [])
     {
-        $hostname = $host->getHostname();
         $connectionString = $host->getConnectionString();
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),
@@ -70,9 +70,12 @@ class Client
             $terminalOutput($type, $buffer);
         };
 
-        $process = $this->createProcess($ssh);
+        $command = str_replace('%secret%', $config['secret'] ?? '', $command);
+        $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
+
+        $process = Process::fromShellCommandline($ssh);
         $process
-            ->setInput(str_replace('%secret%', $config['secret'] ?? '', $command))
+            ->setInput($command)
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);
 
@@ -118,7 +121,7 @@ class Client
     {
         $sshArguments = $host->getSshArguments()->withMultiplexing($host);
 
-        if (!$this->isMultiplexingInitialized($host, $sshArguments)) {
+        if (!$this->isMasterRunning($host, $sshArguments)) {
             $connectionString = $host->getConnectionString();
             $command = "ssh -N $sshArguments $connectionString";
 
@@ -127,7 +130,19 @@ class Client
                 $this->pop->writeln(Process::OUT, $host, $command);
             }
 
-            $output = $this->exec($command);
+            $process = Process::fromShellCommandline($command);
+            $process->setTimeout(30); // Connection timeout (time needed to establish ssh multiplexing)
+
+            try {
+                $process->mustRun();
+            } catch (ProcessTimedOutException $exception) {
+                // Timeout fired: maybe there is no connection,
+                // or maybe another process established master connection.
+                // Let's try proceed anyway.
+                // TODO: Make sure only one at a time "ssh multiplexing initialization" is running. For example by doing it in master PHP process (ParallelExecutor).
+            }
+
+            $output = $process->getOutput();
 
             if ($this->output->isDebug()) {
                 $this->pop->printBuffer(Process::OUT, $host, $output);
@@ -137,14 +152,14 @@ class Client
         return $sshArguments;
     }
 
-    private function isMultiplexingInitialized(Host $host, Arguments $sshArguments)
+    private function isMasterRunning(Host $host, Arguments $sshArguments)
     {
         $command = "ssh -O check $sshArguments echo 2>&1";
         if ($this->output->isDebug()) {
             $this->pop->printBuffer(Process::OUT, $host, $command);
         }
 
-        $process = $this->createProcess($command);
+        $process = Process::fromShellCommandline($command);
         $process->run();
         $output = $process->getOutput();
 
@@ -152,38 +167,5 @@ class Client
             $this->pop->printBuffer(Process::OUT, $host, $output);
         }
         return (bool)preg_match('/Master running/', $output);
-    }
-
-    private function exec($command, &$exitCode = null)
-    {
-        $descriptors = [
-            ['pipe', 'r'],
-            ['pipe', 'w'],
-            ['pipe', 'w'],
-        ];
-
-        // Don't read from stderr, there is a bug in OpenSSH_7.2p2 (stderr doesn't closed with ControlMaster)
-
-        $process = proc_open($command, $descriptors, $pipes);
-        if (is_resource($process)) {
-            fclose($pipes[0]);
-            $output = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
-            fclose($pipes[2]);
-            $exitCode = proc_close($process);
-        } else {
-            $output = 'proc_open failure';
-            $exitCode = 1;
-        }
-        return $output;
-    }
-
-    private function createProcess($command)
-    {
-        if (method_exists('Symfony\Component\Process\Process', 'fromShellCommandline')) {
-            return Process::fromShellCommandline($command);
-        } else {
-            return new Process($command);
-        }
     }
 }

@@ -14,21 +14,30 @@ use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Component\ProcessRunner\ProcessRunner;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
+use Deployer\Console\AutocompleteCommand;
 use Deployer\Console\CommandEvent;
+use Deployer\Console\ConnectCommand;
 use Deployer\Console\DiceCommand;
+use Deployer\Console\HostsCommand;
 use Deployer\Console\InitCommand;
 use Deployer\Console\MainCommand;
 use Deployer\Console\RunCommand;
 use Deployer\Console\SshCommand;
 use Deployer\Console\TreeCommand;
 use Deployer\Console\WorkerCommand;
+use Deployer\Executor\Master;
 use Deployer\Executor\Messenger;
-use Deployer\Executor\ParallelExecutor;
+use Deployer\Executor\Server;
+use Deployer\Host\Host;
+use Deployer\Host\HostCollection;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
 use Deployer\Selector\Selector;
 use Deployer\Task;
+use Deployer\Task\ScriptManager;
+use Deployer\Task\TaskCollection;
+use Deployer\Utility\Httpie;
 use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
@@ -49,14 +58,15 @@ use Throwable;
  * @property InputInterface $input
  * @property OutputInterface $output
  * @property Task\TaskCollection|Task\Task[] $tasks
- * @property Host\HostCollection|Collection|Host\Host[] $hosts
+ * @property HostCollection|Host[] $hosts
  * @property Configuration $config
  * @property Rsync $rsync
  * @property Client $sshClient
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
- * @property ParallelExecutor $executor
+ * @property Server $server
+ * @property Master $master
  * @property Messenger $messenger
  * @property Messenger $logger
  * @property Printer $pop
@@ -80,7 +90,7 @@ class Deployer extends Container
          ******************************/
 
         $console->getDefinition()->addOption(
-            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Specify Deployer file')
+            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Recipe file path')
         );
 
         $this['console'] = function () use ($console) {
@@ -95,6 +105,9 @@ class Deployer extends Container
         $this['inputDefinition'] = function () {
             return new InputDefinition();
         };
+        $this['questionHelper'] = function () {
+            return $this->getHelper('question');
+        };
 
         /******************************
          *           Config           *
@@ -103,8 +116,13 @@ class Deployer extends Container
         $this['config'] = function () {
             return new Configuration();
         };
+        $this->config['shell'] = 'bash -s';
+        $this->config['port'] = '';
+        $this->config['config_file'] = '';
+        $this->config['identity_file'] = '';
+        $this->config['remote_user'] = '';
+        $this->config['forward_agent'] = true;
         $this->config['ssh_multiplexing'] = true;
-        $this->config['default_stage'] = null;
 
         /******************************
          *            Core            *
@@ -123,13 +141,13 @@ class Deployer extends Container
             return new ProcessRunner($c['pop'], $c['logger']);
         };
         $this['tasks'] = function () {
-            return new Task\TaskCollection();
+            return new TaskCollection();
         };
         $this['hosts'] = function () {
-            return new Host\HostCollection();
+            return new HostCollection();
         };
         $this['scriptManager'] = function ($c) {
-            return new Task\ScriptManager($c['tasks']);
+            return new ScriptManager($c['tasks']);
         };
         $this['selector'] = function ($c) {
             return new Selector($c['hosts']);
@@ -140,10 +158,18 @@ class Deployer extends Container
         $this['messenger'] = function ($c) {
             return new Messenger($c['input'], $c['output']);
         };
-        $this['executor'] = function ($c) {
-            return new ParallelExecutor(
+        $this['server'] = function ($c) {
+            return new Server(
                 $c['input'],
                 $c['output'],
+                $c['questionHelper'],
+            );
+        };
+        $this['master'] = function ($c) {
+            return new Master(
+                $c['input'],
+                $c['output'],
+                $c['server'],
                 $c['messenger'],
                 $c['sshClient'],
                 $c['config']
@@ -164,10 +190,6 @@ class Deployer extends Container
         };
 
         self::$instance = $this;
-
-        task('connect', function () {
-            $this['sshClient']->connect(currentHost());
-        })->desc('Connect to remote server');
     }
 
     /**
@@ -184,8 +206,11 @@ class Deployer extends Container
     public function init()
     {
         $this->addTaskCommands();
+        $this->getConsole()->add(new AutocompleteCommand());
+        $this->getConsole()->add(new ConnectCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());
+        $this->getConsole()->add(new HostsCommand($this));
         $this->getConsole()->add(new InitCommand());
         $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));
@@ -301,7 +326,7 @@ class Deployer extends Container
         }
     }
 
-    private static function printException(OutputInterface $output, Throwable $exception)
+    public static function printException(OutputInterface $output, Throwable $exception)
     {
         $class = get_class($exception);
         $file = basename($exception->getFile());
@@ -313,8 +338,24 @@ class Deployer extends Container
             }, explode("\n", $exception->getMessage()))),
             "",
         ]);
-        $output->writeln($exception->getTraceAsString());
-        return;
+        if ($output->isDebug()) {
+            $output->writeln($exception->getTraceAsString());
+        }
+    }
+
+    public static function isWorker() {
+        return Deployer::get()->config->has('master_url');
+    }
+
+    public static function proxyCallToMaster(Host $host, $func, ...$arguments) {
+        return Httpie::get(get('master_url') . '/proxy')
+            ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
+            ->body([
+                'host' => $host->getAlias(),
+                'func' => $func,
+                'arguments' => $arguments,
+            ])
+            ->getJson();
     }
 
     /**

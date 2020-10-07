@@ -77,6 +77,8 @@ class Task
      */
     private $selector;
 
+    private $verbose = false;
+
     public function __construct($name, callable $callback = null)
     {
         $this->name = $name;
@@ -258,5 +260,16 @@ class Task
                 $this->selector = array_merge($this->selector, $newSelector);
             }
         }
+    }
+
+    public function isVerbose(): bool
+    {
+        return $this->verbose;
+    }
+
+    public function verbose(bool $verbose = true)
+    {
+        $this->verbose = $verbose;
+        return $this;
     }
 }

@@ -17,6 +17,8 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class MainCommand extends SelectCommand
 {
+    use CustomOption;
+
     public function __construct(string $name, ?string $description, Deployer $deployer)
     {
         parent::__construct($name, $deployer);
@@ -31,11 +33,12 @@ class MainCommand extends SelectCommand
 
         // Add global options defined with `option()` func.
         $this->getDefinition()->addOptions($this->deployer->inputDefinition->getOptions());
+
         $this->addOption(
             'option',
             'o',
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Sets configuration option'
+            'Set configuration option'
         );
         $this->addOption(
             'limit',
@@ -56,6 +59,12 @@ class MainCommand extends SelectCommand
             'Show execution plan'
         );
         $this->addOption(
+            'start-from',
+            null,
+            Option::VALUE_REQUIRED,
+            'Task name to start execution from'
+        );
+        $this->addOption(
             'log',
             null,
             Option::VALUE_REQUIRED,
@@ -74,30 +83,28 @@ class MainCommand extends SelectCommand
         $this->deployer->input = $input;
         $this->deployer->output = $output;
         $this->deployer->config['log_file'] = $input->getOption('log');
-        $this->parseOptions($input->getOption('option'));
 
         $hosts = $this->selectHosts($input, $output);
+        $this->applyOverrides($hosts, $input->getOption('option'));
 
         $plan = $input->getOption('plan') ? new Planner($output, $hosts) : null;
-        if ($plan === null) {
-            // Materialize hosts configs
-            $configDirectory = sprintf('%s/deployer/%s/%s', sys_get_temp_dir(), uniqid(), time());
-            if (!is_dir($configDirectory)) {
-                mkdir($configDirectory, 0700, true);
-            }
-            $this->deployer->config->set('config_directory', $configDirectory);
-            foreach ($hosts as $alias => $host) {
-                $host->getConfig()->save();
-            }
-        }
 
         $this->deployer->scriptManager->setHooksEnabled(!$input->getOption('no-hooks'));
-        $tasks = $this->deployer->scriptManager->getTasks($this->getName());
+        $startFrom = $input->getOption('start-from');
+        if ($startFrom && !$this->deployer->tasks->has($startFrom)) {
+            throw new Exception("Task ${startFrom} does not exist.");
+        }
+        $tasks = $this->deployer->scriptManager->getTasks($this->getName(), $startFrom);
+
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
 
-        $exitCode = $this->deployer->executor->run($tasks, $hosts, $plan);
+        if (!$plan) {
+            $this->deployer->server->start();
+            $this->deployer->master->connect($hosts);
+        }
+        $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);
 
         if ($plan) {
             $plan->render();
@@ -115,30 +122,9 @@ class MainCommand extends SelectCommand
         if ($this->deployer['fail']->has($this->getName())) {
             $taskName = $this->deployer['fail']->get($this->getName());
             $tasks = $this->deployer->scriptManager->getTasks($taskName);
-            $this->deployer->executor->run($tasks, $hosts);
+            $this->deployer->master->run($tasks, $hosts);
         }
 
         return $exitCode;
-    }
-
-    protected function parseOptions(array $options)
-    {
-        foreach ($options as $option) {
-            list($name, $value) = explode('=', $option);
-            $value = $this->castValueToPhpType(trim($value));
-            $this->deployer->config->set(trim($name), $value);
-        }
-    }
-
-    protected function castValueToPhpType($value)
-    {
-        switch ($value) {
-            case 'true':
-                return true;
-            case 'false':
-                return false;
-            default:
-                return $value;
-        }
     }
 }

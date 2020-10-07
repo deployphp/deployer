@@ -47,6 +47,9 @@ class Messenger
         if ($task->isShallow()) {
             return;
         }
+        if (empty($this->startTime)) {
+            $this->startTime = round(microtime(true) * 1000);
+        }
 
         $endTime = round(microtime(true) * 1000);
         $millis = $endTime - $this->startTime;

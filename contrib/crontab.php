@@ -1,8 +1,7 @@
 <?php
-/* (c) Asafov Sergey <asafov@newleaf.ru>
+/*
  * Recipe for crontab jobs deploy
- * Configuration:
-    You need no specify only crontab:jobs, which must be array of strings
+ * Configuration: You need no specify only crontab:jobs, which must be array of strings
  */
 namespace Deployer;
 

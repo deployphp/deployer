@@ -75,6 +75,19 @@ function str_contains(string $haystack, string $needle)
 }
 
 /**
+ * Checks if string stars with given prefix.
+ *
+ * @param string $string
+ * @param string $startString
+ * @return bool
+ */
+function starts_with(string $string, string $startString)
+{
+    $len = strlen($startString);
+    return (substr($string, 0, $len) === $startString);
+}
+
+/**
  * Take array of key/value and create string of it.
  *
  * This function used for create environment string.
@@ -110,12 +123,49 @@ function is_closure($var)
  *
  * @param array $array
  * @param \Closure $predicate
+ * @return bool
  */
-function array_all(array $array, $predicate) {
+function array_all(array $array, $predicate)
+{
     foreach ($array as $key => $value) {
         if (!$predicate($value, $key)) {
             return false;
         }
     }
     return true;
+}
+
+/**
+ * Cleanup CRLF new line endings.
+ * Issue #2111
+ *
+ * @param $string
+ * @return string
+ */
+function normalize_line_endings($string)
+{
+    return str_replace(["\r\n", "\r"], "\n", $string);
+}
+
+/**
+ * Expand leading tilde (~) symbol in given path.
+ *
+ * @param string $path
+ * @return string
+ */
+function parse_home_dir(string $path): string
+{
+    if ('~' === $path || 0 === strpos($path, '~/')) {
+        if (isset($_SERVER['HOME'])) {
+            $home = $_SERVER['HOME'];
+        } elseif (isset($_SERVER['HOMEDRIVE'], $_SERVER['HOMEPATH'])) {
+            $home = $_SERVER['HOMEDRIVE'] . $_SERVER['HOMEPATH'];
+        } else {
+            return $path;
+        }
+
+        return $home . substr($path, 1);
+    }
+
+    return $path;
 }

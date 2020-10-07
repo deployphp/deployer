@@ -10,6 +10,7 @@ namespace Deployer\Component\Ssh;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Support\Unix;
+use function Deployer\Support\parse_home_dir;
 
 class Arguments
 {
@@ -125,21 +126,12 @@ class Arguments
      */
     private function generateControlPath(Host $host)
     {
+        // TODO: ->addSshOption('ControlPath', '/dev/shm/deployer-%C')
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
-        $homeDir = Unix::parseHomeDir('~');
-        $port = empty($host->getPort()) ? '' : ':' . $host->getPort();
-
-        // TODO: Reuse connection to same host.
-        // If a few host point to same hostname, we get with a few connections.
-        //
-        //    host('a')->hostname('deployer.org');
-        //    host('b')->hostname('deployer.org');
-        //    host('c')->hostname('deployer.org');
-        //
-        // If simple change $connectionData to "{$host->getHostname()}$port" then
-        // only first host be able to perform runs.
-        $connectionData = "{$host->getAlias()}$port";
+        $homeDir = parse_home_dir('~');
+        $port = empty($host->get('port', '')) ? '' : ':' . $host->getPort();
+        $connectionData = "{$host->getConnectionString()}$port";
 
         $tryLongestPossible = 0;
         $controlPath = '';
@@ -149,7 +141,7 @@ class Arguments
                     $controlPath = "$homeDir/.ssh/deployer_%C";
                     break;
                 case 2:
-                    $controlPath = "$homeDir/.ssh/mux_%C";
+                    $controlPath = "$homeDir/.ssh/" . hash("crc32", $connectionData);
                     break;
                 case 3:
                     throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");

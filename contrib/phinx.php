@@ -1,10 +1,68 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
+/*
+## Installing
 
+Add to your _deploy.php_
+
+```php
+require 'contrib/phinx.php';
+```
+
+## Configuration options
+
+All options are in the config parameter `phinx` specified as an array (instead of the `phinx_path` variable).
+All parameters are *optional*, but you can specify them with a dictionary (to change all parameters)
+or by deployer dot notation (to change one option).
+
+### Phinx params
+
+- `phinx.environment`
+- `phinx.date`
+- `phinx.configuration` N.B. current directory is the project directory
+- `phinx.target`
+- `phinx.seed`
+- `phinx.parser`
+- `phinx.remove-all` (pass empty string as value)
+
+### Phinx path params
+
+- `phinx_path` Specify phinx path (by default phinx is searched for in $PATH, ./vendor/bin and ~/.composer/vendor/bin)
+
+### Example of usage
+
+```php
+$phinx_env_vars = [
+  'environment' => 'development',
+  'configuration' => './migration/.phinx.yml',
+  'target' => '20120103083322',
+  'remove-all' => '',
+];
+
+set('phinx_path', '/usr/local/phinx/bin/phinx');
+set('phinx', $phinx_env_vars);
+
+after('cleanup', 'phinx:migrate');
+
+// or set it for a specific server
+host('dev')
+    ->user('user')
+    ->set('deploy_path', '/var/www')
+    ->set('phinx', $phinx_env_vars)
+    ->set('phinx_path', '');
+```
+
+## Suggested Usage
+
+You can run all tasks before or after any
+tasks (but you need to specify external configs for phinx).
+If you use internal configs (which are in your project) you need
+to run it after the `deploy:update_code` task is completed.
+
+## Read more
+
+For further reading see [phinx.org](https://phinx.org). Complete descriptions of all possible options can be found on the [commands page](http://docs.phinx.org/en/latest/commands.html).
+
+ */
 namespace Deployer;
 
 use Deployer\Exception\RunException;

@@ -14,6 +14,7 @@ use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Component\ProcessRunner\ProcessRunner;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
+use Deployer\Console\AutocompleteCommand;
 use Deployer\Console\CommandEvent;
 use Deployer\Console\ConnectCommand;
 use Deployer\Console\DiceCommand;
@@ -203,6 +204,7 @@ class Deployer extends Container
     public function init()
     {
         $this->addTaskCommands();
+        $this->getConsole()->add(new AutocompleteCommand());
         $this->getConsole()->add(new ConnectCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());

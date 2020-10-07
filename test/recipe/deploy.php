@@ -11,7 +11,6 @@ set('shared_files', ['.env']);
 set('keep_releases', 3);
 
 localhost('prod');
-localhost('beta');
 
 task('deploy', [
     'deploy:prepare',

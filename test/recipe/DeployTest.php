@@ -18,7 +18,7 @@ class DeployTest extends AbstractTest
 
         $this->tester->run([
             'deploy',
-            '-s' => 'all',
+            'selector' => 'all',
             '-f' => $recipe
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
@@ -63,7 +63,7 @@ class DeployTest extends AbstractTest
             $recipe = __DIR__ . '/deploy.php';
             $deployer = $this->init($recipe);
 
-            $this->tester->run(['deploy', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+            $this->tester->run(['deploy', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
                 'verbosity' => Output::VERBOSITY_VERBOSE,
                 'interactive' => false,
             ]);
@@ -86,7 +86,7 @@ class DeployTest extends AbstractTest
         $recipe = __DIR__ . '/deploy.php';
         $deployer = $this->init($recipe);
 
-        $this->tester->run(['rollback', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['rollback', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
@@ -105,7 +105,7 @@ class DeployTest extends AbstractTest
         $recipe = __DIR__ . '/deploy.php';
         $deployer = $this->init($recipe);
 
-        $this->tester->run(['deploy:fail', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:fail', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
@@ -128,7 +128,7 @@ class DeployTest extends AbstractTest
         $recipe = __DIR__ . '/deploy.php';
         $deployer = $this->init($recipe);
 
-        $this->tester->run(['deploy:cleanup', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:cleanup', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
@@ -148,12 +148,12 @@ class DeployTest extends AbstractTest
 
         $this->init($recipe);
 
-        $this->tester->run(['deploy:lock', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:lock', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
-        $this->tester->run(['deploy:is-unlocked', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
@@ -170,12 +170,12 @@ class DeployTest extends AbstractTest
 
         $this->init($recipe);
 
-        $this->tester->run(['deploy:unlock', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:unlock', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
-        $this->tester->run(['deploy:is-unlocked', '-s' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);

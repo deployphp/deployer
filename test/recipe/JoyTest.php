@@ -31,7 +31,7 @@ class JoyTest extends AbstractTest
         $this->tester->run([
             'echo',
             '-f' => $recipe,
-            '-s' => 'all'
+            'selector' => 'all'
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
         ]);
@@ -65,7 +65,7 @@ class JoyTest extends AbstractTest
         $this->tester->run(
             [
                 'echo',
-                '-s' => 'all',
+                'selector' => 'all',
                 '-o' => ['greet=Hello'],
                 '-f' => $recipe,
                 //'-l' => 1,
@@ -90,7 +90,7 @@ class JoyTest extends AbstractTest
         $this->tester->run([
             'cache_config_test',
             '-f' => $recipe,
-            '-s' => 'all'
+            'selector' => 'all'
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
         ]);

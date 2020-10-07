@@ -204,7 +204,7 @@ class Master
         /** @var Process[] $processes */
         $processes = [];
 
-        $this->server->addTimer(0, function () use(&$processes, $hosts, $task) {
+        $this->server->addTimer(0, function () use (&$processes, $hosts, $task) {
             foreach ($hosts as $host) {
                 $processes[] = $this->createProcess($host, $task);
             }
@@ -251,9 +251,12 @@ class Master
     protected function createConnectProcess(Host $host): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
+        $option = implode(' ', array_map(function ($o) {
+            return "-o $o";
+        }, $this->input->getOption('option')));
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
         $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
-        $command = "$dep connect {$host->getAlias()} {$this->input} $decorated $verbosity";
+        $command = "$dep connect {$host->getAlias()} $option $decorated $verbosity";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->getTag()}] $command");

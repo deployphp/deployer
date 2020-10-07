@@ -31,7 +31,6 @@ class ConnectCommand extends Command
     protected function configure()
     {
         $this->addArgument('connect-host', InputArgument::REQUIRED);
-        $this->addArgument('_', InputArgument::IS_ARRAY);
         $this->addOption('decorated', null, Option::VALUE_NONE);
         $this->addOption(
             'option',

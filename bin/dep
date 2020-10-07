@@ -12,14 +12,13 @@ define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
 define('DEPLOYER_VERSION', '7.0.0-master');
 
-// Check for php7
-
-if (!defined('PHP_MAJOR_VERSION') || PHP_MAJOR_VERSION < 7) {
+// Check for min. php version requirement
+if (PHP_VERSION_ID < 70300) {
     fwrite(
         STDERR,
-        'Upgrade to php7' . PHP_EOL .
-        'Deployer 5.x supports only php7 and above.' . PHP_EOL .
-        'If you want to use older php version use Deployer 4.x' . PHP_EOL
+        'Upgrade to php 7.3' . PHP_EOL .
+        'Deployer supports only php 7.3 and above.' . PHP_EOL .
+        'If you want to use older php versions you should use older Deployer versions' . PHP_EOL
     );
     exit(1);
 }

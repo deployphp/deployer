@@ -20,7 +20,7 @@ class ContextTest extends TestCase
         $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
         $host
             ->expects($this->once())
-            ->method('getConfig')
+            ->method('config')
             ->willReturn($this->createMock(Configuration::class));
 
         $input = $this->getMockBuilder(InputInterface::class)->disableOriginalConstructor()->getMock();

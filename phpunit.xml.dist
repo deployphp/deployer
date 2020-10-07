@@ -19,8 +19,10 @@
         </testsuite>
     </testsuites>
     <filter>
+
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory>src/</directory>
+            <directory>recipe/</directory>
             <exclude>
                 <directory suffix=".php">vendor/</directory>
                 <directory>bin/</directory>

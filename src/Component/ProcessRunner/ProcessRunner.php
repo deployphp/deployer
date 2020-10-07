@@ -54,7 +54,10 @@ class ProcessRunner
             $terminalOutput($type, $buffer);
         };
 
-        $process = Process::fromShellCommandline(str_replace('%secret%', $config['secret'] ?? '', $command))
+        $command = str_replace('%secret%', $config['secret'] ?? '', $command);
+        $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
+
+        $process = Process::fromShellCommandline($command)
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout'])
             ->setTty($config['tty']);

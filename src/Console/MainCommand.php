@@ -83,38 +83,28 @@ class MainCommand extends SelectCommand
         $this->deployer->input = $input;
         $this->deployer->output = $output;
         $this->deployer->config['log_file'] = $input->getOption('log');
-        $this->parseOptions($input->getOption('option'));
 
         $hosts = $this->selectHosts($input, $output);
+        $this->applyOverrides($hosts, $input->getOption('option'));
 
         $plan = $input->getOption('plan') ? new Planner($output, $hosts) : null;
-        if ($plan === null) {
-            // Materialize hosts configs
-            $configDirectory = sprintf('%s/deployer/%s/%s', sys_get_temp_dir(), uniqid(), time());
-            if (!is_dir($configDirectory)) {
-                mkdir($configDirectory, 0700, true);
-            }
-            $this->deployer->config->set('config_directory', $configDirectory);
-            foreach ($hosts as $alias => $host) {
-                $host->getConfig()->save();
-            }
-        }
 
         $this->deployer->scriptManager->setHooksEnabled(!$input->getOption('no-hooks'));
         $startFrom = $input->getOption('start-from');
-        if ($startFrom) {
-            if (!$this->deployer->tasks->has($startFrom)) {
-                throw new Exception("Task ${startFrom} does not exist.");
-            }
-            $this->deployer->scriptManager->setStartFrom($startFrom);
+        if ($startFrom && !$this->deployer->tasks->has($startFrom)) {
+            throw new Exception("Task ${startFrom} does not exist.");
         }
-        $tasks = $this->deployer->scriptManager->getTasks($this->getName());
+        $tasks = $this->deployer->scriptManager->getTasks($this->getName(), $startFrom);
 
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
 
-        $exitCode = $this->deployer->executor->run($tasks, $hosts, $plan);
+        if (!$plan) {
+            $this->deployer->server->start();
+            $this->deployer->master->connect($hosts);
+        }
+        $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);
 
         if ($plan) {
             $plan->render();
@@ -132,7 +122,7 @@ class MainCommand extends SelectCommand
         if ($this->deployer['fail']->has($this->getName())) {
             $taskName = $this->deployer['fail']->get($this->getName());
             $tasks = $this->deployer->scriptManager->getTasks($taskName);
-            $this->deployer->executor->run($tasks, $hosts);
+            $this->deployer->master->run($tasks, $hosts);
         }
 
         return $exitCode;

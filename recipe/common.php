@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require __DIR__ . '/deploy/check_remote.php';
@@ -61,16 +55,6 @@ set('shared_files', []);
 
 set('copy_dirs', []);
 
-set('writable_dirs', []);
-set('writable_mode', 'acl'); // chmod, chown, chgrp or acl.
-set('writable_use_sudo', false); // Using sudo in writable commands?
-set('writable_recursive', true); // Common for all modes
-set('writable_chmod_mode', '0755'); // For chmod mode
-set('writable_chmod_recursive', true); // For chmod mode only (if is boolean, it has priority over `writable_recursive`)
-
-set('http_user', false);
-set('http_group', false);
-
 set('clear_paths', []);         // Relative path from release_path
 set('clear_use_sudo', false);    // Using sudo in clean commands?
 
@@ -82,9 +66,6 @@ set('use_relative_symlink', function () {
 set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
-
-set('composer_action', 'install');
-set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest');
 
 set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 
@@ -108,23 +89,13 @@ set('bin/git', function () {
     return locateBinaryPath('git');
 });
 
-set('bin/composer', function () {
-    if (commandExist('composer')) {
-        $composer = '{{bin/php}} ' . locateBinaryPath('composer');
-    }
-
-    if (empty($composer)) {
-        run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
-        $composer = '{{bin/php}} {{release_path}}/composer.phar';
-    }
-
-    return $composer;
-});
-
 set('bin/symlink', function () {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
 
+// Path to a file which will store temp script with sudo password.
+// Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
+// sudo command executed.
 set('sudo_askpass', function () {
     if (test('[ -d {{deploy_path}}/.dep ]')) {
         return '{{deploy_path}}/.dep/sudo_pass';
@@ -162,7 +133,7 @@ task('deploy:publish', [
  * Success message
  */
 task('deploy:success', function () {
-    info(currentHost()->getTag() . ' successfully deployed!');
+    info('successfully deployed!');
 })
     ->shallow()
     ->hidden();

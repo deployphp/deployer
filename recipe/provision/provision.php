@@ -1,9 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Deployer;
 
@@ -11,8 +6,9 @@ use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\starts_with;
 
 set('php_version', '7.4');
-set('sudo_password', 'TODO');
-set('env', ['DEBIAN_FRONTEND' => 'noninteractive']);
+set('sudo_password', function () {
+    return askHiddenResponse('Type new password:');
+});
 
 desc('Provision server with nginx, php, php-fpm');
 task('provision', [
@@ -42,9 +38,9 @@ task('provision:check', function () {
     }
 
     $release = run('cat /etc/os-release');
-    ['NAME' => $name, 'VERSION' => $version] = parse_ini_string($release);
+    ['NAME' => $name, 'VERSION_ID' => $version] = parse_ini_string($release);
 
-    if ($name !== 'Ubuntu' || !starts_with($version, '20.04 LTS')) {
+    if ($name !== 'Ubuntu' || $version !== '20.04') {
         $ok = false;
         warning('Only Ubuntu 20.04 LTS supported for now.');
     }
@@ -56,8 +52,8 @@ task('provision:check', function () {
 
 desc('Upgrade all packages');
 task('provision:upgrade', function () {
-    run('apt-get update');
-    run('apt-get upgrade -y');
+    run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
 desc('Install base packages');
@@ -80,7 +76,7 @@ task('provision:install', function () {
         'uuid-runtime',
         'whois',
     ];
-    run('apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ' . implode(' ', $packages));
+    run('apt-get install -y --allow-downgrades --allow-remove-essential --allow-change-held-packages ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
 desc('Configure SSH');
@@ -99,35 +95,37 @@ task('provision:ssh', function () {
 
 desc('Setup deployer user');
 task('provision:user:deployer', function () {
-    if (!test('id deployer >/dev/null 2>&1')) {
+    if (test('id deployer >/dev/null 2>&1')) {
+        info('deployer user already exist');
+    } else {
         run('useradd deployer');
+        run('mkdir -p /home/deployer/.ssh');
+        run('mkdir -p /home/deployer/.deployer');
+        run('adduser deployer sudo');
+
+        run('chsh -s /bin/bash deployer');
+        run('cp /root/.profile /home/deployer/.profile');
+        run('cp /root/.bashrc /home/deployer/.bashrc');
+
+        $password = run("mkpasswd -m sha-512 '%secret%'", ['secret' => get('sudo_password')]);
+        run("usermod --password '%secret%' deployer", ['secret' => $password]);
+
+        // TODO: Copy current ssh-key.
+        run('echo >> /root/.ssh/authorized_keys');
+        run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
+
+        run('ssh-keygen -f /home/deployer/.ssh/id_rsa -t rsa -N ""');
+
+        run('chown -R deployer:deployer /home/deployer');
+        run('chmod -R 755 /home/deployer');
+        run('chmod 700 /home/deployer/.ssh/id_rsa');
+
+        run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php-fpm reload" > /etc/sudoers.d/php-fpm');
+
+        run('usermod -a -G www-data deployer');
+        run('id deployer');
+        run('groups deployer');
     }
-    run('mkdir -p /home/deployer/.ssh');
-    run('mkdir -p /home/deployer/.deployer');
-    run('adduser deployer sudo');
-
-    run('chsh -s /bin/bash deployer');
-    run('cp /root/.profile /home/deployer/.profile');
-    run('cp /root/.bashrc /home/deployer/.bashrc');
-
-    $password = run('mkpasswd -m sha-512 {{sudo_password}}');
-    run("usermod --password $password deployer");
-
-    // TODO: Copy current ssh-key.
-    run('echo >> /root/.ssh/authorized_keys');
-    run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
-
-    run('ssh-keygen -f /home/deployer/.ssh/id_rsa -t rsa -N ""');
-
-    run('chown -R deployer:deployer /home/deployer');
-    run('chmod -R 755 /home/deployer');
-    run('chmod 700 /home/deployer/.ssh/id_rsa');
-
-    run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php-fpm reload" > /etc/sudoers.d/php-fpm');
-
-    run('usermod -a -G www-data deployer');
-    run('id deployer');
-    run('groups deployer');
 });
 
 desc('Setup firewall');
@@ -159,7 +157,7 @@ task('provision:install:php', function () {
         "php-xml",
         "php-zip",
     ];
-    run('apt-get install -y --force-yes ' . implode(' ', $packages));
+    run('apt-get install -y --force-yes ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
 
@@ -202,11 +200,15 @@ task('provision:config:php:sessions', function () {
     run('chmod +t /var/lib/php/sessions');
 });
 
-desc('Generating DH parameters');
+desc('Generating DH (Diffie Hellman) key');
 task('provision:nginx:dhparam', function () {
-    writeln('Generating DH parameters, 2048 bit long safe prime, generator 2');
-    writeln('This is going to take a long time');
-    run('openssl dhparam -out /etc/nginx/dhparams.pem 2048 2>/dev/null');
+    if (test('[ -f /etc/nginx/dhparams.pem ]')) {
+        info('/etc/nginx/dhparams.pem already exist');
+    } else {
+        info('Generating DH key, 2048 bit long safe prime');
+        info('This is going to take a long time');
+        run('openssl dhparam -out /etc/nginx/dhparams.pem 2048 2>/dev/null');
+    }
 });
 
 desc('Install nginx & php-fpm');

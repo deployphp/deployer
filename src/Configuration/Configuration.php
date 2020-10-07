@@ -7,11 +7,12 @@
 
 namespace Deployer\Configuration;
 
-use Deployer\Collection\Collection;
-use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
+use Deployer\Utility\Httpie;
+use function Deployer\get;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
+use function Deployer\Support\normalize_line_endings;
 
 class Configuration implements \ArrayAccess
 {
@@ -23,7 +24,20 @@ class Configuration implements \ArrayAccess
         $this->parent = $parent;
     }
 
-    public function set(string $name, $value)
+    public function update(array $values): void
+    {
+        $this->values = $values;
+    }
+
+    public function bind(Configuration $parent): void
+    {
+        $this->parent = $parent;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function set(string $name, $value): void
     {
         $this->values[$name] = $value;
     }
@@ -40,7 +54,7 @@ class Configuration implements \ArrayAccess
         return false;
     }
 
-    public function add(string $name, array $array)
+    public function add(string $name, array $array): void
     {
         if ($this->has($name)) {
             $config = $this->get($name);
@@ -53,6 +67,10 @@ class Configuration implements \ArrayAccess
         }
     }
 
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
     public function get(string $name, $default = null)
     {
         if (array_key_exists($name, $this->values)) {
@@ -81,7 +99,10 @@ class Configuration implements \ArrayAccess
         throw new ConfigurationException("Config option \"$name\" does not exist.");
     }
 
-    protected function fetch($name)
+    /**
+     * @return mixed|null
+     */
+    protected function fetch(string $name)
     {
         if (array_key_exists($name, $this->values)) {
             return $this->values[$name];
@@ -91,52 +112,97 @@ class Configuration implements \ArrayAccess
         }
         return null;
     }
-    
-    public function normalize($string)
-    {
-        //cleanup CRLF new line endings, issue #2111
-        $normalizeStep1 = str_replace(array("\r\n", "\r"), "\n", $string);
-        $normalized = $normalizeStep1;
-        
-        return $normalized;
-    }
 
+    /**
+     * @param string|mixed $value
+     * @return string|mixed
+     */
     public function parse($value)
     {
         if (is_string($value)) {
-            $normalizedValue = $this->normalize($value);
+            $normalizedValue = normalize_line_endings($value);
             return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
         }
 
         return $value;
     }
 
+    /**
+     * @return array
+     */
+    public function ownValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param array $matches
+     * @return mixed|null
+     */
     private function parseCallback(array $matches)
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
+    /**
+     * @param mixed $offset
+     * @return bool
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     */
     public function offsetExists($offset)
     {
         return $this->has($offset);
     }
 
+    /**
+     * @param string $offset
+     * @return mixed|null
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * @param string $offset
+     * @param mixed $value
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset): void
     {
         unset($this->values[$offset]);
     }
 
-    public function persist()
+    public function load(): void
+    {
+        $values = Httpie::get($this->get('master_url') . '/load')
+            ->body([
+                'host' => $this->get('alias'),
+            ])
+            ->getJson();
+        $this->update($values);
+    }
+
+    public function save(): void
+    {
+        Httpie::get($this->get('master_url') . '/save')
+            ->body([
+                'host' => $this->get('alias'),
+                'config' => $this->persist(),
+            ])
+            ->getJson();
+    }
+
+    public function persist(): array
     {
         $values = [];
         if ($this->parent !== null) {
@@ -149,22 +215,5 @@ class Configuration implements \ArrayAccess
             $values[$key] = $value;
         }
         return $values;
-    }
-
-    public function load()
-    {
-        $file = $this->configFile();
-        if (file_exists($file)) {
-            $this->values = json_decode(file_get_contents($file), true);
-        }
-    }
-
-    public function save()
-    {
-        file_put_contents($this->configFile(), json_encode($this->persist()));
-    }
-
-    private function configFile() {
-        return sprintf('%s/%s.dep', $this->get('config_directory'), str_replace(DIRECTORY_SEPARATOR, "_", $this->get('alias')));
     }
 }

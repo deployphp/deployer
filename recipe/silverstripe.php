@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -54,18 +53,10 @@ task('silverstripe:buildflush', function () {
  * Main task
  */
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
+    'deploy:prepare',
     'deploy:vendors',
-    'deploy:shared',
-    'deploy:writable',
     'silverstripe:buildflush',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

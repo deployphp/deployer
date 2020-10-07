@@ -50,7 +50,6 @@ class RunCommand extends SelectCommand
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
-        $this->parseOptions($input->getOption('option'));
 
         if ($output->getVerbosity() === Output::VERBOSITY_NORMAL) {
             $output->setVerbosity(Output::VERBOSITY_VERBOSE);
@@ -58,6 +57,7 @@ class RunCommand extends SelectCommand
 
         $command = implode(' ', $input->getArgument('command-to-run') ?? '');
         $hosts = $this->selectHosts($input, $output);
+        $this->applyOverrides($hosts, $input->getOption('option'));
 
         $task = new Task($command, function () use ($command, $hosts) {
             run($command);

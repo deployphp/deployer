@@ -7,12 +7,8 @@
 
 namespace Deployer\Console;
 
-use Deployer\Collection\PersistentCollection;
 use Deployer\Deployer;
-use Deployer\Exception\Exception;
-use Deployer\Exception\GracefulShutdownException;
-use Deployer\Exception\NonFatalException;
-use Deployer\Task\Context;
+use Deployer\Executor\Worker;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -30,8 +26,8 @@ class WorkerCommand extends MainCommand
     {
         $this->addArgument('worker-task', InputArgument::REQUIRED);
         $this->addArgument('worker-host', InputArgument::REQUIRED);
-        $this->addArgument('config-directory', InputArgument::REQUIRED);
-        $this->addArgument('original-task', InputArgument::REQUIRED);
+        $this->addArgument('master-port', InputArgument::REQUIRED);
+        $this->addArgument('original-task', InputArgument::REQUIRED); // added as stringing $input adds own args
         $this->addOption('decorated', null, Option::VALUE_NONE);
         parent::configure();
     }
@@ -46,31 +42,20 @@ class WorkerCommand extends MainCommand
             define('NO_ANSI', 'true');
         }
 
-        $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
+        $this->deployer->config->set('master_url', 'http://localhost:' . $input->getArgument('master-port'));
+
         $task = $this->deployer->tasks->get($input->getArgument('worker-task'));
+        $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
+        $host->config()->load();
 
-        $this->deployer->config->set('config_directory', $input->getArgument('config-directory'));
-        $host->getConfig()->load();
+        // TODO: Maybe relevant to leave this code. Was here when loading from config file was.
+//        foreach ($host->getConfig() as $name => $value) {
+//            $this->deployer->config->set($name, $value);
+//        }
+        $worker = new Worker($this->deployer);
+        $exitCode = $worker->execute($task, $host);
 
-        foreach ($host->getConfig() as $name => $value) {
-            $this->deployer->config->set($name, $value);
-        }
-
-        try {
-            Exception::setTaskSourceLocation($task->getSourceLocation());
-            $task->run(new Context($host, $input, $output));
-
-            if ($task->getName() !== 'connect') {
-                $this->deployer->messenger->endOnHost($host);
-            }
-            $host->getConfig()->save();
-            return 0;
-        } catch (GracefulShutdownException $e) {
-            $this->deployer->messenger->renderException($e, $host);
-            return GracefulShutdownException::EXIT_CODE;
-        } catch (\Throwable $e) {
-            $this->deployer->messenger->renderException($e, $host);
-            return 255;
-        }
+        $host->config()->save();
+        return $exitCode;
     }
 }

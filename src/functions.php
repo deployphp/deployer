@@ -7,18 +7,16 @@
 
 namespace Deployer;
 
-use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
-use Deployer\Support\Proxy;
+use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
-use Deployer\Task\Task as T;
-use Symfony\Component\Console\Exception\MissingInputException;
+use Deployer\Task\Task;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,12 +24,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\array_to_string;
 use function Deployer\Support\str_contains;
 
 /**
  * @param string ...$hostname
- * @return Host|Host[]|Proxy
+ * @return Host|Host[]|ObjectProxy
  */
 function host(...$hostname)
 {
@@ -61,13 +60,13 @@ function host(...$hostname)
             $deployer->hosts->set($hostname, $host);
             return $host;
         }, $aliases);
-        return new Proxy($hosts);
+        return new ObjectProxy($hosts);
     }
 }
 
 /**
  * @param string ...$hostnames
- * @return Localhost|Localhost[]|Proxy
+ * @return Localhost|Localhost[]|ObjectProxy
  */
 function localhost(...$hostnames)
 {
@@ -84,7 +83,7 @@ function localhost(...$hostnames)
             $deployer->hosts->set($host->getAlias(), $host);
             return $host;
         }, $hostnames);
-        return new Proxy($hosts);
+        return new ObjectProxy($hosts);
     }
 }
 
@@ -114,7 +113,7 @@ function currentHost()
  * Load list of hosts from file
  *
  * @param string $file
- * @return Proxy
+ * @return ObjectProxy
  */
 function inventory($file)
 {
@@ -127,14 +126,11 @@ function inventory($file)
         $deployer->hosts->set($host->getAlias(), $host);
     }
 
-    return new Proxy($hosts);
+    return new ObjectProxy($hosts);
 }
 
 /**
  * Set task description.
- *
- * @param string $title
- * @return string
  */
 function desc($title = null)
 {
@@ -154,7 +150,7 @@ function desc($title = null)
  *
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
- * @return Task\Task
+ * @return Task
  */
 function task($name, $body = null)
 {
@@ -165,7 +161,7 @@ function task($name, $body = null)
     }
 
     if (is_callable($body)) {
-        $task = new T($name, $body);
+        $task = new Task($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
     } else {
@@ -187,52 +183,52 @@ function task($name, $body = null)
  * Call that task before specified task runs.
  *
  * @param string $task The task before $that should be run.
- * @param string|callable $todo The task to be run.
- * @return T|void
+ * @param string|callable $do The task to be run.
+ * @return Task|void
  */
-function before($task, $todo)
+function before($task, $do)
 {
-    if (is_callable($todo)) {
-        $newTask = task("before:$task", $todo);
+    if (is_callable($do)) {
+        $newTask = task("before:$task", $do);
         before($task, "before:$task");
         return $newTask;
     }
-    task($task)->addBefore($todo);
+    task($task)->addBefore($do);
 }
 
 /**
  * Call that task after specified task runs.
  *
  * @param string $task The task after $that should be run.
- * @param string|callable $todo The task to be run.
- * @return T|void
+ * @param string|callable $do The task to be run.
+ * @return Task|void
  */
-function after($task, $todo)
+function after($task, $do)
 {
-    if (is_callable($todo)) {
-        $newTask = task("after:$task", $todo);
+    if (is_callable($do)) {
+        $newTask = task("after:$task", $do);
         after($task, "after:$task");
         return $newTask;
     }
-    task($task)->addAfter($todo);
+    task($task)->addAfter($do);
 }
 
 /**
  * Setup which task run on failure of first.
  *
  * @param string $task The task which need to fail so $that should be run.
- * @param string $todo The task to be run.
- * @return T|void
+ * @param string $do The task to be run.
+ * @return Task|void
  */
-function fail($task, $todo)
+function fail($task, $do)
 {
-    if (is_callable($todo)) {
-        $newTask = task("fail:$task", $todo);
+    if (is_callable($do)) {
+        $newTask = task("fail:$task", $do);
         fail($task, "fail:$task");
         return $newTask;
     }
     $deployer = Deployer::get();
-    $deployer->fail->set($task, $todo);
+    $deployer->fail->set($task, $do);
 }
 
 /**
@@ -266,20 +262,38 @@ function cd($path)
  *
  * @param string $path
  * @param callable $callback
+ * @return mixed|void Return value of the $callback function or void if callback doesn't return anything
  */
 function within($path, $callback)
 {
     $lastWorkingPath = get('working_path', '');
     try {
         set('working_path', parse($path));
-        $callback();
+        return $callback();
     } finally {
         set('working_path', $lastWorkingPath);
     }
 }
 
 /**
- * Run command.
+ * Executes given command on remote host.
+ *
+ * Options:
+ * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
+ * - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ *
+ * Examples:
+ *
+ * ```php
+ * run('echo hello world');
+ * run('cd {{deploy_path}} && git status');
+ * run('password %secret%', ['secret' => getenv('CI_SECRET')]);
+ * ```
+ *
+ * ```php
+ * $path = run('readlink {{deploy_path}}/current');
+ * run("echo $path");
+ * ```
  *
  * @param string $command
  * @param array $options
@@ -297,7 +311,7 @@ function run($command, $options = [])
             $command = "cd $workingPath && ($command)";
         }
 
-        $env = get('env', []) + ($options['env'] ?? []);
+        $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
         if (!empty($env)) {
             $env = array_to_string($env);
             $command = "export $env; $command";
@@ -324,7 +338,7 @@ function run($command, $options = [])
                 writeln("<fg=green;options=bold>run</> $command");
                 $password = askHiddenResponse('Password:');
             }
-            $run("echo -e '#!/bin/sh\necho \"%secret%\"' > $askpass", array_merge($options, ['secret' => $password]));
+            $run("echo -e '#!/bin/sh\necho \"%sudo_pass%\"' > $askpass", array_merge($options, ['sudo_pass' => $password]));
             $run("chmod a+x $askpass", $options);
             $run(sprintf('export SUDO_ASKPASS=%s; %s', $askpass, preg_replace('/^sudo\b/', 'sudo -A', $command)), $options);
             $run("rm $askpass", $options);
@@ -347,7 +361,7 @@ function runLocally($command, $options = [])
     $process = Deployer::get()->processRunner;
     $command = parse($command);
 
-    $env = get('env', []) + ($options['env'] ?? []);
+    $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
     if (!empty($env)) {
         $env = array_to_string($env);
         $command = "export $env; $command";
@@ -362,7 +376,11 @@ function runLocally($command, $options = [])
  * Run test command.
  * Example:
  *
- *     test('[ -d {{release_path}} ]')
+ * ```php
+ * if (test('[ -d {{release_path}} ]')) {
+ * ...
+ * }
+ * ```
  *
  * @param string $command
  * @return bool
@@ -403,11 +421,11 @@ function on($hosts, callable $callback)
 
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
-            $host->getConfig()->load();
+            $host->config()->load();
             Context::push(new Context($host, input(), output()));
             try {
                 $callback($host);
-                $host->getConfig()->save();
+                $host->config()->save();
             } catch (GracefulShutdownException $e) {
                 $deployer->messenger->renderException($e, $host);
             } finally {
@@ -430,12 +448,21 @@ function invoke($task)
     $hosts = [Context::get()->getHost()];
     $tasks = Deployer::get()->scriptManager->getTasks($task, $hosts);
 
-    $executor = Deployer::get()->executor;
-    $executor->run($tasks, $hosts);
+    $master = Deployer::get()->master;
+    $master->run($tasks, $hosts);
 }
 
-/*
+/**
  * Upload file or directory to host.
+ *
+ * > You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command, this is necessary to mean “the contents of build“.
+ * >
+ * > The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
+ *
+ * @param string $source
+ * @param string $destination
+ * @param array $config
+ * @throws RunException
  */
 function upload(string $source, string $destination, $config = [])
 {
@@ -451,8 +478,13 @@ function upload(string $source, string $destination, $config = [])
     }
 }
 
-/*
+/**
  * Download file or directory from host
+ *
+ * @param string $source
+ * @param string $destination
+ * @param array $config
+ * @throws RunException
  */
 function download(string $source, string $destination, $config = [])
 {
@@ -474,7 +506,7 @@ function download(string $source, string $destination, $config = [])
  */
 function info($message)
 {
-    output()->writeln("<fg=green;options=bold>info</> " . parse($message));
+    writeln("<fg=green;options=bold>info</> " . parse($message));
 }
 
 /**
@@ -504,7 +536,7 @@ function writeln($message, $options = 0)
  */
 function write($message, $options = 0)
 {
-    output()->write(parse($message), $options);
+    output()->write(parse($message), false, $options);
 }
 
 /**
@@ -593,6 +625,10 @@ function ask($message, $default = null, $autocomplete = null)
         return $default;
     }
 
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+    }
+
     /** @var QuestionHelper $helper */
     $helper = Deployer::get()->getHelper('question');
 
@@ -604,11 +640,7 @@ function ask($message, $default = null, $autocomplete = null)
         $question->setAutocompleterValues($autocomplete);
     }
 
-    try {
-        return $helper->ask(input(), output(), $question);
-    } catch (MissingInputException $exception) {
-        throw new Exception("Failed to read input from stdin.\nMake sure what you are asking for input not from parallel task.", $exception->getCode(), $exception);
-    }
+    return $helper->ask(input(), output(), $question);
 }
 
 /**
@@ -637,6 +669,10 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
         return [$default => $availableChoices[$default]];
     }
 
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+    }
+
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
@@ -661,6 +697,10 @@ function askConfirmation($message, $default = false)
         return $default;
     }
 
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+    }
+
     $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
@@ -676,12 +716,16 @@ function askConfirmation($message, $default = false)
  * @param string $message
  * @return string
  */
-function askHiddenResponse($message)
+function askHiddenResponse(string $message)
 {
     Context::required(__FUNCTION__);
 
     if (output()->isQuiet()) {
         return '';
+    }
+
+    if (Deployer::isWorker()) {
+        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     $helper = Deployer::get()->getHelper('question');

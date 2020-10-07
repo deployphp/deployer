@@ -26,18 +26,18 @@ class ScriptManager
      *
      * @return Task[]
      */
-    public function getTasks(string $name)
+    public function getTasks(string $name, ?string $startFrom = null)
     {
         $tasks = [];
         $allTasks = $this->doGetTasks($name);
 
-        if ($this->startFrom === null) {
+        if ($startFrom === null) {
             $tasks = $allTasks;
         } else {
             $skip = true;
             foreach ($allTasks as $task) {
                 if ($skip) {
-                    if ($task->getName() === $this->startFrom) {
+                    if ($task->getName() === $startFrom) {
                         $skip = false;
                     } else {
                         continue;
@@ -93,15 +93,5 @@ class ScriptManager
     public function setHooksEnabled($hooksEnabled): void
     {
         $this->hooksEnabled = $hooksEnabled;
-    }
-
-    public function getStartFrom()
-    {
-        return $this->startFrom;
-    }
-
-    public function setStartFrom(string $startFrom): void
-    {
-        $this->startFrom = $startFrom;
     }
 }

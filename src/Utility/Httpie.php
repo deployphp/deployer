@@ -7,6 +7,8 @@
 
 namespace Deployer\Utility;
 
+use Deployer\Exception\HttpieException;
+
 class Httpie
 {
     private $method = 'GET';
@@ -99,6 +101,12 @@ class Httpie
             curl_setopt($ch, $key, $value);
         }
         $result = curl_exec($ch);
+        if ($result === false) {
+            $error = curl_error($ch);
+            $errno = curl_errno($ch);
+            curl_close($ch);
+            throw new HttpieException($error, $errno);
+        }
         curl_close($ch);
         return $result;
     }

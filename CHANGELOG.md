@@ -13,6 +13,7 @@
 
 ### Changed
 - `within` passess through `$callback` return value. [#2178]
+- Type declarations for methods in `src/Configuration`. [#2187]
 
 ### Fixed
 - Normalize CRLF to LF new line endings. [#2111]
@@ -588,6 +589,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2187]: https://github.com/deployphp/deployer/issues/2187
 [#2181]: https://github.com/deployphp/deployer/issues/2181
 [#2178]: https://github.com/deployphp/deployer/issues/2178
 [#2170]: https://github.com/deployphp/deployer/issues/2170

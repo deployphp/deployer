@@ -24,17 +24,20 @@ class Configuration implements \ArrayAccess
         $this->parent = $parent;
     }
 
-    public function update($values)
+    public function update(array $values): void
     {
         $this->values = $values;
     }
 
-    public function bind(Configuration $parent)
+    public function bind(Configuration $parent): void
     {
         $this->parent = $parent;
     }
 
-    public function set(string $name, $value)
+    /**
+     * @param mixed $value
+     */
+    public function set(string $name, $value): void
     {
         $this->values[$name] = $value;
     }
@@ -51,7 +54,7 @@ class Configuration implements \ArrayAccess
         return false;
     }
 
-    public function add(string $name, array $array)
+    public function add(string $name, array $array): void
     {
         if ($this->has($name)) {
             $config = $this->get($name);
@@ -64,6 +67,10 @@ class Configuration implements \ArrayAccess
         }
     }
 
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
     public function get(string $name, $default = null)
     {
         if (array_key_exists($name, $this->values)) {
@@ -92,7 +99,10 @@ class Configuration implements \ArrayAccess
         throw new ConfigurationException("Config option \"$name\" does not exist.");
     }
 
-    protected function fetch($name)
+    /**
+     * @return mixed|null
+     */
+    protected function fetch(string $name)
     {
         if (array_key_exists($name, $this->values)) {
             return $this->values[$name];
@@ -103,6 +113,10 @@ class Configuration implements \ArrayAccess
         return null;
     }
 
+    /**
+     * @param string|mixed $value
+     * @return string|mixed
+     */
     public function parse($value)
     {
         if (is_string($value)) {
@@ -113,32 +127,54 @@ class Configuration implements \ArrayAccess
         return $value;
     }
 
+    /**
+     * @param array $matches
+     * @return mixed|null
+     */
     private function parseCallback(array $matches)
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
+    /**
+     * @param mixed $offset
+     * @return bool
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
+     */
     public function offsetExists($offset)
     {
         return $this->has($offset);
     }
 
+    /**
+     * @param string $offset
+     * @return mixed|null
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
     public function offsetGet($offset)
     {
         return $this->get($offset);
     }
 
-    public function offsetSet($offset, $value)
+    /**
+     * @param string $offset
+     * @param mixed $value
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    public function offsetSet($offset, $value): void
     {
         $this->set($offset, $value);
     }
 
-    public function offsetUnset($offset)
+    /**
+     * @param mixed $offset
+     */
+    public function offsetUnset($offset): void
     {
         unset($this->values[$offset]);
     }
 
-    public function load()
+    public function load(): void
     {
         $values = Httpie::get($this->get('master_url') . '/load')
             ->body([
@@ -148,7 +184,7 @@ class Configuration implements \ArrayAccess
         $this->update($values);
     }
 
-    public function save()
+    public function save(): void
     {
         Httpie::get($this->get('master_url') . '/save')
             ->body([
@@ -158,7 +194,7 @@ class Configuration implements \ArrayAccess
             ->getJson();
     }
 
-    public function persist()
+    public function persist(): array
     {
         $values = [];
         if ($this->parent !== null) {

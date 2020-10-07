@@ -31,14 +31,6 @@
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
   * [`copy_dirs`](#copy_dirs)
-  * [`writable_dirs`](#writable_dirs)
-  * [`writable_mode`](#writable_mode)
-  * [`writable_use_sudo`](#writable_use_sudo)
-  * [`writable_recursive`](#writable_recursive)
-  * [`writable_chmod_mode`](#writable_chmod_mode)
-  * [`writable_chmod_recursive`](#writable_chmod_recursive)
-  * [`http_user`](#http_user)
-  * [`http_group`](#http_group)
   * [`clear_paths`](#clear_paths)
   * [`clear_use_sudo`](#clear_use_sudo)
   * [`cleanup_use_sudo`](#cleanup_use_sudo)
@@ -87,93 +79,53 @@
 
 
 
-### writable_dirs
+### clear_paths
 [Source](/recipe/common.php#L58)
 
 
 
-### writable_mode
+### clear_use_sudo
 [Source](/recipe/common.php#L59)
 
 
 
-### writable_use_sudo
-[Source](/recipe/common.php#L60)
-
-
-
-### writable_recursive
+### cleanup_use_sudo
 [Source](/recipe/common.php#L61)
 
 
 
-### writable_chmod_mode
-[Source](/recipe/common.php#L62)
-
-
-
-### writable_chmod_recursive
+### use_relative_symlink
 [Source](/recipe/common.php#L63)
 
 
 
-### http_user
-[Source](/recipe/common.php#L65)
-
-
-
-### http_group
+### use_atomic_symlink
 [Source](/recipe/common.php#L66)
 
 
 
-### clear_paths
-[Source](/recipe/common.php#L68)
-
-
-
-### clear_use_sudo
-[Source](/recipe/common.php#L69)
-
-
-
-### cleanup_use_sudo
-[Source](/recipe/common.php#L71)
-
-
-
-### use_relative_symlink
-[Source](/recipe/common.php#L73)
-
-
-
-### use_atomic_symlink
-[Source](/recipe/common.php#L76)
-
-
-
 ### composer_action
-[Source](/recipe/common.php#L80)
+[Source](/recipe/common.php#L70)
 
 
 
 ### composer_options
-[Source](/recipe/common.php#L81)
+[Source](/recipe/common.php#L71)
 
 
 
 ### env
-[Source](/recipe/common.php#L83)
+[Source](/recipe/common.php#L73)
 
 
 
 ### current_path
-[Source](/recipe/common.php#L88)
+[Source](/recipe/common.php#L78)
 
 Return current release path.
 
 ### sudo_askpass
-[Source](/recipe/common.php#L125)
+[Source](/recipe/common.php#L115)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -182,7 +134,7 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L141)
+[Source](/recipe/common.php#L131)
 
 
 
@@ -197,7 +149,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L151)
+[Source](/recipe/common.php#L141)
 
 
 
@@ -209,17 +161,17 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](/recipe/common.php#L161)
+[Source](/recipe/common.php#L151)
 
 Success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L171)
+[Source](/recipe/common.php#L161)
 
 Deploy failure
 
 ### logs
-[Source](/recipe/common.php#L180)
+[Source](/recipe/common.php#L170)
 
 Follow latest application logs.
 

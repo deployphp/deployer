@@ -40,7 +40,7 @@
 ### writable_dirs
 [Source](/recipe/symfony5.php#L8)
 
-* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
+* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 

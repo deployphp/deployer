@@ -27,7 +27,7 @@ Yii shared dirs
 ### writable_dirs
 [Source](/recipe/yii.php#L10)
 
-* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
+* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Yii writable dirs
 

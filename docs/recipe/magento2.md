@@ -51,7 +51,7 @@ in you deployer script.
 ### writable_dirs
 [Source](/recipe/magento2.php#L31)
 
-* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
+* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 

@@ -41,7 +41,7 @@ Shared files
 ### writable_dirs
 [Source](/recipe/typo3.php#L48)
 
-* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
+* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Writeable directories
 

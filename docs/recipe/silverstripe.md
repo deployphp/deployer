@@ -36,7 +36,7 @@ Silverstripe shared dirs
 ### writable_dirs
 [Source](/recipe/silverstripe.php#L24)
 
-* Overrides [`writable_dirs`](/docs/recipe/common.md#writable_dirs) from `recipe/common.php`
+* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Silverstripe writable dirs
 

@@ -30,3 +30,7 @@ after('cache_config_test', function () {
     writeln('echo 2: {{upper_host}}');
 });
 
+task('test_once', function () {
+    writeln('SHOULD BE ONCE');
+})->once();
+

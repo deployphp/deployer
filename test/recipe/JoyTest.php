@@ -97,24 +97,25 @@ class JoyTest extends AbstractTest
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertStringContainsString(filter_stdout(<<<STDOUT
-[prod] running worker on prod
-[prod] echo 1: PROD
-[beta] running worker on beta
-[beta] echo 1: BETA
-task after:cache_config_test
-[prod] echo 2: PROD
-[beta] echo 2: BETA
-STDOUT
-        ), $display);
+        self::assertTrue(substr_count($display, 'worker on prod') == 1, $display);
+        self::assertTrue(substr_count($display, 'worker on beta') == 1, $display);
     }
-}
 
-function filter_stdout($stdout)
-{
-    $lines = explode("\n", $stdout);
-    $lines = array_filter($lines, function ($line) {
-        return preg_match("/\r$/", $line);
-    });
-    return implode("\n", $lines);
+    public function testOnce()
+    {
+        $recipe = __DIR__ . '/joy.php';
+        $this->init($recipe);
+
+        $this->tester->run([
+            'test_once',
+            '-f' => $recipe,
+            'selector' => 'all'
+        ], [
+            'verbosity' => Output::VERBOSITY_VERY_VERBOSE,
+        ]);
+
+        $display = $this->tester->getDisplay();
+        self::assertEquals(0, $this->tester->getStatusCode(), $display);
+        self::assertTrue(substr_count($display, 'SHOULD BE ONCE') == 1, $display);
+    }
 }

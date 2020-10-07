@@ -8,6 +8,7 @@
 - Added a Slack notification task on rollback.
 - Recipe for crontab tasks.
 - ISPManager recipe and docs.
+- Added ability to customize rsync flags.
 - Symfony 5 recipe.
 - Command for checking if a deploy is unlocked. [#2150] [#2150]
 

@@ -34,10 +34,12 @@ class Rsync
         $defaults = [
             'timeout' => null,
             'options' => [],
+            'flags'   => 'azP'
         ];
         $config = array_merge($defaults, $config);
 
         $options = $config['options'] ?? [];
+        $flags = $config['flags'];
 
         $sshArguments = $host->getSshArguments()->getCliArguments();
         if ($sshArguments !== '') {
@@ -49,7 +51,8 @@ class Rsync
         }
 
         $command = sprintf(
-            "rsync -azP %s %s %s",
+            "rsync -%s %s %s %s",
+            $flags,
             implode(' ', $options),
             escapeshellarg($source),
             escapeshellarg($destination)

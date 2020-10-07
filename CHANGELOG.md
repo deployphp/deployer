@@ -590,8 +590,6 @@
 - Fixed remove of shared dir on first deploy.
 
 
-
-
 [#2187]: https://github.com/deployphp/deployer/issues/2187
 [#2181]: https://github.com/deployphp/deployer/issues/2181
 [#2178]: https://github.com/deployphp/deployer/issues/2178

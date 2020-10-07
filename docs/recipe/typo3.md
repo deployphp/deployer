@@ -25,21 +25,21 @@
 DocumentRoot / WebRoot for the TYPO3 installation
 
 ### shared_dirs
-[Source](/recipe/typo3.php#L32)
+[Source](/recipe/typo3.php#L24)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Shared directories
 
 ### shared_files
-[Source](/recipe/typo3.php#L41)
+[Source](/recipe/typo3.php#L33)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Shared files
 
 ### writable_dirs
-[Source](/recipe/typo3.php#L48)
+[Source](/recipe/typo3.php#L40)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -53,16 +53,8 @@ Writeable directories
 Main TYPO3 task
 
 This task is group task which contains next tasks:
-* [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
-* [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
-* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
-* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
-* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
-* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
+* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
 * [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
-* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
-* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
-* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
-* [`deploy:cleanup`](/docs/recipe/deploy/cleanup.md#deploycleanup)
+* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
 
 

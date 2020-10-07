@@ -140,24 +140,16 @@ task('database:migrate', function () {
  * Main task
  */
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
+    'deploy:prepare',
     'deploy:clear_paths',
     'deploy:create_cache_dir',
-    'deploy:shared',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assets:install',
     'deploy:assetic:dump',
     'deploy:cache:clear',
     'deploy:cache:warmup',
-    'deploy:writable',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 // Display success message on completion

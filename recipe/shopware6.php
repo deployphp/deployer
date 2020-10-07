@@ -141,18 +141,10 @@ task('sw:deploy', [
  */
 task('deploy', [
     'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
     'sw:deploy',
-    'deploy:writable',
     'deploy:clear_paths',
-    'deploy:symlink',
-    'deploy:unlock',
     'sw:cache:warmup',
-    'cleanup',
-    'success',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

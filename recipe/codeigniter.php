@@ -13,17 +13,9 @@ set('writable_dirs', ['application/cache', 'application/logs']);
  * Main task
  */
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
+    'deploy:prepare',
     'deploy:vendors',
-    'deploy:shared',
-    'deploy:writable',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

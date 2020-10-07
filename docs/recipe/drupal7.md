@@ -22,26 +22,26 @@
 
 ## Config
 ### drupal_site
-[Source](/recipe/drupal7.php#L20)
+[Source](/recipe/drupal7.php#L12)
 
 Set Drupal 7 site. Change if you use different site
 
 ### shared_dirs
-[Source](/recipe/drupal7.php#L23)
+[Source](/recipe/drupal7.php#L15)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Drupal 7 shared dirs
 
 ### shared_files
-[Source](/recipe/drupal7.php#L28)
+[Source](/recipe/drupal7.php#L20)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Drupal 7 shared files
 
 ### writable_dirs
-[Source](/recipe/drupal7.php#L33)
+[Source](/recipe/drupal7.php#L25)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -55,24 +55,17 @@ Drupal 7 writable dirs
 
 
 This task is group task which contains next tasks:
-* [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
-* [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
-* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
-* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
-* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
-* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
-* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
-* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
-* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
+* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
+* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
 
 
 ### drupal:settings
-[Source](/recipe/drupal7.php#L39)
+[Source](/recipe/drupal7.php#L31)
 
 Create and upload Drupal 7 settings.php using values from secrets
 
 ### drupal:upload_files
-[Source](/recipe/drupal7.php#L81)
+[Source](/recipe/drupal7.php#L73)
 
 Upload Drupal 7 files folder
 

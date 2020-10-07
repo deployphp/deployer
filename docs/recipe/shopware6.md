@@ -139,17 +139,9 @@ Main task
 
 This task is group task which contains next tasks:
 * [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
-* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
-* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
-* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
 * [`sw:deploy`](/docs/recipe/shopware6.md#swdeploy)
-* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
 * [`deploy:clear_paths`](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
-* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
-* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
 * [`sw:cache:warmup`](/docs/recipe/shopware6.md#swcachewarmup)
-* `cleanup`
-* `success`
+* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
 
 

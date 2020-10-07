@@ -59,16 +59,8 @@ Remove files that can be used to compromise Magento
 Main task
 
 This task is group task which contains next tasks:
-* [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
-* [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
-* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
-* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
-* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
-* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
-* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
+* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
 * [`deploy:cache:clear`](/docs/recipe/magento.md#deploycacheclear)
-* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
-* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
-* [`deploy:cleanup`](/docs/recipe/deploy/cleanup.md#deploycleanup)
+* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
 
 

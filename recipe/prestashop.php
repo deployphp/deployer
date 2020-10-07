@@ -32,17 +32,9 @@ set('writable_dirs', [
 );
 
 task('deploy', [
-        'deploy:info',
-        'deploy:setup',
-        'deploy:lock',
-        'deploy:release',
-        'deploy:update_code',
-        'deploy:shared',
+        'deploy:prepare',
         'deploy:vendors',
-        'deploy:writable',
-        'deploy:symlink',
-        'deploy:unlock',
-        'deploy:cleanup',
+        'deploy:publish',
     ]
 )->desc('Deploy your project');
 

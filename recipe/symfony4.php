@@ -38,19 +38,11 @@ task('deploy:cache:warmup', function () {
 
 desc('Deploy project');
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
+    'deploy:prepare',
     'deploy:vendors',
-    'deploy:writable',
     'deploy:cache:clear',
     'deploy:cache:warmup',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:publish',
 ]);
 
 after('deploy', 'success');

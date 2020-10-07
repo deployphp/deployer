@@ -20,26 +20,26 @@
 
 ## Config
 ### drupal_site
-[Source](/recipe/drupal8.php#L20)
+[Source](/recipe/drupal8.php#L12)
 
 Set drupal site. Change if you use different site
 
 ### shared_dirs
-[Source](/recipe/drupal8.php#L24)
+[Source](/recipe/drupal8.php#L16)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Drupal 8 shared dirs
 
 ### shared_files
-[Source](/recipe/drupal8.php#L29)
+[Source](/recipe/drupal8.php#L21)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Drupal 8 shared files
 
 ### writable_dirs
-[Source](/recipe/drupal8.php#L35)
+[Source](/recipe/drupal8.php#L27)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -53,14 +53,7 @@ Drupal 8 Writable dirs
 
 
 This task is group task which contains next tasks:
-* [`deploy:info`](/docs/recipe/deploy/info.md#deployinfo)
-* [`deploy:setup`](/docs/recipe/deploy/setup.md#deploysetup)
-* [`deploy:lock`](/docs/recipe/deploy/lock.md#deploylock)
-* [`deploy:release`](/docs/recipe/deploy/release.md#deployrelease)
-* [`deploy:update_code`](/docs/recipe/deploy/update_code.md#deployupdate_code)
-* [`deploy:shared`](/docs/recipe/deploy/shared.md#deployshared)
-* [`deploy:writable`](/docs/recipe/deploy/writable.md#deploywritable)
-* [`deploy:symlink`](/docs/recipe/deploy/symlink.md#deploysymlink)
-* [`deploy:unlock`](/docs/recipe/deploy/lock.md#deployunlock)
+* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
+* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
 
 

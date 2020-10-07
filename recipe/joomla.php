@@ -8,16 +8,8 @@ set('shared_dirs', ['images']);
 set('writable_dirs', ['images']);
 
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:writable',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:prepare',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

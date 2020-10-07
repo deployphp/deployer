@@ -65,6 +65,7 @@ use Throwable;
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
+ * @property Server $server
  * @property Master $master
  * @property Messenger $messenger
  * @property Messenger $logger

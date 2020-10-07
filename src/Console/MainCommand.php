@@ -91,18 +91,19 @@ class MainCommand extends SelectCommand
 
         $this->deployer->scriptManager->setHooksEnabled(!$input->getOption('no-hooks'));
         $startFrom = $input->getOption('start-from');
-        if ($startFrom) {
-            if (!$this->deployer->tasks->has($startFrom)) {
-                throw new Exception("Task ${startFrom} does not exist.");
-            }
-            $this->deployer->scriptManager->setStartFrom($startFrom);
+        if ($startFrom && !$this->deployer->tasks->has($startFrom)) {
+            throw new Exception("Task ${startFrom} does not exist.");
         }
-        $tasks = $this->deployer->scriptManager->getTasks($this->getName());
+        $tasks = $this->deployer->scriptManager->getTasks($this->getName(), $startFrom);
 
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
         }
 
+        if (!$plan) {
+            $this->deployer->server->start();
+            $this->deployer->master->connect($hosts);
+        }
         $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);
 
         if ($plan) {

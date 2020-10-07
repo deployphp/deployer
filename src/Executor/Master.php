@@ -62,9 +62,6 @@ class Master
      */
     public function run(array $tasks, array $hosts, $plan = null): int
     {
-        $plan || $this->server->start();
-        $plan || $this->connect($hosts);
-
         $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
@@ -140,7 +137,7 @@ class Master
     /**
      * @param Host[] $hosts
      */
-    private function connect(array $hosts)
+    public function connect(array $hosts)
     {
         $callback = function (string $output) {
             $output = preg_replace('/\n$/', '', $output);

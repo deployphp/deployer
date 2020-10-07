@@ -1,5 +1,9 @@
 <?php
-
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Deployer\Executor;
 
@@ -20,9 +24,6 @@ class Server
     private $input;
     private $output;
     private $questionHelper;
-    /**
-     * @var React\EventLoop\LoopInterface
-     */
     private $loop;
     private $port;
 

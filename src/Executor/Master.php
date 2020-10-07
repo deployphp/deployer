@@ -236,6 +236,9 @@ class Master
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
         $decorated = $this->output->isDecorated() ? '--decorated' : '';
         $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
+        if ($task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
+            $verbosity = '-v';
+        }
         $command = "$dep worker $task {$host->getAlias()} {$this->server->getPort()} {$this->input} $decorated $verbosity";
 
         if ($this->output->isDebug()) {

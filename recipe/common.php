@@ -134,8 +134,8 @@ task('deploy:prepare', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
-    'deploy:writable',
     'deploy:shared',
+    'deploy:writable',
 ]);
 
 task('deploy:publish', [

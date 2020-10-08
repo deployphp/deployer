@@ -5,6 +5,15 @@ namespace Deployer;
 localhost('prod');
 localhost('beta');
 
+// testServer:
+
+task('ask', function () {
+    $answer = ask('Question: What kind of bear is best?');
+    writeln($answer);
+});
+
+// testWorker, testOption:
+
 set('greet', '_');
 
 task('echo', function () {
@@ -12,10 +21,7 @@ task('echo', function () {
     run("echo {{greet}}, $alias!");
 });
 
-task('ask', function () {
-    $answer = ask('Question: What kind of bear is best?');
-    writeln($answer);
-});
+// testCachedHostConfig:
 
 set('upper_host', function () {
     writeln('running ' . (Deployer::isWorker() ? 'worker' : 'master') . ' on ' . currentHost()->getAlias());
@@ -29,8 +35,3 @@ task('cache_config_test', function () {
 after('cache_config_test', function () {
     writeln('echo 2: {{upper_host}}');
 });
-
-task('test_once', function () {
-    writeln('SHOULD BE ONCE');
-})->once();
-

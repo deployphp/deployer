@@ -5,7 +5,7 @@ namespace Deployer;
 require 'recipe/common.php';
 
 set('application', 'deployer');
-set('repository', __DIR__ . '/repository');
+set('repository', __REPOSITORY__);
 set('shared_dirs', ['uploads']);
 set('shared_files', ['.env']);
 set('keep_releases', 3);
@@ -38,9 +38,3 @@ task('fail', function () {
 });
 
 fail('deploy:fail', 'deploy:unlock');
-
-task('once', function () {
-    info('should be run only once');
-})->once();
-
-after('deploy', 'once');

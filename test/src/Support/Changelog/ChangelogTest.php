@@ -11,9 +11,11 @@ use PHPUnit\Framework\TestCase;
 
 class ChangelogTest extends TestCase
 {
+    const CHANGELOG = __DIR__ . '/../../../../CHANGELOG.md';
+
     public function testChangelogHasReferences()
     {
-        $changelog = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+        $changelog = file_get_contents(self::CHANGELOG);
         preg_match_all('|\[#(\d+)\]|', $changelog, $matches);
 
         foreach ($matches[1] as $link) {
@@ -30,7 +32,7 @@ class ChangelogTest extends TestCase
 
     public function testChangelogReferencesOrdered()
     {
-        $changelog = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+        $changelog = file_get_contents(self::CHANGELOG);
         preg_match_all('|\[#(\d+)\]: https://github.com/deployphp/[\S/]+/\1/?|', $changelog, $matches);
         $refs = $matches[1];
 
@@ -44,7 +46,7 @@ class ChangelogTest extends TestCase
 
     public function testChangelogParse()
     {
-        $input = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+        $input = file_get_contents(self::CHANGELOG);
 
         $parser = new Parser($input);
         $changelog = $parser->parse();
@@ -54,7 +56,7 @@ class ChangelogTest extends TestCase
 
     public function testChangelogString()
     {
-        $input = file_get_contents(__DIR__ . '/../../CHANGELOG.md');
+        $input = file_get_contents(self::CHANGELOG);
 
         $parser = new Parser($input, false);
         $changelog = $parser->parse();

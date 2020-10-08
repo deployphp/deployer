@@ -8,14 +8,11 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="Unit">
+        <testsuite name="Src">
             <directory>test/src/</directory>
         </testsuite>
-        <testsuite name="Misc">
-            <directory>test/misc/</directory>
-        </testsuite>
-        <testsuite name="Recipe">
-            <directory>test/recipe/</directory>
+        <testsuite name="Joy">
+            <directory>test/joy/</directory>
         </testsuite>
     </testsuites>
     <filter>

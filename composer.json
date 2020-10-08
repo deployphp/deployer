@@ -24,7 +24,7 @@
         ]
     },
     "scripts": {
-        "test": "phpunit",
+        "test": "pest",
         "lint": "phpcs"
     },
     "bin": [
@@ -40,7 +40,8 @@
         "symfony/yaml": "^5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.3",
+        "pestphp/pest": "^0.3",
+        "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^6.4",
         "squizlabs/php_codesniffer": "^3.5"
     },

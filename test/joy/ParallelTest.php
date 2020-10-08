@@ -9,8 +9,10 @@ namespace Deployer;
 
 use Symfony\Component\Console\Output\Output;
 
-class JoyTest extends AbstractTest
+class ParallelTest extends AbstractTest
 {
+    const RECIPE = __DIR__ . '/recipe/parallel.php';
+
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -25,12 +27,10 @@ class JoyTest extends AbstractTest
 
     public function testWorker()
     {
-        $recipe = __DIR__ . '/joy.php';
-        $this->init($recipe);
-
+        $this->init(self::RECIPE);
         $this->tester->run([
             'echo',
-            '-f' => $recipe,
+            '-f' => self::RECIPE,
             'selector' => 'all'
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
@@ -40,13 +40,11 @@ class JoyTest extends AbstractTest
 
     public function testServer()
     {
-        $recipe = __DIR__ . '/joy.php';
-        $this->init($recipe);
-
+        $this->init(self::RECIPE);
         $this->tester->setInputs(['prod', 'Black bear']);
         $this->tester->run([
             'ask',
-            '-f' => $recipe,
+            '-f' => self::RECIPE,
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
             'interactive' => true,
@@ -59,15 +57,13 @@ class JoyTest extends AbstractTest
 
     public function testOption()
     {
-        $recipe = __DIR__ . '/joy.php';
-        $this->init($recipe);
-
+        $this->init(self::RECIPE);
         $this->tester->run(
             [
                 'echo',
                 'selector' => 'all',
                 '-o' => ['greet=Hello'],
-                '-f' => $recipe,
+                '-f' => self::RECIPE,
                 //'-l' => 1,
             ],
             [
@@ -84,12 +80,10 @@ class JoyTest extends AbstractTest
 
     public function testCachedHostConfig()
     {
-        $recipe = __DIR__ . '/joy.php';
-        $this->init($recipe);
-
+        $this->init(self::RECIPE);
         $this->tester->run([
             'cache_config_test',
-            '-f' => $recipe,
+            '-f' => self::RECIPE,
             'selector' => 'all'
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
@@ -99,23 +93,5 @@ class JoyTest extends AbstractTest
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
         self::assertTrue(substr_count($display, 'worker on prod') == 1, $display);
         self::assertTrue(substr_count($display, 'worker on beta') == 1, $display);
-    }
-
-    public function testOnce()
-    {
-        $recipe = __DIR__ . '/joy.php';
-        $this->init($recipe);
-
-        $this->tester->run([
-            'test_once',
-            '-f' => $recipe,
-            'selector' => 'all'
-        ], [
-            'verbosity' => Output::VERBOSITY_VERY_VERBOSE,
-        ]);
-
-        $display = $this->tester->getDisplay();
-        self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertTrue(substr_count($display, 'SHOULD BE ONCE') == 1, $display);
     }
 }

@@ -11,25 +11,24 @@ use Symfony\Component\Console\Output\Output;
 
 class DeployTest extends AbstractTest
 {
+    const RECIPE = __DIR__ . '/recipe/deploy.php';
+
     public function testDeploy()
     {
-        $recipe = __DIR__ . '/deploy.php';
-        $deployer = $this->init($recipe);
-
+        $this->init(self::RECIPE);
         $this->tester->run([
             'deploy',
             'selector' => 'all',
-            '-f' => $recipe
+            '-f' => self::RECIPE
         ], [
-            'verbosity' => Output::VERBOSITY_NORMAL,
+            'verbosity' => Output::VERBOSITY_DEBUG,
             'interactive' => false,
         ]);
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertEquals(1, substr_count($display, 'should be run only once'), $display);
 
-        foreach ($deployer->hosts as $host) {
+        foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 
             self::assertDirectoryExists($deployPath . '/.dep');
@@ -46,11 +45,9 @@ class DeployTest extends AbstractTest
 
     public function testDeploySelectHosts()
     {
-        $recipe = __DIR__ . '/deploy.php';
-        $this->init($recipe);
-
+        $this->init(self::RECIPE);
         $this->tester->setInputs(['0,1']);
-        $this->tester->run(['deploy', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_NORMAL,
             'interactive' => true,
         ]);
@@ -60,10 +57,9 @@ class DeployTest extends AbstractTest
     public function testKeepReleases()
     {
         for ($i = 0; $i < 3; $i++) {
-            $recipe = __DIR__ . '/deploy.php';
-            $deployer = $this->init($recipe);
+            $this->init(self::RECIPE);
 
-            $this->tester->run(['deploy', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+            $this->tester->run(['deploy', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
                 'verbosity' => Output::VERBOSITY_VERBOSE,
                 'interactive' => false,
             ]);
@@ -71,7 +67,7 @@ class DeployTest extends AbstractTest
             self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
         }
 
-        foreach ($deployer->hosts as $host) {
+        foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 
             self::assertEquals(3, intval(exec("cd $deployPath && ls -1 releases | wc -l")));
@@ -83,17 +79,15 @@ class DeployTest extends AbstractTest
      */
     public function testRollback()
     {
-        $recipe = __DIR__ . '/deploy.php';
-        $deployer = $this->init($recipe);
-
-        $this->tester->run(['rollback', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->init(self::RECIPE);
+        $this->tester->run(['rollback', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
 
-        foreach ($deployer->hosts as $host) {
+        foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 
             self::assertEquals(2, intval(exec("cd $deployPath && ls -1 releases | wc -l")));
@@ -102,10 +96,8 @@ class DeployTest extends AbstractTest
 
     public function testFail()
     {
-        $recipe = __DIR__ . '/deploy.php';
-        $deployer = $this->init($recipe);
-
-        $this->tester->run(['deploy:fail', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->init(self::RECIPE);
+        $this->tester->run(['deploy:fail', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
@@ -113,7 +105,7 @@ class DeployTest extends AbstractTest
         $display = $this->tester->getDisplay();
         self::assertEquals(1, $this->tester->getStatusCode(), $display);
 
-        foreach ($deployer->hosts as $host) {
+        foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 
             self::assertEquals('ok', exec("cd $deployPath && [ -f .dep/deploy.lock ] || echo ok"), 'fail hooks deploy:unlock did not run');
@@ -125,35 +117,30 @@ class DeployTest extends AbstractTest
      */
     public function testCleanup()
     {
-        $recipe = __DIR__ . '/deploy.php';
-        $deployer = $this->init($recipe);
-
-        $this->tester->run(['deploy:cleanup', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->init(self::RECIPE);
+        $this->tester->run(['deploy:cleanup', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
 
-        foreach ($deployer->hosts as $host) {
+        foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 
-            self::assertFileNotExists($deployPath . '/release');
+            self::assertFileDoesNotExist($deployPath . '/release');
         }
     }
 
     public function testIsUnlockedExitsWithOneWhenDeployIsLocked()
     {
-        $recipe = __DIR__ . '/deploy.php';
-
-        $this->init($recipe);
-
-        $this->tester->run(['deploy:lock', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->init(self::RECIPE);
+        $this->tester->run(['deploy:lock', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
-        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
@@ -166,16 +153,13 @@ class DeployTest extends AbstractTest
 
     public function testIsUnlockedExitsWithZeroWhenDeployIsNotLocked()
     {
-        $recipe = __DIR__ . '/deploy.php';
-
-        $this->init($recipe);
-
-        $this->tester->run(['deploy:unlock', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->init(self::RECIPE);
+        $this->tester->run(['deploy:unlock', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
-        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => $recipe, '-l' => 1], [
+        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);

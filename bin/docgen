@@ -24,17 +24,16 @@ $input = new ArgvInput();
 $output = new ConsoleOutput();
 $app = new Application('DocGen', '1.0.0');
 $app->setDefaultCommand('all');
-$io = new SymfonyStyle($input, $output);
 
-$api = function () use ($io) {
+$api = function () use ($output) {
     $parser = new ApiGen();
     $parser->parse(file_get_contents(__DIR__ . '/../src/functions.php'));
     $md = $parser->markdown();
     file_put_contents(__DIR__ . '/../docs/api.md', $md);
-    $io->block('API Reference documentation updated.');
+    $output->writeln('API Reference documentation updated.');
 };
 
-$recipes = function () use ($input, $io) {
+$recipes = function () use ($input, $output) {
     $docgen = new DocGen(__DIR__ . '/..');
     $docgen->parse(__DIR__ . '/../recipe');
     $docgen->parse(__DIR__ . '/../contrib');
@@ -45,7 +44,7 @@ $recipes = function () use ($input, $io) {
     }
 
     $docgen->gen(__DIR__ . '/../docs');
-    $io->block('Recipes documentation updated.');
+    $output->writeln('Recipes documentation updated.');
 };
 
 $app->register('api')->setCode($api);
@@ -53,6 +52,7 @@ $app->register('recipes')->setCode($recipes)->addOption('json');
 $app->register('all')->setCode(function () use ($recipes, $api) {
     $api();
     $recipes();
+    echo `git status`;
 })->addOption('json');
 
 $app->run($input, $output);

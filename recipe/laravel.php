@@ -59,7 +59,7 @@ function artisan($command, $options = [])
         }
 
         $artisan = in_array('runInCurrent', $options)
-            ? '{{deploy_path}}/current/artisan'
+            ? '{{current_path}}/artisan'
             : '{{release_path}}/artisan';
 
         $output = run("{{bin/php}} $artisan $command");

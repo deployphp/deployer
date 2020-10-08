@@ -18,9 +18,9 @@ task('deploy:setup', function () {
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
 
     // Check for existing /current directory (not symlink)
-    $result = test('[ ! -L {{deploy_path}}/current ] && [ -d {{deploy_path}}/current ]');
+    $result = test('[ ! -L {{current_path}} ] && [ -d {{current_path}} ]');
     if ($result) {
-        throw new Exception('There already is a directory (not symlink) named "current" in ' . get('deploy_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
+        throw new Exception('There already is a directory (not symlink) in ' . get('current_path') . '. Remove this directory so it can be replaced with a symlink for atomic deployments.');
     }
 
     // Create metadata .dep dir.

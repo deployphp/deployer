@@ -199,7 +199,7 @@ desc('Warmup remote Rsync target');
 task('rsync:warmup', function() {
     $config = get('rsync');
 
-    $source = "{{deploy_path}}/current";
+    $source = "{{current_path}}";
     $destination = "{{deploy_path}}/release";
 
     if (test("[ -d $(echo $source) ]")) {

@@ -72,11 +72,7 @@ set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 /**
  * Return current release path.
  */
-set('current_path', function () {
-    $link = run("readlink {{deploy_path}}/current");
-    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-});
-
+set('current_path', '{{deploy_path}}/current');
 
 /**
  * Custom bins
@@ -160,6 +156,6 @@ task('logs', function () {
     if (output()->getVerbosity() === Output::VERBOSITY_NORMAL) {
         output()->setVerbosity(Output::VERBOSITY_VERBOSE);
     }
-    cd('{{deploy_path}}/current');
+    cd('{{current_path}}');
     run('tail -f {{log_files}}');
 });

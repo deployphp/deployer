@@ -7,6 +7,7 @@
 ### Added
 - Added a Slack notification task on rollback.
 - Recipe for crontab tasks.
+- Cachetool contrib recipe, add stat:clear command.
 - ISPManager recipe and docs.
 - Added ability to customize rsync flags.
 - Symfony 5 recipe.

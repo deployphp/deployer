@@ -6,8 +6,15 @@ require 'recipe/common.php';
 
 set('application', 'deployer');
 set('repository', __REPOSITORY__);
-set('shared_dirs', ['uploads']);
-set('shared_files', ['.env']);
+set('shared_dirs', [
+    'uploads',
+    'storage/logs/',
+    'storage/db',
+]);
+set('shared_files', [
+    '.env',
+    'config/test.yaml'
+]);
 set('keep_releases', 3);
 set('http_user', false);
 

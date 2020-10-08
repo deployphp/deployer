@@ -17,6 +17,9 @@ task('deploy:shared', function () {
     }
 
     foreach (get('shared_dirs') as $dir) {
+        // Make sure all path without tailing slash.
+        $dir = trim($dir, '/');
+
         // Check if shared dir does not exist.
         if (!test("[ -d $sharedPath/$dir ]")) {
             // Create shared dir if it does not exist.

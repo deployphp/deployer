@@ -21,7 +21,7 @@ class DeployTest extends AbstractTest
             'selector' => 'all',
             '-f' => self::RECIPE
         ], [
-            'verbosity' => Output::VERBOSITY_DEBUG,
+            'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
 
@@ -37,8 +37,14 @@ class DeployTest extends AbstractTest
             self::assertDirectoryExists($deployPath . '/current');
             self::assertDirectoryExists($deployPath . '/current/');
             self::assertFileExists($deployPath . '/current/README.md');
+            self::assertDirectoryExists($deployPath . '/current/storage/logs');
+            self::assertDirectoryExists($deployPath . '/current/storage/db');
+            self::assertDirectoryExists($deployPath . '/shared/storage/logs');
+            self::assertDirectoryExists($deployPath . '/shared/storage/db');
             self::assertFileExists($deployPath . '/shared/uploads/poem.txt');
             self::assertFileExists($deployPath . '/shared/.env');
+            self::assertFileExists($deployPath . '/current/config/test.yaml');
+            self::assertFileExists($deployPath . '/shared/config/test.yaml');
             self::assertEquals(1, intval(exec("cd $deployPath && ls -1 releases | wc -l")));
         }
     }

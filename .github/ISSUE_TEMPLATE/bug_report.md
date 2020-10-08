@@ -6,29 +6,19 @@ labels: ''
 assignees: ''
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+### Describe the bug
 
-**To reproduce**
-Steps to reproduce the behavior:
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
 
-**Environment**
-* Deployer version:
-* PHP version:
-* Deployment target(s) OS:
+### To reproduce
 
-**Content of `deploy.php`**
-```php
-// your code here
-```
 
-**Output log with enabled option for verbose output `-vvv`**
-```sh
-# output here
-```
 
-**Additional context**
-Add any other context about the problem here.
+### Expected behavior
+
+
+
+### Environment
+- Deployer version:
+- PHP version:
+- Deployment target(s) OS:

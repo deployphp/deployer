@@ -26,8 +26,21 @@ class Rsync
         $this->output = $output;
     }
 
-    /*
+    /**
      * Start rsync process.
+     *
+     * The `$config` array supports the following keys:
+     *
+     * - `flags` for overriding the default `-azP` passed to the `rsync` command
+     * - `options` with additional flags passed directly to the `rsync` command
+     * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
+     *
+     * @param  \Deployer\Host\Host  $host         target host
+     * @param  string               $source       source directory
+     * @param  string               $destination  target directory
+     * @param  array                $config       additional settings
+     *
+     * @throws \Deployer\Exception\RunException
      */
     public function call(Host $host, string $source, string $destination, array $config = [])
     {

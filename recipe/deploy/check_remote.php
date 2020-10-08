@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 use Deployer\Exception\Exception;
@@ -39,7 +33,12 @@ task('deploy:check_remote', function () {
             $opt = '--heads';
         }
 
-        $remoteLs = runLocally(sprintf("%s ls-remote $opt $repository $ref", get('bin/git')));
+        $remoteLs = null;
+        on(localhost(), function () use (& $remoteLs, $opt, $repository, $ref) {
+            $getRemoteRevisionCmd = sprintf("%s ls-remote $opt $repository $ref", get('bin/git'));
+            $remoteLs = run($getRemoteRevisionCmd);
+        });
+
         if (strstr($remoteLs, "\n")) {
             throw new Exception("Could not determine target revision. '$ref' matched multiple commits.");
         }

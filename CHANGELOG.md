@@ -8,11 +8,24 @@
 - Added a Slack notification task on rollback.
 - Recipe for crontab tasks.
 - Cachetool contrib recipe, add stat:clear command.
+- ISPManager recipe and docs.
+- Added ability to customize rsync flags.
+- Symfony 5 recipe.
+- Command for checking if a deploy is unlocked. [#2150] [#2150]
+
+### Changed
+- `within` passess through `$callback` return value. [#2178]
+- Type declarations for methods in `src/Configuration`. [#2187]
 
 ### Fixed
+- Normalize CRLF to LF new line endings. [#2111]
 - Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
-- When symfony_env is set to dev, require-dev are not installed and missing packages are breaking installation process. [#2035]
+- When symfony_env is set to dev, require-dev are not installed. [#2035]
 - Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
+- DX: Running the installing steps on a VM with php 7.0 errors silently. [#2101]
+- When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
+- Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
+- Fixed unit tests on non-master branches. [#2181]
 
 
 ## v6.8.0
@@ -579,6 +592,14 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2187]: https://github.com/deployphp/deployer/issues/2187
+[#2181]: https://github.com/deployphp/deployer/issues/2181
+[#2178]: https://github.com/deployphp/deployer/issues/2178
+[#2170]: https://github.com/deployphp/deployer/issues/2170
+[#2165]: https://github.com/deployphp/deployer/issues/2165
+[#2150]: https://github.com/deployphp/deployer/issues/2150
+[#2111]: https://github.com/deployphp/deployer/pull/2111
+[#2101]: https://github.com/deployphp/deployer/issues/2101
 [#2052]: https://github.com/deployphp/deployer/issues/2052
 [#2043]: https://github.com/deployphp/deployer/pull/2043
 [#2040]: https://github.com/deployphp/deployer/issues/2040

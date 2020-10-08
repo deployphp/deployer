@@ -14,6 +14,7 @@ use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -73,7 +74,7 @@ class SshCommand extends Command
             }
 
             if (count($hostsAliases) === 1) {
-                $host = $this->deployer->hosts->all()[0];
+                $host = current($this->deployer->hosts->all());
             } else {
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(
@@ -96,7 +97,7 @@ class SshCommand extends Command
         $options = $host->getSshArguments();
         $deployPath = $host->get('deploy_path', '~');
 
-        passthru("ssh -t $options {$host->getHostname()} 'cd '''$deployPath/current'''; $shell_path'");
+        passthru("ssh -t $options {$host->getConnectionString()} 'cd '''$deployPath/current'''; $shell_path'");
         return 0;
     }
 }

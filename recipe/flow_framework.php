@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -40,19 +34,11 @@ task('deploy:publish_resources', function () {
  * Main task
  */
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
+    'deploy:prepare',
     'deploy:vendors',
-    'deploy:shared',
-    'deploy:writable',
     'deploy:run_migrations',
     'deploy:publish_resources',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 after('deploy', 'success');

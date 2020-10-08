@@ -35,7 +35,7 @@ abstract class SelectCommand extends Command
 
     protected function configure()
     {
-        $this->addOption('select', 's', Option::VALUE_OPTIONAL, 'Host selector');
+        $this->addArgument('selector', InputArgument::OPTIONAL, 'Host selector');
     }
 
     protected function selectHosts(Input $input, Output $output)
@@ -44,7 +44,7 @@ abstract class SelectCommand extends Command
         if (!$output->isDecorated() && !defined('NO_ANSI')) {
             define('NO_ANSI', 'true');
         }
-        $selectExpression = $input->getOption('select');
+        $selectExpression = $input->getArgument('selector');
 
         if (empty($selectExpression)) {
             if (count($this->deployer->hosts) === 1) {
@@ -69,7 +69,7 @@ abstract class SelectCommand extends Command
                 });
             }
         } else {
-            $hosts = $this->deployer->selector->selectHosts($selectExpression);
+            $hosts = $this->deployer->selector->select($selectExpression);
         }
 
         if (empty($hosts)) {

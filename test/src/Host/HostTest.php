@@ -7,6 +7,7 @@
 
 namespace Deployer\Host;
 
+use Deployer\Configuration\Configuration;
 use PHPUnit\Framework\TestCase;
 
 class HostTest extends TestCase
@@ -44,9 +45,10 @@ class HostTest extends TestCase
     {
         $host = new Host('host');
         $host
-            ->set('hostname','host')
-            ->set('user','user')
-            ->set('port',2222);
+            ->set('hostname', 'host')
+            ->set('user', 'user')
+            ->setForwardAgent(true)
+            ->set('port', 2222);
 
         self::assertEquals('-A -p 2222', $host->getSshArguments()->getCliArguments());
     }
@@ -81,5 +83,22 @@ class HostTest extends TestCase
             ->set('identity_file', '{{env}}');
 
         self::assertEquals($value, $host->getIdentityFile());
+    }
+
+    public function testHostWithUserFromConfig()
+    {
+        $parent = new Configuration();
+        $parent->set("deploy_user", function () {
+            return "test_user";
+        });
+
+        $host = new Host('host');
+        $host->config()->bind($parent);
+        $host
+            ->setHostname('host')
+            ->setRemoteUser('{{deploy_user}}')
+            ->setPort(22);
+
+        self::assertEquals('test_user@host', $host->getConnectionString());
     }
 }

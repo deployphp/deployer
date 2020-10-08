@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -88,7 +82,7 @@ desc('Enable maintenance mode');
 task('artisan:down', artisan('down', ['runInCurrent', 'showOutput']));
 
 desc('Execute artisan migrate');
-task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']));
+task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']))->once();
 
 desc('Execute artisan migrate:fresh');
 task('artisan:migrate:fresh', artisan('migrate:fresh --force'));
@@ -165,7 +159,7 @@ task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
  *
  *     before('deploy:symlink', 'deploy:public_disk');
  *
- * @see https://laravel.com/docs/5.2/filesystem#configuration
+ * [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
  */
 desc('Make symlink for public disk');
 task('deploy:public_disk', function () {

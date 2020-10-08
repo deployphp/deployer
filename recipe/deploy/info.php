@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 task('deploy:info', function () {
@@ -29,6 +23,6 @@ task('deploy:info', function () {
         $what = "<fg=magenta;options=bold>HEAD</>";
     }
 
-    info("deploy $what on " . currentHost()->getTag());
+    info("deploying $what");
 })
     ->shallow();

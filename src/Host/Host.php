@@ -9,6 +9,7 @@ namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
 use Deployer\Component\Ssh\Arguments;
+use Deployer\Configuration\ProxyConfig;
 use Deployer\Deployer;
 
 class Host
@@ -25,16 +26,10 @@ class Host
         $this->config = new Configuration($parent);
         $this->set('alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
-        $this->set('remote_user', '');
-        $this->set('port', '');
-        $this->set('config_file', '');
-        $this->set('identity_file', '');
-        $this->set('forward_agent', true);
-        $this->set('shell', 'bash -s');
         $this->sshArguments = new Arguments();
     }
 
-    public function getConfig()
+    public function config()
     {
         return $this->config;
     }
@@ -165,9 +160,31 @@ class Host
         return $this->config->get('shell');
     }
 
+    public function setDeployPath(string $path)
+    {
+        $this->config->set('deploy_path', $path);
+        return $this;
+    }
+
+    public function getDeployPath()
+    {
+        return $this->config->get('deploy_path');
+    }
+
+    public function setLabels(array $labels)
+    {
+        $this->config->set('labels', $labels);
+        return $this;
+    }
+
+    public function getLabels()
+    {
+        return $this->config->get('labels');
+    }
+
     public function getConnectionString(): string
     {
-        if ($this->get('remote_user') !== '') {
+        if ($this->get('remote_user', '') !== '') {
             return $this->get('remote_user') . '@' . $this->get('hostname');
         }
         return $this->get('hostname');
@@ -197,19 +214,19 @@ class Host
 
     private function initOptions()
     {
-        if ($this->getPort()) {
+        if ($this->has('port')) {
             $this->sshArguments = $this->sshArguments->withFlag('-p', $this->getPort());
         }
 
-        if ($this->getConfigFile()) {
+        if ($this->has('config_file')) {
             $this->sshArguments = $this->sshArguments->withFlag('-F', $this->getConfigFile());
         }
 
-        if ($this->getIdentityFile()) {
+        if ($this->has('identity_file')) {
             $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
         }
 
-        if ($this->getForwardAgent()) {
+        if ($this->has('forward_agent') && $this->getForwardAgent()) {
             $this->sshArguments = $this->sshArguments->withFlag('-A');
         }
     }

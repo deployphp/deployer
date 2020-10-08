@@ -9,9 +9,9 @@ set('repository', __DIR__ . '/repository');
 set('shared_dirs', ['uploads']);
 set('shared_files', ['.env']);
 set('keep_releases', 3);
+set('http_user', false);
 
 localhost('prod');
-localhost('beta');
 
 task('deploy', [
     'deploy:prepare',
@@ -34,18 +34,13 @@ task('deploy:fail', [
 ]);
 
 task('fail', function () {
-    run('¯\_(ツ)_/¯');
+    run('false');
 });
 
 fail('deploy:fail', 'deploy:unlock');
-
-task('echo', function () {
-    run('echo {{deploy_path}}');
-});
 
 task('once', function () {
     info('should be run only once');
 })->once();
 
 after('deploy', 'once');
-

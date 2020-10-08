@@ -36,7 +36,7 @@ class FunctionsTest extends TestCase
         $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
         $host
             ->expects($this->any())
-            ->method('getConfig')
+            ->method('config')
             ->willReturn(new Configuration());
 
         $this->deployer = new Deployer($console);
@@ -118,6 +118,68 @@ class FunctionsTest extends TestCase
     {
         $output = runLocally('echo "hello"');
         self::assertEquals('hello', $output);
+    }
+
+    public function testRunLocallyWithOptions()
+    {
+        Context::get()->getConfig()->set('env', ['DEPLOYER_ENV' => 'default', 'DEPLOYER_ENV_TMP' => 'default']);
+
+        $output = runLocally('echo $DEPLOYER_ENV');
+        self::assertEquals('default', $output);
+        $output = runLocally('echo $DEPLOYER_ENV_TMP');
+        self::assertEquals('default', $output);
+
+        $output = runLocally('echo $DEPLOYER_ENV', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
+        self::assertEquals('default', $output);
+        $output = runLocally('echo $DEPLOYER_ENV_TMP', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
+        self::assertEquals('overwritten', $output);
+    }
+
+    public function testWithinSetsWorkingPaths()
+    {
+        Context::get()->getConfig()->set('working_path', '/foo');
+
+        within('/bar', function () {
+            $withinWorkingPath = Context::get()->getConfig()->get('working_path');
+            self::assertEquals('/bar', $withinWorkingPath);
+        });
+
+        $originalWorkingPath = Context::get()->getConfig()->get('working_path');
+        self::assertEquals('/foo', $originalWorkingPath);
+    }
+
+    public function testWithinRestoresWorkingPathInCaseOfException()
+    {
+        Context::get()->getConfig()->set('working_path', '/foo');
+
+        try {
+            within('/bar', function () {
+                throw new \Exception('Dummy exception');
+            });
+        } catch (\Exception $exception) {
+            // noop
+        }
+
+        $originalWorkingPath = Context::get()->getConfig()->get('working_path');
+        self::assertEquals('/foo', $originalWorkingPath);
+    }
+
+    public function testWithinReturningValue()
+    {
+        $output = within('/foo', function () {
+           return 'bar';
+        });
+
+        self::assertEquals('bar', $output);
+    }
+
+    public function testWithinWithVoidFunction()
+    {
+        $output = within('/foo', function () {
+            // noop
+        });
+
+        self::assertNull($output);
     }
 
     private function taskToNames($tasks)

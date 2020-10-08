@@ -104,7 +104,7 @@ class Context
      */
     public function getConfig()
     {
-        return $this->host->getConfig();
+        return $this->host->config();
     }
 
     /**

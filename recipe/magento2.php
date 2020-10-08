@@ -5,8 +5,8 @@ require_once __DIR__ . '/common.php';
 
 // Configuration
 
-// By default setup:static-content:deploy uses `en_US`. 
-// To change that, simply put set('static_content_locales', 'en_US de_DE');` 
+// By default setup:static-content:deploy uses `en_US`.
+// To change that, simply put set('static_content_locales', 'en_US de_DE');`
 // in you deployer script.
 set('static_content_locales', 'en_US');
 
@@ -87,20 +87,11 @@ task('deploy:magento', [
 
 desc('Deploy your project');
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
+    'deploy:prepare',
     'deploy:vendors',
-    'deploy:writable',
     'deploy:clear_paths',
     'deploy:magento',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
-    'success'
+    'deploy:publish',
 ]);
 
 after('deploy:failed', 'magento:maintenance:disable');

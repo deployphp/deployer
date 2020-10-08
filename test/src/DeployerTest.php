@@ -34,27 +34,4 @@ class DeployerTest extends TestCase
     {
         $this->assertEquals($this->deployer, Deployer::get());
     }
-
-    public function collections()
-    {
-        return [
-            ['tasks'],
-            ['hosts'],
-        ];
-    }
-
-    /**
-     * @dataProvider collections
-     */
-    public function testCollections($collection)
-    {
-        $this->assertInstanceOf(Collection::class, $this->deployer->{$collection});
-    }
-
-    public function testCollectionsE()
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $this->deployer->some_collection;
-    }
 }

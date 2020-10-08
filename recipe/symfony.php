@@ -1,10 +1,4 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -44,7 +38,7 @@ set('env', function () {
 
 set('composer_options', function () {
     $debug = get('symfony_env') === 'dev';
-    return sprintf('{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction %s --optimize-autoloader --no-suggest', (!$debug ? '--no-dev' : ''));
+    return sprintf('--verbose --prefer-dist --no-progress --no-interaction %s --optimize-autoloader --no-suggest', (!$debug ? '--no-dev' : ''));
 });
 
 
@@ -146,24 +140,16 @@ task('database:migrate', function () {
  * Main task
  */
 task('deploy', [
-    'deploy:info',
-    'deploy:setup',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
+    'deploy:prepare',
     'deploy:clear_paths',
     'deploy:create_cache_dir',
-    'deploy:shared',
     'deploy:assets',
     'deploy:vendors',
     'deploy:assets:install',
     'deploy:assetic:dump',
     'deploy:cache:clear',
     'deploy:cache:warmup',
-    'deploy:writable',
-    'deploy:symlink',
-    'deploy:unlock',
-    'deploy:cleanup',
+    'deploy:publish',
 ])->desc('Deploy your project');
 
 // Display success message on completion

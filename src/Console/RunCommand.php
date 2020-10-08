@@ -22,6 +22,8 @@ use function Deployer\writeln;
 
 class RunCommand extends SelectCommand
 {
+    use CustomOption;
+
     public function __construct(Deployer $deployer)
     {
         parent::__construct('run', $deployer);
@@ -36,6 +38,12 @@ class RunCommand extends SelectCommand
             InputArgument::IS_ARRAY,
             'Command to run'
         );
+        $this->addOption(
+            'option',
+            'o',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Set configuration option'
+        );
     }
 
     protected function execute(Input $input, Output $output)
@@ -49,6 +57,7 @@ class RunCommand extends SelectCommand
 
         $command = implode(' ', $input->getArgument('command-to-run') ?? '');
         $hosts = $this->selectHosts($input, $output);
+        $this->applyOverrides($hosts, $input->getOption('option'));
 
         $task = new Task($command, function () use ($command, $hosts) {
             run($command);

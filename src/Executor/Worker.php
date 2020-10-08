@@ -1,0 +1,50 @@
+<?php
+
+
+namespace Deployer\Executor;
+
+
+use Deployer\Deployer;
+use Deployer\Exception\Exception;
+use Deployer\Exception\GracefulShutdownException;
+use Deployer\Exception\RunException;
+use Deployer\Host\Host;
+use Deployer\Task\Context;
+use Deployer\Task\Task;
+use Throwable;
+
+class Worker
+{
+    /**
+     * @var Deployer
+     */
+    private $deployer;
+
+    public function __construct(Deployer $deployer)
+    {
+        $this->deployer = $deployer;
+    }
+
+    public function execute(Task $task, Host $host)
+    {
+        try {
+            Exception::setTaskSourceLocation($task->getSourceLocation());
+
+            $task->run(new Context($host, $this->deployer->input, $this->deployer->output));
+
+            if ($task->getName() !== 'connect') {
+                $this->deployer->messenger->endOnHost($host);
+            }
+            return 0;
+        } catch (Throwable $e) {
+            $this->deployer->messenger->renderException($e, $host);
+            if ($e instanceof GracefulShutdownException) {
+                return GracefulShutdownException::EXIT_CODE;
+            }
+            if ($e instanceof RunException) {
+                return $e->getExitCode();
+            }
+            return 255;
+        }
+    }
+}

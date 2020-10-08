@@ -18,11 +18,10 @@ if (!$loaded) {
 
 require_once __DIR__ . '/AbstractTest.php';
 
-// Init repository
 $repository = __DIR__ . '/fixtures/repository';
 define('__REPOSITORY__', $repository);
 
-echo `ls -la $repository`;
+// Init repository
 `cd $repository && git init`;
 $branch = trim(`git rev-parse --abbrev-ref HEAD`);
 `cd $repository && git checkout -B $branch 2>&1`;
@@ -30,7 +29,6 @@ $branch = trim(`git rev-parse --abbrev-ref HEAD`);
 `cd $repository && git config user.name 'Anton Medvedev'`;
 `cd $repository && git config user.email 'anton.medv@example.com'`;
 `cd $repository && git commit -m 'first commit'`;
-
 
 putenv('DEPLOYER_LOCAL_WORKER=true');
 define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');

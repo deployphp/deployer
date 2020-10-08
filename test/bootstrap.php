@@ -21,6 +21,8 @@ require_once __DIR__ . '/AbstractTest.php';
 // Init repository
 $repository = __DIR__ . '/fixtures/repository';
 define('__REPOSITORY__', $repository);
+
+echo __DIR__;
 `cd $repository && git init`;
 $branch = trim(`git rev-parse --abbrev-ref HEAD`);
 `cd $repository && git checkout -B $branch 2>&1`;

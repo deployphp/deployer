@@ -96,7 +96,7 @@ class DeployTest extends AbstractTest
         foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 
-            self::assertEquals(2, intval(exec("cd $deployPath && ls -1 releases | wc -l")));
+            self::assertEquals(3, intval(exec("cd $deployPath && ls -1 releases | wc -l")));
         }
     }
 

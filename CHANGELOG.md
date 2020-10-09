@@ -16,6 +16,7 @@
 ### Changed
 - `within` passess through `$callback` return value. [#2178]
 - Type declarations for methods in `src/Configuration`. [#2187]
+- On rollback release kept and marked as BAD.
 
 ### Fixed
 - Normalize CRLF to LF new line endings. [#2111]

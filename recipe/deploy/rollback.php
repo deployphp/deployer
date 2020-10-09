@@ -1,24 +1,45 @@
 <?php
+
 namespace Deployer;
 
 use Deployer\Exception\Exception;
 
 desc('Rollback to previous release');
 task('rollback', function () {
+    $currentRelease = basename(run('readlink {{current_path}}'));
     $releases = get('releases_list');
 
-    if (isset($releases[1])) {
-        $releaseDir = "{{deploy_path}}/releases/{$releases[1]}";
+    $releasesBeforeCurrent = [];
+    $foundCurrent = false;
+    foreach ($releases as $r) {
+        if ($r === $currentRelease) {
+            $foundCurrent = true;
+            continue;
+        }
+        if ($foundCurrent) {
+            $releasesBeforeCurrent[] = $r;
+        }
+    }
+
+    while (isset($releasesBeforeCurrent[0])) {
+        $releaseDir = "{{deploy_path}}/releases/{$releasesBeforeCurrent[0]}";
+
+        // Skip all bad releases.
+        if (test("[ -f $releaseDir/BAD_RELEASE ]")) {
+            array_shift($releasesBeforeCurrent);
+            continue;
+        }
 
         // Symlink to old release.
         run("cd {{deploy_path}} && {{bin/symlink}} $releaseDir {{current_path}}");
 
-        // Remove release
-        run("rm -rf {{deploy_path}}/releases/{$releases[0]}");
+        // Mark release as bad.
+        $date = run('date +"%Y%m%d%H%M%S"');
+        run("echo '$date,{{user}}' > {{deploy_path}}/releases/$currentRelease/BAD_RELEASE");
 
-
-        writeln("<info>rollback</info> to {$releases[1]} release was <success>successful</success>");
-    } else {
-        throw new Exception("No more releases you can revert to.");
+        writeln("<info>rollback</info> to release {$releasesBeforeCurrent[0]} was <success>successful</success>");
+        return;
     }
+
+    throw new Exception("No more releases you can revert to.");
 });

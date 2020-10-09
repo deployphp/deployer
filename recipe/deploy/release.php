@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 use Deployer\Exception\Exception;
@@ -8,11 +9,13 @@ use Deployer\Support\Csv;
  * Name of folder in releases.
  */
 set('release_name', function () {
-    $list = get('releases_list');
+    $list = array_map(function ($r) {
+        return $r[1];
+    }, get('releases_metainfo'));
 
-    // Filter out anything that does not look like a release.
+    // Filter out anything that does not look like a number.
     $list = array_filter($list, function ($release) {
-        return preg_match('/^[\d\.]+$/', $release);
+        return preg_match('/^\d+$/', $release);
     });
 
     $nextReleaseNumber = 1;
@@ -21,6 +24,25 @@ set('release_name', function () {
     }
 
     return (string)$nextReleaseNumber;
+});
+
+/**
+ * Holds metainfo about releases from `.dep/releases` file.
+ */
+set('releases_metainfo', function () {
+    cd('{{deploy_path}}');
+
+    if (!test('[ -f .dep/releases ]')) {
+        return [];
+    }
+
+    $keepReleases = get('keep_releases');
+    if ($keepReleases === -1) {
+        $csv = run('cat .dep/releases');
+    } else {
+        $csv = run("tail -n " . ($keepReleases + 5) . " .dep/releases");
+    }
+    return Csv::parse($csv);
 });
 
 /**
@@ -35,46 +57,22 @@ set('releases_list', function () {
     }
 
     // Will list only dirs in releases.
-    $list = explode("\n", run('cd releases && ls -t -1 -d */'));
-
-    // Prepare list.
-    $list = array_map(function ($release) {
+    $ll = explode("\n", run('cd releases && ls -t -1 -d */'));
+    $ll = array_map(function ($release) {
         return basename(rtrim(trim($release), '/'));
-    }, $list);
+    }, $ll);
 
-    $releases = []; // Releases list.
+    $metainfo = get('releases_metainfo');
 
-    // Collect releases based on .dep/releases info.
-    // Other will be ignored.
-
-    if (test('[ -f .dep/releases ]')) {
-        $keepReleases = get('keep_releases');
-        if ($keepReleases === -1) {
-            $csv = run('cat .dep/releases');
-        } else {
-            // Instead of `tail -n` call here can be `cat` call,
-            // but on hosts with a lot of deploys (more 1k) it
-            // will output a really big list of previous releases.
-            // It spoils appearance of output log, to make it pretty,
-            // we limit it to `n*2 + 5` lines from end of file (15 lines).
-            // Always read as many lines as there are release directories.
-            $csv = run("tail -n " . max(count($releases), ($keepReleases * 2 + 5)) . " .dep/releases");
-        }
-
-        $metainfo = Csv::parse($csv);
-
-        for ($i = count($metainfo) - 1; $i >= 0; --$i) {
-            if (is_array($metainfo[$i]) && count($metainfo[$i]) >= 2) {
-                list(, $release) = $metainfo[$i];
-                $index = array_search($release, $list, true);
-                if ($index !== false) {
-                    $releases[] = $release;
-                    unset($list[$index]);
-                }
+    $releases = [];
+    for ($i = count($metainfo) - 1; $i >= 0; --$i) {
+        if (is_array($metainfo[$i]) && count($metainfo[$i]) >= 2) {
+            list(, $release) = $metainfo[$i];
+            if (in_array($release, $ll, true)) {
+                $releases[] = $release;
             }
         }
     }
-
     return $releases;
 });
 
@@ -97,9 +95,7 @@ task('deploy:release', function () {
     cd('{{deploy_path}}');
 
     // Clean up if there is unfinished release
-    $previousReleaseExist = test('[ -h release ]');
-
-    if ($previousReleaseExist) {
+    if (test('[ -h release ]')) {
         run('rm -rf "$(readlink release)"'); // Delete release
         run('rm release'); // Delete symlink
     }

@@ -2,28 +2,38 @@
 
 namespace Deployer;
 
-use Deployer\Support\Csv;
 use Symfony\Component\Console\Helper\Table;
 
+desc('Show releases status');
 task('status', function () {
-    $metainfo = Csv::parse(run('cat {{deploy_path}}/.dep/releases'));
-    $releasesList = get('releases_list');
-    $currentRelease = run('basename `realpath {{current_path}}`');
+    cd('{{deploy_path}}');
 
-    $metainfo = array_filter($metainfo, function ($r) use ($releasesList) {
-        return in_array($r[1], $releasesList, true);
-    });
+    $metainfo = get('releases_metainfo');
+    $currentRelease = basename(run('readlink {{current_path}}'));
+    $releasesList = get('releases_list');
+
     foreach ($metainfo as &$r) {
         $r[0] = \DateTime::createFromFormat("YmdHis", $r[0])->format("Y-m-d H:i:s");
-        if ($r[1] === $currentRelease) {
-            $r[1] = "<info>$r[1]</info>";
+        $release = $r[1];
+        if (in_array($release, $releasesList, true)) {
+            // Add git commit rev.
+            $r[] = run("cd releases/$release && git show --format='%h' --no-patch");
+
+            if (test("[ -f releases/$release/BAD_RELEASE ]")) {
+                $r[1] = "<error>$release</error> (bad)";
+            } else {
+                $r[1] = "<info>$release</info>";
+            }
         }
-     }
+        if ($release === $currentRelease) {
+            $r[1] .= ' (current)';
+        }
+    }
 
     $table = new Table(output());
     $table
         ->setHeaderTitle(currentHost()->getAlias())
-        ->setHeaders(['Date', 'Release', 'Author', 'Target'])
+        ->setHeaders(['Date', 'Release', 'Author', 'Target', 'Commit'])
         ->setRows($metainfo);
     $table->render();
 });

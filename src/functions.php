@@ -281,6 +281,7 @@ function within($path, $callback)
  * Options:
  * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
  * - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ * - `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']])`;
  *
  * Examples:
  *

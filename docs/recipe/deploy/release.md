@@ -10,6 +10,7 @@
 
 * Config
   * [`release_name`](#release_name)
+  * [`releases_metainfo`](#releases_metainfo)
   * [`releases_list`](#releases_list)
   * [`release_path`](#release_path)
 * Tasks
@@ -17,24 +18,29 @@
 
 ## Config
 ### release_name
-[Source](/recipe/deploy/release.php#L10)
+[Source](/recipe/deploy/release.php#L11)
 
 Name of folder in releases.
 
+### releases_metainfo
+[Source](/recipe/deploy/release.php#L32)
+
+Holds metainfo about releases from `.dep/releases` file.
+
 ### releases_list
-[Source](/recipe/deploy/release.php#L29)
+[Source](/recipe/deploy/release.php#L51)
 
 Return list of releases on host.
 
 ### release_path
-[Source](/recipe/deploy/release.php#L84)
+[Source](/recipe/deploy/release.php#L82)
 
 Return release path.
 
 
 ## Tasks
 ### deploy:release
-[Source](/recipe/deploy/release.php#L96)
+[Source](/recipe/deploy/release.php#L94)
 
 
 

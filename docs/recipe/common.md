@@ -19,6 +19,7 @@
   * [`recipe/deploy/rollback.php`](/docs/recipe/deploy/rollback.md)
   * [`recipe/deploy/setup.php`](/docs/recipe/deploy/setup.md)
   * [`recipe/deploy/shared.php`](/docs/recipe/deploy/shared.md)
+  * [`recipe/deploy/status.php`](/docs/recipe/deploy/status.md)
   * [`recipe/deploy/symlink.php`](/docs/recipe/deploy/symlink.md)
   * [`recipe/deploy/update_code.php`](/docs/recipe/deploy/update_code.md)
   * [`recipe/deploy/vendors.php`](/docs/recipe/deploy/vendors.md)
@@ -48,72 +49,72 @@
 
 ## Config
 ### user
-[Source](/recipe/common.php#L29)
+[Source](/recipe/common.php#L30)
 
 
 
 ### keep_releases
-[Source](/recipe/common.php#L49)
+[Source](/recipe/common.php#L50)
 
 
 
 ### repository
-[Source](/recipe/common.php#L51)
+[Source](/recipe/common.php#L52)
 
 
 
 ### shared_dirs
-[Source](/recipe/common.php#L53)
-
-
-
-### shared_files
 [Source](/recipe/common.php#L54)
 
 
 
+### shared_files
+[Source](/recipe/common.php#L55)
+
+
+
 ### copy_dirs
-[Source](/recipe/common.php#L56)
+[Source](/recipe/common.php#L57)
 
 
 
 ### clear_paths
-[Source](/recipe/common.php#L58)
-
-
-
-### clear_use_sudo
 [Source](/recipe/common.php#L59)
 
 
 
+### clear_use_sudo
+[Source](/recipe/common.php#L60)
+
+
+
 ### cleanup_use_sudo
-[Source](/recipe/common.php#L61)
+[Source](/recipe/common.php#L62)
 
 
 
 ### use_relative_symlink
-[Source](/recipe/common.php#L63)
+[Source](/recipe/common.php#L64)
 
 
 
 ### use_atomic_symlink
-[Source](/recipe/common.php#L66)
+[Source](/recipe/common.php#L67)
 
 
 
 ### env
-[Source](/recipe/common.php#L70)
+[Source](/recipe/common.php#L71)
 
 
 
 ### current_path
-[Source](/recipe/common.php#L75)
+[Source](/recipe/common.php#L76)
 
 Return current release path.
 
 ### sudo_askpass
-[Source](/recipe/common.php#L99)
+[Source](/recipe/common.php#L96)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -122,7 +123,7 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L115)
+[Source](/recipe/common.php#L112)
 
 
 
@@ -137,7 +138,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L125)
+[Source](/recipe/common.php#L122)
 
 
 
@@ -149,17 +150,17 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](/recipe/common.php#L135)
+[Source](/recipe/common.php#L132)
 
 Success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L145)
+[Source](/recipe/common.php#L142)
 
 Deploy failure
 
 ### logs
-[Source](/recipe/common.php#L154)
+[Source](/recipe/common.php#L151)
 
 Follow latest application logs.
 

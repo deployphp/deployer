@@ -43,6 +43,7 @@ class ProcessRunner
             'idle_timeout' => null,
             'cwd' => defined('DEPLOYER_ROOT') ? DEPLOYER_ROOT : null,
             'tty' => false,
+            'vars' => [],
         ];
         $config = array_merge($defaults, $config);
 
@@ -53,6 +54,8 @@ class ProcessRunner
             $this->logger->printBuffer($host, $type, $buffer);
             $terminalOutput($type, $buffer);
         };
+
+        $command = $this->replacePlaceholders($command, $config['vars']);
 
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
@@ -78,5 +81,14 @@ class ProcessRunner
                 $process->getErrorOutput()
             );
         }
+    }
+
+    private function replacePlaceholders(string $command, array $variables): string
+    {
+        foreach ($variables as $placeholder => $replacement) {
+            $command = str_replace("%$placeholder%", $replacement, $command);
+        }
+
+        return $command;
     }
 }

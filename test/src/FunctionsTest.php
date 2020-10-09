@@ -19,6 +19,7 @@ use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Deployer\localhost;
 
 class FunctionsTest extends TestCase
 {
@@ -133,6 +134,25 @@ class FunctionsTest extends TestCase
         self::assertEquals('default', $output);
         $output = runLocally('echo $DEPLOYER_ENV_TMP', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
         self::assertEquals('overwritten', $output);
+    }
+
+    public function testRunLocallyWithTwoPlaceholders(): void
+    {
+        $cmd = "echo 'placeholder %foo% %baz%'";
+        $vars = [ 'foo' => '{{bar}}', 'baz' => 'xyz%' ];
+
+        $output = runLocally($cmd, [ 'vars' => $vars ]);
+        self::assertEquals('placeholder {{bar}} xyz%', $output);
+    }
+
+    public function testRunLocallyWithPlaceholdersAndParsedValues(): void
+    {
+        $cmd = "echo 'placeholder %foo%; parsed {{baz}}'";
+        $vars = [ 'foo' => '{{bar}}' ];
+        Context::get()->getConfig()->set('baz', 'xyz');
+
+        $output = runLocally($cmd, [ 'vars' => $vars ]);
+        self::assertEquals("placeholder {{bar}}; parsed xyz", $output);
     }
 
     public function testWithinSetsWorkingPaths()

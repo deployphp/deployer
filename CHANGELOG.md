@@ -12,6 +12,7 @@
 - Added ability to customize rsync flags.
 - Symfony 5 recipe.
 - Command for checking if a deploy is unlocked. [#2150] [#2150]
+- Added support for placeholders in run and runLocally methods. [#2192]
 
 ### Changed
 - `within` passess through `$callback` return value. [#2178]
@@ -593,6 +594,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2192]: https://github.com/deployphp/deployer/issues/2192
 [#2187]: https://github.com/deployphp/deployer/issues/2187
 [#2181]: https://github.com/deployphp/deployer/issues/2181
 [#2178]: https://github.com/deployphp/deployer/issues/2178

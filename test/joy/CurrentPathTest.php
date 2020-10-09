@@ -15,14 +15,14 @@ class CurrentPathTest extends AbstractTest
 
     public function testDeployWithDifferentCurrentPath()
     {
-        $currentPath = __TEMP_DIR__ . '/public_html';
+        $currentPath = __TEMP_DIR__ . '/prod/public_html';
 
         $this->init(self::RECIPE);
         $this->tester->run([
             'deploy',
             'selector' => 'prod',
             '-f' => self::RECIPE,
-            '-o' => ['current_path=' . __TEMP_DIR__ . '/public_html'],
+            '-o' => ['current_path=' . $currentPath],
         ], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
         ]);

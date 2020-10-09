@@ -123,7 +123,7 @@ task('deploy:release', function () {
     $date = run('date +"%Y%m%d%H%M%S"');
 
     // Save metainfo about release
-    run("echo '$date,{{release_name}}' >> .dep/releases");
+    run("echo '$date,{{release_name}},{{user}},{{git_target}}' >> .dep/releases");
 
     // Make new release
     run("mkdir -p $releasePath");

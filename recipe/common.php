@@ -11,6 +11,7 @@ require __DIR__ . '/deploy/release.php';
 require __DIR__ . '/deploy/rollback.php';
 require __DIR__ . '/deploy/setup.php';
 require __DIR__ . '/deploy/shared.php';
+require __DIR__ . '/deploy/status.php';
 require __DIR__ . '/deploy/symlink.php';
 require __DIR__ . '/deploy/update_code.php';
 require __DIR__ . '/deploy/vendors.php';

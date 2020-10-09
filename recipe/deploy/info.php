@@ -1,6 +1,25 @@
 <?php
 namespace Deployer;
 
+// Holds name of deployed branch, tag or revision.
+set('git_target', function () {
+    $t = '';
+    $branch = get('branch');
+    if (!empty($branch)) {
+        $t = $branch;
+    }
+    if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
+        $t = input()->getOption('tag');
+    }
+    if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
+        $t = input()->getOption('revision');
+    }
+    if (empty($t)) {
+        $t = "HEAD";
+    }
+    return $t;
+});
+
 task('deploy:info', function () {
     $what = '';
     $branch = get('branch');

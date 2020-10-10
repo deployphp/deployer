@@ -8,17 +8,7 @@
 namespace Deployer\Console;
 
 use Deployer\Component\Initializer\Initializer;
-use Deployer\Component\Initializer\Template\CakeTemplate;
-use Deployer\Component\Initializer\Template\CodeIgniterTemplate;
-use Deployer\Component\Initializer\Template\CommonTemplate;
-use Deployer\Component\Initializer\Template\DrupalTemplate;
-use Deployer\Component\Initializer\Template\LaravelTemplate;
-use Deployer\Component\Initializer\Template\SymfonyTemplate;
-use Deployer\Component\Initializer\Template\Typo3Template;
-use Deployer\Component\Initializer\Template\Yii2AdvancedAppTemplate;
-use Deployer\Component\Initializer\Template\Yii2BasicAppTemplate;
-use Deployer\Component\Initializer\Template\YiiTemplate;
-use Deployer\Component\Initializer\Template\ZendTemplate;
+use Deployer\Utility\Httpie;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -103,7 +93,7 @@ class InitCommand extends Command
             }
             $repository = $io->ask('Repository', $default);
 
-            // Repo
+            // Project
             $default = false;
             try {
                 $process = Process::fromShellCommandline('basename "$PWD"');
@@ -114,10 +104,19 @@ class InitCommand extends Command
             $project = $io->ask('Project name', $default);
 
             // Hosts
-            $hosts = explode(',', $io->ask('Hosts (comma separated)', 'deployer.org'));
+            $host = null;
+            if (preg_match('/github.com:(?<org>[A-Za-z0-9_\.\-]+)\//', $repository, $m)) {
+                try {
+                    ['blog' => $blog] = Httpie::get('https://api.github.com/orgs/' . $m['org'])->getJson();
+                    $host = parse_url($blog, PHP_URL_HOST);
+                } catch (\Throwable $e) {
+                    // ¯\_(ツ)_/¯
+                }
+            }
+            $hosts = explode(',', $io->ask('Hosts (comma separated)', $host));
         }
-        file_put_contents($filepath, $initializer->getTemplate($template, $project, $repository, $hosts, $allow));
 
+        file_put_contents($filepath, $initializer->getTemplate($template, $project, $repository, $hosts, $allow));
         $this->telemetry();
         $output->writeln(sprintf(
             '<info>Successfully created</info> <comment>%s</comment>',

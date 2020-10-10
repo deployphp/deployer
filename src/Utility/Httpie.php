@@ -89,6 +89,7 @@ class Httpie
     public function send()
     {
         $ch = curl_init($this->url);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);

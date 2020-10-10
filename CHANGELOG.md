@@ -30,7 +30,15 @@
 - Refactored `dep init` command.
 
 ### Fixed
-- Lots, and lots of long-standing bugs.
+- Normalize CRLF to LF new line endings. [#2111]
+- Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
+- When symfony_env is set to dev, require-dev are not installed. [#2035]
+- Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
+- DX: Running the installing steps on a VM with php 7.0 errors silently. [#2101]
+- When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
+- Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
+- Fixed unit tests on non-master branches. [#2181]
+- Include callback function to validate set data (#976).
 
 
 ## v6.8.0

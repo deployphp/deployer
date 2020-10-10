@@ -8,7 +8,6 @@
 namespace Deployer\Console;
 
 use Deployer\Deployer;
-use Deployer\Host\Host;
 use Deployer\Support\Reporter;
 
 trait CommandCommon

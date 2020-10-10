@@ -83,7 +83,7 @@ class Task
     {
         $this->name = $name;
         $this->callback = $callback;
-        $this->selector = Selector::parse('all');
+        $this->selector = null;
     }
 
     public function run(Context $context)

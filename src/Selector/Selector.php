@@ -39,6 +39,10 @@ class Selector
 
     public static function apply($conditions, Host $host)
     {
+        if (empty($conditions)) {
+            return true;
+        }
+
         $labels = $host->get('labels', []);
         $labels['__host__'] = $host->getAlias();
         $labels['__all__'] = 'yes';

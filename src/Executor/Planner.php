@@ -52,12 +52,12 @@ class Planner
      */
     public function commit(array $hosts, Task $task)
     {
-        if (count($hosts) === 1 && $hosts[0]->getAlias() === 'localhost') {
+        if (count($hosts) === 1 && $hosts[0]->getAlias() === 'local') {
             $row = [];
             foreach ($this->template as $alias) {
                 $row[] = "-";
             }
-            $row[] = $task->getName() . " (local)";
+            $row[] = $task->getName();
             $this->table->addRow($row);
             return;
         }

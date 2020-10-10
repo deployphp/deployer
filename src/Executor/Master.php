@@ -82,7 +82,8 @@ class Master
             }
 
             if ($task->isLocal()) {
-                $plannedHosts = [new Localhost('localhost')];
+                // Special name for local() tasks.
+                $plannedHosts = [new Localhost('local')];
             }
 
             if ($limit === 1 || count($plannedHosts) === 1) {
@@ -106,10 +107,9 @@ class Master
                 }
             } else {
                 foreach (array_chunk($hosts, $limit) as $chunk) {
-                    $selector = $task->getSelector();
                     $selectedHosts = [];
                     foreach ($chunk as $currentHost) {
-                        if ($selector === null || Selector::apply($selector, $currentHost)) {
+                        if (Selector::apply($task->getSelector(), $currentHost)) {
                             $selectedHosts[] = $currentHost;
                         }
                     }

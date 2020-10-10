@@ -99,7 +99,7 @@ function getHost(string $alias)
 }
 
 /**
- * Get current host.
+ * Returns current host.
  *
  * @return Host
  */
@@ -406,16 +406,25 @@ function testLocally($command)
 }
 
 /**
- * Iterate other hosts, allowing to call run func in callback.
+ * Iterate other hosts, allowing to call run a func in callback.
  *
- * @experimental
+ * ```php
+ * on(getHost('prod'), function ($host) {
+ *     ...
+ * });
+ * ```
+ *
+ * ```php
+ * on(Deployer::get()->hosts, function ($host) {
+ *     ...
+ * });
+ * ```
+ *
  * @param Host|Host[] $hosts
  * @param callable $callback
  */
 function on($hosts, callable $callback)
 {
-    $deployer = Deployer::get();
-
     if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
         $hosts = [$hosts];
     }
@@ -428,7 +437,7 @@ function on($hosts, callable $callback)
                 $callback($host);
                 $host->config()->save();
             } catch (GracefulShutdownException $e) {
-                $deployer->messenger->renderException($e, $host);
+                Deployer::get()->messenger->renderException($e, $host);
             } finally {
                 Context::pop();
             }

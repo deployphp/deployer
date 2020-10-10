@@ -33,12 +33,7 @@ task('deploy:check_remote', function () {
             $opt = '--heads';
         }
 
-        $remoteLs = null;
-        on(localhost(), function () use (& $remoteLs, $opt, $repository, $ref) {
-            $getRemoteRevisionCmd = sprintf("%s ls-remote $opt $repository $ref", get('bin/git'));
-            $remoteLs = run($getRemoteRevisionCmd);
-        });
-
+        $remoteLs = runLocally("git ls-remote $opt $repository $ref");
         if (strstr($remoteLs, "\n")) {
             throw new Exception("Could not determine target revision. '$ref' matched multiple commits.");
         }
@@ -55,4 +50,6 @@ task('deploy:check_remote', function () {
     if ($targetRevision && strpos($lastDeployedRevision, $targetRevision) === 0) {
         throw new GracefulShutdownException("Already up-to-date.");
     }
+
+    info("deployed different version");
 });

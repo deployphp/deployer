@@ -8,6 +8,7 @@
  * [`localhost()`](#localhost)
  * [`getHost()`](#getHost)
  * [`currentHost()`](#currentHost)
+ * [`select()`](#select)
  * [`inventory()`](#inventory)
  * [`desc()`](#desc)
  * [`task()`](#task)
@@ -28,7 +29,6 @@
  * [`info()`](#info)
  * [`warning()`](#warning)
  * [`writeln()`](#writeln)
- * [`write()`](#write)
  * [`parse()`](#parse)
  * [`set()`](#set)
  * [`add()`](#add)
@@ -73,7 +73,22 @@ Get host by host alias.
 currentHost()
 ```
 
-Get current host.
+Returns current host.
+
+
+## select()
+
+```php
+select(string $selector)
+```
+
+Returns hosts based on provided selector.
+
+```php
+on(select('stage=prod, role=db'), function ($host) {
+    ...
+});
+```
 
 
 ## inventory()
@@ -228,17 +243,37 @@ Example:
 on($hosts, callable $callback)
 ```
 
-Iterate other hosts, allowing to call run func in callback.
+Iterate other hosts, allowing to call run a func in callback.
+
+```php
+on(select('stage=prod, role=db'), function ($host) {
+    ...
+});
+```
+
+```php
+on(getHost('prod'), function ($host) {
+    ...
+});
+```
+
+```php
+on(Deployer::get()->hosts, function ($host) {
+    ...
+});
+```
 
 
 ## invoke()
 
 ```php
-invoke($task)
+invoke(string $taskName)
 ```
 
-Run task
-
+Runs a task.
+```php
+invoke('deploy:symlink');
+```
 
 ## upload()
 
@@ -285,14 +320,6 @@ writeln($message, $options = 0)
 ```
 
 Writes a message to the output and adds a newline at the end.
-
-## write()
-
-```php
-write($message, $options = 0)
-```
-
-Writes a message to the output.
 
 ## parse()
 

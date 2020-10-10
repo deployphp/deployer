@@ -7,6 +7,10 @@
 
 namespace Deployer\Component\Initializer;
 
+use function Deployer\cd;
+use function Deployer\run;
+use function Deployer\task;
+
 class Initializer
 {
     public function getRecipes()
@@ -65,15 +69,12 @@ add('writable_dirs', []);
 
 // Tasks
 
-task('build', function () {
-    run('cd {{release_path}} && npm run build');
+task('deploy:build', function () {
+    cd('{{release_path}}');
+    run('npm run build');
 });
 
-task('build:upload', function () {
-    upload('dist', '{{release_path}}/dist');
-});
-
-// If deploy fails automatically unlock.
+//after('deploy:update_code', 'deploy:build');
 after('deploy:failed', 'deploy:unlock');
 
 PHP;

@@ -115,31 +115,6 @@ class InitCommand extends Command
 
             // Hosts
             $hosts = explode(',', $io->ask('Hosts (comma separated)', 'deployer.org'));
-
-            // Privacy
-            $io->text(<<<TEXT
-    <info>Contribute to the Deployer Development</info>
-
-Help development and improve features of Deployer by 
-an optional usage data collection program. This program
-collects anonymous usage data and sends it to Deployer. 
-The data is used in Deployer development to get reliable
-statistics on which features are used (or not used). The
-information is not traceable to any individual or 
-organization. Participation is voluntary, and you can 
-change your mind at any time.
-
-Anonymous usage data contains Deployer version, PHP version, 
-OS type, name of the command being executed and whether 
-it was successful or not, count of hosts and anonymized 
-project hash. This program will not affect the performance 
-of Deployer as the data is insignificant and transmitted 
-in a separate process.
-
-We appreciate your involvement!
-TEXT);
-
-            $allow = $io->confirm('Do you confirm?');
         }
         file_put_contents($filepath, $initializer->getTemplate($template, $project, $repository, $hosts, $allow));
 
@@ -149,29 +124,5 @@ TEXT);
             $filepath
         ));
         return 0;
-    }
-
-    /**
-     * Create a initializer system
-     *
-     * @return Initializer
-     */
-    private function createInitializer()
-    {
-        $initializer = new Initializer();
-
-        $initializer->addTemplate('Common', new CommonTemplate());
-        $initializer->addTemplate('Laravel', new LaravelTemplate());
-        $initializer->addTemplate('Symfony', new SymfonyTemplate());
-        $initializer->addTemplate('Yii', new YiiTemplate());
-        $initializer->addTemplate('Yii2 Basic App', new Yii2BasicAppTemplate());
-        $initializer->addTemplate('Yii2 Advanced App', new Yii2AdvancedAppTemplate());
-        $initializer->addTemplate('Zend Framework', new ZendTemplate());
-        $initializer->addTemplate('CakePHP', new CakeTemplate());
-        $initializer->addTemplate('CodeIgniter', new CodeIgniterTemplate());
-        $initializer->addTemplate('Drupal', new DrupalTemplate());
-        $initializer->addTemplate('TYPO3', new Typo3Template());
-
-        return $initializer;
     }
 }

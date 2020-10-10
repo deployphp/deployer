@@ -15,39 +15,15 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 
-/**
- * @copyright (c) Oskar van Velden <oskar@rakso.nl>
- */
 class TreeCommand extends Command
 {
     protected $output;
-
-    /**
-     * @var TaskCollection
-     */
     private $tasks;
-
-    /**
-     * @var Deployer
-     */
     private $deployer;
-
     private $tree;
-
-    /**
-     * Depth of nesting (for rendering purposes)
-     * @var int
-     */
     private $depth = 0;
-
-    /**
-     * @var array
-     */
     private $openGroupDepths = [];
 
-    /**
-     * @param Deployer $deployer
-     */
     public function __construct(Deployer $deployer)
     {
         parent::__construct('tree');
@@ -56,9 +32,6 @@ class TreeCommand extends Command
         $this->tree = [];
     }
 
-    /**
-     * Configures the command
-     */
     protected function configure()
     {
         $this->addArgument(
@@ -68,9 +41,6 @@ class TreeCommand extends Command
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(Input $input, Output $output)
     {
         $this->output = $output;
@@ -82,27 +52,12 @@ class TreeCommand extends Command
         return 0;
     }
 
-    /**
-     * Build the tree based on the given taskName
-     * @param $taskName
-     *
-     * @return void
-     */
     private function buildTree($taskName)
     {
         $this->tasks = Deployer::get()->tasks;
         $this->createTreeFromTaskName($taskName, '', true);
     }
 
-    /**
-     * Create a tree from the given taskname
-     *
-     * @param string $taskName
-     * @param string $postfix
-     * @param bool $isLast
-     *
-     * @return void
-     */
     private function createTreeFromTaskName($taskName, $postfix = '', $isLast = false)
     {
         $task = $this->tasks->get($taskName);
@@ -150,12 +105,6 @@ class TreeCommand extends Command
         }
     }
 
-    /**
-     * Add the (formatted) taskName to the rendertree, with some additional information
-     *
-     * @param string $taskName formatted with prefixes if needed
-     * @param bool $isLast indication for what symbol to use for rendering
-     */
     private function addTaskToTree($taskName, $isLast = false)
     {
         $this->tree[] = [
@@ -166,11 +115,6 @@ class TreeCommand extends Command
         ];
     }
 
-    /**
-     * Render the tree, after everything is build
-     *
-     * @param $taskName
-     */
     private function outputTree($taskName)
     {
         $this->output->writeln("The task-tree for <info>$taskName</info>:");

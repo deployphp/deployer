@@ -33,7 +33,7 @@ trait CommandCommon
                 'extension_curl' => extension_loaded('curl'),
                 'os' => defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
             ], $data));
-        } finally {
+        } catch (\Throwable $e) {
             return;
         }
     }

@@ -16,12 +16,19 @@ if (!$loaded) {
     );
 }
 
+// For loading recipes
+set_include_path(__DIR__ . '/..' . PATH_SEPARATOR . get_include_path());
+
+putenv('DEPLOYER_LOCAL_WORKER=true');
+define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
+define('__FIXTURES__', __DIR__ . '/fixtures');
+define('__REPOSITORY__', __DIR__ . '/fixtures/repository');
+define('__TEMP_DIR__', sys_get_temp_dir() . '/deployer');
+
 require_once __DIR__ . '/AbstractTest.php';
 
-$repository = __DIR__ . '/fixtures/repository';
-define('__REPOSITORY__', $repository);
-
 // Init repository
+$repository = __REPOSITORY__;
 `cd $repository && git init`;
 $branch = trim(`git rev-parse --abbrev-ref HEAD`);
 `cd $repository && git checkout -B $branch 2>&1`;
@@ -29,7 +36,3 @@ $branch = trim(`git rev-parse --abbrev-ref HEAD`);
 `cd $repository && git config user.name 'Anton Medvedev'`;
 `cd $repository && git config user.email 'anton.medv@example.com'`;
 `cd $repository && git commit -m 'first commit'`;
-
-putenv('DEPLOYER_LOCAL_WORKER=true');
-define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
-define('__TEMP_DIR__', sys_get_temp_dir() . '/deployer');

@@ -1,5 +1,5 @@
 <?php
-/* 
+/*
  * This recipe for work with ISPManager Lite panel by API.
  */
 namespace Deployer;
@@ -34,7 +34,7 @@ set('vhost', [
     'owner' => get('ispmanager_owner'),
     'email' => 'webmaster@{{domain}}',
     'charset' => 'off',
-    'dirindex' => 'index.php index.html',
+    'dirindex' => 'index.php uploaded.html',
     'ssi' => 'on',
     'php' => 'on',
     'php_mode' => 'php_mode_mod',

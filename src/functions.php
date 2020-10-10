@@ -439,18 +439,17 @@ function on($hosts, callable $callback)
 }
 
 /**
- * Run task
- *
- * @experimental
- * @param string $task
+ * Runs a task.
+ * ```php
+ * invoke('deploy:symlink');
+ * ```
  */
-function invoke($task)
+function invoke(string $taskName)
 {
-    $hosts = [Context::get()->getHost()];
-    $tasks = Deployer::get()->scriptManager->getTasks($task, $hosts);
-
-    $master = Deployer::get()->master;
-    $master->run($tasks, $hosts);
+    $task = Deployer::get()->tasks->get($taskName);
+    Deployer::get()->messenger->startTask($task);
+    $task->run(Context::get());
+    Deployer::get()->messenger->endTask($task);
 }
 
 /**

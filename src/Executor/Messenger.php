@@ -71,7 +71,7 @@ class Messenger
     public function endOnHost(Host $host)
     {
         if ($this->output->isVeryVerbose()) {
-            $this->output->writeln("[{$host->getTag()}] <info>ok</info>");
+            $this->output->writeln("<fg=yellow;options=bold>done</> on {$host->getTag()}");
         }
     }
 

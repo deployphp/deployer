@@ -184,6 +184,10 @@ class Configuration implements \ArrayAccess
 
     public function load(): void
     {
+        if (!$this->has('master_url')) {
+            return;
+        }
+
         $values = Httpie::get($this->get('master_url') . '/load')
             ->body([
                 'host' => $this->get('alias'),
@@ -194,6 +198,10 @@ class Configuration implements \ArrayAccess
 
     public function save(): void
     {
+        if (!$this->has('master_url')) {
+            return;
+        }
+
         Httpie::get($this->get('master_url') . '/save')
             ->body([
                 'host' => $this->get('alias'),

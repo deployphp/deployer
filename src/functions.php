@@ -108,6 +108,22 @@ function currentHost()
     return Context::get()->getHost();
 }
 
+/**
+ * Returns hosts based on provided selector.
+ *
+ * ```php
+ * on(select('stage=prod, role=db'), function ($host) {
+ *     ...
+ * });
+ * ```
+ *
+ * @return Host[]
+ */
+function select(string $selector)
+{
+    return Deployer::get()->selector->select($selector);
+}
+
 
 /**
  * Load list of hosts from file
@@ -407,6 +423,12 @@ function testLocally($command)
 
 /**
  * Iterate other hosts, allowing to call run a func in callback.
+ *
+ * ```php
+ * on(select('stage=prod, role=db'), function ($host) {
+ *     ...
+ * });
+ * ```
  *
  * ```php
  * on(getHost('prod'), function ($host) {

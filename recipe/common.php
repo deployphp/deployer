@@ -45,7 +45,10 @@ set('user', function () {
 
 // Number of releases to preserve in releases folder.
 set('keep_releases', 5, function ($value) {
-    return is_integer($value) && $value >= -1;
+    if (is_integer($value) && $value >= -1) {
+        return true;
+    }
+    throw new ConfigurationException("Config error: \"keep_releases\" value must be an integer equal or bigger than \"-1\".");
 });
 
 // Repository to deploy.
@@ -76,6 +79,7 @@ set('clear_paths', [], 'is_array');
 set('clear_use_sudo', false, 'is_bool');
 
 // NOT IN THE NEW COMMON.PHP FILE
+/* set('cleanup_use_sudo', false, 'is_bool'); // Using sudo in cleanup commands? */
 /* set('writable_dirs', [], 'is_array'); */
 /* set('writable_mode', 'acl', function ($value) { */
 /*     return $value === 'chmod' */

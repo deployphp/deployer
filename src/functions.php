@@ -561,16 +561,6 @@ function writeln($message, $options = 0)
 }
 
 /**
- * Writes a message to the output.
- * @param string $message
- * @param int $options
- */
-function write($message, $options = 0)
-{
-    output()->write(parse($message), false, $options);
-}
-
-/**
  * Parse set values.
  *
  * @param string $value

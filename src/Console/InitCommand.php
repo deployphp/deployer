@@ -30,6 +30,7 @@ use Symfony\Component\Process\Process;
 
 class InitCommand extends Command
 {
+    use CommandCommon;
 
     protected function configure()
     {
@@ -140,15 +141,13 @@ TEXT);
 
             $allow = $io->confirm('Do you confirm?');
         }
-
-
         file_put_contents($filepath, $initializer->getTemplate($template, $project, $repository, $hosts, $allow));
 
+        $this->telemetry();
         $output->writeln(sprintf(
             '<info>Successfully created</info> <comment>%s</comment>',
             $filepath
         ));
-
         return 0;
     }
 

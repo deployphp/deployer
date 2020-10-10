@@ -23,15 +23,10 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
  */
 class SshCommand extends Command
 {
-    /**
-     * @var Deployer
-     */
+    use CommandCommon;
+
     private $deployer;
 
-    /**
-     * SshCommand constructor.
-     * @param Deployer $deployer
-     */
     public function __construct(Deployer $deployer)
     {
         parent::__construct('ssh');
@@ -39,9 +34,6 @@ class SshCommand extends Command
         $this->deployer = $deployer;
     }
 
-    /**
-     * Configures the command
-     */
     protected function configure()
     {
         $this->addArgument(
@@ -51,11 +43,9 @@ class SshCommand extends Command
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->telemetry();
         $hostname = $input->getArgument('hostname');
         if (!empty($hostname)) {
             $host = $this->deployer->hosts->get($hostname);

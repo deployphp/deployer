@@ -358,50 +358,6 @@ class Deployer extends Container
             ->getJson();
     }
 
-    /**
-     * Collect anonymous stats about Deployer usage for improving developer experience.
-     * If you are not comfortable with this, you will always be able to disable this
-     * by setting `allow_anonymous_stats` to false in your deploy.php file.
-     *
-     * @param CommandEvent $commandEvent
-     * @codeCoverageIgnore
-     */
-    public function collectAnonymousStats(CommandEvent $commandEvent)
-    {
-        if ($this->config->has('allow_anonymous_stats') && $this->config['allow_anonymous_stats'] === false) {
-            return;
-        }
-
-        $stats = [
-            'status' => 'success',
-            'command_name' => $commandEvent->getCommand()->getName(),
-            'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
-            'hosts_count' => $this->hosts->count(),
-            'deployer_version' => $this->getConsole()->getVersion(),
-            'deployer_phar' => self::isPharArchive(),
-            'php_version' => phpversion(),
-            'extension_pcntl' => extension_loaded('pcntl'),
-            'extension_curl' => extension_loaded('curl'),
-            'os' => defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
-            'exception' => null,
-        ];
-
-        if ($commandEvent->getException() !== null) {
-            $stats['status'] = 'error';
-            $stats['exception'] = get_class($commandEvent->getException());
-        }
-
-        if ($stats['command_name'] === 'init') {
-            $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
-        }
-
-        if (in_array($stats['command_name'], ['worker', 'list', 'help'], true)) {
-            return;
-        }
-
-        Reporter::report($stats);
-    }
-
     public static function isPharArchive()
     {
         return 'phar:' === substr(__FILE__, 0, 5);

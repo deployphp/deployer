@@ -5,7 +5,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Utility;
+namespace Deployer\Support;
+
+use Deployer\Utility\Httpie;
 
 /**
  * @codeCoverageIgnore
@@ -43,7 +45,7 @@ class Reporter
         }
     }
 
-    private static function send(array $stats)
+    public static function send(array $stats)
     {
         Httpie::post(self::ENDPOINT)
             ->body($stats)

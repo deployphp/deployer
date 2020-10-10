@@ -11,6 +11,7 @@ use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\Planner;
+use Deployer\Support\Reporter;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -18,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 class MainCommand extends SelectCommand
 {
     use CustomOption;
+    use CommandCommon;
 
     public function __construct(string $name, ?string $description, Deployer $deployer)
     {
@@ -83,7 +85,10 @@ class MainCommand extends SelectCommand
         $this->deployer->input = $input;
         $this->deployer->output = $output;
         $this->deployer->config['log_file'] = $input->getOption('log');
-
+        $this->telemetry([
+            'project_hash' => empty($this->deployer->config['repository']) ? null : sha1($this->deployer->config['repository']),
+            'hosts_count' => $this->deployer->hosts->count(),
+        ]);
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));
 

@@ -14,6 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class DiceCommand extends Command
 {
+    use CommandCommon;
+
     private $deployer;
 
     public function __construct()
@@ -29,6 +31,7 @@ class DiceCommand extends Command
 
     protected function execute(Input $input, Output $output)
     {
+        $this->telemetry();
         $number = intval($input->getArgument('number'));
         while ($number-- > 0) {
             $output->write(["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"][rand(0, 5)]);

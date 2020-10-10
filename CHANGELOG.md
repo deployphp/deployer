@@ -13,6 +13,7 @@
 - Symfony 5 recipe.
 - Command for checking if a deploy is unlocked. [#2150] [#2150]
 - Added support for placeholders in run and runLocally methods. [#2192]
+- Added new push command which pushes local changes to host.
 
 ### Changed
 - `within` passess through `$callback` return value. [#2178]

@@ -7,6 +7,7 @@ require __DIR__ . '/deploy/clear_paths.php';
 require __DIR__ . '/deploy/copy_dirs.php';
 require __DIR__ . '/deploy/info.php';
 require __DIR__ . '/deploy/lock.php';
+require __DIR__ . '/deploy/push.php';
 require __DIR__ . '/deploy/release.php';
 require __DIR__ . '/deploy/rollback.php';
 require __DIR__ . '/deploy/setup.php';

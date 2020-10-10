@@ -40,7 +40,8 @@ class Rsync
         $defaults = [
             'timeout' => null,
             'options' => [],
-            'flags'   => 'azP'
+            'flags'   => 'azP',
+            'progress_bar' => true,
         ];
         $config = array_merge($defaults, $config);
 
@@ -66,7 +67,7 @@ class Rsync
         $this->pop->command($host, $command);
 
         $progressBar = null;
-        if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
+        if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL && $config['progress_bar']) {
             $progressBar = new ProgressBar($this->output);
             $progressBar->setBarCharacter('<info>≡</info>');
             $progressBar->setProgressCharacter('>');

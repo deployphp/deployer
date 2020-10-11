@@ -9,6 +9,7 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Executor\Worker;
+use Deployer\Host\Localhost;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
@@ -45,17 +46,21 @@ class WorkerCommand extends MainCommand
         $this->deployer->config->set('master_url', 'http://localhost:' . $input->getArgument('master-port'));
 
         $task = $this->deployer->tasks->get($input->getArgument('worker-task'));
-        $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
-        $host->config()->load();
 
-        // TODO: Maybe relevant to leave this code. Was here when loading from config file was.
-//        foreach ($host->getConfig() as $name => $value) {
-//            $this->deployer->config->set($name, $value);
-//        }
+        $hostName = $input->getArgument('worker-host');
+        if ($hostName === 'local') {
+            $host = new Localhost('local');
+        } else {
+            $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
+            $host->config()->load();
+        }
+
         $worker = new Worker($this->deployer);
         $exitCode = $worker->execute($task, $host);
 
-        $host->config()->save();
+        if ($hostName !== 'local') {
+            $host->config()->save();
+        }
         return $exitCode;
     }
 }

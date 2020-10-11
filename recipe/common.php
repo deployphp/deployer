@@ -24,10 +24,10 @@ use Deployer\Exception\RunException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
 
-/**
- * Facts
- */
-
+// Name of current user who is running deploy.
+// It will be shown in `dep status` command as author.
+// If not set will try automatically get git user name,
+// otherwise output of `whoami` command.
 set('user', function () {
     if (getenv('CI') !== false) {
         return 'ci';
@@ -44,23 +44,35 @@ set('user', function () {
     }
 });
 
-/**
- * Configuration
- */
-
+// Number of releases to preserve in releases folder.
 set('keep_releases', 5);
 
-set('repository', ''); // Repository to deploy.
+// Repository to deploy.
+set('repository', '');
 
+// List of dirs what will be shared between releases.
+// Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
+// ```php
+// set('shared_dirs', ['storage']);
+// ```
 set('shared_dirs', []);
+
+// List of files what will be shared between releases.
+// Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
+// ```php
+// set('shared_files', ['.env']);
+// ```
 set('shared_files', []);
 
+// List of dirs to copy between releases.
+// For example you can copy `node_modules` to speedup npm install.
 set('copy_dirs', []);
 
-set('clear_paths', []);         // Relative path from release_path
-set('clear_use_sudo', false);    // Using sudo in clean commands?
+// List of paths to remove from {{release_path}}.
+set('clear_paths', []);
 
-set('cleanup_use_sudo', false); // Using sudo in cleanup commands?
+// Use sudo for deploy:clear_path task?
+set('clear_use_sudo', false);
 
 set('use_relative_symlink', function () {
     return commandSupportsOption('ln', '--relative');
@@ -95,21 +107,24 @@ set('env', []);
 set('dotenv', false);
 
 /**
- * Return current release path.
+ * Return current release path. Default to {{deploy_path}}/`current`.
+ * ```php
+ * set('current_path', '/var/public_html');
+ * ```
  */
 set('current_path', '{{deploy_path}}/current');
 
-/**
- * Custom bins
- */
+// Custom php bin of remote host.
 set('bin/php', function () {
     return locateBinaryPath('php');
 });
 
+// Custom git bin of remote host.
 set('bin/git', function () {
     return locateBinaryPath('git');
 });
 
+// Custom ln bin of remote host.
 set('bin/symlink', function () {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });
@@ -132,7 +147,6 @@ option('tag', null, InputOption::VALUE_REQUIRED, 'Tag to deploy');
 option('revision', null, InputOption::VALUE_REQUIRED, 'Revision to deploy');
 option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
 
-
 task('deploy:prepare', [
     'deploy:info',
     'deploy:setup',
@@ -151,7 +165,7 @@ task('deploy:publish', [
 ]);
 
 /**
- * Success message
+ * Prints success message
  */
 task('deploy:success', function () {
     info('successfully deployed!');
@@ -161,7 +175,7 @@ task('deploy:success', function () {
 
 
 /**
- * Deploy failure
+ * Hook on deploy failure.
  */
 task('deploy:failed', function () {
 })->hidden();

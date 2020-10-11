@@ -88,15 +88,9 @@ function starts_with(string $string, string $startString)
 }
 
 /**
- * Take array of key/value and create string of it.
- *
  * This function used for create environment string.
- *
- * @param array $array
- *
- * @return string
  */
-function array_to_string(array $array): string
+function env_strinfigy(array $array): string
 {
     return implode(' ', array_map(
         function ($key, $value) {

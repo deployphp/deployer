@@ -25,7 +25,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use function Deployer\Support\array_merge_alternate;
-use function Deployer\Support\array_to_string;
+use function Deployer\Support\env_strinfigy;
 use function Deployer\Support\str_contains;
 
 /**
@@ -297,7 +297,8 @@ function within($path, $callback)
  * Options:
  * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
  * - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
- * - `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']])`;
+ * - `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']]);`
+ * - `env` - Array of environment variables: `run('echo $KEY', ['env' => ['key' => 'value']]);`
  *
  * Examples:
  *
@@ -330,7 +331,7 @@ function run($command, $options = [])
 
         $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
         if (!empty($env)) {
-            $env = array_to_string($env);
+            $env = env_strinfigy($env);
             $command = "export $env; $command";
         }
 
@@ -380,7 +381,7 @@ function runLocally($command, $options = [])
 
     $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
     if (!empty($env)) {
-        $env = array_to_string($env);
+        $env = env_strinfigy($env);
         $command = "export $env; $command";
     }
 

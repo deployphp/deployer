@@ -69,7 +69,21 @@ set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
 
-set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
+/**
+ * Remote environment variables.
+ * ```php
+ * set('env', [
+ *     'KEY' => 'something',
+ * ]);
+ * ```
+ *
+ * It is possible to override it per `run()` call.
+ *
+ * ```php
+ * run('echo $KEY', ['env' => ['KEY' => 'over']]
+ * ```
+ */
+set('env', []);
 
 /**
  * Return current release path.

@@ -39,6 +39,7 @@
   * [`use_relative_symlink`](#use_relative_symlink)
   * [`use_atomic_symlink`](#use_atomic_symlink)
   * [`env`](#env)
+  * [`dotenv`](#dotenv)
   * [`current_path`](#current_path)
   * [`sudo_askpass`](#sudo_askpass)
 * Tasks
@@ -105,17 +106,37 @@
 
 
 ### env
-[Source](/recipe/common.php#L72)
+[Source](/recipe/common.php#L86)
 
+Remote environment variables.
+```php
+set('env', [
+    'KEY' => 'something',
+]);
+```
 
+It is possible to override it per `run()` call.
+
+```php
+run('echo $KEY', ['env' => ['KEY' => 'over']]
+```
+
+### dotenv
+[Source](/recipe/common.php#L95)
+
+Path to `.env` file which will be used as environment variables for each command per `run()`.
+
+```php
+set('dotenv', '[current_path](/docs/recipe/common.md#current_path)/.env');
+```
 
 ### current_path
-[Source](/recipe/common.php#L77)
+[Source](/recipe/common.php#L100)
 
 Return current release path.
 
 ### sudo_askpass
-[Source](/recipe/common.php#L97)
+[Source](/recipe/common.php#L120)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -124,7 +145,7 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L113)
+[Source](/recipe/common.php#L136)
 
 
 
@@ -139,7 +160,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L123)
+[Source](/recipe/common.php#L146)
 
 
 
@@ -151,17 +172,17 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](/recipe/common.php#L133)
+[Source](/recipe/common.php#L156)
 
 Success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L143)
+[Source](/recipe/common.php#L166)
 
 Deploy failure
 
 ### logs
-[Source](/recipe/common.php#L152)
+[Source](/recipe/common.php#L175)
 
 Follow latest application logs.
 

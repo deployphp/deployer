@@ -86,6 +86,15 @@ set('use_atomic_symlink', function () {
 set('env', []);
 
 /**
+ * Path to `.env` file which will be used as environment variables for each command per `run()`.
+ *
+ * ```php
+ * set('dotenv', '{{current_path}}/.env');
+ * ```
+ */
+set('dotenv', false);
+
+/**
  * Return current release path.
  */
 set('current_path', '{{deploy_path}}/current');

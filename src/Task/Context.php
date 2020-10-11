@@ -70,7 +70,7 @@ class Context
     public static function get()
     {
         if (empty(self::$contexts)) {
-            throw new Exception('Context was required, but there\'s nothing there.');
+            throw new Exception("Context was requested but was not available.");
         }
         return end(self::$contexts);
     }

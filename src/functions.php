@@ -335,6 +335,11 @@ function run($command, $options = [])
             $command = "export $env; $command";
         }
 
+        $dotenv = get('dotenv', false);
+        if (!empty($dotenv)) {
+            $command = ". $dotenv; $command";
+        }
+
         if ($host instanceof Localhost) {
             $process = Deployer::get()->processRunner;
             $output = $process->run($host, $command, $options);

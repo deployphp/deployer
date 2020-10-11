@@ -17,5 +17,8 @@
     <testsuite name="Joy">
       <directory>test/joy/</directory>
     </testsuite>
+    <testsuite name="e2e">
+      <directory>test/e2e/</directory>
+    </testsuite>
   </testsuites>
 </phpunit>

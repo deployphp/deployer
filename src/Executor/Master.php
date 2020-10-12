@@ -217,7 +217,9 @@ class Master
 
         $this->server->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback) {
             $this->gatherOutput($processes, $callback);
-            $this->output->write(spinner());
+            if ($this->output->isDecorated()) {
+                $this->output->write(spinner());
+            }
             if ($this->allFinished($processes)) {
                 $this->server->stop();
                 $this->server->cancelTimer($timer);

@@ -15,7 +15,6 @@ use Deployer\Component\ProcessRunner\ProcessRunner;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
 use Deployer\Console\AutocompleteCommand;
-use Deployer\Console\CommandEvent;
 use Deployer\Console\ConnectCommand;
 use Deployer\Console\DiceCommand;
 use Deployer\Console\HostsCommand;

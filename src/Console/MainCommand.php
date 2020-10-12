@@ -64,19 +64,19 @@ class MainCommand extends SelectCommand
             'start-from',
             null,
             Option::VALUE_REQUIRED,
-            'Task name to start execution from'
+            'Start execution from this task'
         );
         $this->addOption(
             'log',
             null,
             Option::VALUE_REQUIRED,
-            'Log to file'
+            'Write log to a file'
         );
         $this->addOption(
             'profile',
             null,
             Option::VALUE_REQUIRED,
-            'Writes tasks profile fo PROFILE file'
+            'Write profile to a file'
         );
     }
 

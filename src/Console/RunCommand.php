@@ -29,9 +29,10 @@ class RunCommand extends SelectCommand
     protected function configure()
     {
         parent::configure();
-        $this->addArgument(
-            'command-to-run',
-            InputArgument::IS_ARRAY,
+        $this->addOption(
+            'command',
+            'c',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
             'Command to run'
         );
         $this->addOption(
@@ -51,7 +52,7 @@ class RunCommand extends SelectCommand
             $output->setVerbosity(Output::VERBOSITY_VERBOSE);
         }
 
-        $command = implode(' ', $input->getArgument('command-to-run') ?? '');
+        $command = implode('; ', $input->getOption('command') ?? '');
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));
 

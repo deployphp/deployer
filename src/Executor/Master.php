@@ -15,6 +15,7 @@ use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
+use Deployer\Support\Stringify;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -234,12 +235,11 @@ class Master
     protected function createProcess(Host $host, Task $task): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $decorated = $this->output->isDecorated() ? '--decorated' : '';
-        $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
+        $options = Stringify::options($this->input, $this->output);
         if ($task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
-            $verbosity = '-v';
+            $options .= ' -v';
         }
-        $command = "$dep worker $task {$host->getAlias()} {$this->server->getPort()} {$this->input} $decorated $verbosity";
+        $command = "$dep worker --task $task --host {$host->getAlias()} --port {$this->server->getPort()} {$options}";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->getTag()}] $command");
@@ -251,12 +251,8 @@ class Master
     protected function createConnectProcess(Host $host): Process
     {
         $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $option = implode(' ', array_map(function ($o) {
-            return "-o $o";
-        }, $this->input->getOption('option')));
-        $decorated = $this->output->isDecorated() ? '--decorated' : '';
-        $verbosity = self::stringifyVerbosity($this->output->getVerbosity());
-        $command = "$dep connect {$host->getAlias()} $option $decorated $verbosity";
+        $options = Stringify::options($this->input, $this->output);
+        $command = "$dep connect --host {$host->getAlias()} {$options}";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[{$host->getTag()}] $command");

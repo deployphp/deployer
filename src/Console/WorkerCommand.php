@@ -25,12 +25,11 @@ class WorkerCommand extends MainCommand
 
     protected function configure()
     {
-        $this->addArgument('worker-task', InputArgument::REQUIRED);
-        $this->addArgument('worker-host', InputArgument::REQUIRED);
-        $this->addArgument('master-port', InputArgument::REQUIRED);
-        $this->addArgument('original-task', InputArgument::REQUIRED); // added as stringing $input adds own args
-        $this->addOption('decorated', null, Option::VALUE_NONE);
         parent::configure();
+        $this->addOption('task', null, Option::VALUE_REQUIRED);
+        $this->addOption('host', null, Option::VALUE_REQUIRED);
+        $this->addOption('port', null, Option::VALUE_REQUIRED);
+        $this->addOption('decorated', null, Option::VALUE_NONE);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -43,15 +42,15 @@ class WorkerCommand extends MainCommand
             define('NO_ANSI', 'true');
         }
 
-        $this->deployer->config->set('master_url', 'http://localhost:' . $input->getArgument('master-port'));
+        $this->deployer->config->set('master_url', 'http://localhost:' . $input->getOption('port'));
 
-        $task = $this->deployer->tasks->get($input->getArgument('worker-task'));
+        $task = $this->deployer->tasks->get($input->getOption('task'));
 
-        $hostName = $input->getArgument('worker-host');
+        $hostName = $input->getOption('host');
         if ($hostName === 'local') {
             $host = new Localhost('local');
         } else {
-            $host = $this->deployer->hosts->get($input->getArgument('worker-host'));
+            $host = $this->deployer->hosts->get($input->getOption('host'));
             $host->config()->load();
         }
 

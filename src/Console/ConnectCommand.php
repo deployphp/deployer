@@ -15,22 +15,18 @@ use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class ConnectCommand extends Command
+class ConnectCommand extends MainCommand
 {
-    use CustomOption;
-
-    protected $deployer;
-
     public function __construct(Deployer $deployer)
     {
-        parent::__construct('connect');
-        $this->deployer = $deployer;
+        parent::__construct('connect', null, $deployer);
         $this->setHidden(true);
     }
 
     protected function configure()
     {
-        $this->addArgument('connect-host', InputArgument::REQUIRED);
+        parent::configure();
+        $this->addOption('host', null, Option::VALUE_REQUIRED);
         $this->addOption('decorated', null, Option::VALUE_NONE);
         $this->addOption(
             'option',
@@ -49,7 +45,7 @@ class ConnectCommand extends Command
             define('NO_ANSI', 'true');
         }
 
-        $host = $this->deployer->hosts->get($input->getArgument('connect-host'));
+        $host = $this->deployer->hosts->get($input->getOption('host'));
         $this->applyOverrides([$host], $input->getOption('option'));
 
         try {

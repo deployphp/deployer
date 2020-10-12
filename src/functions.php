@@ -25,7 +25,7 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use function Deployer\Support\array_merge_alternate;
-use function Deployer\Support\env_strinfigy;
+use function Deployer\Support\env_stringify;
 use function Deployer\Support\str_contains;
 
 /**
@@ -331,7 +331,7 @@ function run($command, $options = [])
 
         $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
         if (!empty($env)) {
-            $env = env_strinfigy($env);
+            $env = env_stringify($env);
             $command = "export $env; $command";
         }
 
@@ -386,7 +386,7 @@ function runLocally($command, $options = [])
 
     $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
     if (!empty($env)) {
-        $env = env_strinfigy($env);
+        $env = env_stringify($env);
         $command = "export $env; $command";
     }
 

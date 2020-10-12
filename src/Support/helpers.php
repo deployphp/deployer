@@ -90,7 +90,7 @@ function starts_with(string $string, string $startString)
 /**
  * This function used for create environment string.
  */
-function env_strinfigy(array $array): string
+function env_stringify(array $array): string
 {
     return implode(' ', array_map(
         function ($key, $value) {

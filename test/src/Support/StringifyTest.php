@@ -30,7 +30,7 @@ class StringifyTest extends TestCase
 
         self::assertEquals("--option 'env=prod' --limit 1 -vvv", Stringify::options(
             new ArgvInput(['deploy', '-o', 'env=prod', '-l1'], $definition),
-            new ConsoleOutput(Output::VERBOSITY_DEBUG)
+            new ConsoleOutput(Output::VERBOSITY_DEBUG, false)
         ));
     }
 }

@@ -16,6 +16,20 @@ use function Deployer\Support\normalize_line_endings;
 
 class Configuration implements \ArrayAccess
 {
+
+    const PREDEFINED_PARAMS = [
+        'alias', 'application', 'bin/composer', 'bin/git', 'bin/php', 'bin/symlink', 
+        'branch', 'cleanup_use_sudo', 'clear_paths', 'clear_use_sudo', 'composer_action', 
+        'composer_options', 'config_file', 'copy_dirs', 'current_path', 'deploy_path',
+        'env', 'forward_agent', 'git_cache', 'hostname', 'http_group', 'http_user', 
+        'identity_file', 'keep_releases', 'log_file', 'master_url', 'php_version',
+        'port', 'release_name', 'release_path', 'releases_list', 'remote_user', 
+        'repository', 'roles', 'shared_dirs', 'shared_files', 'shell', 
+        'ssh_multiplexing', 'sudo_askpass', 'sudo_password', 'use_atomic_symlink', 
+        'use_relative_symlink', 'user', 'working_path', 'writable_chmod_mode', 
+        'writable_chmod_recursive', 'writable_dirs', 'writable_mode', 
+        'writable_recursive', 'writable_use_sudo'];
+
     private $parent;
     private $values = [];
     private $validations = [];
@@ -48,6 +62,21 @@ class Configuration implements \ArrayAccess
             && !call_user_func($this->validations[$name], $value)
         ) {
             throw new ConfigurationException("Config option \"$name\" has an invalid value.");
+        }
+        $closestDistance = 4;
+        foreach (self::PREDEFINED_PARAMS as $predefinedParam) {
+            if ($name === $predefinedParam) {
+                unset($closestParam);
+                break;
+            }
+            $distance = levenshtein($name, $predefinedParam);
+            if ($distance < $closestDistance) {
+                $closestDistance = $distance;
+                $closestParam = $predefinedParam;
+            }
+        }
+        if (isset($closestParam)) {
+            print("<fg=yellow>Warning:</> \"$name\" not found in parameters. Did you mean \"$closestParam\"?\n");
         }
         $this->values[$name] = $value;
     }

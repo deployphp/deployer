@@ -32,3 +32,9 @@ jobs:
 
     - name: Run test suite
       run: composer test
+
+    - name: Build the docker-compose stack
+      run: cd test/docker && docker-compose build
+
+    - name: Run E2E test suite
+      run: cd test/docker && docker-compose up --abort-on-container-exit

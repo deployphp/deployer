@@ -1,17 +1,50 @@
 <?php declare(strict_types=1);
 namespace e2e;
 
-use Deployer\AbstractTest;
+use Deployer\Deployer;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Tester\ApplicationTester;
 
-abstract class AbstractE2ETest extends AbstractTest
+abstract class AbstractE2ETest extends TestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $isE2EEnvironment = filter_var(getenv('E2E_ENV'), FILTER_VALIDATE_BOOLEAN);
+    /**
+     * @var ApplicationTester
+     */
+    protected $tester;
 
-        if ($isE2EEnvironment !== true) {
-            $this->markTestSkipped('Cannot execute in non-E2E environment');
+    /**
+     * @var Deployer
+     */
+    protected $deployer;
+
+    public static function setUpBeforeClass(): void
+    {
+        self::cleanUp();
+        mkdir(__TEMP_DIR__);
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        self::cleanUp();
+    }
+
+    protected static function cleanUp(): void
+    {
+        if (is_dir(__TEMP_DIR__)) {
+            exec('rm -rf ' . __TEMP_DIR__);
         }
+    }
+
+    protected function init(string $recipe): void
+    {
+        $console = new Application();
+        $console->setAutoExit(false);
+        $this->tester = new ApplicationTester($console);
+
+        $this->deployer = new Deployer($console);
+        Deployer::load($recipe);
+        $this->deployer->init();
+        $this->deployer->config->set('deploy_path', __TEMP_DIR__ . '/{{hostname}}');
     }
 }

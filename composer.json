@@ -25,6 +25,7 @@
     },
     "scripts": {
         "test": "pest",
+        "test-e2e": "pest --config test/e2e/phpunit-e2e.xml.dist",
         "lint": "phpcs"
     },
     "bin": [

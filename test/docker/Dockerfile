@@ -19,6 +19,9 @@ RUN ssh-keygen \
     -t rsa \
     -f ~/.ssh/id_rsa
 
+RUN git config --global user.email "e2e@deployer.test" \
+    && git config --global user.name "E2E Deployer"
+
 ARG XDEBUG_VERSION=2.9.8
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
@@ -27,7 +30,6 @@ RUN set -eux; \
 	apk del .build-deps
 
 COPY --from=composer /tmp/composer /bin/composer
-ENV E2E_ENV=1
 VOLUME [ "/project" ]
 WORKDIR /project
 
@@ -47,8 +49,8 @@ RUN mkdir /run/sshd \
     && sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
 
 # Configure Apache to expose healthcheck & configure site to use /var/www/html/current ad document root
-COPY ./conf/healthcheck.conf /etc/apache2/sites-available/healthcheck.conf
-COPY ./initial-site/index.html /var/www/html/initial-site/index.html
+COPY conf/healthcheck.conf /etc/apache2/sites-available/healthcheck.conf
+COPY initial-site/index.html /var/www/html/initial-site/index.html
 
 ENV APACHE_DOCUMENT_ROOT /var/www/html/current
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf \
@@ -70,12 +72,25 @@ RUN useradd \
     && chmod 700 ~deployer/.ssh \
     && chmod 600 ~deployer/.ssh/authorized_keys
 
-COPY ./scripts/start-servers.sh /usr/local/bin/start-servers
+RUN useradd \
+        --create-home \
+        git \
+    && mkdir ~git/.ssh \
+    && touch ~git/.ssh/authorized_keys \
+    && chown -R git:git ~git/.ssh \
+    && chmod 700 ~git/.ssh \
+    && chmod 700 ~git/.ssh/authorized_keys \
+    && mkdir ~git/repository \
+    && git init --bare ~git/repository \
+    && chown -R git:git ~git/repository
+
+COPY scripts/start-servers.sh /usr/local/bin/start-servers
 COPY --from=composer /tmp/composer /usr/local/bin/composer
 COPY --from=deployer /root/.ssh/id_rsa.pub /tmp/root_rsa.pub
 
 RUN chmod a+x /usr/local/bin/start-servers \
     && cat /tmp/root_rsa.pub >> ~deployer/.ssh/authorized_keys \
+    && cat /tmp/root_rsa.pub >> ~git/.ssh/authorized_keys \
     && rm -rf /tmp/root_rsa.pub
 
 EXPOSE 22 80 81

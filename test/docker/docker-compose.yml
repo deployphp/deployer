@@ -3,14 +3,14 @@ version: '2.4'
 services: 
   deployer:
     build:
-      context: .
+      context: ""
       target: deployer
     depends_on: 
       server:
         condition: service_healthy
     volumes: 
-      - ./../:/project
-    command: "php vendor/bin/pest"
+      - ./../../:/project
+    command: "php vendor/bin/pest --config test/e2e/phpunit-e2e.xml.dist"
     networks:
       - e2e
 #    environment:
@@ -29,7 +29,7 @@ services:
 
   server:
     build: 
-      context: .
+      context: ""
       target: server
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:81/health_check"]

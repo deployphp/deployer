@@ -19,9 +19,8 @@ class FunctionsE2ETest extends AbstractE2ETest
         ]);
 
         $display = $this->tester->getDisplay();
-        $display = trim($display); // Output may contain newlines, so we should trim them in advance
 
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertEquals('placeholder {{bar}} xyz%', $display);
+        self::assertStringContainsString('placeholder {{bar}} xyz%', $display);
     }
 }

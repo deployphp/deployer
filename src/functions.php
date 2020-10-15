@@ -357,8 +357,9 @@ function run($command, $options = [])
             }
             $run("echo -e '#!/bin/sh\necho \"%sudo_pass%\"' > $askpass", array_merge($options, ['sudo_pass' => $password]));
             $run("chmod a+x $askpass", $options);
-            $run(sprintf('export SUDO_ASKPASS=%s; %s', $askpass, preg_replace('/^sudo\b/', 'sudo -A', $command)), $options);
+            $output = $run(sprintf('export SUDO_ASKPASS=%s; %s', $askpass, preg_replace('/^sudo\b/', 'sudo -A', $command)), $options);
             $run("rm $askpass", $options);
+            return $output;
         }
     } else {
         return $run($command, $options);

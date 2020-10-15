@@ -5,61 +5,55 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Console;
+namespace Deployer\Command;
 
 use Deployer\Deployer;
-use Deployer\Executor\Worker;
-use Deployer\Host\Localhost;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
-class WorkerCommand extends MainCommand
+class ConnectCommand extends MainCommand
 {
     public function __construct(Deployer $deployer)
     {
-        parent::__construct('worker', null, $deployer);
+        parent::__construct('connect', null, $deployer);
         $this->setHidden(true);
     }
 
     protected function configure()
     {
         parent::configure();
-        $this->addOption('task', null, Option::VALUE_REQUIRED);
         $this->addOption('host', null, Option::VALUE_REQUIRED);
-        $this->addOption('port', null, Option::VALUE_REQUIRED);
         $this->addOption('decorated', null, Option::VALUE_NONE);
+        $this->addOption(
+            'option',
+            'o',
+            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
+            'Set configuration option'
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
-
         $output->setDecorated($input->getOption('decorated'));
         if (!$output->isDecorated() && !defined('NO_ANSI')) {
             define('NO_ANSI', 'true');
         }
 
-        $this->deployer->config->set('master_url', 'http://localhost:' . $input->getOption('port'));
+        $host = $this->deployer->hosts->get($input->getOption('host'));
+        $this->applyOverrides([$host], $input->getOption('option'));
 
-        $task = $this->deployer->tasks->get($input->getOption('task'));
-
-        $hostName = $input->getOption('host');
-        if ($hostName === 'local') {
-            $host = new Localhost('local');
-        } else {
-            $host = $this->deployer->hosts->get($input->getOption('host'));
-            $host->config()->load();
+        try {
+            $this->deployer->sshClient->connect($host);
+        } catch (ProcessFailedException $exception) {
+            $output->writeln($exception->getProcess()->getErrorOutput());
+            return 1;
         }
-
-        $worker = new Worker($this->deployer);
-        $exitCode = $worker->execute($task, $host);
-
-        if ($hostName !== 'local') {
-            $host->config()->save();
-        }
-        return $exitCode;
+        return 0;
     }
 }

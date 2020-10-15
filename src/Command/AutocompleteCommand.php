@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Console;
+namespace Deployer\Command;
 
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;

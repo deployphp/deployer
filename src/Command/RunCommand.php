@@ -5,7 +5,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Console;
+namespace Deployer\Command;
 
 use Deployer\Deployer;
 use Deployer\Task\Context;

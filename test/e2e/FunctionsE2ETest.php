@@ -16,11 +16,11 @@ class FunctionsE2ETest extends AbstractE2ETest
             'test:functions:run-with-placeholders',
             '-f' => self::RECIPE,
             'selector' => 'all',
-        ]);
+        ], [ 'decorated' => false ]);
 
-        $display = $this->tester->getDisplay();
+        $display = trim($this->tester->getDisplay());
 
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
-        self::assertStringContainsString('placeholder {{bar}} xyz%', $display);
+        self::assertEquals('placeholder {{bar}} xyz%', $display);
     }
 }

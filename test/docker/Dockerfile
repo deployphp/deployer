@@ -65,7 +65,7 @@ RUN useradd \
         --create-home \
         deployer \
     && echo 'deployer:deployer' | chpasswd \
-    && echo 'deployer ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers \
+    && echo 'deployer ALL=(ALL) ALL' >> /etc/sudoers \
     && mkdir ~deployer/.ssh \
     && touch ~deployer/.ssh/authorized_keys \
     && chown -R deployer:deployer ~deployer/.ssh \

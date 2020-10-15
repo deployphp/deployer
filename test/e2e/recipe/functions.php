@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 namespace Deployer;
 
-require_once __DIR__ . '/deploy.php';
+// we need to user require instead of require_once, as the hosts HAVE to be loaded multiple times
+require __DIR__ . '/deploy.php';
 
 task('test:functions:run-with-placeholders', function (): void {
     $cmd = "echo 'placeholder %foo% %baz%'";

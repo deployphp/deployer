@@ -85,4 +85,4 @@ The `server` container contains:
 * git
 * PHP 7.3
 * SSH server with
-* sudo (user `deployer` can use `sudo` without having to enter passwords)
+* sudo (user `deployer` can use `sudo` after providing a password: `deployer`)

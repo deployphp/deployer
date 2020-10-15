@@ -35,27 +35,36 @@ set_error_handler(function ($severity, $message, $filename, $lineno) {
 });
 
 // Detect deploy.php script
-
 $deployFile = null;
-
-if (preg_match('/(^|\s) --? (f|file) (=|\s) (?<file>.+?) (\s|$)/x', implode(' ', $argv), $match)) {
-    $deployFile = $match['file'];
-}
-
-if (empty($deployFile)) {
-    $deployFile = getcwd() . '/deploy.php';
-
-    if (!is_readable($deployFile)) {
-        $currentDir = getcwd();
-        $count = 0;
-        do {
-            $currentDir = dirname($currentDir);
-            $deployFile = $currentDir . '/deploy.php';
-            $count++;
-        } while (!is_readable($deployFile) && $count < 100);
+foreach ($argv as $i => $arg) {
+    if (preg_match('/^(-f|--file)$/', $arg, $match) && $i + 1 < count($argv)) {
+        $deployFile = $argv[$i + 1];
     }
-} else {
-    $deployFile = ($deployFile[0] === '/' ? '' : getcwd() . '/') . $deployFile;
+    if (preg_match('/^(-f|--file)=(?<file>.+?)$/', $arg, $match)) {
+        $deployFile = $match['file'];
+    }
+
+    if (!empty($deployFile)) {
+        $deployFile = ($deployFile[0] === '/' ? '' : getcwd() . '/') . $deployFile;
+    }
+}
+$lookUp = function (string $name): ?string
+{
+    $dir = getcwd();
+    for ($i = 0; $i < 10; $i++) {
+        $path = "$dir/$name";
+        if (is_readable($path)) {
+            return $path;
+        }
+        $dir = dirname($dir);
+    }
+    return null;
+};
+if (empty($deployFile)) {
+    $deployFile = $lookUp('deploy.php');
+}
+if (empty($deployFile)) {
+    $deployFile = $lookUp('deploy.yaml');
 }
 
 // Detect autoload location

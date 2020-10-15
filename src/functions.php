@@ -9,10 +9,10 @@ namespace Deployer;
 
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
-use Deployer\Host\FileLoader;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
+use Deployer\Importer\Importer;
 use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
@@ -124,25 +124,19 @@ function select(string $selector)
     return Deployer::get()->selector->select($selector);
 }
 
-
 /**
- * Load list of hosts from file
+ * Import other php or yaml recipes.
  *
- * @param string $file
- * @return ObjectProxy
+ * ```php
+ * import('recipe/common.php');
+ * ```
+ *
+ * ```php
+ * import(__DIR__ . '/config/hosts.yaml');
+ * ```
  */
-function inventory($file)
-{
-    $deployer = Deployer::get();
-    $fileLoader = new FileLoader();
-    $fileLoader->load($file);
-
-    $hosts = $fileLoader->getHosts();
-    foreach ($hosts as $host) {
-        $deployer->hosts->set($host->getAlias(), $host);
-    }
-
-    return new ObjectProxy($hosts);
+function import(string $file) {
+    Importer::import($file);
 }
 
 /**

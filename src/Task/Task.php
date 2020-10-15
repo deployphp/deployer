@@ -14,76 +14,21 @@ class Task
     private $name;
     private $callback;
     private $description;
-
-    /**
-     * Task source file location.
-     *
-     * @var string
-     */
     private $sourceLocation = '';
-
-    /**
-     * Should we run this task locally?
-     *
-     * @var bool
-     */
     private $local = false;
-
-    /**
-     * List of task names to run before.
-     *
-     * @var string[]
-     */
     private $before = [];
-
-    /**
-     * List of task names to run after.
-     *
-     * @var string[]
-     */
     private $after = [];
-
-    /**
-     * Make task internal and not visible in CLI.
-     *
-     * @var bool
-     */
     private $hidden = false;
-
-    /**
-     * Run task only once on one of hosts.
-     *
-     * @var bool
-     */
     private $once = false;
-
-    /**
-     * Shallow task will not print execution message/finish messages.
-     * Useful for success messages and info printing.
-     *
-     * @var bool
-     */
     private $shallow = false;
-
-    /**
-     * Limit parallel execution of the task.
-     *
-     * @var int|null
-     */
     private $limit = null;
-
-    /**
-     * @var array
-     */
-    private $selector;
-
+    private $selector = null;
     private $verbose = false;
 
     public function __construct($name, callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;
-        $this->selector = null;
     }
 
     public function run(Context $context)
@@ -138,9 +83,9 @@ class Task
     /**
      * Mark this task local.
      */
-    public function local()
+    public function local(bool $local = true)
     {
-        $this->local = true;
+        $this->local = $local;
         return $this;
     }
 
@@ -152,9 +97,9 @@ class Task
     /**
      * Mark this task to run only once on one of hosts.
      */
-    public function once()
+    public function once($once = true)
     {
-        $this->once = true;
+        $this->once = $once;
         return $this;
     }
 
@@ -168,9 +113,9 @@ class Task
      *
      * @return $this
      */
-    public function hidden()
+    public function hidden(bool $hidden = true)
     {
-        $this->hidden = true;
+        $this->hidden = $hidden;
         return $this;
     }
 
@@ -204,9 +149,9 @@ class Task
     /**
      * Sets task as shallow. Shallow task will not print execution message/finish messages.
      */
-    public function shallow()
+    public function shallow(bool $shallow = true)
     {
-        $this->shallow = true;
+        $this->shallow = $shallow;
         return $this;
     }
 

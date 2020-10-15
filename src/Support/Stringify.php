@@ -21,6 +21,10 @@ class Stringify
             if (!$input->getOption($name)) {
                 continue;
             }
+            if ($name === 'file') {
+                $options[] = "--file=" .self::escape(ltrim($option, '='));
+                continue;
+            }
             if (in_array($name, ['verbose'], true)) {
                 continue;
             }

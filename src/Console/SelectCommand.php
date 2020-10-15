@@ -9,17 +9,12 @@ namespace Deployer\Console;
 
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
-use Deployer\Exception\GracefulShutdownException;
-use Deployer\Executor\Planner;
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\QuestionHelper;
-use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
-use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 

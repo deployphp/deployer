@@ -48,7 +48,7 @@ abstract class AbstractTest extends TestCase
         $this->tester = new ApplicationTester($console);
 
         $this->deployer = new Deployer($console);
-        Deployer::load($recipe);
+        $this->deployer->importer->import($recipe);
         $this->deployer->init();
         $this->deployer->config->set('deploy_path', __TEMP_DIR__ . '/{{hostname}}');
     }

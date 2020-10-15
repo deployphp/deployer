@@ -29,6 +29,7 @@ use Deployer\Executor\Messenger;
 use Deployer\Executor\Server;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
+use Deployer\Importer\Importer;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
@@ -37,7 +38,6 @@ use Deployer\Task;
 use Deployer\Task\ScriptManager;
 use Deployer\Task\TaskCollection;
 use Deployer\Utility\Httpie;
-use Deployer\Utility\Reporter;
 use Deployer\Utility\Rsync;
 use Pimple\Container;
 use Symfony\Component\Console;
@@ -71,6 +71,7 @@ use Throwable;
  * @property Printer $pop
  * @property Collection $fail
  * @property InputDefinition $inputDefinition
+ * @property Importer $importer
  */
 class Deployer extends Container
 {
@@ -89,7 +90,7 @@ class Deployer extends Container
          ******************************/
 
         $console->getDefinition()->addOption(
-            new InputOption('--file', '-f', InputOption::VALUE_OPTIONAL, 'Recipe file path')
+            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'Recipe file path')
         );
 
         $this['console'] = function () use ($console) {
@@ -173,6 +174,9 @@ class Deployer extends Container
                 $c['sshClient'],
                 $c['config']
             );
+        };
+        $this['importer'] = function () {
+            return new Importer();
         };
 
         /******************************
@@ -292,36 +296,20 @@ class Deployer extends Container
             $console = new Application('Deployer', $version);
             $deployer = new self($console);
 
-            // Require deploy.php file
-            self::load($deployFile);
+            // Import recipe file
+            if (is_readable($deployFile)) {
+                $deployer->importer->import($deployFile);
+            }
 
             // Run Deployer
             $deployer->init();
             $console->run($input, $output);
 
         } catch (Throwable $exception) {
+            if (str_contains("$input", "-vvv")) {
+                $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
+            }
             self::printException($output, $exception);
-        }
-    }
-
-    public static function load(string $deployFile)
-    {
-        if (is_readable($deployFile)) {
-            // Prevent variable leak into deploy.php file
-            call_user_func(function () use ($deployFile) {
-                // Reorder autoload stack
-                $originStack = spl_autoload_functions();
-
-                require $deployFile;
-
-                $newStack = spl_autoload_functions();
-                if ($originStack[0] !== $newStack[0]) {
-                    foreach (array_reverse($originStack) as $loader) {
-                        spl_autoload_unregister($loader);
-                        spl_autoload_register($loader, true, true);
-                    }
-                }
-            });
         }
     }
 
@@ -339,6 +327,10 @@ class Deployer extends Container
         ]);
         if ($output->isDebug()) {
             $output->writeln($exception->getTraceAsString());
+        }
+
+        if ($exception->getPrevious()) {
+            self::printException($output, $exception->getPrevious());
         }
     }
 

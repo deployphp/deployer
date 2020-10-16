@@ -147,7 +147,6 @@ class Configuration implements \ArrayAccess
     /**
      * @param mixed $offset
      * @return bool
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function offsetExists($offset)
     {

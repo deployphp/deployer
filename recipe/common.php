@@ -18,8 +18,6 @@ require __DIR__ . '/deploy/update_code.php';
 require __DIR__ . '/deploy/vendors.php';
 require __DIR__ . '/deploy/writable.php';
 
-require __DIR__ . '/provision/provision.php';
-
 use Deployer\Exception\RunException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;

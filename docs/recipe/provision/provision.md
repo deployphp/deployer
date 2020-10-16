@@ -4,7 +4,7 @@
 
 # provision
 
-[Source](/recipe/provision/provision.php)
+[Source](/recipe/provision.php)
 
 
 
@@ -27,19 +27,19 @@
 
 ## Config
 ### php_version
-[Source](/recipe/provision/provision.php#L8)
+[Source](/recipe/provision.php#L8)
 
 
 
 ### sudo_password
-[Source](/recipe/provision/provision.php#L9)
+[Source](/recipe/provision.php#L9)
 
 
 
 
 ## Tasks
 ### provision
-[Source](/recipe/provision/provision.php#L14)
+[Source](/recipe/provision.php#L14)
 
 
 
@@ -56,57 +56,57 @@ This task is group task which contains next tasks:
 
 
 ### provision:check
-[Source](/recipe/provision/provision.php#L33)
+[Source](/recipe/provision.php#L33)
 
 
 
 ### provision:upgrade
-[Source](/recipe/provision/provision.php#L54)
+[Source](/recipe/provision.php#L54)
 
 
 
 ### provision:install
-[Source](/recipe/provision/provision.php#L60)
+[Source](/recipe/provision.php#L60)
 
 
 
 ### provision:ssh
-[Source](/recipe/provision/provision.php#L83)
+[Source](/recipe/provision.php#L83)
 
 
 
 ### provision:user:deployer
-[Source](/recipe/provision/provision.php#L97)
+[Source](/recipe/provision.php#L97)
 
 
 
 ### provision:firewall
-[Source](/recipe/provision/provision.php#L132)
+[Source](/recipe/provision.php#L132)
 
 
 
 ### provision:install:php
-[Source](/recipe/provision/provision.php#L140)
+[Source](/recipe/provision.php#L140)
 
 
 
 ### provision:install:composer
-[Source](/recipe/provision/provision.php#L165)
+[Source](/recipe/provision.php#L165)
 
 
 
 ### provision:config:php:sessions
-[Source](/recipe/provision/provision.php#L198)
+[Source](/recipe/provision.php#L198)
 
 
 
 ### provision:nginx:dhparam
-[Source](/recipe/provision/provision.php#L204)
+[Source](/recipe/provision.php#L204)
 
 
 
 ### provision:nginx
-[Source](/recipe/provision/provision.php#L215)
+[Source](/recipe/provision.php#L215)
 
 
 

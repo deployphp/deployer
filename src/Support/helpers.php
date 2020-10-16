@@ -64,24 +64,16 @@ function array_merge_alternate(array $original, array $override)
 
 /**
  * Determines if the given string contains the given value.
- *
- * @param string $haystack
- * @param string $needle
- * @return bool
  */
-function str_contains(string $haystack, string $needle)
+function str_contains(string $haystack, string $needle): bool
 {
     return strpos($haystack, $needle) !== false;
 }
 
 /**
  * Checks if string stars with given prefix.
- *
- * @param string $string
- * @param string $startString
- * @return bool
  */
-function starts_with(string $string, string $startString)
+function starts_with(string $string, string $startString): bool
 {
     $len = strlen($startString);
     return (substr($string, 0, $len) === $startString);
@@ -103,23 +95,17 @@ function env_stringify(array $array): string
 
 /**
  * Check if var is closure.
- *
- * @param $var
- * @return bool
+ * @param mixed $var
  */
-function is_closure($var)
+function is_closure($var): bool
 {
     return is_object($var) && ($var instanceof \Closure);
 }
 
 /**
  * Check if all elements satisfy predicate.
- *
- * @param array $array
- * @param \Closure $predicate
- * @return bool
  */
-function array_all(array $array, $predicate)
+function array_all(array $array, $predicate): bool
 {
     foreach ($array as $key => $value) {
         if (!$predicate($value, $key)) {
@@ -131,21 +117,14 @@ function array_all(array $array, $predicate)
 
 /**
  * Cleanup CRLF new line endings.
- * Issue #2111
- *
- * @param $string
- * @return string
  */
-function normalize_line_endings($string)
+function normalize_line_endings(string $string): string
 {
     return str_replace(["\r\n", "\r"], "\n", $string);
 }
 
 /**
  * Expand leading tilde (~) symbol in given path.
- *
- * @param string $path
- * @return string
  */
 function parse_home_dir(string $path): string
 {
@@ -162,4 +141,23 @@ function parse_home_dir(string $path): string
     }
 
     return $path;
+}
+
+function fork(callable $callable)
+{
+    $pid = null;
+    // Make sure function is not disabled via php.ini "disable_functions"
+    if (extension_loaded('pcntl') && function_exists('pcntl_fork')) {
+        declare(ticks = 1);
+        $pid = pcntl_fork();
+    }
+    if (is_null($pid) || $pid === -1) {
+        // Fork fails or there is no `pcntl` extension.
+        $callable();
+    } elseif ($pid === 0) {
+        // Child process.
+        posix_setsid();
+        $callable();
+        exit(0);
+    }
 }

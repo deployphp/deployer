@@ -23,7 +23,7 @@ task('database:migrate', function () {
         $options = sprintf('%s --configuration={{release_path}}/{{migrations_config}}', $options);
     }
 
-    run(sprintf('{{bin/php}} {{bin/console}} doctrine:migrations:migrate %s {{console_options}}', $options));
+    run(sprintf('cd {{release_path}} && {{bin/php}} {{bin/console}} doctrine:migrations:migrate %s {{console_options}}', $options));
 });
 
 desc('Clear cache');

@@ -30,6 +30,7 @@
 - When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
 - Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
 - Fixed unit tests on non-master branches. [#2181]
+- Fixes Symfony / DoctrineMigrations >= 3.0 relative paths. [#2207]
 
 
 ## v6.8.0
@@ -596,6 +597,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2207]: https://github.com/deployphp/deployer/issues/2207
 [#2192]: https://github.com/deployphp/deployer/issues/2192
 [#2187]: https://github.com/deployphp/deployer/issues/2187
 [#2181]: https://github.com/deployphp/deployer/issues/2181

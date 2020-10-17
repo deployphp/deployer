@@ -15,10 +15,8 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 Do you want to contribute to this project? Start working on one of those:
 
 - Improve docs of [recipes](recipe) or [contrib](contrib) 
-- Fix one of [bugs](http://bit.ly/deployer-bugs)
+- Fix one of the [bugs](http://bit.ly/deployer-bugs)
 - Add new features!
-  
-[Other issues from v7 milestone](https://github.com/deployphp/deployer/milestone/7)
 
 ## Maintainer
 * Anton Medvedev [@antonmedv](https://github.com/antonmedv)

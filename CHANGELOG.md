@@ -5,32 +5,31 @@
 [v6.8.0...master](https://github.com/deployphp/deployer/compare/v6.8.0...master)
 
 ### Added
-- Added a Slack notification task on rollback.
-- Recipe for crontab tasks.
-- Cachetool contrib recipe, add stat:clear command.
-- ISPManager recipe and docs.
-- Added ability to customize rsync flags.
-- Symfony 5 recipe.
-- Command for checking if a deploy is unlocked. [#2150]
-- Added support for placeholders in run and runLocally methods. [#2192]
-- Added new push command which pushes local changes to host.
+- Added documentation generation from recipes.
+- Added support for `ask()` functions in parallel mode.
+- Added support for `sudo` commands.
+- Added `provision.php` recipe for a quick setup of a server with php, nginx and security.
+- Added `dep status` command which shows currently deployed revisions.
+- Added `dep hosts` command to show hosts info in json format.
+- Added `dep tree` command to show task configuration.
+- Added `--plan` option to show execution plan, which tasks on which hosts.
+- Added `dep push` command to quickly push local changes to remote hosts.
+- Added yaml recipe syntax.
+- Added dotenv support on remote hosts.
+- Added labels and selectors support.
+- Added support for placeholders in `run()` func.
+- Added support for secret passing in `run()` func without outputting to logs.
 
 ### Changed
-- `within` passess through `$callback` return value. [#2178]
-- Type declarations for methods in `src/Configuration`. [#2187]
-- On rollback release kept and marked as BAD.
-- Create customizable favicon definition for all hangout notifications.
+- Refactored executor engine, up to 2x faster than before.
+- Refactored `common.php` recipe to support new frameworks.
+- Refactored bash/zsh autocomplete to support hosts.
+- Docs rewritten to be more clean, easy to use and understandable.
+- Better parallel execution support, configurable per task.
+- Refactored `dep init` command.
 
 ### Fixed
-- Normalize CRLF to LF new line endings. [#2111]
-- Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
-- When symfony_env is set to dev, require-dev are not installed. [#2035]
-- Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
-- DX: Running the installing steps on a VM with php 7.0 errors silently. [#2101]
-- When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
-- Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
-- Fixed unit tests on non-master branches. [#2181]
-- Fixes Symfony / DoctrineMigrations >= 3.0 relative paths. [#2207]
+- Lots, and lots of long-standing bugs.
 
 
 ## v6.8.0
@@ -597,20 +596,6 @@
 - Fixed remove of shared dir on first deploy.
 
 
-[#2207]: https://github.com/deployphp/deployer/issues/2207
-[#2192]: https://github.com/deployphp/deployer/issues/2192
-[#2187]: https://github.com/deployphp/deployer/issues/2187
-[#2181]: https://github.com/deployphp/deployer/issues/2181
-[#2178]: https://github.com/deployphp/deployer/issues/2178
-[#2170]: https://github.com/deployphp/deployer/issues/2170
-[#2165]: https://github.com/deployphp/deployer/issues/2165
-[#2150]: https://github.com/deployphp/deployer/issues/2150
-[#2111]: https://github.com/deployphp/deployer/pull/2111
-[#2101]: https://github.com/deployphp/deployer/issues/2101
-[#2052]: https://github.com/deployphp/deployer/issues/2052
-[#2043]: https://github.com/deployphp/deployer/pull/2043
-[#2040]: https://github.com/deployphp/deployer/issues/2040
-[#2035]: https://github.com/deployphp/deployer/issues/2035
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990
 [#1989]: https://github.com/deployphp/deployer/issues/1989
@@ -650,7 +635,6 @@
 [#1556]: https://github.com/deployphp/deployer/pull/1556
 [#1554]: https://github.com/deployphp/deployer/pull/1554
 [#1536]: https://github.com/deployphp/deployer/pull/1536
-[#1521]: https://github.com/deployphp/deployer/pull/1521
 [#1513]: https://github.com/deployphp/deployer/pull/1513
 [#1508]: https://github.com/deployphp/deployer/issues/1508
 [#1488]: https://github.com/deployphp/deployer/issues/1488
@@ -694,7 +678,6 @@
 [#1192]: https://github.com/deployphp/deployer/issues/1192
 [#1175]: https://github.com/deployphp/deployer/pull/1175
 [#1165]: https://github.com/deployphp/deployer/issues/1165
-[#1153]: https://github.com/deployphp/deployer/issues/1153
 [#1152]: https://github.com/deployphp/deployer/pull/1152
 [#1146]: https://github.com/deployphp/deployer/pull/1146
 [#1145]: https://github.com/deployphp/deployer/pull/1145

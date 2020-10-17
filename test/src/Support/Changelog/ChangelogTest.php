@@ -30,6 +30,26 @@ class ChangelogTest extends TestCase
         }
     }
 
+    public function testReferencesHasLink()
+    {
+        $changelog = file_get_contents(self::CHANGELOG);
+        preg_match_all('/(?<ref>\[#(?<id>\d+)]: https.+)/', $changelog, $matches);
+
+        $missing = [];
+        foreach ($matches['id'] as $i => $ref) {
+            if (!preg_match("/\[#$ref][^:]/", $changelog)) {
+                $missing[] = $matches['ref'][$i];
+            }
+        }
+
+        if (count($missing) > 0) {
+            self::fail("Next references does not have a link in CHANGELOG.md:\n" . implode("\n", $missing));
+            return;
+        }
+
+        self::assertTrue(true);
+    }
+
     public function testChangelogReferencesOrdered()
     {
         $changelog = file_get_contents(self::CHANGELOG);
@@ -61,8 +81,9 @@ class ChangelogTest extends TestCase
         $parser = new Parser($input, false);
         $changelog = $parser->parse();
 
-        self::assertTrue(
-            "$changelog" === $input,
+        self::assertEquals(
+            "$changelog",
+            $input,
             "Please make sure what CHANGELOG.md formatted properly. Run next command:\n" .
             "\n" .
             "    php bin/changelog fix\n" .

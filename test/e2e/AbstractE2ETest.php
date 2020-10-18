@@ -2,6 +2,7 @@
 namespace e2e;
 
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\ApplicationTester;
@@ -36,6 +37,10 @@ abstract class AbstractE2ETest extends TestCase
         }
     }
 
+    /**
+     * @param string $recipe path to recipe file
+     * @throws Exception
+     */
     protected function init(string $recipe): void
     {
         $console = new Application();
@@ -43,7 +48,7 @@ abstract class AbstractE2ETest extends TestCase
         $this->tester = new ApplicationTester($console);
 
         $this->deployer = new Deployer($console);
-        Deployer::load($recipe);
+        $this->deployer->importer->import($recipe);
         $this->deployer->init();
         $this->deployer->config->set('deploy_path', __TEMP_DIR__ . '/{{hostname}}');
     }

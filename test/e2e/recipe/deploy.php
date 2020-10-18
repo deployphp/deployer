@@ -3,6 +3,7 @@ namespace Deployer;
 
 set('application', 'deployer-e2e');
 host('server.test')
+    ->setDeployPath('/var/www/html')
     ->setTag('e2e')
     ->setRemoteUser('deployer')
     ->setSshOptions(

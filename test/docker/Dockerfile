@@ -39,6 +39,7 @@ WORKDIR /project
 
 FROM php:7.3-apache AS server
 RUN apt-get update && apt-get install -y \
+        acl \
         git \
         openssh-server \
         sudo \
@@ -50,9 +51,9 @@ RUN mkdir /run/sshd \
 
 # Configure Apache to expose healthcheck & configure site to use /var/www/html/current ad document root
 COPY conf/healthcheck.conf /etc/apache2/sites-available/healthcheck.conf
-COPY initial-site/index.html /var/www/html/initial-site/index.html
+COPY ./initial-site /var/www/html/initial-site
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/current
+ENV APACHE_DOCUMENT_ROOT /var/www/html/current/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf \
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && ln -s /var/www/html/initial-site /var/www/html/current \

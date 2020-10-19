@@ -55,7 +55,7 @@ function host(...$hostname)
         $deployer->hosts->set($aliases[0], $host);
         return $host;
     } else {
-        $hosts = array_map(function ($hostname) use ($deployer) {
+        $hosts = array_map(function ($hostname) use ($deployer) : Host {
             $host = new Host($hostname);
             $deployer->hosts->set($hostname, $host);
             return $host;
@@ -78,7 +78,7 @@ function localhost(...$hostnames)
         $deployer->hosts->set($host->getAlias(), $host);
         return $host;
     } else {
-        $hosts = array_map(function ($hostname) use ($deployer) {
+        $hosts = array_map(function ($hostname) use ($deployer): Localhost {
             $host = new Localhost($hostname);
             $deployer->hosts->set($host->getAlias(), $host);
             return $host;
@@ -93,7 +93,7 @@ function localhost(...$hostnames)
  * @param string $alias
  * @return Host
  */
-function getHost(string $alias)
+function getHost(string $alias): Host
 {
     return Deployer::get()->hosts->get($alias);
 }
@@ -103,7 +103,7 @@ function getHost(string $alias)
  *
  * @return Host
  */
-function currentHost()
+function currentHost(): Host
 {
     return Context::get()->getHost();
 }
@@ -117,9 +117,11 @@ function currentHost()
  * });
  * ```
  *
+ * @param string $selector
+ *
  * @return Host[]
  */
-function select(string $selector)
+function select(string $selector): array
 {
     return Deployer::get()->selector->select($selector);
 }
@@ -134,8 +136,12 @@ function select(string $selector)
  * ```php
  * import(__DIR__ . '/config/hosts.yaml');
  * ```
+ *
+ * @param string $file
+ *
+ * @throws Exception\Exception
  */
-function import(string $file) {
+function import(string $file): void {
     Importer::import($file);
 }
 
@@ -160,9 +166,10 @@ function desc($title = null)
  *
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
+ *
  * @return Task
  */
-function task($name, $body = null)
+function task(string $name, $body = null): Task
 {
     $deployer = Deployer::get();
 
@@ -194,9 +201,10 @@ function task($name, $body = null)
  *
  * @param string $task The task before $that should be run.
  * @param string|callable $do The task to be run.
+ *
  * @return Task|void
  */
-function before($task, $do)
+function before(string $task, $do)
 {
     if (is_callable($do)) {
         $newTask = task("before:$task", $do);
@@ -211,9 +219,10 @@ function before($task, $do)
  *
  * @param string $task The task after $that should be run.
  * @param string|callable $do The task to be run.
+ *
  * @return Task|void
  */
-function after($task, $do)
+function after(string $task, $do)
 {
     if (is_callable($do)) {
         $newTask = task("after:$task", $do);
@@ -228,9 +237,10 @@ function after($task, $do)
  *
  * @param string $task The task which need to fail so $that should be run.
  * @param string $do The task to be run.
+ *
  * @return Task|void
  */
-function fail($task, $do)
+function fail(string $task, $do)
 {
     if (is_callable($do)) {
         $newTask = task("fail:$task", $do);
@@ -250,7 +260,7 @@ function fail($task, $do)
  * @param string $description A description text
  * @param string|string[]|int|bool|null $default The default value (must be null for self::VALUE_NONE)
  */
-function option($name, $shortcut = null, $mode = null, $description = '', $default = null)
+function option(string $name, $shortcut = null, $mode = null, $description = '', $default = null): void
 {
     Deployer::get()->inputDefinition->addOption(
         new InputOption($name, $shortcut, $mode, $description, $default)
@@ -262,7 +272,7 @@ function option($name, $shortcut = null, $mode = null, $description = '', $defau
  *
  * @param string $path
  */
-function cd($path)
+function cd(string $path): void
 {
     set('working_path', parse($path));
 }
@@ -272,9 +282,10 @@ function cd($path)
  *
  * @param string $path
  * @param callable $callback
+ *
  * @return mixed|void Return value of the $callback function or void if callback doesn't return anything
  */
-function within($path, $callback)
+function within(string $path, callable $callback)
 {
     $lastWorkingPath = get('working_path', '');
     try {
@@ -309,11 +320,12 @@ function within($path, $callback)
  *
  * @param string $command
  * @param array $options
+ *
  * @return string
  */
-function run($command, $options = [])
+function run(string $command, $options = []): string
 {
-    $run = function ($command, $options) {
+    $run = function ($command, $options): string {
         $host = Context::get()->getHost();
 
         $command = parse($command);
@@ -372,9 +384,10 @@ function run($command, $options = [])
  *
  * @param string $command Command to run locally.
  * @param array $options
+ *
  * @return string Output of command.
  */
-function runLocally($command, $options = [])
+function runLocally(string $command, $options = []): string
 {
     $process = Deployer::get()->processRunner;
     $command = parse($command);
@@ -401,9 +414,10 @@ function runLocally($command, $options = [])
  * ```
  *
  * @param string $command
+ *
  * @return bool
  */
-function test($command)
+function test(string $command): bool
 {
     return run("if $command; then echo 'true'; fi") === 'true';
 }
@@ -415,9 +429,10 @@ function test($command)
  *     testLocally('[ -d {{local_release_path}} ]')
  *
  * @param string $command
+ *
  * @return bool
  */
-function testLocally($command)
+function testLocally(string $command): bool
 {
     return runLocally("if $command; then echo 'true'; fi") === 'true';
 }
@@ -446,7 +461,7 @@ function testLocally($command)
  * @param Host|Host[] $hosts
  * @param callable $callback
  */
-function on($hosts, callable $callback)
+function on($hosts, callable $callback): void
 {
     if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
         $hosts = [$hosts];
@@ -475,8 +490,12 @@ function on($hosts, callable $callback)
  * ```php
  * invoke('deploy:symlink');
  * ```
+ *
+ * @param string $taskName
+ *
+ * @throws Exception\Exception
  */
-function invoke(string $taskName)
+function invoke(string $taskName): void
 {
     $task = Deployer::get()->tasks->get($taskName);
     Deployer::get()->messenger->startTask($task);
@@ -496,7 +515,7 @@ function invoke(string $taskName)
  * @param array $config
  * @throws RunException
  */
-function upload(string $source, string $destination, $config = [])
+function upload(string $source, string $destination, $config = []): void
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
@@ -518,7 +537,7 @@ function upload(string $source, string $destination, $config = [])
  * @param array $config
  * @throws RunException
  */
-function download(string $source, string $destination, $config = [])
+function download(string $source, string $destination, $config = []): void
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
@@ -534,18 +553,20 @@ function download(string $source, string $destination, $config = [])
 
 /**
  * Writes an info message.
+ *
  * @param string $message
  */
-function info($message)
+function info(string $message): void
 {
     writeln("<fg=green;options=bold>info</> " . parse($message));
 }
 
 /**
  * Writes an warning message.
+ *
  * @param string $message
  */
-function warning($message)
+function warning(string $message): void
 {
     writeln("<fg=yellow;options=bold>warning</> <comment>" . parse($message) . "</comment>");
 }
@@ -555,7 +576,7 @@ function warning($message)
  * @param string|array $message
  * @param int $options
  */
-function writeln($message, $options = 0)
+function writeln($message, $options = 0): void
 {
     $host = currentHost();
     output()->writeln("[{$host->getTag()}] " . parse($message), $options);
@@ -565,9 +586,10 @@ function writeln($message, $options = 0)
  * Parse set values.
  *
  * @param string $value
+ *
  * @return string
  */
-function parse($value)
+function parse(string $value): string
 {
     return Context::get()->getConfig()->parse($value);
 }
@@ -578,7 +600,7 @@ function parse($value)
  * @param string $name
  * @param mixed $value
  */
-function set($name, $value)
+function set(string $name, $value): void
 {
     if (!Context::has()) {
         Deployer::get()->config->set($name, $value);
@@ -593,7 +615,7 @@ function set($name, $value)
  * @param string $name
  * @param array $array
  */
-function add($name, $array)
+function add(string $name, array $array): void
 {
     if (!Context::has()) {
         Deployer::get()->config->add($name, $array);
@@ -607,9 +629,10 @@ function add($name, $array)
  *
  * @param string $name
  * @param mixed|null $default
+ *
  * @return mixed
  */
-function get($name, $default = null)
+function get(string $name, $default = null)
 {
     if (!Context::has()) {
         return Deployer::get()->config->get($name, $default);
@@ -622,9 +645,10 @@ function get($name, $default = null)
  * Check if there is such configuration option.
  *
  * @param string $name
+ *
  * @return boolean
  */
-function has($name)
+function has(string $name): bool
 {
     if (!Context::has()) {
         return Deployer::get()->config->has($name);
@@ -637,9 +661,10 @@ function has($name)
  * @param string $message
  * @param string|null $default
  * @param string[]|null $autocomplete
- * @return string
+ *
+ * @return string|null
  */
-function ask($message, $default = null, $autocomplete = null)
+function ask(string $message, $default = null, $autocomplete = null): ?string
 {
     Context::required(__FUNCTION__);
 
@@ -670,9 +695,10 @@ function ask($message, $default = null, $autocomplete = null)
  * @param string[] $availableChoices
  * @param string|null $default
  * @param bool|false $multiselect
+ *
  * @return string|string[]
  */
-function askChoice($message, array $availableChoices, $default = null, $multiselect = false)
+function askChoice(string $message, array $availableChoices, $default = null, $multiselect = false)
 {
     Context::required(__FUNCTION__);
 
@@ -709,9 +735,10 @@ function askChoice($message, array $availableChoices, $default = null, $multisel
 /**
  * @param string $message
  * @param bool $default
+ *
  * @return bool
  */
-function askConfirmation($message, $default = false)
+function askConfirmation(string $message, $default = false): bool
 {
     Context::required(__FUNCTION__);
 
@@ -738,7 +765,7 @@ function askConfirmation($message, $default = false)
  * @param string $message
  * @return string
  */
-function askHiddenResponse(string $message)
+function askHiddenResponse(string $message): string
 {
     Context::required(__FUNCTION__);
 
@@ -765,7 +792,7 @@ function askHiddenResponse(string $message)
 /**
  * @return InputInterface
  */
-function input()
+function input(): InputInterface
 {
     return Context::get()->getInput();
 }
@@ -774,7 +801,7 @@ function input()
 /**
  * @return OutputInterface
  */
-function output()
+function output(): OutputInterface
 {
     return Context::get()->getOutput();
 }
@@ -783,14 +810,15 @@ function output()
  * Check if command exists
  *
  * @param string $command
+ *
  * @return bool
  */
-function commandExist($command)
+function commandExist(string $command): bool
 {
     return test("hash $command 2>/dev/null");
 }
 
-function commandSupportsOption($command, $option)
+function commandSupportsOption($command, $option): bool
 {
     $man = run("(man $command 2>&1 || $command -h 2>&1 || $command --help 2>&1) | grep -- $option || true");
     if (empty($man)) {
@@ -799,7 +827,7 @@ function commandSupportsOption($command, $option)
     return str_contains($man, $option);
 }
 
-function locateBinaryPath($name)
+function locateBinaryPath($name): string
 {
     $nameEscaped = escapeshellarg($name);
 

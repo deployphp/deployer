@@ -78,50 +78,12 @@ set('clear_paths', [], 'is_array');
 // Use sudo for deploy:clear_path task?
 set('clear_use_sudo', false, 'is_bool');
 
-// NOT IN THE NEW COMMON.PHP FILE
-/* set('cleanup_use_sudo', false, 'is_bool'); // Using sudo in cleanup commands? */
-/* set('writable_dirs', [], 'is_array'); */
-/* set('writable_mode', 'acl', function ($value) { */
-/*     return $value === 'chmod' */
-/*         || $value === 'chown' */
-/*         || $value === 'chgrp' */
-/*         || $value === 'acl'; */ 
-/* }); // chmod, chown, chgrp or acl. */
-/* set('writable_use_sudo', false, 'is_bool'); // Using sudo in writable commands? */
-/* set('writable_recursive', true, 'is_bool'); // Common for all modes */
-/* set('writable_chmod_mode', '0755', function ($value) { */
-/*     $chmodPattern = '/^[ugoa]*([-+=]([rwxXst]*|[ugo]))+|[-+=]?[0-7]+$/'; */
-/*     return preg_match($chmodPattern, $value); */
-/* }); // For chmod mode */
-/* set('writable_chmod_recursive', true, 'is_bool'); // For chmod mode only (if is boolean, it has priority over `writable_recursive`) */
-/* set('http_user', false, 'is_bool'); */
-/* set('http_group', false, 'is_bool'); */
-// END: NOT IN THE NEW COMMON.PHP FILE
-
 set('use_relative_symlink', function () {
     return commandSupportsOption('ln', '--relative');
 });
-
 set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
-
-// NOT IN THE NEW COMMON.PHP FILE
-/* set('composer_action', 'install', function ($value) { */
-/*     switch ($value) { */
-/*     case 'install': */
-/*     case 'i': */
-/*     case 'require': */
-/*     case 'u': */
-/*     case 'update': */
-/*     case 'upgrade': */
-/*         return true; */
-/*     } */
-/*     return false; */
-/* }); */
-
-/* set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest', 'is_string'); */
-// END: NOT IN THE NEW COMMON.PHP FILE
 
 /**
  * Remote environment variables.

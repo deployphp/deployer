@@ -7,8 +7,8 @@ require_once __DIR__ . '/../../../recipe/laravel.php';
 getHost('server.test')
     ->set('timeout', 600);
 
-set('repository', 'https://github.com/bsacharski/e2e-laraver-boilerplate.git');
-set('branch', 'master');
+set('repository', 'https://github.com/deployphp/test-laravel.git');
+set('branch', 'main');
 
 task('laravel:setup-env', function(): void {
     $sharedPath = "{{deploy_path}}/shared";

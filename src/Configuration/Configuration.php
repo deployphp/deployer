@@ -7,28 +7,17 @@
 
 namespace Deployer\Configuration;
 
+use Deployer\Task\Context;
 use Deployer\Utility\Httpie;
-use function Deployer\get;
 use Deployer\Exception\ConfigurationException;
+use function Deployer\get;
+use function Deployer\warning;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;
 
 class Configuration implements \ArrayAccess
 {
-
-    const PREDEFINED_PARAMS = [
-        'alias', 'application', 'bin/composer', 'bin/git', 'bin/php', 'bin/symlink', 
-        'branch', 'cleanup_use_sudo', 'clear_paths', 'clear_use_sudo', 'composer_action', 
-        'composer_options', 'config_file', 'copy_dirs', 'current_path', 'deploy_path',
-        'env', 'forward_agent', 'git_cache', 'hostname', 'http_group', 'http_user', 
-        'identity_file', 'keep_releases', 'log_file', 'master_url', 'php_version',
-        'port', 'release_name', 'release_path', 'releases_list', 'remote_user', 
-        'repository', 'roles', 'shared_dirs', 'shared_files', 'shell', 
-        'ssh_multiplexing', 'sudo_askpass', 'sudo_password', 'use_atomic_symlink', 
-        'use_relative_symlink', 'user', 'working_path', 'writable_chmod_mode', 
-        'writable_chmod_recursive', 'writable_dirs', 'writable_mode', 
-        'writable_recursive', 'writable_use_sudo'];
 
     private $parent;
     private $values = [];
@@ -63,8 +52,20 @@ class Configuration implements \ArrayAccess
         ) {
             throw new ConfigurationException("Config option \"$name\" has an invalid value.");
         }
+        $callingFile = pathinfo(debug_backtrace()[1]['file'], PATHINFO_FILENAME);
+        if (!$this->has($name) && $callingFile === 'deploy') {
+            $this->verifyConfigurationName($name);
+        }
+        $this->values[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     */
+    protected function verifyConfigurationName(string $name): void
+    {
         $closestDistance = 4;
-        foreach (self::PREDEFINED_PARAMS as $predefinedParam) {
+        foreach (array_keys($this->ownValues()) as $predefinedParam) {
             if ($name === $predefinedParam) {
                 unset($closestParam);
                 break;
@@ -76,9 +77,8 @@ class Configuration implements \ArrayAccess
             }
         }
         if (isset($closestParam)) {
-            print("<fg=yellow>Warning:</> \"$name\" not found in parameters. Did you mean \"$closestParam\"?\n");
+            warning("\"$name\" not found in parameters. Did you mean \"$closestParam\"?");
         }
-        $this->values[$name] = $value;
     }
 
     public function has(string $name): bool

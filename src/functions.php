@@ -24,6 +24,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\env_stringify;
 use function Deployer\Support\str_contains;
@@ -547,7 +548,12 @@ function info($message)
  */
 function warning($message)
 {
-    writeln("<fg=yellow;options=bold>warning</> <comment>" . parse($message) . "</comment>");
+    if (Context::has()) {
+        writeln("<fg=yellow;options=bold>warning</> <comment>" . parse($message) . "</comment>");
+    } else {
+        $output = new ConsoleOutput();
+        $output->writeln("<fg=yellow;options=bold>warning</> <comment>$message</comment>");
+    }
 }
 
 /**
@@ -577,8 +583,9 @@ function parse($value)
  *
  * @param string $name
  * @param mixed $value
+ * @param callable $callback
  */
-function set($name, $value, $callback = null)
+function set(string $name, $value, callable $callback = null)
 {
     if (!Context::has()) {
         Deployer::get()->config->set($name, $value, $callback);

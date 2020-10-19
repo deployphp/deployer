@@ -20,6 +20,7 @@
 - Added support for placeholders in `run()` func.
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
+- Added configuration check and callback function to validate set data. [#976]
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -30,15 +31,7 @@
 - Refactored `dep init` command.
 
 ### Fixed
-- Normalize CRLF to LF new line endings. [#2111]
-- Recipe for Magento now supports locale configuration for `setup:static-content:deploy`. [#2040]
-- When symfony_env is set to dev, require-dev are not installed. [#2035]
-- Fixed exit status of rollback command when there are no releases to rollback to. [#2052]
-- DX: Running the installing steps on a VM with php 7.0 errors silently. [#2101]
-- When the second parameter $options passed to run() and runLocally(), use it to overwrite default env config. [#2165]
-- Replaced `runLocally` with `on(localhost(), ...)` in `deploy:check_remote` to make sure all code is ran on localhost. [#2170]
-- Fixed unit tests on non-master branches. [#2181]
-- Include callback function to validate set data (#976).
+- Lots, and lots of long-standing bugs.
 
 
 ## v6.8.0
@@ -714,6 +707,7 @@
 [#986]: https://github.com/deployphp/deployer/pull/986
 [#979]: https://github.com/deployphp/deployer/pull/979
 [#978]: https://github.com/deployphp/deployer/pull/978
+[#976]: https://github.com/deployphp/deployer/pull/976
 [#962]: https://github.com/deployphp/deployer/pull/962
 [#956]: https://github.com/deployphp/deployer/pull/956
 [#955]: https://github.com/deployphp/deployer/pull/955

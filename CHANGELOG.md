@@ -19,6 +19,7 @@
 - Added labels and selectors support.
 - Added support for placeholders in `run()` func.
 - Added support for secret passing in `run()` func without outputting to logs.
+- Added docker-based E2E testing environment. [#2197]
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -596,6 +597,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990
 [#1989]: https://github.com/deployphp/deployer/issues/1989

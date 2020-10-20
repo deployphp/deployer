@@ -47,16 +47,33 @@ class Configuration implements \ArrayAccess
         if (is_callable($callback)) {
             $this->validations[$name] = $callback;
         }
-        if (array_key_exists($name, $this->validations) 
-            && !call_user_func($this->validations[$name], $value)
+        $callingFile = pathinfo(debug_backtrace()[1]['file'], PATHINFO_FILENAME);
+        if ($callingFile === 'deploy') {
+            if ($this->has($name)) {
+                $this->verifyConfigurationValue($name, $value);
+            } else {
+                $this->verifyConfigurationName($name);
+            }
+        }
+        $this->values[$name] = $value;
+    }
+
+    /**
+     * @param string $name
+     * @param mix $value
+     */
+    protected function verifyConfigurationValue(string $name, $value): void
+    {
+        if ($this->parent) {
+            $definedCallable = &$this->parent;
+        } else {
+            $definedCallable = &$this;
+        }
+        if (array_key_exists($name, $definedCallable->validations) 
+            && !call_user_func($definedCallable->validations[$name], $value)
         ) {
             throw new ConfigurationException("Config option \"$name\" has an invalid value.");
         }
-        $callingFile = pathinfo(debug_backtrace()[1]['file'], PATHINFO_FILENAME);
-        if (!$this->has($name) && $callingFile === 'deploy') {
-            $this->verifyConfigurationName($name);
-        }
-        $this->values[$name] = $value;
     }
 
     /**

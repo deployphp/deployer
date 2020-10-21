@@ -4,7 +4,7 @@ namespace Deployer;
 
 set('composer_action', 'install');
 
-set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest');
+set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
 
 set('bin/composer', function () {
     if (commandExist('composer')) {

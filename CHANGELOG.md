@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Copy shared files and folder should be verbose only when deployer is run with Very verbose output. [#2209]
 
 
 ## v6.8.0
@@ -597,6 +598,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2209]: https://github.com/deployphp/deployer/issues/2209
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

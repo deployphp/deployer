@@ -30,7 +30,7 @@ task('deploy:shared', function () {
                 run(
                     sprintf(
                         'cp -r%s {{release_path}}/%s %s/%s',
-                        output()->getVerbosity() === OutputInterface::VERBOSITY_VERY_VERBOSE ? 'v' : '',
+                        output()->getVerbosity() === OutputInterface::VERBOSITY_DEBUG ? 'v' : '',
                         $dir,
                         $sharedPath,
                         dirname(parse($dir))
@@ -65,7 +65,7 @@ task('deploy:shared', function () {
             run(
                 sprintf(
                     'cp -r%s {{release_path}}/%s %s/%s',
-                    output()->getVerbosity() === OutputInterface::VERBOSITY_VERY_VERBOSE ? 'v' : '',
+                    output()->getVerbosity() === OutputInterface::VERBOSITY_DEBUG ? 'v' : '',
                     $file,
                     $sharedPath,
                     $file

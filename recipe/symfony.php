@@ -38,7 +38,7 @@ set('env', function () {
 
 set('composer_options', function () {
     $debug = get('symfony_env') === 'dev';
-    return sprintf('--verbose --prefer-dist --no-progress --no-interaction %s --optimize-autoloader --no-suggest', (!$debug ? '--no-dev' : ''));
+    return sprintf('--verbose --prefer-dist --no-progress --no-interaction %s --optimize-autoloader', (!$debug ? '--no-dev' : ''));
 });
 
 

@@ -28,7 +28,6 @@
 - Docs rewritten to be more clean, easy to use and understandable.
 - Better parallel execution support, configurable per task.
 - Refactored `dep init` command.
-- [composer 3] Removed deprecated option "--no-suggest".
 
 ### Fixed
 - Lots, and lots of long-standing bugs.

@@ -2,6 +2,7 @@
 namespace Deployer;
 
 use Deployer\Exception\Exception;
+use Symfony\Component\Console\Output\OutputInterface;
 
 desc('Creating symlinks for shared files and dirs');
 task('deploy:shared', function () {
@@ -26,7 +27,15 @@ task('deploy:shared', function () {
             run("mkdir -p $sharedPath/$dir");
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname(parse($dir)));
+                run(
+                    sprintf(
+                        'cp -r%s {{release_path}}/%s %s/%s',
+                        output()->getVerbosity() === OutputInterface::VERBOSITY_VERY_VERBOSE ? 'v' : '',
+                        $dir,
+                        $sharedPath,
+                        dirname(parse($dir))
+                    )
+                );
             }
         }
 
@@ -53,7 +62,15 @@ task('deploy:shared', function () {
         // and file exist in release
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
-            run("cp -rv {{release_path}}/$file $sharedPath/$file");
+            run(
+                sprintf(
+                    'cp -r%s {{release_path}}/%s %s/%s',
+                    output()->getVerbosity() === OutputInterface::VERBOSITY_VERY_VERBOSE ? 'v' : '',
+                    $file,
+                    $sharedPath,
+                    $file
+                )
+            );
         }
 
         // Remove from source.

@@ -24,3 +24,8 @@
 
 
 
+### deploy:is-unlocked
+[Source](/recipe/deploy/lock.php#L27)
+
+
+

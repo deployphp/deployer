@@ -124,12 +124,18 @@ class Task
         return $this->hidden;
     }
 
+    /**
+     * Make $task being run before this task
+     */
     public function addBefore(string $task)
     {
         array_unshift($this->before, $task);
         return $this;
     }
 
+    /**
+     * Make $task being run after this task
+     */
     public function addAfter(string $task)
     {
         array_push($this->after, $task);

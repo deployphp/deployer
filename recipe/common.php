@@ -87,7 +87,7 @@ set('use_atomic_symlink', function () {
 });
 
 set('composer_action', 'install');
-set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader --no-suggest');
+set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
 
 set('env', []); // Run command environment (for example, SYMFONY_ENV=prod)
 

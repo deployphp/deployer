@@ -17,6 +17,8 @@ task('deploy:shared', function () {
         }
     }
 
+    $copyVerbosity = output()->getVerbosity() === OutputInterface::VERBOSITY_DEBUG ? 'v' : '';
+
     foreach (get('shared_dirs') as $dir) {
         // Make sure all path without tailing slash.
         $dir = trim($dir, '/');
@@ -27,15 +29,7 @@ task('deploy:shared', function () {
             run("mkdir -p $sharedPath/$dir");
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run(
-                    sprintf(
-                        'cp -r%s {{release_path}}/%s %s/%s',
-                        output()->getVerbosity() === OutputInterface::VERBOSITY_DEBUG ? 'v' : '',
-                        $dir,
-                        $sharedPath,
-                        dirname(parse($dir))
-                    )
-                );
+                run("cp -r{$copyVerbosity} {{release_path}}/{$dir} {$sharedPath}/" . dirname(parse($dir)));
             }
         }
 
@@ -63,13 +57,7 @@ task('deploy:shared', function () {
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
             run(
-                sprintf(
-                    'cp -r%s {{release_path}}/%s %s/%s',
-                    output()->getVerbosity() === OutputInterface::VERBOSITY_DEBUG ? 'v' : '',
-                    $file,
-                    $sharedPath,
-                    $file
-                )
+                "cp -r{$copyVerbosity} {{release_path}}/{$file} {$sharedPath}/{$file}"
             );
         }
 

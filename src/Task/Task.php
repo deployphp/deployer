@@ -61,6 +61,9 @@ class Task
         return $this->description;
     }
 
+    /**
+     * @return $this
+     */
     public function desc(string $description)
     {
         $this->description = $description;
@@ -82,6 +85,8 @@ class Task
 
     /**
      * Mark this task local.
+     *
+     * @return $this
      */
     public function local(bool $local = true)
     {
@@ -96,6 +101,8 @@ class Task
 
     /**
      * Mark this task to run only once on one of hosts.
+     *
+     * @return $this
      */
     public function once($once = true)
     {
@@ -125,7 +132,9 @@ class Task
     }
 
     /**
-     * Make $task being run before this task
+     * Make $task being run before this task.
+     *
+     * @return $this
      */
     public function addBefore(string $task)
     {
@@ -135,6 +144,8 @@ class Task
 
     /**
      * Make $task being run after this task
+     *
+     * @return $this
      */
     public function addAfter(string $task)
     {
@@ -154,6 +165,8 @@ class Task
 
     /**
      * Sets task as shallow. Shallow task will not print execution message/finish messages.
+     *
+     * @return $this
      */
     public function shallow(bool $shallow = true)
     {
@@ -176,7 +189,8 @@ class Task
 
     /**
      * @param int|null $limit
-     * @return Task
+     *
+     * @return $this
      */
     public function limit(?int $limit)
     {
@@ -186,7 +200,8 @@ class Task
 
     /**
      * @param string $selector
-     * @return Task
+     *
+     * @return $this
      */
     public function select(string $selector)
     {
@@ -218,6 +233,9 @@ class Task
         return $this->verbose;
     }
 
+    /**
+     * @return $this
+     */
     public function verbose(bool $verbose = true)
     {
         $this->verbose = $verbose;

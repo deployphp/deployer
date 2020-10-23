@@ -26,7 +26,9 @@
     "scripts": {
         "test": "pest",
         "test-e2e": "pest --config test/e2e/phpunit-e2e.xml.dist",
-        "lint": "phpcs"
+        "lint": "phpcs",
+        "phpstan": "phpstan analyse -c phpstan.neon.dist",
+        "phpstan-baseline": "phpstan analyse -c phpstan.neon.dist --generate-baseline phpstan-baseline.neon"
     },
     "bin": [
         "bin/dep"
@@ -42,6 +44,7 @@
     },
     "require-dev": {
         "pestphp/pest": "^0.3",
+        "phpstan/phpstan": "^0.12.51",
         "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^6.4",
         "squizlabs/php_codesniffer": "^3.5"

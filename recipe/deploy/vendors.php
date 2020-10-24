@@ -6,6 +6,15 @@ set('composer_action', 'install');
 
 set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
 
+/**
+ * Can be used to choose what composer version to install.
+ * Valid values are any that are listed here: https://getcomposer.org/download/
+ *
+ * For example:
+ * set('composer_version', '10.10.15')
+ */
+set('composer_version', null);
+
 set('bin/composer', function () {
     if (commandExist('composer')) {
         return '{{bin/php}} ' . locateBinaryPath('composer');
@@ -15,7 +24,14 @@ set('bin/composer', function () {
         return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
     }
 
-    run("cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
+    $composerVersionToInstall = get('composer_version', null);
+    $installCommand = "cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}";
+
+    if ($composerVersionToInstall) {
+        $installCommand .= " -- --version=" . $composerVersionToInstall;
+    }
+
+    run($installCommand);
     run('mv {{release_path}}/composer.phar {{deploy_path}}/.dep/composer.phar');
     return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
 });

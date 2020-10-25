@@ -35,7 +35,7 @@ class Rsync
      * - `options` with additional flags passed directly to the `rsync` command
      * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
      */
-    public function call(Host $host, string $source, string $destination, array $config = [])
+    public function call(Host $host, string $source, string $destination, array $config = []): void
     {
         $defaults = [
             'timeout' => null,

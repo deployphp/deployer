@@ -20,7 +20,7 @@ class Collection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return mixed|void
+     * @return mixed
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function get(string $name)
@@ -28,7 +28,7 @@ class Collection implements Countable, IteratorAggregate
         if ($this->has($name)) {
             return $this->values[$name];
         } else {
-            return $this->throwNotFound($name);
+            $this->throwNotFound($name);
         }
     }
 

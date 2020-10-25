@@ -34,4 +34,10 @@ jobs:
       run: php bin/docgen
 
     - name: Check for uncommitted changes
-      run: '[ -z "$(git status --porcelain docs/)" ] || { echo "Please, run bin/docgen to update docs"; exit 1; }'
+      run: |
+        status=$(git status --porcelain docs/);
+        [ -z "$status" ] || {
+          echo "Please, run bin/docgen and commit next files:";
+          echo $status;
+          exit 1;
+        }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,16 +17,15 @@ class GroupTask extends Task
     private $group;
 
     /**
-     * @param string $name
      * @param string[] $group
      */
-    public function __construct($name, $group)
+    public function __construct(string $name, array $group)
     {
         parent::__construct($name);
         $this->group = $group;
     }
 
-    public function run(Context $context)
+    public function run(Context $context): void
     {
         // TODO: implement;
     }
@@ -36,7 +35,7 @@ class GroupTask extends Task
      *
      * @return string[]
      */
-    public function getGroup()
+    public function getGroup(): array
     {
         return $this->group;
     }

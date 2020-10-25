@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -25,13 +25,17 @@ class Task
     private $selector = null;
     private $verbose = false;
 
+    /**
+     * Task constructor.
+     * @param mixed $name
+     */
     public function __construct($name, callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;
     }
 
-    public function run(Context $context)
+    public function run(Context $context): void
     {
         Context::push($context);
 
@@ -46,25 +50,25 @@ class Task
         }
     }
 
+    /**
+     * @return mixed
+     */
     public function getName()
     {
         return $this->name;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return $this->getName();
     }
 
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @return $this
-     */
-    public function desc(string $description)
+    public function desc(string $description): self
     {
         $this->description = $description;
         return $this;
@@ -75,7 +79,7 @@ class Task
         return $this->sourceLocation;
     }
 
-    public function saveSourceLocation()
+    public function saveSourceLocation(): void
     {
         if (function_exists('debug_backtrace')) {
             $trace = debug_backtrace();
@@ -85,58 +89,50 @@ class Task
 
     /**
      * Mark this task local.
-     *
-     * @return $this
      */
-    public function local(bool $local = true)
+    public function local(bool $local = true): self
     {
         $this->local = $local;
         return $this;
     }
 
-    public function isLocal()
+    public function isLocal(): bool
     {
         return $this->local;
     }
 
     /**
      * Mark this task to run only once on one of hosts.
-     *
-     * @return $this
      */
-    public function once($once = true)
+    public function once(bool $once = true): self
     {
         $this->once = $once;
         return $this;
     }
 
-    public function isOnce()
+    public function isOnce(): bool
     {
         return $this->once;
     }
 
     /**
      * Mark task as hidden and not accessible from CLI.
-     *
-     * @return $this
      */
-    public function hidden(bool $hidden = true)
+    public function hidden(bool $hidden = true): self
     {
         $this->hidden = $hidden;
         return $this;
     }
 
-    public function isHidden()
+    public function isHidden(): bool
     {
         return $this->hidden;
     }
 
     /**
      * Make $task being run before this task.
-     *
-     * @return $this
      */
-    public function addBefore(string $task)
+    public function addBefore(string $task): self
     {
         array_unshift($this->before, $task);
         return $this;
@@ -144,66 +140,49 @@ class Task
 
     /**
      * Make $task being run after this task
-     *
-     * @return $this
      */
-    public function addAfter(string $task)
+    public function addAfter(string $task): self
     {
         array_push($this->after, $task);
         return $this;
     }
 
-    public function getBefore()
+    public function getBefore(): array
     {
         return $this->before;
     }
 
-    public function getAfter()
+    public function getAfter(): array
     {
         return $this->after;
     }
 
     /**
      * Sets task as shallow. Shallow task will not print execution message/finish messages.
-     *
-     * @return $this
      */
-    public function shallow(bool $shallow = true)
+    public function shallow(bool $shallow = true): self
     {
         $this->shallow = $shallow;
         return $this;
     }
 
-    public function isShallow()
+    public function isShallow(): bool
     {
         return $this->shallow;
     }
 
-    /**
-     * @return int|null
-     */
     public function getLimit(): ?int
     {
         return $this->limit;
     }
 
-    /**
-     * @param int|null $limit
-     *
-     * @return $this
-     */
-    public function limit(?int $limit)
+    public function limit(?int $limit): self
     {
         $this->limit = $limit;
         return $this;
     }
 
-    /**
-     * @param string $selector
-     *
-     * @return $this
-     */
-    public function select(string $selector)
+    public function select(string $selector): self
     {
         $this->selector = Selector::parse($selector);
         return $this;
@@ -217,7 +196,7 @@ class Task
         return $this->selector;
     }
 
-    public function addSelector(?array $newSelector)
+    public function addSelector(?array $newSelector): void
     {
         if ($newSelector !== null) {
             if ($this->selector === null) {
@@ -233,10 +212,7 @@ class Task
         return $this->verbose;
     }
 
-    /**
-     * @return $this
-     */
-    public function verbose(bool $verbose = true)
+    public function verbose(bool $verbose = true): self
     {
         $this->verbose = $verbose;
         return $this;

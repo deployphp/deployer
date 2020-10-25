@@ -20,6 +20,7 @@
 
     <file>src/Collection</file>
     <file>src/Configuration</file>
+    <file>src/Task</file>
     <file>src/functions.php</file>
 
     <arg name="basepath" value="."/>

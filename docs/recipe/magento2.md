@@ -28,35 +28,35 @@
 
 ## Config
 ### static_content_locales
-[Source](/recipe/magento2.php#L11)
+[Source](/recipe/magento2.php#L13)
 
 By default setup:static-content:deploy uses `en_US`.
 To change that, simply put set('static_content_locales', 'en_US de_DE');`
 in you deployer script.
 
 ### shared_files
-[Source](/recipe/magento2.php#L13)
+[Source](/recipe/magento2.php#L15)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
-[Source](/recipe/magento2.php#L17)
+[Source](/recipe/magento2.php#L19)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/magento2.php#L31)
+[Source](/recipe/magento2.php#L33)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### clear_paths
-[Source](/recipe/magento2.php#L37)
+[Source](/recipe/magento2.php#L39)
 
 * Overrides [`clear_paths`](/docs/recipe/common.md#clear_paths) from `recipe/common.php`
 
@@ -65,37 +65,37 @@ in you deployer script.
 
 ## Tasks
 ### magento:compile
-[Source](/recipe/magento2.php#L48)
+[Source](/recipe/magento2.php#L50)
 
 Tasks
 
 ### magento:deploy:assets
-[Source](/recipe/magento2.php#L54)
+[Source](/recipe/magento2.php#L56)
 
 
 
 ### magento:maintenance:enable
-[Source](/recipe/magento2.php#L59)
+[Source](/recipe/magento2.php#L61)
 
 
 
 ### magento:maintenance:disable
-[Source](/recipe/magento2.php#L64)
+[Source](/recipe/magento2.php#L66)
 
 
 
 ### magento:upgrade:db
-[Source](/recipe/magento2.php#L69)
+[Source](/recipe/magento2.php#L71)
 
 
 
 ### magento:cache:flush
-[Source](/recipe/magento2.php#L74)
+[Source](/recipe/magento2.php#L76)
 
 
 
 ### deploy:magento
-[Source](/recipe/magento2.php#L79)
+[Source](/recipe/magento2.php#L81)
 
 
 
@@ -108,7 +108,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](/recipe/magento2.php#L89)
+[Source](/recipe/magento2.php#L91)
 
 
 

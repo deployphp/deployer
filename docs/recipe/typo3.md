@@ -20,26 +20,26 @@
 
 ## Config
 ### typo3_webroot
-[Source](/recipe/typo3.php#L9)
+[Source](/recipe/typo3.php#L11)
 
 DocumentRoot / WebRoot for the TYPO3 installation
 
 ### shared_dirs
-[Source](/recipe/typo3.php#L24)
+[Source](/recipe/typo3.php#L26)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Shared directories
 
 ### shared_files
-[Source](/recipe/typo3.php#L33)
+[Source](/recipe/typo3.php#L35)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Shared files
 
 ### writable_dirs
-[Source](/recipe/typo3.php#L40)
+[Source](/recipe/typo3.php#L42)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -48,7 +48,7 @@ Writeable directories
 
 ## Tasks
 ### deploy
-[Source](/recipe/typo3.php#L14)
+[Source](/recipe/typo3.php#L16)
 
 Main TYPO3 task
 

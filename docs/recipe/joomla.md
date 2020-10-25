@@ -19,21 +19,21 @@
 
 ## Config
 ### shared_files
-[Source](/recipe/joomla.php#L6)
+[Source](/recipe/joomla.php#L8)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
-[Source](/recipe/joomla.php#L7)
+[Source](/recipe/joomla.php#L9)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/joomla.php#L8)
+[Source](/recipe/joomla.php#L10)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -42,7 +42,7 @@
 
 ## Tasks
 ### deploy
-[Source](/recipe/joomla.php#L10)
+[Source](/recipe/joomla.php#L12)
 
 
 

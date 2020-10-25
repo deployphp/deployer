@@ -21,21 +21,21 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/magento.php#L11)
+[Source](/recipe/magento.php#L13)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Magento shared dirs
 
 ### shared_files
-[Source](/recipe/magento.php#L14)
+[Source](/recipe/magento.php#L16)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Magento shared files
 
 ### writable_dirs
-[Source](/recipe/magento.php#L17)
+[Source](/recipe/magento.php#L19)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -44,17 +44,17 @@ Magento writable dirs
 
 ## Tasks
 ### deploy:cache:clear
-[Source](/recipe/magento.php#L22)
+[Source](/recipe/magento.php#L24)
 
 Clear cache
 
 ### deploy:clear_version
-[Source](/recipe/magento.php#L29)
+[Source](/recipe/magento.php#L31)
 
 Remove files that can be used to compromise Magento
 
 ### deploy
-[Source](/recipe/magento.php#L42)
+[Source](/recipe/magento.php#L44)
 
 Main task
 

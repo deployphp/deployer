@@ -1,16 +1,16 @@
 version: '2.4'
 
-services: 
+services:
   deployer:
     build:
       context: ""
       target: deployer
-    depends_on: 
+    depends_on:
       server:
         condition: service_healthy
-    volumes: 
+    volumes:
       - ./../../:/project
-    command: "php vendor/bin/pest --config test/e2e/phpunit-e2e.xml.dist"
+    command: "php vendor/bin/pest --config test/e2e/phpunit-e2e.xml"
     networks:
       - e2e
 #    environment:
@@ -28,7 +28,7 @@ services:
 #      PHP_IDE_CONFIG: serverName=deployer-e2e
 
   server:
-    build: 
+    build:
       context: ""
       target: server
     healthcheck:

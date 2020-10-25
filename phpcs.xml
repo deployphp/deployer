@@ -18,6 +18,7 @@
         <exclude name="SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint" />
     </rule>
 
+    <file>src/Collection</file>
     <file>src/Configuration</file>
     <file>src/functions.php</file>
 

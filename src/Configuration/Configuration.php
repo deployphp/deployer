@@ -127,10 +127,7 @@ class Configuration implements \ArrayAccess
         return $value;
     }
 
-    /**
-     * @return array
-     */
-    public function ownValues()
+    public function ownValues(): array
     {
         return $this->values;
     }

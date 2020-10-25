@@ -14,17 +14,20 @@ class Collection implements Countable, IteratorAggregate
 {
     protected $values = [];
 
-    public function all()
+    public function all(): array
     {
         return $this->values;
     }
 
+    /**
+     * @return mixed
+     */
     public function get(string $name)
     {
         if ($this->has($name)) {
             return $this->values[$name];
         } else {
-            return $this->throwNotFound($name);
+            $this->throwNotFound($name);
         }
     }
 
@@ -33,6 +36,9 @@ class Collection implements Countable, IteratorAggregate
         return array_key_exists($name, $this->values);
     }
 
+    /**
+     * @param mixed $object
+     */
     public function set(string $name, $object)
     {
         $this->values[$name] = $object;
@@ -56,12 +62,15 @@ class Collection implements Countable, IteratorAggregate
         return $values;
     }
 
+    /**
+     * @return \ArrayIterator|\Traversable
+     */
     public function getIterator()
     {
         return new \ArrayIterator($this->values);
     }
 
-    protected function throwNotFound(string $name)
+    protected function throwNotFound(string $name): void
     {
         throw new \InvalidArgumentException("Element \"$name\" not found in collection.");
     }

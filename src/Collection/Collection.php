@@ -21,7 +21,6 @@ class Collection implements Countable, IteratorAggregate
 
     /**
      * @return mixed
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function get(string $name)
     {
@@ -39,7 +38,6 @@ class Collection implements Countable, IteratorAggregate
 
     /**
      * @param mixed $object
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function set(string $name, $object)
     {
@@ -66,7 +64,6 @@ class Collection implements Countable, IteratorAggregate
 
     /**
      * @return \ArrayIterator|\Traversable
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ReturnTypeHint.MissingNativeTypeHint
      */
     public function getIterator()
     {

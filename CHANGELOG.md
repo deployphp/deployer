@@ -22,6 +22,7 @@
 - Added docker-based E2E testing environment. [#2197]
 - Typehinting for functions.php. [#2187]
 - Phpstan static analysis via GitHub Actions.
+- Added `composer_version` to choose composer version to install.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

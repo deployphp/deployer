@@ -3,6 +3,8 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+add('recipes', ['magento2']);
+
 // Configuration
 
 // By default setup:static-content:deploy uses `en_US`.

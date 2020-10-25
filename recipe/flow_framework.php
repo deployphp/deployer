@@ -3,6 +3,8 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+add('recipes', ['flow_framework']);
+
 // Flow-Framework application-context
 set('flow_context', 'Production');
 

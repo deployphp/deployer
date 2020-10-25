@@ -3,6 +3,8 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+add('recipes', ['drupal7']);
+
 task('deploy', [
     'deploy:prepare',
     'deploy:publish',

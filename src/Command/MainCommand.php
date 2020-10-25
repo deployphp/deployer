@@ -88,6 +88,7 @@ class MainCommand extends SelectCommand
         $this->telemetry([
             'project_hash' => empty($this->deployer->config['repository']) ? null : sha1($this->deployer->config['repository']),
             'hosts_count' => $this->deployer->hosts->count(),
+            'recipes' => $this->deployer->config->get('recipes', []),
         ]);
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));

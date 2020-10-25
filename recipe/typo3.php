@@ -3,6 +3,8 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+add('recipes', ['typo3']);
+
 /**
  * DocumentRoot / WebRoot for the TYPO3 installation
  */

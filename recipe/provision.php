@@ -5,6 +5,8 @@ namespace Deployer;
 use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\starts_with;
 
+add('recipes', ['provision']);
+
 set('php_version', '7.4');
 set('sudo_password', function () {
     return askHiddenResponse('Type new password:');

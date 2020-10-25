@@ -1,0 +1,82 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
+			count: 1
+			path: src/Command/DiceCommand.php
+
+		-
+			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
+			count: 1
+			path: src/Command/InitCommand.php
+
+		-
+			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
+			count: 1
+			path: src/Command/MainCommand.php
+
+		-
+			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
+			count: 1
+			path: src/Command/SshCommand.php
+
+		-
+			message: "#^Anonymous function has an unused use \\$hosts\\.$#"
+			count: 1
+			path: src/Command/RunCommand.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 2
+			path: src/Component/PharUpdate/Exception/Exception.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Component/PharUpdate/Manifest.php
+
+		-
+			message: "#^Used function Deployer\\\\hostTag not found\\.$#"
+			count: 1
+			path: src/Component/ProcessRunner/Printer.php
+
+		-
+			message: "#^Constant DEPLOYER_BIN not found\\.$#"
+			count: 2
+			path: src/Executor/Master.php
+
+		-
+			message: "#^Variable \\$script in isset\\(\\) is never defined\\.$#"
+			count: 1
+			path: src/Importer/Importer.php
+
+		-
+			message: "#^Undefined variable\\: \\$script$#"
+			count: 1
+			path: src/Importer/Importer.php
+
+		-
+			message: "#^Variable \\$upload in isset\\(\\) is never defined\\.$#"
+			count: 3
+			path: src/Importer/Importer.php
+
+		-
+			message: "#^Undefined variable\\: \\$upload$#"
+			count: 1
+			path: src/Importer/Importer.php
+
+		-
+			message: "#^Variable \\$download in isset\\(\\) is never defined\\.$#"
+			count: 3
+			path: src/Importer/Importer.php
+
+		-
+			message: "#^Undefined variable\\: \\$download$#"
+			count: 1
+			path: src/Importer/Importer.php
+
+		-
+			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
+			count: 1
+			path: src/Utility/Httpie.php
+

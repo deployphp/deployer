@@ -21,6 +21,7 @@
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
 - Typehinting for functions.php. [#2187]
+- Phpstan static analysis via GitHub Actions.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

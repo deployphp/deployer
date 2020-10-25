@@ -11,6 +11,7 @@
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
+  * [`symfony_version`](#symfony_version)
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
@@ -23,56 +24,61 @@
   * [`deploy`](#deploy) — Deploy project
 
 ## Config
-### shared_dirs
+### symfony_version
 [Source](/recipe/symfony.php#L8)
+
+
+
+### shared_dirs
+[Source](/recipe/symfony.php#L14)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### shared_files
-[Source](/recipe/symfony.php#L13)
+[Source](/recipe/symfony.php#L19)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/symfony.php#L18)
+[Source](/recipe/symfony.php#L24)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### migrations_config
-[Source](/recipe/symfony.php#L22)
+[Source](/recipe/symfony.php#L28)
 
 
 
 ### console_options
-[Source](/recipe/symfony.php#L28)
+[Source](/recipe/symfony.php#L32)
 
 
 
 
 ## Tasks
 ### database:migrate
-[Source](/recipe/symfony.php#L33)
+[Source](/recipe/symfony.php#L37)
 
 
 
 ### deploy:cache:clear
-[Source](/recipe/symfony.php#L43)
+[Source](/recipe/symfony.php#L47)
 
 
 
 ### deploy:cache:warmup
-[Source](/recipe/symfony.php#L48)
+[Source](/recipe/symfony.php#L52)
 
 
 
 ### deploy
-[Source](/recipe/symfony.php#L53)
+[Source](/recipe/symfony.php#L57)
 
 
 

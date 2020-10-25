@@ -20,9 +20,6 @@
 - Added support for placeholders in `run()` func.
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
-- Typehinting for functions.php. [#2187]
-- Phpstan static analysis via GitHub Actions.
-- Added `composer_version` to choose composer version to install.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -34,7 +31,6 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
-- Copy shared files and folder should be verbose only when deployer is run with Very verbose output. [#2209]
 
 
 ## v6.8.0

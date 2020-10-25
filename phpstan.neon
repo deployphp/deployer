@@ -1,6 +1,6 @@
 includes:
-    - phpstan-baseline.neon
-    
+    - test/phpstan-baseline.neon
+
 parameters:
     level: 1
     paths:

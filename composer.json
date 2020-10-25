@@ -25,10 +25,10 @@
     },
     "scripts": {
         "test": "pest",
-        "test-e2e": "pest --config test/e2e/phpunit-e2e.xml.dist",
+        "test:e2e": "pest --config test/e2e/phpunit-e2e.xml",
         "lint": "phpcs",
-        "phpstan": "phpstan analyse -c phpstan.neon.dist",
-        "phpstan-baseline": "phpstan analyse -c phpstan.neon.dist --generate-baseline phpstan-baseline.neon"
+        "phpstan": "phpstan analyse -c phpstan.neon",
+        "phpstan:baseline": "phpstan analyse -c phpstan.neon --generate-baseline test/phpstan-baseline.neon"
     },
     "bin": [
         "bin/dep"

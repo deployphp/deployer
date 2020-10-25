@@ -5,6 +5,12 @@ require_once __DIR__ . '/common.php';
 
 add('recipes', ['symfony']);
 
+set('symfony_version', function () {
+    $result = run('{{bin/console}} --version');
+    preg_match_all('/(\d+\.?)+/', $result, $matches);
+    return $matches[0][0] ?? 5.0;
+});
+
 set('shared_dirs', [
     'var/log',
     'var/sessions']
@@ -21,9 +27,7 @@ set('writable_dirs', [
 
 set('migrations_config', '');
 
-set('bin/console', function () {
-    return parse('{{release_path}}/bin/console');
-});
+set('bin/console', '{{bin/php}} {{release_path}}/bin/console');
 
 set('console_options', function () {
     return '--no-interaction';
@@ -36,17 +40,17 @@ task('database:migrate', function () {
         $options = "$options --configuration={{release_path}}/{{migrations_config}}";
     }
 
-    run("cd {{release_path}} && {{bin/php}} {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
+    run("cd {{release_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
 });
 
 desc('Clear cache');
 task('deploy:cache:clear', function () {
-    run('{{bin/php}} {{bin/console}} cache:clear {{console_options}} --no-warmup');
+    run('{{bin/console}} cache:clear {{console_options}} --no-warmup');
 });
 
 desc('Warm up cache');
 task('deploy:cache:warmup', function () {
-    run('{{bin/php}} {{bin/console}} cache:warmup {{console_options}}');
+    run('{{bin/console}} cache:warmup {{console_options}}');
 });
 
 desc('Deploy project');

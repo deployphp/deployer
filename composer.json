@@ -14,6 +14,16 @@
             "email": "anton@medv.io"
         }
     ],
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://patreon.com/deployer"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/antonmedv"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Deployer\\": "src/"

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -26,7 +26,7 @@ class ScriptManager
      *
      * @return Task[]
      */
-    public function getTasks(string $name, ?string $startFrom = null)
+    public function getTasks(string $name, ?string $startFrom = null): array
     {
         $tasks = [];
         $allTasks = $this->doGetTasks($name);
@@ -53,10 +53,9 @@ class ScriptManager
     }
 
     /**
-     * @param string $name
      * @return Task[]
      */
-    public function doGetTasks(string $name)
+    public function doGetTasks(string $name): array
     {
         $tasks = [];
 
@@ -85,12 +84,12 @@ class ScriptManager
         return array_flatten($tasks);
     }
 
-    public function getHooksEnabled()
+    public function getHooksEnabled(): bool
     {
         return $this->hooksEnabled;
     }
 
-    public function setHooksEnabled($hooksEnabled): void
+    public function setHooksEnabled(bool $hooksEnabled): void
     {
         $this->hooksEnabled = $hooksEnabled;
     }

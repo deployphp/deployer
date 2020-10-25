@@ -8,10 +8,12 @@ set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction 
 
 /**
  * Can be used to choose what composer version to install.
- * Valid values are any that are listed here: https://getcomposer.org/download/
+ * Valid values are any that are [listed here](https://getcomposer.org/download/).
  *
  * For example:
- * set('composer_version', '10.10.15')
+ * ```php
+ *     set('composer_version', '10.10.15')
+ * ```
  */
 set('composer_version', null);
 

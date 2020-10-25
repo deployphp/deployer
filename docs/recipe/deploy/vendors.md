@@ -11,6 +11,7 @@
 * Config
   * [`composer_action`](#composer_action)
   * [`composer_options`](#composer_options)
+  * [`composer_version`](#composer_version)
 * Tasks
   * [`deploy:vendors`](#deployvendors) — Installing vendors
 
@@ -25,10 +26,21 @@
 
 
 
+### composer_version
+[Source](/recipe/deploy/vendors.php#L18)
+
+Can be used to choose what composer version to install.
+Valid values are any that are [listed here](https://getcomposer.org/download/).
+
+For example:
+```php
+    set('composer_version', '10.10.15')
+```
+
 
 ## Tasks
 ### deploy:vendors
-[Source](/recipe/deploy/vendors.php#L24)
+[Source](/recipe/deploy/vendors.php#L42)
 
 
 

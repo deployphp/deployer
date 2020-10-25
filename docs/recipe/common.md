@@ -25,7 +25,6 @@
   * [`recipe/deploy/update_code.php`](/docs/recipe/deploy/update_code.md)
   * [`recipe/deploy/vendors.php`](/docs/recipe/deploy/vendors.md)
   * [`recipe/deploy/writable.php`](/docs/recipe/deploy/writable.md)
-  * [`recipe/provision/provision.php`](/docs/recipe/provision/provision.md)
 * Config
   * [`user`](#user)
   * [`keep_releases`](#keep_releases)
@@ -50,7 +49,7 @@
 
 ## Config
 ### user
-[Source](/recipe/common.php#L31)
+[Source](/recipe/common.php#L29)
 
 Name of current user who is running deploy.
 It will be shown in `dep status` command as author.
@@ -58,17 +57,17 @@ If not set will try automatically get git user name,
 otherwise output of `whoami` command.
 
 ### keep_releases
-[Source](/recipe/common.php#L48)
+[Source](/recipe/common.php#L46)
 
 Number of releases to preserve in releases folder.
 
 ### repository
-[Source](/recipe/common.php#L51)
+[Source](/recipe/common.php#L49)
 
 Repository to deploy.
 
 ### shared_dirs
-[Source](/recipe/common.php#L58)
+[Source](/recipe/common.php#L56)
 
 List of dirs what will be shared between releases.
 Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
@@ -77,7 +76,7 @@ set('shared_dirs', ['storage']);
 ```
 
 ### shared_files
-[Source](/recipe/common.php#L65)
+[Source](/recipe/common.php#L63)
 
 List of files what will be shared between releases.
 Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
@@ -86,33 +85,33 @@ set('shared_files', ['.env']);
 ```
 
 ### copy_dirs
-[Source](/recipe/common.php#L69)
+[Source](/recipe/common.php#L67)
 
 List of dirs to copy between releases.
 For example you can copy `node_modules` to speedup npm install.
 
 ### clear_paths
-[Source](/recipe/common.php#L72)
+[Source](/recipe/common.php#L70)
 
 List of paths to remove from [release_path](/docs/recipe/deploy/release.md#release_path).
 
 ### clear_use_sudo
-[Source](/recipe/common.php#L75)
+[Source](/recipe/common.php#L73)
 
 Use sudo for deploy:clear_path task?
 
 ### use_relative_symlink
-[Source](/recipe/common.php#L77)
+[Source](/recipe/common.php#L75)
 
 
 
 ### use_atomic_symlink
-[Source](/recipe/common.php#L80)
+[Source](/recipe/common.php#L78)
 
 
 
 ### env
-[Source](/recipe/common.php#L98)
+[Source](/recipe/common.php#L96)
 
 Remote environment variables.
 ```php
@@ -128,7 +127,7 @@ run('echo $KEY', ['env' => ['KEY' => 'over']]
 ```
 
 ### dotenv
-[Source](/recipe/common.php#L107)
+[Source](/recipe/common.php#L105)
 
 Path to `.env` file which will be used as environment variables for each command per `run()`.
 
@@ -137,7 +136,7 @@ set('dotenv', '[current_path](/docs/recipe/common.md#current_path)/.env');
 ```
 
 ### current_path
-[Source](/recipe/common.php#L115)
+[Source](/recipe/common.php#L113)
 
 Return current release path. Default to {{deploy_path}}/`current`.
 ```php
@@ -145,7 +144,7 @@ set('current_path', '/var/public_html');
 ```
 
 ### sudo_askpass
-[Source](/recipe/common.php#L135)
+[Source](/recipe/common.php#L133)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -154,7 +153,7 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L150)
+[Source](/recipe/common.php#L148)
 
 
 
@@ -169,7 +168,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L160)
+[Source](/recipe/common.php#L158)
 
 
 
@@ -181,17 +180,17 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](/recipe/common.php#L170)
+[Source](/recipe/common.php#L168)
 
 Prints success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L180)
+[Source](/recipe/common.php#L178)
 
 Hook on deploy failure.
 
 ### logs
-[Source](/recipe/common.php#L189)
+[Source](/recipe/common.php#L187)
 
 Follow latest application logs.
 

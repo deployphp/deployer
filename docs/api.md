@@ -9,7 +9,7 @@
  * [`getHost()`](#getHost)
  * [`currentHost()`](#currentHost)
  * [`select()`](#select)
- * [`inventory()`](#inventory)
+ * [`import()`](#import)
  * [`desc()`](#desc)
  * [`task()`](#task)
  * [`before()`](#before)
@@ -47,21 +47,21 @@
 ## host()
 
 ```php
-host(...$hostname)
+host(string ...$hostname)
 ```
 
 
 ## localhost()
 
 ```php
-localhost(...$hostnames)
+localhost(string ...$hostnames)
 ```
 
 
 ## getHost()
 
 ```php
-getHost(string $alias)
+getHost(string $alias): Host
 ```
 
 Get host by host alias.
@@ -70,7 +70,7 @@ Get host by host alias.
 ## currentHost()
 
 ```php
-currentHost()
+currentHost(): Host
 ```
 
 Returns current host.
@@ -79,7 +79,7 @@ Returns current host.
 ## select()
 
 ```php
-select(string $selector)
+select(string $selector): array
 ```
 
 Returns hosts based on provided selector.
@@ -91,19 +91,27 @@ on(select('stage=prod, role=db'), function ($host) {
 ```
 
 
-## inventory()
+## import()
 
 ```php
-inventory($file)
+import(string $file): void {
 ```
 
-Load list of hosts from file
+Import other php or yaml recipes.
+
+```php
+import('recipe/common.php');
+```
+
+```php
+import(__DIR__ . '/config/hosts.yaml');
+```
 
 
 ## desc()
 
 ```php
-desc($title = null)
+desc(?string $title = null): ?string
 ```
 
 Set task description.
@@ -111,7 +119,7 @@ Set task description.
 ## task()
 
 ```php
-task($name, $body = null)
+task(string $name, $body = null): Task
 ```
 
 Define a new task and save to tasks list.
@@ -119,37 +127,42 @@ Define a new task and save to tasks list.
 Alternatively get a defined task.
 
 
+
 ## before()
 
 ```php
-before($task, $do)
+before(string $task, $do)
 ```
 
 Call that task before specified task runs.
 
 
+
 ## after()
 
 ```php
-after($task, $do)
+after(string $task, $do)
 ```
 
 Call that task after specified task runs.
 
 
+
 ## fail()
 
 ```php
-fail($task, $do)
+fail(string $task, string $do)
 ```
 
-Setup which task run on failure of first.
+Setup which task run on failure of $task.
+When called multiple times for a task, previous fail() definitions will be overridden.
+
 
 
 ## option()
 
 ```php
-option($name, $shortcut = null, $mode = null, $description = '', $default = null)
+option(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null): void
 ```
 
 Add users options.
@@ -158,16 +171,15 @@ Add users options.
 ## cd()
 
 ```php
-cd($path)
+cd(string $path): void
 ```
 
 Change the current working directory.
 
-
 ## within()
 
 ```php
-within($path, $callback)
+within(string $path, callable $callback)
 ```
 
 Execute a callback within a specific directory and revert back to the initial working directory.
@@ -176,7 +188,7 @@ Execute a callback within a specific directory and revert back to the initial wo
 ## run()
 
 ```php
-run($command, $options = [])
+run(string $command, array $options = []): string
 ```
 
 Executes given command on remote host.
@@ -204,16 +216,17 @@ run("echo $path");
 ## runLocally()
 
 ```php
-runLocally($command, $options = [])
+runLocally(string $command, array $options = []): string
 ```
 
 Execute commands on local machine
 
 
+
 ## test()
 
 ```php
-test($command)
+test(string $command): bool
 ```
 
 Run test command.
@@ -225,11 +238,10 @@ if (test('[ -d {{release_path}} ]')) {
 }
 ```
 
-
 ## testLocally()
 
 ```php
-testLocally($command)
+testLocally(string $command): bool
 ```
 
 Run test command locally.
@@ -237,11 +249,10 @@ Example:
 
     testLocally('[ -d {{local_release_path}} ]')
 
-
 ## on()
 
 ```php
-on($hosts, callable $callback)
+on($hosts, callable $callback): void
 ```
 
 Iterate other hosts, allowing to call run a func in callback.
@@ -268,7 +279,7 @@ on(Deployer::get()->hosts, function ($host) {
 ## invoke()
 
 ```php
-invoke(string $taskName)
+invoke(string $taskName): void
 ```
 
 Runs a task.
@@ -276,10 +287,11 @@ Runs a task.
 invoke('deploy:symlink');
 ```
 
+
 ## upload()
 
 ```php
-upload(string $source, string $destination, $config = [])
+upload(string $source, string $destination, array $config = []): void
 ```
 
 Upload file or directory to host.
@@ -292,7 +304,7 @@ Upload file or directory to host.
 ## download()
 
 ```php
-download(string $source, string $destination, $config = [])
+download(string $source, string $destination, array $config = []): void
 ```
 
 Download file or directory from host
@@ -301,7 +313,7 @@ Download file or directory from host
 ## info()
 
 ```php
-info($message)
+info(string $message): void
 ```
 
 Writes an info message.
@@ -309,7 +321,7 @@ Writes an info message.
 ## warning()
 
 ```php
-warning($message)
+warning(string $message): void
 ```
 
 Writes an warning message.
@@ -317,7 +329,7 @@ Writes an warning message.
 ## writeln()
 
 ```php
-writeln($message, $options = 0)
+writeln($message, int $options = 0): void
 ```
 
 Writes a message to the output and adds a newline at the end.
@@ -325,16 +337,15 @@ Writes a message to the output and adds a newline at the end.
 ## parse()
 
 ```php
-parse($value)
+parse(string $value): string
 ```
 
 Parse set values.
 
-
 ## set()
 
 ```php
-set($name, $value)
+set(string $name, $value): void
 ```
 
 Setup configuration option.
@@ -343,7 +354,7 @@ Setup configuration option.
 ## add()
 
 ```php
-add($name, $array)
+add(string $name, array $array): void
 ```
 
 Merge new config params to existing config array.
@@ -352,83 +363,83 @@ Merge new config params to existing config array.
 ## get()
 
 ```php
-get($name, $default = null)
+get(string $name, $default = null)
 ```
 
 Get configuration value.
 
 
+
 ## has()
 
 ```php
-has($name)
+has(string $name): bool
 ```
 
 Check if there is such configuration option.
 
-
 ## ask()
 
 ```php
-ask($message, $default = null, $autocomplete = null)
+ask(string $message, ?string $default = null, ?array $autocomplete = null): ?string
 ```
 
 
 ## askChoice()
 
 ```php
-askChoice($message, array $availableChoices, $default = null, $multiselect = false)
+askChoice(string $message, array $availableChoices, ?string $default = null, bool $multiselect = false)
 ```
+
 
 
 ## askConfirmation()
 
 ```php
-askConfirmation($message, $default = false)
+askConfirmation(string $message, bool $default = false): bool
 ```
 
 
 ## askHiddenResponse()
 
 ```php
-askHiddenResponse(string $message)
+askHiddenResponse(string $message): string
 ```
 
 
 ## input()
 
 ```php
-input()
+input(): InputInterface
 ```
 
 
 ## output()
 
 ```php
-output()
+output(): OutputInterface
 ```
 
 
 ## commandExist()
 
 ```php
-commandExist($command)
+commandExist(string $command): bool
 ```
 
 Check if command exists
 
-
 ## commandSupportsOption()
 
 ```php
-commandSupportsOption($command, $option)
+commandSupportsOption(string $command, string $option): bool
 ```
 
 
 ## locateBinaryPath()
 
 ```php
-locateBinaryPath($name)
+locateBinaryPath(string $name): string
 ```
 
 

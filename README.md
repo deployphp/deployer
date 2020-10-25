@@ -25,12 +25,6 @@ See also the list of [contributors](https://github.com/deployphp/deployer/graphs
 
 ## Sponsorship
 
-<a href="https://www.patreon.com/deployer"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
-
-Development of the **Deployer** generously supported by contributions from individuals and corporations. If you are benefiting from **Deployer** and would like to help keep the project financially sustainable, please visit Anton Medvedev's [Patreon page](https://www.patreon.com/deployer) or contact him [via email](mailto:anton@medv.io)
-
-### Top Supporters
-
 * Daniel Knoch from [cariba.de](https://cariba.de)
 
 See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).

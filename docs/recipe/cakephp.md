@@ -20,33 +20,33 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/cakephp.php#L11)
+[Source](/recipe/cakephp.php#L13)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
-CakePHP 3 Project Template shared dirs
+CakePHP 4 Project Template shared dirs
 
 ### shared_files
-[Source](/recipe/cakephp.php#L17)
+[Source](/recipe/cakephp.php#L19)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
-CakePHP 3 Project Template shared files
+CakePHP 4 Project Template shared files
 
 
 ## Tasks
 ### deploy:init
-[Source](/recipe/cakephp.php#L24)
+[Source](/recipe/cakephp.php#L27)
 
 Create plugins' symlinks
 
 ### deploy:run_migrations
-[Source](/recipe/cakephp.php#L31)
+[Source](/recipe/cakephp.php#L34)
 
 Run migrations
 
 ### deploy
-[Source](/recipe/cakephp.php#L40)
+[Source](/recipe/cakephp.php#L43)
 
 Main task
 

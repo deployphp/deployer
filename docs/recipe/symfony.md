@@ -11,157 +11,80 @@
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
-  * [`symfony_env`](#symfony_env)
+  * [`symfony_version`](#symfony_version)
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
-  * [`clear_paths`](#clear_paths)
-  * [`assets`](#assets)
-  * [`dump_assets`](#dump_assets)
-  * [`env`](#env)
-  * [`composer_options`](#composer_options)
-  * [`bin_dir`](#bin_dir)
-  * [`var_dir`](#var_dir)
-  * [`console_options`](#console_options)
   * [`migrations_config`](#migrations_config)
+  * [`console_options`](#console_options)
 * Tasks
-  * [`deploy:create_cache_dir`](#deploycreate_cache_dir)
-  * [`deploy:assets`](#deployassets)
-  * [`deploy:assets:install`](#deployassetsinstall)
-  * [`deploy:assetic:dump`](#deployasseticdump)
-  * [`deploy:cache:clear`](#deploycacheclear)
-  * [`deploy:cache:warmup`](#deploycachewarmup)
-  * [`database:migrate`](#databasemigrate)
-  * [`deploy`](#deploy)
+  * [`database:migrate`](#databasemigrate) — Migrate database
+  * [`deploy:cache:clear`](#deploycacheclear) — Clear cache
+  * [`deploy:cache:warmup`](#deploycachewarmup) — Warm up cache
+  * [`deploy`](#deploy) — Deploy project
 
 ## Config
-### symfony_env
-[Source](/recipe/symfony.php#L12)
+### symfony_version
+[Source](/recipe/symfony.php#L8)
 
-Symfony build set
+
 
 ### shared_dirs
-[Source](/recipe/symfony.php#L15)
+[Source](/recipe/symfony.php#L14)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
-Symfony shared dirs
+
 
 ### shared_files
-[Source](/recipe/symfony.php#L18)
+[Source](/recipe/symfony.php#L19)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
-Symfony shared files
+
 
 ### writable_dirs
-[Source](/recipe/symfony.php#L21)
+[Source](/recipe/symfony.php#L24)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
-Symfony writable dirs
-
-### clear_paths
-[Source](/recipe/symfony.php#L24)
-
-* Overrides [`clear_paths`](/docs/recipe/common.md#clear_paths) from `recipe/common.php`
-
-Clear paths
-
-### assets
-[Source](/recipe/symfony.php#L27)
-
-Assets
-
-### dump_assets
-[Source](/recipe/symfony.php#L30)
-
-Requires non symfony-core package `kriswallsmith/assetic` to be installed
-
-### env
-[Source](/recipe/symfony.php#L33)
-
-* Overrides [`env`](/docs/recipe/common.md#env) from `recipe/common.php`
-
-Environment vars
-
-### composer_options
-[Source](/recipe/symfony.php#L39)
-
-* Overrides [`composer_options`](/docs/recipe/deploy/vendors.md#composer_options) from `recipe/deploy/vendors.php`
 
 
-
-### bin_dir
-[Source](/recipe/symfony.php#L46)
-
-Adding support for the Symfony3 directory structure
-
-### var_dir
-[Source](/recipe/symfony.php#L47)
+### migrations_config
+[Source](/recipe/symfony.php#L28)
 
 
 
 ### console_options
-[Source](/recipe/symfony.php#L55)
+[Source](/recipe/symfony.php#L32)
 
-Symfony console opts
 
-### migrations_config
-[Source](/recipe/symfony.php#L61)
-
-Migrations configuration file
 
 
 ## Tasks
-### deploy:create_cache_dir
-[Source](/recipe/symfony.php#L67)
+### database:migrate
+[Source](/recipe/symfony.php#L37)
 
-Create cache dir
 
-### deploy:assets
-[Source](/recipe/symfony.php#L85)
-
-Normalize asset timestamps
-
-### deploy:assets:install
-[Source](/recipe/symfony.php#L97)
-
-Install assets from public dir of bundles
-
-### deploy:assetic:dump
-[Source](/recipe/symfony.php#L105)
-
-Dump all assets to the filesystem
 
 ### deploy:cache:clear
-[Source](/recipe/symfony.php#L114)
+[Source](/recipe/symfony.php#L47)
 
-Clear Cache
+
 
 ### deploy:cache:warmup
-[Source](/recipe/symfony.php#L121)
+[Source](/recipe/symfony.php#L52)
 
-Warm up cache
 
-### database:migrate
-[Source](/recipe/symfony.php#L129)
-
-Migrate database
 
 ### deploy
-[Source](/recipe/symfony.php#L142)
+[Source](/recipe/symfony.php#L57)
 
-Main task
+
 
 This task is group task which contains next tasks:
 * [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:clear_paths`](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
-* [`deploy:create_cache_dir`](/docs/recipe/symfony.md#deploycreate_cache_dir)
-* [`deploy:assets`](/docs/recipe/symfony.md#deployassets)
 * [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
-* [`deploy:assets:install`](/docs/recipe/symfony.md#deployassetsinstall)
-* [`deploy:assetic:dump`](/docs/recipe/symfony.md#deployasseticdump)
 * [`deploy:cache:clear`](/docs/recipe/symfony.md#deploycacheclear)
 * [`deploy:cache:warmup`](/docs/recipe/symfony.md#deploycachewarmup)
 * [`deploy:publish`](/docs/recipe/common.md#deploypublish)

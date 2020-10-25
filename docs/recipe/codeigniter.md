@@ -18,14 +18,14 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/codeigniter.php#L7)
+[Source](/recipe/codeigniter.php#L9)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 CodeIgniter shared dirs
 
 ### writable_dirs
-[Source](/recipe/codeigniter.php#L10)
+[Source](/recipe/codeigniter.php#L12)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -34,7 +34,7 @@ CodeIgniter writable dirs
 
 ## Tasks
 ### deploy
-[Source](/recipe/codeigniter.php#L15)
+[Source](/recipe/codeigniter.php#L17)
 
 Main task
 

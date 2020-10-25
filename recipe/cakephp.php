@@ -3,18 +3,21 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+add('recipes', ['cakephp']);
+
 /**
- * CakePHP 3 Project Template configuration
+ * CakePHP 4 Project Template configuration
  */
 
-// CakePHP 3 Project Template shared dirs
+// CakePHP 4 Project Template shared dirs
 set('shared_dirs', [
     'logs',
     'tmp',
 ]);
 
-// CakePHP 3 Project Template shared files
+// CakePHP 4 Project Template shared files
 set('shared_files', [
+    'config/.env',
     'config/app.php',
 ]);
 
@@ -30,8 +33,8 @@ task('deploy:init', function () {
  */
 task('deploy:run_migrations', function () {
     run('{{release_path}}/bin/cake migrations migrate');
-    run('{{release_path}}/bin/cake orm_cache clear');
-    run('{{release_path}}/bin/cake orm_cache build');
+    run('{{release_path}}/bin/cake schema_cache clear');
+    run('{{release_path}}/bin/cake schema_cachebuild');
 })->desc('Run migrations');
 
 /**

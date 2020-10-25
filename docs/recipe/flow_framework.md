@@ -21,17 +21,17 @@
 
 ## Config
 ### flow_context
-[Source](/recipe/flow_framework.php#L7)
+[Source](/recipe/flow_framework.php#L9)
 
 Flow-Framework application-context
 
 ### flow_command
-[Source](/recipe/flow_framework.php#L10)
+[Source](/recipe/flow_framework.php#L12)
 
 Flow-Framework cli-command
 
 ### shared_dirs
-[Source](/recipe/flow_framework.php#L13)
+[Source](/recipe/flow_framework.php#L15)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -40,17 +40,17 @@ Flow-Framework shared directories
 
 ## Tasks
 ### deploy:run_migrations
-[Source](/recipe/flow_framework.php#L22)
+[Source](/recipe/flow_framework.php#L24)
 
 Apply database migrations
 
 ### deploy:publish_resources
-[Source](/recipe/flow_framework.php#L29)
+[Source](/recipe/flow_framework.php#L31)
 
 Publish resources
 
 ### deploy
-[Source](/recipe/flow_framework.php#L36)
+[Source](/recipe/flow_framework.php#L38)
 
 Main task
 

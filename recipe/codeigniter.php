@@ -3,6 +3,8 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+add('recipes', ['codeigniter']);
+
 // CodeIgniter shared dirs
 set('shared_dirs', ['application/cache', 'application/logs']);
 

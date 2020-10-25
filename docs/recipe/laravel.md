@@ -48,170 +48,170 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/laravel.php#L6)
+[Source](/recipe/laravel.php#L8)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### shared_files
-[Source](/recipe/laravel.php#L7)
+[Source](/recipe/laravel.php#L9)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/laravel.php#L8)
+[Source](/recipe/laravel.php#L10)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### log_files
-[Source](/recipe/laravel.php#L19)
+[Source](/recipe/laravel.php#L21)
 
 
 
 ### laravel_version
-[Source](/recipe/laravel.php#L20)
+[Source](/recipe/laravel.php#L22)
 
 
 
 
 ## Tasks
 ### artisan:up
-[Source](/recipe/laravel.php#L79)
+[Source](/recipe/laravel.php#L81)
 
 
 
 ### artisan:down
-[Source](/recipe/laravel.php#L82)
+[Source](/recipe/laravel.php#L84)
 
 
 
 ### artisan:migrate
-[Source](/recipe/laravel.php#L85)
+[Source](/recipe/laravel.php#L87)
 
 
 
 ### artisan:migrate:fresh
-[Source](/recipe/laravel.php#L88)
+[Source](/recipe/laravel.php#L90)
 
 
 
 ### artisan:migrate:rollback
-[Source](/recipe/laravel.php#L91)
+[Source](/recipe/laravel.php#L93)
 
 
 
 ### artisan:migrate:status
-[Source](/recipe/laravel.php#L94)
+[Source](/recipe/laravel.php#L96)
 
 
 
 ### artisan:db:seed
-[Source](/recipe/laravel.php#L97)
+[Source](/recipe/laravel.php#L99)
 
 
 
 ### artisan:cache:clear
-[Source](/recipe/laravel.php#L100)
+[Source](/recipe/laravel.php#L102)
 
 
 
 ### artisan:config:clear
-[Source](/recipe/laravel.php#L103)
+[Source](/recipe/laravel.php#L105)
 
 
 
 ### artisan:config:cache
-[Source](/recipe/laravel.php#L106)
+[Source](/recipe/laravel.php#L108)
 
 
 
 ### artisan:route:cache
-[Source](/recipe/laravel.php#L109)
+[Source](/recipe/laravel.php#L111)
 
 
 
 ### artisan:view:clear
-[Source](/recipe/laravel.php#L112)
+[Source](/recipe/laravel.php#L114)
 
 
 
 ### artisan:view:cache
-[Source](/recipe/laravel.php#L115)
+[Source](/recipe/laravel.php#L117)
 
 
 
 ### artisan:optimize
-[Source](/recipe/laravel.php#L118)
+[Source](/recipe/laravel.php#L120)
 
 
 
 ### artisan:optimize:clear
-[Source](/recipe/laravel.php#L121)
+[Source](/recipe/laravel.php#L123)
 
 
 
 ### artisan:queue:restart
-[Source](/recipe/laravel.php#L124)
+[Source](/recipe/laravel.php#L126)
 
 
 
 ### artisan:storage:link
-[Source](/recipe/laravel.php#L127)
+[Source](/recipe/laravel.php#L129)
 
 
 
 ### artisan:horizon:assets
-[Source](/recipe/laravel.php#L130)
+[Source](/recipe/laravel.php#L132)
 
 
 
 ### artisan:horizon:publish
-[Source](/recipe/laravel.php#L133)
+[Source](/recipe/laravel.php#L135)
 
 
 
 ### artisan:horizon:terminate
-[Source](/recipe/laravel.php#L136)
+[Source](/recipe/laravel.php#L138)
 
 
 
 ### artisan:telescope:clear
-[Source](/recipe/laravel.php#L139)
+[Source](/recipe/laravel.php#L141)
 
 
 
 ### artisan:telescope:prune
-[Source](/recipe/laravel.php#L142)
+[Source](/recipe/laravel.php#L144)
 
 
 
 ### artisan:telescope:publish
-[Source](/recipe/laravel.php#L145)
+[Source](/recipe/laravel.php#L147)
 
 
 
 ### artisan:nova:publish
-[Source](/recipe/laravel.php#L148)
+[Source](/recipe/laravel.php#L150)
 
 
 
 ### artisan:event:clear
-[Source](/recipe/laravel.php#L151)
+[Source](/recipe/laravel.php#L153)
 
 
 
 ### artisan:event:cache
-[Source](/recipe/laravel.php#L154)
+[Source](/recipe/laravel.php#L156)
 
 
 
 ### deploy:public_disk
-[Source](/recipe/laravel.php#L165)
+[Source](/recipe/laravel.php#L167)
 
 Task deploy:public_disk support the public disk.
 To run this task automatically, please add below line to your deploy.php file
@@ -221,7 +221,7 @@ To run this task automatically, please add below line to your deploy.php file
 [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
 
 ### deploy
-[Source](/recipe/laravel.php#L180)
+[Source](/recipe/laravel.php#L182)
 
 Main deploy task.
 

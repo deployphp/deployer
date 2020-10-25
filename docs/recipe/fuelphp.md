@@ -17,7 +17,7 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/fuelphp.php#L7)
+[Source](/recipe/fuelphp.php#L9)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -26,7 +26,7 @@ FuelPHP 1.x shared dirs
 
 ## Tasks
 ### deploy
-[Source](/recipe/fuelphp.php#L14)
+[Source](/recipe/fuelphp.php#L16)
 
 Main task
 

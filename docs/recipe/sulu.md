@@ -9,7 +9,7 @@
 
 
 * Require
-  * [`recipe/symfony3.php`](/docs/recipe/symfony3.md)
+  * [`recipe/symfony.php`](/docs/recipe/symfony.md)
 * Tasks
   * [`deploy:website:cache:clear`](#deploywebsitecacheclear) — Clear cache
   * [`deploy:website:cache:warmup`](#deploywebsitecachewarmup) — Warm up cache
@@ -17,12 +17,12 @@
 
 ## Tasks
 ### deploy:website:cache:clear
-[Source](/recipe/sulu.php#L23)
+[Source](/recipe/sulu.php#L26)
 
 
 
 ### deploy:website:cache:warmup
-[Source](/recipe/sulu.php#L28)
+[Source](/recipe/sulu.php#L31)
 
 
 

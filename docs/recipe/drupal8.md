@@ -20,26 +20,26 @@
 
 ## Config
 ### drupal_site
-[Source](/recipe/drupal8.php#L12)
+[Source](/recipe/drupal8.php#L14)
 
 Set drupal site. Change if you use different site
 
 ### shared_dirs
-[Source](/recipe/drupal8.php#L16)
+[Source](/recipe/drupal8.php#L18)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Drupal 8 shared dirs
 
 ### shared_files
-[Source](/recipe/drupal8.php#L21)
+[Source](/recipe/drupal8.php#L23)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Drupal 8 shared files
 
 ### writable_dirs
-[Source](/recipe/drupal8.php#L27)
+[Source](/recipe/drupal8.php#L29)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -48,7 +48,7 @@ Drupal 8 Writable dirs
 
 ## Tasks
 ### deploy
-[Source](/recipe/drupal8.php#L6)
+[Source](/recipe/drupal8.php#L8)
 
 
 

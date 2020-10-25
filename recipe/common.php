@@ -22,6 +22,8 @@ use Deployer\Exception\RunException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
 
+add('recipes', ['common']);
+
 // Name of current user who is running deploy.
 // It will be shown in `dep status` command as author.
 // If not set will try automatically get git user name,

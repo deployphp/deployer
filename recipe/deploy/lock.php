@@ -11,7 +11,7 @@ task('deploy:lock', function () {
     if ($locked) {
         throw new GracefulShutdownException(
             "Deploy locked.\n" .
-            sprintf("Execute \"deploy:unlock\" task to unlock.")
+            "Execute \"deploy:unlock\" task to unlock."
         );
     } else {
         run("echo \"{{user}}\" > {{deploy_path}}/.dep/deploy.lock");

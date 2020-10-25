@@ -1,6 +1,8 @@
 <?php
 namespace Deployer;
 
+add('recipes', ['shopware']);
+
 set('repository', 'git@github.com:shopware/production.git');
 
 set('release_name', static function () {

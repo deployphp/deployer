@@ -14,7 +14,6 @@ set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction 
  * ```php
  *     set('composer_version', '10.10.15')
  * ```
- *
  */
 set('composer_version', null);
 

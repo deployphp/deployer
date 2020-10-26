@@ -41,7 +41,7 @@ class Manifest
      */
     public function findRecent(Version $version, $major = false, $pre = false)
     {
-        /** @var $current Update */
+        /** @var Update */
         $current = null;
         $major = $major ? $version->getMajor() : null;
 
@@ -106,7 +106,7 @@ class Manifest
      *
      * @param array $decoded The decoded JSON data.
      *
-     * @return Manifest The new instance.
+     * @return static The new instance.
      */
     private static function create($decoded)
     {

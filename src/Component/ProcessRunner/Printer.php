@@ -11,7 +11,6 @@ use Deployer\Host\Host;
 use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
-use function Deployer\hostTag;
 
 class Printer
 {

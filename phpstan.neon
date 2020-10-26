@@ -2,6 +2,10 @@ includes:
     - test/phpstan-baseline.neon
 
 parameters:
-    level: 1
+    level: 2
     paths:
         - src
+
+    ignoreErrors:
+        - "#^Constant DEPLOYER_VERSION not found\\.$#"
+        - "#^Constant DEPLOYER_BIN not found\\.$#"

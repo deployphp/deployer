@@ -7,6 +7,7 @@
 
 namespace Deployer\Command;
 
+use Deployer\Component\Ssh\Client;
 use Deployer\Deployer;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -84,7 +85,7 @@ class SshCommand extends Command
         }
 
         Context::push(new Context($host, $input, $output));
-        $options = $host->getSshArguments();
+        $options = Client::connectionOptions($host);
         $deployPath = $host->get('deploy_path', '~');
 
         passthru("ssh -t $options {$host->getConnectionString()} 'cd '''$deployPath/current'''; $shell_path'");

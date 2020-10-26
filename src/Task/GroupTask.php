@@ -27,7 +27,6 @@ class GroupTask extends Task
 
     public function run(Context $context): void
     {
-        // TODO: implement;
     }
 
     /**

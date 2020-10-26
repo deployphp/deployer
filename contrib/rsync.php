@@ -117,6 +117,8 @@ host('hostname')
  */
 namespace Deployer;
 
+use Deployer\Component\Ssh\Client;
+
 set('rsync', [
     'exclude' => [
         '.git',
@@ -238,16 +240,15 @@ task('rsync', function() {
         throw new \RuntimeException('You need to specify a destination path.');
     }
 
-    $server = \Deployer\Task\Context::get()->getHost();
-    if ($server instanceof \Deployer\Host\Localhost) {
+    $host = \Deployer\Task\Context::get()->getHost();
+    if ($host instanceof \Deployer\Host\Localhost) {
         runLocally("rsync -{$config['flags']} {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$dst/'", $config);
         return;
     }
 
-    $host = $server->getHostname();
-    $port = $server->getPort() ? ' -p' . $server->getPort() : '';
-    $sshArguments = $server->getSshArguments();
-    $user = !$server->getRemoteUser() ? '' : $server->getRemoteUser() . '@';
+    $host = $host->getHostname();
+    $sshArguments = Client::connectionOptions($host);
+    $user = !$host->getRemoteUser() ? '' : $host->getRemoteUser() . '@';
 
-    runLocally("rsync -{$config['flags']} -e 'ssh$port $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$user$host:$dst/'", $config);
+    runLocally("rsync -{$config['flags']} -e 'ssh  $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$user$host:$dst/'", $config);
 });

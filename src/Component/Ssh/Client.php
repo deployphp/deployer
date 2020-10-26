@@ -8,6 +8,7 @@
 namespace Deployer\Component\Ssh;
 
 use Deployer\Deployer;
+use Deployer\Exception\Exception;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Deployer\Component\ProcessRunner\Printer;
@@ -15,6 +16,7 @@ use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
+use function Deployer\Support\parse_home_dir;
 
 class Client
 {
@@ -39,9 +41,11 @@ class Client
         ];
 
         $config = array_merge($defaults, $config);
-        $sshArguments = $host->getSshArguments();
+        $options = self::connectionOptions($host);
+
+        // TODO: Init multiplexing again only after passing ControlPersist seconds.
         if ($host->getSshMultiplexing()) {
-            $sshArguments = $this->initMultiplexing($host);
+            $this->initMultiplexing($host);
         }
 
         $become = '';
@@ -52,9 +56,9 @@ class Client
         $shellCommand = $host->getShell();
 
         if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $ssh = "ssh $sshArguments $connectionString $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
+            $ssh = "ssh $options $connectionString $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
         } else {
-            $ssh = "ssh $sshArguments $connectionString $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
+            $ssh = "ssh $options $connectionString $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
         }
 
         // -vvv for ssh command
@@ -120,13 +124,13 @@ class Client
         }
     }
 
-    private function initMultiplexing(Host $host)
+    private function initMultiplexing(Host $host): void
     {
-        $sshArguments = $host->getSshArguments()->withMultiplexing($host);
+        $options = self::connectionOptions($host);
 
-        if (!$this->isMasterRunning($host, $sshArguments)) {
+        if (!$this->isMasterRunning($host, $options)) {
             $connectionString = $host->getConnectionString();
-            $command = "ssh -N $sshArguments $connectionString";
+            $command = "ssh -N $options $connectionString";
 
             if ($this->output->isDebug()) {
                 $this->pop->writeln(Process::OUT, $host, '<info>ssh multiplexing initialization</info>');
@@ -142,7 +146,6 @@ class Client
                 // Timeout fired: maybe there is no connection,
                 // or maybe another process established master connection.
                 // Let's try proceed anyway.
-                // TODO: Make sure only one at a time "ssh multiplexing initialization" is running. For example by doing it in master PHP process (ParallelExecutor).
             }
 
             $output = $process->getOutput();
@@ -151,13 +154,11 @@ class Client
                 $this->pop->printBuffer(Process::OUT, $host, $output);
             }
         }
-
-        return $sshArguments;
     }
 
-    private function isMasterRunning(Host $host, Arguments $sshArguments)
+    private function isMasterRunning(Host $host, string $options): bool
     {
-        $command = "ssh -O check $sshArguments echo 2>&1";
+        $command = "ssh -O check $options echo 2>&1";
         if ($this->output->isDebug()) {
             $this->pop->printBuffer(Process::OUT, $host, $command);
         }
@@ -179,5 +180,80 @@ class Client
         }
 
         return $command;
+    }
+
+    public static function connectionOptions(Host $host): string
+    {
+        $options = "";
+
+        if ($host->has('ssh_arguments')) {
+            $options .= " " . implode(' ', $host->getSshArguments());
+        }
+
+        if ($host->has('port')) {
+            $options .= " -p " . $host->getPort();
+        }
+
+        if ($host->has('config_file')) {
+            $options .= " -F " . $host->getConfigFile();
+        }
+
+        if ($host->has('identity_file')) {
+            $options .= " -i " . $host->getIdentityFile();
+        }
+
+        if ($host->has('forward_agent') && $host->getForwardAgent()) {
+            $options .= " -A";
+        }
+
+        if ($host->has('ssh_multiplexing') && $host->getSshMultiplexing()) {
+            $options .= " " . implode(' ', [
+                    '-o ControlMaster=auto',
+                    '-o ControlPersist=60',
+                    '-o ControlPath=' . self::generateControlPath($host),
+                ]);
+        }
+
+        return $options;
+    }
+
+    /**
+     * Return SSH multiplexing control path
+     *
+     * When ControlPath is longer than 104 chars we can get:
+     *
+     *     SSH Error: unix_listener: too long for Unix domain socket
+     *
+     * So try to get as descriptive path as possible.
+     * %C is for creating hash out of connection attributes.
+     */
+    private static function generateControlPath(Host $host): string
+    {
+        // TODO: ->addSshOption('ControlPath', '/dev/shm/deployer-%C')
+        $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
+        $unixMaxPath = 104; // Theoretical max limit for path length
+        $homeDir = parse_home_dir('~');
+        $port = empty($host->get('port', '')) ? '' : ':' . $host->getPort();
+        $connectionData = "{$host->getConnectionString()}$port";
+
+        $tryLongestPossible = 0;
+        $controlPath = '';
+        do {
+            switch ($tryLongestPossible) {
+                case 1:
+                    $controlPath = "$homeDir/.ssh/deployer_%C";
+                    break;
+                case 2:
+                    $controlPath = "$homeDir/.ssh/" . hash("crc32", $connectionData);
+                    break;
+                case 3:
+                    throw new Exception("The multiplexing control path is too long. Control path is: $controlPath");
+                default:
+                    $controlPath = "$homeDir/.ssh/deployer_$connectionData";
+            }
+            $tryLongestPossible++;
+        } while (strlen($controlPath) + $connectionHashLength > $unixMaxPath); // Unix socket max length
+
+        return $controlPath;
     }
 }

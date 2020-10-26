@@ -8,6 +8,7 @@
 namespace Deployer\Utility;
 
 use Deployer\Component\ProcessRunner\Printer;
+use Deployer\Component\Ssh\Client;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -48,9 +49,9 @@ class Rsync
         $options = $config['options'] ?? [];
         $flags = $config['flags'];
 
-        $sshArguments = $host->getSshArguments()->getCliArguments();
-        if ($sshArguments !== '') {
-            $options[] = "-e 'ssh $sshArguments'";
+        $connectionOptions = Client::connectionOptions($host);
+        if ($connectionOptions !== '') {
+            $options[] = "-e 'ssh $connectionOptions'";
         }
 
         if ($host->has("become")) {

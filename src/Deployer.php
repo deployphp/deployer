@@ -117,10 +117,6 @@ class Deployer extends Container
             return new Configuration();
         };
         $this->config['shell'] = 'bash -s';
-        $this->config['port'] = '';
-        $this->config['config_file'] = '';
-        $this->config['identity_file'] = '';
-        $this->config['remote_user'] = '';
         $this->config['forward_agent'] = true;
         $this->config['ssh_multiplexing'] = true;
 

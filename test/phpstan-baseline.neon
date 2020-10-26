@@ -11,16 +11,6 @@ parameters:
 			path: ../src/Component/PharUpdate/Manifest.php
 
 		-
-			message: "#^Method Deployer\\\\Component\\\\PharUpdate\\\\Version\\\\Builder\\:\\:clearPreRelease\\(\\) should return Deployer\\\\Component\\\\PharUpdate\\\\Version\\\\Builder but return statement is missing\\.$#"
-			count: 1
-			path: ../src/Component/PharUpdate/Version/Builder.php
-
-		-
-			message: "#^Default value of the parameter \\#2 \\$code \\(string\\) of method Deployer\\\\Support\\\\Changelog\\\\ParseException\\:\\:__construct\\(\\) is incompatible with type int\\.$#"
-			count: 1
-			path: ../src/Support/Changelog/ParseException.php
-
-		-
 			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:ask\\(\\)\\.$#"
 			count: 3
 			path: ../src/functions.php

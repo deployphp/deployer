@@ -9,8 +9,11 @@ namespace Deployer\Support\Changelog;
 
 class ParseException extends \Exception
 {
-    public function __construct(string $message = '', $code = '')
+    public function __construct(string $message = '', $code = 0)
     {
+        if (!$code) {
+            $code = '';
+        }
         parent::__construct("$message\n\n{$code}\n\n");
     }
 }

@@ -24,8 +24,6 @@ class Builder extends Version
 
     /**
      * Removes the pre-release version identifiers.
-     *
-     * @return Builder The Version builder.
      */
     public function clearPreRelease()
     {

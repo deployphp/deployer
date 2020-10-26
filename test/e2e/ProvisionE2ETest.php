@@ -25,5 +25,10 @@ class ProvisionE2ETest extends AbstractE2ETest
 
         $display = trim($this->tester->getDisplay());
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
+
+        self::assertStringContainsString('nginx version:', $display);
+        self::assertStringContainsString('PHP 7', $display);
+        self::assertStringContainsString('(cli)', $display);
+        self::assertStringContainsString('(fpm-fcgi)', $display);
     }
 }

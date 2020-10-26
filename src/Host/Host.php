@@ -8,14 +8,11 @@
 namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
-use Deployer\Component\Ssh\Arguments;
-use Deployer\Configuration\ProxyConfig;
 use Deployer\Deployer;
 
 class Host
 {
     private $config;
-    private $sshArguments;
 
     public function __construct(string $hostname)
     {
@@ -26,7 +23,6 @@ class Host
         $this->config = new Configuration($parent);
         $this->set('alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
-        $this->sshArguments = new Arguments();
     }
 
     public function config()
@@ -190,45 +186,15 @@ class Host
         return $this->get('hostname');
     }
 
-    public function getSshArguments()
+    public function setSshArguments(array $args)
     {
-        $this->initOptions();
-        return $this->sshArguments;
-    }
-
-    // TODO: Migrate to configuration.
-
-    public function setSshOptions(array $options)
-    {
-        $this->sshArguments = $this->sshArguments->withOptions($options);
+        $this->config->set('ssh_arguments', $args);
         return $this;
     }
 
-    // TODO: Migrate to configuration.
-
-    public function setSshFlags(array $flags)
+    public function getSshArguments(): array
     {
-        $this->sshArguments = $this->sshArguments->withFlags($flags);
-        return $this;
-    }
-
-    private function initOptions()
-    {
-        if ($this->has('port')) {
-            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->getPort());
-        }
-
-        if ($this->has('config_file')) {
-            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->getConfigFile());
-        }
-
-        if ($this->has('identity_file')) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
-        }
-
-        if ($this->has('forward_agent') && $this->getForwardAgent()) {
-            $this->sshArguments = $this->sshArguments->withFlag('-A');
-        }
+        return $this->config->get('ssh_arguments');
     }
 
     private function generateTag()
@@ -237,7 +203,7 @@ class Host
             return $this->getAlias();
         }
 
-        if ($this->getAlias() === 'localhost') {
+        if (in_array($this->getAlias(), ['localhost', 'local'])) {
             return $this->getAlias();
         }
 

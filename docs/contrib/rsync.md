@@ -137,49 +137,49 @@ host('hostname')
 
 ## Config
 ### rsync
-[Source](/contrib/rsync.php#L120)
+[Source](/contrib/rsync.php#L122)
 
 
 
 ### rsync_src
-[Source](/contrib/rsync.php#L136)
+[Source](/contrib/rsync.php#L138)
 
 
 
 ### rsync_dest
-[Source](/contrib/rsync.php#L137)
-
-
-
-### rsync_excludes
 [Source](/contrib/rsync.php#L139)
 
 
 
+### rsync_excludes
+[Source](/contrib/rsync.php#L141)
+
+
+
 ### rsync_includes
-[Source](/contrib/rsync.php#L154)
+[Source](/contrib/rsync.php#L156)
 
 
 
 ### rsync_filter
-[Source](/contrib/rsync.php#L169)
+[Source](/contrib/rsync.php#L171)
 
 
 
 ### rsync_options
-[Source](/contrib/rsync.php#L187)
+[Source](/contrib/rsync.php#L189)
 
 
 
 
 ## Tasks
 ### rsync:warmup
-[Source](/contrib/rsync.php#L199)
+[Source](/contrib/rsync.php#L201)
 
 
 
 ### rsync
-[Source](/contrib/rsync.php#L214)
+[Source](/contrib/rsync.php#L216)
 
 
 

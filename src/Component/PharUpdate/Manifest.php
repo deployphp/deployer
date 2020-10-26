@@ -37,11 +37,11 @@ class Manifest
      * @param boolean $major   Lock to major version?
      * @param boolean $pre     Allow pre-releases?
      *
-     * @return Update The update.
+     * @return Update|null The update.
      */
     public function findRecent(Version $version, $major = false, $pre = false)
     {
-        /** @var Update */
+        /** @var Update|null */
         $current = null;
         $major = $major ? $version->getMajor() : null;
 
@@ -82,7 +82,7 @@ class Manifest
      *
      * @param string $json The JSON encoded string.
      *
-     * @return Manifest The manifest.
+     * @return static The manifest.
      */
     public static function load($json)
     {
@@ -94,7 +94,7 @@ class Manifest
      *
      * @param string $file The JSON encoded file.
      *
-     * @return Manifest The manifest.
+     * @return static The manifest.
      */
     public static function loadFile($file)
     {

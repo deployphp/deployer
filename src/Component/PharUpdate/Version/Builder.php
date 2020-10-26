@@ -14,18 +14,14 @@ class Builder extends Version
 {
     /**
      * Removes the build metadata identifiers.
-     *
-     * @return Builder The Version builder.
      */
     public function clearBuild()
     {
-        return $this->build = array();
+        $this->build = array();
     }
 
     /**
      * Removes the pre-release version identifiers.
-     *
-     * @return Builder The Version builder.
      */
     public function clearPreRelease()
     {

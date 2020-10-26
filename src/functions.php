@@ -624,7 +624,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
         return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
-    /** @var QuestionHelper $helper */
+    /** @var QuestionHelper */
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
@@ -667,6 +667,7 @@ function askChoice(string $message, array $availableChoices, ?string $default = 
         return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
+    /** @var QuestionHelper */
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
@@ -690,6 +691,7 @@ function askConfirmation(string $message, bool $default = false): bool
         return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
+    /** @var QuestionHelper */
     $helper = Deployer::get()->getHelper('question');
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
@@ -713,6 +715,7 @@ function askHiddenResponse(string $message): string
         return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
+    /** @var QuestionHelper */
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();

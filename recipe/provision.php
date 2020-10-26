@@ -3,6 +3,7 @@
 namespace Deployer;
 
 use Deployer\Exception\GracefulShutdownException;
+use Symfony\Component\Console\Input\InputOption;
 use function Deployer\Support\starts_with;
 
 add('recipes', ['provision']);
@@ -132,10 +133,18 @@ task('provision:user:deployer', function () {
 
 desc('Setup firewall');
 task('provision:firewall', function () {
-    run('ufw allow 22');
-    run('ufw allow 80');
-    run('ufw allow 443');
-    run('ufw --force enable');
+    $firewallEnabled = get('firewall', true);
+
+    if ($firewallEnabled) {
+        run('ufw allow 22');
+        run('ufw allow 80');
+        run('ufw allow 443');
+        run('ufw --force enable');
+    } else {
+        if (output()->isDebug()) {
+            writeln("Skipping firewall setup");
+        }
+    }
 });
 
 desc('Install PHP packages');

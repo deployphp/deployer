@@ -8,6 +8,8 @@ services:
     depends_on:
       server:
         condition: service_healthy
+      provisioned:
+        condition: service_started
     volumes:
       - ./../../:/project
     command: "php vendor/bin/pest --config test/e2e/phpunit-e2e.xml"
@@ -41,6 +43,15 @@ services:
       e2e:
         aliases:
           - server.test
+
+  provisioned:
+    build:
+      context: ""
+      target: provisioned
+    networks:
+      e2e:
+        aliases:
+          - provisioned.test
 
 networks:
   e2e:

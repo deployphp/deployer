@@ -91,7 +91,7 @@ class Command extends Base
 
         $output->writeln('Looking for updates...');
 
-        /** @var $pharUpdate Helper */
+        /** @var Helper */
         $pharUpdate = $this->getHelper('phar-update');
         $manager = $pharUpdate->getManager($this->manifestUri);
 

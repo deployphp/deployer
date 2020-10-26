@@ -120,7 +120,7 @@ class TreeCommand extends Command
         $this->output->writeln("The task-tree for <info>$taskName</info>:");
 
         /**
-         * @var $REPEAT_COUNT number of spaces for each depth increase
+         * @var int number of spaces for each depth increase
          */
         $REPEAT_COUNT = 4;
 

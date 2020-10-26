@@ -15,7 +15,7 @@ class Exception extends \Exception implements ExceptionInterface
      * @param string $format    The format.
      * @param mixed  $value,... The value(s).
      *
-     * @return Exception The exception.
+     * @return static The exception.
      */
     public static function create($format, $value = null)
     {
@@ -29,7 +29,7 @@ class Exception extends \Exception implements ExceptionInterface
     /**
      * Creates an exception for the last error message.
      *
-     * @return Exception The exception.
+     * @return static The exception.
      */
     public static function lastError()
     {

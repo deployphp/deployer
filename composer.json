@@ -54,7 +54,7 @@
     },
     "require-dev": {
         "pestphp/pest": "^0.3",
-        "phpstan/phpstan": "^0.12.51",
+        "phpstan/phpstan": "^0.12.52",
         "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^6.4",
         "squizlabs/php_codesniffer": "^3.5"

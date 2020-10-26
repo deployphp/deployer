@@ -1,31 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
-			count: 1
-			path: ../src/Command/DiceCommand.php
-
-		-
-			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
-			count: 1
-			path: ../src/Command/InitCommand.php
-
-		-
-			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
-			count: 1
-			path: ../src/Command/MainCommand.php
-
-		-
-			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
-			count: 1
-			path: ../src/Command/SshCommand.php
-
-		-
-			message: "#^Anonymous function has an unused use \\$hosts\\.$#"
-			count: 1
-			path: ../src/Command/RunCommand.php
-
-		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 2
 			path: ../src/Component/PharUpdate/Exception/Exception.php
@@ -36,47 +11,17 @@ parameters:
 			path: ../src/Component/PharUpdate/Manifest.php
 
 		-
-			message: "#^Used function Deployer\\\\hostTag not found\\.$#"
+			message: "#^Method Deployer\\\\Component\\\\PharUpdate\\\\Version\\\\Builder\\:\\:clearPreRelease\\(\\) should return Deployer\\\\Component\\\\PharUpdate\\\\Version\\\\Builder but return statement is missing\\.$#"
 			count: 1
-			path: ../src/Component/ProcessRunner/Printer.php
+			path: ../src/Component/PharUpdate/Version/Builder.php
 
 		-
-			message: "#^Constant DEPLOYER_BIN not found\\.$#"
-			count: 2
-			path: ../src/Executor/Master.php
-
-		-
-			message: "#^Variable \\$script in isset\\(\\) is never defined\\.$#"
+			message: "#^Default value of the parameter \\#2 \\$code \\(string\\) of method Deployer\\\\Support\\\\Changelog\\\\ParseException\\:\\:__construct\\(\\) is incompatible with type int\\.$#"
 			count: 1
-			path: ../src/Importer/Importer.php
+			path: ../src/Support/Changelog/ParseException.php
 
 		-
-			message: "#^Undefined variable\\: \\$script$#"
-			count: 1
-			path: ../src/Importer/Importer.php
-
-		-
-			message: "#^Variable \\$upload in isset\\(\\) is never defined\\.$#"
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:ask\\(\\)\\.$#"
 			count: 3
-			path: ../src/Importer/Importer.php
-
-		-
-			message: "#^Undefined variable\\: \\$upload$#"
-			count: 1
-			path: ../src/Importer/Importer.php
-
-		-
-			message: "#^Variable \\$download in isset\\(\\) is never defined\\.$#"
-			count: 3
-			path: ../src/Importer/Importer.php
-
-		-
-			message: "#^Undefined variable\\: \\$download$#"
-			count: 1
-			path: ../src/Importer/Importer.php
-
-		-
-			message: "#^Constant DEPLOYER_VERSION not found\\.$#"
-			count: 1
-			path: ../src/Utility/Httpie.php
+			path: ../src/functions.php
 

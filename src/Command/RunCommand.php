@@ -56,7 +56,7 @@ class RunCommand extends SelectCommand
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));
 
-        $task = new Task($command, function () use ($command, $hosts) {
+        $task = new Task($command, function () use ($command) {
             run($command);
         });
 

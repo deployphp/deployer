@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Fixed phpstan level 1 warnings.
 
 
 ## v6.8.0

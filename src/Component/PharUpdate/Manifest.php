@@ -82,7 +82,7 @@ class Manifest
      *
      * @param string $json The JSON encoded string.
      *
-     * @return Manifest The manifest.
+     * @return static The manifest.
      */
     public static function load($json)
     {
@@ -94,7 +94,7 @@ class Manifest
      *
      * @param string $file The JSON encoded file.
      *
-     * @return Manifest The manifest.
+     * @return static The manifest.
      */
     public static function loadFile($file)
     {

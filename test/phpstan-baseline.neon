@@ -11,7 +11,12 @@ parameters:
 			path: ../src/Component/PharUpdate/Manifest.php
 
 		-
-			message: "#^Call to an undefined method Symfony\\\\Component\\\\Console\\\\Helper\\\\HelperInterface\\:\\:ask\\(\\)\\.$#"
-			count: 3
-			path: ../src/functions.php
+			message: "#^Property Deployer\\\\Component\\\\PharUpdate\\\\Update\\:\\:\\$file \\(string\\) does not accept null\\.$#"
+			count: 1
+			path: ../src/Component/PharUpdate/Update.php
+
+		-
+			message: "#^Default value of the parameter \\#2 \\$code \\(string\\) of method Deployer\\\\Support\\\\Changelog\\\\ParseException\\:\\:__construct\\(\\) is incompatible with type int\\.$#"
+			count: 1
+			path: ../src/Support/Changelog/ParseException.php
 

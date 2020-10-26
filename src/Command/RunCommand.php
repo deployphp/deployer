@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
+use function Deployer\has;
 use function Deployer\run;
 
 class RunCommand extends SelectCommand
@@ -57,6 +58,9 @@ class RunCommand extends SelectCommand
         $this->applyOverrides($hosts, $input->getOption('option'));
 
         $task = new Task($command, function () use ($command) {
+            if (has('current_path')) {
+                $command = "cd {{current_path}}; $command";
+            }
             run($command);
         });
 

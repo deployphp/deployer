@@ -229,7 +229,11 @@ class Client
      */
     private static function generateControlPath(Host $host): string
     {
-        // TODO: ->addSshOption('ControlPath', '/dev/shm/deployer-%C')
+        // In case of CI environment, lets use shared memory.
+        if (getenv('CI') && is_writable('/dev/shm')) {
+            return '/dev/shm/%C';
+        }
+
         $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
         $homeDir = parse_home_dir('~');

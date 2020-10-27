@@ -20,7 +20,7 @@ class Update
     /**
      * The temporary file path.
      *
-     * @var string
+     * @var string|null
      */
     private $file;
 

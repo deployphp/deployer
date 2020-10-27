@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -12,6 +12,9 @@ use Deployer\Deployer;
 
 class Host
 {
+    /**
+     * @var Configuration $config
+     */
     private $config;
 
     public function __construct(string $hostname)
@@ -25,18 +28,21 @@ class Host
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
     }
 
-    public function config()
+    public function config(): Configuration
     {
         return $this->config;
     }
 
-    public function set(string $name, $value)
+    /**
+     * @param mixed $value
+     */
+    public function set(string $name, $value): self
     {
         $this->config->set($name, $value);
         return $this;
     }
 
-    public function add(string $name, array $value)
+    public function add(string $name, array $value): self
     {
         $this->config->add($name, $value);
         return $this;
@@ -47,133 +53,137 @@ class Host
         return $this->config->has($name);
     }
 
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
     public function get(string $name, $default = null)
     {
         return $this->config->get($name, $default);
     }
 
-    public function getAlias()
+    public function getAlias():? string
     {
         return $this->config->get('alias');
     }
 
-    public function setTag(string $tag)
+    public function setTag(string $tag): self
     {
         $this->config->set('tag', $tag);
         return $this;
     }
 
-    public function getTag(): string
+    public function getTag():? string
     {
         return $this->config->get('tag', $this->generateTag());
     }
 
-    public function setHostname(string $hostname)
+    public function setHostname(string $hostname): self
     {
         $this->config->set('hostname', $hostname);
         return $this;
     }
 
-    public function getHostname()
+    public function getHostname():? string
     {
         return $this->config->get('hostname');
     }
 
-    public function setRemoteUser($user)
+    public function setRemoteUser(string $user): self
     {
         $this->config->set('remote_user', $user);
         return $this;
     }
 
-    public function getRemoteUser()
+    public function getRemoteUser():? string
     {
         return $this->config->get('remote_user');
     }
 
-    public function setPort(int $port)
+    public function setPort(int $port): self
     {
         $this->config->set('port', $port);
         return $this;
     }
 
-    public function getPort()
+    public function getPort():? int
     {
         return $this->config->get('port');
     }
 
-    public function setConfigFile(string $file)
+    public function setConfigFile(string $file): self
     {
         $this->config->set('config_file', $file);
         return $this;
     }
 
-    public function getConfigFile()
+    public function getConfigFile():? string
     {
         return $this->config->get('config_file');
     }
 
-    public function setIdentityFile($file)
+    public function setIdentityFile(string $file): self
     {
         $this->config->set('identity_file', $file);
         return $this;
     }
 
-    public function getIdentityFile()
+    public function getIdentityFile():? string
     {
         return $this->config->get('identity_file');
     }
 
-    public function setForwardAgent(bool $on)
+    public function setForwardAgent(bool $on): self
     {
         $this->config->set('forward_agent', $on);
         return $this;
     }
 
-    public function getForwardAgent()
+    public function getForwardAgent():? bool
     {
         return $this->config->get('forward_agent');
     }
 
-    public function setSshMultiplexing(bool $on)
+    public function setSshMultiplexing(bool $on): self
     {
         $this->config->set('ssh_multiplexing', $on);
         return $this;
     }
 
-    public function getSshMultiplexing()
+    public function getSshMultiplexing():? bool
     {
         return $this->config->get('ssh_multiplexing');
     }
 
-    public function setShell(string $command)
+    public function setShell(string $command): self
     {
         $this->config->set('shell', $command);
         return $this;
     }
 
-    public function getShell(): string
+    public function getShell():? string
     {
         return $this->config->get('shell');
     }
 
-    public function setDeployPath(string $path)
+    public function setDeployPath(string $path): self
     {
         $this->config->set('deploy_path', $path);
         return $this;
     }
 
-    public function getDeployPath()
+    public function getDeployPath():? string
     {
         return $this->config->get('deploy_path');
     }
 
-    public function setLabels(array $labels)
+    public function setLabels(array $labels): self
     {
         $this->config->set('labels', $labels);
         return $this;
     }
 
-    public function getLabels()
+    public function getLabels():? array
     {
         return $this->config->get('labels');
     }
@@ -186,18 +196,18 @@ class Host
         return $this->get('hostname');
     }
 
-    public function setSshArguments(array $args)
+    public function setSshArguments(array $args): self
     {
         $this->config->set('ssh_arguments', $args);
         return $this;
     }
 
-    public function getSshArguments(): array
+    public function getSshArguments():? array
     {
         return $this->config->get('ssh_arguments');
     }
 
-    private function generateTag()
+    private function generateTag():? string
     {
         if (defined('NO_ANSI')) {
             return $this->getAlias();

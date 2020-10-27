@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -36,7 +36,7 @@ class Rsync
      * - `options` with additional flags passed directly to the `rsync` command
      * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
      */
-    public function call(Host $host, string $source, string $destination, array $config = [])
+    public function call(Host $host, string $source, string $destination, array $config = []): void
     {
         $defaults = [
             'timeout' => null,

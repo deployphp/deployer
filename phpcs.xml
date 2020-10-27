@@ -22,6 +22,7 @@
     <file>src/Configuration</file>
     <file>src/Task</file>
     <file>src/functions.php</file>
+    <file>src/Utility</file>
 
     <arg name="basepath" value="."/>
     <arg name="colors"/>

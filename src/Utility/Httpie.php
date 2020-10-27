@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -79,14 +79,17 @@ class Httpie
         return $http;
     }
 
-    public function setopt($key, $value)
+    /**
+     * @param mixed $value
+     */
+    public function setopt(int $key, $value): Httpie
     {
         $http = clone $this;
         $http->curlopts[$key] = $value;
         return $http;
     }
 
-    public function send()
+    public function send(): string
     {
         $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
@@ -112,6 +115,9 @@ class Httpie
         return $result;
     }
 
+    /**
+     * @return array|bool
+     */
     public function getJson()
     {
         $result = $this->send();

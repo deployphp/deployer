@@ -110,7 +110,7 @@ class Importer
                         throw $e;
                     }
                 };
-                $body = function () use ($wrapRun, $name, $script) {
+                $body = function () use ($wrapRun, $script) {
                     if (is_string($script)) {
                         $wrapRun($script);
                     } else {

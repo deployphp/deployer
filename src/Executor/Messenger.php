@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -31,7 +31,7 @@ class Messenger
         $this->output = $output;
     }
 
-    public function startTask(Task $task)
+    public function startTask(Task $task): void
     {
         $this->startTime = round(microtime(true) * 1000);
         if (!$task->isShallow()) {
@@ -42,7 +42,7 @@ class Messenger
     /*
      * Print task was ok.
      */
-    public function endTask(Task $task)
+    public function endTask(Task $task): void
     {
         if ($task->isShallow()) {
             return;
@@ -64,18 +64,17 @@ class Messenger
         if (!empty($this->input->getOption('profile'))) {
             $line = sprintf("%s\t%s\n", $task->getName(), $taskTime);
             file_put_contents($this->input->getOption('profile'), $line, FILE_APPEND);
-
         }
     }
 
-    public function endOnHost(Host $host)
+    public function endOnHost(Host $host): void
     {
         if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> on {$host->getTag()}");
         }
     }
 
-    public function renderException(Throwable $exception, Host $host)
+    public function renderException(Throwable $exception, Host $host): void
     {
         if ($exception instanceof RunException) {
 

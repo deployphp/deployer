@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -60,7 +60,7 @@ class Server
         $path = $request->getUri()->getPath();
         switch ($path) {
             case '/load':
-                ['host' => $host] = json_decode($request->getBody(), true);
+                ['host' => $host] = json_decode($request->getBody()->getContents(), true);
 
                 $host = getHost($host);
                 $config = json_encode($host->config()->persist());
@@ -68,7 +68,7 @@ class Server
                 return new Response(200, ['Content-Type' => 'application/json'], $config);
 
             case '/save':
-                ['host' => $host, 'config' => $config] = json_decode($request->getBody(), true);
+                ['host' => $host, 'config' => $config] = json_decode($request->getBody()->getContents(), true);
 
                 $host = getHost($host);
                 $host->config()->update($config);
@@ -76,7 +76,7 @@ class Server
                 return new Response(200, ['Content-Type' => 'application/json'], 'true');
 
             case '/proxy':
-                ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($request->getBody(), true);
+                ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($request->getBody()->getContents(), true);
 
                 Context::push(new Context(getHost($host), $this->input, $this->output));
                 $answer = call_user_func($func, ...$arguments);
@@ -89,27 +89,33 @@ class Server
         }
     }
 
-    public function addPeriodicTimer($interval, $callback)
+    /**
+     * @param int|float $interval
+     */
+    public function addPeriodicTimer($interval, callable $callback): void
     {
         $this->loop->addPeriodicTimer($interval, $callback);
     }
 
-    public function addTimer($interval, $callback)
+    /**
+     * @param int|float $interval
+     */
+    public function addTimer($interval, callable $callback): void
     {
         $this->loop->addTimer($interval, $callback);
     }
 
-    public function cancelTimer($timer)
+    public function cancelTimer(React\EventLoop\TimerInterface  $timer): void
     {
         $this->loop->cancelTimer($timer);
     }
 
-    public function run()
+    public function run(): void
     {
         $this->loop->run();
     }
 
-    public function stop()
+    public function stop(): void
     {
         $this->loop->stop();
     }

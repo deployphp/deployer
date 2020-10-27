@@ -1,8 +1,11 @@
-<?php
-
+<?php declare(strict_types=1);
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Deployer\Executor;
-
 
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
@@ -25,7 +28,7 @@ class Worker
         $this->deployer = $deployer;
     }
 
-    public function execute(Task $task, Host $host)
+    public function execute(Task $task, Host $host): int
     {
         try {
             Exception::setTaskSourceLocation($task->getSourceLocation());

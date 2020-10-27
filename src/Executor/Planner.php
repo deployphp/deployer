@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -30,10 +30,9 @@ class Planner
     /**
      * Planner constructor.
      *
-     * @param OutputInterface $output
      * @param Host[] $hosts
      */
-    public function __construct(OutputInterface $output, $hosts)
+    public function __construct(OutputInterface $output, array $hosts)
     {
         $headers = [];
         $this->template = [];
@@ -48,9 +47,8 @@ class Planner
 
     /**
      * @param Host[] $hosts
-     * @param Task $task
      */
-    public function commit(array $hosts, Task $task)
+    public function commit(array $hosts, Task $task): void
     {
         if (count($hosts) === 1 && $hosts[0]->getAlias() === 'local') {
             $row = [];

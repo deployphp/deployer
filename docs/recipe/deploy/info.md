@@ -9,12 +9,12 @@
 
 
 * Config
-  * [`git_target`](#git_target)
+  * [`target`](#target)
 * Tasks
   * [`deploy:info`](#deployinfo)
 
 ## Config
-### git_target
+### target
 [Source](/recipe/deploy/info.php#L5)
 
 Holds name of deployed branch, tag or revision.

@@ -2,7 +2,7 @@
 namespace Deployer;
 
 // Holds name of deployed branch, tag or revision.
-set('git_target', function () {
+set('target', function () {
     $t = '';
     $branch = get('branch');
     if (!empty($branch)) {

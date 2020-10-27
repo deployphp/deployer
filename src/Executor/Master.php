@@ -23,7 +23,7 @@ use Symfony\Component\Process\Process;
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
 
-function spinner($message = '')
+function spinner(string $message = ''): string
 {
     $frame = FRAMES[(int)(microtime(true) * 10) % count(FRAMES)];
     return "  $frame $message\r";
@@ -58,10 +58,8 @@ class Master
     /**
      * @param Task[] $tasks
      * @param Host[] $hosts
-     * @param Planner|null $plan
-     * @return int
      */
-    public function run(array $tasks, array $hosts, $plan = null): int
+    public function run(array $tasks, array $hosts, ?Planner $plan = null): int
     {
         $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
 
@@ -138,7 +136,7 @@ class Master
     /**
      * @param Host[] $hosts
      */
-    public function connect(array $hosts)
+    public function connect(array $hosts): void
     {
         $callback = function (string $output) {
             $output = preg_replace('/\n$/', '', $output);
@@ -173,9 +171,7 @@ class Master
     }
 
     /**
-     * @param Task $task
      * @param Host[] $hosts
-     * @return int
      */
     private function runTask(Task $task, array $hosts): int
     {
@@ -265,7 +261,6 @@ class Master
 
     /**
      * @param Process[] $processes
-     * @return bool
      */
     protected function allFinished(array $processes): bool
     {
@@ -279,9 +274,8 @@ class Master
 
     /**
      * @param Process[] $processes
-     * @param callable $callback
      */
-    protected function gatherOutput(array $processes, callable $callback)
+    protected function gatherOutput(array $processes, callable $callback): void
     {
         foreach ($processes as $process) {
             $output = $process->getIncrementalOutput();
@@ -298,7 +292,6 @@ class Master
 
     /**
      * @param Process[] $processes
-     * @return int
      */
     protected function cumulativeExitCode(array $processes): int
     {

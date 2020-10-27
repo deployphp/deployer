@@ -11,12 +11,37 @@ parameters:
 			path: ../src/Component/PharUpdate/Manifest.php
 
 		-
-			message: "#^Property Deployer\\\\Component\\\\PharUpdate\\\\Update\\:\\:\\$file \\(string\\) does not accept null\\.$#"
+			message: "#^If condition is always true\\.$#"
 			count: 1
-			path: ../src/Component/PharUpdate/Update.php
+			path: ../src/Host/Host.php
 
 		-
-			message: "#^Default value of the parameter \\#2 \\$code \\(string\\) of method Deployer\\\\Support\\\\Changelog\\\\ParseException\\:\\:__construct\\(\\) is incompatible with type int\\.$#"
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
-			path: ../src/Support/Changelog/ParseException.php
+			path: ../src/Importer/Importer.php
+
+		-
+			message: "#^Function Deployer\\\\host\\(\\) never returns array\\<Deployer\\\\Host\\\\Host\\> so it can be removed from the return typehint\\.$#"
+			count: 1
+			path: ../src/functions.php
+
+		-
+			message: "#^Function Deployer\\\\localhost\\(\\) never returns array\\<Deployer\\\\Host\\\\Localhost\\> so it can be removed from the return typehint\\.$#"
+			count: 1
+			path: ../src/functions.php
+
+		-
+			message: "#^Function Deployer\\\\before\\(\\) never returns void so it can be removed from the return typehint\\.$#"
+			count: 1
+			path: ../src/functions.php
+
+		-
+			message: "#^Function Deployer\\\\after\\(\\) never returns void so it can be removed from the return typehint\\.$#"
+			count: 1
+			path: ../src/functions.php
+
+		-
+			message: "#^Function Deployer\\\\fail\\(\\) never returns void so it can be removed from the return typehint\\.$#"
+			count: 1
+			path: ../src/functions.php
 

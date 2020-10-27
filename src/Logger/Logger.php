@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -24,26 +24,26 @@ class Logger
         $this->handler = $handler;
     }
 
-    public function log(string $message)
+    public function log(string $message): void
     {
         $this->handler->log("$message\n");
     }
 
-    public function callback(Host $host)
+    public function callback(Host $host): \Closure
     {
         return function ($type, $buffer) use ($host) {
-            $this->printBuffer($type, $host, $buffer);
+            $this->printBuffer($host, $type, $buffer);
         };
     }
 
-    public function printBuffer(Host $host, string $type, string $buffer)
+    public function printBuffer(Host $host, string $type, string $buffer): void
     {
         foreach (explode("\n", rtrim($buffer)) as $line) {
             $this->writeln($host, $type, $line);
         }
     }
 
-    public function writeln(Host $host, string $type, string $line)
+    public function writeln(Host $host, string $type, string $line): void
     {
         $line = Printer::filterOutput($line);
 

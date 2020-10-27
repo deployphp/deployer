@@ -65,6 +65,7 @@ after('deploy:failed', 'yammer:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`yammer_url`](#yammer_url)
   * [`yammer_title`](#yammer_title)
   * [`yammer_body`](#yammer_body)
@@ -76,45 +77,50 @@ after('deploy:failed', 'yammer:notify:failure');
   * [`yammer:notify:failure`](#yammernotifyfailure) — Notifying Yammer about deploy failure
 
 ## Config
+### target
+[Source](/contrib/yammer.php#L64)
+
+Target of deployment
+
 ### yammer_url
-[Source](/contrib/yammer.php#L63)
+[Source](/contrib/yammer.php#L66)
 
 
 
 ### yammer_title
-[Source](/contrib/yammer.php#L66)
+[Source](/contrib/yammer.php#L69)
 
 Title of project
 
 ### yammer_body
-[Source](/contrib/yammer.php#L71)
+[Source](/contrib/yammer.php#L74)
 
 Deploy message
 
 ### yammer_success_body
-[Source](/contrib/yammer.php#L72)
+[Source](/contrib/yammer.php#L75)
 
 
 
 ### yammer_failure_body
-[Source](/contrib/yammer.php#L73)
+[Source](/contrib/yammer.php#L76)
 
 
 
 
 ## Tasks
 ### yammer:notify
-[Source](/contrib/yammer.php#L76)
+[Source](/contrib/yammer.php#L79)
 
 
 
 ### yammer:notify:success
-[Source](/contrib/yammer.php#L96)
+[Source](/contrib/yammer.php#L99)
 
 
 
 ### yammer:notify:failure
-[Source](/contrib/yammer.php#L116)
+[Source](/contrib/yammer.php#L119)
 
 
 

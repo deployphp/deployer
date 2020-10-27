@@ -69,6 +69,7 @@ after('deploy:failed', 'telegram:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`telegram_title`](#telegram_title)
   * [`telegram_token`](#telegram_token)
   * [`telegram_chat_id`](#telegram_chat_id)
@@ -80,45 +81,50 @@ after('deploy:failed', 'telegram:notify:failure');
   * [`telegram:notify`](#telegramnotify)
 
 ## Config
-### telegram_title
+### target
 [Source](/contrib/telegram.php#L67)
+
+Target of deployment
+
+### telegram_title
+[Source](/contrib/telegram.php#L70)
 
 Title of project
 
 ### telegram_token
-[Source](/contrib/telegram.php#L72)
+[Source](/contrib/telegram.php#L75)
 
 Telegram settings
 
 ### telegram_chat_id
-[Source](/contrib/telegram.php#L75)
-
-
-
-### telegram_url
 [Source](/contrib/telegram.php#L78)
 
 
 
+### telegram_url
+[Source](/contrib/telegram.php#L81)
+
+
+
 ### telegram_text
-[Source](/contrib/telegram.php#L83)
+[Source](/contrib/telegram.php#L86)
 
 Deploy message
 
 ### telegram_success_text
-[Source](/contrib/telegram.php#L84)
+[Source](/contrib/telegram.php#L87)
 
 
 
 ### telegram_failure_text
-[Source](/contrib/telegram.php#L85)
+[Source](/contrib/telegram.php#L88)
 
 
 
 
 ## Tasks
 ### telegram:notify
-[Source](/contrib/telegram.php#L90)
+[Source](/contrib/telegram.php#L93)
 
 
 

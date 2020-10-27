@@ -72,6 +72,7 @@ after('deploy:failed', 'rocketchat:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`rockchat_title`](#rockchat_title)
   * [`rocketchat_icon_emoji`](#rocketchat_icon_emoji)
   * [`rocketchat_icon_url`](#rocketchat_icon_url)
@@ -91,85 +92,90 @@ after('deploy:failed', 'rocketchat:notify:failure');
   * [`rocketchat:notify:failure`](#rocketchatnotifyfailure) — Notifying RocketChat about deploy failure
 
 ## Config
-### rockchat_title
+### target
 [Source](/contrib/rocketchat.php#L70)
 
 
 
+### rockchat_title
+[Source](/contrib/rocketchat.php#L72)
+
+
+
 ### rocketchat_icon_emoji
-[Source](/contrib/rocketchat.php#L74)
+[Source](/contrib/rocketchat.php#L76)
 
 
 
 ### rocketchat_icon_url
-[Source](/contrib/rocketchat.php#L75)
-
-
-
-### rocketchat_channel
 [Source](/contrib/rocketchat.php#L77)
 
 
 
-### rocketchat_room_id
-[Source](/contrib/rocketchat.php#L78)
-
-
-
-### rocketchat_username
+### rocketchat_channel
 [Source](/contrib/rocketchat.php#L79)
 
 
 
-### rocketchat_webhook
+### rocketchat_room_id
 [Source](/contrib/rocketchat.php#L80)
 
 
 
-### rocketchat_color
+### rocketchat_username
+[Source](/contrib/rocketchat.php#L81)
+
+
+
+### rocketchat_webhook
 [Source](/contrib/rocketchat.php#L82)
 
 
 
-### rocketchat_success_color
-[Source](/contrib/rocketchat.php#L83)
-
-
-
-### rocketchat_failure_color
+### rocketchat_color
 [Source](/contrib/rocketchat.php#L84)
 
 
 
-### rocketchat_text
+### rocketchat_success_color
+[Source](/contrib/rocketchat.php#L85)
+
+
+
+### rocketchat_failure_color
 [Source](/contrib/rocketchat.php#L86)
 
 
 
+### rocketchat_text
+[Source](/contrib/rocketchat.php#L88)
+
+
+
 ### rocketchat_success_text
-[Source](/contrib/rocketchat.php#L87)
+[Source](/contrib/rocketchat.php#L89)
 
 
 
 ### rocketchat_failure_text
-[Source](/contrib/rocketchat.php#L88)
+[Source](/contrib/rocketchat.php#L90)
 
 
 
 
 ## Tasks
 ### rocketchat:notify
-[Source](/contrib/rocketchat.php#L91)
+[Source](/contrib/rocketchat.php#L93)
 
 
 
 ### rocketchat:notify:success
-[Source](/contrib/rocketchat.php#L121)
+[Source](/contrib/rocketchat.php#L123)
 
 
 
 ### rocketchat:notify:failure
-[Source](/contrib/rocketchat.php#L151)
+[Source](/contrib/rocketchat.php#L153)
 
 
 

@@ -60,6 +60,7 @@ after('deploy:failed', 'discord:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`discord_webhook`](#discord_webhook)
   * [`discord_notify_text`](#discord_notify_text)
   * [`discord_success_text`](#discord_success_text)
@@ -73,55 +74,60 @@ after('deploy:failed', 'discord:notify:failure');
   * [`discord:notify:failure`](#discordnotifyfailure) — Notify Discord about deploy failure
 
 ## Config
+### target
+[Source](/contrib/discord.php#L58)
+
+
+
 ### discord_webhook
-[Source](/contrib/discord.php#L59)
+[Source](/contrib/discord.php#L60)
 
 
 
 ### discord_notify_text
-[Source](/contrib/discord.php#L64)
+[Source](/contrib/discord.php#L65)
 
 Deploy messages
 
 ### discord_success_text
-[Source](/contrib/discord.php#L69)
+[Source](/contrib/discord.php#L70)
 
 
 
 ### discord_failure_text
-[Source](/contrib/discord.php#L74)
+[Source](/contrib/discord.php#L75)
 
 
 
 ### discord_message
-[Source](/contrib/discord.php#L81)
+[Source](/contrib/discord.php#L82)
 
 The message
 
 
 ## Tasks
 ### discord_send_message
-[Source](/contrib/discord.php#L84)
+[Source](/contrib/discord.php#L85)
 
 Helpers
 
 ### discord:test
-[Source](/contrib/discord.php#L92)
+[Source](/contrib/discord.php#L93)
 
 Tasks
 
 ### discord:notify
-[Source](/contrib/discord.php#L104)
+[Source](/contrib/discord.php#L105)
 
 
 
 ### discord:notify:success
-[Source](/contrib/discord.php#L113)
+[Source](/contrib/discord.php#L114)
 
 
 
 ### discord:notify:failure
-[Source](/contrib/discord.php#L122)
+[Source](/contrib/discord.php#L123)
 
 
 

@@ -78,6 +78,7 @@ after('deploy:failed', 'workplace:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`workplace_text`](#workplace_text)
   * [`workplace_success_text`](#workplace_success_text)
   * [`workplace_failure_text`](#workplace_failure_text)
@@ -88,40 +89,45 @@ after('deploy:failed', 'workplace:notify:failure');
   * [`workplace:notify:failure`](#workplacenotifyfailure) — Notifying Workplace about deploy failure
 
 ## Config
-### workplace_text
+### target
 [Source](/contrib/workplace.php#L77)
+
+Target of deployment
+
+### workplace_text
+[Source](/contrib/workplace.php#L80)
 
 Deploy message
 
 ### workplace_success_text
-[Source](/contrib/workplace.php#L78)
+[Source](/contrib/workplace.php#L81)
 
 
 
 ### workplace_failure_text
-[Source](/contrib/workplace.php#L79)
+[Source](/contrib/workplace.php#L82)
 
 
 
 ### workplace_edit_post
-[Source](/contrib/workplace.php#L82)
+[Source](/contrib/workplace.php#L85)
 
 By default, create a new post for every message
 
 
 ## Tasks
 ### workplace:notify
-[Source](/contrib/workplace.php#L85)
+[Source](/contrib/workplace.php#L88)
 
 
 
 ### workplace:notify:success
-[Source](/contrib/workplace.php#L110)
+[Source](/contrib/workplace.php#L113)
 
 
 
 ### workplace:notify:failure
-[Source](/contrib/workplace.php#L122)
+[Source](/contrib/workplace.php#L125)
 
 
 

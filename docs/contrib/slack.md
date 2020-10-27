@@ -70,6 +70,7 @@ after('deploy:failed', 'slack:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`slack_title`](#slack_title)
   * [`slack_text`](#slack_text)
   * [`slack_success_text`](#slack_success_text)
@@ -86,70 +87,75 @@ after('deploy:failed', 'slack:notify:failure');
   * [`slack:notify:rollback`](#slacknotifyrollback) — Notifying Slack about rollback
 
 ## Config
-### slack_title
+### target
 [Source](/contrib/slack.php#L69)
+
+Target of deployment
+
+### slack_title
+[Source](/contrib/slack.php#L72)
 
 Title of project
 
 ### slack_text
-[Source](/contrib/slack.php#L74)
+[Source](/contrib/slack.php#L77)
 
 Deploy message
 
 ### slack_success_text
-[Source](/contrib/slack.php#L75)
+[Source](/contrib/slack.php#L78)
 
 
 
 ### slack_failure_text
-[Source](/contrib/slack.php#L76)
+[Source](/contrib/slack.php#L79)
 
 
 
 ### slack_rollback_text
-[Source](/contrib/slack.php#L77)
+[Source](/contrib/slack.php#L80)
 
 
 
 ### slack_color
-[Source](/contrib/slack.php#L80)
+[Source](/contrib/slack.php#L83)
 
 Color of attachment
 
 ### slack_success_color
-[Source](/contrib/slack.php#L81)
+[Source](/contrib/slack.php#L84)
 
 
 
 ### slack_failure_color
-[Source](/contrib/slack.php#L82)
+[Source](/contrib/slack.php#L85)
 
 
 
 ### slack_rollback_color
-[Source](/contrib/slack.php#L83)
+[Source](/contrib/slack.php#L86)
 
 
 
 
 ## Tasks
 ### slack:notify
-[Source](/contrib/slack.php#L86)
+[Source](/contrib/slack.php#L89)
 
 
 
 ### slack:notify:success
-[Source](/contrib/slack.php#L105)
+[Source](/contrib/slack.php#L108)
 
 
 
 ### slack:notify:failure
-[Source](/contrib/slack.php#L124)
+[Source](/contrib/slack.php#L127)
 
 
 
 ### slack:notify:rollback
-[Source](/contrib/slack.php#L143)
+[Source](/contrib/slack.php#L146)
 
 
 

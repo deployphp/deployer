@@ -88,6 +88,7 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`mattermost_webhook`](#mattermost_webhook)
   * [`mattermost_channel`](#mattermost_channel)
   * [`mattermost_username`](#mattermost_username)
@@ -103,65 +104,70 @@ after('deploy:failed', 'mattermost:notify:failure');
   * [`mattermost:notify:failure`](#mattermostnotifyfailure) — Notifying mattermost about deploy failure
 
 ## Config
-### mattermost_webhook
+### target
 [Source](/contrib/mattermost.php#L86)
 
 
 
-### mattermost_channel
-[Source](/contrib/mattermost.php#L87)
-
-
-
-### mattermost_username
+### mattermost_webhook
 [Source](/contrib/mattermost.php#L88)
 
 
 
-### mattermost_icon_url
+### mattermost_channel
 [Source](/contrib/mattermost.php#L89)
 
 
 
-### mattermost_success_emoji
+### mattermost_username
+[Source](/contrib/mattermost.php#L90)
+
+
+
+### mattermost_icon_url
 [Source](/contrib/mattermost.php#L91)
 
 
 
+### mattermost_success_emoji
+[Source](/contrib/mattermost.php#L93)
+
+
+
 ### mattermost_failure_emoji
-[Source](/contrib/mattermost.php#L92)
-
-
-
-### mattermost_text
 [Source](/contrib/mattermost.php#L94)
 
 
 
+### mattermost_text
+[Source](/contrib/mattermost.php#L96)
+
+
+
 ### mattermost_success_text
-[Source](/contrib/mattermost.php#L95)
+[Source](/contrib/mattermost.php#L97)
 
 
 
 ### mattermost_failure_text
-[Source](/contrib/mattermost.php#L96)
+[Source](/contrib/mattermost.php#L98)
 
 
 
 
 ## Tasks
 ### mattermost:notify
-[Source](/contrib/mattermost.php#L99)
+[Source](/contrib/mattermost.php#L101)
 
 
 
 ### mattermost:notify:success
-[Source](/contrib/mattermost.php#L120)
+[Source](/contrib/mattermost.php#L122)
 
 
 
 ### mattermost:notify:failure
-[Source](/contrib/mattermost.php#L141)
+[Source](/contrib/mattermost.php#L143)
 
 
 

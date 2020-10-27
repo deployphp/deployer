@@ -35,20 +35,26 @@ after('deploy', 'rollbar:notify');
 
 
 * Config
+  * [`target`](#target)
   * [`rollbar_comment`](#rollbar_comment)
 * Tasks
   * [`rollbar:notify`](#rollbarnotify) — Notifying Rollbar of deployment
 
 ## Config
-### rollbar_comment
+### target
 [Source](/contrib/rollbar.php#L33)
+
+
+
+### rollbar_comment
+[Source](/contrib/rollbar.php#L35)
 
 
 
 
 ## Tasks
 ### rollbar:notify
-[Source](/contrib/rollbar.php#L36)
+[Source](/contrib/rollbar.php#L38)
 
 
 

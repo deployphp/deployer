@@ -79,6 +79,7 @@ after('deploy:failed', 'teams:notify:failure');
 
 
 * Config
+  * [`target`](#target)
   * [`teams_title`](#teams_title)
   * [`teams_text`](#teams_text)
   * [`teams_success_text`](#teams_success_text)
@@ -92,55 +93,60 @@ after('deploy:failed', 'teams:notify:failure');
   * [`teams:notify:failure`](#teamsnotifyfailure) — Notifying Teams about deploy failure
 
 ## Config
-### teams_title
+### target
 [Source](/contrib/ms-teams.php#L78)
+
+Target of deployment
+
+### teams_title
+[Source](/contrib/ms-teams.php#L81)
 
 Title of project
 
 ### teams_text
-[Source](/contrib/ms-teams.php#L83)
+[Source](/contrib/ms-teams.php#L86)
 
 Deploy message
 
 ### teams_success_text
-[Source](/contrib/ms-teams.php#L84)
+[Source](/contrib/ms-teams.php#L87)
 
 
 
 ### teams_failure_text
-[Source](/contrib/ms-teams.php#L85)
+[Source](/contrib/ms-teams.php#L88)
 
 
 
 ### teams_color
-[Source](/contrib/ms-teams.php#L88)
+[Source](/contrib/ms-teams.php#L91)
 
 Color of attachment
 
 ### teams_success_color
-[Source](/contrib/ms-teams.php#L89)
+[Source](/contrib/ms-teams.php#L92)
 
 
 
 ### teams_failure_color
-[Source](/contrib/ms-teams.php#L90)
+[Source](/contrib/ms-teams.php#L93)
 
 
 
 
 ## Tasks
 ### teams:notify
-[Source](/contrib/ms-teams.php#L93)
+[Source](/contrib/ms-teams.php#L96)
 
 
 
 ### teams:notify:success
-[Source](/contrib/ms-teams.php#L108)
+[Source](/contrib/ms-teams.php#L111)
 
 
 
 ### teams:notify:failure
-[Source](/contrib/ms-teams.php#L123)
+[Source](/contrib/ms-teams.php#L126)
 
 
 

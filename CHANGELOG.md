@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Missing default value for {{target}} option in most of the contrib recipes. [#2238]
 
 
 ## v6.8.0
@@ -597,6 +598,7 @@
 - Fixed remove of shared dir on first deploy.
 
 
+[#2238]: https://github.com/deployphp/deployer/issues/2238
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

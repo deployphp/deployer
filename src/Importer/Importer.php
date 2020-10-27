@@ -16,11 +16,15 @@ use function Deployer\host;
 use function Deployer\localhost;
 use function Deployer\run;
 use function Deployer\set;
+use function Deployer\Support\find_line_number;
 use function Deployer\task;
 use function Deployer\upload;
 
 class Importer
 {
+    private static $recipeFilename;
+    private static $recipeSource;
+
     public static function import($paths)
     {
         if (!is_array($paths)) {
@@ -44,7 +48,9 @@ class Importer
                     }
                 });
             } else if (preg_match('/\.ya?ml$/i', $path)) {
-                $root = Yaml::parse(file_get_contents($path));
+                self::$recipeFilename = basename($path);
+                self::$recipeSource = file_get_contents($path);
+                $root = Yaml::parse(self::$recipeSource);
                 foreach (array_keys($root) as $key) {
                     try {
                         self::$key($root[$key]);
@@ -95,12 +101,21 @@ class Importer
                         }
                     }
                 }
-                $body = function () use ($script) {
+                $wrapRun = function ($cmd) {
+                    try {
+                        run($cmd);
+                    } catch (Exception $e) {
+                        $e->setTaskFilename(self::$recipeFilename);
+                        $e->setTaskLineNumber(find_line_number(self::$recipeSource, $cmd));
+                        throw $e;
+                    }
+                };
+                $body = function () use ($wrapRun, $name, $script) {
                     if (is_string($script)) {
-                        run($script);
+                        $wrapRun($script);
                     } else {
                         foreach ($script as $line) {
-                            run($line);
+                            $wrapRun($line);
                         }
                     }
                 };
@@ -129,8 +144,8 @@ class Importer
                     }
                 };
             }
-            $task = task($name, $body);
 
+            $task = task($name, $body);
             $methods = [
                 'desc',
                 'local',
@@ -140,7 +155,6 @@ class Importer
                 'limit',
                 'select',
             ];
-
             foreach ($methods as $method) {
                 if (isset($$method)) {
                     $task->$method($$method);

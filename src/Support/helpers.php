@@ -161,3 +161,13 @@ function fork(callable $callable)
         exit(0);
     }
 }
+
+function find_line_number(string $source, string $string): int
+{
+    $string = explode(PHP_EOL, $string)[0];
+    $before = strstr($source, $string, true);
+    if (false !== $before) {
+        return count(explode(PHP_EOL, $before));
+    }
+    return 1;
+}

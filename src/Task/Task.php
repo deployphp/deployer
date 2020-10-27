@@ -79,6 +79,11 @@ class Task
         return $this->sourceLocation;
     }
 
+    public function setSourceLocation(string $path): void
+    {
+        $this->sourceLocation = $path;
+    }
+
     public function saveSourceLocation(): void
     {
         if (function_exists('debug_backtrace')) {

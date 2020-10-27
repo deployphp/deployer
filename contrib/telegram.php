@@ -63,6 +63,9 @@ after('deploy:failed', 'telegram:notify:failure');
 namespace Deployer;
 use Deployer\Utility\Httpie;
 
+// Target of deployment
+set('target', '{{hostname}}');
+
 // Title of project
 set('telegram_title', function () {
     return get('application', 'Project');

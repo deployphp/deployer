@@ -83,6 +83,8 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+set('target', '{{hostname}}');
+
 set('mattermost_webhook', null);
 set('mattermost_channel', null);
 set('mattermost_username', 'deployer');

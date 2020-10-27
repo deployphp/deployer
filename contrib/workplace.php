@@ -73,6 +73,9 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+// Target of deployment
+set('target', '{{hostname}}');
+
 // Deploy message
 set('workplace_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
 set('workplace_success_text', 'Deploy to *{{target}}* successful');

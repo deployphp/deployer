@@ -65,6 +65,9 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+// Target of deployment
+set('target', '{{hostname}}');
+
 // Title of project
 set('slack_title', function () {
     return get('application', 'Project');

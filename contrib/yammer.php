@@ -60,6 +60,9 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+// Target of deployment
+set('target', '{{hostname}}');
+
 set('yammer_url', 'https://www.yammer.com/api/v1/messages.json');
 
 // Title of project

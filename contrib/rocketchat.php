@@ -67,6 +67,8 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+set('target', '{{hostname}}');
+
 set('rockchat_title', function() {
     return get('application', 'Project');
 });

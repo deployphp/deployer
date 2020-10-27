@@ -30,6 +30,8 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+set('target', '{{hostname}}');
+
 set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
 
 desc('Notifying Rollbar of deployment');

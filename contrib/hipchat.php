@@ -30,6 +30,8 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+set('target', '{{hostname}}');
+
 set('hipchat_color', 'green');
 set('hipchat_from', '{{target}}');
 set('hipchat_message', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');

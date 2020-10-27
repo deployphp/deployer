@@ -53,8 +53,9 @@ after('deploy:failed', 'discord:notify:failure');
  */
 namespace Deployer;
 
-use Deployer\Task\Context;
 use Deployer\Utility\Httpie;
+
+set('target', '{{hostname}}');
 
 set('discord_webhook', function () {
     return 'https://discordapp.com/api/webhooks/{{discord_channel}}/{{discord_token}}/slack';

@@ -62,4 +62,4 @@ task('deploy', [
     'deploy:publish',
 ]);
 
-after('deploy', 'success');
+after('deploy', 'deploy:success');

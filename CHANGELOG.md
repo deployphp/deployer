@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Symfony recipe success step.
 
 
 ## v6.8.0

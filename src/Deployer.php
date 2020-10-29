@@ -8,13 +8,8 @@
 namespace Deployer;
 
 use Deployer\Collection\Collection;
-use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
-use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
-use Deployer\Component\ProcessRunner\Printer;
-use Deployer\Component\ProcessRunner\ProcessRunner;
-use Deployer\Component\Ssh\Client;
-use Deployer\Configuration\Configuration;
 use Deployer\Command\AutocompleteCommand;
+use Deployer\Command\ConfigCommand;
 use Deployer\Command\ConnectCommand;
 use Deployer\Command\DiceCommand;
 use Deployer\Command\HostsCommand;
@@ -24,6 +19,12 @@ use Deployer\Command\RunCommand;
 use Deployer\Command\SshCommand;
 use Deployer\Command\TreeCommand;
 use Deployer\Command\WorkerCommand;
+use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
+use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
+use Deployer\Component\ProcessRunner\Printer;
+use Deployer\Component\ProcessRunner\ProcessRunner;
+use Deployer\Component\Ssh\Client;
+use Deployer\Configuration\Configuration;
 use Deployer\Executor\Master;
 use Deployer\Executor\Messenger;
 use Deployer\Executor\Server;
@@ -207,9 +208,9 @@ class Deployer extends Container
         $this->addTaskCommands();
         $this->getConsole()->add(new AutocompleteCommand());
         $this->getConsole()->add(new ConnectCommand($this));
+        $this->getConsole()->add(new ConfigCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());
-        $this->getConsole()->add(new HostsCommand($this));
         $this->getConsole()->add(new InitCommand());
         $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));

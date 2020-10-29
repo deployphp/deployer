@@ -82,7 +82,7 @@ _dep()
     fi
     
     # completing for a host
-    hosts=$($script hosts --format txt)
+    hosts=$($script config all --format list)
     [[ $? -eq 0 ]] || return 0;
     COMPREPLY=($(compgen -W "${hosts}" -- ${cur}))
     __ltrim_colon_completions "$cur"
@@ -125,7 +125,7 @@ _dep()
             _describe 'option' options
         ;;
         hosts)
-            hosts=("${(@f)$(${words[1]} hosts --format txt)}")
+            hosts=("${(@f)$(${words[1]} config all --format list)}")
             _describe 'hosts' hosts
         *)
             # fallback to file completion

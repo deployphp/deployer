@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate;
 
 use Deployer\Component\PharUpdate\Version\Comparator;
@@ -36,10 +35,8 @@ class Manifest
      * @param Version $version The current version.
      * @param boolean $major   Lock to major version?
      * @param boolean $pre     Allow pre-releases?
-     *
-     * @return Update|null The update.
      */
-    public function findRecent(Version $version, $major = false, $pre = false)
+    public function findRecent(Version $version, bool $major = false, bool $pre = false):? Update
     {
         /** @var Update|null */
         $current = null;
@@ -72,7 +69,7 @@ class Manifest
      *
      * @return Update[] The updates.
      */
-    public function getUpdates()
+    public function getUpdates(): array
     {
         return $this->updates;
     }
@@ -81,10 +78,8 @@ class Manifest
      * Loads the manifest from a JSON encoded string.
      *
      * @param string $json The JSON encoded string.
-     *
-     * @return static The manifest.
      */
-    public static function load($json)
+    public static function load(string $json): self
     {
         return self::create(json_decode($json));
     }
@@ -93,10 +88,8 @@ class Manifest
      * Loads the manifest from a JSON encoded file.
      *
      * @param string $file The JSON encoded file.
-     *
-     * @return static The manifest.
      */
-    public static function loadFile($file)
+    public static function loadFile(string $file): self
     {
         return self::create(json_decode(file_get_contents($file)));
     }
@@ -108,7 +101,7 @@ class Manifest
      *
      * @return static The new instance.
      */
-    private static function create($decoded)
+    private static function create(array $decoded): self
     {
         $updates = array();
 

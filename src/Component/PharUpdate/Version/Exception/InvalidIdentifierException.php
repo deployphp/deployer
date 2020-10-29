@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Version\Exception;
 
 /**
@@ -21,7 +20,7 @@ class InvalidIdentifierException extends VersionException
      *
      * @param string $identifier The invalid identifier.
      */
-    public function __construct($identifier)
+    public function __construct(string $identifier)
     {
         parent::__construct(
             sprintf(
@@ -38,7 +37,7 @@ class InvalidIdentifierException extends VersionException
      *
      * @return string The invalid identifier.
      */
-    public function getIdentifier()
+    public function getIdentifier(): string
     {
         return $this->identifier;
     }

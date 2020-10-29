@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -31,7 +31,7 @@ class Client
         $this->logger = $logger;
     }
 
-    public function run(Host $host, string $command, array $config = [])
+    public function run(Host $host, string $command, array $config = []): string
     {
         $connectionString = $host->getConnectionString();
         $defaults = [
@@ -104,7 +104,7 @@ class Client
         return $output;
     }
 
-    private function parseExitStatus(Process $process)
+    private function parseExitStatus(Process $process): int
     {
         $output = $process->getOutput();
         preg_match('/\[exit_code:(.*?)\]/', $output, $match);

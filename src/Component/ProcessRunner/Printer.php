@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -21,7 +21,7 @@ class Printer
         $this->output = $output;
     }
 
-    public function command(Host $host, string $command)
+    public function command(Host $host, string $command): void
     {
         // -v for run command
         if ($this->output->isVerbose()) {
@@ -32,10 +32,9 @@ class Printer
     /**
      * Returns a callable for use with the symfony Process->run($callable) method.
      *
-     * @param Host $host
      * @return callable A function expecting a int $type (e.g. Process::OUT or Process::ERR) and string $buffer parameters.
      */
-    public function callback(Host $host)
+    public function callback(Host $host): callable
     {
         return function ($type, $buffer) use ($host) {
             if ($this->output->isVerbose()) {
@@ -46,10 +45,8 @@ class Printer
 
     /**
      * @param string $type Process::OUT or Process::ERR
-     * @param Host $host
-     * @param string $buffer
      */
-    public function printBuffer(string $type, Host $host, string $buffer)
+    public function printBuffer(string $type, Host $host, string $buffer): void
     {
         foreach (explode("\n", rtrim($buffer)) as $line) {
             $this->writeln($type, $host, $line);
@@ -58,10 +55,8 @@ class Printer
 
     /**
      * @param string $type Process::OUT or Process::ERR
-     * @param Host $host
-     * @param string $line
      */
-    public function writeln(string $type, Host $host, string $line)
+    public function writeln(string $type, Host $host, string $line): void
     {
         $line = self::filterOutput($line);
 
@@ -81,11 +76,8 @@ class Printer
 
     /**
      * This filtering used only in Ssh\Client, but for simplify putted here.
-     *
-     * @param string $output
-     * @return string
      */
-    public static function filterOutput($output)
+    public static function filterOutput(string $output): string
     {
         return preg_replace('/\[exit_code:(.*?)]/', '', $output);
     }

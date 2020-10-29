@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -28,13 +28,6 @@ class ProcessRunner
 
     /**
      * Runs a command, consider deployer global configs (timeout,...)
-     *
-     * @param Host $host
-     * @param string $command
-     * @param array $config
-     *
-     * @return string
-     *
      */
     public function run(Host $host, string $command, array $config = []): string
     {

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Version;
 
 /**
@@ -47,16 +46,16 @@ class Version
     /**
      * Sets the version information.
      *
-     * @param integer $major The major version number.
-     * @param integer $minor The minor version number.
-     * @param integer $patch The patch version number.
+     * @param int $major The major version number.
+     * @param int $minor The minor version number.
+     * @param int $patch The patch version number.
      * @param array   $pre   The pre-release version identifiers.
      * @param array   $build The build metadata identifiers.
      */
     public function __construct(
-        $major = 0,
-        $minor = 0,
-        $patch = 0,
+        int $major = 0,
+        int $minor = 0,
+        int $patch = 0,
         array $pre = array(),
         array $build = array()
     ) {
@@ -72,7 +71,7 @@ class Version
      *
      * @return array The build metadata identifiers.
      */
-    public function getBuild()
+    public function getBuild(): array
     {
         return $this->build;
     }
@@ -80,9 +79,9 @@ class Version
     /**
      * Returns the major version number.
      *
-     * @return integer The major version number.
+     * @return int The major version number.
      */
-    public function getMajor()
+    public function getMajor(): int
     {
         return $this->major;
     }
@@ -90,9 +89,9 @@ class Version
     /**
      * Returns the minor version number.
      *
-     * @return integer The minor version number.
+     * @return int The minor version number.
      */
-    public function getMinor()
+    public function getMinor(): int
     {
         return $this->minor;
     }
@@ -100,9 +99,9 @@ class Version
     /**
      * Returns the patch version number.
      *
-     * @return integer The patch version number.
+     * @return int The patch version number.
      */
-    public function getPatch()
+    public function getPatch(): int
     {
         return $this->patch;
     }
@@ -112,7 +111,7 @@ class Version
      *
      * @return array The pre-release version identifiers.
      */
-    public function getPreRelease()
+    public function getPreRelease(): array
     {
         return $this->preRelease;
     }
@@ -122,7 +121,7 @@ class Version
      *
      * @return boolean TRUE if it is stable, FALSE if not.
      */
-    public function isStable()
+    public function isStable(): bool
     {
         return empty($this->preRelease) && $this->major !== 0;
     }
@@ -132,7 +131,7 @@ class Version
      *
      * @return string The string representation.
      */
-    public function __toString()
+    public function __toString(): string
     {
         return Dumper::toString($this);
     }

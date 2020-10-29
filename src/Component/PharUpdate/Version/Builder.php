@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Version;
 
 use Deployer\Component\PharUpdate\Version\Exception\InvalidIdentifierException;
@@ -15,7 +14,7 @@ class Builder extends Version
     /**
      * Removes the build metadata identifiers.
      */
-    public function clearBuild()
+    public function clearBuild(): void
     {
         $this->build = array();
     }
@@ -23,7 +22,7 @@ class Builder extends Version
     /**
      * Removes the pre-release version identifiers.
      */
-    public function clearPreRelease()
+    public function clearPreRelease(): void
     {
         $this->preRelease = array();
     }
@@ -33,7 +32,7 @@ class Builder extends Version
      *
      * @return Builder The Version builder.
      */
-    public static function create()
+    public static function create(): Builder
     {
         return new Builder();
     }
@@ -43,7 +42,7 @@ class Builder extends Version
      *
      * @return Version The readonly Version instance.
      */
-    public function getVersion()
+    public function getVersion(): Version
     {
         return new Version(
             $this->major,
@@ -61,7 +60,7 @@ class Builder extends Version
      *
      * @return Builder The Version builder.
      */
-    public function importComponents(array $components)
+    public function importComponents(array $components): self
     {
         if (isset($components[Parser::BUILD])) {
             $this->build = $components[Parser::BUILD];
@@ -103,7 +102,7 @@ class Builder extends Version
      *
      * @return Builder The Version builder.
      */
-    public function importString($version)
+    public function importString(string $version): self
     {
         return $this->importComponents(Parser::toComponents($version));
     }
@@ -115,7 +114,7 @@ class Builder extends Version
      *
      * @return Builder The Version builder.
      */
-    public function importVersion($version)
+    public function importVersion(Version $version): self
     {
         return $this
             ->setMajor($version->getMajor())
@@ -129,11 +128,11 @@ class Builder extends Version
      * Increments the major version number and resets the minor and patch
      * version numbers to zero.
      *
-     * @param integer $amount Increment by what amount?
+     * @param int $amount Increment by what amount?
      *
      * @return Builder The Version builder.
      */
-    public function incrementMajor($amount = 1)
+    public function incrementMajor(int $amount = 1): self
     {
         $this->major += $amount;
         $this->minor = 0;
@@ -146,11 +145,11 @@ class Builder extends Version
      * Increments the minor version number and resets the patch version number
      * to zero.
      *
-     * @param integer $amount Increment by what amount?
+     * @param int $amount Increment by what amount?
      *
      * @return Builder The Version builder.
      */
-    public function incrementMinor($amount = 1)
+    public function incrementMinor(int $amount = 1): self
     {
         $this->minor += $amount;
         $this->patch = 0;
@@ -161,11 +160,11 @@ class Builder extends Version
     /**
      * Increments the patch version number.
      *
-     * @param integer $amount Increment by what amount?
+     * @param int $amount Increment by what amount?
      *
      * @return Builder The Version builder.
      */
-    public function incrementPatch($amount = 1)
+    public function incrementPatch(int $amount = 1): self
     {
         $this->patch += $amount;
 
@@ -181,7 +180,7 @@ class Builder extends Version
      *
      * @throws InvalidIdentifierException If an identifier is invalid.
      */
-    public function setBuild(array $identifiers)
+    public function setBuild(array $identifiers): self
     {
         foreach ($identifiers as $identifier) {
             if (!Validator::isIdentifier($identifier)) {
@@ -197,13 +196,13 @@ class Builder extends Version
     /**
      * Sets the major version number.
      *
-     * @param integer $number The major version number.
+     * @param int $number The major version number.
      *
      * @return Builder The Version builder.
      *
      * @throws InvalidNumberException If the number is invalid.
      */
-    public function setMajor($number)
+    public function setMajor(int $number): self
     {
         if (!Validator::isNumber($number)) {
             throw new InvalidNumberException($number);
@@ -217,13 +216,13 @@ class Builder extends Version
     /**
      * Sets the minor version number.
      *
-     * @param integer $number The minor version number.
+     * @param int $number The minor version number.
      *
      * @return Builder The Version builder.
      *
      * @throws InvalidNumberException If the number is invalid.
      */
-    public function setMinor($number)
+    public function setMinor(int $number): self
     {
         if (!Validator::isNumber($number)) {
             throw new InvalidNumberException($number);
@@ -237,13 +236,13 @@ class Builder extends Version
     /**
      * Sets the patch version number.
      *
-     * @param integer $number The patch version number.
+     * @param int $number The patch version number.
      *
      * @return Builder The Version builder.
      *
      * @throws InvalidNumberException If the number is invalid.
      */
-    public function setPatch($number)
+    public function setPatch(int $number): self
     {
         if (!Validator::isNumber($number)) {
             throw new InvalidNumberException($number);
@@ -263,7 +262,7 @@ class Builder extends Version
      *
      * @throws InvalidIdentifierException If an identifier is invalid.
      */
-    public function setPreRelease(array $identifiers)
+    public function setPreRelease(array $identifiers): self
     {
         foreach ($identifiers as $identifier) {
             if (!Validator::isIdentifier($identifier)) {

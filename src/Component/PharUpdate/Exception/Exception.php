@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Exception;
 
 /**
@@ -12,12 +11,9 @@ class Exception extends \Exception implements ExceptionInterface
     /**
      * Creates a new exception using a format and values.
      *
-     * @param string $format    The format.
      * @param mixed  $value,... The value(s).
-     *
-     * @return static The exception.
      */
-    public static function create($format, $value = null)
+    public static function create(string $format, $value = null): self
     {
         if (0 < func_num_args()) {
             $format = vsprintf($format, array_slice(func_get_args(), 1));
@@ -28,10 +24,8 @@ class Exception extends \Exception implements ExceptionInterface
 
     /**
      * Creates an exception for the last error message.
-     *
-     * @return static The exception.
      */
-    public static function lastError()
+    public static function lastError(): self
     {
         $error = error_get_last();
 

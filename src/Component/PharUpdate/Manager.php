@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate;
 
 use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
@@ -42,7 +41,7 @@ class Manager
      *
      * @return Manifest The manifest.
      */
-    public function getManifest()
+    public function getManifest(): Manifest
     {
         return $this->manifest;
     }
@@ -52,7 +51,7 @@ class Manager
      *
      * @return string The file.
      */
-    public function getRunningFile()
+    public function getRunningFile(): string
     {
         if (null === $this->runningFile) {
             $this->runningFile = realpath($_SERVER['argv'][0]);
@@ -69,7 +68,7 @@ class Manager
      * @throws Exception\Exception
      * @throws InvalidArgumentException If the file path is invalid.
      */
-    public function setRunningFile($file)
+    public function setRunningFile(string $file): void
     {
         if (false === is_file($file)) {
             throw InvalidArgumentException::create(
@@ -90,7 +89,7 @@ class Manager
      *
      * @return boolean TRUE if an update was performed, FALSE if none available.
      */
-    public function update($version, $major = false, $pre = false)
+    public function update($version, bool $major = false, bool $pre = false): bool
     {
         if (false === ($version instanceof Version)) {
             $version = Parser::toVersion($version);

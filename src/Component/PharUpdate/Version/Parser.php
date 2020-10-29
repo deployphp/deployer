@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Version;
 
 use Deployer\Component\PharUpdate\Version\Exception\InvalidStringRepresentationException;
@@ -43,7 +42,7 @@ class Parser
      *
      * @return Builder A Version builder.
      */
-    public static function toBuilder($version)
+    public static function toBuilder(string $version): Builder
     {
         return Builder::create()->importComponents(
             self::toComponents($version)
@@ -60,7 +59,7 @@ class Parser
      * @throws InvalidStringRepresentationException If the string representation
      *                                              is invalid.
      */
-    public static function toComponents($version)
+    public static function toComponents(string $version): array
     {
         if (!Validator::isVersion($version)) {
             throw new InvalidStringRepresentationException($version);
@@ -100,7 +99,7 @@ class Parser
      *
      * @return Version A Version instance.
      */
-    public static function toVersion($version)
+    public static function toVersion(string $version): Version
     {
         $components = self::toComponents($version);
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Console;
 
 use LogicException;
@@ -32,7 +32,7 @@ class Command extends Base
      * @param string  $name    The command name.
      * @param boolean $disable Disable upgrading?
      */
-    public function __construct($name, $disable = false)
+    public function __construct(string $name, bool $disable = false)
     {
         $this->disableUpgrade = $disable;
 
@@ -44,7 +44,7 @@ class Command extends Base
      *
      * @param string $uri The URI.
      */
-    public function setManifestUri($uri)
+    public function setManifestUri(string $uri)
     {
         $this->manifestUri = $uri;
     }

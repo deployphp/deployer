@@ -56,15 +56,11 @@ class Configuration implements \ArrayAccess
 
     public function add(string $name, array $array): void
     {
-        if ($this->has($name)) {
-            $config = $this->get($name);
-            if (!is_array($config)) {
-                throw new ConfigurationException("Config option \"$name\" isn't array.");
-            }
-            $this->set($name, array_merge_alternate($config, $array));
-        } else {
-            $this->set($name, $array);
+        $config = $this->get($name);
+        if (!is_array($config)) {
+            throw new ConfigurationException("Config option \"$name\" isn't array.");
         }
+        $this->set($name, array_merge_alternate($config, $array));
     }
 
     /**

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -26,7 +26,7 @@ class DocGen
         $this->root = realpath($root);
     }
 
-    public function parse(string $source)
+    public function parse(string $source): void
     {
         $directory = new RecursiveDirectoryIterator($source);
         $iterator = new RegexIterator(new RecursiveIteratorIterator($directory), '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
@@ -39,7 +39,7 @@ class DocGen
         }
     }
 
-    public function gen(string $destination)
+    public function gen(string $destination):? string
     {
         foreach ($this->recipes as $recipe) {
             // $find will try to return DocConfig for a given config $name.
@@ -191,27 +191,28 @@ MD;
             }
             file_put_contents($filePath, $output);
         }
+        return null;
     }
 }
 
-function trimComment($line)
+function trimComment(string $line): string
 {
     return preg_replace('#^(/\*\*?\s?|\s\*\s?|//\s?)#', '', $line);
 }
 
-function indent($text)
+function indent(string $text): string
 {
     return implode("\n", array_map(function ($line) {
         return "  " . $line;
     }, explode("\n", $text)));
 }
 
-function php_to_md($file)
+function php_to_md(string $file): string
 {
     return preg_replace('#\.php$#', '.md', $file);
 }
 
-function anchor($s)
+function anchor(string $s): string
 {
     return str_replace(':', '', $s);
 }

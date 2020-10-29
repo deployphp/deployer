@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -27,13 +27,16 @@ class DocRecipe
      */
     public $tasks = [];
 
-    public function __construct($recipeName, $recipePath)
+    public function __construct(string $recipeName, string $recipePath)
     {
         $this->recipeName = $recipeName;
         $this->recipePath = $recipePath;
     }
 
-    public function parse($content)
+    /**
+     * @return bool|int
+     */
+    public function parse(string $content)
     {
         $comment = '';
         $first = true;
@@ -129,5 +132,6 @@ class DocRecipe
                     break;
             }
         }
+        return false;
     }
 }

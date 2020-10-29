@@ -21,6 +21,7 @@
     <file>src/Collection</file>
     <file>src/Component</file>
     <file>src/Configuration</file>
+    <file>src/Documentation</file>
     <file>src/Exception</file>
     <file>src/Executor</file>
     <file>src/Host</file>

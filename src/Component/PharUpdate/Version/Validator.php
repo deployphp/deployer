@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Version;
 
 /**
@@ -26,7 +25,7 @@ class Validator
      *
      * @return boolean TRUE if the identifier is valid, FALSE If not.
      */
-    public static function isIdentifier($identifier)
+    public static function isIdentifier(string $identifier): bool
     {
         return (true == preg_match(self::IDENTIFIER_REGEX, $identifier));
     }
@@ -38,7 +37,7 @@ class Validator
      *
      * @return boolean TRUE if the number is valid, FALSE If not.
      */
-    public static function isNumber($number)
+    public static function isNumber(int $number): bool
     {
         return (true == preg_match('/^(0|[1-9]\d*)$/', $number));
     }
@@ -50,7 +49,7 @@ class Validator
      *
      * @return boolean TRUE if the string representation is valid, FALSE if not.
      */
-    public static function isVersion($version)
+    public static function isVersion(string $version): bool
     {
         return (true == preg_match(self::VERSION_REGEX, $version));
     }

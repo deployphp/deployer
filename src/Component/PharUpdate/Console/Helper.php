@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Console;
 
 use Deployer\Component\PharUpdate\Manifest;
@@ -26,15 +26,12 @@ class Helper extends Base
      *
      * @return Manager The update manager.
      */
-    public function getManager($uri)
+    public function getManager(string $uri): Manager
     {
         return new Manager(Manifest::loadFile($uri));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'phar-update';
     }

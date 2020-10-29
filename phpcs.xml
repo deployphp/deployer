@@ -19,6 +19,7 @@
     </rule>
 
     <file>src/Collection</file>
+    <file>src/Component</file>
     <file>src/Configuration</file>
     <file>src/Exception</file>
     <file>src/Executor</file>

@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Version\Exception;
 
 /**
@@ -21,7 +20,7 @@ class InvalidStringRepresentationException extends VersionException
      *
      * @param string $version The string representation.
      */
-    public function __construct($version)
+    public function __construct(string $version)
     {
         parent::__construct(
             sprintf(
@@ -38,7 +37,7 @@ class InvalidStringRepresentationException extends VersionException
      *
      * @return string The invalid string representation.
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         return $this->version;
     }

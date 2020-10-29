@@ -1,5 +1,4 @@
-<?php
-
+<?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate;
 
 use Deployer\Component\PharUpdate\Exception\FileException;
@@ -70,11 +69,11 @@ class Update
      *                         from.
      */
     public function __construct(
-        $name,
-        $sha1,
-        $url,
+        string $name,
+        string $sha1,
+        string $url,
         Version $version,
-        $key = null
+        string $key = null
     ) {
         $this->name = $name;
         $this->publicKey = $key;
@@ -91,7 +90,7 @@ class Update
      * @throws Exception\Exception
      * @throws FileException If the file could not be replaced.
      */
-    public function copyTo($file)
+    public function copyTo(string $file): void
     {
         if (null === $this->file) {
             throw LogicException::create(
@@ -131,7 +130,7 @@ class Update
      *
      * @throws FileException If the file could not be deleted.
      */
-    public function deleteFile()
+    public function deleteFile(): void
     {
         if ($this->file) {
             if (file_exists($this->file)) {
@@ -167,7 +166,7 @@ class Update
      * @throws FileException            If the SHA1 checksum differs.
      * @throws UnexpectedValueException If the Phar is corrupt.
      */
-    public function getFile()
+    public function getFile():? string
     {
         if (null === $this->file) {
             unlink($this->file = tempnam(sys_get_temp_dir(), 'upd'));
@@ -220,50 +219,40 @@ class Update
 
     /**
      * Returns name of the update file.
-     *
-     * @return string The name.
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * Returns the URL where the public key can be downloaded from.
-     *
-     * @return string The URL.
      */
-    public function getPublicKey()
+    public function getPublicKey(): string
     {
         return $this->publicKey;
     }
 
     /**
      * Returns the SHA1 file checksum.
-     *
-     * @return string The checksum.
      */
-    public function getSha1()
+    public function getSha1(): string
     {
         return $this->sha1;
     }
 
     /**
      * Returns the URL where the update can be downloaded from.
-     *
-     * @return string The URL.
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
 
     /**
      * Returns the version of the update.
-     *
-     * @return Version The version.
      */
-    public function getVersion()
+    public function getVersion(): Version
     {
         return $this->version;
     }
@@ -275,7 +264,7 @@ class Update
      *
      * @return boolean TRUE if the update is newer, FALSE if not.
      */
-    public function isNewer(Version $version)
+    public function isNewer(Version $version): bool
     {
         return Comparator::isGreaterThan($this->version, $version);
     }

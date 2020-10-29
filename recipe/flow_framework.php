@@ -21,26 +21,27 @@ set('shared_dirs', [
 /**
  * Apply database migrations
  */
+desc('Apply database migrations');
 task('deploy:run_migrations', function () {
     run('FLOW_CONTEXT={{flow_context}} {{bin/php}} {{release_path}}/{{flow_command}} doctrine:migrate');
-})->desc('Apply database migrations');
+});
 
 /**
  * Publish resources
  */
+desc('Publish resources');
 task('deploy:publish_resources', function () {
     run('FLOW_CONTEXT={{flow_context}} {{bin/php}} {{release_path}}/{{flow_command}} resource:publish');
-})->desc('Publish resources');
+});
 
 /**
  * Main task
  */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'deploy:run_migrations',
     'deploy:publish_resources',
     'deploy:publish',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
+]);

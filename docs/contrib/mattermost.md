@@ -76,7 +76,7 @@ before('deploy', 'mattermost:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'mattermost:notify:success');
+after('deploy:success', 'mattermost:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

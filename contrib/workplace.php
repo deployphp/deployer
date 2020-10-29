@@ -59,7 +59,7 @@ before('deploy', 'workplace:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'workplace:notify:success');
+after('deploy:success', 'workplace:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

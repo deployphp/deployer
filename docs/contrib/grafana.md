@@ -39,7 +39,7 @@ set('grafana', [
 If you want to create annotation about successful end of deployment.
 
 ```php
-after('success', 'grafana:annotation');
+after('deploy:success', 'grafana:annotation');
 ```
 
 

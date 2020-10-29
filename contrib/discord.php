@@ -42,7 +42,7 @@ before('deploy', 'discord:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'discord:notify:success');
+after('deploy:success', 'discord:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

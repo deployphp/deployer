@@ -53,7 +53,7 @@ before('deploy', 'yammer:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'yammer:notify:success');
+after('deploy:success', 'yammer:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

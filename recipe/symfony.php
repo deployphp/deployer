@@ -61,5 +61,3 @@ task('deploy', [
     'deploy:cache:warmup',
     'deploy:publish',
 ]);
-
-after('deploy', 'success');

@@ -21,9 +21,10 @@ set('writable_dirs', ['var', 'media']);
 /**
  * Clear cache
  */
+desc('Clear cache');
 task('deploy:cache:clear', function () {
     run("cd {{release_path}} && php -r \"require_once 'app/Mage.php'; umask(0); Mage::app()->cleanCache();\"");
-})->desc('Clear cache');
+});
 
 /**
  * Remove files that can be used to compromise Magento
@@ -41,10 +42,9 @@ after('deploy:update_code', 'deploy:clear_version');
 /**
  * Main task
  */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:cache:clear',
     'deploy:publish',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
+]);

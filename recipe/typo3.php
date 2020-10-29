@@ -13,12 +13,12 @@ set('typo3_webroot', 'Web');
 /**
  * Main TYPO3 task
  */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'deploy:publish',
-])->desc('Deploy your project');
-after('deploy', 'success');
+]);
 
 /**
  * Shared directories

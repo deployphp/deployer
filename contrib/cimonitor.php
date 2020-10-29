@@ -16,7 +16,7 @@ Add tasks on deploy:
 
 ```php
 before('deploy', 'cimonitor:notify');
-after('success', 'cimonitor:notify:success');
+after('deploy:success', 'cimonitor:notify:success');
 after('deploy:failed', 'cimonitor:notify:failure');
 ```
 
@@ -53,7 +53,7 @@ before('deploy', 'cimonitor:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'cimonitor:notify:success');
+after('deploy:success', 'cimonitor:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

@@ -58,7 +58,7 @@ before('deploy', 'telegram:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'telegram:notify:success');
+after('deploy:success', 'telegram:notify:success');
 ```
 If you want to notify about failed deployment add this too:
 

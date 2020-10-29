@@ -53,7 +53,7 @@ before('deploy', 'rocketchat:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'rocketchat:notify:success');
+after('deploy:success', 'rocketchat:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

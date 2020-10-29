@@ -15,12 +15,9 @@ set('bin/websiteconsole', function () {
 });
 
 desc('Migrate PHPCR');
-task(
-    'phpcr:migrate',
-    function () {
-        run('{{bin/php}} {{bin/console}} phpcr:migrations:migrate');
-    }
-);
+task('phpcr:migrate', function () {
+    run('{{bin/console}} phpcr:migrations:migrate');
+});
 
 desc('Clear cache');
 task('deploy:website:cache:clear', function () {

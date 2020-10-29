@@ -47,5 +47,3 @@ task('deploy', [
     'deploy:run_migrations',
     'deploy:publish',
 ])->desc('Deploy your project');
-
-after('deploy', 'success');

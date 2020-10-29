@@ -141,13 +141,11 @@ task('sw:deploy', [
 /**
  * Main task
  */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'sw:deploy',
     'deploy:clear_paths',
     'sw:cache:warmup',
     'deploy:publish',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
-after('deploy:failed', 'deploy:unlock');
+]);

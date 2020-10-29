@@ -9,9 +9,8 @@ set('shared_files', ['wp-config.php']);
 set('shared_dirs', ['wp-content/uploads']);
 set('writable_dirs', ['wp-content/uploads']);
 
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:publish',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
+]);

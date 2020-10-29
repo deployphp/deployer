@@ -28,7 +28,7 @@ set('teams_webhook', 'https://outlook.office.com/webhook/...');
 Add in content:
 ```php
 before('deploy', 'teams:notify');
-after('success', 'teams:notify:success');
+after('deploy:success', 'teams:notify:success');
 after('deploy:failed', 'teams:notify:failure');
 ```
 9.) Sip your coffee
@@ -68,7 +68,7 @@ before('deploy', 'teams:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'teams:notify:success');
+after('deploy:success', 'teams:notify:success');
 ```
 
 If you want to notify about failed deployment add this too:

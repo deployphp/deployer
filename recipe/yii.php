@@ -14,10 +14,9 @@ set('writable_dirs', ['runtime']);
 /**
  * Main task
  */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'deploy:publish',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
+]);

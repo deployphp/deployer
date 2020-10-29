@@ -43,22 +43,23 @@ set('silverstripe_cli_script', function () {
 /**
  * Helper tasks
  */
+desc('Run /dev/build');
 task('silverstripe:build', function () {
     return run('{{bin/php}} {{release_path}}/{{silverstripe_cli_script}} /dev/build');
-})->desc('Run /dev/build');
+});
 
+desc('Run /dev/build?flush=all');
 task('silverstripe:buildflush', function () {
     return run('{{bin/php}} {{release_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
-})->desc('Run /dev/build?flush=all');
+});
 
 /**
  * Main task
  */
+desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'silverstripe:buildflush',
     'deploy:publish',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
+]);

@@ -13,7 +13,7 @@ class Task
 {
     private $name;
     /**
-     * @phpstan-var callable():void $callback
+     * @phpstan-var callable():void
      */
     private $callback;
     private $description;

@@ -192,7 +192,7 @@ function task(string $name, $body = null): Task
  * @param string $task The task before $that should be run.
  * @param string|callable $do The task to be run.
  *
- * @return Task|void
+ * @return Task|null
  */
 function before(string $task, $do)
 {
@@ -210,7 +210,7 @@ function before(string $task, $do)
  * @param string $task The task after $that should be run.
  * @param string|callable $do The task to be run.
  *
- * @return Task|void
+ * @return Task|null
  */
 function after(string $task, $do)
 {
@@ -229,7 +229,7 @@ function after(string $task, $do)
  * @param string $task The task which need to fail so $that should be run.
  * @param string $do The task to be run.
  *
- * @return Task|void
+ * @return Task|null
  */
 function fail(string $task, string $do)
 {
@@ -269,7 +269,7 @@ function cd(string $path): void
 /**
  * Execute a callback within a specific directory and revert back to the initial working directory.
  *
- * @return mixed|void Return value of the $callback function or void if callback doesn't return anything
+ * @return mixed|null Return value of the $callback function or null if callback doesn't return anything
  */
 function within(string $path, callable $callback)
 {

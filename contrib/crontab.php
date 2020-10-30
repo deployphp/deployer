@@ -15,7 +15,7 @@ task('crontab:load', function () {
     set('crontab:all', []);
 
     // Crontab is empty
-    if (!test ("[ -f '/var/spool/cron/{{user}}' ]")) {
+    if (!test ("{{bin/crontab}} -l >> /dev/null 2>&1")) {
         return;
     }
 

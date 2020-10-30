@@ -15,9 +15,9 @@
   * [`flow_command`](#flow_command)
   * [`shared_dirs`](#shared_dirs)
 * Tasks
-  * [`deploy:run_migrations`](#deployrun_migrations)
-  * [`deploy:publish_resources`](#deploypublish_resources)
-  * [`deploy`](#deploy)
+  * [`deploy:run_migrations`](#deployrun_migrations) — Apply database migrations
+  * [`deploy:publish_resources`](#deploypublish_resources) — Publish resources
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### flow_context
@@ -40,17 +40,17 @@ Flow-Framework shared directories
 
 ## Tasks
 ### deploy:run_migrations
-[Source](/recipe/flow_framework.php#L24)
+[Source](/recipe/flow_framework.php#L25)
 
 Apply database migrations
 
 ### deploy:publish_resources
-[Source](/recipe/flow_framework.php#L31)
+[Source](/recipe/flow_framework.php#L33)
 
 Publish resources
 
 ### deploy
-[Source](/recipe/flow_framework.php#L38)
+[Source](/recipe/flow_framework.php#L41)
 
 Main task
 

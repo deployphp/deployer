@@ -16,7 +16,7 @@
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### typo3_webroot
@@ -48,7 +48,7 @@ Writeable directories
 
 ## Tasks
 ### deploy
-[Source](/recipe/typo3.php#L16)
+[Source](/recipe/typo3.php#L17)
 
 Main TYPO3 task
 

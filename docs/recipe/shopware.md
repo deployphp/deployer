@@ -28,7 +28,7 @@
   * [`sw:plugin:activate:all`](#swpluginactivateall)
   * [`sw:plugin:migrate:all`](#swpluginmigrateall)
   * [`sw:deploy`](#swdeploy)
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### repository
@@ -133,7 +133,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](/recipe/shopware.php#L144)
+[Source](/recipe/shopware.php#L145)
 
 Main task
 

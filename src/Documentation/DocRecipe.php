@@ -43,6 +43,8 @@ class DocRecipe
         $desc = '';
         $currentTask = null;
 
+        $content = str_replace("\r\n", "\n", $content);
+
         $state = 'root';
         foreach (explode("\n", $content) as $i => $line) {
             $m = [];

@@ -14,7 +14,7 @@
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### shared_dirs
@@ -34,7 +34,7 @@ CodeIgniter writable dirs
 
 ## Tasks
 ### deploy
-[Source](/recipe/codeigniter.php#L17)
+[Source](/recipe/codeigniter.php#L18)
 
 Main task
 

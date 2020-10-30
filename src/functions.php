@@ -157,7 +157,7 @@ function desc(?string $title = null): ?string
  *
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
- *
+ * @phpstan-param callable():void|array|string|null $body
  */
 function task(string $name, $body = null): Task
 {
@@ -191,6 +191,7 @@ function task(string $name, $body = null): Task
  *
  * @param string $task The task before $that should be run.
  * @param string|callable $do The task to be run.
+ * @phpstan-param string|callable():void $do
  *
  * @return Task|void
  */
@@ -209,7 +210,7 @@ function before(string $task, $do)
  *
  * @param string $task The task after $that should be run.
  * @param string|callable $do The task to be run.
- *
+ * @phpstan-param string|callable():void $do
  * @return Task|void
  */
 function after(string $task, $do)
@@ -227,11 +228,12 @@ function after(string $task, $do)
  * When called multiple times for a task, previous fail() definitions will be overridden.
  *
  * @param string $task The task which need to fail so $that should be run.
- * @param string $do The task to be run.
+ * @param string|callable $do The task to be run.
+ * @phpstan-param string|callable(): void $do
  *
  * @return Task|void
  */
-function fail(string $task, string $do)
+function fail(string $task, $do)
 {
     if (is_callable($do)) {
         $newTask = task("fail:$task", $do);
@@ -434,6 +436,7 @@ function testLocally(string $command): bool
  * ```
  *
  * @param Host|Host[] $hosts
+ * @phpstan-param callable-string|callable(Host):void $callback
  */
 function on($hosts, callable $callback): void
 {

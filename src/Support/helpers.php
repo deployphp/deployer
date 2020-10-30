@@ -143,6 +143,9 @@ function parse_home_dir(string $path): string
     return $path;
 }
 
+/**
+ * @phpstan-param callable():void $callable
+ */
 function fork(callable $callable)
 {
     $pid = null;

@@ -193,7 +193,7 @@ class Deployer extends Container
     }
 
     /**
-     * @return Deployer
+     * @return self
      */
     public static function get()
     {

@@ -274,6 +274,7 @@ class Master
 
     /**
      * @param Process[] $processes
+     * @phpstan-param callable(string):void $callback
      */
     protected function gatherOutput(array $processes, callable $callback): void
     {

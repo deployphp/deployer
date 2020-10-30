@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#4 \\$default of method Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\:\\:addArgument\\(\\) expects array\\<string\\>\\|string\\|null, int given\\.$#"
+			count: 1
+			path: ../src/Command/DiceCommand.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 2
 			path: ../src/Component/PharUpdate/Exception/Exception.php
@@ -9,6 +14,11 @@ parameters:
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: ../src/Component/PharUpdate/Manifest.php
+
+		-
+			message: "#^Parameter \\#2 \\$subject of function preg_match expects string, int given\\.$#"
+			count: 1
+			path: ../src/Component/PharUpdate/Version/Validator.php
 
 		-
 			message: "#^If condition is always true\\.$#"

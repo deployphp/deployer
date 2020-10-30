@@ -16,11 +16,6 @@ parameters:
 			path: ../src/Component/PharUpdate/Manifest.php
 
 		-
-			message: "#^Parameter \\#2 \\$subject of function preg_match expects string, int given\\.$#"
-			count: 1
-			path: ../src/Component/PharUpdate/Version/Validator.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../src/Host/Host.php

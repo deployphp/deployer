@@ -202,6 +202,8 @@ function before(string $task, $do)
         return $newTask;
     }
     task($task)->addBefore($do);
+
+    return null;
 }
 
 /**
@@ -220,6 +222,8 @@ function after(string $task, $do)
         return $newTask;
     }
     task($task)->addAfter($do);
+
+    return null;
 }
 
 /**
@@ -240,6 +244,8 @@ function fail(string $task, string $do)
     }
     $deployer = Deployer::get();
     $deployer->fail->set($task, $do);
+
+    return null;
 }
 
 /**
@@ -280,6 +286,8 @@ function within(string $path, callable $callback)
     } finally {
         set('working_path', $lastWorkingPath);
     }
+
+    return null;
 }
 
 /**

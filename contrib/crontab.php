@@ -49,6 +49,7 @@ task('crontab:sync', function () {
     $cronJobs = get('crontab:all');
 
     foreach ($syncJobs as $syncJob) {
+        $syncJob = parse($job);
         $syncJobData = parseJob($syncJob);
 
         if (is_null ($syncJobData)) {

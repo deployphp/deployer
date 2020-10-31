@@ -1,7 +1,24 @@
 <?php
 /*
- * Recipe for crontab jobs deploy
- * Configuration: You need no specify only crontab:jobs, which must be array of strings
+Recipe for adding crontab jobs.
+
+It checks for duplicates by the command part of the job. Changing the schedule will update the crontab. So when you change the command part you have to manually remove the old one. Use `crontab -e` on the server to remove it.
+
+## Configuration
+
+- *crontab:jobs* - An array of strings with crontab lines.
+
+## Usage
+
+```php
+require 'contrib/crontab.php';
+
+after('deploy:success', 'crontab:sync');
+
+add('crontab:jobs', [
+    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
+]);
+```
  */
 namespace Deployer;
 

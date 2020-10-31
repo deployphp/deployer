@@ -204,7 +204,7 @@ task('cpanel:createdb', function () {
 
     $cpanel = getCPanel();
     $config = get('cpanel', []);
-    if (!askConfirmation(sprintf('This will try to create the database %s on the host though CPanel API, ok?', get('cpanel_createdb'), get('deploy_path')), true)) {
+    if (!askConfirmation(sprintf('This will try to create the database %s on the host though CPanel API, ok?', get('cpanel_createdb')), true)) {
         return;
     }
 
@@ -242,7 +242,7 @@ task('cpanel:createaddondomain', function () {
     $addAddonDomainResult = $cpanel->cpanel('AddonDomain', 'addaddondomain', $config['user'], ['dir' => get('addondir'), 'newdomain'=> $domain, 'subdomain' => $subDomain]);
     $addAddonDomainData = json_decode($addAddonDomainResult, true);
 
-    if (isset($delAddonDomainResult['cpanelresult']['error'])) {
+    if (isset($addAddonDomainResult['cpanelresult']['error'])) {
         writeln($addAddonDomainData['cpanelresult']['error']);
     } else {
         writeln('Successfully created addon domain!');

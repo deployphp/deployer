@@ -246,9 +246,9 @@ task('rsync', function() {
         return;
     }
 
-    $host = $host->getHostname();
     $sshArguments = Client::connectionOptions($host);
     $user = !$host->getRemoteUser() ? '' : $host->getRemoteUser() . '@';
+    $host = $host->getHostname();
 
     runLocally("rsync -{$config['flags']} -e 'ssh  $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$user$host:$dst/'", $config);
 });

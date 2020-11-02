@@ -157,7 +157,6 @@ function desc(?string $title = null): ?string
  *
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
- *
  */
 function task(string $name, $body = null): Task
 {
@@ -231,11 +230,11 @@ function after(string $task, $do)
  * When called multiple times for a task, previous fail() definitions will be overridden.
  *
  * @param string $task The task which need to fail so $that should be run.
- * @param string $do The task to be run.
+ * @param string|callable $do The task to be run.
  *
  * @return Task|null
  */
-function fail(string $task, string $do)
+function fail(string $task, $do)
 {
     if (is_callable($do)) {
         $newTask = task("fail:$task", $do);

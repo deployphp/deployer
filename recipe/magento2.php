@@ -61,7 +61,7 @@ task('magento:compile', function () {
 
 desc('Deploy assets');
 task('magento:deploy:assets', function () {
-    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy {{static_content_locales}}");
+    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy {{static_content_locales}} --force");
 });
 
 desc('Enable maintenance mode');

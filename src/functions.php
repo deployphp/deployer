@@ -441,7 +441,6 @@ function testLocally(string $command): bool
  * ```
  *
  * @param Host|Host[] $hosts
- * @phpstan-param callable-string|callable(Host):void $callback
  */
 function on($hosts, callable $callback): void
 {

@@ -49,9 +49,6 @@ class Collection implements Countable, IteratorAggregate
         return count($this->values);
     }
 
-    /**
-     * @phpstan-param callable(mixed, array-key):bool $callback
-     */
     public function select(callable $callback): array
     {
         $values = [];

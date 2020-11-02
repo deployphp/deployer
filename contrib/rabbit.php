@@ -73,7 +73,7 @@ task('deploy:rabbit', function () {
         $message = "Deployment to '%s'%s was successful\n(%s)";
         $config['message'] = sprintf(
             $message,
-            $host,
+            $host->getHostname(),
             $stageInfo,
             $releasePath
         );

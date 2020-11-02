@@ -15,7 +15,7 @@
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### shared_files
@@ -42,7 +42,7 @@
 
 ## Tasks
 ### deploy
-[Source](/recipe/wordpress.php#L12)
+[Source](/recipe/wordpress.php#L13)
 
 
 

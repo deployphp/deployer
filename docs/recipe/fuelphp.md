@@ -13,7 +13,7 @@
 * Config
   * [`shared_dirs`](#shared_dirs)
 * Tasks
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### shared_dirs
@@ -26,7 +26,7 @@ FuelPHP 1.x shared dirs
 
 ## Tasks
 ### deploy
-[Source](/recipe/fuelphp.php#L16)
+[Source](/recipe/fuelphp.php#L17)
 
 Main task
 

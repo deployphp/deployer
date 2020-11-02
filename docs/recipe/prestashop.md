@@ -15,7 +15,7 @@
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### shared_files
@@ -26,14 +26,14 @@
 
 
 ### shared_dirs
-[Source](/recipe/prestashop.php#L10)
+[Source](/recipe/prestashop.php#L13)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/prestashop.php#L22)
+[Source](/recipe/prestashop.php#L24)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -42,7 +42,7 @@
 
 ## Tasks
 ### deploy
-[Source](/recipe/prestashop.php#L37)
+[Source](/recipe/prestashop.php#L39)
 
 
 

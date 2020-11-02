@@ -11,12 +11,12 @@
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)
 * Tasks
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 
 ## Tasks
 ### deploy
-[Source](/recipe/zend_framework.php#L11)
+[Source](/recipe/zend_framework.php#L12)
 
 Main task
 

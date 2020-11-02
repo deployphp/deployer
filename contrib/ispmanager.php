@@ -304,7 +304,7 @@ task('ispmanager:domain-create', function () {
             throw new Exception('Domain already exists!');
         }
         else {
-            warning1 ('Domain already exists - skipping');
+            warning ('Domain already exists - skipping');
             return true;
         }
     }
@@ -440,7 +440,6 @@ task('ispmanager:domain-php-select', function () {
 
     if (!isset ($config['phpSelect']['mode']) || !isset ($config['phpSelect']['version'])) {
         throw new Exception('Incorrect settings for select php version');
-        return;
     }
 
     $phpVersions = get ('ispmanager_phplist');
@@ -450,7 +449,6 @@ task('ispmanager:domain-php-select', function () {
 
     if (!isset ($phpVersions[$newVersion])) {
         throw new Exception('Incorrect php version');
-        return;
     }
 
     $versionData = $phpVersions[$newVersion];

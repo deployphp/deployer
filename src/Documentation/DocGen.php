@@ -23,7 +23,7 @@ class DocGen
 
     public function __construct(string $root)
     {
-        $this->root = realpath($root);
+        $this->root = str_replace(DIRECTORY_SEPARATOR, '/', realpath($root));
     }
 
     public function parse(string $source): void
@@ -31,7 +31,8 @@ class DocGen
         $directory = new RecursiveDirectoryIterator($source);
         $iterator = new RegexIterator(new RecursiveIteratorIterator($directory), '/^.+\.php$/i', RecursiveRegexIterator::GET_MATCH);
         foreach ($iterator as [$path]) {
-            $recipePath = str_replace($this->root . '/', '', realpath($path));
+            $realPath = str_replace(DIRECTORY_SEPARATOR, '/', realpath($path));
+            $recipePath = str_replace($this->root . '/', '', $realPath);
             $recipeName = preg_replace('/\.php$/i', '', basename($recipePath));
             $recipe = new DocRecipe($recipeName, $recipePath);
             $recipe->parse(file_get_contents($path));

@@ -16,6 +16,8 @@ class ApiGen
         $comment = '';
         $params = '';
 
+        $source = str_replace("\r\n", "\n", $source);
+
         $state = 'root';
         foreach (explode("\n", $source) as $lineNumber => $line) {
             switch ($state) {

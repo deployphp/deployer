@@ -15,9 +15,9 @@
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
 * Tasks
-  * [`deploy:cache:clear`](#deploycacheclear)
+  * [`deploy:cache:clear`](#deploycacheclear) — Clear cache
   * [`deploy:clear_version`](#deployclear_version)
-  * [`deploy`](#deploy)
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### shared_dirs
@@ -44,17 +44,17 @@ Magento writable dirs
 
 ## Tasks
 ### deploy:cache:clear
-[Source](/recipe/magento.php#L24)
+[Source](/recipe/magento.php#L25)
 
 Clear cache
 
 ### deploy:clear_version
-[Source](/recipe/magento.php#L31)
+[Source](/recipe/magento.php#L32)
 
 Remove files that can be used to compromise Magento
 
 ### deploy
-[Source](/recipe/magento.php#L44)
+[Source](/recipe/magento.php#L46)
 
 Main task
 

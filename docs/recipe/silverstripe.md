@@ -16,9 +16,9 @@
   * [`writable_dirs`](#writable_dirs)
   * [`silverstripe_cli_script`](#silverstripe_cli_script)
 * Tasks
-  * [`silverstripe:build`](#silverstripebuild)
-  * [`silverstripe:buildflush`](#silverstripebuildflush)
-  * [`deploy`](#deploy)
+  * [`silverstripe:build`](#silverstripebuild) — Run /dev/build
+  * [`silverstripe:buildflush`](#silverstripebuildflush) — Run /dev/build?flush=all
+  * [`deploy`](#deploy) — Deploy your project
 
 ## Config
 ### shared_assets
@@ -48,17 +48,17 @@ Silverstripe cli script
 
 ## Tasks
 ### silverstripe:build
-[Source](/recipe/silverstripe.php#L46)
+[Source](/recipe/silverstripe.php#L47)
 
 Helper tasks
 
 ### silverstripe:buildflush
-[Source](/recipe/silverstripe.php#L50)
+[Source](/recipe/silverstripe.php#L52)
 
 
 
 ### deploy
-[Source](/recipe/silverstripe.php#L57)
+[Source](/recipe/silverstripe.php#L60)
 
 Main task
 

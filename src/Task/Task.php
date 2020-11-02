@@ -12,9 +12,6 @@ use Deployer\Selector\Selector;
 class Task
 {
     private $name;
-    /**
-     * @phpstan-var callable():void
-     */
     private $callback;
     private $description;
     private $sourceLocation = '';
@@ -31,7 +28,6 @@ class Task
     /**
      * Task constructor.
      * @param mixed $name
-     * @phpstan-param callable():void $callback
      */
     public function __construct($name, callable $callback = null)
     {

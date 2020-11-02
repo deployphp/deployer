@@ -127,7 +127,6 @@ Define a new task and save to tasks list.
 Alternatively get a defined task.
 
 
-
 ## before()
 
 ```php
@@ -147,11 +146,10 @@ after(string $task, $do)
 Call that task after specified task runs.
 
 
-
 ## fail()
 
 ```php
-fail(string $task, string $do)
+fail(string $task, $do)
 ```
 
 Setup which task run on failure of $task.

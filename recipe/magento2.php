@@ -54,6 +54,7 @@ set('clear_paths', [
 // Tasks
 desc('Compile magento di');
 task('magento:compile', function () {
+    run('cd {{release_path}} && {{bin/composer}} dump-autoload -o');
     run("{{bin/php}} {{release_path}}/bin/magento setup:di:compile");
     run('cd {{release_path}} && {{bin/composer}} dump-autoload -o');
 });

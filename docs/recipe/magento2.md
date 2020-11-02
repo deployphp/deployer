@@ -28,35 +28,35 @@
 
 ## Config
 ### static_content_locales
-[Source](/recipe/magento2.php#L13)
+[Source](/recipe/magento2.php#L19)
 
 By default setup:static-content:deploy uses `en_US`.
 To change that, simply put set('static_content_locales', 'en_US de_DE');`
 in you deployer script.
 
 ### shared_files
-[Source](/recipe/magento2.php#L15)
+[Source](/recipe/magento2.php#L21)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
-[Source](/recipe/magento2.php#L19)
+[Source](/recipe/magento2.php#L25)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/magento2.php#L33)
+[Source](/recipe/magento2.php#L39)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### clear_paths
-[Source](/recipe/magento2.php#L39)
+[Source](/recipe/magento2.php#L45)
 
 * Overrides [`clear_paths`](/docs/recipe/common.md#clear_paths) from `recipe/common.php`
 
@@ -65,50 +65,48 @@ in you deployer script.
 
 ## Tasks
 ### magento:compile
-[Source](/recipe/magento2.php#L50)
+[Source](/recipe/magento2.php#L56)
 
 Tasks
 
 ### magento:deploy:assets
-[Source](/recipe/magento2.php#L56)
+[Source](/recipe/magento2.php#L63)
 
 
 
 ### magento:maintenance:enable
-[Source](/recipe/magento2.php#L61)
+[Source](/recipe/magento2.php#L68)
 
 
 
 ### magento:maintenance:disable
-[Source](/recipe/magento2.php#L66)
+[Source](/recipe/magento2.php#L73)
 
 
 
 ### magento:upgrade:db
-[Source](/recipe/magento2.php#L71)
+[Source](/recipe/magento2.php#L78)
 
 
 
 ### magento:cache:flush
-[Source](/recipe/magento2.php#L76)
+[Source](/recipe/magento2.php#L115)
 
 
 
 ### deploy:magento
-[Source](/recipe/magento2.php#L81)
+[Source](/recipe/magento2.php#L120)
 
 
 
 This task is group task which contains next tasks:
 * [`magento:compile`](/docs/recipe/magento2.md#magentocompile)
 * [`magento:deploy:assets`](/docs/recipe/magento2.md#magentodeployassets)
-* [`magento:maintenance:enable`](/docs/recipe/magento2.md#magentomaintenanceenable)
 * [`magento:upgrade:db`](/docs/recipe/magento2.md#magentoupgradedb)
-* [`magento:cache:flush`](/docs/recipe/magento2.md#magentocacheflush)
 
 
 ### deploy
-[Source](/recipe/magento2.php#L91)
+[Source](/recipe/magento2.php#L128)
 
 
 

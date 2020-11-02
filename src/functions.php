@@ -157,7 +157,6 @@ function desc(?string $title = null): ?string
  *
  * @param string $name Name of current task.
  * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
- * @phpstan-param callable():void|array|string|null $body
  */
 function task(string $name, $body = null): Task
 {
@@ -191,7 +190,6 @@ function task(string $name, $body = null): Task
  *
  * @param string $task The task before $that should be run.
  * @param string|callable $do The task to be run.
- * @phpstan-param string|callable():void $do
  *
  * @return Task|null
  */
@@ -212,7 +210,6 @@ function before(string $task, $do)
  *
  * @param string $task The task after $that should be run.
  * @param string|callable $do The task to be run.
- * @phpstan-param string|callable():void $do
  *
  * @return Task|null
  */
@@ -234,7 +231,6 @@ function after(string $task, $do)
  *
  * @param string $task The task which need to fail so $that should be run.
  * @param string|callable $do The task to be run.
- * @phpstan-param string|callable(): void $do
  *
  * @return Task|null
  */

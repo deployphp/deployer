@@ -193,7 +193,7 @@ function task(string $name, $body = null): Task
  * @param string|callable $do The task to be run.
  * @phpstan-param string|callable():void $do
  *
- * @return Task|void
+ * @return Task|null
  */
 function before(string $task, $do)
 {
@@ -203,6 +203,8 @@ function before(string $task, $do)
         return $newTask;
     }
     task($task)->addBefore($do);
+
+    return null;
 }
 
 /**
@@ -211,7 +213,8 @@ function before(string $task, $do)
  * @param string $task The task after $that should be run.
  * @param string|callable $do The task to be run.
  * @phpstan-param string|callable():void $do
- * @return Task|void
+ *
+ * @return Task|null
  */
 function after(string $task, $do)
 {
@@ -221,6 +224,8 @@ function after(string $task, $do)
         return $newTask;
     }
     task($task)->addAfter($do);
+
+    return null;
 }
 
 /**
@@ -231,7 +236,7 @@ function after(string $task, $do)
  * @param string|callable $do The task to be run.
  * @phpstan-param string|callable(): void $do
  *
- * @return Task|void
+ * @return Task|null
  */
 function fail(string $task, $do)
 {
@@ -242,6 +247,8 @@ function fail(string $task, $do)
     }
     $deployer = Deployer::get();
     $deployer->fail->set($task, $do);
+
+    return null;
 }
 
 /**
@@ -271,7 +278,7 @@ function cd(string $path): void
 /**
  * Execute a callback within a specific directory and revert back to the initial working directory.
  *
- * @return mixed|void Return value of the $callback function or void if callback doesn't return anything
+ * @return mixed|null Return value of the $callback function or null if callback doesn't return anything
  */
 function within(string $path, callable $callback)
 {
@@ -282,6 +289,8 @@ function within(string $path, callable $callback)
     } finally {
         set('working_path', $lastWorkingPath);
     }
+
+    return null;
 }
 
 /**

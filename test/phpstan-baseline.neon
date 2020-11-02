@@ -1,6 +1,11 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Parameter \\#4 \\$default of method Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\:\\:addArgument\\(\\) expects array\\<string\\>\\|string\\|null, int given\\.$#"
+			count: 1
+			path: ../src/Command/DiceCommand.php
+
+		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 2
 			path: ../src/Component/PharUpdate/Exception/Exception.php
@@ -31,17 +36,7 @@ parameters:
 			path: ../src/functions.php
 
 		-
-			message: "#^Function Deployer\\\\before\\(\\) never returns void so it can be removed from the return typehint\\.$#"
-			count: 1
-			path: ../src/functions.php
-
-		-
-			message: "#^Function Deployer\\\\after\\(\\) never returns void so it can be removed from the return typehint\\.$#"
-			count: 1
-			path: ../src/functions.php
-
-		-
-			message: "#^Function Deployer\\\\fail\\(\\) never returns void so it can be removed from the return typehint\\.$#"
+			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../src/functions.php
 

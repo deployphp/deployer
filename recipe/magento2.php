@@ -25,15 +25,15 @@ set('shared_files', [
 set('shared_dirs', [
     'var/composer_home',
     'var/log',
-    'var/cache',
     'var/export',
     'var/report',
+    'var/import',
     'var/import_history',
     'var/session',
     'var/importexport',
     'var/backups',
     'var/tmp',
-    'pub/sitemaps',
+    'pub/sitemap',
     'pub/media'
 ]);
 set('writable_dirs', [

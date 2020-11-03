@@ -31,6 +31,9 @@ class Client
         $this->logger = $logger;
     }
 
+    /**
+     * @throws RunException
+     */
     public function run(Host $host, string $command, array $config = []): string
     {
         $connectionString = $host->getConnectionString();

@@ -212,6 +212,7 @@ run("echo $path");
 ```
 
 
+
 ## runLocally()
 
 ```php
@@ -219,6 +220,7 @@ runLocally(string $command, array $options = []): string
 ```
 
 Execute commands on local machine
+
 
 
 
@@ -237,6 +239,7 @@ if (test('[ -d {{release_path}} ]')) {
 }
 ```
 
+
 ## testLocally()
 
 ```php
@@ -247,6 +250,7 @@ Run test command locally.
 Example:
 
     testLocally('[ -d {{local_release_path}} ]')
+
 
 ## on()
 
@@ -300,6 +304,7 @@ Upload file or directory to host.
 > The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
 
 
+
 ## download()
 
 ```php
@@ -307,6 +312,7 @@ download(string $source, string $destination, array $config = []): void
 ```
 
 Download file or directory from host
+
 
 
 ## info()
@@ -427,6 +433,7 @@ commandExist(string $command): bool
 ```
 
 Check if command exists
+
 
 ## commandSupportsOption()
 

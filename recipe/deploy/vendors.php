@@ -17,6 +17,11 @@ set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction 
  */
 set('composer_version', null);
 
+/**
+ * Set this variable to stable, snapshot, preview, 1 or 2 to select which Composer channel to use
+ */
+set('composer_channel', null);
+
 set('bin/composer', function () {
     if (commandExist('composer')) {
         return '{{bin/php}} ' . locateBinaryPath('composer');
@@ -27,10 +32,18 @@ set('bin/composer', function () {
     }
 
     $composerVersionToInstall = get('composer_version', null);
+    $composerChannel = get('composer_channel', null);
     $installCommand = "cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}";
 
     if ($composerVersionToInstall) {
         $installCommand .= " -- --version=" . $composerVersionToInstall;
+    }
+    elseif ($composerChannel) {
+        $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2', ];
+        if(!in_array($composerChannel, $composerValidChannels)) {
+            throw new \Exception('Selected Composer channel '.$composerChannel.' is not valid. Valid channels are: '.implode(', ', $composerValidChannels));
+        }
+        $installCommand .= " -- --".$composerChannel;
     }
 
     run($installCommand);

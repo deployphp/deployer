@@ -28,6 +28,8 @@ class ProcessRunner
 
     /**
      * Runs a command, consider deployer global configs (timeout,...)
+     *
+     * @throws RunException
      */
     public function run(Host $host, string $command, array $config = []): string
     {

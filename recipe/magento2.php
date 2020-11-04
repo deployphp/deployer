@@ -6,6 +6,7 @@ require_once __DIR__ . '/common.php';
 use Deployer\Exception\RunException;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
+const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 const MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG = 'maintenance mode is active';
 
@@ -74,6 +75,43 @@ task('magento:maintenance:disable', function () {
     run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:disable; fi");
 });
 
+desc('Config Import');
+task('magento:config:import', function () {
+    $configImportNeeded = false;
+
+    try {
+        run('{{bin/php}} {{release_path}}/bin/magento app:config:status');
+    } catch (ProcessFailedException $e) {
+        if ($e->getProcess()->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
+            $configImportNeeded = true;
+        } else {
+            throw $e;
+        }
+    } catch (RunException $e) {
+        if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
+            $configImportNeeded = true;
+        } else {
+            throw $e;
+        }
+    }
+
+    if ($configImportNeeded) {
+        // check whether maintenance mode is enabled or not in order to keep the status afterwards
+        $maintenanceModeStatusOutput = run("{{bin/php}} {{release_path}}/bin/magento maintenance:status");
+        $maintenanceModeActive = strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
+
+        if (!$maintenanceModeActive) {
+            invoke('magento:maintenance:enable');
+        }
+
+        run('{{bin/php}} {{release_path}}/bin/magento app:config:import --no-interaction');
+
+        if (!$maintenanceModeActive) {
+            invoke('magento:maintenance:disable');
+        }
+    }
+});
+
 desc('Upgrade magento database');
 task('magento:upgrade:db', function () {
     $databaseUpgradeNeeded = false;
@@ -120,6 +158,7 @@ desc('Magento2 deployment operations');
 task('deploy:magento', [
     'magento:compile',
     'magento:deploy:assets',
+    'magento:config:import',
     'magento:upgrade:db',
     'magento:cache:flush'
 ]);

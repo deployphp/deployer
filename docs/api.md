@@ -94,7 +94,7 @@ on(select('stage=prod, role=db'), function ($host) {
 ## import()
 
 ```php
-import(string $file): void {
+import(string $file): void
 ```
 
 Import other php or yaml recipes.

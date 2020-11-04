@@ -12,7 +12,6 @@ use Deployer\Command\AutocompleteCommand;
 use Deployer\Command\ConfigCommand;
 use Deployer\Command\ConnectCommand;
 use Deployer\Command\DiceCommand;
-use Deployer\Command\HostsCommand;
 use Deployer\Command\InitCommand;
 use Deployer\Command\MainCommand;
 use Deployer\Command\RunCommand;
@@ -181,8 +180,8 @@ class Deployer extends Container
          ******************************/
 
         $this['log_handler'] = function () {
-            return !empty($this->config['log_file'])
-                ? new FileHandler($this->config['log_file'])
+            return !empty($this['log_file'])
+                ? new FileHandler($this['log_file'])
                 : new NullHandler();
         };
         $this['logger'] = function () {

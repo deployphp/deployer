@@ -7,14 +7,16 @@
 
 namespace Deployer\Command;
 
+use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\Planner;
-use Deployer\Support\Reporter;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
+use function Deployer\Support\find_config_line;
+use function Deployer\warning;
 
 class MainCommand extends SelectCommand
 {
@@ -84,7 +86,7 @@ class MainCommand extends SelectCommand
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
-        $this->deployer->config['log_file'] = $input->getOption('log');
+        $this->deployer['log_file'] = $input->getOption('log');
         $this->telemetry([
             'project_hash' => empty($this->deployer->config['repository']) ? null : sha1($this->deployer->config['repository']),
             'hosts_count' => $this->deployer->hosts->count(),
@@ -107,6 +109,7 @@ class MainCommand extends SelectCommand
         }
 
         if (!$plan) {
+            $this->validateConfig();
             $this->deployer->server->start();
             $this->deployer->master->connect($hosts);
         }
@@ -132,5 +135,45 @@ class MainCommand extends SelectCommand
         }
 
         return $exitCode;
+    }
+
+    private function validateConfig(): void
+    {
+        if (!defined('DEPLOYER_DEPLOY_FILE')) {
+            return;
+        }
+        $validate = function (Configuration $configA, Configuration $configB): void {
+            $keysA = array_keys($configA->ownValues());
+            $keysB = array_keys($configB->ownValues());
+            for ($i = 0; $i < count($keysA); $i++) {
+                for ($j = $i + 1; $j < count($keysB); $j++) {
+                    $a = $keysA[$i];
+                    $b = $keysB[$j];
+                    if (levenshtein($a, $b) == 1) {
+                        $source = file_get_contents(DEPLOYER_DEPLOY_FILE);
+                        $code = '';
+                        foreach (find_config_line($source, $a) as list($n, $line)) {
+                            $code .= "    $n: " . str_replace($a, "<fg=red>$a</fg=red>", $line) . "\n";
+                        }
+                        foreach (find_config_line($source, $b) as list($n, $line)) {
+                            $code .= "    $n: " . str_replace($b, "<fg=red>$b</fg=red>", $line) . "\n";
+                        }
+                        if (!empty($code)) {
+                            warning(<<<AAA
+                                Did you mean "<fg=green>$a</fg=green>" or "<fg=green>$b</fg=green>"?</>
+                                
+                                $code
+                                AAA
+                            );
+                        }
+                    }
+                }
+            }
+        };
+
+        $validate($this->deployer->config, $this->deployer->config);
+        foreach ($this->deployer->hosts as $host) {
+            $validate($host->config(), $this->deployer->config);
+        }
     }
 }

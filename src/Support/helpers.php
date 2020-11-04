@@ -148,7 +148,7 @@ function fork(callable $callable)
     $pid = null;
     // Make sure function is not disabled via php.ini "disable_functions"
     if (extension_loaded('pcntl') && function_exists('pcntl_fork')) {
-        declare(ticks = 1);
+        declare(ticks=1);
         $pid = pcntl_fork();
     }
     if (is_null($pid) || $pid === -1) {
@@ -170,4 +170,16 @@ function find_line_number(string $source, string $string): int
         return count(explode(PHP_EOL, $before));
     }
     return 1;
+}
+
+function find_config_line(string $source, string $name): \Generator
+{
+    foreach (explode(PHP_EOL, $source) as $n => $line) {
+        if (preg_match("/\(['\"]{$name}['\"]/", $line)) {
+            yield [$n + 1, $line];
+        }
+        if (preg_match("/\s{$name}:/", $line)) {
+            yield [$n + 1, $line];
+        }
+    }
 }

@@ -132,7 +132,8 @@ function select(string $selector): array
  *
  * @throws Exception\Exception
  */
-function import(string $file): void {
+function import(string $file): void
+{
     Importer::import($file);
 }
 
@@ -312,7 +313,7 @@ function within(string $path, callable $callback)
  * ```
  *
  * @param array $options
- * 
+ *
  * @throws RunException
  */
 function run(string $command, array $options = []): string
@@ -378,7 +379,7 @@ function run(string $command, array $options = []): string
  * @param array $options
  *
  * @return string Output of command.
- * 
+ *
  * @throws RunException
  */
 function runLocally(string $command, array $options = []): string
@@ -406,7 +407,7 @@ function runLocally(string $command, array $options = []): string
  * ...
  * }
  * ```
- * 
+ *
  * @throws RunException
  */
 function test(string $command): bool
@@ -419,7 +420,7 @@ function test(string $command): bool
  * Example:
  *
  *     testLocally('[ -d {{local_release_path}} ]')
- * 
+ *
  * @throws RunException
  */
 function testLocally(string $command): bool
@@ -498,7 +499,7 @@ function invoke(string $taskName): void
  * > The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
  *
  * @param array $config
- * 
+ *
  * @throws RunException
  */
 function upload(string $source, string $destination, array $config = []): void
@@ -519,7 +520,7 @@ function upload(string $source, string $destination, array $config = []): void
  * Download file or directory from host
  *
  * @param array $config
- * 
+ *
  * @throws RunException
  */
 function download(string $source, string $destination, array $config = []): void
@@ -549,7 +550,13 @@ function info(string $message): void
  */
 function warning(string $message): void
 {
-    writeln("<fg=yellow;options=bold>warning</> <comment>" . parse($message) . "</comment>");
+    $message = "<fg=yellow;options=bold>warning</> <comment>$message</comment>";
+
+    if (Context::has()) {
+        writeln($message);
+    } else {
+        Deployer::get()->output->writeln($message);
+    }
 }
 
 /**
@@ -757,7 +764,7 @@ function output(): OutputInterface
 
 /**
  * Check if command exists
- * 
+ *
  * @throws RunException
  */
 function commandExist(string $command): bool

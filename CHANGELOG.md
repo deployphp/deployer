@@ -32,9 +32,6 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
-- Fixed bin/docgen on windows. [#2253]
-- Fixed type signature of fail(). [#2261]
-- Typo in rabbit recipe, regarding hostname. [#2260]
 
 
 ## v6.8.0
@@ -599,7 +596,6 @@
 - Fixed `DotArray` syntax in `Collection`.
 - Fixed typo3 recipe.
 - Fixed remove of shared dir on first deploy.
-
 
 [#2261]: https://github.com/deployphp/deployer/pull/2261
 [#2260]: https://github.com/deployphp/deployer/pull/2260

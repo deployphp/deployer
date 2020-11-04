@@ -35,6 +35,8 @@ class Rsync
      * - `flags` for overriding the default `-azP` passed to the `rsync` command
      * - `options` with additional flags passed directly to the `rsync` command
      * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
+     * 
+     * @throws RunException
      */
     public function call(Host $host, string $source, string $destination, array $config = []): void
     {

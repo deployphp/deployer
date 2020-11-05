@@ -116,7 +116,9 @@ class Deployer extends Container
         $this['config'] = function () {
             return new Configuration();
         };
-        $this->config['shell'] = 'bash -s';
+        // -l  act as if it had been invoked as a login shell (i.e. source ~/.profile file)
+        // -s  commands are read from the standard input (no arguments should remain after this option)
+        $this->config['shell'] = 'bash -ls';
         $this->config['forward_agent'] = true;
         $this->config['ssh_multiplexing'] = true;
 

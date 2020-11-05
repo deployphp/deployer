@@ -9,6 +9,7 @@ namespace Deployer;
 
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
+use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
@@ -294,7 +295,8 @@ function within(string $path, callable $callback)
  * Executes given command on remote host.
  *
  * Options:
- * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
+ * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+ * - `idle_timeout` - Sets the process idle timeout (max. time since last output) in seconds.
  * - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * - `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']]);`
  * - `env` - Array of environment variables: `run('echo $KEY', ['env' => ['key' => 'value']]);`
@@ -314,7 +316,7 @@ function within(string $path, callable $callback)
  *
  * @param array $options
  *
- * @throws RunException
+ * @throws RunException|TimeoutException
  */
 function run(string $command, array $options = []): string
 {

@@ -193,7 +193,8 @@ run(string $command, array $options = []): string
 Executes given command on remote host.
 
 Options:
-- `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec).
+- `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+- `idle_timeout` - Sets the process idle timeout (max. time since last output) in seconds.
 - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
 - `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']]);`
 - `env` - Array of environment variables: `run('echo $KEY', ['env' => ['key' => 'value']]);`

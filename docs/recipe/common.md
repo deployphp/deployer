@@ -36,6 +36,7 @@
   * [`clear_use_sudo`](#clear_use_sudo)
   * [`use_relative_symlink`](#use_relative_symlink)
   * [`use_atomic_symlink`](#use_atomic_symlink)
+  * [`default_timeout`](#default_timeout)
   * [`env`](#env)
   * [`dotenv`](#dotenv)
   * [`current_path`](#current_path)
@@ -110,8 +111,14 @@ Use sudo for deploy:clear_path task?
 
 
 
+### default_timeout
+[Source](/recipe/common.php#L86)
+
+Default timeout for `run()` and `runLocally()` functions. Default to 300 seconds.
+Set to `null` to disable timeout.
+
 ### env
-[Source](/recipe/common.php#L98)
+[Source](/recipe/common.php#L102)
 
 Remote environment variables.
 ```php
@@ -127,7 +134,7 @@ run('echo $KEY', ['env' => ['KEY' => 'over']]
 ```
 
 ### dotenv
-[Source](/recipe/common.php#L107)
+[Source](/recipe/common.php#L111)
 
 Path to `.env` file which will be used as environment variables for each command per `run()`.
 
@@ -136,7 +143,7 @@ set('dotenv', '[current_path](/docs/recipe/common.md#current_path)/.env');
 ```
 
 ### current_path
-[Source](/recipe/common.php#L115)
+[Source](/recipe/common.php#L119)
 
 Return current release path. Default to {{deploy_path}}/`current`.
 ```php
@@ -144,7 +151,7 @@ set('current_path', '/var/public_html');
 ```
 
 ### sudo_askpass
-[Source](/recipe/common.php#L135)
+[Source](/recipe/common.php#L139)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -153,7 +160,7 @@ sudo command executed.
 
 ## Tasks
 ### deploy:prepare
-[Source](/recipe/common.php#L150)
+[Source](/recipe/common.php#L154)
 
 
 
@@ -168,7 +175,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](/recipe/common.php#L160)
+[Source](/recipe/common.php#L164)
 
 
 
@@ -180,17 +187,17 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](/recipe/common.php#L170)
+[Source](/recipe/common.php#L174)
 
 Prints success message
 
 ### deploy:failed
-[Source](/recipe/common.php#L180)
+[Source](/recipe/common.php#L184)
 
 Hook on deploy failure.
 
 ### logs
-[Source](/recipe/common.php#L189)
+[Source](/recipe/common.php#L193)
 
 Follow latest application logs.
 

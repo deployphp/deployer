@@ -7,11 +7,11 @@
 
 namespace Deployer\Component\Ssh;
 
-use Deployer\Deployer;
+use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\RunException;
+use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
-use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
@@ -32,7 +32,7 @@ class Client
     }
 
     /**
-     * @throws RunException
+     * @throws RunException|TimeoutException
      */
     public function run(Host $host, string $command, array $config = []): string
     {
@@ -56,13 +56,10 @@ class Client
             $become = sprintf('sudo -H -u %s', $host->get('become'));
         }
 
+        $shellId = bin2hex(random_bytes(10));
         $shellCommand = $host->getShell();
 
-        if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-            $ssh = "ssh $options $connectionString $become \"$shellCommand; printf '[exit_code:%s]' $?;\"";
-        } else {
-            $ssh = "ssh $options $connectionString $become '$shellCommand; printf \"[exit_code:%s]\" $?;'";
-        }
+        $ssh = "ssh $options $connectionString $become " . escapeshellarg(": $shellId; $shellCommand; printf [exit_code:%s] $?;");
 
         // -vvv for ssh command
         if ($this->output->isDebug()) {
@@ -72,14 +69,7 @@ class Client
         $this->pop->command($host, $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
-        $terminalOutput = $this->pop->callback($host);
-        $callback = function ($type, $buffer) use ($host, $terminalOutput) {
-            $this->logger->printBuffer($host, $type, $buffer);
-            $terminalOutput($type, $buffer);
-        };
-
         $command = $this->replacePlaceholders($command, $config['vars']);
-
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
 
@@ -89,7 +79,22 @@ class Client
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);
 
-        $process->run($callback);
+        $callback = function ($type, $buffer) use ($host) {
+            $this->logger->printBuffer($host, $type, $buffer);
+            $this->pop->callback($host)($type, $buffer);
+        };
+
+        try {
+            $process->run($callback);
+        } catch (ProcessTimedOutException $exception) {
+            // Let's try to kill all processes started by this command.
+            $pid = $this->run($host, "ps x | grep $shellId | grep -v grep | awk '{print \$1}'");
+            $this->run($host, "kill -9 -$pid"); // Minus before pid means all processes in this group.
+            throw new TimeoutException(
+                $command,
+                $exception->getExceededTimeout()
+            );
+        }
 
         $output = $this->pop->filterOutput($process->getOutput());
         $exitCode = $this->parseExitStatus($process);
@@ -109,15 +114,8 @@ class Client
 
     private function parseExitStatus(Process $process): int
     {
-        $output = $process->getOutput();
-        preg_match('/\[exit_code:(.*?)\]/', $output, $match);
-
-        if (!isset($match[1])) {
-            return -1;
-        }
-
-        $exitCode = (int)$match[1];
-        return $exitCode;
+        preg_match('/\[exit_code:(\d*)]/', $process->getOutput(), $match);
+        return (int)($match[1] ?? -1);
     }
 
     public function connect(Host $host)

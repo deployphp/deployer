@@ -7,12 +7,12 @@
 
 namespace Deployer\Component\ProcessRunner;
 
-use Deployer\Deployer;
-use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Exception\RunException;
+use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
 use Deployer\Logger\Logger;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 class ProcessRunner
@@ -74,6 +74,11 @@ class ProcessRunner
                 $process->getExitCode(),
                 $process->getOutput(),
                 $process->getErrorOutput()
+            );
+        } catch (ProcessTimedOutException $exception) {
+            throw new TimeoutException(
+                $command,
+                $exception->getExceededTimeout()
             );
         }
     }

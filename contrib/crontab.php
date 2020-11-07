@@ -24,7 +24,7 @@ namespace Deployer;
 
 // Get path to bin
 set('bin/crontab', function () {
-    return run('which crontab');
+    return locateBinaryPath('crontab');
 });
 
 desc('Load crontab');

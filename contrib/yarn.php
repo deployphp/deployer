@@ -21,7 +21,7 @@ after('deploy:update_code', 'yarn:install');
 namespace Deployer;
 
 set('bin/yarn', function () {
-    return run('which yarn');
+    return locateBinaryPath('yarn');
 });
 
 // In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.

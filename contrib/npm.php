@@ -27,7 +27,7 @@ after('deploy:update_code', 'npm:ci');
 namespace Deployer;
 
 set('bin/npm', function () {
-    return run('which npm');
+    return locateBinaryPath('npm');
 });
 
 // In there is a {{previous_release}}, node_modules will be copied from it before installing deps.

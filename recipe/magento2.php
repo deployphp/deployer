@@ -4,7 +4,6 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 use Deployer\Exception\RunException;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
@@ -52,6 +51,19 @@ set('clear_paths', [
     'var/view_preprocessed/*'
 ]);
 
+set('magento_version', function () {
+    // detect version
+    $versionOutput = run('{{bin/php}} {{release_path}}/bin/magento --version');
+    preg_match('/(\d+\.?)+$/', $versionOutput, $matches);
+    return $matches[0] ?? "2.0";
+});
+
+set('maintenance_mode_status_active', function () {
+    // detect maintenance mode active
+    $maintenanceModeStatusOutput = run("{{bin/php}} {{current_path}}/bin/magento maintenance:status");
+    return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
+});
+
 // Tasks
 desc('Compile magento di');
 task('magento:compile', function () {
@@ -79,34 +91,32 @@ desc('Config Import');
 task('magento:config:import', function () {
     $configImportNeeded = false;
 
-    try {
-        run('{{bin/php}} {{release_path}}/bin/magento app:config:status');
-    } catch (ProcessFailedException $e) {
-        if ($e->getProcess()->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
-            $configImportNeeded = true;
-        } else {
-            throw $e;
-        }
-    } catch (RunException $e) {
-        if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
-            $configImportNeeded = true;
-        } else {
-            throw $e;
+    if(version_compare(get('magento_version'), '2.2.0', '<')) {
+        //app:config:import command does not exist in 2.0.x and 2.1.x branches
+        $configImportNeeded = false;
+    } elseif(version_compare(get('magento_version'), '2.2.4', '<')) {
+        //app:config:status command does not exist until 2.2.4, so proceed with config:import in every deploy
+        $configImportNeeded = true;
+    } else {
+        try {
+            run('{{bin/php}} {{release_path}}/bin/magento app:config:status');
+        } catch (RunException $e) {
+            if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
+                $configImportNeeded = true;
+            } else {
+                throw $e;
+            }
         }
     }
 
     if ($configImportNeeded) {
-        // check whether maintenance mode is enabled or not in order to keep the status afterwards
-        $maintenanceModeStatusOutput = run("{{bin/php}} {{release_path}}/bin/magento maintenance:status");
-        $maintenanceModeActive = strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
-
-        if (!$maintenanceModeActive) {
+        if (!get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:enable');
         }
 
         run('{{bin/php}} {{release_path}}/bin/magento app:config:import --no-interaction');
 
-        if (!$maintenanceModeActive) {
+        if (!get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');
         }
     }
@@ -118,12 +128,6 @@ task('magento:upgrade:db', function () {
 
     try {
         run('{{bin/php}} {{release_path}}/bin/magento setup:db:status');
-    } catch (ProcessFailedException $e) {
-        if ($e->getProcess()->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
-            $databaseUpgradeNeeded = true;
-        } else {
-            throw $e;
-        }
     } catch (RunException $e) {
         if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
             $databaseUpgradeNeeded = true;
@@ -133,17 +137,13 @@ task('magento:upgrade:db', function () {
     }
 
     if ($databaseUpgradeNeeded) {
-        // check whether maintenance mode is enabled or not in order to keep the status afterwards
-        $maintenanceModeStatusOutput = run("{{bin/php}} {{release_path}}/bin/magento maintenance:status");
-        $maintenanceModeActive = strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
-
-        if (!$maintenanceModeActive) {
+        if (!get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:enable');
         }
 
         run("{{bin/php}} {{release_path}}/bin/magento setup:upgrade --keep-generated");
 
-        if (!$maintenanceModeActive) {
+        if (!get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');
         }
     }

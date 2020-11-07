@@ -12,10 +12,12 @@ use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Executor\Planner;
+use Deployer\Utility\Httpie;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use function Deployer\Support\find_config_line;
+use function Deployer\Support\fork;
 use function Deployer\warning;
 
 class MainCommand extends SelectCommand
@@ -109,6 +111,7 @@ class MainCommand extends SelectCommand
         }
 
         if (!$plan) {
+            $this->checkUpdates();
             $this->validateConfig();
             $this->deployer->server->start();
             $this->deployer->master->connect($hosts);
@@ -135,6 +138,17 @@ class MainCommand extends SelectCommand
         }
 
         return $exitCode;
+    }
+
+    private function checkUpdates()
+    {
+        fork(function () {
+            try {
+                echo Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send();
+            } catch (\Throwable $e) {
+                // Meh
+            }
+        });
     }
 
     private function validateConfig(): void

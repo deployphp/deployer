@@ -86,7 +86,7 @@ use Deployer\Exception\RunException;
  */
 set('bin/phinx', function () {
     try {
-        $phinxPath = run('which phinx');
+        $phinxPath = locateBinaryPath('phinx');
     } catch (RunException $e) {
         $phinxPath = null;
     }

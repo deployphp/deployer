@@ -144,7 +144,7 @@ class MainCommand extends SelectCommand
     {
         fork(function () {
             try {
-                echo Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send();
+                $this->deployer->output->write(Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send());
             } catch (\Throwable $e) {
                 // Meh
             }

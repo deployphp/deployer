@@ -49,19 +49,11 @@ namespace Deployer;
 
 set('cachetool', '');
 set('cachetool_args', '');
-set('cachetool_binary', function () {
-    return run("{{bin/php}} -r \"echo (PHP_VERSION_ID <= 50640) ? 'cachetool-3.2.1.phar' : ((PHP_VERSION_ID <= 70133) ? 'cachetool-4.1.1.phar' : 'cachetool.phar');\"");
-});
 set('bin/cachetool', function () {
-    $cachetool_binary = get('cachetool_binary');
-    $cachetool_binary = locateBinaryPath($cachetool_binary);
-
-    if (empty($cachetool_binary)) {
-        run("cd {{release_path}} && curl -sSO https://gordalina.github.io/cachetool/downloads/{{cachetool_binary}}");
-        $cachetool_binary = '{{release_path}}/{{cachetool_binary}}';
+    if (!test('[ -f {{release_path}}/cachetool.phar ]')) {
+        run("cd {{release_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar");
     }
-
-    return $cachetool_binary;
+    return '{{release_path}}/cachetool.phar';
 });
 set('cachetool_options', function () {
     $options = get('cachetool');

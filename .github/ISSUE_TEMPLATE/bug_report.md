@@ -6,6 +6,6 @@ labels: ''
 assignees: ''
 ---
 - Deployer version: 
-- Deployment target(s) OS:
+- Deployment OS:
 
       Please, provide a minimal reproducible example of deploy.php

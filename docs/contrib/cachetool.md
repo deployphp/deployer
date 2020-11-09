@@ -55,7 +55,6 @@ http://gordalina.github.io/cachetool/
 * Config
   * [`cachetool`](#cachetool)
   * [`cachetool_args`](#cachetool_args)
-  * [`cachetool_binary`](#cachetool_binary)
   * [`cachetool_options`](#cachetool_options)
 * Tasks
   * [`cachetool:clear:apc`](#cachetoolclearapc) — Clearing APC system cache
@@ -74,35 +73,30 @@ http://gordalina.github.io/cachetool/
 
 
 
-### cachetool_binary
-[Source](/contrib/cachetool.php#L52)
-
-
-
 ### cachetool_options
-[Source](/contrib/cachetool.php#L66)
+[Source](/contrib/cachetool.php#L58)
 
 
 
 
 ## Tasks
 ### cachetool:clear:apc
-[Source](/contrib/cachetool.php#L80)
+[Source](/contrib/cachetool.php#L72)
 
 
 
 ### cachetool:clear:opcache
-[Source](/contrib/cachetool.php#L88)
+[Source](/contrib/cachetool.php#L80)
 
 Clear opcache cache
 
 ### cachetool:clear:apcu
-[Source](/contrib/cachetool.php#L96)
+[Source](/contrib/cachetool.php#L88)
 
 Clear APCU cache
 
 ### cachetool:clear:stat
-[Source](/contrib/cachetool.php#L104)
+[Source](/contrib/cachetool.php#L96)
 
 Clear file status cache, including the realpath cache
 

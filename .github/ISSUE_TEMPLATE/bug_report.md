@@ -8,4 +8,4 @@ assignees: ''
 - Deployer version: 
 - Deployment target(s) OS:
 
-    Please, provide a minimal reproducible example of deploy.php
+      Please, provide a minimal reproducible example of deploy.php

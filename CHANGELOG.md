@@ -28,7 +28,6 @@
 - Docs rewritten to be more clean, easy to use and understandable.
 - Better parallel execution support, configurable per task.
 - Refactored `dep init` command.
-- Magento 2 database migrations check in order to get zero downtime deployments. [#2202]
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
@@ -594,14 +593,8 @@
 - Fixed release cleanup.
 - Improved Symfony recipe.
 - Fixed `DotArray` syntax in `Collection`.
-- Fixed typo3 recipe.
-- Fixed remove of shared dir on first deploy.
 
 
-[#2261]: https://github.com/deployphp/deployer/pull/2261
-[#2260]: https://github.com/deployphp/deployer/pull/2260
-[#2253]: https://github.com/deployphp/deployer/issues/2253
-[#2202]: https://github.com/deployphp/deployer/issues/2202
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

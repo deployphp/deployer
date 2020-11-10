@@ -31,7 +31,6 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
-- Fixed resolving of cachetool binary for php above 7.2. [#2275]
 
 
 ## v6.8.0
@@ -598,7 +597,6 @@
 - Fixed remove of shared dir on first deploy.
 
 
-[#2275]: https://github.com/deployphp/deployer/issues/2275
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

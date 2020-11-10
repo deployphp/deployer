@@ -29,5 +29,9 @@ See also the list of [contributors](https://github.com/deployphp/deployer/graphs
 
 See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).
 
+## Related
+
+* [GitHub Action for Deployer](https://github.com/deployphp/action)
+
 ## License
 [MIT](https://github.com/deployphp/deployer/blob/master/LICENSE)

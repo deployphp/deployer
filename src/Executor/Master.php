@@ -156,7 +156,7 @@ class Master
             while ($process->isRunning()) {
                 $this->gatherOutput([$process], $callback);
                 if ($this->output->isDecorated()) {
-                    $this->output->write(spinner(str_pad("connect {$host->getTag()}", intval(getenv('COLUMNS')) - 1)));
+                    $this->output->write(spinner("connect {$host->getTag()}"));
                 }
                 usleep(1000);
             }

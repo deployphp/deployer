@@ -37,13 +37,12 @@ set('bin/composer', function () {
 
     if ($composerVersionToInstall) {
         $installCommand .= " -- --version=" . $composerVersionToInstall;
-    }
-    elseif ($composerChannel) {
-        $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2', ];
-        if(!in_array($composerChannel, $composerValidChannels)) {
-            throw new \Exception('Selected Composer channel '.$composerChannel.' is not valid. Valid channels are: '.implode(', ', $composerValidChannels));
+    } elseif ($composerChannel) {
+        $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2',];
+        if (!in_array($composerChannel, $composerValidChannels)) {
+            throw new \Exception('Selected Composer channel ' . $composerChannel . ' is not valid. Valid channels are: ' . implode(', ', $composerValidChannels));
         }
-        $installCommand .= " -- --".$composerChannel;
+        $installCommand .= " -- --" . $composerChannel;
     }
 
     run($installCommand);

@@ -11,6 +11,7 @@ use Deployer\Exception\Exception;
 use Symfony\Component\Yaml\Yaml;
 use function Deployer\after;
 use function Deployer\before;
+use function Deployer\cd;
 use function Deployer\download;
 use function Deployer\host;
 use function Deployer\localhost;
@@ -115,7 +116,11 @@ class Importer
                         $wrapRun($script);
                     } else {
                         foreach ($script as $line) {
-                            $wrapRun($line);
+                            if (preg_match('/^cd\s(?<path>.+)/i', $line, $matches)) {
+                                cd($matches['path']);
+                            } else {
+                                $wrapRun($line);
+                            }
                         }
                     }
                 };
@@ -181,14 +186,26 @@ class Importer
     protected static function after($after)
     {
         foreach ($after as $key => $value) {
-            after($key, $value);
+            if (is_array($value)) {
+                foreach (array_reverse($value) as $v) {
+                    after($key, $v);
+                }
+            } else {
+                after($key, $value);
+            }
         }
     }
 
     protected static function before($before)
     {
         foreach ($before as $key => $value) {
-            before($key, $value);
+            if (is_array($value)) {
+                foreach (array_reverse($value) as $v) {
+                    before($key, $v);
+                }
+            } else {
+                before($key, $value);
+            }
         }
     }
 }

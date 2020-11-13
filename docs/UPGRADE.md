@@ -2,6 +2,54 @@
 
 1. Change `hostname` to `alias`.
 2. Change `real_hostname` to `hostname`.
+3. Update `host()` definitions:
+    1. Add `set` prefix to all setters: `identityFile` -> `setIdentityFile` or `set('identify_file')`
+    2. Update `addSshOption('UserKnownHostsFile', '/dev/null')` to `setSshArguments(['-o UserKnownHostsFile=/dev/null']);`
+    3. Replace _stage_ with labels, i.e.
+       ```php
+       host('deployer.org')
+           ->set('roles', ['stage' => 'prod']); 
+       ```
+    4. `alias()` is deleted, `host()` itself sets alias and hostname, to override hostname use `setHostname()`.
+4. Update `task()` definitions.
+    1. Replace `onRoles()` with `select()`:
+       ```php
+       task(...)
+           ->select('stage=prod');
+       ``` 
+5. Third party recipes now live inside main Deployer repo in _contrib_:
+   ```php
+   require 'contrib/rsync.php';
+   ```
+6. Replace `inventory()` with `import()`. It now can import hosts, configs, tasks:
+   ```yaml
+   import: recipe/common.php
+   
+   config:
+     application: deployer
+     shared_dirs:
+       - uploads
+       - storage/logs/
+       - storage/db
+     shared_files:
+       - .env
+       - config/test.yaml
+     keep_releases: 3
+     http_user: false
+   
+   hosts:
+     prod:
+       local: true
+   
+   tasks:
+     deploy:
+       - deploy:prepare
+       - deploy:vendors
+       - deploy:publish
+   
+     deploy:vendors:
+       script: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
+   ```  
 
 # Upgrade from 5.x to 6.x
 

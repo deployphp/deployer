@@ -27,6 +27,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\env_stringify;
+use function Deployer\Support\is_closure;
 use function Deployer\Support\str_contains;
 
 /**
@@ -197,7 +198,7 @@ function task(string $name, $body = null): Task
  */
 function before(string $task, $do)
 {
-    if (is_callable($do)) {
+    if (is_closure($do)) {
         $newTask = task("before:$task", $do);
         before($task, "before:$task");
         return $newTask;
@@ -217,7 +218,7 @@ function before(string $task, $do)
  */
 function after(string $task, $do)
 {
-    if (is_callable($do)) {
+    if (is_closure($do)) {
         $newTask = task("after:$task", $do);
         after($task, "after:$task");
         return $newTask;

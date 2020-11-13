@@ -1,0 +1,40 @@
+hosts:
+  deployer.org: ~
+
+tasks:
+  pull:
+    script:
+      - cd ~/dev/deployer
+      - git pull
+      - git status
+
+  test:
+    script:
+      - cd ~/dev/deployer
+      - composer install
+      - composer test
+      - bin/build
+      - php deployer.phar -v
+
+  release:composer:
+    script:
+      - cd ~/dev/deployer
+      - bin/release
+
+  release:phar:
+    script:
+      - .
+
+  release:dist:
+    script:
+      - .
+
+  release:
+    - release:composer
+    - release:phar
+    - release:dist
+
+before:
+  release:
+    - pull
+    - test

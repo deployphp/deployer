@@ -1,0 +1,60 @@
+#!/usr/bin/env php
+<?php
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+$binDepPath = __DIR__ . '/dep';
+$content = file_get_contents($binDepPath);
+preg_match("/define\('DEPLOYER_VERSION', '(?<version>.+?)'\);/", $content, $matches);
+$version = $newVersion = $matches['version'];
+echo "Current version is $version\n";
+
+$opt = getopt(null, ['patch']);
+
+if (array_key_exists('patch', $opt)) {
+    if (preg_match('/^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)-master$/', $version, $matches)) {
+        ['major' => $major, 'minor' => $minor, 'patch' => $patch] = $matches;
+        $patch++;
+        $newVersion = "$major.$minor.$patch";
+    } else {
+        echo "Patch can be only applied for master version.\n";
+        exit(1);
+    }
+} else {
+    $newVersion = $argv[1] ?? '';
+    if (empty($newVersion)) {
+        echo "Specify a version 1.2.3 or --patch.\n";
+        exit(1);
+    }
+    if (!preg_match('/^\d+\.\d+\.\d+(\-\w+(\.\d+)?)?$/', $newVersion)) {
+        echo "Version must follow semver. Got $newVersion\n";
+        exit(1);
+    }
+}
+
+if ($version === $newVersion) {
+    echo "New version $newVersion is same as old version $version.\n";
+    exit(1);
+}
+
+$content = str_replace($version, $newVersion, $content);
+file_put_contents($binDepPath, $content);
+
+`git add $binDepPath`;
+`git commit -m 'Release $newVersion'`;
+`git tag v$newVersion`;
+echo "Release $newVersion\n";
+
+preg_match('/^(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/', $newVersion, $matches);
+['major' => $major, 'minor' => $minor, 'patch' => $patch] = $matches;
+$masterVersion = "$major.$minor.$patch-master";
+
+$content = str_replace($newVersion, $masterVersion, $content);
+file_put_contents($binDepPath, $content);
+
+`git add $binDepPath`;
+`git commit -m 'Back to master'`;
+echo "Commit $masterVersion\n";

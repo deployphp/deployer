@@ -8,7 +8,7 @@
     3. Replace _stage_ with labels, i.e.
        ```php
        host('deployer.org')
-           ->set('roles', ['stage' => 'prod']); 
+           ->set('labels', ['stage' => 'prod']); 
        ```
     4. `alias()` is deleted, `host()` itself sets alias and hostname, to override hostname use `setHostname()`.
 4. Update `task()` definitions.

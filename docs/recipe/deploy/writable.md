@@ -22,49 +22,49 @@
 
 ## Config
 ### http_user
-[Source](/recipe/deploy/writable.php#L6)
+[Source](https://github.com/deployphp/deployer/search?q=http_user+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 Attempts automatically to detect http user in process list.
 
 ### http_group
-[Source](/recipe/deploy/writable.php#L20)
+[Source](https://github.com/deployphp/deployer/search?q=http_group+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 
 
 ### writable_dirs
-[Source](/recipe/deploy/writable.php#L23)
+[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 List of writable dirs.
 
 ### writable_mode
-[Source](/recipe/deploy/writable.php#L26)
+[Source](https://github.com/deployphp/deployer/search?q=writable_mode+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 chmod, chown, chgrp or acl.
 
 ### writable_use_sudo
-[Source](/recipe/deploy/writable.php#L29)
+[Source](https://github.com/deployphp/deployer/search?q=writable_use_sudo+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 Using sudo in writable commands?
 
 ### writable_recursive
-[Source](/recipe/deploy/writable.php#L32)
+[Source](https://github.com/deployphp/deployer/search?q=writable_recursive+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 Common for all modes
 
 ### writable_chmod_mode
-[Source](/recipe/deploy/writable.php#L35)
+[Source](https://github.com/deployphp/deployer/search?q=writable_chmod_mode+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 For chmod mode
 
 ### writable_chmod_recursive
-[Source](/recipe/deploy/writable.php#L38)
+[Source](https://github.com/deployphp/deployer/search?q=writable_chmod_recursive+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
 
 ## Tasks
 ### deploy:writable
-[Source](/recipe/deploy/writable.php#L42)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Awritable+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 
 

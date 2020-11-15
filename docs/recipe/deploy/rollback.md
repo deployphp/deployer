@@ -14,7 +14,7 @@
 
 ## Tasks
 ### rollback
-[Source](/recipe/deploy/rollback.php#L8)
+[Source](https://github.com/deployphp/deployer/search?q=rollback+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arollback.php)
 
 
 

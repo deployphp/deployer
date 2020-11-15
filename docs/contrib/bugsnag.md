@@ -34,7 +34,7 @@ after('deploy', 'bugsnag:notify');
 
 ## Tasks
 ### bugsnag:notify
-[Source](/contrib/bugsnag.php#L29)
+[Source](https://github.com/deployphp/deployer/search?q=bugsnag%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Abugsnag.php)
 
 
 

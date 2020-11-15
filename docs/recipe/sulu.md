@@ -18,17 +18,17 @@
 
 ## Tasks
 ### phpcr:migrate
-[Source](/recipe/sulu.php#L18)
+[Source](https://github.com/deployphp/deployer/search?q=phpcr%3Amigrate+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asulu.php)
 
 
 
 ### deploy:website:cache:clear
-[Source](/recipe/sulu.php#L23)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Awebsite%3Acache%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asulu.php)
 
 
 
 ### deploy:website:cache:warmup
-[Source](/recipe/sulu.php#L28)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Awebsite%3Acache%3Awarmup+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asulu.php)
 
 
 

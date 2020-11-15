@@ -26,59 +26,59 @@ This recipe for work with ISPManager Lite panel by API.
 
 ## Config
 ### ispmanager_owner
-[Source](/contrib/ispmanager.php#L9)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_owner+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_doc_root
-[Source](/contrib/ispmanager.php#L10)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_doc_root+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager
-[Source](/contrib/ispmanager.php#L13)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 ISPManager default configuration
 
 ### vhost
-[Source](/contrib/ispmanager.php#L29)
+[Source](https://github.com/deployphp/deployer/search?q=vhost+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 Vhost default configuration
 
 ### ispmanager_session
-[Source](/contrib/ispmanager.php#L49)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_session+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 Storage
 
 ### ispmanager_databases
-[Source](/contrib/ispmanager.php#L50)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_databases+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_domains
-[Source](/contrib/ispmanager.php#L56)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_domains+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_phplist
-[Source](/contrib/ispmanager.php#L57)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_phplist+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_aliaslist
-[Source](/contrib/ispmanager.php#L58)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager_aliaslist+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 
 ## Tasks
 ### ispmanager:init
-[Source](/contrib/ispmanager.php#L61)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager%3Ainit+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager:process
-[Source](/contrib/ispmanager.php#L688)
+[Source](https://github.com/deployphp/deployer/search?q=ispmanager%3Aprocess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 

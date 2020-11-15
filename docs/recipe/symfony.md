@@ -25,60 +25,60 @@
 
 ## Config
 ### symfony_version
-[Source](/recipe/symfony.php#L8)
+[Source](https://github.com/deployphp/deployer/search?q=symfony_version+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### shared_dirs
-[Source](/recipe/symfony.php#L14)
+[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### shared_files
-[Source](/recipe/symfony.php#L19)
+[Source](https://github.com/deployphp/deployer/search?q=shared_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/symfony.php#L24)
+[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### migrations_config
-[Source](/recipe/symfony.php#L28)
+[Source](https://github.com/deployphp/deployer/search?q=migrations_config+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### console_options
-[Source](/recipe/symfony.php#L32)
+[Source](https://github.com/deployphp/deployer/search?q=console_options+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 
 ## Tasks
 ### database:migrate
-[Source](/recipe/symfony.php#L37)
+[Source](https://github.com/deployphp/deployer/search?q=database%3Amigrate+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### deploy:cache:clear
-[Source](/recipe/symfony.php#L47)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Acache%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### deploy:cache:warmup
-[Source](/recipe/symfony.php#L52)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Acache%3Awarmup+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### deploy
-[Source](/recipe/symfony.php#L57)
+[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 

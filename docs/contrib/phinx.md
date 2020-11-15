@@ -80,22 +80,22 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 ## Tasks
 ### phinx:migrate
-[Source](/contrib/phinx.php#L154)
+[Source](https://github.com/deployphp/deployer/search?q=phinx%3Amigrate+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
 
 
 
 ### phinx:rollback
-[Source](/contrib/phinx.php#L176)
+[Source](https://github.com/deployphp/deployer/search?q=phinx%3Arollback+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
 
 
 
 ### phinx:seed
-[Source](/contrib/phinx.php#L198)
+[Source](https://github.com/deployphp/deployer/search?q=phinx%3Aseed+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
 
 
 
 ### phinx:breakpoint
-[Source](/contrib/phinx.php#L219)
+[Source](https://github.com/deployphp/deployer/search?q=phinx%3Abreakpoint+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
 
 
 

@@ -16,7 +16,7 @@
 
 ## Tasks
 ### deploy
-[Source](/recipe/composer.php#L9)
+[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acomposer.php)
 
 
 

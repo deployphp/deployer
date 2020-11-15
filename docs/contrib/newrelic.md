@@ -40,24 +40,24 @@ after('deploy', 'newrelic:notify');
 
 ## Config
 ### newrelic_app_id
-[Source](/contrib/newrelic.php#L30)
+[Source](https://github.com/deployphp/deployer/search?q=newrelic_app_id+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
 ### newrelic_description
-[Source](/contrib/newrelic.php#L34)
+[Source](https://github.com/deployphp/deployer/search?q=newrelic_description+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
 ### newrelic_revision
-[Source](/contrib/newrelic.php#L38)
+[Source](https://github.com/deployphp/deployer/search?q=newrelic_revision+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
 
 ## Tasks
 ### newrelic:notify
-[Source](/contrib/newrelic.php#L43)
+[Source](https://github.com/deployphp/deployer/search?q=newrelic%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 

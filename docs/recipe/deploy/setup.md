@@ -14,7 +14,7 @@
 
 ## Tasks
 ### deploy:setup
-[Source](/recipe/deploy/setup.php#L8)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Asetup+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Asetup.php)
 
 
 

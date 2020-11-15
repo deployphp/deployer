@@ -21,17 +21,17 @@
 
 ## Config
 ### flow_context
-[Source](/recipe/flow_framework.php#L9)
+[Source](https://github.com/deployphp/deployer/search?q=flow_context+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
 Flow-Framework application-context
 
 ### flow_command
-[Source](/recipe/flow_framework.php#L12)
+[Source](https://github.com/deployphp/deployer/search?q=flow_command+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
 Flow-Framework cli-command
 
 ### shared_dirs
-[Source](/recipe/flow_framework.php#L15)
+[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -40,17 +40,17 @@ Flow-Framework shared directories
 
 ## Tasks
 ### deploy:run_migrations
-[Source](/recipe/flow_framework.php#L25)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Arun_migrations+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
 Apply database migrations
 
 ### deploy:publish_resources
-[Source](/recipe/flow_framework.php#L33)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Apublish_resources+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
 Publish resources
 
 ### deploy
-[Source](/recipe/flow_framework.php#L41)
+[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
 Main task
 

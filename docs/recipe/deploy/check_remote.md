@@ -14,7 +14,7 @@
 
 ## Tasks
 ### deploy:check_remote
-[Source](/recipe/deploy/check_remote.php#L10)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Acheck_remote+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Acheck_remote.php)
 
 Cancel deployment if there would be no change to the codebase.
 This avoids unnecessary releases if the latest commit has already been deployed.

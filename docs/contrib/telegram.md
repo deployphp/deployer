@@ -81,44 +81,44 @@ after('deploy:failed', 'telegram:notify:failure');
 
 ## Config
 ### telegram_title
-[Source](/contrib/telegram.php#L67)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_title+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 Title of project
 
 ### telegram_token
-[Source](/contrib/telegram.php#L72)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_token+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 Telegram settings
 
 ### telegram_chat_id
-[Source](/contrib/telegram.php#L75)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_chat_id+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 
 
 ### telegram_url
-[Source](/contrib/telegram.php#L78)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_url+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 
 
 ### telegram_text
-[Source](/contrib/telegram.php#L83)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 Deploy message
 
 ### telegram_success_text
-[Source](/contrib/telegram.php#L84)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_success_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 
 
 ### telegram_failure_text
-[Source](/contrib/telegram.php#L85)
+[Source](https://github.com/deployphp/deployer/search?q=telegram_failure_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 
 
 
 ## Tasks
 ### telegram:notify
-[Source](/contrib/telegram.php#L90)
+[Source](https://github.com/deployphp/deployer/search?q=telegram%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 
 

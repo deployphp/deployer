@@ -87,69 +87,69 @@ after('deploy:failed', 'slack:notify:failure');
 
 ## Config
 ### slack_title
-[Source](/contrib/slack.php#L69)
+[Source](https://github.com/deployphp/deployer/search?q=slack_title+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 Title of project
 
 ### slack_text
-[Source](/contrib/slack.php#L74)
+[Source](https://github.com/deployphp/deployer/search?q=slack_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 Deploy message
 
 ### slack_success_text
-[Source](/contrib/slack.php#L75)
+[Source](https://github.com/deployphp/deployer/search?q=slack_success_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack_failure_text
-[Source](/contrib/slack.php#L76)
+[Source](https://github.com/deployphp/deployer/search?q=slack_failure_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack_rollback_text
-[Source](/contrib/slack.php#L77)
+[Source](https://github.com/deployphp/deployer/search?q=slack_rollback_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack_color
-[Source](/contrib/slack.php#L80)
+[Source](https://github.com/deployphp/deployer/search?q=slack_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 Color of attachment
 
 ### slack_success_color
-[Source](/contrib/slack.php#L81)
+[Source](https://github.com/deployphp/deployer/search?q=slack_success_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack_failure_color
-[Source](/contrib/slack.php#L82)
+[Source](https://github.com/deployphp/deployer/search?q=slack_failure_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack_rollback_color
-[Source](/contrib/slack.php#L83)
+[Source](https://github.com/deployphp/deployer/search?q=slack_rollback_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 
 ## Tasks
 ### slack:notify
-[Source](/contrib/slack.php#L86)
+[Source](https://github.com/deployphp/deployer/search?q=slack%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack:notify:success
-[Source](/contrib/slack.php#L105)
+[Source](https://github.com/deployphp/deployer/search?q=slack%3Anotify%3Asuccess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack:notify:failure
-[Source](/contrib/slack.php#L124)
+[Source](https://github.com/deployphp/deployer/search?q=slack%3Anotify%3Afailure+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 
 ### slack:notify:rollback
-[Source](/contrib/slack.php#L143)
+[Source](https://github.com/deployphp/deployer/search?q=slack%3Anotify%3Arollback+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 
 

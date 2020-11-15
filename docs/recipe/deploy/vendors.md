@@ -18,17 +18,17 @@
 
 ## Config
 ### composer_action
-[Source](/recipe/deploy/vendors.php#L5)
+[Source](https://github.com/deployphp/deployer/search?q=composer_action+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
 
 
 ### composer_options
-[Source](/recipe/deploy/vendors.php#L7)
+[Source](https://github.com/deployphp/deployer/search?q=composer_options+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
 
 
 ### composer_version
-[Source](/recipe/deploy/vendors.php#L18)
+[Source](https://github.com/deployphp/deployer/search?q=composer_version+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
 Can be used to choose what composer version to install.
 Valid values are any that are [listed here](https://getcomposer.org/download/).
@@ -39,14 +39,14 @@ For example:
 ```
 
 ### composer_channel
-[Source](/recipe/deploy/vendors.php#L23)
+[Source](https://github.com/deployphp/deployer/search?q=composer_channel+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
 Set this variable to stable, snapshot, preview, 1 or 2 to select which Composer channel to use
 
 
 ## Tasks
 ### deploy:vendors
-[Source](/recipe/deploy/vendors.php#L54)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Avendors+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
 
 

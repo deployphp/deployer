@@ -14,7 +14,7 @@
 
 ## Tasks
 ### deploy:symlink
-[Source](/recipe/deploy/symlink.php#L5)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Asymlink+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Asymlink.php)
 
 
 

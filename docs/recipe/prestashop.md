@@ -19,21 +19,21 @@
 
 ## Config
 ### shared_files
-[Source](/recipe/prestashop.php#L9)
+[Source](https://github.com/deployphp/deployer/search?q=shared_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
-[Source](/recipe/prestashop.php#L13)
+[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](/recipe/prestashop.php#L24)
+[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -42,7 +42,7 @@
 
 ## Tasks
 ### deploy
-[Source](/recipe/prestashop.php#L39)
+[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
 
 
 

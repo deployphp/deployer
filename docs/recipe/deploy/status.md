@@ -14,7 +14,7 @@
 
 ## Tasks
 ### status
-[Source](/recipe/deploy/status.php#L8)
+[Source](https://github.com/deployphp/deployer/search?q=status+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Astatus.php)
 
 
 

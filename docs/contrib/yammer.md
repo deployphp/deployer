@@ -77,44 +77,44 @@ after('deploy:failed', 'yammer:notify:failure');
 
 ## Config
 ### yammer_url
-[Source](/contrib/yammer.php#L63)
+[Source](https://github.com/deployphp/deployer/search?q=yammer_url+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
 ### yammer_title
-[Source](/contrib/yammer.php#L66)
+[Source](https://github.com/deployphp/deployer/search?q=yammer_title+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 Title of project
 
 ### yammer_body
-[Source](/contrib/yammer.php#L71)
+[Source](https://github.com/deployphp/deployer/search?q=yammer_body+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 Deploy message
 
 ### yammer_success_body
-[Source](/contrib/yammer.php#L72)
+[Source](https://github.com/deployphp/deployer/search?q=yammer_success_body+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
 ### yammer_failure_body
-[Source](/contrib/yammer.php#L73)
+[Source](https://github.com/deployphp/deployer/search?q=yammer_failure_body+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
 
 ## Tasks
 ### yammer:notify
-[Source](/contrib/yammer.php#L76)
+[Source](https://github.com/deployphp/deployer/search?q=yammer%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
 ### yammer:notify:success
-[Source](/contrib/yammer.php#L96)
+[Source](https://github.com/deployphp/deployer/search?q=yammer%3Anotify%3Asuccess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
 ### yammer:notify:failure
-[Source](/contrib/yammer.php#L116)
+[Source](https://github.com/deployphp/deployer/search?q=yammer%3Anotify%3Afailure+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 

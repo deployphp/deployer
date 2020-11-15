@@ -93,54 +93,54 @@ after('deploy:failed', 'teams:notify:failure');
 
 ## Config
 ### teams_title
-[Source](/contrib/ms-teams.php#L78)
+[Source](https://github.com/deployphp/deployer/search?q=teams_title+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Title of project
 
 ### teams_text
-[Source](/contrib/ms-teams.php#L83)
+[Source](https://github.com/deployphp/deployer/search?q=teams_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Deploy message
 
 ### teams_success_text
-[Source](/contrib/ms-teams.php#L84)
+[Source](https://github.com/deployphp/deployer/search?q=teams_success_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams_failure_text
-[Source](/contrib/ms-teams.php#L85)
+[Source](https://github.com/deployphp/deployer/search?q=teams_failure_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams_color
-[Source](/contrib/ms-teams.php#L88)
+[Source](https://github.com/deployphp/deployer/search?q=teams_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Color of attachment
 
 ### teams_success_color
-[Source](/contrib/ms-teams.php#L89)
+[Source](https://github.com/deployphp/deployer/search?q=teams_success_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams_failure_color
-[Source](/contrib/ms-teams.php#L90)
+[Source](https://github.com/deployphp/deployer/search?q=teams_failure_color+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 
 ## Tasks
 ### teams:notify
-[Source](/contrib/ms-teams.php#L93)
+[Source](https://github.com/deployphp/deployer/search?q=teams%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams:notify:success
-[Source](/contrib/ms-teams.php#L108)
+[Source](https://github.com/deployphp/deployer/search?q=teams%3Anotify%3Asuccess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams:notify:failure
-[Source](/contrib/ms-teams.php#L123)
+[Source](https://github.com/deployphp/deployer/search?q=teams%3Anotify%3Afailure+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 

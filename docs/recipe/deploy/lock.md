@@ -15,12 +15,12 @@
 
 ## Tasks
 ### deploy:lock
-[Source](/recipe/deploy/lock.php#L8)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Alock+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
 
 
 
 ### deploy:unlock
-[Source](/recipe/deploy/lock.php#L22)
+[Source](https://github.com/deployphp/deployer/search?q=deploy%3Aunlock+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
 
 
 

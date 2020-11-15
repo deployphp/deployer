@@ -22,43 +22,43 @@
 
 ## Config
 ### shared_assets
-[Source](/recipe/silverstripe.php#L12)
+[Source](https://github.com/deployphp/deployer/search?q=shared_assets+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 
 
 ### shared_dirs
-[Source](/recipe/silverstripe.php#L21)
+[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Silverstripe shared dirs
 
 ### writable_dirs
-[Source](/recipe/silverstripe.php#L26)
+[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Silverstripe writable dirs
 
 ### silverstripe_cli_script
-[Source](/recipe/silverstripe.php#L31)
+[Source](https://github.com/deployphp/deployer/search?q=silverstripe_cli_script+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 Silverstripe cli script
 
 
 ## Tasks
 ### silverstripe:build
-[Source](/recipe/silverstripe.php#L47)
+[Source](https://github.com/deployphp/deployer/search?q=silverstripe%3Abuild+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 Helper tasks
 
 ### silverstripe:buildflush
-[Source](/recipe/silverstripe.php#L52)
+[Source](https://github.com/deployphp/deployer/search?q=silverstripe%3Abuildflush+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 
 
 ### deploy
-[Source](/recipe/silverstripe.php#L60)
+[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 Main task
 

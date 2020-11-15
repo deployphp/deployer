@@ -157,17 +157,17 @@ after('deploy:prepare', 'cpanel:createdb');
 
 ## Tasks
 ### cpanel:createdb
-[Source](/contrib/cpanel.php#L203)
+[Source](https://github.com/deployphp/deployer/search?q=cpanel%3Acreatedb+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acpanel.php)
 
 
 
 ### cpanel:createaddondomain
-[Source](/contrib/cpanel.php#L231)
+[Source](https://github.com/deployphp/deployer/search?q=cpanel%3Acreateaddondomain+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acpanel.php)
 
 
 
 ### cpanel:deleteaddondomain
-[Source](/contrib/cpanel.php#L254)
+[Source](https://github.com/deployphp/deployer/search?q=cpanel%3Adeleteaddondomain+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acpanel.php)
 
 
 

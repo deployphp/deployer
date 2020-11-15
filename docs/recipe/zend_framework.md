@@ -16,7 +16,7 @@
 
 ## Tasks
 ### deploy
-[Source](/recipe/zend_framework.php#L12)
+[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Azend_framework.php)
 
 Main task
 

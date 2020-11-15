@@ -13,7 +13,7 @@ tasks:
   pull:
     script:
       - cd {{depl}}
-      - git pull
+      - git pull --rebase
       - git status
 
   test:
@@ -28,6 +28,7 @@ tasks:
     script:
       - cd {{depl}}
       - bin/release {{version}}
+      - git push --tags
 
   release:phar:
     script:

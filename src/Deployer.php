@@ -337,6 +337,10 @@ class Deployer extends Container
     }
 
     public static function proxyCallToMaster(Host $host, $func, ...$arguments) {
+        // As request to master will stop master permanently,
+        // wait a little bit in order for periodic timer of
+        // master gather worker outputs and print it to user.
+        usleep(100000); // Sleep 100ms.
         return Httpie::get(get('master_url') . '/proxy')
             ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
             ->body([

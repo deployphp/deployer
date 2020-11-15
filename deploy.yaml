@@ -1,16 +1,21 @@
+config:
+  depl: ~/dev/deployer
+  dist: ~/dev/dist
+  site: ~/dev/deployer.org
+
 hosts:
   deployer.org: ~
 
 tasks:
   pull:
     script:
-      - cd ~/dev/deployer
+      - cd {{depl}}
       - git pull
       - git status
 
   test:
     script:
-      - cd ~/dev/deployer
+      - cd {{depl}}
       - composer install
       - composer test
       - bin/build
@@ -18,7 +23,7 @@ tasks:
 
   release:composer:
     script:
-      - cd ~/dev/deployer
+      - cd {{depl}}
       - bin/release
 
   release:phar:

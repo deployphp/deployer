@@ -27,44 +27,44 @@
 Attempts automatically to detect http user in process list.
 
 ### http_group
-[Source](/recipe/deploy/writable.php#L22)
+[Source](/recipe/deploy/writable.php#L20)
 
 
 
 ### writable_dirs
-[Source](/recipe/deploy/writable.php#L25)
+[Source](/recipe/deploy/writable.php#L23)
 
 List of writable dirs.
 
 ### writable_mode
-[Source](/recipe/deploy/writable.php#L28)
+[Source](/recipe/deploy/writable.php#L26)
 
 chmod, chown, chgrp or acl.
 
 ### writable_use_sudo
-[Source](/recipe/deploy/writable.php#L31)
+[Source](/recipe/deploy/writable.php#L29)
 
 Using sudo in writable commands?
 
 ### writable_recursive
-[Source](/recipe/deploy/writable.php#L34)
+[Source](/recipe/deploy/writable.php#L32)
 
 Common for all modes
 
 ### writable_chmod_mode
-[Source](/recipe/deploy/writable.php#L37)
+[Source](/recipe/deploy/writable.php#L35)
 
 For chmod mode
 
 ### writable_chmod_recursive
-[Source](/recipe/deploy/writable.php#L40)
+[Source](/recipe/deploy/writable.php#L38)
 
 For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
 
 ## Tasks
 ### deploy:writable
-[Source](/recipe/deploy/writable.php#L44)
+[Source](/recipe/deploy/writable.php#L42)
 
 
 

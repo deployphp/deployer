@@ -45,8 +45,6 @@ task('deploy:writable', function () {
     // Safety to avoid modifying files outside the deploy_path
     $safeDirs = array_map(function($v) { return ltrim($v, '/'); }, get('writable_dirs'));
     $dirs = join(' ', $safeDirs);
-
-    $dirs = join(' ', get('writable_dirs'));
     $mode = get('writable_mode');
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
     $httpUser = get('http_user');

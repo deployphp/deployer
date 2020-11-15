@@ -28,7 +28,8 @@ tasks:
     script:
       - cd {{depl}}
       - bin/release {{version}}
-      - git push --follow-tags
+      - git push
+      - git push --tags
 
   release:phar:
     script:

@@ -23,7 +23,7 @@
     "hosts": {
       "type": "object",
       "patternProperties": {
-        "^.+$": {
+        "^": {
           "oneOf": [
             {
               "type": "object",
@@ -43,7 +43,7 @@
     "tasks": {
       "type": "object",
       "patternProperties": {
-        "^.+$": {
+        "^": {
           "oneOf": [
             {
               "type": "object",

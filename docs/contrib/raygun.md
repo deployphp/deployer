@@ -40,7 +40,7 @@ after('deploy', 'raygun:notify');
 
 ## Tasks
 ### raygun:notify
-[Source](https://github.com/deployphp/deployer/search?q=raygun%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Araygun.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22raygun%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Araygun.php)
 
 
 

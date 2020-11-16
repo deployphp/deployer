@@ -18,14 +18,14 @@
 
 ## Config
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acodeigniter.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acodeigniter.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 CodeIgniter shared dirs
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acodeigniter.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acodeigniter.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -34,7 +34,7 @@ CodeIgniter writable dirs
 
 ## Tasks
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acodeigniter.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acodeigniter.php)
 
 Main task
 

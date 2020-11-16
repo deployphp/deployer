@@ -35,12 +35,12 @@ add('crontab:jobs', [
 
 ## Tasks
 ### crontab:load
-[Source](https://github.com/deployphp/deployer/search?q=crontab%3Aload+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acrontab.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22crontab%3Aload%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acrontab.php)
 
 
 
 ### crontab:sync
-[Source](https://github.com/deployphp/deployer/search?q=crontab%3Async+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acrontab.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22crontab%3Async%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acrontab.php)
 
 
 

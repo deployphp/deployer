@@ -20,26 +20,26 @@
 
 ## Config
 ### typo3_webroot
-[Source](https://github.com/deployphp/deployer/search?q=typo3_webroot+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22typo3_webroot%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
 
 DocumentRoot / WebRoot for the TYPO3 installation
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Shared directories
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=shared_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Shared files
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -48,7 +48,7 @@ Writeable directories
 
 ## Tasks
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Atypo3.php)
 
 Main TYPO3 task
 

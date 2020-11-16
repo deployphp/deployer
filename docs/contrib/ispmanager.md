@@ -26,59 +26,59 @@ This recipe for work with ISPManager Lite panel by API.
 
 ## Config
 ### ispmanager_owner
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_owner+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_owner%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_doc_root
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_doc_root+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_doc_root%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 ISPManager default configuration
 
 ### vhost
-[Source](https://github.com/deployphp/deployer/search?q=vhost+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22vhost%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 Vhost default configuration
 
 ### ispmanager_session
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_session+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_session%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 Storage
 
 ### ispmanager_databases
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_databases+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_databases%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_domains
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_domains+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_domains%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_phplist
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_phplist+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_phplist%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager_aliaslist
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager_aliaslist+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager_aliaslist%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 
 ## Tasks
 ### ispmanager:init
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager%3Ainit+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager%3Ainit%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 
 ### ispmanager:process
-[Source](https://github.com/deployphp/deployer/search?q=ispmanager%3Aprocess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22ispmanager%3Aprocess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aispmanager.php)
 
 
 

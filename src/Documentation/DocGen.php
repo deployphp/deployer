@@ -129,7 +129,7 @@ class DocGen
                     $anchor = anchor($c->name);
                     $toc .= "  * [`{$c->name}`](#{$anchor})\n";
                     $config .= "### {$c->name}\n";
-                    $searchTerm = urlencode("{$c->name} in:file language:php path:" . dirname($c->recipePath) . " filename:" . basename($c->recipePath));
+                    $searchTerm = urlencode("\"{$c->name}\" in:file language:php path:" . dirname($c->recipePath) . " filename:" . basename($c->recipePath));
                     $config .= "[Source](https://github.com/deployphp/deployer/search?q={$searchTerm})\n\n";
                     $o = $findConfigOverride($recipe, $c->name);
                     if ($o !== null) {
@@ -152,7 +152,7 @@ class DocGen
                     }
                     $toc .= "  * [`{$t->name}`](#{$anchor}){$desc}\n";
                     $tasks .= "### {$t->name}\n";
-                    $searchTerm = urlencode("{$t->name} in:file language:php path:" . dirname($t->recipePath) . " filename:" . basename($t->recipePath));
+                    $searchTerm = urlencode("\"{$t->name}\" in:file language:php path:" . dirname($t->recipePath) . " filename:" . basename($t->recipePath));
                     $tasks .= "[Source](https://github.com/deployphp/deployer/search?q={$searchTerm})\n\n";
                     $tasks .= $replaceLinks($t->comment);
                     if (is_array($t->group)) {

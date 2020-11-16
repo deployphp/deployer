@@ -63,44 +63,44 @@ after('deploy:failed', 'chat:notify:failure');
 
 ## Config
 ### chat_title
-[Source](https://github.com/deployphp/deployer/search?q=chat_title+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 Title of project
 
 ### chat_subtitle
-[Source](https://github.com/deployphp/deployer/search?q=chat_subtitle+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_subtitle%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 ### favicon
-[Source](https://github.com/deployphp/deployer/search?q=favicon+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22favicon%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
 ### chat_line1
-[Source](https://github.com/deployphp/deployer/search?q=chat_line1+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_line1%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 Deploy messages
 
 ### chat_line2
-[Source](https://github.com/deployphp/deployer/search?q=chat_line2+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_line2%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 
 ## Tasks
 ### chat:notify
-[Source](https://github.com/deployphp/deployer/search?q=chat%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 ### chat:notify:success
-[Source](https://github.com/deployphp/deployer/search?q=chat%3Anotify%3Asuccess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 ### chat:notify:failure
-[Source](https://github.com/deployphp/deployer/search?q=chat%3Anotify%3Afailure+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 

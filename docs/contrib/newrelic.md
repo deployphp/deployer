@@ -40,24 +40,24 @@ after('deploy', 'newrelic:notify');
 
 ## Config
 ### newrelic_app_id
-[Source](https://github.com/deployphp/deployer/search?q=newrelic_app_id+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22newrelic_app_id%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
 ### newrelic_description
-[Source](https://github.com/deployphp/deployer/search?q=newrelic_description+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22newrelic_description%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
 ### newrelic_revision
-[Source](https://github.com/deployphp/deployer/search?q=newrelic_revision+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22newrelic_revision%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
 
 ## Tasks
 ### newrelic:notify
-[Source](https://github.com/deployphp/deployer/search?q=newrelic%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22newrelic%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 

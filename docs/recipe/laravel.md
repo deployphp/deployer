@@ -48,170 +48,170 @@
 
 ## Config
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=shared_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### log_files
-[Source](https://github.com/deployphp/deployer/search?q=log_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22log_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### laravel_version
-[Source](https://github.com/deployphp/deployer/search?q=laravel_version+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22laravel_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 
 ## Tasks
 ### artisan:up
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aup+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:down
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Adown+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Adown%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:migrate
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Amigrate+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Amigrate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:migrate:fresh
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Amigrate%3Afresh+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Amigrate%3Afresh%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:migrate:rollback
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Amigrate%3Arollback+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Amigrate%3Arollback%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:migrate:status
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Amigrate%3Astatus+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Amigrate%3Astatus%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:db:seed
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Adb%3Aseed+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Adb%3Aseed%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:cache:clear
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Acache%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:config:clear
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aconfig%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aconfig%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:config:cache
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aconfig%3Acache+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aconfig%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:route:cache
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aroute%3Acache+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aroute%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:view:clear
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aview%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aview%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:view:cache
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aview%3Acache+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aview%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:optimize
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aoptimize+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aoptimize%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:optimize:clear
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aoptimize%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aoptimize%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:queue:restart
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aqueue%3Arestart+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aqueue%3Arestart%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:storage:link
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Astorage%3Alink+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Astorage%3Alink%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:horizon:assets
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Ahorizon%3Aassets+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Aassets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:horizon:publish
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Ahorizon%3Apublish+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Apublish%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:horizon:terminate
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Ahorizon%3Aterminate+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Aterminate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:telescope:clear
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Atelescope%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Atelescope%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:telescope:prune
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Atelescope%3Aprune+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Atelescope%3Aprune%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:telescope:publish
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Atelescope%3Apublish+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Atelescope%3Apublish%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:nova:publish
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Anova%3Apublish+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Anova%3Apublish%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:event:clear
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aevent%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### artisan:event:cache
-[Source](https://github.com/deployphp/deployer/search?q=artisan%3Aevent%3Acache+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
 ### deploy:public_disk
-[Source](https://github.com/deployphp/deployer/search?q=deploy%3Apublic_disk+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Apublic_disk%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 Task deploy:public_disk support the public disk.
 To run this task automatically, please add below line to your deploy.php file
@@ -221,7 +221,7 @@ To run this task automatically, please add below line to your deploy.php file
 [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 Main deploy task.
 

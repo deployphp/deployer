@@ -25,60 +25,60 @@
 
 ## Config
 ### symfony_version
-[Source](https://github.com/deployphp/deployer/search?q=symfony_version+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22symfony_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=shared_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### migrations_config
-[Source](https://github.com/deployphp/deployer/search?q=migrations_config+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22migrations_config%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/search?q=console_options+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22console_options%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 
 ## Tasks
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/search?q=database%3Amigrate+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22database%3Amigrate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/search?q=deploy%3Acache%3Aclear+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### deploy:cache:warmup
-[Source](https://github.com/deployphp/deployer/search?q=deploy%3Acache%3Awarmup+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Awarmup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
 
 

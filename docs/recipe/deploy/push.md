@@ -14,7 +14,7 @@
 
 ## Tasks
 ### push
-[Source](https://github.com/deployphp/deployer/search?q=push+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Apush.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22push%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Apush.php)
 
 Creates patch of local changes and pushes them on host.
 And applies to current_path. Push can be done many times.

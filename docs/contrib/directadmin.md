@@ -106,22 +106,22 @@ task('deploy', [
 
 ## Tasks
 ### directadmin:createdb
-[Source](https://github.com/deployphp/deployer/search?q=directadmin%3Acreatedb+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Acreatedb%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
 
 
 
 ### directadmin:deletedb
-[Source](https://github.com/deployphp/deployer/search?q=directadmin%3Adeletedb+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Adeletedb%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
 
 
 
 ### directadmin:createdomain
-[Source](https://github.com/deployphp/deployer/search?q=directadmin%3Acreatedomain+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Acreatedomain%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
 
 
 
 ### directadmin:deletedomain
-[Source](https://github.com/deployphp/deployer/search?q=directadmin%3Adeletedomain+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Adeletedomain%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
 
 
 

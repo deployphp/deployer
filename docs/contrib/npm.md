@@ -39,12 +39,12 @@ after('deploy:update_code', 'npm:ci');
 
 ## Tasks
 ### npm:install
-[Source](https://github.com/deployphp/deployer/search?q=npm%3Ainstall+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22npm%3Ainstall%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
 
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
 
 ### npm:ci
-[Source](https://github.com/deployphp/deployer/search?q=npm%3Aci+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22npm%3Aci%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
 
 
 

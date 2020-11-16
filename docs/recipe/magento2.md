@@ -31,89 +31,89 @@
 
 ## Config
 ### static_content_locales
-[Source](https://github.com/deployphp/deployer/search?q=static_content_locales+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22static_content_locales%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 By default setup:static-content:deploy uses `en_US`.
 To change that, simply put set('static_content_locales', 'en_US de_DE');`
 in you deployer script.
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=shared_files+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/search?q=clear_paths+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22clear_paths%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 * Overrides [`clear_paths`](/docs/recipe/common.md#clear_paths) from `recipe/common.php`
 
 
 
 ### magento_version
-[Source](https://github.com/deployphp/deployer/search?q=magento_version+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### maintenance_mode_status_active
-[Source](https://github.com/deployphp/deployer/search?q=maintenance_mode_status_active+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22maintenance_mode_status_active%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 
 ## Tasks
 ### magento:compile
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Acompile+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Acompile%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 Tasks
 
 ### magento:deploy:assets
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Adeploy%3Aassets+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Adeploy%3Aassets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### magento:maintenance:enable
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Amaintenance%3Aenable+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Amaintenance%3Aenable%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### magento:maintenance:disable
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Amaintenance%3Adisable+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Amaintenance%3Adisable%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### magento:config:import
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Aconfig%3Aimport+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Aconfig%3Aimport%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### magento:upgrade:db
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Aupgrade%3Adb+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Aupgrade%3Adb%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### magento:cache:flush
-[Source](https://github.com/deployphp/deployer/search?q=magento%3Acache%3Aflush+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Acache%3Aflush%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
 ### deploy:magento
-[Source](https://github.com/deployphp/deployer/search?q=deploy%3Amagento+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Amagento%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 
@@ -125,7 +125,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 

@@ -74,54 +74,54 @@ after('deploy:failed', 'discord:notify:failure');
 
 ## Config
 ### discord_webhook
-[Source](https://github.com/deployphp/deployer/search?q=discord_webhook+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord_notify_text
-[Source](https://github.com/deployphp/deployer/search?q=discord_notify_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_notify_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Deploy messages
 
 ### discord_success_text
-[Source](https://github.com/deployphp/deployer/search?q=discord_success_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord_failure_text
-[Source](https://github.com/deployphp/deployer/search?q=discord_failure_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord_message
-[Source](https://github.com/deployphp/deployer/search?q=discord_message+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 The message
 
 
 ## Tasks
 ### discord_send_message
-[Source](https://github.com/deployphp/deployer/search?q=discord_send_message+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_send_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Helpers
 
 ### discord:test
-[Source](https://github.com/deployphp/deployer/search?q=discord%3Atest+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Atest%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Tasks
 
 ### discord:notify
-[Source](https://github.com/deployphp/deployer/search?q=discord%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord:notify:success
-[Source](https://github.com/deployphp/deployer/search?q=discord%3Anotify%3Asuccess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord:notify:failure
-[Source](https://github.com/deployphp/deployer/search?q=discord%3Anotify%3Afailure+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 

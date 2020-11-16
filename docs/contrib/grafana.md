@@ -50,7 +50,7 @@ after('deploy:success', 'grafana:annotation');
 
 ## Tasks
 ### grafana:annotation
-[Source](https://github.com/deployphp/deployer/search?q=grafana%3Aannotation+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Agrafana.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22grafana%3Aannotation%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Agrafana.php)
 
 
 

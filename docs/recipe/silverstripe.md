@@ -22,43 +22,43 @@
 
 ## Config
 ### shared_assets
-[Source](https://github.com/deployphp/deployer/search?q=shared_assets+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_assets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=shared_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Silverstripe shared dirs
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=writable_dirs+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Silverstripe writable dirs
 
 ### silverstripe_cli_script
-[Source](https://github.com/deployphp/deployer/search?q=silverstripe_cli_script+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22silverstripe_cli_script%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 Silverstripe cli script
 
 
 ## Tasks
 ### silverstripe:build
-[Source](https://github.com/deployphp/deployer/search?q=silverstripe%3Abuild+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22silverstripe%3Abuild%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 Helper tasks
 
 ### silverstripe:buildflush
-[Source](https://github.com/deployphp/deployer/search?q=silverstripe%3Abuildflush+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22silverstripe%3Abuildflush%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=deploy+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
 Main task
 

@@ -14,7 +14,7 @@
 
 ## Tasks
 ### deploy:copy_dirs
-[Source](https://github.com/deployphp/deployer/search?q=deploy%3Acopy_dirs+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Acopy_dirs.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acopy_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Acopy_dirs.php)
 
 
 

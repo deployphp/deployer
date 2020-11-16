@@ -64,39 +64,39 @@ http://gordalina.github.io/cachetool/
 
 ## Config
 ### cachetool
-[Source](https://github.com/deployphp/deployer/search?q=cachetool+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 
 
 ### cachetool_args
-[Source](https://github.com/deployphp/deployer/search?q=cachetool_args+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool_args%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 
 
 ### cachetool_options
-[Source](https://github.com/deployphp/deployer/search?q=cachetool_options+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool_options%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 
 
 
 ## Tasks
 ### cachetool:clear:apc
-[Source](https://github.com/deployphp/deployer/search?q=cachetool%3Aclear%3Aapc+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aapc%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 
 
 ### cachetool:clear:opcache
-[Source](https://github.com/deployphp/deployer/search?q=cachetool%3Aclear%3Aopcache+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aopcache%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 Clear opcache cache
 
 ### cachetool:clear:apcu
-[Source](https://github.com/deployphp/deployer/search?q=cachetool%3Aclear%3Aapcu+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aapcu%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 Clear APCU cache
 
 ### cachetool:clear:stat
-[Source](https://github.com/deployphp/deployer/search?q=cachetool%3Aclear%3Astat+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Astat%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 Clear file status cache, including the realpath cache
 

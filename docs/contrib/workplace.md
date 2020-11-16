@@ -89,39 +89,39 @@ after('deploy:failed', 'workplace:notify:failure');
 
 ## Config
 ### workplace_text
-[Source](https://github.com/deployphp/deployer/search?q=workplace_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 Deploy message
 
 ### workplace_success_text
-[Source](https://github.com/deployphp/deployer/search?q=workplace_success_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace_failure_text
-[Source](https://github.com/deployphp/deployer/search?q=workplace_failure_text+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace_edit_post
-[Source](https://github.com/deployphp/deployer/search?q=workplace_edit_post+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_edit_post%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 By default, create a new post for every message
 
 
 ## Tasks
 ### workplace:notify
-[Source](https://github.com/deployphp/deployer/search?q=workplace%3Anotify+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace:notify:success
-[Source](https://github.com/deployphp/deployer/search?q=workplace%3Anotify%3Asuccess+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace:notify:failure
-[Source](https://github.com/deployphp/deployer/search?q=workplace%3Anotify%3Afailure+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 

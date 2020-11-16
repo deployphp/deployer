@@ -14,7 +14,7 @@
 
 ## Tasks
 ### deploy:setup
-[Source](https://github.com/deployphp/deployer/search?q=deploy%3Asetup+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Asetup.php)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Asetup%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Asetup.php)
 
 
 

@@ -16,13 +16,13 @@
 
 ## Config
 ### branch
-[Source](/recipe/deploy/update_code.php#L10)
+[Source](https://github.com/deployphp/deployer/search?q=%22branch%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aupdate_code.php)
 
 Determines which branch to deploy. Can be overridden with cli option `--branch`.
 If not specified, will get current git HEAD branch as default branch to deploy.
 
 ### git_cache
-[Source](/recipe/deploy/update_code.php#L36)
+[Source](https://github.com/deployphp/deployer/search?q=%22git_cache%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aupdate_code.php)
 
 This config option will if set to true will instructs git to use previous release files,
 and download only changed files from server.
@@ -34,7 +34,7 @@ Faster cloning by borrowing objects from existing clones.
 
 ## Tasks
 ### deploy:update_code
-[Source](/recipe/deploy/update_code.php#L51)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aupdate_code%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aupdate_code.php)
 
 Update code at [release_path](/docs/recipe/deploy/release.md#release_path) on host.
 

@@ -74,54 +74,54 @@ after('deploy:failed', 'discord:notify:failure');
 
 ## Config
 ### discord_webhook
-[Source](/contrib/discord.php#L59)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord_notify_text
-[Source](/contrib/discord.php#L64)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_notify_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Deploy messages
 
 ### discord_success_text
-[Source](/contrib/discord.php#L69)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord_failure_text
-[Source](/contrib/discord.php#L74)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord_message
-[Source](/contrib/discord.php#L81)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 The message
 
 
 ## Tasks
 ### discord_send_message
-[Source](/contrib/discord.php#L84)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord_send_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Helpers
 
 ### discord:test
-[Source](/contrib/discord.php#L92)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Atest%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Tasks
 
 ### discord:notify
-[Source](/contrib/discord.php#L104)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord:notify:success
-[Source](/contrib/discord.php#L113)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 
 ### discord:notify:failure
-[Source](/contrib/discord.php#L122)
+[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 
 

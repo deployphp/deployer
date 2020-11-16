@@ -93,54 +93,54 @@ after('deploy:failed', 'teams:notify:failure');
 
 ## Config
 ### teams_title
-[Source](/contrib/ms-teams.php#L78)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Title of project
 
 ### teams_text
-[Source](/contrib/ms-teams.php#L83)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Deploy message
 
 ### teams_success_text
-[Source](/contrib/ms-teams.php#L84)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams_failure_text
-[Source](/contrib/ms-teams.php#L85)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams_color
-[Source](/contrib/ms-teams.php#L88)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Color of attachment
 
 ### teams_success_color
-[Source](/contrib/ms-teams.php#L89)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_success_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams_failure_color
-[Source](/contrib/ms-teams.php#L90)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams_failure_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 
 ## Tasks
 ### teams:notify
-[Source](/contrib/ms-teams.php#L93)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams:notify:success
-[Source](/contrib/ms-teams.php#L108)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
 ### teams:notify:failure
-[Source](/contrib/ms-teams.php#L123)
+[Source](https://github.com/deployphp/deployer/search?q=%22teams%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 

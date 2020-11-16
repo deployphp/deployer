@@ -1,33 +1,43 @@
+import:
+  - src/Support/Task/ask-version.php
+
+config:
+  depl: ~/dev/deployer
+  dist: ~/dev/dist
+  site: ~/dev/deployer.org
+
 hosts:
   deployer.org: ~
 
 tasks:
   pull:
     script:
-      - cd ~/dev/deployer
-      - git pull
+      - cd {{depl}}
+      - git pull --rebase
       - git status
 
   test:
     script:
-      - cd ~/dev/deployer
+      - cd {{depl}}
       - composer install
       - composer test
       - bin/build
-      - php deployer.phar -v
+      - php deployer.phar --version
 
   release:composer:
     script:
-      - cd ~/dev/deployer
-      - bin/release
+      - cd {{depl}}
+      - bin/release {{version}}
+      - git push
+      - git push --tags
 
   release:phar:
     script:
-      - .
+      - todo
 
   release:dist:
     script:
-      - .
+      - todo
 
   release:
     - release:composer
@@ -38,3 +48,5 @@ before:
   release:
     - pull
     - test
+  release:composer:
+    - ask:version

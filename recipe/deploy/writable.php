@@ -5,9 +5,7 @@ namespace Deployer;
 // Attempts automatically to detect http user in process list.
 set('http_user', function () {
     $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
-    if (count($httpUserCandidates)) {
-        $httpUser = array_shift($httpUserCandidates);
-    }
+    $httpUser = array_shift($httpUserCandidates);
 
     if (empty($httpUser)) {
         throw new \RuntimeException(

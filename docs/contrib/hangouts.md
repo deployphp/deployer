@@ -63,44 +63,44 @@ after('deploy:failed', 'chat:notify:failure');
 
 ## Config
 ### chat_title
-[Source](/contrib/hangouts.php#L50)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 Title of project
 
 ### chat_subtitle
-[Source](/contrib/hangouts.php#L54)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_subtitle%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 ### favicon
-[Source](/contrib/hangouts.php#L57)
+[Source](https://github.com/deployphp/deployer/search?q=%22favicon%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
 ### chat_line1
-[Source](/contrib/hangouts.php#L60)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_line1%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 Deploy messages
 
 ### chat_line2
-[Source](/contrib/hangouts.php#L61)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat_line2%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 
 ## Tasks
 ### chat:notify
-[Source](/contrib/hangouts.php#L64)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 ### chat:notify:success
-[Source](/contrib/hangouts.php#L107)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
 ### chat:notify:failure
-[Source](/contrib/hangouts.php#L150)
+[Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 

@@ -41,14 +41,14 @@ after('deploy', 'rollbar:notify');
 
 ## Config
 ### rollbar_comment
-[Source](/contrib/rollbar.php#L33)
+[Source](https://github.com/deployphp/deployer/search?q=%22rollbar_comment%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arollbar.php)
 
 
 
 
 ## Tasks
 ### rollbar:notify
-[Source](/contrib/rollbar.php#L36)
+[Source](https://github.com/deployphp/deployer/search?q=%22rollbar%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arollbar.php)
 
 
 

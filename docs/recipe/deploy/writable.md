@@ -23,42 +23,42 @@
 
 ## Config
 ### http_user
-[Source](/recipe/deploy/writable.php#L6)
+[Source](https://github.com/deployphp/deployer/search?q=%22http_user%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 Attempts automatically to detect http user in process list.
 
 ### http_group
-[Source](/recipe/deploy/writable.php#L22)
+[Source](https://github.com/deployphp/deployer/search?q=%22http_group%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 
 
 ### writable_dirs
-[Source](/recipe/deploy/writable.php#L25)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 List of writable dirs.
 
 ### writable_mode
-[Source](/recipe/deploy/writable.php#L28)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_mode%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 chmod, chown, chgrp or acl.
 
 ### writable_use_sudo
-[Source](/recipe/deploy/writable.php#L31)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_use_sudo%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 Using sudo in writable commands?
 
 ### writable_recursive
-[Source](/recipe/deploy/writable.php#L34)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_recursive%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 Common for all modes
 
 ### writable_chmod_mode
-[Source](/recipe/deploy/writable.php#L37)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_chmod_mode%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 For chmod mode
 
 ### writable_chmod_recursive
-[Source](/recipe/deploy/writable.php#L40)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_chmod_recursive%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
@@ -70,7 +70,7 @@ Allow absolute path in writable_dirs
 
 ## Tasks
 ### deploy:writable
-[Source](/recipe/deploy/writable.php#L46)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Awritable%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Awritable.php)
 
 
 

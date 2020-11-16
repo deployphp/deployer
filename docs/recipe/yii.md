@@ -18,14 +18,14 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/yii.php#L9)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ayii.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Yii shared dirs
 
 ### writable_dirs
-[Source](/recipe/yii.php#L12)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ayii.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -34,7 +34,7 @@ Yii writable dirs
 
 ## Tasks
 ### deploy
-[Source](/recipe/yii.php#L18)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ayii.php)
 
 Main task
 

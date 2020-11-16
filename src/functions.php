@@ -321,7 +321,7 @@ function within(string $path, callable $callback)
  */
 function run(string $command, array $options = []): string
 {
-    $run = function ($command, $options): string {
+    $run = function ($command, $options = []): string {
         $host = Context::get()->getHost();
 
         $command = parse($command);
@@ -363,10 +363,11 @@ function run(string $command, array $options = []): string
                 writeln("<fg=green;options=bold>run</> $command");
                 $password = askHiddenResponse('Password:');
             }
-            $run("echo -e '#!/bin/sh\necho \"%sudo_pass%\"' > $askpass", array_merge($options, ['sudo_pass' => $password]));
-            $run("chmod a+x $askpass", $options);
-            $output = $run(sprintf('export SUDO_ASKPASS=%s; %s', $askpass, preg_replace('/^sudo\b/', 'sudo -A', $command)), $options);
-            $run("rm $askpass", $options);
+            $run("echo -e '#!/bin/sh\necho \"\$PASSWORD\"' > $askpass");
+            $run("chmod a+x $askpass");
+            $command = preg_replace('/^sudo\b/', 'sudo -A', $command);
+            $output = $run(" SUDO_ASKPASS=$askpass PASSWORD=%sudo_pass% $command", array_merge($options, ['sudo_pass' => escapeshellarg($password)]));
+            $run("rm $askpass");
             return $output;
         }
     } else {

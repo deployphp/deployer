@@ -116,7 +116,7 @@ class Httpie
     }
 
     /**
-     * @return array|bool
+     * @return array|string|bool
      */
     public function getJson()
     {

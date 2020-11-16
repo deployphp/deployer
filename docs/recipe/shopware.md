@@ -32,94 +32,94 @@
 
 ## Config
 ### repository
-[Source](/recipe/shopware.php#L6)
+[Source](https://github.com/deployphp/deployer/search?q=%22repository%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### release_name
-[Source](/recipe/shopware.php#L8)
+[Source](https://github.com/deployphp/deployer/search?q=%22release_name%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### shared_files
-[Source](/recipe/shopware.php#L12)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### shared_dirs
-[Source](/recipe/shopware.php#L15)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### writable_dirs
-[Source](/recipe/shopware.php#L24)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### static_folders
-[Source](/recipe/shopware.php#L33)
+[Source](https://github.com/deployphp/deployer/search?q=%22static_folders%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 
 ## Tasks
 ### sw:update_code
-[Source](/recipe/shopware.php#L35)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aupdate_code%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:system:install
-[Source](/recipe/shopware.php#L38)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Asystem%3Ainstall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:build
-[Source](/recipe/shopware.php#L41)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Abuild%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:system:setup
-[Source](/recipe/shopware.php#L44)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Asystem%3Asetup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:theme:compile
-[Source](/recipe/shopware.php#L47)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Atheme%3Acompile%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:cache:clear
-[Source](/recipe/shopware.php#L50)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:cache:warmup
-[Source](/recipe/shopware.php#L53)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Acache%3Awarmup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:database:migrate
-[Source](/recipe/shopware.php#L57)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Adatabase%3Amigrate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:plugin:refresh
-[Source](/recipe/shopware.php#L60)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Arefresh%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:plugin:activate:all
-[Source](/recipe/shopware.php#L63)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aactivate%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:plugin:migrate:all
-[Source](/recipe/shopware.php#L96)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Amigrate%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 
 ### sw:deploy
-[Source](/recipe/shopware.php#L132)
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Adeploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 Grouped SW deploy tasks
 
@@ -133,7 +133,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](/recipe/shopware.php#L145)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 Main task
 

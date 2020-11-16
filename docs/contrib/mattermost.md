@@ -104,64 +104,64 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 ## Config
 ### mattermost_webhook
-[Source](/contrib/mattermost.php#L86)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_channel
-[Source](/contrib/mattermost.php#L87)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_channel%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_username
-[Source](/contrib/mattermost.php#L88)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_username%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_icon_url
-[Source](/contrib/mattermost.php#L89)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_icon_url%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_success_emoji
-[Source](/contrib/mattermost.php#L91)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_success_emoji%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_failure_emoji
-[Source](/contrib/mattermost.php#L92)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_failure_emoji%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_text
-[Source](/contrib/mattermost.php#L94)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_success_text
-[Source](/contrib/mattermost.php#L95)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost_failure_text
-[Source](/contrib/mattermost.php#L96)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 
 ## Tasks
 ### mattermost:notify
-[Source](/contrib/mattermost.php#L99)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost:notify:success
-[Source](/contrib/mattermost.php#L120)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
 ### mattermost:notify:failure
-[Source](/contrib/mattermost.php#L141)
+[Source](https://github.com/deployphp/deployer/search?q=%22mattermost%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 

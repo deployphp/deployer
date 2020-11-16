@@ -21,21 +21,21 @@
 
 ## Config
 ### shared_dirs
-[Source](/recipe/magento.php#L13)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
 * Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Magento shared dirs
 
 ### shared_files
-[Source](/recipe/magento.php#L16)
+[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
 * Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Magento shared files
 
 ### writable_dirs
-[Source](/recipe/magento.php#L19)
+[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
 * Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -44,17 +44,17 @@ Magento writable dirs
 
 ## Tasks
 ### deploy:cache:clear
-[Source](/recipe/magento.php#L25)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
 Clear cache
 
 ### deploy:clear_version
-[Source](/recipe/magento.php#L32)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aclear_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
 Remove files that can be used to compromise Magento
 
 ### deploy
-[Source](/recipe/magento.php#L46)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
 Main task
 

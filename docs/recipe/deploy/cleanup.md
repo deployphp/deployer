@@ -14,7 +14,7 @@
 
 ## Tasks
 ### deploy:cleanup
-[Source](/recipe/deploy/cleanup.php#L5)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acleanup%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Acleanup.php)
 
 
 

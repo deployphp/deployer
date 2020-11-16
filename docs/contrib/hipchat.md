@@ -44,29 +44,29 @@ after('deploy', 'hipchat:notify');
 
 ## Config
 ### hipchat_color
-[Source](/contrib/hipchat.php#L33)
+[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
 
 
 
 ### hipchat_from
-[Source](/contrib/hipchat.php#L34)
+[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_from%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
 
 
 
 ### hipchat_message
-[Source](/contrib/hipchat.php#L35)
+[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
 
 
 
 ### hipchat_url
-[Source](/contrib/hipchat.php#L36)
+[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_url%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
 
 
 
 
 ## Tasks
 ### hipchat:notify
-[Source](/contrib/hipchat.php#L39)
+[Source](https://github.com/deployphp/deployer/search?q=%22hipchat%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
 
 
 

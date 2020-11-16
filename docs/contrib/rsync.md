@@ -137,49 +137,49 @@ host('hostname')
 
 ## Config
 ### rsync
-[Source](/contrib/rsync.php#L122)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync_src
-[Source](/contrib/rsync.php#L138)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync_src%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync_dest
-[Source](/contrib/rsync.php#L139)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync_dest%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync_excludes
-[Source](/contrib/rsync.php#L141)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync_excludes%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync_includes
-[Source](/contrib/rsync.php#L156)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync_includes%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync_filter
-[Source](/contrib/rsync.php#L171)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync_filter%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync_options
-[Source](/contrib/rsync.php#L189)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync_options%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 
 ## Tasks
 ### rsync:warmup
-[Source](/contrib/rsync.php#L201)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync%3Awarmup%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
 ### rsync
-[Source](/contrib/rsync.php#L216)
+[Source](https://github.com/deployphp/deployer/search?q=%22rsync%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 

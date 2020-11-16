@@ -89,39 +89,39 @@ after('deploy:failed', 'workplace:notify:failure');
 
 ## Config
 ### workplace_text
-[Source](/contrib/workplace.php#L77)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 Deploy message
 
 ### workplace_success_text
-[Source](/contrib/workplace.php#L78)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace_failure_text
-[Source](/contrib/workplace.php#L79)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace_edit_post
-[Source](/contrib/workplace.php#L82)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace_edit_post%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 By default, create a new post for every message
 
 
 ## Tasks
 ### workplace:notify
-[Source](/contrib/workplace.php#L85)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace:notify:success
-[Source](/contrib/workplace.php#L110)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
 ### workplace:notify:failure
-[Source](/contrib/workplace.php#L122)
+[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 

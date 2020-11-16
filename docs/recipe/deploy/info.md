@@ -15,14 +15,14 @@
 
 ## Config
 ### target
-[Source](/recipe/deploy/info.php#L5)
+[Source](https://github.com/deployphp/deployer/search?q=%22target%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Ainfo.php)
 
 Holds name of deployed branch, tag or revision.
 
 
 ## Tasks
 ### deploy:info
-[Source](/recipe/deploy/info.php#L23)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Ainfo%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Ainfo.php)
 
 
 

@@ -90,79 +90,79 @@ after('deploy:failed', 'cimonitor:notify:failure');
 
 ## Config
 ### cimonitor_title
-[Source](/contrib/cimonitor.php#L70)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 Title of project based on git repo
 
 ### cimonitor_user
-[Source](/contrib/cimonitor.php#L75)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_user%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_status_info
-[Source](/contrib/cimonitor.php#L83)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_status_info%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 CI monitor status states and job states
 
 ### cimonitor_status_warning
-[Source](/contrib/cimonitor.php#L84)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_status_warning%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_status_error
-[Source](/contrib/cimonitor.php#L85)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_status_error%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_status_success
-[Source](/contrib/cimonitor.php#L86)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_status_success%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_job_state_info
-[Source](/contrib/cimonitor.php#L87)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_info%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_job_state_pending
-[Source](/contrib/cimonitor.php#L88)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_pending%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_job_state_running
-[Source](/contrib/cimonitor.php#L89)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_running%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_job_state_warning
-[Source](/contrib/cimonitor.php#L90)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_warning%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_job_state_error
-[Source](/contrib/cimonitor.php#L91)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_error%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor_job_state_success
-[Source](/contrib/cimonitor.php#L92)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_success%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 
 ## Tasks
 ### cimonitor:notify
-[Source](/contrib/cimonitor.php#L95)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor:notify:success
-[Source](/contrib/cimonitor.php#L122)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
 ### cimonitor:notify:failure
-[Source](/contrib/cimonitor.php#L151)
+[Source](https://github.com/deployphp/deployer/search?q=%22cimonitor%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 

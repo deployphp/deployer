@@ -92,84 +92,84 @@ after('deploy:failed', 'rocketchat:notify:failure');
 
 ## Config
 ### rockchat_title
-[Source](/contrib/rocketchat.php#L70)
+[Source](https://github.com/deployphp/deployer/search?q=%22rockchat_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_icon_emoji
-[Source](/contrib/rocketchat.php#L74)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_icon_emoji%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_icon_url
-[Source](/contrib/rocketchat.php#L75)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_icon_url%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_channel
-[Source](/contrib/rocketchat.php#L77)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_channel%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_room_id
-[Source](/contrib/rocketchat.php#L78)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_room_id%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_username
-[Source](/contrib/rocketchat.php#L79)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_username%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_webhook
-[Source](/contrib/rocketchat.php#L80)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_color
-[Source](/contrib/rocketchat.php#L82)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_success_color
-[Source](/contrib/rocketchat.php#L83)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_success_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_failure_color
-[Source](/contrib/rocketchat.php#L84)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_failure_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_text
-[Source](/contrib/rocketchat.php#L86)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_success_text
-[Source](/contrib/rocketchat.php#L87)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat_failure_text
-[Source](/contrib/rocketchat.php#L88)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 
 ## Tasks
 ### rocketchat:notify
-[Source](/contrib/rocketchat.php#L91)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat:notify:success
-[Source](/contrib/rocketchat.php#L121)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 
 ### rocketchat:notify:failure
-[Source](/contrib/rocketchat.php#L151)
+[Source](https://github.com/deployphp/deployer/search?q=%22rocketchat%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arocketchat.php)
 
 
 

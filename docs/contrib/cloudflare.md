@@ -36,7 +36,7 @@ if not the, last tasks before cleanup
 
 ## Tasks
 ### deploy:cloudflare
-[Source](/contrib/cloudflare.php#L28)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acloudflare%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acloudflare.php)
 
 
 

@@ -18,29 +18,29 @@
 
 ## Config
 ### release_name
-[Source](/recipe/deploy/release.php#L11)
+[Source](https://github.com/deployphp/deployer/search?q=%22release_name%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
 
 Name of folder in releases.
 
 ### releases_metainfo
-[Source](/recipe/deploy/release.php#L32)
+[Source](https://github.com/deployphp/deployer/search?q=%22releases_metainfo%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
 
 Holds metainfo about releases from `.dep/releases` file.
 
 ### releases_list
-[Source](/recipe/deploy/release.php#L51)
+[Source](https://github.com/deployphp/deployer/search?q=%22releases_list%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
 
 Return list of releases on host.
 
 ### release_path
-[Source](/recipe/deploy/release.php#L82)
+[Source](https://github.com/deployphp/deployer/search?q=%22release_path%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
 
 Return release path.
 
 
 ## Tasks
 ### deploy:release
-[Source](/recipe/deploy/release.php#L94)
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Arelease%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
 
 
 

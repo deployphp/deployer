@@ -46,7 +46,7 @@ desc('Make writable dirs');
 task('deploy:writable', function () {
     // Without writable_allow_absolute_path we prefix each writable_dir whith deploy_path
     // to avoid changing files outside the deploy_path
-    $path = get('writable_allow_absolute_path') ? ' ' : ' ' . get('deploy_path');
+    $path = get('writable_allow_absolute_path') ? ' ' : ' ' . get('deploy_path') . '/';
     $dirs = $path . join($path, get('writable_dirs'));
 
     $mode = get('writable_mode');

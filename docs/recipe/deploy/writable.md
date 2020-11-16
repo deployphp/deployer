@@ -17,6 +17,7 @@
   * [`writable_recursive`](#writable_recursive)
   * [`writable_chmod_mode`](#writable_chmod_mode)
   * [`writable_chmod_recursive`](#writable_chmod_recursive)
+  * [`writable_allow_absolute_path`](#writable_allow_absolute_path)
 * Tasks
   * [`deploy:writable`](#deploywritable) — Make writable dirs
 
@@ -61,10 +62,15 @@ For chmod mode
 
 For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
+### writable_allow_absolute_path
+[Source](/recipe/deploy/writable.php#L43)
+
+Allow absolute path in writable_dirs
+
 
 ## Tasks
 ### deploy:writable
-[Source](/recipe/deploy/writable.php#L44)
+[Source](/recipe/deploy/writable.php#L46)
 
 
 

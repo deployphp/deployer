@@ -37,22 +37,19 @@ set('writable_chmod_mode', '0755');
 // For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 set('writable_chmod_recursive', true);
 
-// Allow absolute path in writable_dirs
-set('writable_allow_absolute_path', false);
-
 desc('Make writable dirs');
 task('deploy:writable', function () {
-    // Without writable_allow_absolute_path we prefix each writable_dir whith deploy_path
-    // to avoid changing files outside the deploy_path
-    $path = get('writable_allow_absolute_path') ? ' ' : ' ' . get('deploy_path') . '/';
-    $dirs = $path . join($path, get('writable_dirs'));
-
+    $dirs = join(' ', get('writable_dirs'));
     $mode = get('writable_mode');
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
     $httpUser = get('http_user');
 
     if (empty($dirs)) {
         return;
+    }
+    // Check that we don't have absolute path
+    if (strpos($dirs, ' /') !== false) {
+        throw new \RuntimeException('Absolute path not allowed in config parameter `writable_dirs`.');
     }
 
     cd('{{release_path}}');

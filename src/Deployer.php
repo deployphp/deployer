@@ -280,7 +280,7 @@ class Deployer extends Container
             $deployer = new self($console);
 
             // Import recipe file
-            if (is_readable($deployFile)) {
+            if (is_readable($deployFile ?? '')) {
                 $deployer->importer->import($deployFile);
             }
 

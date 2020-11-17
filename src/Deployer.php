@@ -269,7 +269,7 @@ class Deployer extends Container
     /**
      * Run Deployer
      */
-    public static function run(string $version, string $deployFile)
+    public static function run(string $version, ?string $deployFile)
     {
         $input = new ArgvInput();
         $output = new ConsoleOutput();

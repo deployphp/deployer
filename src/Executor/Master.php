@@ -25,7 +25,7 @@ const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '
 
 function spinner(string $message = ''): string
 {
-    $frame = FRAMES[(int)(microtime(true) * 10) % count(FRAMES)];
+    $frame = FRAMES[((new \DateTime)->format('u') / 1e5) % count(FRAMES)];
     return "  $frame $message\r";
 }
 

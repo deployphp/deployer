@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -26,6 +26,9 @@ class Importer
     private static $recipeFilename;
     private static $recipeSource;
 
+    /**
+     * @param string|string[] $paths
+     */
     public static function import($paths)
     {
         if (!is_array($paths)) {
@@ -65,7 +68,7 @@ class Importer
         }
     }
 
-    protected static function hosts($hosts)
+    protected static function hosts(array $hosts)
     {
         foreach ($hosts as $alias => $config) {
             if ($config['local'] ?? false) {
@@ -81,14 +84,14 @@ class Importer
         }
     }
 
-    protected static function config($config)
+    protected static function config(array $config)
     {
         foreach ($config as $key => $value) {
             set($key, $value);
         }
     }
 
-    protected static function tasks($tasks)
+    protected static function tasks(array $tasks)
     {
         $buildTask = function ($name, $config) {
             extract($config);
@@ -183,7 +186,7 @@ class Importer
         }
     }
 
-    protected static function after($after)
+    protected static function after(array $after)
     {
         foreach ($after as $key => $value) {
             if (is_array($value)) {
@@ -196,7 +199,7 @@ class Importer
         }
     }
 
-    protected static function before($before)
+    protected static function before(array $before)
     {
         foreach ($before as $key => $value) {
             if (is_array($value)) {

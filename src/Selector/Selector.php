@@ -37,7 +37,7 @@ class Selector
         return $hosts;
     }
 
-    public static function apply($conditions, Host $host)
+    public static function apply(?array $conditions, Host $host): bool
     {
         if (empty($conditions)) {
             return true;
@@ -62,7 +62,7 @@ class Selector
         return false;
     }
 
-    private static function compare(string $op, $a, $b): bool
+    private static function compare(string $op, ?string $a, ?string $b): bool
     {
         if ($op === '=') {
             return $a === $b;
@@ -73,7 +73,7 @@ class Selector
         return false;
     }
 
-    public static function parse(string $expression)
+    public static function parse(string $expression): array
     {
         $all = [];
         foreach (explode(',', $expression) as $sub) {

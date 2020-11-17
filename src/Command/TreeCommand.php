@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -41,7 +41,7 @@ class TreeCommand extends Command
         );
     }
 
-    protected function execute(Input $input, Output $output)
+    protected function execute(Input $input, Output $output): int
     {
         $this->output = $output;
 
@@ -52,13 +52,13 @@ class TreeCommand extends Command
         return 0;
     }
 
-    private function buildTree($taskName)
+    private function buildTree(string $taskName)
     {
         $this->tasks = Deployer::get()->tasks;
         $this->createTreeFromTaskName($taskName, '', true);
     }
 
-    private function createTreeFromTaskName($taskName, $postfix = '', $isLast = false)
+    private function createTreeFromTaskName(string $taskName, string $postfix = '', bool $isLast = false)
     {
         $task = $this->tasks->get($taskName);
 
@@ -105,7 +105,7 @@ class TreeCommand extends Command
         }
     }
 
-    private function addTaskToTree($taskName, $isLast = false)
+    private function addTaskToTree(string $taskName, bool $isLast = false)
     {
         $this->tree[] = [
             'taskName' => $taskName,
@@ -115,7 +115,7 @@ class TreeCommand extends Command
         ];
     }
 
-    private function outputTree($taskName)
+    private function outputTree(string $taskName)
     {
         $this->output->writeln("The task-tree for <info>$taskName</info>:");
 

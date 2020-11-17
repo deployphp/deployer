@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,7 +16,7 @@ class Reporter
 {
     const ENDPOINT = 'https://deployer.org/api/stats';
 
-    public static function report(array $stats)
+    public static function report(array $stats): void
     {
         $pid = null;
         // make sure function is not disabled via php.ini "disable_functions"
@@ -45,7 +45,7 @@ class Reporter
         }
     }
 
-    public static function send(array $stats)
+    public static function send(array $stats): void
     {
         Httpie::post(self::ENDPOINT)
             ->body($stats)

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -105,7 +105,7 @@ function is_closure($var): bool
 /**
  * Check if all elements satisfy predicate.
  */
-function array_all(array $array, $predicate): bool
+function array_all(array $array, callable $predicate): bool
 {
     foreach ($array as $key => $value) {
         if (!$predicate($value, $key)) {

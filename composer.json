@@ -36,7 +36,7 @@
     "scripts": {
         "test": "pest",
         "test:e2e": "pest --config test/e2e/phpunit-e2e.xml",
-        "lint": "phpcs",
+        "phpcs": "phpcs",
         "phpstan": "phpstan analyse -c phpstan.neon",
         "phpstan:baseline": "phpstan analyse -c phpstan.neon --generate-baseline test/phpstan-baseline.neon"
     },

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -18,7 +18,7 @@ trait CommandCommon
      * by setting DO_NOT_TRACK environment variable to `1`.
      * @codeCoverageIgnore
      */
-    protected function telemetry(array $data = [])
+    protected function telemetry(array $data = []): void
     {
         if (getenv('DO_NOT_TRACK') === '1') {
             return;

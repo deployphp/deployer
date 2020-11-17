@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -193,10 +193,7 @@ class Deployer extends Container
         self::$instance = $this;
     }
 
-    /**
-     * @return self
-     */
-    public static function get()
+    public static function get(): self
     {
         return self::$instance;
     }
@@ -239,11 +236,10 @@ class Deployer extends Container
     }
 
     /**
-     * @param string $name
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (isset($this[$name])) {
             return $this[$name];
@@ -253,38 +249,27 @@ class Deployer extends Container
     }
 
     /**
-     * @param string $name
      * @param mixed $value
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         $this[$name] = $value;
     }
 
-    /**
-     * @return Application
-     */
-    public function getConsole()
+    public function getConsole(): Application
     {
         return $this['console'];
     }
 
-    /**
-     * @param string $name
-     * @return Console\Helper\HelperInterface
-     */
-    public function getHelper($name)
+    public function getHelper(string $name): Console\Helper\HelperInterface
     {
         return $this->getConsole()->getHelperSet()->get($name);
     }
 
     /**
      * Run Deployer
-     *
-     * @param string $version
-     * @param string $deployFile
      */
-    public static function run($version, $deployFile)
+    public static function run(string $version, string $deployFile)
     {
         $input = new ArgvInput();
         $output = new ConsoleOutput();
@@ -332,11 +317,18 @@ class Deployer extends Container
         }
     }
 
-    public static function isWorker() {
+    public static function isWorker(): bool
+    {
         return Deployer::get()->config->has('master_url');
     }
 
-    public static function proxyCallToMaster(Host $host, $func, ...$arguments) {
+    /**
+     * @param mixed ...$arguments
+     * @return array|bool|string
+     * @throws \Exception
+     */
+    public static function proxyCallToMaster(Host $host, string $func, ...$arguments)
+    {
         // As request to master will stop master permanently,
         // wait a little bit in order for periodic timer of
         // master gather worker outputs and print it to user.
@@ -351,7 +343,7 @@ class Deployer extends Container
             ->getJson();
     }
 
-    public static function isPharArchive()
+    public static function isPharArchive(): bool
     {
         return 'phar:' === substr(__FILE__, 0, 5);
     }

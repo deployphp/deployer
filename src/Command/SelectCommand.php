@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -33,7 +33,7 @@ abstract class SelectCommand extends Command
         $this->addArgument('selector', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Host selector');
     }
 
-    protected function selectHosts(Input $input, Output $output)
+    protected function selectHosts(Input $input, Output $output): array
     {
         $output->getFormatter()->setStyle('success', new OutputFormatterStyle('green'));
         if (!$output->isDecorated() && !defined('NO_ANSI')) {

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -29,7 +29,7 @@ class DiceCommand extends Command
         $this->addArgument('number', InputArgument::OPTIONAL, 'Number of dice', 2);
     }
 
-    protected function execute(Input $input, Output $output)
+    protected function execute(Input $input, Output $output): int
     {
         $this->telemetry();
         $number = intval($input->getArgument('number'));

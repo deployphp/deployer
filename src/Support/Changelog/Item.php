@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,7 +17,7 @@ class Item
      */
     private $references = [];
 
-    public function __toString()
+    public function __toString(): string
     {
         sort($this->references, SORT_NUMERIC);
 
@@ -38,7 +38,10 @@ class Item
         $this->message = $message;
     }
 
-    public function addReference(int $reference)
+    /**
+     * @param int|string $reference
+     */
+    public function addReference($reference)
     {
         $this->references[] = $reference;
     }

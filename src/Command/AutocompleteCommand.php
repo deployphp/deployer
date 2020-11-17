@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -35,7 +35,7 @@ class AutocompleteCommand extends Command
         return 0;
     }
 
-    private function bash()
+    private function bash(): string
     {
         return <<<'BASH'
 _dep()
@@ -94,7 +94,7 @@ complete -o default -F _dep dep
 BASH;
     }
 
-    private function zsh()
+    private function zsh(): string
     {
         return <<<'ZSH'
 _dep()

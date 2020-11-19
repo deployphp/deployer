@@ -25,7 +25,7 @@ See also the list of [contributors](https://github.com/deployphp/deployer/graphs
 
 ## Sponsorship
 
-* Daniel Knoch from [cariba.de](https://cariba.de)
+* Daniel Knoch
 
 See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).
 

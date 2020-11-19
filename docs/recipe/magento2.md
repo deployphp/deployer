@@ -12,6 +12,7 @@
   * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`static_content_locales`](#static_content_locales)
+  * [`content_version`](#content_version)
   * [`shared_files`](#shared_files)
   * [`shared_dirs`](#shared_dirs)
   * [`writable_dirs`](#writable_dirs)
@@ -21,6 +22,7 @@
 * Tasks
   * [`magento:compile`](#magentocompile) — Compile magento di
   * [`magento:deploy:assets`](#magentodeployassets) — Deploy assets
+  * [`magento:sync:content_version`](#magentosynccontent_version) — Sync content version
   * [`magento:maintenance:enable`](#magentomaintenanceenable) — Enable maintenance mode
   * [`magento:maintenance:disable`](#magentomaintenancedisable) — Disable maintenance mode
   * [`magento:config:import`](#magentoconfigimport) — Config Import
@@ -36,6 +38,11 @@
 By default setup:static-content:deploy uses `en_US`.
 To change that, simply put set('static_content_locales', 'en_US de_DE');`
 in you deployer script.
+
+### content_version
+[Source](https://github.com/deployphp/deployer/search?q=%22content_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+
+
 
 ### shared_files
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
@@ -84,6 +91,11 @@ Tasks
 
 ### magento:deploy:assets
 [Source](https://github.com/deployphp/deployer/search?q=%22magento%3Adeploy%3Aassets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
+
+
+
+### magento:sync:content_version
+[Source](https://github.com/deployphp/deployer/search?q=%22magento%3Async%3Acontent_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 
 

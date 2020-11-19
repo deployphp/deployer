@@ -25,16 +25,10 @@ require 'contrib/npm.php';
 after('deploy:update_code', 'npm:install');
 ~~~
 
-or if you want use `npm ci` command
-~~~php
-after('deploy:update_code', 'npm:ci');
-~~~
-
 
 
 * Tasks
   * [`npm:install`](#npminstall) — Install npm packages
-  * [`npm:ci`](#npmci) — Install npm packages with a clean slate
 
 
 ## Tasks
@@ -42,9 +36,4 @@ after('deploy:update_code', 'npm:ci');
 [Source](https://github.com/deployphp/deployer/search?q=%22npm%3Ainstall%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
 
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
-
-### npm:ci
-[Source](https://github.com/deployphp/deployer/search?q=%22npm%3Aci%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
-
-
 

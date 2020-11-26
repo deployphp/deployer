@@ -18,6 +18,7 @@ task('deploy:cleanup', function () {
     }
 
     foreach ($releases as $release) {
+        run("$sudo find {{deploy_path}}/releases/$release/* -delete", $runOpts);
         run("rm -rf {{deploy_path}}/releases/$release", $runOpts);
     }
 

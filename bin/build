@@ -36,10 +36,12 @@ foreach ($iterator as $fileInfo) {
     echo "Add file: " . $file . "\n";
     $phar->addFile($fileInfo->getRealPath(), $file);
 
-    $phar[$file]->compress(Phar::GZ);
+    if (!array_key_exists('nozip', $opt)) {
+        $phar[$file]->compress(Phar::GZ);
     
-    if (!$phar[$file]->isCompressed()) {
-        echo "Could not compress File: {$file}\n";
+        if (!$phar[$file]->isCompressed()) {
+            echo "Could not compress File: {$file}\n";
+        }
     }
 }
 
@@ -55,11 +57,6 @@ Phar::mapPhar('{$pharName}');
 require 'phar://{$pharName}/bin/dep';
 __HALT_COMPILER();
 STUB);
-
-if (!array_key_exists('nozip', $opt)) {
-    $phar->compressFiles(Phar::GZ);
-}
-
 $phar->stopBuffering();
 unset($phar);
 

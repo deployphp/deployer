@@ -40,7 +40,7 @@ $iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo
 });
 $iterator = new RecursiveIteratorIterator($iterator);
 $iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
-   return in_array($fileInfo->getExtension(), ['php', 'exe'], true);
+    return in_array($fileInfo->getExtension(), ['php', 'exe'], true);
 });
 
 foreach ($iterator as $fileInfo) {
@@ -48,6 +48,12 @@ foreach ($iterator as $fileInfo) {
 
     echo "Add file: " . $file . "\n";
     $phar->addFile($fileInfo->getRealPath(), $file);
+
+    $phar[$file]->compress(Phar::GZ);
+    
+    if (!$phar[$file]->isCompressed()) {
+        echo "Could not compress File: {$file}\n";
+    }
 }
 
 // Add bin/dep file
@@ -66,7 +72,7 @@ __HALT_COMPILER();
 STUB;
 
 $phar->setStub($stub);
-$phar->compressFiles(Phar::GZ);
+// $phar->compressFiles(Phar::GZ);
 $phar->stopBuffering();
 unset($phar);
 

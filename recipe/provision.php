@@ -123,7 +123,7 @@ task('provision:user:deployer', function () {
         run('chmod -R 755 /home/deployer');
         run('chmod 700 /home/deployer/.ssh/id_rsa');
 
-        run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php-fpm reload" > /etc/sudoers.d/php-fpm');
+        run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php{{php_version}}-fpm reload" > /etc/sudoers.d/php-fpm');
 
         run('usermod -a -G www-data deployer');
         run('id deployer');

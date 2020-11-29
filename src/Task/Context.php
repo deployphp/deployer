@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -35,30 +35,19 @@ class Context
      */
     private static $contexts = [];
 
-    /**
-     * @param Host $host
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     */
-    public function __construct($host, InputInterface $input = null, OutputInterface $output = null)
+    public function __construct(Host $host, InputInterface $input = null, OutputInterface $output = null)
     {
         $this->host = $host;
         $this->input = $input;
         $this->output = $output;
     }
 
-    /**
-     * @param Context $context
-     */
-    public static function push(Context $context)
+    public static function push(Context $context): void
     {
         self::$contexts[] = $context;
     }
 
-    /**
-     * @return bool
-     */
-    public static function has()
+    public static function has(): bool
     {
         return !empty(self::$contexts);
     }
@@ -70,15 +59,12 @@ class Context
     public static function get()
     {
         if (empty(self::$contexts)) {
-            throw new Exception('Context was required, but there\'s nothing there.');
+            throw new Exception("Context was requested but was not available.");
         }
         return end(self::$contexts);
     }
 
-    /**
-     * @return Context
-     */
-    public static function pop()
+    public static function pop(): ?Context
     {
         return array_pop(self::$contexts);
     }
@@ -89,44 +75,31 @@ class Context
      * This method provides a useful error to the end-user to make him/her aware
      * to use a function in the required task-context.
      *
-     * @param string $callerName
      * @throws Exception
      */
-    public static function required($callerName)
+    public static function required(string $callerName): void
     {
-        if (!self::get()) {
+        if (empty(self::$contexts)) {
             throw new Exception("'$callerName' can only be used within a task.");
         }
     }
 
-    /**
-     * @return Configuration
-     */
-    public function getConfig()
+    public function getConfig(): Configuration
     {
-        return $this->host->getConfig();
+        return $this->host->config();
     }
 
-    /**
-     * @return InputInterface
-     */
-    public function getInput()
+    public function getInput(): InputInterface
     {
         return $this->input;
     }
 
-    /**
-     * @return OutputInterface
-     */
-    public function getOutput()
+    public function getOutput(): OutputInterface
     {
         return $this->output;
     }
 
-    /**
-     * @return Host
-     */
-    public function getHost()
+    public function getHost(): Host
     {
         return $this->host;
     }

@@ -1,0 +1,54 @@
+import:
+  - src/Support/Config/version.php
+
+config:
+  depl: ~/dev/deployer
+  site: ~/deployer.org
+  dist: ~/dev/dist
+
+hosts:
+  deployer.org: ~
+
+tasks:
+  pull:
+    script:
+      - cd {{depl}}
+      - git pull --rebase
+      - git status
+
+  test:
+    script:
+      - cd {{depl}}
+      - composer install
+      - composer test
+      - bin/build
+      - php deployer.phar --version
+
+  release:composer:
+    script:
+      - cd {{depl}}
+      - bin/release {{version}}
+      - git push
+      - git push --tags
+
+  release:phar:
+    script:
+      - cd {{site}}
+      - php scripts/sync-artifacts.php
+      - git add artifacts
+      - git commit -m "Release {{version}}"
+
+  release:dist:
+    script:
+      - cd {{dist}}
+      - php update
+
+  release:
+    - release:composer
+    - release:phar
+    - release:dist
+
+before:
+  release:
+    - pull
+    - test

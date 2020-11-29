@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -24,7 +24,7 @@ class Changelog
      */
     private $references = [];
 
-    public function __toString()
+    public function __toString(): string
     {
         $versions = join("\n", $this->versions);
 

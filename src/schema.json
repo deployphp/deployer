@@ -1,0 +1,126 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://deployer.org/schema.json#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "import": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "config": {
+      "type": "object"
+    },
+    "hosts": {
+      "type": "object",
+      "patternProperties": {
+        "^": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "local": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "tasks": {
+      "type": "object",
+      "patternProperties": {
+        "^": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "script": {
+                  "oneOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  ]
+                },
+                "upload": {
+                  "type": "object",
+                  "properties": {
+                    "src": {
+                      "type": "string"
+                    },
+                    "dest": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "download": {
+                  "type": "object",
+                  "properties": {
+                    "src": {
+                      "type": "string"
+                    },
+                    "dest": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "desc": {
+                  "type": "string"
+                },
+                "local": {
+                  "type": "boolean"
+                },
+                "once": {
+                  "type": "boolean"
+                },
+                "hidden": {
+                  "type": "boolean"
+                },
+                "shallow": {
+                  "type": "boolean"
+                },
+                "limit": {
+                  "type": "number"
+                },
+                "select": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "before": {
+      "type": "object"
+    },
+    "after": {
+      "type": "object"
+    }
+  }
+}

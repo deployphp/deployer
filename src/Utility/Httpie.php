@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -6,6 +6,8 @@
  */
 
 namespace Deployer\Utility;
+
+use Deployer\Exception\HttpieException;
 
 class Httpie
 {
@@ -77,16 +79,20 @@ class Httpie
         return $http;
     }
 
-    public function setopt($key, $value)
+    /**
+     * @param mixed $value
+     */
+    public function setopt(int $key, $value): Httpie
     {
         $http = clone $this;
         $http->curlopts[$key] = $value;
         return $http;
     }
 
-    public function send()
+    public function send(): string
     {
         $ch = curl_init($this->url);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
@@ -99,10 +105,19 @@ class Httpie
             curl_setopt($ch, $key, $value);
         }
         $result = curl_exec($ch);
+        if ($result === false) {
+            $error = curl_error($ch);
+            $errno = curl_errno($ch);
+            curl_close($ch);
+            throw new HttpieException($error, $errno);
+        }
         curl_close($ch);
         return $result;
     }
 
+    /**
+     * @return array|string|bool
+     */
     public function getJson()
     {
         $result = $this->send();

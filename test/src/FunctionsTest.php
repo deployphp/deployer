@@ -8,17 +8,18 @@
 namespace Deployer;
 
 use Deployer\Configuration\Configuration;
-use Deployer\Console\Application;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Deployer\localhost;
 
 class FunctionsTest extends TestCase
 {
@@ -27,42 +28,22 @@ class FunctionsTest extends TestCase
      */
     private $deployer;
 
-    /**
-     * @var Application
-     */
-    private $console;
-
-    /**
-     * @var InputInterface
-     */
-    private $input;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
-     * @var Host
-     */
-    private $host;
-
     protected function setUp(): void
     {
-        $this->console = new Application();
+        $console = new Application();
 
-        $this->input = $this->createMock(Input::class);
-        $this->output = $this->createMock(Output::class);
-        $this->host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
-        $this->host
+        $input = $this->createMock(Input::class);
+        $output = $this->createMock(Output::class);
+        $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
+        $host
             ->expects($this->any())
-            ->method('getConfig')
+            ->method('config')
             ->willReturn(new Configuration());
 
-        $this->deployer = new Deployer($this->console);
-        $this->deployer['input'] = $this->input;
-        $this->deployer['output'] = $this->output;
-        Context::push(new Context($this->host, $this->input, $this->output));
+        $this->deployer = new Deployer($console);
+        $this->deployer['input'] = $input;
+        $this->deployer['output'] = $output;
+        Context::push(new Context($host, $input, $output));
     }
 
     protected function tearDown(): void
@@ -76,7 +57,7 @@ class FunctionsTest extends TestCase
     {
         host('domain.com');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
-        self::assertInstanceOf(Host::class, host('domain.com'));
+        self::assertInstanceOf(Host::class, getHost('domain.com'));
 
         host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));
@@ -93,18 +74,10 @@ class FunctionsTest extends TestCase
         self::assertInstanceOf(Localhost::class, $this->deployer->hosts->get('domain.com'));
     }
 
-    public function testInventory()
-    {
-        inventory(__DIR__ . '/../fixture/inventory.yml');
-
-        foreach (['app.deployer.org', 'beta.deployer.org', 'db1.deployer.org', 'db2.deployer.org'] as $hostname) {
-            self::assertInstanceOf(Host::class, $this->deployer->hosts->get($hostname));
-        }
-    }
-
     public function testTask()
     {
-        task('task', 'pwd');
+        task('task', function () {
+        });
 
         $task = $this->deployer->tasks->get('task');
         self::assertInstanceOf(Task::class, $task);
@@ -122,28 +95,111 @@ class FunctionsTest extends TestCase
 
     public function testBefore()
     {
-        task('main', 'pwd');
-        task('before', 'ls');
+        task('main', function () {});
+        task('before', function () {});
         before('main', 'before');
+        before('before', function () {});
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        self::assertEquals(['before', 'main'], $names);
+        self::assertEquals(['before:before', 'before', 'main'], $names);
     }
 
     public function testAfter()
     {
-        task('main', 'pwd');
-        task('after', 'ls');
+        task('main', function () {});
+        task('after', function () {});
         after('main', 'after');
+        after('after', function () {});
 
         $names = $this->taskToNames($this->deployer->scriptManager->getTasks('main'));
-        self::assertEquals(['main', 'after'], $names);
+        self::assertEquals(['main', 'after', 'after:after'], $names);
     }
 
     public function testRunLocally()
     {
         $output = runLocally('echo "hello"');
         self::assertEquals('hello', $output);
+    }
+
+    public function testRunLocallyWithOptions()
+    {
+        Context::get()->getConfig()->set('env', ['DEPLOYER_ENV' => 'default', 'DEPLOYER_ENV_TMP' => 'default']);
+
+        $output = runLocally('echo $DEPLOYER_ENV');
+        self::assertEquals('default', $output);
+        $output = runLocally('echo $DEPLOYER_ENV_TMP');
+        self::assertEquals('default', $output);
+
+        $output = runLocally('echo $DEPLOYER_ENV', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
+        self::assertEquals('default', $output);
+        $output = runLocally('echo $DEPLOYER_ENV_TMP', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
+        self::assertEquals('overwritten', $output);
+    }
+
+    public function testRunLocallyWithTwoPlaceholders(): void
+    {
+        $cmd = "echo 'placeholder %foo% %baz%'";
+        $vars = [ 'foo' => '{{bar}}', 'baz' => 'xyz%' ];
+
+        $output = runLocally($cmd, [ 'vars' => $vars ]);
+        self::assertEquals('placeholder {{bar}} xyz%', $output);
+    }
+
+    public function testRunLocallyWithPlaceholdersAndParsedValues(): void
+    {
+        $cmd = "echo 'placeholder %foo%; parsed {{baz}}'";
+        $vars = [ 'foo' => '{{bar}}' ];
+        Context::get()->getConfig()->set('baz', 'xyz');
+
+        $output = runLocally($cmd, [ 'vars' => $vars ]);
+        self::assertEquals("placeholder {{bar}}; parsed xyz", $output);
+    }
+
+    public function testWithinSetsWorkingPaths()
+    {
+        Context::get()->getConfig()->set('working_path', '/foo');
+
+        within('/bar', function () {
+            $withinWorkingPath = Context::get()->getConfig()->get('working_path');
+            self::assertEquals('/bar', $withinWorkingPath);
+        });
+
+        $originalWorkingPath = Context::get()->getConfig()->get('working_path');
+        self::assertEquals('/foo', $originalWorkingPath);
+    }
+
+    public function testWithinRestoresWorkingPathInCaseOfException()
+    {
+        Context::get()->getConfig()->set('working_path', '/foo');
+
+        try {
+            within('/bar', function () {
+                throw new \Exception('Dummy exception');
+            });
+        } catch (\Exception $exception) {
+            // noop
+        }
+
+        $originalWorkingPath = Context::get()->getConfig()->get('working_path');
+        self::assertEquals('/foo', $originalWorkingPath);
+    }
+
+    public function testWithinReturningValue()
+    {
+        $output = within('/foo', function () {
+           return 'bar';
+        });
+
+        self::assertEquals('bar', $output);
+    }
+
+    public function testWithinWithVoidFunction()
+    {
+        $output = within('/foo', function () {
+            // noop
+        });
+
+        self::assertNull($output);
     }
 
     private function taskToNames($tasks)

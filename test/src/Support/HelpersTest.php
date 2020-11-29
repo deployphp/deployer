@@ -51,4 +51,12 @@ class HelpersTest extends TestCase
             'extra',
         ], $config);
     }
+
+    public function testParseHomeDir()
+    {
+        $this->assertStringStartsWith('/', parse_home_dir('~/path'));
+        $this->assertStringStartsWith('/', parse_home_dir('~'));
+        $this->assertStringStartsWith('~', parse_home_dir('~path'));
+        $this->assertStringEndsWith('~', parse_home_dir('path~'));
+    }
 }

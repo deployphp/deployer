@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -7,64 +7,90 @@
 
 namespace Deployer\Task;
 
-use Deployer\Host\Host;
+use Deployer\Exception\Exception;
 use function Deployer\Support\array_flatten;
 
 class ScriptManager
 {
-    /**
-     * @var TaskCollection
-     */
     private $tasks;
+    private $hooksEnabled = true;
+    private $startFrom = null;
 
-    /**
-     * @param TaskCollection $tasks
-     */
     public function __construct(TaskCollection $tasks)
     {
         $this->tasks = $tasks;
     }
 
     /**
-     * Return tasks to run
+     * Return tasks to run.
      *
-     * @param string $name
-     * @param Host[] $hosts
-     * @param bool $hooksEnabled
      * @return Task[]
      */
-    public function getTasks($name, array $hosts = [], $hooksEnabled = true)
+    public function getTasks(string $name, ?string $startFrom = null): array
     {
-        $collect = function ($name) use (&$collect, $hosts, $hooksEnabled) {
-            $task = $this->tasks->get($name);
+        $tasks = [];
+        $allTasks = $this->doGetTasks($name);
 
-            if (!$task->shouldBePerformed(...array_values($hosts))) {
-                return [];
+        if ($startFrom === null) {
+            $tasks = $allTasks;
+        } else {
+            $skip = true;
+            foreach ($allTasks as $task) {
+                if ($skip) {
+                    if ($task->getName() === $startFrom) {
+                        $skip = false;
+                    } else {
+                        continue;
+                    }
+                }
+                $tasks[] = $task;
             }
-
-            $relatedTasks = [];
-
-            if ($hooksEnabled) {
-                $relatedTasks = array_merge(array_map($collect, $task->getBefore()), $relatedTasks);
+            if (count($tasks) === 0) {
+                throw new Exception('All tasks skipped via --start-from option. Nothing to run.');
             }
+        }
+        return $tasks;
+    }
 
-            if ($task instanceof GroupTask) {
-                $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getGroup()));
-            } else {
-                $relatedTasks = array_merge($relatedTasks, [$task->getName()]);
+    /**
+     * @return Task[]
+     */
+    public function doGetTasks(string $name): array
+    {
+        $tasks = [];
+
+        $task = $this->tasks->get($name);
+
+        if ($this->hooksEnabled) {
+            $tasks = array_merge(array_map([$this, 'doGetTasks'], $task->getBefore()), $tasks);
+        }
+
+        if ($task instanceof GroupTask) {
+            foreach ($task->getGroup() as $taskName) {
+                $subTasks = $this->doGetTasks($taskName);
+                foreach ($subTasks as $subTask) {
+                    $subTask->addSelector($task->getSelector());
+                    $tasks[] = $subTask;
+                }
             }
+        } else {
+            $tasks[] = $task;
+        }
 
-            if ($hooksEnabled) {
-                $relatedTasks = array_merge($relatedTasks, array_map($collect, $task->getAfter()));
-            }
+        if ($this->hooksEnabled) {
+            $tasks = array_merge($tasks, array_map([$this, 'doGetTasks'], $task->getAfter()));
+        }
 
-            return $relatedTasks;
-        };
+        return array_flatten($tasks);
+    }
 
-        $script = $collect($name);
-        $tasks = array_flatten($script);
+    public function getHooksEnabled(): bool
+    {
+        return $this->hooksEnabled;
+    }
 
-        // Convert names to real tasks
-        return array_map([$this->tasks, 'get'], $tasks);
+    public function setHooksEnabled(bool $hooksEnabled): void
+    {
+        $this->hooksEnabled = $hooksEnabled;
     }
 }

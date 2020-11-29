@@ -1,13 +1,8 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
 use Deployer\Exception\Exception;
+use Symfony\Component\Console\Output\OutputInterface;
 
 desc('Creating symlinks for shared files and dirs');
 task('deploy:shared', function () {
@@ -22,15 +17,19 @@ task('deploy:shared', function () {
         }
     }
 
+    $copyVerbosity = output()->getVerbosity() === OutputInterface::VERBOSITY_DEBUG ? 'v' : '';
+
     foreach (get('shared_dirs') as $dir) {
+        // Make sure all path without tailing slash.
+        $dir = trim($dir, '/');
+
         // Check if shared dir does not exist.
         if (!test("[ -d $sharedPath/$dir ]")) {
             // Create shared dir if it does not exist.
             run("mkdir -p $sharedPath/$dir");
-
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -rv {{release_path}}/$dir $sharedPath/" . dirname(parse($dir)));
+                run("cp -r{$copyVerbosity} {{release_path}}/{$dir} {$sharedPath}/" . dirname(parse($dir)));
             }
         }
 
@@ -57,7 +56,9 @@ task('deploy:shared', function () {
         // and file exist in release
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
-            run("cp -rv {{release_path}}/$file $sharedPath/$file");
+            run(
+                "cp -r{$copyVerbosity} {{release_path}}/{$file} {$sharedPath}/{$file}"
+            );
         }
 
         // Remove from source.

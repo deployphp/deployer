@@ -7,6 +7,7 @@
 
 namespace Deployer\Host;
 
+use Deployer\Configuration\Configuration;
 use PHPUnit\Framework\TestCase;
 
 class HostTest extends TestCase
@@ -15,53 +16,34 @@ class HostTest extends TestCase
     {
         $host = new Host('host');
         $host
-            ->hostname('host')
-            ->user('user')
-            ->port(22)
-            ->configFile('~/.ssh/config')
-            ->identityFile('~/.ssh/id_rsa')
-            ->forwardAgent(true)
-            ->multiplexing(true)
-            ->sshOptions(['BatchMode' => 'yes'])
-            ->addSshOption('Compression', 'yes');
+            ->setHostname('hostname')
+            ->setRemoteUser('remote_user')
+            ->setPort(22)
+            ->setConfigFile('~/.ssh/config')
+            ->setIdentityFile('~/.ssh/id_rsa')
+            ->setForwardAgent(true)
+            ->setSshMultiplexing(true);
 
-        self::assertEquals('host', $host->getHostname());
-        self::assertEquals('user', $host->getUser());
+        self::assertEquals('host', $host->getAlias());
+        self::assertStringContainsString('host', $host->getTag());
+        self::assertEquals('hostname', $host->getHostname());
+        self::assertEquals('remote_user', $host->getRemoteUser());
         self::assertEquals(22, $host->getPort());
         self::assertEquals('~/.ssh/config', $host->getConfigFile());
         self::assertEquals('~/.ssh/id_rsa', $host->getIdentityFile());
-        self::assertEquals(true, $host->isForwardAgent());
-        self::assertEquals(true, $host->isMultiplexing());
-        self::assertEquals('user@host', "$host");
-        self::assertStringContainsString(
-            '-A -p 22 -F ~/.ssh/config -i ~/.ssh/id_rsa -o BatchMode=yes -o Compression=yes',
-            $host->getSshArguments()->getCliArguments()
-        );
-    }
-
-    public function testHostWithCustomPort()
-    {
-        $host = new Host('host');
-        $host
-            ->hostname('host')
-            ->user('user')
-            ->port(2222);
-
-        self::assertEquals('-A -p 2222', $host->getSshArguments()->getCliArguments());
-        self::assertEquals('user@host', "$host");
+        self::assertEquals(true, $host->getForwardAgent());
+        self::assertEquals(true, $host->getSshMultiplexing());
     }
 
     public function testConfigurationAccessor()
     {
         $host = new Host('host');
         $host
-            ->stage('stage')
-            ->roles('db', 'app')
+            ->set('roles', ['db', 'app'])
             ->set('key', 'value')
             ->set('array', [1])
             ->add('array', [2]);
 
-        self::assertEquals('stage', $host->get('stage'));
         self::assertEquals(['db', 'app'], $host->get('roles'));
         self::assertEquals('value', $host->get('key'));
         self::assertEquals([1, 2], $host->get('array'));
@@ -70,8 +52,8 @@ class HostTest extends TestCase
     public function testHostAlias()
     {
         $host = new Host('host/alias');
-        self::assertEquals('host/alias', $host->getHostname());
-        self::assertEquals('host', "$host");
+        self::assertEquals('host/alias', $host->getAlias());
+        self::assertEquals('host', $host->getHostname());
     }
 
     public function testHostWithParams()
@@ -80,8 +62,25 @@ class HostTest extends TestCase
         $value = 'new_value';
         $host
             ->set('env', $value)
-            ->identityFile('{{env}}');
+            ->set('identity_file', '{{env}}');
 
         self::assertEquals($value, $host->getIdentityFile());
+    }
+
+    public function testHostWithUserFromConfig()
+    {
+        $parent = new Configuration();
+        $parent->set("deploy_user", function () {
+            return "test_user";
+        });
+
+        $host = new Host('host');
+        $host->config()->bind($parent);
+        $host
+            ->setHostname('host')
+            ->setRemoteUser('{{deploy_user}}')
+            ->setPort(22);
+
+        self::assertEquals('test_user@host', $host->getConnectionString());
     }
 }

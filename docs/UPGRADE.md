@@ -2,7 +2,8 @@
 
 1. Change `hostname` to `alias`.
 2. Change `real_hostname` to `hostname`.
-3. Update `host()` definitions:
+3. Change `user` to `remote_user`.
+4. Update `host()` definitions:
     1. Add `set` prefix to all setters: `identityFile` -> `setIdentityFile` or `set('identify_file')`
     2. Update `addSshOption('UserKnownHostsFile', '/dev/null')` to `setSshArguments(['-o UserKnownHostsFile=/dev/null']);`
     3. Replace _stage_ with labels, i.e.
@@ -11,17 +12,17 @@
            ->set('labels', ['stage' => 'prod']); 
        ```
     4. `alias()` is deleted, `host()` itself sets alias and hostname, to override hostname use `setHostname()`.
-4. Update `task()` definitions.
+5. Update `task()` definitions.
     1. Replace `onRoles()` with `select()`:
        ```php
        task(...)
            ->select('stage=prod');
        ``` 
-5. Third party recipes now live inside main Deployer repo in _contrib_:
+6. Third party recipes now live inside main Deployer repo in _contrib_:
    ```php
    require 'contrib/rsync.php';
    ```
-6. Replace `inventory()` with `import()`. It now can import hosts, configs, tasks:
+7. Replace `inventory()` with `import()`. It now can import hosts, configs, tasks:
    ```yaml
    import: recipe/common.php
    

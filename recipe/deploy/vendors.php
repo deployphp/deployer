@@ -20,11 +20,11 @@ set('composer_version', null);
 /**
  * Set this variable to stable, snapshot, preview, 1 or 2 to select which Composer channel to use
  */
-set('composer_channel', null);
+set('composer_channel', 'stable');
 
 set('bin/composer', function () {
-    $composerVersionToInstall = get('composer_version', null);
-    $composerChannelToInstall = get('composer_channel', 'stable');
+    $composerVersionToInstall = get('composer_version');
+    $composerChannelToInstall = get('composer_channel');
 
     $composerBin = null;
     if (commandExist('composer')) {

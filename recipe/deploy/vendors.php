@@ -32,11 +32,11 @@ set('bin/composer', function () {
 
     $composerBin = null;
     if (commandExist('composer')) {
-        $composerBin = '{{bin/php} ' . locateBinaryPath('composer');
+        $composerBin = '{{bin/php}} ' . locateBinaryPath('composer');
     }
 
     if (test('[ -f {{deploy_path}}/.dep/composer.phar ]')) {
-        $composerBin = '{{bin/php} {{deploy_path}}/.dep/composer.phar';
+        $composerBin = '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
     }
 
     if ($composerBin) {

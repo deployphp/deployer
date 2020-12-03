@@ -24,11 +24,7 @@ set('composer_channel', null);
 
 set('bin/composer', function () {
     $composerVersionToInstall = get('composer_version', null);
-    $composerChannelToInstall = get('composer_channel', null);
-    $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2',];
-    if ($composerChannelToInstall && !in_array((string)$composerChannelToInstall, $composerValidChannels, true)) {
-        throw new \Exception('Selected Composer channel ' . $composerChannelToInstall . ' is not valid. Valid channels are: ' . implode(', ', $composerValidChannels));
-    }
+    $composerChannelToInstall = get('composer_channel', 'stable');
 
     $composerBin = null;
     if (commandExist('composer')) {

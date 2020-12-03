@@ -26,7 +26,7 @@ set('bin/composer', function () {
     $composerVersionToInstall = get('composer_version', null);
     $composerChannelToInstall = get('composer_channel', null);
     $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2',];
-    if (!in_array((string)$composerChannelToInstall, $composerValidChannels, true)) {
+    if ($composerChannelToInstall && !in_array((string)$composerChannelToInstall, $composerValidChannels, true)) {
         throw new \Exception('Selected Composer channel ' . $composerChannelToInstall . ' is not valid. Valid channels are: ' . implode(', ', $composerValidChannels));
     }
 
@@ -40,7 +40,7 @@ set('bin/composer', function () {
     }
 
     if ($composerBin) {
-        $currentComposerVersionRaw = run('{{bin/php}} ' . $composerBin . ' --version');
+        $currentComposerVersionRaw = run($composerBin . ' --version');
         if (preg_match('/(\\d+\\.\\d+)(\\.\\d+)?-?(RC|alpha|beta|dev)?\d*/', $currentComposerVersionRaw, $composerVersionMatches)) {
             $currentComposerVersion = $composerVersionMatches[0] ?? null;
             if ($currentComposerVersion) {

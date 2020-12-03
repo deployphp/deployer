@@ -32,11 +32,11 @@ set('bin/composer', function () {
 
     $composerBin = null;
     if (commandExist('composer')) {
-        $composerBin = locateBinaryPath('composer');
+        $composerBin = '{{bin/php} ' . locateBinaryPath('composer');
     }
 
     if (test('[ -f {{deploy_path}}/.dep/composer.phar ]')) {
-        $composerBin = '{{deploy_path}}/.dep/composer.phar';
+        $composerBin = '{{bin/php} {{deploy_path}}/.dep/composer.phar';
     }
 
     if ($composerBin) {
@@ -45,7 +45,7 @@ set('bin/composer', function () {
             $currentComposerVersion = $composerVersionMatches[0] ?? null;
             if ($currentComposerVersion) {
                 if ($composerVersionToInstall && $currentComposerVersion === (string)$composerVersionToInstall) {
-                    return '{{bin/php} ' . $composerBin;
+                    return $composerBin;
                 }
                 if ($composerChannelToInstall && !$composerVersionToInstall) {
                     if (preg_match('/\\+(.*)\\)/', $currentComposerVersionRaw, $snapshotVersion)) {
@@ -54,7 +54,7 @@ set('bin/composer', function () {
                     $composerChannelData = json_decode(file_get_contents('https://getcomposer.org/versions'), true);
                     $latestComposerVersionFromChannel = $composerChannelData[$composerChannelToInstall][0]['version'] ?? null;
                     if ($latestComposerVersionFromChannel && $latestComposerVersionFromChannel === $currentComposerVersion) {
-                        return '{{bin/php} ' . $composerBin;
+                        return $composerBin;
                     }
                 }
             }

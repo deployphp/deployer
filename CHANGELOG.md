@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Impossibility to ask for empty password via askHiddenResponse(). [#2317]
 
 
 ## v6.8.0
@@ -595,6 +596,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2317]: https://github.com/deployphp/deployer/issues/2317
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

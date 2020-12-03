@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Impossibility to ask for empty password via askHiddenResponse(). [#2317]
 
 
 ## v6.8.0

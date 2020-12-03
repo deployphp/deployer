@@ -23,26 +23,49 @@ set('composer_version', null);
 set('composer_channel', null);
 
 set('bin/composer', function () {
+    $composerVersionToInstall = get('composer_version', null);
+    $composerChannelToInstall = get('composer_channel', null);
+    $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2',];
+    if (!in_array((string)$composerChannelToInstall, $composerValidChannels, true)) {
+        throw new \Exception('Selected Composer channel ' . $composerChannelToInstall . ' is not valid. Valid channels are: ' . implode(', ', $composerValidChannels));
+    }
+
+    $composerBin = null;
     if (commandExist('composer')) {
-        return '{{bin/php}} ' . locateBinaryPath('composer');
+        $composerBin = locateBinaryPath('composer');
     }
 
     if (test('[ -f {{deploy_path}}/.dep/composer.phar ]')) {
-        return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
+        $composerBin = '{{deploy_path}}/.dep/composer.phar';
     }
 
-    $composerVersionToInstall = get('composer_version', null);
-    $composerChannel = get('composer_channel', null);
-    $installCommand = "cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}";
+    if ($composerBin) {
+        $currentComposerVersionRaw = run('{{bin/php}} ' . $composerBin . ' --version');
+        if (preg_match('/(\\d+\\.\\d+)(\\.\\d+)?-?(RC|alpha|beta|dev)?\d*/', $currentComposerVersionRaw, $composerVersionMatches)) {
+            $currentComposerVersion = $composerVersionMatches[0] ?? null;
+            if ($currentComposerVersion) {
+                if ($composerVersionToInstall && $currentComposerVersion === (string)$composerVersionToInstall) {
+                    return '{{bin/php} ' . $composerBin;
+                }
+                if ($composerChannelToInstall && !$composerVersionToInstall) {
+                    if (preg_match('/\\+(.*)\\)/', $currentComposerVersionRaw, $snapshotVersion)) {
+                        $currentComposerVersion = $snapshotVersion[1] ?? null;
+                    }
+                    $composerChannelData = json_decode(file_get_contents('https://getcomposer.org/versions'), true);
+                    $latestComposerVersionFromChannel = $composerChannelData[$composerChannelToInstall][0]['version'] ?? null;
+                    if ($latestComposerVersionFromChannel && $latestComposerVersionFromChannel === $currentComposerVersion) {
+                        return '{{bin/php} ' . $composerBin;
+                    }
+                }
+            }
+        }
+    }
 
+    $installCommand = "cd {{release_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}";
     if ($composerVersionToInstall) {
         $installCommand .= " -- --version=" . $composerVersionToInstall;
-    } elseif ($composerChannel) {
-        $composerValidChannels = ['stable', 'snapshot', 'preview', '1', '2',];
-        if (!in_array($composerChannel, $composerValidChannels)) {
-            throw new \Exception('Selected Composer channel ' . $composerChannel . ' is not valid. Valid channels are: ' . implode(', ', $composerValidChannels));
-        }
-        $installCommand .= " -- --" . $composerChannel;
+    } elseif ($composerChannelToInstall) {
+        $installCommand .= " -- --" . $composerChannelToInstall;
     }
 
     run($installCommand);

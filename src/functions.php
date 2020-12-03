@@ -740,7 +740,7 @@ function askHiddenResponse(string $message): string
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return (string) Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */
@@ -753,7 +753,7 @@ function askHiddenResponse(string $message): string
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 
-    return $helper->ask(input(), output(), $question);
+    return (string) $helper->ask(input(), output(), $question);
 }
 
 function input(): InputInterface

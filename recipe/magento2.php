@@ -4,6 +4,7 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 
 use Deployer\Exception\RunException;
+use Deployer\Host\Host;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
@@ -17,6 +18,10 @@ add('recipes', ['magento2']);
 // To change that, simply put set('static_content_locales', 'en_US de_DE');`
 // in you deployer script.
 set('static_content_locales', 'en_US');
+
+set('content_version', function () {
+    return time();
+});
 
 set('shared_files', [
     'app/etc/env.php',
@@ -74,8 +79,18 @@ task('magento:compile', function () {
 
 desc('Deploy assets');
 task('magento:deploy:assets', function () {
-    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy {{static_content_locales}}");
+    run("{{bin/php}} {{release_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}}");
 });
+
+desc('Sync content version');
+task('magento:sync:content_version', function () {
+    $timestamp = time();
+    on(select('all'), function (Host $host) use ($timestamp) {
+        $host->set('content_version', $timestamp);
+    });
+})->once();
+
+before('magento:deploy:assets', 'magento:sync:content_version');
 
 desc('Enable maintenance mode');
 task('magento:maintenance:enable', function () {

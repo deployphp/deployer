@@ -61,7 +61,7 @@ class InitCommand extends Command
         $template = $io->choice('Select project template', $this->recipes(), 'common');
 
         // Repo
-        $default = false;
+        $default = '';
         try {
             $process = Process::fromShellCommandline('git remote get-url origin');
             $default = $process->mustRun()->getOutput();
@@ -86,7 +86,7 @@ class InitCommand extends Command
         }
 
         // Project
-        $default = false;
+        $default = '';
         try {
             $process = Process::fromShellCommandline('basename "$PWD"');
             $default = $process->mustRun()->getOutput();

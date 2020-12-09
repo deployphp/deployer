@@ -18,7 +18,7 @@ task('deploy:cleanup', function () {
     }
 
     foreach ($releases as $release) {
-        run("ionice -c 3 nice -19 find {{deploy_path}}/releases/$release/ -delete", $runOpts);
+        run("find {{deploy_path}}/releases/$release/ -delete", $runOpts);
         run("rm -rf {{deploy_path}}/releases/$release", $runOpts);
     }
 

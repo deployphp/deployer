@@ -20,6 +20,7 @@
 - Added support for placeholders in `run()` func.
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
+- Added safety to avoid modifying files outside deploy_path.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

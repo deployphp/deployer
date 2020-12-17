@@ -27,7 +27,7 @@
         "bin/dep"
     ],
     "require": {
-        "php": "~7.0",
+        "php": ">=7.2.5",
         "deployer/phar-update": "~2.1",
         "pimple/pimple": "~3.0",
         "symfony/console": "~2.7|~3.0|~4.0",

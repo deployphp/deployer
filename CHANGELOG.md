@@ -33,7 +33,6 @@
 - Lots, and lots of long-standing bugs.
 
 
-
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
 

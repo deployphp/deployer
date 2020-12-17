@@ -3,3 +3,7 @@ contact_links:
   - name: Ask question
     url: https://github.com/deployphp/deployer/discussions/category_choices
     about: Please ask and answer questions in discussions
+    
+  - name: PHP8 Support
+    url: https://github.com/deployphp/deployer/discussions/2351
+    about: Read this is you have PHP8 releted problems

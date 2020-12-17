@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.4.5...master](https://github.com/deployphp/deployer/compare/v6.4.5...master)
+
+### Fixed
+- Add Symfony 5+ support
+
+
 ## v6.4.5
 [v6.4.4...v6.4.5](https://github.com/deployphp/deployer/compare/v6.4.4...v6.4.5)
 

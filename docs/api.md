@@ -51,11 +51,13 @@ host(string ...$hostname)
 ```
 
 
+
 ## localhost()
 
 ```php
 localhost(string ...$hostnames)
 ```
+
 
 
 ## getHost()
@@ -67,6 +69,7 @@ getHost(string $alias): Host
 Get host by host alias.
 
 
+
 ## currentHost()
 
 ```php
@@ -74,6 +77,7 @@ currentHost(): Host
 ```
 
 Returns current host.
+
 
 
 ## select()
@@ -89,6 +93,7 @@ on(select('stage=prod, role=db'), function ($host) {
     ...
 });
 ```
+
 
 
 ## import()
@@ -108,6 +113,7 @@ import(__DIR__ . '/config/hosts.yaml');
 ```
 
 
+
 ## desc()
 
 ```php
@@ -115,6 +121,7 @@ desc(?string $title = null): ?string
 ```
 
 Set task description.
+
 
 ## task()
 
@@ -127,6 +134,16 @@ Define a new task and save to tasks list.
 Alternatively get a defined task.
 
 
+### Arguments:
+- ### name
+  **type**: `string `
+
+  Name of current task.
+- ### body
+  **type**: `callable|array|string|null `
+
+  Callable task, array of other tasks names or nothing to get a defined tasks
+
 ## before()
 
 ```php
@@ -137,6 +154,16 @@ Call that task before specified task runs.
 
 
 
+### Arguments:
+- ### task
+  **type**: `string `
+
+  The task before $that should be run.
+- ### do
+  **type**: `string|callable `
+
+  The task to be run.
+
 ## after()
 
 ```php
@@ -146,6 +173,16 @@ after(string $task, $do)
 Call that task after specified task runs.
 
 
+
+### Arguments:
+- ### task
+  **type**: `string `
+
+  The task after $that should be run.
+- ### do
+  **type**: `string|callable `
+
+  The task to be run.
 
 ## fail()
 
@@ -158,6 +195,16 @@ When called multiple times for a task, previous fail() definitions will be overr
 
 
 
+### Arguments:
+- ### task
+  **type**: `string `
+
+  The task which need to fail so $that should be run.
+- ### do
+  **type**: `string|callable `
+
+  The task to be run.
+
 ## option()
 
 ```php
@@ -167,6 +214,28 @@ option(string $name, $shortcut = null, ?int $mode = null, string $description = 
 Add users options.
 
 
+### Arguments:
+- ### name
+  **type**: `string `
+
+  The option name
+- ### shortcut
+  **type**: `string|array|null `
+
+  The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+- ### mode
+  **type**: `int|null `
+
+  The option mode: One of the VALUE_* constants
+- ### description
+  **type**: `string `
+
+  A description text
+- ### default
+  **type**: `string|string[]|int|bool|null `
+
+  The default value (must be null for self::VALUE_NONE)
+
 ## cd()
 
 ```php
@@ -174,6 +243,7 @@ cd(string $path): void
 ```
 
 Change the current working directory.
+
 
 ## within()
 
@@ -184,27 +254,22 @@ within(string $path, callable $callback)
 Execute a callback within a specific directory and revert back to the initial working directory.
 
 
+
 ## run()
 
 ```php
-run(string $command, array $options = []): string
+run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
 ```
 
 Executes given command on remote host.
-
-Options:
-- `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
-- `idle_timeout` - Sets the process idle timeout (max. time since last output) in seconds.
-- `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']]);`
-- `env` - Array of environment variables: `run('echo $KEY', ['env' => ['key' => 'value']]);`
 
 Examples:
 
 ```php
 run('echo hello world');
 run('cd {{deploy_path}} && git status');
-run('password %secret%', ['secret' => getenv('CI_SECRET')]);
+run('password %secret%', secret: getenv('CI_SECRET'));
+run('curl medv.io', timeout: 5);
 ```
 
 ```php
@@ -214,16 +279,82 @@ run("echo $path");
 
 
 
+### Arguments:
+- ### command
+  **type**: `string `
+
+  Command to run on remote host
+- ### options
+  **type**: `array|null `
+
+  Array of options will override passed named arguments.
+- ### timeout
+  **type**: `int|null `
+
+   Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+- ### idle_timeout
+  **type**: `int|null `
+
+  Sets the process idle timeout (max. time since last output) in seconds.
+- ### secret
+  **type**: `string|null `
+
+  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+- ### vars
+  **type**: `array|null `
+
+  Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
+- ### env
+  **type**: `array|null `
+
+  Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+
 ## runLocally()
 
 ```php
-runLocally(string $command, array $options = []): string
+runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
 ```
 
-Execute commands on local machine
+Execute commands on a local machine.
+
+Examples:
+
+```php
+$user = runLocally('git config user.name');
+runLocally("echo $user");
+```
 
 
 
+### Arguments:
+- ### command
+  **type**: `string `
+
+  Command to run on localhost.
+- ### options
+  **type**: `array|null `
+
+  Array of options will override passed named arguments.
+- ### timeout
+  **type**: `int|null `
+
+   Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+- ### idle_timeout
+  **type**: `int|null `
+
+  Sets the process idle timeout (max. time since last output) in seconds.
+- ### secret
+  **type**: `string|null `
+
+  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+- ### vars
+  **type**: `array|null `
+
+  Array of placeholders to replace in command: `runLocally('echo %key%', vars: ['key' => 'anything does here']);`
+- ### env
+  **type**: `array|null `
+
+  Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
 
 ## test()
 
@@ -241,6 +372,7 @@ if (test('[ -d {{release_path}} ]')) {
 ```
 
 
+
 ## testLocally()
 
 ```php
@@ -251,6 +383,7 @@ Run test command locally.
 Example:
 
     testLocally('[ -d {{local_release_path}} ]')
+
 
 
 ## on()
@@ -280,6 +413,7 @@ on(Deployer::get()->hosts, function ($host) {
 ```
 
 
+
 ## invoke()
 
 ```php
@@ -290,6 +424,7 @@ Runs a task.
 ```php
 invoke('deploy:symlink');
 ```
+
 
 
 ## upload()
@@ -306,6 +441,7 @@ Upload file or directory to host.
 
 
 
+
 ## download()
 
 ```php
@@ -313,6 +449,7 @@ download(string $source, string $destination, array $config = []): void
 ```
 
 Download file or directory from host
+
 
 
 
@@ -324,6 +461,7 @@ info(string $message): void
 
 Writes an info message.
 
+
 ## warning()
 
 ```php
@@ -331,6 +469,7 @@ warning(string $message): void
 ```
 
 Writes an warning message.
+
 
 ## writeln()
 
@@ -340,6 +479,7 @@ writeln($message, int $options = 0): void
 
 Writes a message to the output and adds a newline at the end.
 
+
 ## parse()
 
 ```php
@@ -347,6 +487,7 @@ parse(string $value): string
 ```
 
 Parse set values.
+
 
 ## set()
 
@@ -357,6 +498,7 @@ set(string $name, $value): void
 Setup configuration option.
 
 
+
 ## add()
 
 ```php
@@ -364,6 +506,7 @@ add(string $name, array $array): void
 ```
 
 Merge new config params to existing config array.
+
 
 
 ## get()
@@ -376,6 +519,7 @@ Get configuration value.
 
 
 
+
 ## has()
 
 ```php
@@ -384,11 +528,13 @@ has(string $name): bool
 
 Check if there is such configuration option.
 
+
 ## ask()
 
 ```php
 ask(string $message, ?string $default = null, ?array $autocomplete = null): ?string
 ```
+
 
 
 ## askChoice()
@@ -399,11 +545,13 @@ askChoice(string $message, array $availableChoices, ?string $default = null, boo
 
 
 
+
 ## askConfirmation()
 
 ```php
 askConfirmation(string $message, bool $default = false): bool
 ```
+
 
 
 ## askHiddenResponse()
@@ -413,6 +561,7 @@ askHiddenResponse(string $message): string
 ```
 
 
+
 ## input()
 
 ```php
@@ -420,11 +569,13 @@ input(): InputInterface
 ```
 
 
+
 ## output()
 
 ```php
 output(): OutputInterface
 ```
+
 
 
 ## commandExist()
@@ -436,6 +587,7 @@ commandExist(string $command): bool
 Check if command exists
 
 
+
 ## commandSupportsOption()
 
 ```php
@@ -443,10 +595,12 @@ commandSupportsOption(string $command, string $option): bool
 ```
 
 
+
 ## locateBinaryPath()
 
 ```php
 locateBinaryPath(string $name): string
 ```
+
 
 

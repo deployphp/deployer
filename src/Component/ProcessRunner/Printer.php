@@ -53,9 +53,6 @@ class Printer
         }
     }
 
-    /**
-     * @param string $type Process::OUT or Process::ERR
-     */
     public function writeln(string $type, Host $host, string $line): void
     {
         $line = self::filterOutput($line);
@@ -65,13 +62,7 @@ class Printer
             return;
         }
 
-        if ($type === Process::ERR) {
-            $line = "[{$host->getTag()}] <fg=red>err</> $line";
-        } else {
-            $line = "[{$host->getTag()}] $line";
-        }
-
-        $this->output->writeln($line);
+        $this->output->writeln("[{$host->getTag()}] $line");
     }
 
     /**

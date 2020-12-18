@@ -52,12 +52,6 @@ class Logger
             return;
         }
 
-        if ($type === Process::ERR) {
-            $line = "[{$host->getAlias()}] err $line";
-        } else {
-            $line = "[{$host->getAlias()}] $line";
-        }
-
-        $this->log($line);
+        $this->log("[{$host->getAlias()}] $line");
     }
 }

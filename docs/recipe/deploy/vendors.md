@@ -11,8 +11,6 @@
 * Config
   * [`composer_action`](#composer_action)
   * [`composer_options`](#composer_options)
-  * [`composer_version`](#composer_version)
-  * [`composer_channel`](#composer_channel)
 * Tasks
   * [`deploy:vendors`](#deployvendors) — Installing vendors
 
@@ -26,22 +24,6 @@
 [Source](https://github.com/deployphp/deployer/search?q=%22composer_options%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
 
-
-### composer_version
-[Source](https://github.com/deployphp/deployer/search?q=%22composer_version%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
-
-Can be used to choose what composer version to install.
-Valid values are any that are [listed here](https://getcomposer.org/download/).
-
-For example:
-```php
-    set('composer_version', '10.10.15')
-```
-
-### composer_channel
-[Source](https://github.com/deployphp/deployer/search?q=%22composer_channel%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
-
-Set this variable to stable, snapshot, preview, 1 or 2 to select which Composer channel to use
 
 
 ## Tasks

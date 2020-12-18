@@ -390,8 +390,8 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  * Examples:
  *
  * ```php
- * $user = run('git config user.name');
- * run("echo $user");
+ * $user = runLocally('git config user.name');
+ * runLocally("echo $user");
  * ```
  *
  * @param string $command Command to run on localhost.

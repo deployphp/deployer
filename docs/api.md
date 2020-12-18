@@ -320,8 +320,8 @@ Execute commands on a local machine.
 Examples:
 
 ```php
-$user = run('git config user.name');
-run("echo $user");
+$user = runLocally('git config user.name');
+runLocally("echo $user");
 ```
 
 

@@ -20,6 +20,7 @@
 - Added support for placeholders in `run()` func.
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
+- Added support for PHP8.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

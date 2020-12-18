@@ -56,7 +56,7 @@ function host(string ...$hostname)
         $deployer->hosts->set($aliases[0], $host);
         return $host;
     } else {
-        $hosts = array_map(function ($hostname) use ($deployer) : Host {
+        $hosts = array_map(function ($hostname) use ($deployer): Host {
             $host = new Host($hostname);
             $deployer->hosts->set($hostname, $host);
             return $host;
@@ -295,19 +295,13 @@ function within(string $path, callable $callback)
 /**
  * Executes given command on remote host.
  *
- * Options:
- * - `timeout` - Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
- * - `idle_timeout` - Sets the process idle timeout (max. time since last output) in seconds.
- * - `secret` - Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
- * - `vars` - Array of placeholders to replace in command: `run('echo %key%', ['vars' => ['key' => 'anything does here']]);`
- * - `env` - Array of environment variables: `run('echo $KEY', ['env' => ['key' => 'value']]);`
- *
  * Examples:
  *
  * ```php
  * run('echo hello world');
  * run('cd {{deploy_path}} && git status');
- * run('password %secret%', ['secret' => getenv('CI_SECRET')]);
+ * run('password %secret%', secret: getenv('CI_SECRET'));
+ * run('curl medv.io', timeout: 5);
  * ```
  *
  * ```php
@@ -315,12 +309,26 @@ function within(string $path, callable $callback)
  * run("echo $path");
  * ```
  *
- * @param array $options
+ * @param string $command Command to run on remote host
+ * @param array|null $options Array of options will override passed named arguments.
+ * @param int|null $timeout  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+ * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
+ * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ * @param array|null $vars Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
+ * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
  *
- * @throws RunException|TimeoutException
+ * @throws Exception\Exception|RunException|TimeoutException
  */
-function run(string $command, array $options = []): string
+function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
 {
+    $namedArguments = [];
+    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env',] as $arg) {
+        if ($$arg !== null) {
+            $namedArguments[$arg] = $$arg;
+        }
+    }
+    $options = array_merge($namedArguments, $options);
+
     $run = function ($command, $options = []): string {
         $host = Context::get()->getHost();
 
@@ -377,17 +385,35 @@ function run(string $command, array $options = []): string
 
 
 /**
- * Execute commands on local machine
+ * Execute commands on a local machine.
  *
- * @param string $command Command to run locally.
- * @param array $options
+ * Examples:
  *
- * @return string Output of command.
+ * ```php
+ * $user = run('git config user.name');
+ * run("echo $user");
+ * ```
+ *
+ * @param string $command Command to run on localhost.
+ * @param array|null $options Array of options will override passed named arguments.
+ * @param int|null $timeout  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+ * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
+ * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ * @param array|null $vars Array of placeholders to replace in command: `runLocally('echo %key%', vars: ['key' => 'anything does here']);`
+ * @param array|null $env Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
  *
  * @throws RunException
  */
-function runLocally(string $command, array $options = []): string
+function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
 {
+    $namedArguments = [];
+    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env'] as $arg) {
+        if ($$arg !== null) {
+            $namedArguments[$arg] = $$arg;
+        }
+    }
+    $options = array_merge($namedArguments, $options);
+
     $process = Deployer::get()->processRunner;
     $command = parse($command);
 
@@ -740,7 +766,7 @@ function askHiddenResponse(string $message): string
     }
 
     if (Deployer::isWorker()) {
-        return (string) Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return (string)Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */
@@ -753,7 +779,7 @@ function askHiddenResponse(string $message): string
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 
-    return (string) $helper->ask(input(), output(), $question);
+    return (string)$helper->ask(input(), output(), $question);
 }
 
 function input(): InputInterface

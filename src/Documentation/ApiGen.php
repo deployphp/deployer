@@ -46,8 +46,11 @@ class ApiGen
                         $state = 'root';
                         break;
                     }
+                    if (preg_match('/^\s\*\s@param\s(?<type>.+?)\$(?<name>.+?)\s(?<comment>.+)$/', $line, $matches)) {
+                        $params .= "- ### {$matches['name']}\n  **type**: `{$matches['type']}`\n\n  {$matches['comment']}\n";
+                        break;
+                    }
                     if (str_starts_with($line, ' * @')) {
-                        $params .= $line . "\n";
                         break;
                     }
                     $comment .= preg_replace('/^\s\*\s?/', '', $line) . "\n";
@@ -82,6 +85,10 @@ MD;
                 'signature' => $signature,
             ] = $fn;
 
+            if (!empty($params)) {
+                $params = "### Arguments:\n$params";
+            }
+
             $output .= <<<MD
 ## $funcName()
 
@@ -90,6 +97,7 @@ $signature
 ```
 
 $comment
+$params
 
 MD;
         }

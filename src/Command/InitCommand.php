@@ -124,7 +124,6 @@ class InitCommand extends Command
 namespace Deployer;
 
 require 'recipe/$template.php';
-require 'recipe/provision.php';
 
 // Config
 
@@ -161,7 +160,6 @@ PHP;
         return <<<YAML
 import: 
     - recipe/$template.php
-    - recipe/provision.php
 
 config:
   application: '$project'

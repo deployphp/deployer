@@ -61,7 +61,7 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-av
     && echo "Listen 81" >> /etc/apache2/ports.conf \
     && a2enmod rewrite \
     && a2ensite healthcheck
-    
+
 RUN useradd \
         --create-home \
         deployer \
@@ -96,31 +96,3 @@ RUN chmod a+x /usr/local/bin/start-servers \
 
 EXPOSE 22 80 81
 CMD [ "start-servers" ]
-
-
-
-
-
-FROM ubuntu:20.04 AS provisioned
-RUN apt-get update && apt-get install -y \
-            openssh-server \
-            sudo \
-    && rm -rf /var/lib/apt/lists/*
-
-# SSH login fix. Otherwise user is kicked off after login
-RUN mkdir /run/sshd \
-    && sed -i 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd
-
-COPY --from=deployer /root/.ssh/id_rsa.pub /tmp/root_rsa.pub
-
-RUN mkdir ~root/.ssh \
-    && cat /tmp/root_rsa.pub >> ~root/.ssh/authorized_keys \
-    && chmod 700 ~root/.ssh \
-    && chmod 600 ~root/.ssh \
-    && rm -rf /tmp/root_rsa.pub
-
-COPY scripts/provisioned-start.sh /usr/local/bin/provisioned-start
-RUN chmod a+x /usr/local/bin/provisioned-start
-
-EXPOSE 22 80 443
-CMD [ "provisioned-start" ]

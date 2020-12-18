@@ -8,7 +8,6 @@
 - Added documentation generation from recipes.
 - Added support for `ask()` functions in parallel mode.
 - Added support for `sudo` commands.
-- Added `provision.php` recipe for a quick setup of a server with php, nginx and security.
 - Added `dep status` command which shows currently deployed revisions.
 - Added `dep hosts` command to show hosts info in json format.
 - Added `dep tree` command to show task configuration.

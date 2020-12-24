@@ -18,7 +18,7 @@ set('bin/composer', function () {
         return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
     }
 
-    warning("Composer binary didn't found. Installing latest composer to \"{{deploy_path}}/.dep/composer.phar\".");
+    warning("Composer binary wasn't found. Installing latest composer to \"{{deploy_path}}/.dep/composer.phar\".");
     run("cd {{deploy_path}} && curl -sS https://getcomposer.org/installer | {{bin/php}}");
     run('mv {{deploy_path}}/composer.phar {{deploy_path}}/.dep/composer.phar');
     return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';

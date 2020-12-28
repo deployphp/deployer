@@ -57,6 +57,15 @@ class InitCommand extends Command
             $recipePath = "deploy.$language";
         }
 
+        // Avoid accidentally override of existing file.
+        if (file_exists($recipePath)) {
+            $message = "Warning: $recipePath already exists. Do you want to override the existing file?";
+            if (!$io->confirm($message, false)) {
+                $io->text('Exiting due to user choice.');
+                exit(0);
+            }
+        }
+
         // Template
         $template = $io->choice('Select project template', $this->recipes(), 'common');
 
@@ -100,7 +109,13 @@ class InitCommand extends Command
         if (isset($tempHostFile)) {
             $host = file_get_contents($tempHostFile);
         }
-        $hosts = explode(',', $io->ask('Hosts (comma separated)', $host));
+        $hosts = [];
+        $answer = $io->ask('Hosts (comma separated)');
+        if ($answer) {
+            $hosts = explode(',', $answer);
+        } else {
+            $output->writeln("<info>No hosts given, you need to define them manually in <comment>$recipePath</comment>.</info>");
+        }
 
         file_put_contents($recipePath, $this->$language($template, $project, $repository, $hosts));
 

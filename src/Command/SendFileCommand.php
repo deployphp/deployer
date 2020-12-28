@@ -11,7 +11,6 @@ use Deployer\Component\Ssh\Client;
 use Deployer\Deployer;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
-use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -103,25 +102,18 @@ class SendFileCommand extends Command
             }
         }
 
-        $shell_path = 'exec $SHELL -l';
-
-        if ($host->has('shell_path')) {
-            $shell_path = 'exec ' . $host->get('shell_path') . ' -l';
-        }
-
-        Context::push(new Context($host, $input, $output));
-        if ($input->getOption('targetPath')) {
-            $deployPath = $input->getOption('targetPath');
-        } else {
-            $deployPath = $host->get('deploy_path', '~');
-        }
-
         $scpOptions = $input->getOption('scpOptions');
 
         $verbosity = $this->determineVerbosity($output);
 
         foreach ($hosts as $host) {
             $port = '';
+
+            if ($input->getOption('targetPath')) {
+                $deployPath = $input->getOption('targetPath');
+            } else {
+                $deployPath = $host->get('deploy_path', '~');
+            }
 
             if ($host->has('port')) {
                 $port = " -P {$host->getPort()}";

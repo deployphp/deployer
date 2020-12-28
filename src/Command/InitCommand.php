@@ -131,6 +131,7 @@ class InitCommand extends Command
     {
         $h = "";
         foreach ($hosts as $host) {
+            $host = trim($host);
             $h .= "host('{$host}');\n";
         }
 

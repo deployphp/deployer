@@ -21,15 +21,14 @@ use Symfony\Component\Console\Question\ChoiceQuestion;
 /**
  * @codeCoverageIgnore
  */
-class SendFileCommand extends Command
+class SendFileCommand extends SelectCommand
 {
     use CommandCommon;
-
-    private $deployer;
+    use CustomOption;
 
     public function __construct(Deployer $deployer)
     {
-        parent::__construct('sendfile');
+        parent::__construct('sendfile', $deployer);
 
         $this->setDescription('Send a file to given host(s)');
 

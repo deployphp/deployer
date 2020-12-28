@@ -86,34 +86,20 @@ class SendFileCommand extends Command
 
         $this->ensureFile($source);
 
+        $hosts = [];
         if (!empty($hostname)) {
-            $host = $this->deployer->hosts->get($hostname);
+            $hosts = [$this->deployer->hosts->get($hostname)];
         } else {
-            $hostsAliases = [];
             foreach ($this->deployer->hosts as $host) {
                 if ($host instanceof Localhost) {
                     continue;
                 }
-                $hostsAliases[] = $host->getAlias();
+                $hosts[] = $host;
             }
 
-            if (count($hostsAliases) === 0) {
+            if (count($hosts) === 0) {
                 $output->writeln('No remote hosts.');
-                return 2; // Because there are no hosts.
-            }
-
-            if (count($hostsAliases) === 1) {
-                $host = current($this->deployer->hosts->all());
-            } else {
-                $helper = $this->getHelper('question');
-                $question = new ChoiceQuestion(
-                    '<question>Select host:</question>',
-                    $hostsAliases
-                );
-                $question->setErrorMessage('There is no "%s" host.');
-
-                $hostname = $helper->ask($input, $output, $question);
-                $host = $this->deployer->hosts->get($hostname);
+                return 2;
             }
         }
 
@@ -130,10 +116,17 @@ class SendFileCommand extends Command
             $deployPath = $host->get('deploy_path', '~');
         }
 
-        $port = "-P {$host->getPort()}";
         $scpOptions = $input->getOption('scpOptions');
 
-        passthru("scp $scpOptions $port $source {$host->getConnectionString()}:$deployPath");
+        foreach ($hosts as $host) {
+            $port = '';
+
+            if ($host->has('port')) {
+                $port = "-P {$host->getPort()}";
+            }
+            $connectionString = $host->getConnectionString();
+            passthru("scp $scpOptions $port $source $connectionString:$deployPath");
+        }
         return 0;
     }
 }

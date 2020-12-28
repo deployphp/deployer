@@ -118,15 +118,35 @@ class SendFileCommand extends Command
 
         $scpOptions = $input->getOption('scpOptions');
 
+        $verbosity = $this->determineVerbosity($output);
+
         foreach ($hosts as $host) {
             $port = '';
 
             if ($host->has('port')) {
-                $port = "-P {$host->getPort()}";
+                $port = " -P {$host->getPort()}";
             }
+
             $connectionString = $host->getConnectionString();
-            passthru("scp $scpOptions $port $source $connectionString:$deployPath");
+
+            $command = "scp$verbosity$port $source $connectionString:$deployPath";
+
+            if ($output->getVerbosity() != OutputInterface::VERBOSITY_QUIET) {
+                $output->writeln("Executing: $command");
+            }
+
+            passthru($command);
         }
+
         return 0;
+    }
+
+    protected function determineVerbosity(OutputInterface $output): string
+    {
+        if ($output->getVerbosity() == OutputInterface::VERBOSITY_DEBUG) {
+            return ' -v ';
+        }
+
+        return '';
     }
 }

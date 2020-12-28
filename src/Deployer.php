@@ -15,6 +15,7 @@ use Deployer\Command\DiceCommand;
 use Deployer\Command\InitCommand;
 use Deployer\Command\MainCommand;
 use Deployer\Command\RunCommand;
+use Deployer\Command\SendFileCommand;
 use Deployer\Command\SshCommand;
 use Deployer\Command\TreeCommand;
 use Deployer\Command\WorkerCommand;
@@ -211,6 +212,7 @@ class Deployer extends Container
         $this->getConsole()->add(new DiceCommand());
         $this->getConsole()->add(new InitCommand());
         $this->getConsole()->add(new TreeCommand($this));
+        $this->getConsole()->add(new SendFileCommand($this));
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
         if (self::isPharArchive()) {
@@ -287,7 +289,6 @@ class Deployer extends Container
             // Run Deployer
             $deployer->init();
             $console->run($input, $output);
-
         } catch (Throwable $exception) {
             if (str_contains("$input", "-vvv")) {
                 $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);

@@ -110,7 +110,7 @@ class InitCommand extends Command
             $host = file_get_contents($tempHostFile);
         }
         $hosts = [];
-        $answer = $io->ask('Hosts (comma separated)');
+        $answer = $io->ask('Hosts (comma separated)', $host);
         if ($answer) {
             $hosts = explode(',', $answer);
         } else {

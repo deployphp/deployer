@@ -43,6 +43,11 @@ class SendFileCommand extends SelectCommand
             'Source'
         );
         $this->addArgument(
+            'selector',
+            InputArgument::REQUIRED,
+            'One or more target hosts where the file should be sent to'
+        );
+        $this->addArgument(
             'hostname',
             InputArgument::OPTIONAL,
             'Hostname'

@@ -10,12 +10,12 @@ set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction 
 // composer version to `.dep/composer.phar`. To use specific composer version
 // download desired phar and place it at `.dep/composer.phar`.
 set('bin/composer', function () {
-    if (commandExist('composer')) {
-        return '{{bin/php}} ' . locateBinaryPath('composer');
-    }
-
     if (test('[ -f {{deploy_path}}/.dep/composer.phar ]')) {
         return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
+    }
+
+    if (commandExist('composer')) {
+        return '{{bin/php}} ' . locateBinaryPath('composer');
     }
 
     warning("Composer binary wasn't found. Installing latest composer to \"{{deploy_path}}/.dep/composer.phar\".");

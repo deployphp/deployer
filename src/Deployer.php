@@ -160,7 +160,7 @@ class Deployer extends Container
             return new Server(
                 $c['input'],
                 $c['output'],
-                $c['questionHelper'],
+                $c['questionHelper']
             );
         };
         $this['master'] = function ($c) {

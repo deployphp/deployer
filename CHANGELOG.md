@@ -20,6 +20,7 @@
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
 - Added support for PHP8.
+- Added task to generate laravel passport keys.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

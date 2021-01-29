@@ -155,6 +155,9 @@ task('artisan:event:clear', artisan('event:clear', ['min' => '5.8.9']));
 desc('Execute artisan event:cache');
 task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
 
+desc('Execute artisan passport:keys');
+task('artisan:passport:keys', artisan('passport:keys'));
+
 /**
  * Task deploy:public_disk support the public disk.
  * To run this task automatically, please add below line to your deploy.php file

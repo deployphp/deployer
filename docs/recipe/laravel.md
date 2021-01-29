@@ -43,6 +43,7 @@
   * [`artisan:nova:publish`](#artisannovapublish) — Execute artisan nova:publish
   * [`artisan:event:clear`](#artisaneventclear) — Execute artisan event:clear
   * [`artisan:event:cache`](#artisaneventcache) — Execute artisan event:cache
+  * [`artisan:passport:keys`](#artisanpassportkeys) — Execute artisan passport:keys
   * [`deploy:public_disk`](#deploypublic_disk) — Make symlink for public disk
   * [`deploy`](#deploy) — Deploy your project
 
@@ -208,6 +209,9 @@
 ### artisan:event:cache
 [Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
+
+### artisan:passport:keys
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Apassport%3Akeys%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 ### deploy:public_disk

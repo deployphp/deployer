@@ -32,6 +32,11 @@ class Stringify
                 $option = [$option];
             }
             foreach ($option as $value) {
+                if(is_bool($value)){
+                    $options[] = "--$name ";
+                    continue;
+                }
+
                 $options[] = "--$name " . self::escape($value);
             }
         }

@@ -26,10 +26,11 @@ class StringifyTest extends TestCase
             new Option('start-from', null, Option::VALUE_REQUIRED, 'Start execution from this task'),
             new Option('log', null, Option::VALUE_REQUIRED, 'Write log to a file'),
             new Option('profile', null, Option::VALUE_REQUIRED, 'Write profile to a file',),
+            new Option('ansi', null, Option::VALUE_OPTIONAL, 'Force ANSI output',),
         ]);
 
-        self::assertEquals("--option 'env=prod' --limit 1 -vvv", Stringify::options(
-            new ArgvInput(['deploy', '-o', 'env=prod', '-l1'], $definition),
+        self::assertEquals("--option 'env=prod' --option ansi --limit 1 -vvv", Stringify::options(
+            new ArgvInput(['deploy', '-o', 'env=prod', '-o', 'ansi', '-l1'], $definition),
             new ConsoleOutput(Output::VERBOSITY_DEBUG, false)
         ));
     }

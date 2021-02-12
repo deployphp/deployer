@@ -1,26 +1,58 @@
 <?php
 namespace Deployer;
+​
+require 'recipe/common.php';
+​
+function parsePluginList($raw) {
+    $lengths = array_filter(array_map('strlen', explode(' ', $raw[4])));
+    $raw = array_slice($raw, 7, -3);
+    
+    $result = [];
+    
+    foreach ($raw as $row) {
+        $pluginParts = [];
+        foreach ($lengths as $length) {
+            $pluginParts[] = trim(substr($row, 0, $length));
+            $row = substr($row, $length + 1);
+        }
+        
+        $result[] = [
+            'plugin'            => $pluginParts[0] ?? null,
+            'label'             => $pluginParts[1] ?? null,
+            'version'           => $pluginParts[2] ?? null,
+            'upgrade_version'   => $pluginParts[3] ?? null,
+            'author'            => $pluginParts[4] ?? null,
+            'installed'         => $pluginParts[5] ?? null,
+            'active'            => $pluginParts[6] ?? null,
+            'upgradeable'       => $pluginParts[7] ?? null
+        ];
+    }
+    
+    return $result;
+}
 
-add('recipes', ['shopware']);
-
-set('repository', 'git@github.com:shopware/production.git');
-
-set('release_name', static function () {
-    return date('YmdHis');
-});
-
+set('git_tty', true);
+set('allow_anonymous_stats', false);
+set('default_timeout', 3600);
+​
+// Hosts
+//inventory('hosts.yml');
+​
+//=============================
 set('shared_files', [
     '.env',
+    'public/.htaccess',
+    'public/sw-domain-hash.html',
 ]);
+​
 set('shared_dirs', [
-    'custom/plugins',
     'config/jwt',
-    'files',
-    'var/log',
+    'config/secrets',
     'public/media',
     'public/thumbnail',
     'public/sitemap',
 ]);
+​
 set('writable_dirs', [
     'custom/plugins',
     'config/jwt',
@@ -30,122 +62,132 @@ set('writable_dirs', [
     'public/thumbnail',
     'public/sitemap',
 ]);
+set('writable_dirs_recursive', true);
+​
 set('static_folders', []);
+​
+//======================
+task('sw:vendors', function () {
+    run('cd {{release_path}} && composer install --no-interaction --optimize-autoloader --no-suggest ');
+});
+​
+/*
+ * For local deployment may be need to set correctly permissions
+ */
+/*
+task('sw:writable', function () {
+    run('cd {{release_path}} && sudo chown -R {{cmd_owner}}:{{cmd_group}} ./*');
+});
+task('sw:writable:dirs', function () {
+    run('cd {{release_path}} && sudo chown -R {{cmd_owner}}:{{cmd_group}} var/');
+    run('cd {{release_path}} && sudo chown -R {{cmd_owner}}:{{cmd_group}} public/media/ public/thumbnail/ public/sitemap/');
+    run('cd {{release_path}} && sudo chmod -R 775 public/media/ public/thumbnail/ public/sitemap/');
+    run('cd {{release_path}} && sudo chmod -R 775 var/');
+});
+task('sw:jwt', function () {
+    run('cd {{release_path}} && sudo chown -R {{cmd_owner}}:{{cmd_group}} config/jwt/');
+    run('cd {{release_path}} && sudo chmod 660 config/jwt/public.pem');
+    run('cd {{release_path}} && sudo chmod 660 config/jwt/private.pem');
+});
+*/
 
-task('sw:update_code', static function () {
-    run('git clone {{repository}} {{release_path}}');
-});
-task('sw:system:install', static function () {
-    run('cd {{release_path}} && bin/console system:install');
-});
-task('sw:build', static function () {
-    run('cd {{release_path}}/bin && bash build.sh');
-});
-task('sw:system:setup', static function () {
-    run('cd {{release_path}} && bin/console system:setup');
-});
-task('sw:theme:compile', static function () {
-    run('cd {{release_path}} && bin/console theme:compile');
-});
-task('sw:cache:clear', static function () {
-    run('cd {{release_path}} && bin/console cache:clear');
-});
-task('sw:cache:warmup', static function () {
-    run('cd {{release_path}} && bin/console cache:warmup');
-    run('cd {{release_path}} && bin/console http:cache:warm:up');
+//=======================
+task('sw:build', function(){
+    run('cd {{release_path}} && bin/build-js.sh;');
 });
 task('sw:database:migrate', static function () {
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
-task('sw:plugin:refresh', function (){
-    run('cd {{release_path}} && bin/console plugin:refresh');
-});
-task('sw:plugin:activate:all', static function () {
-    task('sw:plugin:refresh');
-    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
+//************
 
-    // take line over headlines and count "-" to get the size of the cells
-    $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
-
-    // ignore first seven lines (headline, title, table, ...)
-    $plugins = array_slice($plugins, 7, -3);
+task('sw:plugins', static function () {
+    run('cd {{release_path}} && bin/console plugin:refresh;');
+    
+    $plugins = parsePluginList( explode("\n", run('cd {{release_path}} && bin/console plugin:list;')) );
+    
     foreach ($plugins as $plugin) {
-        $pluginParts = [];
-        foreach ($lengths as $length) {
-            $pluginParts[] = trim(substr($plugin, 0, $length));
-            $plugin = substr($plugin, $length + 1);
-        }
-
-        [
-            $plugin,
-            $label,
-            $version,
-            $upgrade,
-            $version,
-            $author,
-            $installed,
-            $active,
-            $upgradeable,
-        ] = $pluginParts;
-
-        if ($installed === 'No' || $active === 'No') {
-            run("cd {{release_path}} && bin/console plugin:install --activate $plugin");
-        }
-    }
-});
-task('sw:plugin:migrate:all', static function(){
-    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
-
-    // take line over headlines and count "-" to get the size of the cells
-    $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
-
-    // ignore first seven lines (headline, title, table, ...)
-    $plugins = array_slice($plugins, 7, -3);
-    foreach ($plugins as $plugin) {
-        $pluginParts = [];
-        foreach ($lengths as $length) {
-            $pluginParts[] = trim(substr($plugin, 0, $length));
-            $plugin = substr($plugin, $length + 1);
-        }
-
-        [
-            $plugin,
-            $label,
-            $version,
-            $upgrade,
-            $version,
-            $author,
-            $installed,
-            $active,
-            $upgradeable,
-        ] = $pluginParts;
-
-        if ($installed === 'Yes' || $active === 'Yes') {
-            run("cd {{release_path}} && bin/console database:migrate --all $plugin || true");
+        if ($plugin['installed'] === 'No' || $plugin['active'] === 'No') {
+            run("cd {{release_path}} && bin/console plugin:install --activate ".$plugin['plugin']);
         }
     }
 });
 
-/**
- * Grouped SW deploy tasks
- */
-task('sw:deploy', [
+task('sw:plugins:migrate', static function(){
+    $plugins = parsePluginList( explode("\n", run('cd {{release_path}} && bin/console plugin:list;')) );
+    
+    foreach ($plugins as $plugin) {
+        if ($plugin['installed'] === 'Yes' || $plugin['active'] === 'Yes') {
+            run("cd {{release_path}} && bin/console database:migrate --all ".$plugin['plugin']." || true");
+        }
+    }
+});
+
+task('sw:plugins:handle', [
+    'sw:plugins',
+    'sw:plugins:migrate'
+]);
+
+//************
+
+task('sw:theme:compile', function(){
+    run('cd {{release_path}} && bin/console theme:compile;');
+});
+
+
+task('sw:sitemap:generate', function(){
+    run('cd {{release_path}} && bin/console sitemap:generate;');
+});
+task('sw:cache:clear', function(){
+    run('cd {{release_path}} && bin/console cache:clear;');
+});
+task('sw:cache:warmup', function(){
+    run('cd {{release_path}} && bin/console cache:warmup;');
+    run('cd {{release_path}} && bin/console http:cache:warm:up');
+});
+task('sw:assets:install', function(){
+    run('cd {{release_path}} && bin/console assets:install;');
+});
+
+task('sw:init', [
     'sw:build',
-    'sw:plugin:activate:all',
     'sw:database:migrate',
-    'sw:plugin:migrate:all',
-    'sw:theme:compile',
-    'sw:cache:clear',
+    'sw:plugins:handle',
+    'sw:theme:compile'
 ]);
 
-/**
- * Main task
- */
-desc('Deploy your project');
-task('deploy', [
-    'deploy:prepare',
-    'sw:deploy',
-    'deploy:clear_paths',
+task('sw:deploy', [
+    //'sw:sitemap:generate', // Will be failed, if elasticsearch server is not configured. 
+    'sw:cache:clear',
     'sw:cache:warmup',
-    'deploy:publish',
+    'sw:assets:install',
 ]);
+//=======================
+
+task('deploy', [
+    'deploy:info',
+    'deploy:prepare',
+    'deploy:lock',
+    'deploy:release',
+    'deploy:update_code',
+    
+    'deploy:shared',
+    'deploy:writable',
+    
+    //'sw:writable', // For local deployment, uncomment if needed
+    'sw:vendors',
+    //'sw:jwt', // For local deployment, uncomment if needed
+    
+    'sw:init',
+    'sw:deploy',
+    //'sw:writable:dirs', // For local deployment, uncomment if needed
+    'sw:cache:clear', // after all commands
+    
+    'deploy:symlink',
+    'deploy:unlock',
+    'cleanup',
+    'success'
+])->desc('Deploy Project');
+
+// [Optional] If deploy fails automatically unlock.
+after('deploy:failed', 'deploy:unlock');
+

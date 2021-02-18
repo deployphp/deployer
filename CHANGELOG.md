@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Shopware recipe plugin active/update.
 
 
 ## v6.8.0

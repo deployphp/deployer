@@ -123,6 +123,37 @@ task('sw:plugin:migrate:all', static function(){
         }
     }
 });
+task('sw:plugin:upgrade:all', static function () {
+    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
+
+    // take line over headlines and count "-" to get the size of the cells
+    $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
+
+    // ignore first seven lines (headline, title, table, ...)
+    $plugins = array_slice($plugins, 7, -3);
+    foreach ($plugins as $plugin) {
+        $pluginParts = [];
+        foreach ($lengths as $length) {
+            $pluginParts[] = trim(substr($plugin, 0, $length));
+            $plugin = substr($plugin, $length + 1);
+        }
+
+        [
+            $plugin,
+            $label,
+            $version,
+            $upgrade,
+            $author,
+            $installed,
+            $active,
+            $upgradeable,
+        ] = $pluginParts;
+
+        if ($upgradeable === 'Yes') {
+            run("cd {{release_path}} && bin/console plugin:update $plugin");
+        }
+    }
+});
 
 /**
  * Grouped SW deploy tasks
@@ -132,6 +163,7 @@ task('sw:deploy', [
     'sw:plugin:activate:all',
     'sw:database:migrate',
     'sw:plugin:migrate:all',
+    'sw:plugin:upgrade:all',
     'sw:theme:compile',
     'sw:cache:clear',
 ]);

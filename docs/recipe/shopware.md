@@ -27,6 +27,7 @@
   * [`sw:plugin:refresh`](#swpluginrefresh)
   * [`sw:plugin:activate:all`](#swpluginactivateall)
   * [`sw:plugin:migrate:all`](#swpluginmigrateall)
+  * [`sw:plugin:upgrade:all`](#swpluginupgradeall)
   * [`sw:deploy`](#swdeploy)
   * [`deploy`](#deploy) — Deploy your project
 
@@ -118,6 +119,11 @@
 
 
 
+### sw:plugin:upgrade:all
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aupgrade%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
+
+
 ### sw:deploy
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Adeploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
@@ -128,6 +134,7 @@ This task is group task which contains next tasks:
 * [`sw:plugin:activate:all`](/docs/recipe/shopware.md#swpluginactivateall)
 * [`sw:database:migrate`](/docs/recipe/shopware.md#swdatabasemigrate)
 * [`sw:plugin:migrate:all`](/docs/recipe/shopware.md#swpluginmigrateall)
+* [`sw:plugin:upgrade:all`](/docs/recipe/shopware.md#swpluginupgradeall)
 * [`sw:theme:compile`](/docs/recipe/shopware.md#swthemecompile)
 * [`sw:cache:clear`](/docs/recipe/shopware.md#swcacheclear)
 

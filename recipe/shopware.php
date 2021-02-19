@@ -61,7 +61,7 @@ task('sw:plugin:refresh', function (){
     run('cd {{release_path}} && bin/console plugin:refresh');
 });
 task('sw:plugin:activate:all', static function () {
-    task('sw:plugin:refresh');
+    invoke('sw:plugin:refresh');
     $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
 
     // take line over headlines and count "-" to get the size of the cells
@@ -81,7 +81,6 @@ task('sw:plugin:activate:all', static function () {
             $label,
             $version,
             $upgrade,
-            $version,
             $author,
             $installed,
             $active,
@@ -113,7 +112,6 @@ task('sw:plugin:migrate:all', static function(){
             $label,
             $version,
             $upgrade,
-            $version,
             $author,
             $installed,
             $active,

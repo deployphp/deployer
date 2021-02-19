@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Fixed incorrect plugin:list parsing (remove duplicate version column). Invoke nested sw:plugin:refresh task instead of redefining it, so that it actually runs.
 
 
 ## v6.8.0

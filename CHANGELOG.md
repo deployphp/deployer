@@ -28,6 +28,7 @@
 - Docs rewritten to be more clean, easy to use and understandable.
 - Better parallel execution support, configurable per task.
 - Refactored `dep init` command.
+- Normalize shopware recipe (require common.php).
 
 ### Fixed
 - Lots, and lots of long-standing bugs.

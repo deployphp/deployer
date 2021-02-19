@@ -32,5 +32,10 @@ class StringifyTest extends TestCase
             new ArgvInput(['deploy', '-o', 'env=prod', '-l1'], $definition),
             new ConsoleOutput(Output::VERBOSITY_DEBUG, false)
         ));
+
+        self::assertEquals("--plan", Stringify::options(
+            new ArgvInput(['deploy', '--plan'], $definition),
+            new ConsoleOutput(Output::VERBOSITY_DEBUG, false)
+        ));
     }
 }

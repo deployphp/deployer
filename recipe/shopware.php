@@ -2,8 +2,6 @@
 
 namespace Deployer;
 
-require_once __DIR__ . '/vendor/autoload.php';
-
 use MJS\TopSort\Implementations\FixedArraySort;
 
 add('recipes', ['shopware']);

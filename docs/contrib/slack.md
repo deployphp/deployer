@@ -29,6 +29,7 @@ before('deploy', 'slack:notify');
   ```
   set('slack_webhook', 'https://hooks.slack.com/...');
   ```
+- `slack_channel` - channel to send notification to. The default is the channel configured in the webhook
 - `slack_title` – the title of application, default `{{application}}`
 - `slack_text` – notification message template, markdown supported
   ```
@@ -70,6 +71,7 @@ after('deploy:failed', 'slack:notify:failure');
 
 
 * Config
+  * [`slack_channel`](#slack_channel)
   * [`slack_title`](#slack_title)
   * [`slack_text`](#slack_text)
   * [`slack_success_text`](#slack_success_text)
@@ -86,6 +88,11 @@ after('deploy:failed', 'slack:notify:failure');
   * [`slack:notify:rollback`](#slacknotifyrollback) — Notifying Slack about rollback
 
 ## Config
+### slack_channel
+[Source](https://github.com/deployphp/deployer/search?q=%22slack_channel%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
+
+Channel to publish to, when null the default change of the webhook will be used
+
 ### slack_title
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 

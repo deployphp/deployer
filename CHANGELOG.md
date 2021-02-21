@@ -32,6 +32,7 @@
 ### Fixed
 - Lots, and lots of long-standing bugs.
 - Fixed incorrect plugin:list parsing (remove duplicate version column). Invoke nested sw:plugin:refresh task instead of redefining it, so that it actually runs.
+- Rsync finds ssh_config if path contains ~. [#2427] [#2428]
 
 
 ## v6.8.0
@@ -596,6 +597,8 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2428]: https://github.com/deployphp/deployer/pull/2428
+[#2427]: https://github.com/deployphp/deployer/issues/2427
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

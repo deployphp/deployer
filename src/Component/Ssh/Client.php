@@ -196,7 +196,11 @@ class Client
         }
 
         if ($host->has('config_file')) {
-            $options .= " -F " . $host->getConfigFile();
+            if (\Deployer\Support\str_contains($host->getConfigFile(), '~')) {
+                $options .= " -F `realpath " . $host->getConfigFile() . '`';
+            } else {
+                $options .= " -F " . $host->getConfigFile();
+            }
         }
 
         if ($host->has('identity_file')) {

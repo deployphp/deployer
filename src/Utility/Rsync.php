@@ -53,7 +53,7 @@ class Rsync
 
         $connectionOptions = Client::connectionOptions($host);
         if ($connectionOptions !== '') {
-            $options[] = "-e 'ssh $connectionOptions'";
+            $options[] = "-e \"ssh $connectionOptions\"";
         }
 
         if ($host->has("become")) {

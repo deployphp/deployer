@@ -21,6 +21,7 @@
 - Added docker-based E2E testing environment. [#2197]
 - Added support for PHP8.
 - Added slack_channel option to Slack recipe.
+- Chatwork contrib recipe.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

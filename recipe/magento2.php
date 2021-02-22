@@ -24,7 +24,7 @@ set('content_version', function () {
 });
 
 set('shared_files', [
-    'app/etc/env.php',
+    'app/etc/config.php',
     'var/.maintenance.ip',
 ]);
 set('shared_dirs', [

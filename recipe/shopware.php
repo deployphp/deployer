@@ -26,7 +26,6 @@ set('shared_dirs', [
 ]);
 set('writable_dirs', [
     'custom/plugins',
-    'config/jwt',
     'files',
     'var',
     'public/media',

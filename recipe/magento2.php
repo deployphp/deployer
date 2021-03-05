@@ -15,7 +15,7 @@ add('recipes', ['magento2']);
 // Configuration
 
 // By default setup:static-content:deploy uses `en_US`.
-// To change that, simply put set('static_content_locales', 'en_US de_DE');`
+// To change that, simply put `set('static_content_locales', 'en_US de_DE');`
 // in you deployer script.
 set('static_content_locales', 'en_US');
 

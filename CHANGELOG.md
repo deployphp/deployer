@@ -31,6 +31,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Check if shared file exists before touching it (and fail because no write permission)
 
 
 ## v6.8.0

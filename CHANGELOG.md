@@ -35,7 +35,8 @@
 - Lots, and lots of long-standing bugs.
 - Fixed incorrect plugin:list parsing (remove duplicate version column). Invoke nested sw:plugin:refresh task instead of redefining it, so that it actually runs.
 - Shopware activates/runs migration in order (respects dependencies in composer.json). [#2423] [#2425]
-- Check if shared file exists before touching it (and fail because no write permission)
+- Check if shared file exists before touching it (and fail because no write permission) [#2393]
+
 
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
@@ -722,3 +723,4 @@
 [#911]: https://github.com/deployphp/deployer/pull/911
 [#381]: https://github.com/deployphp/deployer/pull/381
 [#330]: https://github.com/deployphp/deployer/pull/330
+[#2393]: https://github.com/deployphp/deployer/pull/2393/

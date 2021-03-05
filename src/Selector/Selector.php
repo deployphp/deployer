@@ -62,13 +62,26 @@ class Selector
         return false;
     }
 
-    private static function compare(string $op, ?string $a, ?string $b): bool
+    /**
+     * @param string|array $a
+     */
+    private static function compare(string $op, $a, ?string $b): bool
     {
+        $matchFunction = function($a, ?string $b) {
+            foreach ((array)$a as $item) {
+                if ($item === $b) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         if ($op === '=') {
-            return $a === $b;
+            return $matchFunction($a, $b);
         }
         if ($op === '!=') {
-            return $a !== $b;
+            return !$matchFunction($a, $b);
         }
         return false;
     }

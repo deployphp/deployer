@@ -63,7 +63,7 @@ class Selector
     }
 
     /**
-     * @param string|array $a
+     * @param string|string[] $a
      */
     private static function compare(string $op, $a, ?string $b): bool
     {

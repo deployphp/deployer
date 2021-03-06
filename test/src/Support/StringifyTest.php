@@ -29,8 +29,8 @@ class StringifyTest extends TestCase
             new Option('ansi', null, Option::VALUE_OPTIONAL, 'Force ANSI output',),
         ]);
 
-        self::assertEquals("--option 'env=prod' --option ansi --limit 1 -vvv", Stringify::options(
-            new ArgvInput(['deploy', '-o', 'env=prod', '-o', 'ansi', '-l1'], $definition),
+        self::assertEquals("--option 'env=prod' --ansi --limit 1 -vvv", Stringify::options(
+            new ArgvInput(['deploy', '-o', 'env=prod', '--ansi', '-l1'], $definition),
             new ConsoleOutput(Output::VERBOSITY_DEBUG, false)
         ));
     }

@@ -9,9 +9,16 @@ namespace Deployer\Task;
 
 use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
+use function Deployer\invoke;
+use function Deployer\task;
 
 class TaskTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        StubTask::$runned = 0;
+    }
+
     public function testTask()
     {
         $mock = self::getMockBuilder('stdClass')
@@ -75,6 +82,21 @@ class TaskTest extends TestCase
         $task3 = new Task('task3', new StubTask());
         $task3->run($context);
         self::assertEquals(1, StubTask::$runned);
+    }
+
+    public function testGroupInvoke(): void
+    {
+        $spy = new StubTask();
+
+        task('foo', $spy);
+        task('bar', $spy);
+        task('group', ['foo', 'bar']);
+
+        (new Task('group:invoke', function () {
+            invoke('group');
+        }))->run(new Context(new Host('localhost')));
+
+        $this->assertSame(2, StubTask::$runned);
     }
 }
 

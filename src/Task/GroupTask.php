@@ -7,6 +7,8 @@
 
 namespace Deployer\Task;
 
+use function Deployer\invoke;
+
 class GroupTask extends Task
 {
     /**
@@ -27,6 +29,9 @@ class GroupTask extends Task
 
     public function run(Context $context): void
     {
+        foreach ($this->group as $item) {
+            invoke($item);
+        }
     }
 
     /**

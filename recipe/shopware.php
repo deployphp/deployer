@@ -4,6 +4,8 @@ namespace Deployer;
 
 use MJS\TopSort\Implementations\FixedArraySort;
 
+require_once __DIR__ . '/common.php';
+
 add('recipes', ['shopware']);
 
 set('repository', 'git@github.com:shopware/production.git');

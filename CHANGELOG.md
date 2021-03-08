@@ -20,6 +20,8 @@
 - Added support for secret passing in `run()` func without outputting to logs.
 - Added docker-based E2E testing environment. [#2197]
 - Added support for PHP8.
+- Added slack_channel option to Slack recipe.
+- Chatwork contrib recipe.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -33,6 +35,9 @@
 ### Fixed
 - Lots, and lots of long-standing bugs.
 - Fixed incorrect plugin:list parsing (remove duplicate version column). Invoke nested sw:plugin:refresh task instead of redefining it, so that it actually runs.
+- Shopware activates/runs migration in order (respects dependencies in composer.json). [#2423] [#2425]
+- Boolean options should not go through the `self::escape` function. [#2392]
+- Check if shared file exists before touching it (and fail because no write permission). [#2393]
 
 
 ## v6.8.0
@@ -597,6 +602,10 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2425]: https://github.com/deployphp/deployer/pull/2425
+[#2423]: https://github.com/deployphp/deployer/issues/2423
+[#2393]: https://github.com/deployphp/deployer/pull/2393
+[#2392]: https://github.com/deployphp/deployer/issues/2392
 [#2197]: https://github.com/deployphp/deployer/issues/2197
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990

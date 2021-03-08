@@ -22,6 +22,7 @@ before('deploy', 'slack:notify');
   ```
   set('slack_webhook', 'https://hooks.slack.com/...');
   ```
+- `slack_channel` - channel to send notification to. The default is the channel configured in the webhook
 - `slack_title` – the title of application, default `{{application}}`
 - `slack_text` – notification message template, markdown supported
   ```
@@ -65,6 +66,9 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
+// Channel to publish to, when null the default change of the webhook will be used
+set('slack_channel', null);
+
 // Title of project
 set('slack_title', function () {
     return get('application', 'Project');
@@ -95,7 +99,7 @@ task('slack:notify', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['attachments' => [$attachment]])->send();
+    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
 })
     ->once()
     ->shallow()
@@ -114,7 +118,7 @@ task('slack:notify:success', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['attachments' => [$attachment]])->send();
+    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
 })
     ->once()
     ->shallow()
@@ -133,7 +137,7 @@ task('slack:notify:failure', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['attachments' => [$attachment]])->send();
+    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
 })
     ->once()
     ->shallow()
@@ -152,7 +156,7 @@ task('slack:notify:rollback', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['attachments' => [$attachment]])->send();
+    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
 })
     ->once()
     ->shallow()

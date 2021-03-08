@@ -45,9 +45,11 @@
     ],
     "require": {
         "php": ">=7.2.5",
+        "marcj/topsort": "^2.0",
         "psr/http-message": "^1",
         "react/http": "^1",
         "symfony/console": "^5",
+        "symfony/polyfill-php80": "^1.22",
         "symfony/process": "^5",
         "symfony/yaml": "^5"
     },

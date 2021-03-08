@@ -1,5 +1,8 @@
 <?php
+
 namespace Deployer;
+
+use MJS\TopSort\Implementations\FixedArraySort;
 
 require_once __DIR__ . '/common.php';
 
@@ -25,7 +28,6 @@ set('shared_dirs', [
 ]);
 set('writable_dirs', [
     'custom/plugins',
-    'config/jwt',
     'files',
     'var',
     'public/media',
@@ -59,25 +61,79 @@ task('sw:cache:warmup', static function () {
 task('sw:database:migrate', static function () {
     run('cd {{release_path}} && bin/console database:migrate --all');
 });
-task('sw:plugin:refresh', function (){
+task('sw:plugin:refresh', function () {
     run('cd {{release_path}} && bin/console plugin:refresh');
 });
-task('sw:plugin:activate:all', static function () {
-    invoke('sw:plugin:refresh');
-    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
+/**
+ * @return array
+ * @throws \MJS\TopSort\CircularDependencyException
+ * @throws \MJS\TopSort\ElementNotFoundException
+ */
+function getSortedPlugins(): array
+{
+    cd('{{release_path}}');
+    $plugins = explode("\n", run('bin/console plugin:list'));
 
     // take line over headlines and count "-" to get the size of the cells
     $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
 
     // ignore first seven lines (headline, title, table, ...)
     $plugins = array_slice($plugins, 7, -3);
+    $parsedPlugins = [];
     foreach ($plugins as $plugin) {
         $pluginParts = [];
         foreach ($lengths as $length) {
             $pluginParts[] = trim(substr($plugin, 0, $length));
             $plugin = substr($plugin, $length + 1);
         }
+        $parsedPlugins[$pluginParts[0]] = $pluginParts;
+    }
 
+    $composer = json_decode(run('cat composer.lock'), true);
+
+    $pluginMapping = $dependencies = [];
+    foreach ($parsedPlugins as $plugin) {
+        $pluginName = $plugin[0];
+        // collect cpmposer plugin names
+        foreach ($composer['packages'] as $config) {
+            if (!isset($config['extra']['shopware-plugin-class'])) {
+                // we only collect a mapping for shopware modules name <-> composer name
+                continue;
+            }
+            if (str_ends_with($config['extra']['shopware-plugin-class'], $pluginName)) {
+                $pluginMapping[$config['name']] = $pluginName;
+            }
+        }
+
+        // collect dependencies
+        foreach ($composer['packages'] as $config) {
+            if (!isset($pluginMapping[$config['name']])) {
+                // if the composer.json doesn't belong to a shopware module
+                // or doesn't have dependencies, ignore it
+                continue;
+            }
+            $dependencies[$config['name']] = array_filter(array_keys($config['require'] ?? []),
+                static function ($composerName) use ($pluginMapping) {
+                    // only add dependencies between shopware modules
+                    return isset($pluginMapping[$composerName]);
+                });
+        }
+    }
+
+    $sorter = new FixedArraySort();
+    foreach ($dependencies as $name => $dep) {
+        $sorter->add($name, $dep);
+    }
+
+    return array_map(static function ($name) use ($parsedPlugins, $pluginMapping) {
+        return $parsedPlugins[$pluginMapping[$name]];
+    }, $sorter->sort());
+}
+
+task('sw:plugin:activate:all', static function () {
+    invoke('sw:plugin:refresh');
+
+    foreach (getSortedPlugins() as $pluginInfo) {
         [
             $plugin,
             $label,
@@ -87,28 +143,17 @@ task('sw:plugin:activate:all', static function () {
             $installed,
             $active,
             $upgradeable,
-        ] = $pluginParts;
+        ] = $pluginInfo;
 
         if ($installed === 'No' || $active === 'No') {
             run("cd {{release_path}} && bin/console plugin:install --activate $plugin");
         }
     }
 });
-task('sw:plugin:migrate:all', static function(){
-    $plugins = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
 
-    // take line over headlines and count "-" to get the size of the cells
-    $lengths = array_filter(array_map('strlen', explode(' ', $plugins[4])));
-
-    // ignore first seven lines (headline, title, table, ...)
-    $plugins = array_slice($plugins, 7, -3);
-    foreach ($plugins as $plugin) {
-        $pluginParts = [];
-        foreach ($lengths as $length) {
-            $pluginParts[] = trim(substr($plugin, 0, $length));
-            $plugin = substr($plugin, $length + 1);
-        }
-
+task('sw:plugin:migrate:all', static function () {
+    invoke('sw:plugin:refresh');
+    foreach (getSortedPlugins() as $pluginInfo) {
         [
             $plugin,
             $label,
@@ -118,7 +163,7 @@ task('sw:plugin:migrate:all', static function(){
             $installed,
             $active,
             $upgradeable,
-        ] = $pluginParts;
+        ] = $pluginInfo;
 
         if ($installed === 'Yes' || $active === 'Yes') {
             run("cd {{release_path}} && bin/console database:migrate --all $plugin || true");

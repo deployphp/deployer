@@ -68,7 +68,7 @@ task('deploy:shared', function () {
         run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
 
         // Touch shared
-        run("touch $sharedPath/$file");
+        run("[[ -f $sharedPath/$file ]] || touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
         run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");

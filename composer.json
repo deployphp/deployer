@@ -35,16 +35,15 @@
     },
     "scripts": {
         "test": "pest",
-        "test:e2e": "pest --config test/e2e/phpunit-e2e.xml",
+        "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "phpcs": "phpcs",
         "phpstan": "phpstan analyse -c phpstan.neon",
-        "phpstan:baseline": "phpstan analyse -c phpstan.neon --generate-baseline test/phpstan-baseline.neon"
+        "phpstan:baseline": "phpstan analyse -c phpstan.neon --generate-baseline tests/phpstan-baseline.neon"
     },
     "bin": [
         "bin/dep"
     ],
     "require": {
-        "php": ">=7.2.5",
         "marcj/topsort": "^2.0",
         "psr/http-message": "^1",
         "react/http": "^1",
@@ -54,7 +53,7 @@
         "symfony/yaml": "^5"
     },
     "require-dev": {
-        "pestphp/pest": "^0.3",
+        "pestphp/pest": "^1.0",
         "phpstan/phpstan": "^0.12.53",
         "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^6.4",

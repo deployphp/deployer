@@ -43,7 +43,7 @@ jobs:
       continue-on-error: true
 
     - name: Build the docker-compose stack
-      run: cd test/docker && docker-compose build
+      run: cd tests/docker && docker-compose build
 
     - name: Cache Composer packages
       id: composer-cache
@@ -59,4 +59,4 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Run E2E test suite
-      run: cd test/docker && docker-compose up --abort-on-container-exit
+      run: cd tests/docker && docker-compose up --abort-on-container-exit

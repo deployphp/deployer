@@ -77,7 +77,7 @@ class Client
 
         $process = new Process($ssh);
         $process
-            ->setInput($command . "; printf '[exit_code:%s]' $?;")
+            ->setInput("( $command ); printf '[exit_code:%s]' $?;")
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);
 

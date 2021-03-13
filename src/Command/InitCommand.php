@@ -57,6 +57,15 @@ class InitCommand extends Command
             $recipePath = "deploy.$language";
         }
 
+        // Avoid accidentally override of existing file.
+        if (file_exists($recipePath)) {
+            $io->warning("$recipePath already exists");
+            if (!$io->confirm("Do you want to override the existing file?", false)) {
+                $io->block('👍🏻');
+                exit(1);
+            }
+        }
+
         // Template
         $template = $io->choice('Select project template', $this->recipes(), 'common');
 

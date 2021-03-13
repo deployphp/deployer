@@ -14,6 +14,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Deployer\localhost;
 
 class WorkerCommand extends MainCommand
 {
@@ -47,8 +48,8 @@ class WorkerCommand extends MainCommand
         $task = $this->deployer->tasks->get($input->getOption('task'));
 
         $hostName = $input->getOption('host');
-        if ($hostName === 'local') {
-            $host = new Localhost('local');
+        if ($hostName === Localhost::extraordinary) {
+            $host = localhost(Localhost::extraordinary);
         } else {
             $host = $this->deployer->hosts->get($input->getOption('host'));
             $host->config()->load();

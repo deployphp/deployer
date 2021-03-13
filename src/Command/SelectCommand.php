@@ -69,7 +69,11 @@ abstract class SelectCommand extends Command
         }
 
         if (empty($hosts)) {
-            throw new Exception('No host selected');
+            $message = 'No host selected.';
+            if (!empty($selectExpression)) {
+                $message .= " Please, check your selector:\n\n    $selectExpression";
+            }
+            throw new Exception($message);
         }
 
         return $hosts;

@@ -35,7 +35,7 @@ class Rsync
      * - `flags` for overriding the default `-azP` passed to the `rsync` command
      * - `options` with additional flags passed directly to the `rsync` command
      * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
-     * 
+     *
      * @throws RunException
      */
     public function call(Host $host, string $source, string $destination, array $config = []): void
@@ -84,7 +84,7 @@ class Rsync
                         $max = intval($match[3]);
                         $step = $max - intval($match[2]);
                         $progressBar->setMaxSteps($max);
-                        $progressBar->setFormat("[{$host->getTag()}] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+                        $progressBar->setFormat("[$host] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
                         $progressBar->setProgress($step);
                     }
                 }

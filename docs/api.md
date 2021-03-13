@@ -291,7 +291,7 @@ run("echo $path");
 - ### timeout
   **type**: `int|null `
 
-   Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
 - ### idle_timeout
   **type**: `int|null `
 
@@ -338,7 +338,7 @@ runLocally("echo $user");
 - ### timeout
   **type**: `int|null `
 
-   Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
 - ### idle_timeout
   **type**: `int|null `
 

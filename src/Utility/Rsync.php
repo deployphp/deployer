@@ -51,7 +51,7 @@ class Rsync
         $options = $config['options'] ?? [];
         $flags = $config['flags'];
 
-        $connectionOptions = Client::connectionOptions($host);
+        $connectionOptions = Client::connectionOptionsString($host);
         if ($connectionOptions !== '') {
             $options[] = "-e 'ssh $connectionOptions'";
         }

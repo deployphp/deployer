@@ -10,7 +10,6 @@ namespace Deployer\Command;
 use Deployer\Deployer;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -18,6 +17,7 @@ use function Deployer\cd;
 use function Deployer\get;
 use function Deployer\has;
 use function Deployer\run;
+use function Deployer\test;
 use function Deployer\writeln;
 
 class RunCommand extends SelectCommand
@@ -58,7 +58,10 @@ class RunCommand extends SelectCommand
 
         $task = new Task($command, function () use ($command) {
             if (has('current_path')) {
-                cd(get('current_path'));
+                $path = get('current_path');
+                if (test("[ -d $path ]")) {
+                    cd($path);
+                }
             }
             $output = run($command);
             writeln($output);

@@ -8,9 +8,7 @@
 namespace Deployer\Component\ProcessRunner;
 
 use Deployer\Host\Host;
-use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class Printer
 {
@@ -25,7 +23,7 @@ class Printer
     {
         // -v for run command
         if ($this->output->isVerbose()) {
-            $this->output->writeln("[{$host->getTag()}] <fg=green;options=bold>run</> $command");
+            $this->output->writeln("[$host] <fg=green;options=bold>run</> $command");
         }
     }
 
@@ -62,7 +60,7 @@ class Printer
             return;
         }
 
-        $this->output->writeln("[{$host->getTag()}] $line");
+        $this->output->writeln("[$host] $line");
     }
 
     /**

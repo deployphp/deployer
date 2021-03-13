@@ -42,7 +42,7 @@ function host(string ...$hostname)
         if ($deployer->hosts->has($alias)) {
             $host = $deployer->hosts->get($alias);
             throw new \InvalidArgumentException(
-                "Host \"{$host->getTag()}\" already exists.\n" .
+                "Host \"$host\" already exists.\n" .
                 "If you want to override configuration options, get host with <fg=yellow>getHost</> function.\n" .
                 "\n" .
                 "    <fg=yellow>getHost</>(<fg=green>'{$alias}'</>);" .
@@ -350,7 +350,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
             $command = ". $dotenv; $command";
         }
 
-        if ($host instanceof Localhost) {
+        if ($host instanceof Localhost || Context::get()->isLocal()) {
             $process = Deployer::get()->processRunner;
             $output = $process->run($host, $command, $options);
         } else {
@@ -596,7 +596,7 @@ function warning(string $message): void
 function writeln($message, int $options = 0): void
 {
     $host = currentHost();
-    output()->writeln("[{$host->getTag()}] " . parse($message), $options);
+    output()->writeln("[$host] " . parse($message), $options);
 }
 
 /**

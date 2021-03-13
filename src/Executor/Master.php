@@ -80,11 +80,6 @@ class Master
                 }
             }
 
-            if ($task->isLocal()) {
-                // Special name for local() tasks.
-                $plannedHosts = [new Localhost('local')];
-            }
-
             if ($limit === 1 || count($plannedHosts) === 1) {
                 foreach ($plannedHosts as $currentHost) {
                     if (!Selector::apply($task->getSelector(), $currentHost)) {
@@ -156,7 +151,7 @@ class Master
             while ($process->isRunning()) {
                 $this->gatherOutput([$process], $callback);
                 if ($this->output->isDecorated()) {
-                    $this->output->write(spinner("connect {$host->getTag()}"));
+                    $this->output->write(spinner("connect $host"));
                 }
                 usleep(1000);
             }
@@ -240,7 +235,7 @@ class Master
         $command = "$dep worker --task $task --host {$host->getAlias()} --port {$this->server->getPort()} {$options}";
 
         if ($this->output->isDebug()) {
-            $this->output->writeln("[{$host->getTag()}] $command");
+            $this->output->writeln("[$host] $command");
         }
 
         return Process::fromShellCommandline($command);
@@ -253,7 +248,7 @@ class Master
         $command = "$dep connect --host {$host->getAlias()} {$options}";
 
         if ($this->output->isDebug()) {
-            $this->output->writeln("[{$host->getTag()}] $command");
+            $this->output->writeln("[$host] $command");
         }
 
         return Process::fromShellCommandline($command);

@@ -9,6 +9,7 @@ namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
+use Deployer\Task\Context;
 
 class Host
 {
@@ -26,6 +27,15 @@ class Host
         $this->config = new Configuration($parent);
         $this->set('alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
+    }
+
+    public function __toString(): string
+    {
+        $asterisks = '';
+        if (Context::has() && Context::get()->isLocal()) {
+            $asterisks = '*';
+        }
+        return "$asterisks{$this->getTag()}";
     }
 
     public function config(): Configuration

@@ -50,15 +50,6 @@ class Planner
      */
     public function commit(array $hosts, Task $task): void
     {
-        if (count($hosts) === 1 && $hosts[0]->getAlias() === 'local') {
-            $row = [];
-            foreach ($this->template as $alias) {
-                $row[] = "-";
-            }
-            $row[] = $task->getName();
-            $this->table->addRow($row);
-            return;
-        }
         $row = [];
         foreach ($this->template as $alias) {
             $on = "-";

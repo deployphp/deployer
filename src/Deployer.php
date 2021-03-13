@@ -69,7 +69,7 @@ use Throwable;
  * @property Messenger $messenger
  * @property Messenger $logger
  * @property Printer $pop
- * @property Collection $fail
+ * @property Collection $onfail
  * @property InputDefinition $inputDefinition
  * @property Importer $importer
  */
@@ -150,7 +150,7 @@ class Deployer extends Container
         $this['selector'] = function ($c) {
             return new Selector($c['hosts']);
         };
-        $this['fail'] = function () {
+        $this['onfail'] = function () {
             return new Collection();
         };
         $this['messenger'] = function ($c) {

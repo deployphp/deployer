@@ -8,9 +8,9 @@
 namespace Deployer\Exception;
 
 /**
- * Then this exception thrown, it will not trigger "fail" callback.
+ * Then this exception thrown, it will not trigger "onfail" callback.
  *
- *     fail('deploy', 'deploy:failed');
+ *     onfail('deploy', 'deploy:failed');
  *
  *     task('deploy', function () {
  *         throw new GracefulShutdownException(...);

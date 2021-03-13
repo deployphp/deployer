@@ -14,7 +14,7 @@
  * [`task()`](#task)
  * [`before()`](#before)
  * [`after()`](#after)
- * [`fail()`](#fail)
+ * [`onfail()`](#onfail)
  * [`option()`](#option)
  * [`cd()`](#cd)
  * [`within()`](#within)
@@ -184,14 +184,14 @@ Call that task after specified task runs.
 
   The task to be run.
 
-## fail()
+## onfail()
 
 ```php
-fail(string $task, $do)
+onfail(string $task, $do)
 ```
 
 Setup which task run on failure of $task.
-When called multiple times for a task, previous fail() definitions will be overridden.
+When called multiple times for a task, previous onfail() definitions will be overridden.
 
 
 

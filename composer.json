@@ -34,11 +34,13 @@
         ]
     },
     "scripts": {
+        "dep": "bin/dep -f deploy.yaml",
+        "release": "@dep release",
         "test": "pest",
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "phpcs": "phpcs",
         "phpstan": "phpstan analyse -c phpstan.neon",
-        "phpstan:baseline": "phpstan analyse -c phpstan.neon --generate-baseline tests/phpstan-baseline.neon"
+        "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
     },
     "bin": [
         "bin/dep"
@@ -60,6 +62,7 @@
         "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 0
     }
 }

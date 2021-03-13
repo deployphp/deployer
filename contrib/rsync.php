@@ -246,7 +246,7 @@ task('rsync', function() {
         return;
     }
 
-    $sshArguments = Client::connectionOptions($host);
+    $sshArguments = Client::connectionOptionsString($host);
     $user = !$host->getRemoteUser() ? '' : $host->getRemoteUser() . '@';
     $host = $host->getHostname();
 

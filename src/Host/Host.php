@@ -72,7 +72,7 @@ class Host
         return $this->config->get($name, $default);
     }
 
-    public function getAlias():? string
+    public function getAlias(): ?string
     {
         return $this->config->get('alias');
     }
@@ -83,7 +83,7 @@ class Host
         return $this;
     }
 
-    public function getTag():? string
+    public function getTag(): ?string
     {
         return $this->config->get('tag', $this->generateTag());
     }
@@ -94,7 +94,7 @@ class Host
         return $this;
     }
 
-    public function getHostname():? string
+    public function getHostname(): ?string
     {
         return $this->config->get('hostname');
     }
@@ -105,7 +105,7 @@ class Host
         return $this;
     }
 
-    public function getRemoteUser():? string
+    public function getRemoteUser(): ?string
     {
         return $this->config->get('remote_user');
     }
@@ -116,7 +116,7 @@ class Host
         return $this;
     }
 
-    public function getPort():? int
+    public function getPort(): ?int
     {
         return $this->config->get('port');
     }
@@ -127,7 +127,7 @@ class Host
         return $this;
     }
 
-    public function getConfigFile():? string
+    public function getConfigFile(): ?string
     {
         return $this->config->get('config_file');
     }
@@ -138,7 +138,7 @@ class Host
         return $this;
     }
 
-    public function getIdentityFile():? string
+    public function getIdentityFile(): ?string
     {
         return $this->config->get('identity_file');
     }
@@ -149,7 +149,7 @@ class Host
         return $this;
     }
 
-    public function getForwardAgent():? bool
+    public function getForwardAgent(): ?bool
     {
         return $this->config->get('forward_agent');
     }
@@ -160,7 +160,7 @@ class Host
         return $this;
     }
 
-    public function getSshMultiplexing():? bool
+    public function getSshMultiplexing(): ?bool
     {
         return $this->config->get('ssh_multiplexing');
     }
@@ -171,7 +171,7 @@ class Host
         return $this;
     }
 
-    public function getShell():? string
+    public function getShell(): ?string
     {
         return $this->config->get('shell');
     }
@@ -182,7 +182,7 @@ class Host
         return $this;
     }
 
-    public function getDeployPath():? string
+    public function getDeployPath(): ?string
     {
         return $this->config->get('deploy_path');
     }
@@ -193,7 +193,7 @@ class Host
         return $this;
     }
 
-    public function getLabels():? array
+    public function getLabels(): ?array
     {
         return $this->config->get('labels');
     }
@@ -212,12 +212,12 @@ class Host
         return $this;
     }
 
-    public function getSshArguments():? array
+    public function getSshArguments(): ?array
     {
         return $this->config->get('ssh_arguments');
     }
 
-    private function generateTag():? string
+    private function generateTag(): ?string
     {
         if (defined('NO_ANSI')) {
             return $this->getAlias();

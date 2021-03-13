@@ -14,8 +14,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
+use function Deployer\cd;
+use function Deployer\get;
 use function Deployer\has;
 use function Deployer\run;
+use function Deployer\writeln;
 
 class RunCommand extends SelectCommand
 {
@@ -49,19 +52,16 @@ class RunCommand extends SelectCommand
         $this->deployer->input = $input;
         $this->deployer->output = $output;
 
-        if ($output->getVerbosity() === Output::VERBOSITY_NORMAL) {
-            $output->setVerbosity(Output::VERBOSITY_VERBOSE);
-        }
-
         $command = implode('; ', $input->getOption('command') ?? '');
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));
 
         $task = new Task($command, function () use ($command) {
             if (has('current_path')) {
-                $command = "cd {{current_path}}; $command";
+                cd(get('current_path'));
             }
-            run($command);
+            $output = run($command);
+            writeln($output);
         });
 
         foreach ($hosts as $host) {

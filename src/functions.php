@@ -311,7 +311,7 @@ function within(string $path, callable $callback)
  *
  * @param string $command Command to run on remote host
  * @param array|null $options Array of options will override passed named arguments.
- * @param int|null $timeout  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+ * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $vars Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
@@ -396,7 +396,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  *
  * @param string $command Command to run on localhost.
  * @param array|null $options Array of options will override passed named arguments.
- * @param int|null $timeout  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+ * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $vars Array of placeholders to replace in command: `runLocally('echo %key%', vars: ['key' => 'anything does here']);`

@@ -230,22 +230,22 @@ function after(string $task, $do)
 
 /**
  * Setup which task run on failure of $task.
- * When called multiple times for a task, previous onfail() definitions will be overridden.
+ * When called multiple times for a task, previous fail() definitions will be overridden.
  *
  * @param string $task The task which need to fail so $that should be run.
  * @param string|callable $do The task to be run.
  *
  * @return Task|null
  */
-function onfail(string $task, $do)
+function fail(string $task, $do)
 {
     if (is_callable($do)) {
         $newTask = task("fail:$task", $do);
-        onfail($task, "fail:$task");
+        fail($task, "fail:$task");
         return $newTask;
     }
     $deployer = Deployer::get();
-    $deployer->onfail->set($task, $do);
+    $deployer->fail->set($task, $do);
 
     return null;
 }

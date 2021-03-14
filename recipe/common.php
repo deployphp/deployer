@@ -184,7 +184,7 @@ task('deploy:success', function () {
 task('deploy:failed', function () {
 })->hidden();
 
-onfail('deploy', 'deploy:failed');
+fail('deploy', 'deploy:failed');
 
 /**
  * Follow latest application logs.

@@ -131,8 +131,8 @@ class MainCommand extends SelectCommand
         }
 
         // Check if we have tasks to execute on failure.
-        if ($this->deployer['onfail']->has($this->getName())) {
-            $taskName = $this->deployer['onfail']->get($this->getName());
+        if ($this->deployer['fail']->has($this->getName())) {
+            $taskName = $this->deployer['fail']->get($this->getName());
             $tasks = $this->deployer->scriptManager->getTasks($taskName);
             $this->deployer->master->run($tasks, $hosts);
         }

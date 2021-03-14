@@ -44,4 +44,4 @@ task('fail', function () {
     run('false');
 });
 
-onfail('deploy:fail', 'deploy:unlock');
+fail('deploy:fail', 'deploy:unlock');

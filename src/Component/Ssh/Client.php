@@ -196,7 +196,9 @@ class Client
         $options = [];
 
         if ($host->has('ssh_arguments')) {
-            $options = array_merge($options, $host->getSshArguments());
+            foreach ($host->getSshArguments() as $arg) {
+                $options = array_merge($options, explode(' ', $arg));
+            }
         }
 
         if ($host->has('port')) {

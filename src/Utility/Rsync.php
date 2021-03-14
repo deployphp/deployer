@@ -43,7 +43,7 @@ class Rsync
         $defaults = [
             'timeout' => null,
             'options' => [],
-            'flags'   => 'azP',
+            'flags' => '-azP',
             'progress_bar' => true,
         ];
         $config = array_merge($defaults, $config);
@@ -53,21 +53,22 @@ class Rsync
 
         $connectionOptions = Client::connectionOptionsString($host);
         if ($connectionOptions !== '') {
-            $options[] = "-e 'ssh $connectionOptions'";
+            $options = array_merge($options, ['-e', "ssh $connectionOptions"]);
         }
 
         if ($host->has("become")) {
-            $options[] = "--rsync-path='sudo -H -u {$host->get('become')} rsync'";
+            $options = array_merge($options, ['--rsync-path', "sudo -H -u {$host->get('become')} rsync"]);
         }
 
-        $command = sprintf(
-            "rsync -%s %s %s %s",
-            $flags,
-            implode(' ', $options),
-            escapeshellarg($source),
-            escapeshellarg($destination)
-        );
-        $this->pop->command($host, $command);
+        $command = array_merge(['rsync', $flags], $options, [$source, $destination]);
+
+        $commandString = $command[0];
+        for ($i = 1; $i < count($command); $i++) {
+            $commandString .= ' ' . escapeshellarg($command[$i]);
+        }
+        if ($this->output->isVerbose()) {
+            $this->output->writeln("[$host] $commandString");
+        }
 
         $progressBar = null;
         if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL && $config['progress_bar']) {
@@ -95,14 +96,14 @@ class Rsync
             }
         };
 
-        $process = Process::fromShellCommandline($command)
-            ->setTimeout($config['timeout']);
+        $process = new Process($command);
+        $process->setTimeout($config['timeout']);
         try {
             $process->mustRun($callback);
         } catch (ProcessFailedException $exception) {
             throw new RunException(
                 $host,
-                $command,
+                $commandString,
                 $process->getExitCode(),
                 $process->getOutput(),
                 $process->getErrorOutput()

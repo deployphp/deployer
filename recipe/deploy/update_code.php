@@ -1,6 +1,8 @@
 <?php
 namespace Deployer;
 
+use Deployer\Exception\RunException;
+
 /**
  * Determines which branch to deploy. Can be overridden with cli option `--branch`.
  * If not specified, will get current git HEAD branch as default branch to deploy.
@@ -49,9 +51,22 @@ task('deploy:update_code', function () {
         }
     }
 
+    // Clone the repository to a bare repo.
     $bare = parse('{{deploy_path}}/.dep/repo');
     run("[ -d $bare ] || mkdir -p $bare");
     run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1");
+
+
+    // Populate known hosts.
+    preg_match('/.*(@|\/\/)([^\/:]+).*/', $repository, $match);
+    if (isset($match[2])) {
+        $repositoryHostname = $match[2];
+        try {
+            run("ssh-keygen -F $repositoryHostname");
+        } catch (RunException) {
+            run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
+        }
+    }
 
     cd($bare);
 

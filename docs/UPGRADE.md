@@ -50,7 +50,9 @@
    
      deploy:vendors:
        script: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
-   ```  
+   ``` 
+8. Rename success task in ~~success~~ to `deploy:success`.
+9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
 
 # Upgrade from 5.x to 6.x
 

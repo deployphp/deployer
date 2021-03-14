@@ -69,7 +69,7 @@ task('deploy:update_code', function () {
 
     cd($bare);
 
-    // If remote url change, update in .git/repo as well.
+    // If remote url changed, update it in `.git/repo` as well.
     run("[[ $($git remote get-url origin) == '$repository' ]] || $git remote set-url origin $repository ");
 
     // Copy to release_path.

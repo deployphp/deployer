@@ -44,20 +44,17 @@ class Client
         ];
         $config = array_merge($defaults, $config);
 
-        // TODO: Init multiplexing again only after passing ControlPersist seconds.
         if ($host->getSshMultiplexing()) {
             $this->initMultiplexing($host);
         }
 
         $shellId = bin2hex(random_bytes(10));
-        $become = '';
-        if ($host->has('become')) {
-            $become = "sudo -H -u {$host->get('become')} ";
-        }
         $shellCommand = $host->getShell();
+        if ($host->has('become')) {
+            $shellCommand = "sudo -H -u {$host->get('become')} " . $shellCommand;
+        }
 
-        $bash = ": $shellId; $become $shellCommand";
-        $ssh = array_merge(['ssh'], self::connectionOptionsArray($host), [$connectionString, $bash]);
+        $ssh = array_merge(['ssh'], self::connectionOptionsArray($host), [$connectionString, ": $shellId; $shellCommand"]);
 
         // -vvv for ssh command
         if ($this->output->isDebug()) {

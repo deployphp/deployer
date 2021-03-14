@@ -10,7 +10,7 @@ use Deployer\Exception\RunException;
 set('branch', function () {
     try {
         $branch = runLocally('git rev-parse --abbrev-ref HEAD');
-    } catch (\Throwable) {
+    } catch (\Throwable $e) {
         $branch = null;
     }
 
@@ -57,7 +57,7 @@ task('deploy:update_code', function () {
         $repositoryHostname = $match[2];
         try {
             run("ssh-keygen -F $repositoryHostname");
-        } catch (RunException) {
+        } catch (RunException $e) {
             run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
         }
     }

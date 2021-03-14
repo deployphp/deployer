@@ -51,12 +51,6 @@ task('deploy:update_code', function () {
         }
     }
 
-    // Clone the repository to a bare repo.
-    $bare = parse('{{deploy_path}}/.dep/repo');
-    run("[ -d $bare ] || mkdir -p $bare");
-    run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1");
-
-
     // Populate known hosts.
     preg_match('/.*(@|\/\/)([^\/:]+).*/', $repository, $match);
     if (isset($match[2])) {
@@ -67,6 +61,11 @@ task('deploy:update_code', function () {
             run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
         }
     }
+
+    // Clone the repository to a bare repo.
+    $bare = parse('{{deploy_path}}/.dep/repo');
+    run("[ -d $bare ] || mkdir -p $bare");
+    run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1");
 
     cd($bare);
 

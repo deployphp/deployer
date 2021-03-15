@@ -309,7 +309,7 @@ function within(string $path, callable $callback)
  * run("echo $path");
  * ```
  *
- * @param string $command Command to run on remote host
+ * @param string $command Command to run on remote host.
  * @param array|null $options Array of options will override passed named arguments.
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.

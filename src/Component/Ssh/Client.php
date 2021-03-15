@@ -246,7 +246,7 @@ class Client
             return '/dev/shm/%C';
         }
 
-        $connectionHashLength = 16; // Length of connection hash that OpenSSH appends to controlpath
+        $connectionHashLength = 17; // Length of connection hash that OpenSSH appends to controlpath
         $unixMaxPath = 104; // Theoretical max limit for path length
         $homeDir = parse_home_dir('~');
         $port = empty($host->get('port', '')) ? '' : ':' . $host->getPort();

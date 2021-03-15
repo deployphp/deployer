@@ -58,7 +58,7 @@ class WorkerCommand extends MainCommand
         $worker = new Worker($this->deployer);
         $exitCode = $worker->execute($task, $host);
 
-        if ($hostName !== 'local') {
+        if ($hostName !== Localhost::extraordinary) {
             $host->config()->save();
         }
         return $exitCode;

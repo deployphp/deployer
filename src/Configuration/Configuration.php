@@ -26,7 +26,7 @@ class Configuration implements \ArrayAccess
 
     public function update(array $values): void
     {
-        $this->values = $values;
+        $this->values = array_merge($this->values, $values);
     }
 
     public function bind(Configuration $parent): void
@@ -209,9 +209,6 @@ class Configuration implements \ArrayAccess
     public function persist(): array
     {
         $values = [];
-        if ($this->parent !== null) {
-            $values = $this->parent->persist();
-        }
         foreach ($this->values as $key => $value) {
             if (is_closure($value)) {
                 continue;

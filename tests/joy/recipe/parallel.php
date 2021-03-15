@@ -3,7 +3,10 @@
 namespace Deployer;
 
 localhost('prod');
-localhost('beta');
+localhost('beta')
+    ->set('host_level_callback_config', function () {
+        return 'from callback';
+    });
 
 // testServer:
 
@@ -35,3 +38,12 @@ task('cache_config_test', function () {
 after('cache_config_test', function () {
     writeln('echo 2: {{upper_host}}');
 });
+
+// testHostConfigFromCallback:
+
+set('host_level_callback_config', 'from global');
+
+task('host_config_from_callback', function () {
+   writeln('config value is {{host_level_callback_config}}');
+});
+

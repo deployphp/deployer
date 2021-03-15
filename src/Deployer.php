@@ -205,7 +205,6 @@ class Deployer extends Container
     {
         $this->addTaskCommands();
         $this->getConsole()->add(new AutocompleteCommand());
-        $this->getConsole()->add(new ConnectCommand($this));
         $this->getConsole()->add(new ConfigCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());

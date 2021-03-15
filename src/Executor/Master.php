@@ -133,36 +133,15 @@ class Master
      */
     public function connect(array $hosts): void
     {
-        $callback = function (string $output) {
-            $output = preg_replace('/\n$/', '', $output);
-            if (strlen($output) !== 0) {
-                $this->output->writeln($output);
-            }
-        };
-
-        // Connect to each host sequentially, to prevent getting locked.
+        // Connect to each host sequentially, to allow user type yes if fingerprint is missing.
         foreach ($hosts as $host) {
             if ($host instanceof Localhost) {
                 continue;
             }
-            $process = $this->createConnectProcess($host);
-            $process->start();
-
-            while ($process->isRunning()) {
-                $this->gatherOutput([$process], $callback);
-                if ($this->output->isDecorated()) {
-                    $this->output->write(spinner("connect $host"));
-                }
-                usleep(1000);
-            }
-
-            if ($process->getExitCode() !== 0) {
-                throw new ConnectException($process->getOutput());
-            }
+            $this->output->write("  connecting $host\r");
+            $this->client->connect($host);
+            $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
         }
-
-        // Clear spinner.
-        $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
     }
 
     /**
@@ -233,19 +212,6 @@ class Master
             $options .= ' -v';
         }
         $command = "$dep worker --task $task --host {$host->getAlias()} --port {$this->server->getPort()} {$options}";
-
-        if ($this->output->isDebug()) {
-            $this->output->writeln("[$host] $command");
-        }
-
-        return Process::fromShellCommandline($command);
-    }
-
-    protected function createConnectProcess(Host $host): Process
-    {
-        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $options = Stringify::options($this->input, $this->output);
-        $command = "$dep connect --host {$host->getAlias()} {$options}";
 
         if ($this->output->isDebug()) {
             $this->output->writeln("[$host] $command");

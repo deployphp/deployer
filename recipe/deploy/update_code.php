@@ -78,5 +78,5 @@ task('deploy:update_code', function () {
 
     // Save revision in releases log.
     $rev = run("$git rev-list $at -1");
-    run("sed -i 's/revision/$rev/' {{deploy_path}}/.dep/releases");
+    run("sed -ibak 's/revision/$rev/' {{deploy_path}}/.dep/releases");
 });

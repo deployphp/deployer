@@ -207,7 +207,7 @@ class Client
         }
 
         if ($host->has('config_file')) {
-            $options = array_merge($options, ['-F', $host->getConfigFile()]);
+            $options = array_merge($options, ['-F', parse_home_dir($host->getConfigFile())]);
         }
 
         if ($host->has('identity_file')) {

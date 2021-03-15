@@ -258,7 +258,7 @@ Execute a callback within a specific directory and revert back to the initial wo
 ## run()
 
 ```php
-run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
+run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null, ?bool $real_time_output = false): string
 ```
 
 Executes given command on remote host.
@@ -283,7 +283,7 @@ run("echo $path");
 - ### command
   **type**: `string `
 
-  Command to run on remote host
+  Command to run on remote host.
 - ### options
   **type**: `array|null `
 
@@ -308,6 +308,10 @@ run("echo $path");
   **type**: `array|null `
 
   Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+- ### real_time_output
+  **type**: `bool|null `
+
+  Print command output in real-time.
 
 ## runLocally()
 

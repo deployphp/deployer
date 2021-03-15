@@ -316,19 +316,19 @@ function within(string $path, callable $callback)
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $vars Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
  * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+ * @param bool|null $real_time_output Print command output in real-time.
  *
  * @throws Exception\Exception|RunException|TimeoutException
  */
-function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
+function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null, ?bool $real_time_output = false): string
 {
     $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env',] as $arg) {
+    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env', 'real_time_output'] as $arg) {
         if ($$arg !== null) {
             $namedArguments[$arg] = $$arg;
         }
     }
     $options = array_merge($namedArguments, $options);
-
     $run = function ($command, $options = []): string {
         $host = Context::get()->getHost();
 

@@ -41,6 +41,7 @@ class Client
             'timeout' => $host->get('default_timeout', 300),
             'idle_timeout' => null,
             'vars' => [],
+            'real_time_output' => false,
         ];
         $config = array_merge($defaults, $config);
 
@@ -78,9 +79,9 @@ class Client
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);
 
-        $callback = function ($type, $buffer) use ($host) {
+        $callback = function ($type, $buffer) use ($config, $host) {
             $this->logger->printBuffer($host, $type, $buffer);
-            $this->pop->callback($host)($type, $buffer);
+            $this->pop->callback($host, $config['real_time_output'])($type, $buffer);
         };
 
         try {

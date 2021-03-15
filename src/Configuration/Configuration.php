@@ -102,7 +102,7 @@ class Configuration implements \ArrayAccess
     /**
      * @return mixed|null
      */
-    protected function fetch(string $name)
+    public function fetch(string $name)
     {
         if (array_key_exists($name, $this->values)) {
             return $this->values[$name];

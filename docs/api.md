@@ -434,7 +434,7 @@ invoke('deploy:symlink');
 ## upload()
 
 ```php
-upload(string $source, string $destination, array $config = []): void
+upload($source, string $destination, array $config = []): void
 ```
 
 Upload file or directory to host.

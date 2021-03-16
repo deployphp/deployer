@@ -528,15 +528,16 @@ function invoke(string $taskName): void
  * >
  * > The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
  *
+ * @param string|string[] $source
  * @param array $config
  *
  * @throws RunException
  */
-function upload(string $source, string $destination, array $config = []): void
+function upload($source, string $destination, array $config = []): void
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
-    $source = parse($source);
+    $source = is_array($source) ? array_map('Deployer\parse', $source) : parse($source);
     $destination = parse($destination);
 
     if ($host instanceof Localhost) {

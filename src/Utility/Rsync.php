@@ -36,9 +36,10 @@ class Rsync
      * - `options` with additional flags passed directly to the `rsync` command
      * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
      *
+     * @param string|string[] $source
      * @throws RunException
      */
-    public function call(Host $host, string $source, string $destination, array $config = []): void
+    public function call(Host $host, $source, string $destination, array $config = []): void
     {
         $defaults = [
             'timeout' => null,
@@ -55,12 +56,13 @@ class Rsync
         if ($connectionOptions !== '') {
             $options = array_merge($options, ['-e', "ssh $connectionOptions"]);
         }
-
         if ($host->has("become")) {
             $options = array_merge($options, ['--rsync-path', "sudo -H -u {$host->get('become')} rsync"]);
         }
-
-        $command = array_merge(['rsync', $flags], $options, [$source, $destination]);
+        if (!is_array($source)) {
+            $source = [$source];
+        }
+        $command = array_merge(['rsync', $flags], $options, $source, [$destination]);
 
         $commandString = $command[0];
         for ($i = 1; $i < count($command); $i++) {

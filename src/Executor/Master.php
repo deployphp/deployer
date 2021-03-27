@@ -10,7 +10,6 @@ namespace Deployer\Executor;
 use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
-use Deployer\Exception\ConnectException;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;

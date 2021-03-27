@@ -8,17 +8,10 @@
 namespace Deployer\Command;
 
 use Deployer\Deployer;
-use Deployer\Task\Context;
-use Deployer\Task\Task;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Yaml\Yaml;
-use function Deployer\has;
-use function Deployer\run;
-use function Deployer\Support\is_closure;
 
 class ConfigCommand extends SelectCommand
 {

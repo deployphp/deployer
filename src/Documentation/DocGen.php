@@ -7,7 +7,6 @@
 
 namespace Deployer\Documentation;
 
-
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;

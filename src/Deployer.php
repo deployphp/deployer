@@ -10,7 +10,6 @@ namespace Deployer;
 use Deployer\Collection\Collection;
 use Deployer\Command\AutocompleteCommand;
 use Deployer\Command\ConfigCommand;
-use Deployer\Command\ConnectCommand;
 use Deployer\Command\DiceCommand;
 use Deployer\Command\InitCommand;
 use Deployer\Command\MainCommand;

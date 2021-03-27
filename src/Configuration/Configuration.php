@@ -9,7 +9,6 @@ namespace Deployer\Configuration;
 
 use Deployer\Exception\ConfigurationException;
 use Deployer\Utility\Httpie;
-use function Deployer\get;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;

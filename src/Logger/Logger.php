@@ -10,7 +10,6 @@ namespace Deployer\Logger;
 use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Host\Host;
 use Deployer\Logger\Handler\HandlerInterface;
-use Symfony\Component\Process\Process;
 
 class Logger
 {

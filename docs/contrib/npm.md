@@ -11,9 +11,9 @@
 
 Add to your _deploy.php_
 
-~~~php
+```php
 require 'contrib/npm.php';
-~~~
+```
 
 ## Configuration
 
@@ -21,9 +21,9 @@ require 'contrib/npm.php';
 
 ## Usage
 
-~~~php
+```php
 after('deploy:update_code', 'npm:install');
-~~~
+```
 
 
 

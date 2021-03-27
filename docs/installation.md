@@ -91,9 +91,9 @@ This will build the `deployer.phar` phar archive.
 Deployer comes with an autocomplete script for bash/zsh/fish, so you don't need to remember all tasks and options.
 To install, run the following command:
 
-~~~bash
+```sh
 dep autocomplete
-~~~
+```
 
 And follow the instructions. 
 

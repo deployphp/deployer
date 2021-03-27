@@ -19,7 +19,6 @@ use function Deployer\get;
 use function Deployer\has;
 use function Deployer\run;
 use function Deployer\test;
-use function Deployer\writeln;
 
 class RunCommand extends SelectCommand
 {

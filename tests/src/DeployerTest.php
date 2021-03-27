@@ -7,7 +7,6 @@
 
 namespace Deployer;
 
-use Deployer\Collection\Collection;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;

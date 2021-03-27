@@ -7,7 +7,6 @@
 
 namespace Deployer\Support;
 
-
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

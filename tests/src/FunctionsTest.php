@@ -16,9 +16,7 @@ use Deployer\Task\Task;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\Input;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Console\Output\OutputInterface;
 use function Deployer\localhost;
 
 class FunctionsTest extends TestCase

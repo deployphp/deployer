@@ -7,7 +7,6 @@
 
 namespace Deployer\Documentation;
 
-
 class DocTask
 {
     public $name;

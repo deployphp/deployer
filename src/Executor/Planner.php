@@ -7,16 +7,10 @@
 
 namespace Deployer\Executor;
 
-use Deployer\Exception\Exception;
-use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableStyle;
-use Symfony\Component\Console\Input\Input;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
-use Throwable;
 
 class Planner
 {

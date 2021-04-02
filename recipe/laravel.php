@@ -19,10 +19,15 @@ set('writable_dirs', [
     'storage/logs',
 ]);
 set('log_files', 'storage/logs/*.log');
+set('laravel_base_path', function () {
+    try {
+        return get('release_path');
+    } catch (\Exception $e) {
+        return get('current_path');
+    }
+});
 set('laravel_version', function () {
-    $result = run('{{bin/php}} {{release_path}}/artisan --version');
-    preg_match_all('/(\d+\.?)+/', $result, $matches);
-    return $matches[0][0] ?? 5.5;
+    return laravel_version('{{laravel_base_path}}');
 });
 
 /**
@@ -43,38 +48,55 @@ set('laravel_version', function () {
 function artisan($command, $options = [])
 {
     return function () use ($command, $options) {
+
+        // By default, we use the "release_path" to run the command. However, if it does
+        // not exists or if explicitly requested, we fallback to the "current_path".
+        // This ensure we can run "dep artisan:*" on the current release.
+        $basePath = in_array('runInCurrent', $options)
+            ? get('current_path')
+            : get('laravel_base_path');
+
+        // Ensure the artisan command is available on the current version.
         $versionTooEarly = array_key_exists('min', $options)
-            && laravel_version_compare($options['min'], '<');
+            && laravel_version_compare($basePath, $options['min'], '<');
 
         $versionTooLate = array_key_exists('max', $options)
-            && laravel_version_compare($options['max'], '>');
+            && laravel_version_compare($basePath, $options['max'], '>');
 
         if ($versionTooEarly || $versionTooLate) {
             return;
         }
-        if (in_array('failIfNoEnv', $options) && !test('[ -s {{release_path}}/.env ]')) {
+
+        // Ensure we warn or fail when a command relies on the ".env" file.
+        if (in_array('failIfNoEnv', $options) && !test("[ -s $basePath/.env ]")) {
             throw new \Exception('Your .env file is empty! Cannot proceed.');
         }
-        if (in_array('skipIfNoEnv', $options) && !test('[ -s {{release_path}}/.env ]')) {
+
+        if (in_array('skipIfNoEnv', $options) && !test("[ -s $basePath/.env ]")) {
             warning("Your .env file is empty! Skipping...</>");
             return;
         }
 
-        $artisan = in_array('runInCurrent', $options)
-            ? '{{current_path}}/artisan'
-            : '{{release_path}}/artisan';
+        // Run the artisan command.
+        $output = run("{{bin/php}} $basePath/artisan $command");
 
-        $output = run("{{bin/php}} $artisan $command");
-
+        // Output the results when appropriate.
         if (in_array('showOutput', $options)) {
             writeln("<info>$output</info>");
         }
     };
 }
 
-function laravel_version_compare($version, $comparator)
+function laravel_version_compare($basePath, $version, $comparator)
 {
-    return version_compare(get('laravel_version'), $version, $comparator);
+    return version_compare(laravel_version($basePath), $version, $comparator);
+}
+
+function laravel_version($basePath)
+{
+    $result = run("{{bin/php}} $basePath/artisan --version");
+    preg_match_all('/(\d+\.?)+/', $result, $matches);
+    return $matches[0][0] ?? 5.5;
 }
 
 desc('Disable maintenance mode');

@@ -15,6 +15,7 @@
   * [`shared_files`](#shared_files)
   * [`writable_dirs`](#writable_dirs)
   * [`log_files`](#log_files)
+  * [`laravel_base_path`](#laravel_base_path)
   * [`laravel_version`](#laravel_version)
 * Tasks
   * [`artisan:up`](#artisanup) — Disable maintenance mode
@@ -70,6 +71,11 @@
 
 ### log_files
 [Source](https://github.com/deployphp/deployer/search?q=%22log_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### laravel_base_path
+[Source](https://github.com/deployphp/deployer/search?q=%22laravel_base_path%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 

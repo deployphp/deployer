@@ -31,6 +31,7 @@
 - Better parallel execution support, configurable per task.
 - Refactored `dep init` command.
 - Normalize shopware recipe (require common.php).
+- Allow artisan commands to run in the current release. [#2485]
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
@@ -602,6 +603,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2485]: https://github.com/deployphp/deployer/pull/2485
 [#2425]: https://github.com/deployphp/deployer/pull/2425
 [#2423]: https://github.com/deployphp/deployer/issues/2423
 [#2393]: https://github.com/deployphp/deployer/pull/2393

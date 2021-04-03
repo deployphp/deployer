@@ -27,7 +27,7 @@ set('writable_dirs', [
 
 set('migrations_config', '');
 
-set('bin/console', '{{bin/php}} {{release_path}}/bin/console');
+set('bin/console', '{{bin/php}} {{release_or_current_path}}/bin/console');
 
 set('console_options', function () {
     return '--no-interaction';
@@ -37,10 +37,10 @@ desc('Migrate database');
 task('database:migrate', function () {
     $options = '--allow-no-migration';
     if (get('migrations_config') !== '') {
-        $options = "$options --configuration={{release_path}}/{{migrations_config}}";
+        $options = "$options --configuration={{release_or_current_path}}/{{migrations_config}}";
     }
 
-    run("cd {{release_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
+    run("cd {{release_or_current_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
 });
 
 desc('Clear cache');

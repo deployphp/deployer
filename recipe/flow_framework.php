@@ -23,7 +23,7 @@ set('shared_dirs', [
  */
 desc('Apply database migrations');
 task('deploy:run_migrations', function () {
-    run('FLOW_CONTEXT={{flow_context}} {{bin/php}} {{release_path}}/{{flow_command}} doctrine:migrate');
+    run('FLOW_CONTEXT={{flow_context}} {{bin/php}} {{release_or_current_path}}/{{flow_command}} doctrine:migrate');
 });
 
 /**
@@ -31,7 +31,7 @@ task('deploy:run_migrations', function () {
  */
 desc('Publish resources');
 task('deploy:publish_resources', function () {
-    run('FLOW_CONTEXT={{flow_context}} {{bin/php}} {{release_path}}/{{flow_command}} resource:publish');
+    run('FLOW_CONTEXT={{flow_context}} {{bin/php}} {{release_or_current_path}}/{{flow_command}} resource:publish');
 });
 
 /**

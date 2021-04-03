@@ -30,7 +30,13 @@ after('deploy', 'php-fpm:reload');
 namespace Deployer;
 
 set('php_fpm_version', function () {
-    throw new \Exception('Please provide the PHP-fpm version using the `php_fpm_version` option.');
+    $phpFpmProcess = run("ps aux | grep php-fpm | grep 'master process'");
+
+    if (! preg_match('/^.*master process.*(\d\.\d).*$/', $phpFpmProcess, $match)) {
+        throw new \Exception('Please provide the PHP-fpm version using the `php_fpm_version` option.');
+    }
+
+    return $match[1];
 });
 set('php_fpm_service', 'php{{php_fpm_version}}-fpm');
 set('php_fpm_command', 'echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload');

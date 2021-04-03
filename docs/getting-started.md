@@ -142,9 +142,9 @@ after('deploy', 'reload:php-fpm');
 
 If you need to connect to the host, Deployer has a shortcut for faster access:
 
-~~~sh
+```sh
 dep ssh
-~~~
+```
 
 This command will connect to selected hosts and cd to `current_path`.
 

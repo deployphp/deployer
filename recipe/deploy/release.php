@@ -89,6 +89,15 @@ set('release_path', function () {
     }
 });
 
+/**
+ * Return the release path during a deployment
+ * but fallback to the current path otherwise.
+ */
+set('release_or_current_path', function () {
+    $releaseExists = test('[ -h {{deploy_path}}/release ]');
+
+    return $releaseExists ? get('release_path') : get('current_path');
+});
 
 desc('Prepare release. Clean up unfinished releases and prepare next release');
 task('deploy:release', function () {

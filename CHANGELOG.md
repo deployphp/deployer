@@ -22,6 +22,7 @@
 - Added support for PHP8.
 - Added slack_channel option to Slack recipe.
 - Chatwork contrib recipe.
+- Added `release_or_current_path` option that fallbacks to the `current_path` when the `release_path` does not exist. [#2486]
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -602,6 +603,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2486]: https://github.com/deployphp/deployer/pull/2486
 [#2425]: https://github.com/deployphp/deployer/pull/2425
 [#2423]: https://github.com/deployphp/deployer/issues/2423
 [#2393]: https://github.com/deployphp/deployer/pull/2393

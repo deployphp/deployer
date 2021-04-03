@@ -25,16 +25,16 @@ set('shared_files', [
  * Create plugins' symlinks
  */
 task('deploy:init', function () {
-    run('{{release_path}}/bin/cake plugin assets symlink');
+    run('{{release_or_current_path}}/bin/cake plugin assets symlink');
 })->desc('Initialization');
 
 /**
  * Run migrations
  */
 task('deploy:run_migrations', function () {
-    run('{{release_path}}/bin/cake migrations migrate');
-    run('{{release_path}}/bin/cake schema_cache clear');
-    run('{{release_path}}/bin/cake schema_cachebuild');
+    run('{{release_or_current_path}}/bin/cake migrations migrate');
+    run('{{release_or_current_path}}/bin/cake schema_cache clear');
+    run('{{release_or_current_path}}/bin/cake schema_cachebuild');
 })->desc('Run migrations');
 
 /**

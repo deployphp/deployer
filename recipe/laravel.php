@@ -20,7 +20,7 @@ set('writable_dirs', [
 ]);
 set('log_files', 'storage/logs/*.log');
 set('laravel_version', function () {
-    $result = run('{{bin/php}} {{release_path}}/artisan --version');
+    $result = run('{{bin/php}} {{release_or_current_path}}/artisan --version');
     preg_match_all('/(\d+\.?)+/', $result, $matches);
     return $matches[0][0] ?? 5.5;
 });
@@ -43,6 +43,8 @@ set('laravel_version', function () {
 function artisan($command, $options = [])
 {
     return function () use ($command, $options) {
+
+        // Ensure the artisan command is available on the current version.
         $versionTooEarly = array_key_exists('min', $options)
             && laravel_version_compare($options['min'], '<');
 
@@ -52,20 +54,26 @@ function artisan($command, $options = [])
         if ($versionTooEarly || $versionTooLate) {
             return;
         }
-        if (in_array('failIfNoEnv', $options) && !test('[ -s {{release_path}}/.env ]')) {
+
+        // Ensure we warn or fail when a command relies on the ".env" file.
+        if (in_array('failIfNoEnv', $options) && !test('[ -s {{release_or_current_path}}/.env ]')) {
             throw new \Exception('Your .env file is empty! Cannot proceed.');
         }
-        if (in_array('skipIfNoEnv', $options) && !test('[ -s {{release_path}}/.env ]')) {
+
+        if (in_array('skipIfNoEnv', $options) && !test('[ -s {{release_or_current_path}}/.env ]')) {
             warning("Your .env file is empty! Skipping...</>");
             return;
         }
 
+        // Use the release_path by default unless it does not exist or specified otherwise.
         $artisan = in_array('runInCurrent', $options)
             ? '{{current_path}}/artisan'
-            : '{{release_path}}/artisan';
+            : '{{release_or_current_path}}/artisan';
 
+        // Run the artisan command.
         $output = run("{{bin/php}} $artisan $command");
 
+        // Output the results when appropriate.
         if (in_array('showOutput', $options)) {
             writeln("<info>$output</info>");
         }
@@ -166,13 +174,13 @@ task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
 desc('Make symlink for public disk');
 task('deploy:public_disk', function () {
     // Remove from source.
-    run('if [ -d $(echo {{release_path}}/public/storage) ]; then rm -rf {{release_path}}/public/storage; fi');
+    run('if [ -d $(echo {{release_or_current_path}}/public/storage) ]; then rm -rf {{release_or_current_path}}/public/storage; fi');
 
     // Create shared dir if it does not exist.
     run('mkdir -p {{deploy_path}}/shared/storage/app/public');
 
     // Symlink shared dir to release dir
-    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_path}}/public/storage');
+    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_or_current_path}}/public/storage');
 });
 
 /**

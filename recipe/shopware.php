@@ -37,32 +37,32 @@ set('writable_dirs', [
 set('static_folders', []);
 
 task('sw:update_code', static function () {
-    run('git clone {{repository}} {{release_path}}');
+    run('git clone {{repository}} {{release_or_current_path}}');
 });
 task('sw:system:install', static function () {
-    run('cd {{release_path}} && bin/console system:install');
+    run('cd {{release_or_current_path}} && bin/console system:install');
 });
 task('sw:build', static function () {
-    run('cd {{release_path}}/bin && bash build.sh');
+    run('cd {{release_or_current_path}}/bin && bash build.sh');
 });
 task('sw:system:setup', static function () {
-    run('cd {{release_path}} && bin/console system:setup');
+    run('cd {{release_or_current_path}} && bin/console system:setup');
 });
 task('sw:theme:compile', static function () {
-    run('cd {{release_path}} && bin/console theme:compile');
+    run('cd {{release_or_current_path}} && bin/console theme:compile');
 });
 task('sw:cache:clear', static function () {
-    run('cd {{release_path}} && bin/console cache:clear');
+    run('cd {{release_or_current_path}} && bin/console cache:clear');
 });
 task('sw:cache:warmup', static function () {
-    run('cd {{release_path}} && bin/console cache:warmup');
-    run('cd {{release_path}} && bin/console http:cache:warm:up');
+    run('cd {{release_or_current_path}} && bin/console cache:warmup');
+    run('cd {{release_or_current_path}} && bin/console http:cache:warm:up');
 });
 task('sw:database:migrate', static function () {
-    run('cd {{release_path}} && bin/console database:migrate --all');
+    run('cd {{release_or_current_path}} && bin/console database:migrate --all');
 });
 task('sw:plugin:refresh', function () {
-    run('cd {{release_path}} && bin/console plugin:refresh');
+    run('cd {{release_or_current_path}} && bin/console plugin:refresh');
 });
 /**
  * @return array
@@ -71,7 +71,7 @@ task('sw:plugin:refresh', function () {
  */
 function getSortedPlugins(): array
 {
-    cd('{{release_path}}');
+    cd('{{release_or_current_path}}');
     $plugins = explode("\n", run('bin/console plugin:list'));
 
     // take line over headlines and count "-" to get the size of the cells
@@ -146,7 +146,7 @@ task('sw:plugin:activate:all', static function () {
         ] = $pluginInfo;
 
         if ($installed === 'No' || $active === 'No') {
-            run("cd {{release_path}} && bin/console plugin:install --activate $plugin");
+            run("cd {{release_or_current_path}} && bin/console plugin:install --activate $plugin");
         }
     }
 });
@@ -166,7 +166,7 @@ task('sw:plugin:migrate:all', static function () {
         ] = $pluginInfo;
 
         if ($installed === 'Yes' || $active === 'Yes') {
-            run("cd {{release_path}} && bin/console database:migrate --all $plugin || true");
+            run("cd {{release_or_current_path}} && bin/console database:migrate --all $plugin || true");
         }
     }
 });

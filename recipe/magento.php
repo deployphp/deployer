@@ -23,17 +23,17 @@ set('writable_dirs', ['var', 'media']);
  */
 desc('Clear cache');
 task('deploy:cache:clear', function () {
-    run("cd {{release_path}} && php -r \"require_once 'app/Mage.php'; umask(0); Mage::app()->cleanCache();\"");
+    run("cd {{release_or_current_path}} && php -r \"require_once 'app/Mage.php'; umask(0); Mage::app()->cleanCache();\"");
 });
 
 /**
  * Remove files that can be used to compromise Magento
  */
 task('deploy:clear_version', function () {
-    run("rm -f {{release_path}}/LICENSE.html");
-    run("rm -f {{release_path}}/LICENSE.txt");
-    run("rm -f {{release_path}}/LICENSE_AFL.txt");
-    run("rm -f {{release_path}}/RELEASE_NOTES.txt");
+    run("rm -f {{release_or_current_path}}/LICENSE.html");
+    run("rm -f {{release_or_current_path}}/LICENSE.txt");
+    run("rm -f {{release_or_current_path}}/LICENSE_AFL.txt");
+    run("rm -f {{release_or_current_path}}/RELEASE_NOTES.txt");
 })->hidden();
 
 after('deploy:update_code', 'deploy:clear_version');

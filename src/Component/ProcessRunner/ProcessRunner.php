@@ -51,11 +51,11 @@ class ProcessRunner
         };
 
         $command = $this->replacePlaceholders($command, $config['vars']);
-
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
 
-        $process = Process::fromShellCommandline($command)
+        $process = Process::fromShellCommandline($host->getShell())
+            ->setInput($command)
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);
 

@@ -13,6 +13,7 @@
   * [`releases_metainfo`](#releases_metainfo)
   * [`releases_list`](#releases_list)
   * [`release_path`](#release_path)
+  * [`release_or_current_path`](#release_or_current_path)
 * Tasks
   * [`deploy:release`](#deployrelease) — Prepare release. Clean up unfinished releases and prepare next release
 
@@ -36,6 +37,12 @@ Return list of releases on host.
 [Source](https://github.com/deployphp/deployer/search?q=%22release_path%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
 
 Return release path.
+
+### release_or_current_path
+[Source](https://github.com/deployphp/deployer/search?q=%22release_or_current_path%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arelease.php)
+
+Return the release path during a deployment
+but fallback to the current path otherwise.
 
 
 ## Tasks

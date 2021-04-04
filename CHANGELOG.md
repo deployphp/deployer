@@ -23,6 +23,7 @@
 - Added slack_channel option to Slack recipe.
 - Chatwork contrib recipe.
 - Added `release_or_current_path` option that fallbacks to the `current_path` when the `release_path` does not exist. [#2486]
+- Added `contrib/php-fpm.php` recipe that provides a task to reload PHP-fpm. [#2487]
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -603,6 +604,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2487]: https://github.com/deployphp/deployer/pull/2487
 [#2486]: https://github.com/deployphp/deployer/pull/2486
 [#2425]: https://github.com/deployphp/deployer/pull/2425
 [#2423]: https://github.com/deployphp/deployer/issues/2423

@@ -19,6 +19,8 @@
 * Tasks
   * [`artisan:down`](#artisandown) — Put the application into maintenance / demo mode
   * [`artisan:up`](#artisanup) — Bring the application out of maintenance mode
+  * [`artisan:key:generate`](#artisankeygenerate) — Set the application key
+  * [`artisan:passport:keys`](#artisanpassportkeys) — Create the encryption keys for API authentication
   * [`artisan:db:seed`](#artisandbseed) — Seed the database with records
   * [`artisan:migrate`](#artisanmigrate) — Run the database migrations
   * [`artisan:migrate:fresh`](#artisanmigratefresh) — Drop all tables and re-run all migrations
@@ -94,6 +96,16 @@
 
 ### artisan:up
 [Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:key:generate
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Akey%3Agenerate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:passport:keys
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Apassport%3Akeys%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 

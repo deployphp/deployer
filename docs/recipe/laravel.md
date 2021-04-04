@@ -17,33 +17,40 @@
   * [`log_files`](#log_files)
   * [`laravel_version`](#laravel_version)
 * Tasks
-  * [`artisan:up`](#artisanup) — Disable maintenance mode
-  * [`artisan:down`](#artisandown) — Enable maintenance mode
-  * [`artisan:migrate`](#artisanmigrate) — Execute artisan migrate
-  * [`artisan:migrate:fresh`](#artisanmigratefresh) — Execute artisan migrate:fresh
-  * [`artisan:migrate:rollback`](#artisanmigraterollback) — Execute artisan migrate:rollback
-  * [`artisan:migrate:status`](#artisanmigratestatus) — Execute artisan migrate:status
-  * [`artisan:db:seed`](#artisandbseed) — Execute artisan db:seed
-  * [`artisan:cache:clear`](#artisancacheclear) — Execute artisan cache:clear
-  * [`artisan:config:clear`](#artisanconfigclear) — Execute artisan config:clear
-  * [`artisan:config:cache`](#artisanconfigcache) — Execute artisan config:cache
-  * [`artisan:route:cache`](#artisanroutecache) — Execute artisan route:cache
-  * [`artisan:view:clear`](#artisanviewclear) — Execute artisan view:clear
-  * [`artisan:view:cache`](#artisanviewcache) — Execute artisan view:cache
-  * [`artisan:optimize`](#artisanoptimize) — Execute artisan optimize
-  * [`artisan:optimize:clear`](#artisanoptimizeclear) — Execute artisan optimize:clear
-  * [`artisan:queue:restart`](#artisanqueuerestart) — Execute artisan queue:restart
-  * [`artisan:storage:link`](#artisanstoragelink) — Execute artisan storage:link
-  * [`artisan:horizon:assets`](#artisanhorizonassets) — Execute artisan horizon:assets
-  * [`artisan:horizon:publish`](#artisanhorizonpublish) — Execute artisan horizon:publish
-  * [`artisan:horizon:terminate`](#artisanhorizonterminate) — Execute artisan horizon:terminate
-  * [`artisan:telescope:clear`](#artisantelescopeclear) — Execute artisan telescope:clear
-  * [`artisan:telescope:prune`](#artisantelescopeprune) — Execute artisan telescope:prune
-  * [`artisan:telescope:publish`](#artisantelescopepublish) — Execute artisan telescope:publish
-  * [`artisan:nova:publish`](#artisannovapublish) — Execute artisan nova:publish
-  * [`artisan:event:clear`](#artisaneventclear) — Execute artisan event:clear
-  * [`artisan:event:cache`](#artisaneventcache) — Execute artisan event:cache
-  * [`deploy:public_disk`](#deploypublic_disk) — Make symlink for public disk
+  * [`artisan:down`](#artisandown) — Put the application into maintenance / demo mode
+  * [`artisan:up`](#artisanup) — Bring the application out of maintenance mode
+  * [`artisan:db:seed`](#artisandbseed) — Seed the database with records
+  * [`artisan:migrate`](#artisanmigrate) — Run the database migrations
+  * [`artisan:migrate:fresh`](#artisanmigratefresh) — Drop all tables and re-run all migrations
+  * [`artisan:migrate:rollback`](#artisanmigraterollback) — Rollback the last database migration
+  * [`artisan:migrate:status`](#artisanmigratestatus) — Show the status of each migration
+  * [`artisan:cache:clear`](#artisancacheclear) — Flush the application cache
+  * [`artisan:config:cache`](#artisanconfigcache) — Create a cache file for faster configuration loading
+  * [`artisan:config:clear`](#artisanconfigclear) — Remove the configuration cache file
+  * [`artisan:event:cache`](#artisaneventcache) — Discover and cache the application\'s events and listeners
+  * [`artisan:event:clear`](#artisaneventclear) — Clear all cached events and listeners
+  * [`artisan:event:list`](#artisaneventlist) — List the application\'s events and listeners
+  * [`artisan:optimize`](#artisanoptimize) — Cache the framework bootstrap files
+  * [`artisan:optimize:clear`](#artisanoptimizeclear) — Remove the cached bootstrap files
+  * [`artisan:route:cache`](#artisanroutecache) — Create a route cache file for faster route registration
+  * [`artisan:route:clear`](#artisanrouteclear) — Remove the route cache file
+  * [`artisan:route:list`](#artisanroutelist) — List all registered routes
+  * [`artisan:storage:link`](#artisanstoragelink) — Create the symbolic links configured for the application
+  * [`artisan:view:cache`](#artisanviewcache) — Compile all of the application\'s Blade templates
+  * [`artisan:view:clear`](#artisanviewclear) — Clear all compiled view files
+  * [`artisan:queue:failed`](#artisanqueuefailed) — List all of the failed queue jobs
+  * [`artisan:queue:flush`](#artisanqueueflush) — Flush all of the failed queue jobs
+  * [`artisan:queue:restart`](#artisanqueuerestart) — Restart queue worker daemons after their current job
+  * [`artisan:horizon`](#artisanhorizon) — Start a master supervisor in the foreground
+  * [`artisan:horizon:clear`](#artisanhorizonclear) — Delete all of the jobs from the specified queue
+  * [`artisan:horizon:continue`](#artisanhorizoncontinue) — Instruct the master supervisor to continue processing jobs
+  * [`artisan:horizon:list`](#artisanhorizonlist) — List all of the deployed machines
+  * [`artisan:horizon:pause`](#artisanhorizonpause) — Pause the master supervisor
+  * [`artisan:horizon:purge`](#artisanhorizonpurge) — Terminate any rogue Horizon processes
+  * [`artisan:horizon:status`](#artisanhorizonstatus) — Get the current status of Horizon
+  * [`artisan:horizon:terminate`](#artisanhorizonterminate) — Terminate the master supervisor so it can be restarted
+  * [`artisan:telescope:clear`](#artisantelescopeclear) — Clear all entries from Telescope
+  * [`artisan:telescope:prune`](#artisantelescopeprune) — Prune stale entries from the Telescope database
   * [`deploy`](#deploy) — Deploy your project
 
 ## Config
@@ -80,13 +87,18 @@
 
 
 ## Tasks
+### artisan:down
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Adown%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
 ### artisan:up
 [Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
-### artisan:down
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Adown%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:db:seed
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Adb%3Aseed%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
@@ -110,18 +122,8 @@
 
 
 
-### artisan:db:seed
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Adb%3Aseed%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-
-
 ### artisan:cache:clear
 [Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-
-
-### artisan:config:clear
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aconfig%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
@@ -130,18 +132,23 @@
 
 
 
-### artisan:route:cache
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aroute%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:config:clear
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aconfig%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
-### artisan:view:clear
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aview%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:event:cache
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
-### artisan:view:cache
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aview%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:event:clear
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:event:list
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Alist%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
@@ -155,8 +162,18 @@
 
 
 
-### artisan:queue:restart
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aqueue%3Arestart%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:route:cache
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aroute%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:route:clear
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aroute%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:route:list
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aroute%3Alist%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
@@ -165,13 +182,63 @@
 
 
 
-### artisan:horizon:assets
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Aassets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:view:cache
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aview%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
-### artisan:horizon:publish
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Apublish%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+### artisan:view:clear
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aview%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:queue:failed
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aqueue%3Afailed%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:queue:flush
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aqueue%3Aflush%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:queue:restart
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aqueue%3Arestart%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon:clear
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon:continue
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Acontinue%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon:list
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Alist%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon:pause
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Apause%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon:purge
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Apurge%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
+
+
+
+### artisan:horizon:status
+[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Ahorizon%3Astatus%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
 
@@ -189,36 +256,6 @@
 [Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Atelescope%3Aprune%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
 
 
-
-### artisan:telescope:publish
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Atelescope%3Apublish%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-
-
-### artisan:nova:publish
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Anova%3Apublish%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-
-
-### artisan:event:clear
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-
-
-### artisan:event:cache
-[Source](https://github.com/deployphp/deployer/search?q=%22artisan%3Aevent%3Acache%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-
-
-### deploy:public_disk
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Apublic_disk%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)
-
-Task deploy:public_disk support the public disk.
-To run this task automatically, please add below line to your deploy.php file
-
-    before('deploy:symlink', 'deploy:public_disk');
-
-[Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
 
 ### deploy
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Alaravel.php)

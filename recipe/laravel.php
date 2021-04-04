@@ -164,26 +164,6 @@ desc('Execute artisan event:cache');
 task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
 
 /**
- * Task deploy:public_disk support the public disk.
- * To run this task automatically, please add below line to your deploy.php file
- *
- *     before('deploy:symlink', 'deploy:public_disk');
- *
- * [Laravel filesystem configuration](https://laravel.com/docs/5.2/filesystem#configuration)
- */
-desc('Make symlink for public disk');
-task('deploy:public_disk', function () {
-    // Remove from source.
-    run('if [ -d $(echo {{release_or_current_path}}/public/storage) ]; then rm -rf {{release_or_current_path}}/public/storage; fi');
-
-    // Create shared dir if it does not exist.
-    run('mkdir -p {{deploy_path}}/shared/storage/app/public');
-
-    // Symlink shared dir to release dir
-    run('{{bin/symlink}} {{deploy_path}}/shared/storage/app/public {{release_or_current_path}}/public/storage');
-});
-
-/**
  * Main deploy task.
  */
 desc('Deploy your project');

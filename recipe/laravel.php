@@ -85,73 +85,101 @@ function laravel_version_compare($version, $comparator)
     return version_compare(get('laravel_version'), $version, $comparator);
 }
 
-desc('Disable maintenance mode');
+desc('Bring the application out of maintenance mode');
 task('artisan:up', artisan('up', ['runInCurrent', 'showOutput']));
 
-desc('Enable maintenance mode');
+desc('Put the application into maintenance / demo mode');
 task('artisan:down', artisan('down', ['runInCurrent', 'showOutput']));
 
-desc('Execute artisan migrate');
+desc('Run the database migrations');
 task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']));
 
-desc('Execute artisan migrate:fresh');
+desc('Drop all tables and re-run all migrations');
 task('artisan:migrate:fresh', artisan('migrate:fresh --force'));
 
-desc('Execute artisan migrate:rollback');
+desc('Rollback the last database migration');
 task('artisan:migrate:rollback', artisan('migrate:rollback --force', ['showOutput']));
 
-desc('Execute artisan migrate:status');
+desc('Show the status of each migration');
 task('artisan:migrate:status', artisan('migrate:status', ['showOutput']));
 
-desc('Execute artisan db:seed');
+desc('Seed the database with records');
 task('artisan:db:seed', artisan('db:seed --force', ['showOutput']));
 
-desc('Execute artisan cache:clear');
+desc('Flush the application cache');
 task('artisan:cache:clear', artisan('cache:clear'));
 
-desc('Execute artisan config:clear');
+desc('Remove the configuration cache file');
 task('artisan:config:clear', artisan('config:clear'));
 
-desc('Execute artisan config:cache');
+desc('Create a cache file for faster configuration loading');
 task('artisan:config:cache', artisan('config:cache'));
 
-desc('Execute artisan route:cache');
+desc('Create a route cache file for faster route registration');
 task('artisan:route:cache', artisan('route:cache'));
 
-desc('Execute artisan view:clear');
+desc('Remove the route cache file');
+task('artisan:route:clear', artisan('route:clear'));
+
+desc('List all registered routes');
+task('artisan:route:list', artisan('route:list', ['showOutput']));
+
+desc('Clear all compiled view files');
 task('artisan:view:clear', artisan('view:clear'));
 
-desc('Execute artisan view:cache');
+desc('Compile all of the application\'s Blade templates');
 task('artisan:view:cache', artisan('view:cache', ['min' => 5.6]));
 
-desc('Execute artisan optimize');
-task('artisan:optimize', artisan('optimize', ['max' => 5.7]));
+desc('Cache the framework bootstrap files');
+task('artisan:optimize', artisan('optimize'));
 
-desc('Execute artisan optimize:clear');
-task('artisan:optimize:clear', artisan('optimize:clear', ['min' => 5.7]));
+desc('Remove the cached bootstrap files');
+task('artisan:optimize:clear', artisan('optimize:clear'));
 
-desc('Execute artisan queue:restart');
+desc('Restart queue worker daemons after their current job');
 task('artisan:queue:restart', artisan('queue:restart'));
 
-desc('Execute artisan storage:link');
+desc('Create the symbolic links configured for the application');
 task('artisan:storage:link', artisan('storage:link', ['min' => 5.3]));
 
+desc('Start a master supervisor in the foreground');
+task('artisan:horizon', artisan('horizon'));
 
+desc('Delete all of the jobs from the specified queue');
+task('artisan:horizon:clear', artisan('horizon:clear'));
 
-desc('Execute artisan horizon:terminate');
+desc('Instruct the master supervisor to continue processing jobs');
+task('artisan:horizon:continue', artisan('horizon:continue'));
+
+desc('List all of the deployed machines');
+task('artisan:horizon:list', artisan('horizon:list', ['showOutput']));
+
+desc('Pause the master supervisor');
+task('artisan:horizon:pause', artisan('horizon:pause'));
+
+desc('Terminate any rogue Horizon processes');
+task('artisan:horizon:purge', artisan('horizon:purge'));
+
+desc('Get the current status of Horizon');
+task('artisan:horizon:status', artisan('horizon:status', ['showOutput']));
+
+desc('Terminate the master supervisor so it can be restarted');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
 
-desc('Execute artisan telescope:clear');
+desc('Clear all entries from Telescope');
 task('artisan:telescope:clear', artisan('telescope:clear'));
 
-desc('Execute artisan telescope:prune');
+desc('Prune stale entries from the Telescope database');
 task('artisan:telescope:prune', artisan('telescope:prune'));
 
-desc('Execute artisan event:clear');
+desc('Clear all cached events and listeners');
 task('artisan:event:clear', artisan('event:clear', ['min' => '5.8.9']));
 
-desc('Execute artisan event:cache');
+desc('Discover and cache the application\'s events and listeners');
 task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
+
+desc('List the application\'s events and listeners');
+task('artisan:event:list', artisan('event:list', ['showOutput', 'min' => '5.8.9']));
 
 /**
  * Main deploy task.

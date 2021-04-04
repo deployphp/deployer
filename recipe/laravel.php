@@ -136,11 +136,7 @@ task('artisan:queue:restart', artisan('queue:restart'));
 desc('Execute artisan storage:link');
 task('artisan:storage:link', artisan('storage:link', ['min' => 5.3]));
 
-desc('Execute artisan horizon:assets');
-task('artisan:horizon:assets', artisan('horizon:assets'));
 
-desc('Execute artisan horizon:publish');
-task('artisan:horizon:publish', artisan('horizon:publish'));
 
 desc('Execute artisan horizon:terminate');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
@@ -150,12 +146,6 @@ task('artisan:telescope:clear', artisan('telescope:clear'));
 
 desc('Execute artisan telescope:prune');
 task('artisan:telescope:prune', artisan('telescope:prune'));
-
-desc('Execute artisan telescope:publish');
-task('artisan:telescope:publish', artisan('telescope:publish'));
-
-desc('Execute artisan nova:publish');
-task('artisan:nova:publish', artisan('nova:publish'));
 
 desc('Execute artisan event:clear');
 task('artisan:event:clear', artisan('event:clear', ['min' => '5.8.9']));

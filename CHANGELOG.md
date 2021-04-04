@@ -24,6 +24,7 @@
 - Chatwork contrib recipe.
 - Added `release_or_current_path` option that fallbacks to the `current_path` when the `release_path` does not exist. [#2486]
 - Added `contrib/php-fpm.php` recipe that provides a task to reload PHP-fpm. [#2487]
+- Added tasks `artisan:key:generate` and `artisan:passport:keys` to the Laravel recipe.
 - Added the following artisan tasks: `artisan:route:clear`, `artisan:route:list`, `artisan:horizon`, `artisan:horizon:clear`, `artisan:horizon:continue`, `artisan:horizon:list`, `artisan:horizon:pause`, `artisan:horizon:purge`, `artisan:horizon:status`, `artisan:event:list`, `artisan:queue:failed`, `artisan:queue:flushed`. [#2488]
 
 ### Changed

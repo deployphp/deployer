@@ -96,6 +96,16 @@ desc('Bring the application out of maintenance mode');
 task('artisan:up', artisan('up', ['runInCurrent', 'showOutput']));
 
 /*
+ * Generate keys.
+ */
+
+desc('Set the application key');
+task('artisan:key:generate', artisan('key:generate'));
+
+desc('Create the encryption keys for API authentication');
+task('artisan:passport:keys', artisan('passport:keys'));
+
+/*
  * Database and migrations.
  */
 

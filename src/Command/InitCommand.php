@@ -164,6 +164,8 @@ PHP;
             $h .= "  $host:\n    deploy_path: '~/{{application}}'\n";
         }
 
+        $additionalConfigs = $this->getAdditionalConfigs($template);
+
         return <<<YAML
 import: 
     - recipe/$template.php
@@ -171,13 +173,7 @@ import:
 config:
   application: '$project'
   repository: '$repository'
-  shared_files:
-    - .env
-  shared_dirs:
-    - uploads
-  writable_dirs:
-    - uploads
-
+{$additionalConfigs}
 hosts:
 {$h}
 tasks:
@@ -188,6 +184,23 @@ tasks:
 after:
   deploy:failed: deploy:unlock
 
+YAML;
+    }
+
+    private function getAdditionalConfigs(string $template): string
+    {
+        if ($template !== 'common') {
+            return '';
+        }
+
+        return <<<YAML
+  shared_files:
+    - .env
+  shared_dirs:
+    - uploads
+  writable_dirs:
+    - uploads
+  
 YAML;
     }
 

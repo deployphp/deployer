@@ -29,6 +29,7 @@ use Deployer\Executor\Messenger;
 use Deployer\Executor\Server;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
+use Deployer\Host\Localhost;
 use Deployer\Importer\Importer;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
@@ -117,7 +118,12 @@ class Deployer extends Container
         };
         // -l  act as if it had been invoked as a login shell (i.e. source ~/.profile file)
         // -s  commands are read from the standard input (no arguments should remain after this option)
-        $this->config['shell'] = 'bash -ls';
+        $this->config['shell'] = function () {
+            if (currentHost() instanceof Localhost) {
+                return 'bash -s'; // Non-login shell for localhost.
+            }
+            return 'bash -ls';
+        };
         $this->config['forward_agent'] = true;
         $this->config['ssh_multiplexing'] = true;
 

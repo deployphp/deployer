@@ -36,6 +36,7 @@ class WorkerCommand extends MainCommand
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
+        $this->deployer['log'] = $input->getOption('log');
 
         $output->setDecorated($input->getOption('decorated'));
         if (!$output->isDecorated() && !defined('NO_ANSI')) {

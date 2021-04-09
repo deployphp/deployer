@@ -159,7 +159,7 @@ class Deployer extends Container
             return new Collection();
         };
         $this['messenger'] = function ($c) {
-            return new Messenger($c['input'], $c['output']);
+            return new Messenger($c['input'], $c['output'], $c['logger']);
         };
         $this['server'] = function ($c) {
             return new Server(
@@ -187,8 +187,8 @@ class Deployer extends Container
          ******************************/
 
         $this['log_handler'] = function () {
-            return !empty($this['log_file'])
-                ? new FileHandler($this['log_file'])
+            return !empty($this['log'])
+                ? new FileHandler($this['log'])
                 : new NullHandler();
         };
         $this['logger'] = function () {

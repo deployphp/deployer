@@ -15,6 +15,7 @@ class ScriptManager
     private $tasks;
     private $hooksEnabled = true;
     private $startFrom = null;
+    private $visittedTasks = [];
 
     public function __construct(TaskCollection $tasks)
     {
@@ -29,6 +30,7 @@ class ScriptManager
     public function getTasks(string $name, ?string $startFrom = null): array
     {
         $tasks = [];
+        $this->visittedTasks = [];
         $allTasks = $this->doGetTasks($name);
 
         if ($startFrom === null) {
@@ -57,14 +59,20 @@ class ScriptManager
      */
     public function doGetTasks(string $name): array
     {
+        if (array_key_exists($name, $this->visittedTasks)) {
+            if ($this->visittedTasks[$name] >= 100) {
+                throw new Exception("Looks like a circular dependency with \"$name\" task.");
+            }
+            $this->visittedTasks[$name]++;
+        } else {
+            $this->visittedTasks[$name] = 1;
+        }
+
         $tasks = [];
-
         $task = $this->tasks->get($name);
-
         if ($this->hooksEnabled) {
             $tasks = array_merge(array_map([$this, 'doGetTasks'], $task->getBefore()), $tasks);
         }
-
         if ($task instanceof GroupTask) {
             foreach ($task->getGroup() as $taskName) {
                 $subTasks = $this->doGetTasks($taskName);
@@ -76,11 +84,9 @@ class ScriptManager
         } else {
             $tasks[] = $task;
         }
-
         if ($this->hooksEnabled) {
             $tasks = array_merge($tasks, array_map([$this, 'doGetTasks'], $task->getAfter()));
         }
-
         return array_flatten($tasks);
     }
 

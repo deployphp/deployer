@@ -15,6 +15,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use function Deployer\writeln;
 
 class Rsync
 {
@@ -46,11 +47,17 @@ class Rsync
             'options' => [],
             'flags' => '-azP',
             'progress_bar' => true,
+            'display_stats' => false
         ];
         $config = array_merge($defaults, $config);
 
         $options = $config['options'] ?? [];
         $flags = $config['flags'];
+        $displayStats = $config['display_stats'] || in_array('--stats', $options, true);
+
+        if ($displayStats && !in_array('--stats', $options, true)) {
+            $options[] = '--stats';
+        }
 
         $connectionOptions = Client::connectionOptionsString($host);
         if ($connectionOptions !== '') {
@@ -80,7 +87,10 @@ class Rsync
             $progressBar->setEmptyBarCharacter('-');
         }
 
-        $callback = function ($type, $buffer) use ($host, $progressBar) {
+        $fullOutput = '';
+
+        $callback = function ($type, $buffer) use ($host, $progressBar, &$fullOutput) {
+            $fullOutput .= $buffer;
             if ($progressBar) {
                 foreach (explode("\n", $buffer) as $line) {
                     if (preg_match('/(to-chk|to-check)=(\d+?)\/(\d+)/', $line, $match)) {
@@ -102,6 +112,27 @@ class Rsync
         $process->setTimeout($config['timeout']);
         try {
             $process->mustRun($callback);
+
+            if ($displayStats) {
+                $stats = [];
+
+                $statsStarted = false;
+                foreach (explode("\n", $fullOutput) as $line) {
+                    if (strpos($line, 'Number of files') === 0) {
+                        $statsStarted = true;
+                    }
+
+                    if ($statsStarted) {
+                        if (empty($line)) {
+                            break;
+                        }
+                        $stats[] = $line;
+                    }
+                }
+
+                writeln("Rsync operation stats\n" . '<comment>' . implode("\n", $stats) . '</comment>');
+            }
+
         } catch (ProcessFailedException $exception) {
             throw new RunException(
                 $host,

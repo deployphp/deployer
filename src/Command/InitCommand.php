@@ -7,10 +7,8 @@
 
 namespace Deployer\Command;
 
-use Deployer\Component\Initializer\Initializer;
 use Deployer\Utility\Httpie;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -55,6 +53,15 @@ class InitCommand extends Command
         $language = $io->choice('Select recipe language', ['php', 'yaml'], 'php');
         if (empty($recipePath)) {
             $recipePath = "deploy.$language";
+        }
+
+        // Avoid accidentally override of existing file.
+        if (file_exists($recipePath)) {
+            $io->warning("$recipePath already exists");
+            if (!$io->confirm("Do you want to override the existing file?", false)) {
+                $io->block('👍🏻');
+                exit(1);
+            }
         }
 
         // Template
@@ -157,6 +164,8 @@ PHP;
             $h .= "  $host:\n    deploy_path: '~/{{application}}'\n";
         }
 
+        $additionalConfigs = $this->getAdditionalConfigs($template);
+
         return <<<YAML
 import: 
     - recipe/$template.php
@@ -164,13 +173,7 @@ import:
 config:
   application: '$project'
   repository: '$repository'
-  shared_files:
-    - .env
-  shared_dirs:
-    - uploads
-  writable_dirs:
-    - uploads
-
+{$additionalConfigs}
 hosts:
 {$h}
 tasks:
@@ -181,6 +184,23 @@ tasks:
 after:
   deploy:failed: deploy:unlock
 
+YAML;
+    }
+
+    private function getAdditionalConfigs(string $template): string
+    {
+        if ($template !== 'common') {
+            return '';
+        }
+
+        return <<<YAML
+  shared_files:
+    - .env
+  shared_dirs:
+    - uploads
+  writable_dirs:
+    - uploads
+  
 YAML;
     }
 

@@ -258,7 +258,7 @@ Execute a callback within a specific directory and revert back to the initial wo
 ## run()
 
 ```php
-run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
+run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null, ?bool $real_time_output = false): string
 ```
 
 Executes given command on remote host.
@@ -283,7 +283,7 @@ run("echo $path");
 - ### command
   **type**: `string `
 
-  Command to run on remote host
+  Command to run on remote host.
 - ### options
   **type**: `array|null `
 
@@ -291,7 +291,7 @@ run("echo $path");
 - ### timeout
   **type**: `int|null `
 
-   Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
 - ### idle_timeout
   **type**: `int|null `
 
@@ -308,6 +308,10 @@ run("echo $path");
   **type**: `array|null `
 
   Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+- ### real_time_output
+  **type**: `bool|null `
+
+  Print command output in real-time.
 
 ## runLocally()
 
@@ -338,7 +342,7 @@ runLocally("echo $user");
 - ### timeout
   **type**: `int|null `
 
-   Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
 - ### idle_timeout
   **type**: `int|null `
 
@@ -430,7 +434,7 @@ invoke('deploy:symlink');
 ## upload()
 
 ```php
-upload(string $source, string $destination, array $config = []): void
+upload($source, string $destination, array $config = []): void
 ```
 
 Upload file or directory to host.

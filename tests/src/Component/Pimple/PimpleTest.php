@@ -7,7 +7,6 @@
 
 namespace Deployer\Component\Pimple;
 
-use Deployer\Component\Pimple\Exception\ExpectedInvokableException;
 use Deployer\Component\Pimple\Exception\FrozenServiceException;
 use Deployer\Component\Pimple\Exception\InvalidServiceIdentifierException;
 use Deployer\Component\Pimple\Exception\UnknownIdentifierException;

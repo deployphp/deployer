@@ -121,7 +121,7 @@ class Manifest
                 return Comparator::isGreaterThan(
                     $a->getVersion(),
                     $b->getVersion()
-                );
+                ) ? 1 : 0;
             }
         );
 

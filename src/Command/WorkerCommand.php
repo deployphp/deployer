@@ -10,10 +10,10 @@ namespace Deployer\Command;
 use Deployer\Deployer;
 use Deployer\Executor\Worker;
 use Deployer\Host\Localhost;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
+use function Deployer\localhost;
 
 class WorkerCommand extends MainCommand
 {
@@ -36,6 +36,7 @@ class WorkerCommand extends MainCommand
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
+        $this->deployer['log'] = $input->getOption('log');
 
         $output->setDecorated($input->getOption('decorated'));
         if (!$output->isDecorated() && !defined('NO_ANSI')) {
@@ -47,8 +48,8 @@ class WorkerCommand extends MainCommand
         $task = $this->deployer->tasks->get($input->getOption('task'));
 
         $hostName = $input->getOption('host');
-        if ($hostName === 'local') {
-            $host = new Localhost('local');
+        if ($hostName === Localhost::extraordinary) {
+            $host = localhost(Localhost::extraordinary);
         } else {
             $host = $this->deployer->hosts->get($input->getOption('host'));
             $host->config()->load();
@@ -57,7 +58,7 @@ class WorkerCommand extends MainCommand
         $worker = new Worker($this->deployer);
         $exitCode = $worker->execute($task, $host);
 
-        if ($hostName !== 'local') {
+        if ($hostName !== Localhost::extraordinary) {
             $host->config()->save();
         }
         return $exitCode;

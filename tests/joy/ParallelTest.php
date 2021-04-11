@@ -94,4 +94,21 @@ class ParallelTest extends AbstractTest
         self::assertTrue(substr_count($display, 'worker on prod') == 1, $display);
         self::assertTrue(substr_count($display, 'worker on beta') == 1, $display);
     }
+
+    public function testHostConfigFromCallback()
+    {
+        $this->init(self::RECIPE);
+        $this->tester->run([
+            'host_config_from_callback',
+            '-f' => self::RECIPE,
+            'selector' => 'all'
+        ], [
+            'verbosity' => Output::VERBOSITY_NORMAL,
+        ]);
+
+        $display = $this->tester->getDisplay();
+        self::assertEquals(0, $this->tester->getStatusCode(), $display);
+        self::assertTrue(substr_count($display, '[prod] config value is from global') == 1, $display);
+        self::assertTrue(substr_count($display, '[beta] config value is from callback') == 1, $display);
+    }
 }

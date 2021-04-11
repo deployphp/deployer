@@ -100,6 +100,15 @@ class ConfigurationTest extends TestCase
         self::assertEquals('path/beta', $beta->get('deploy_path'));
     }
 
+    public function testGetFromCallback()
+    {
+        $config = new Configuration();
+        $config->set('func', function () {
+            return 'param';
+        });
+        self::assertEquals('param', $config['func']);
+    }
+
     public function testAdd()
     {
         $config = new Configuration();
@@ -154,12 +163,12 @@ class ConfigurationTest extends TestCase
         $parent = new Configuration();
         $alpha = new Configuration($parent);
 
-        $parent->set('deploy_path', 'path/{{name}}');
-        $parent->set('whoami', function () {
+        $parent->set('global', 'do not include');
+        $alpha->set('whoami', function () {
             $this->fail('should not be called');
         });
         $alpha->set('name', 'alpha');
 
-        self::assertEquals(['deploy_path' => 'path/{{name}}', 'name' => 'alpha'], $alpha->persist());
+        self::assertEquals(['name' => 'alpha'], $alpha->persist());
     }
 }

@@ -88,7 +88,7 @@ class MainCommand extends SelectCommand
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
-        $this->deployer['log_file'] = $input->getOption('log');
+        $this->deployer['log'] = $input->getOption('log');
         $this->telemetry([
             'project_hash' => empty($this->deployer->config['repository']) ? null : sha1($this->deployer->config['repository']),
             'hosts_count' => $this->deployer->hosts->count(),

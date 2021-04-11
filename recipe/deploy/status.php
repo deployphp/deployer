@@ -16,13 +16,6 @@ task('status', function () {
         $r[0] = \DateTime::createFromFormat("YmdHis", $r[0])->format("Y-m-d H:i:s");
         $release = $r[1];
         if (in_array($release, $releasesList, true)) {
-            // Add git commit rev.
-            try {
-                $r[] = run("cd releases/$release && git show --format='%h' --no-patch");
-            } catch (\Throwable $e) {
-                $r[] = '?';
-            }
-
             if (test("[ -f releases/$release/BAD_RELEASE ]")) {
                 $r[1] = "<error>$release</error> (bad)";
             } else {

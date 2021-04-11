@@ -42,7 +42,7 @@ function host(string ...$hostname)
         if ($deployer->hosts->has($alias)) {
             $host = $deployer->hosts->get($alias);
             throw new \InvalidArgumentException(
-                "Host \"{$host->getTag()}\" already exists.\n" .
+                "Host \"$host\" already exists.\n" .
                 "If you want to override configuration options, get host with <fg=yellow>getHost</> function.\n" .
                 "\n" .
                 "    <fg=yellow>getHost</>(<fg=green>'{$alias}'</>);" .
@@ -309,26 +309,26 @@ function within(string $path, callable $callback)
  * run("echo $path");
  * ```
  *
- * @param string $command Command to run on remote host
+ * @param string $command Command to run on remote host.
  * @param array|null $options Array of options will override passed named arguments.
- * @param int|null $timeout  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+ * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $vars Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
  * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+ * @param bool|null $real_time_output Print command output in real-time.
  *
  * @throws Exception\Exception|RunException|TimeoutException
  */
-function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
+function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null, ?bool $real_time_output = false): string
 {
     $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env',] as $arg) {
+    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env', 'real_time_output'] as $arg) {
         if ($$arg !== null) {
             $namedArguments[$arg] = $$arg;
         }
     }
     $options = array_merge($namedArguments, $options);
-
     $run = function ($command, $options = []): string {
         $host = Context::get()->getHost();
 
@@ -350,7 +350,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
             $command = ". $dotenv; $command";
         }
 
-        if ($host instanceof Localhost) {
+        if ($host instanceof Localhost || Context::get()->isLocal()) {
             $process = Deployer::get()->processRunner;
             $output = $process->run($host, $command, $options);
         } else {
@@ -396,7 +396,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  *
  * @param string $command Command to run on localhost.
  * @param array|null $options Array of options will override passed named arguments.
- * @param int|null $timeout  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+ * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $vars Array of placeholders to replace in command: `runLocally('echo %key%', vars: ['key' => 'anything does here']);`
@@ -528,15 +528,16 @@ function invoke(string $taskName): void
  * >
  * > The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
  *
+ * @param string|string[] $source
  * @param array $config
  *
  * @throws RunException
  */
-function upload(string $source, string $destination, array $config = []): void
+function upload($source, string $destination, array $config = []): void
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
-    $source = parse($source);
+    $source = is_array($source) ? array_map('Deployer\parse', $source) : parse($source);
     $destination = parse($destination);
 
     if ($host instanceof Localhost) {
@@ -596,7 +597,7 @@ function warning(string $message): void
 function writeln($message, int $options = 0): void
 {
     $host = currentHost();
-    output()->writeln("[{$host->getTag()}] " . parse($message), $options);
+    output()->writeln("[$host] " . parse($message), $options);
 }
 
 /**

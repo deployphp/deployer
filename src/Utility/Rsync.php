@@ -35,15 +35,16 @@ class Rsync
      * - `flags` for overriding the default `-azP` passed to the `rsync` command
      * - `options` with additional flags passed directly to the `rsync` command
      * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
-     * 
+     *
+     * @param string|string[] $source
      * @throws RunException
      */
-    public function call(Host $host, string $source, string $destination, array $config = []): void
+    public function call(Host $host, $source, string $destination, array $config = []): void
     {
         $defaults = [
             'timeout' => null,
             'options' => [],
-            'flags'   => 'azP',
+            'flags' => '-azP',
             'progress_bar' => true,
         ];
         $config = array_merge($defaults, $config);
@@ -51,23 +52,25 @@ class Rsync
         $options = $config['options'] ?? [];
         $flags = $config['flags'];
 
-        $connectionOptions = Client::connectionOptions($host);
+        $connectionOptions = Client::connectionOptionsString($host);
         if ($connectionOptions !== '') {
-            $options[] = "-e 'ssh $connectionOptions'";
+            $options = array_merge($options, ['-e', "ssh $connectionOptions"]);
         }
-
         if ($host->has("become")) {
-            $options[] = "--rsync-path='sudo -H -u {$host->get('become')} rsync'";
+            $options = array_merge($options, ['--rsync-path', "sudo -H -u {$host->get('become')} rsync"]);
         }
+        if (!is_array($source)) {
+            $source = [$source];
+        }
+        $command = array_merge(['rsync', $flags], $options, $source, [$destination]);
 
-        $command = sprintf(
-            "rsync -%s %s %s %s",
-            $flags,
-            implode(' ', $options),
-            escapeshellarg($source),
-            escapeshellarg($destination)
-        );
-        $this->pop->command($host, $command);
+        $commandString = $command[0];
+        for ($i = 1; $i < count($command); $i++) {
+            $commandString .= ' ' . escapeshellarg($command[$i]);
+        }
+        if ($this->output->isVerbose()) {
+            $this->output->writeln("[$host] $commandString");
+        }
 
         $progressBar = null;
         if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL && $config['progress_bar']) {
@@ -84,7 +87,7 @@ class Rsync
                         $max = intval($match[3]);
                         $step = $max - intval($match[2]);
                         $progressBar->setMaxSteps($max);
-                        $progressBar->setFormat("[{$host->getTag()}] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+                        $progressBar->setFormat("[$host] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
                         $progressBar->setProgress($step);
                     }
                 }
@@ -95,14 +98,14 @@ class Rsync
             }
         };
 
-        $process = Process::fromShellCommandline($command)
-            ->setTimeout($config['timeout']);
+        $process = new Process($command);
+        $process->setTimeout($config['timeout']);
         try {
             $process->mustRun($callback);
         } catch (ProcessFailedException $exception) {
             throw new RunException(
                 $host,
-                $command,
+                $commandString,
                 $process->getExitCode(),
                 $process->getOutput(),
                 $process->getErrorOutput()

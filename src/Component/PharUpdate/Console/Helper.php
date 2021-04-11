@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 namespace Deployer\Component\PharUpdate\Console;
 
-use Deployer\Component\PharUpdate\Manifest;
 use Deployer\Component\PharUpdate\Manager;
+use Deployer\Component\PharUpdate\Manifest;
 use Symfony\Component\Console\Helper\Helper as Base;
 
 /**

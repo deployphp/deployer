@@ -8,8 +8,16 @@
 
 
 
+* Config
+  * [`cleanup_use_sudo`](#cleanup_use_sudo)
 * Tasks
   * [`deploy:cleanup`](#deploycleanup) — Cleaning up old releases
+
+## Config
+### cleanup_use_sudo
+[Source](https://github.com/deployphp/deployer/search?q=%22cleanup_use_sudo%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Acleanup.php)
+
+Use sudo in deploy:cleanup task for rm command.
 
 
 ## Tasks

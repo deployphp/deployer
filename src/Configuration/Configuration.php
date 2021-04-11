@@ -9,7 +9,6 @@ namespace Deployer\Configuration;
 
 use Deployer\Exception\ConfigurationException;
 use Deployer\Utility\Httpie;
-use function Deployer\get;
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;
@@ -26,7 +25,7 @@ class Configuration implements \ArrayAccess
 
     public function update(array $values): void
     {
-        $this->values = $values;
+        $this->values = array_merge($this->values, $values);
     }
 
     public function bind(Configuration $parent): void
@@ -102,7 +101,7 @@ class Configuration implements \ArrayAccess
     /**
      * @return mixed|null
      */
-    protected function fetch(string $name)
+    public function fetch(string $name)
     {
         if (array_key_exists($name, $this->values)) {
             return $this->values[$name];
@@ -209,9 +208,6 @@ class Configuration implements \ArrayAccess
     public function persist(): array
     {
         $values = [];
-        if ($this->parent !== null) {
-            $values = $this->parent->persist();
-        }
         foreach ($this->values as $key => $value) {
             if (is_closure($value)) {
                 continue;

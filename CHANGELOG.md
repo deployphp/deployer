@@ -22,6 +22,10 @@
 - Added support for PHP8.
 - Added slack_channel option to Slack recipe.
 - Chatwork contrib recipe.
+- Added `release_or_current_path` option that fallbacks to the `current_path` when the `release_path` does not exist. [#2486]
+- Added `contrib/php-fpm.php` recipe that provides a task to reload PHP-fpm. [#2487]
+- Added tasks `artisan:key:generate` and `artisan:passport:keys` to the Laravel recipe.
+- Added the following artisan tasks: `artisan:route:clear`, `artisan:route:list`, `artisan:horizon`, `artisan:horizon:clear`, `artisan:horizon:continue`, `artisan:horizon:list`, `artisan:horizon:pause`, `artisan:horizon:purge`, `artisan:horizon:status`, `artisan:event:list`, `artisan:queue:failed`, `artisan:queue:flushed`. [#2488]
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -31,6 +35,8 @@
 - Better parallel execution support, configurable per task.
 - Refactored `dep init` command.
 - Normalize shopware recipe (require common.php).
+- Removed the `min` and `max` constraints on the `artisan:optimize` and `artisan:optimize:clear` tasks. [#2488]
+- Excluded the `shared_files`, `shared_dirs` and `writable_dirs` configs from the `deploy.yaml` default template unless the `common` template was chosen.
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
@@ -38,6 +44,10 @@
 - Shopware activates/runs migration in order (respects dependencies in composer.json). [#2423] [#2425]
 - Boolean options should not go through the `self::escape` function. [#2392]
 - Check if shared file exists before touching it (and fail because no write permission). [#2393]
+
+### Removed
+- Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]
+- Removed the following tasks `artisan:horizon:assets`, `artisan:horizon:publish`, `artisan:telescope:publish` and `artisan:nova:publish`. These commands publish code that should be commited. [#2488]
 
 
 ## v6.8.0
@@ -602,6 +612,9 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2488]: https://github.com/deployphp/deployer/pull/2488
+[#2487]: https://github.com/deployphp/deployer/pull/2487
+[#2486]: https://github.com/deployphp/deployer/pull/2486
 [#2425]: https://github.com/deployphp/deployer/pull/2425
 [#2423]: https://github.com/deployphp/deployer/issues/2423
 [#2393]: https://github.com/deployphp/deployer/pull/2393

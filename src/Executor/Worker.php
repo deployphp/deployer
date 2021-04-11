@@ -33,7 +33,9 @@ class Worker
         try {
             Exception::setTaskSourceLocation($task->getSourceLocation());
 
-            $task->run(new Context($host, $this->deployer->input, $this->deployer->output));
+            $context = new Context($host, $this->deployer->input, $this->deployer->output);
+            $context->setIsLocal($task->isLocal());
+            $task->run($context);
 
             if ($task->getName() !== 'connect') {
                 $this->deployer->messenger->endOnHost($host);

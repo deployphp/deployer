@@ -1,5 +1,6 @@
 import:
   - src/Support/Config/version.php
+  - src/Support/Config/verification.php
 
 config:
   depl: ~/dev/deployer
@@ -10,6 +11,11 @@ hosts:
   deployer.org: ~
 
 tasks:
+  check_master:
+    local: true
+    script:
+      - "[[ $(git branch --show-current) == 'master' ]] || { echo 'Checkout master branch to release Deployer.'; exit 1; }"
+
   pull:
     script:
       - cd {{depl}}
@@ -50,5 +56,7 @@ tasks:
 
 before:
   release:
+    - check_master
     - pull
     - test
+    - verification

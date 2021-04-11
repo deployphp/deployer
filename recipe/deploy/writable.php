@@ -107,7 +107,7 @@ task('deploy:writable', function () {
             }
         } else {
             $alias = currentHost()->getAlias();
-            throw new \RuntimeException("Can't set writable dirs with ACL.\nInstall ACL with next command:\ndep run $alias -- sudo apt-get install acl");
+            throw new \RuntimeException("Can't set writable dirs with ACL.\nInstall ACL with next command:\ndep run 'sudo apt-get install acl' -- $alias");
         }
     } else {
         throw new \RuntimeException("Unknown writable_mode `$mode`.");

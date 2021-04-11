@@ -156,7 +156,7 @@ task('magento:upgrade:db', function () {
             invoke('magento:maintenance:enable');
         }
 
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:upgrade --keep-generated");
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:upgrade --keep-generated --no-interaction");
 
         if (!get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');

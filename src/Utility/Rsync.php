@@ -31,14 +31,6 @@ class Rsync
     /**
      * Start rsync process.
      *
-     * The `$config` array supports the following keys:
-     *
-     * - `flags` for overriding the default `-azP` passed to the `rsync` command
-     * - `options` with additional flags passed directly to the `rsync` command
-     * - `timeout` for `Process::fromShellCommandline()` (`null` by default),
-     * - `progress_bar` to display upload/download progress,
-     * - `display_stats' to display rsync set of statistics.
-     *
      * @param string|string[] $source
      * @throws RunException
      */

@@ -146,7 +146,6 @@ This task is group task which contains next tasks:
 * [`sw:plugin:activate:all`](/docs/recipe/shopware.md#swpluginactivateall)
 * [`sw:database:migrate`](/docs/recipe/shopware.md#swdatabasemigrate)
 * [`sw:plugin:migrate:all`](/docs/recipe/shopware.md#swpluginmigrateall)
-* [`sw:plugin:upgrade:all`](/docs/recipe/shopware.md#swpluginupgradeall)
 * [`sw:theme:compile`](/docs/recipe/shopware.md#swthemecompile)
 * [`sw:cache:clear`](/docs/recipe/shopware.md#swcacheclear)
 

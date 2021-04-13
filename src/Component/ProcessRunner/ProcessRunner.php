@@ -37,28 +37,27 @@ class ProcessRunner
             'timeout' => $host->get('default_timeout', 300),
             'idle_timeout' => null,
             'cwd' => defined('DEPLOYER_ROOT') ? DEPLOYER_ROOT : null,
-            'tty' => false,
             'vars' => [],
+            'real_time_output' => false,
         ];
         $config = array_merge($defaults, $config);
 
         $this->pop->command($host, $command);
 
-        $terminalOutput = $this->pop->callback($host);
+        $terminalOutput = $this->pop->callback($host, $config['real_time_output']);
         $callback = function ($type, $buffer) use ($host, $terminalOutput) {
             $this->logger->printBuffer($host, $type, $buffer);
             $terminalOutput($type, $buffer);
         };
 
         $command = $this->replacePlaceholders($command, $config['vars']);
-
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
 
-        $process = Process::fromShellCommandline($command)
+        $process = Process::fromShellCommandline($host->getShell())
+            ->setInput($command)
             ->setTimeout($config['timeout'])
-            ->setIdleTimeout($config['idle_timeout'])
-            ->setTty($config['tty']);
+            ->setIdleTimeout($config['idle_timeout']);
 
         if ($config['cwd'] !== null) {
             $process->setWorkingDirectory($config['cwd']);

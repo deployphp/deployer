@@ -10,6 +10,7 @@ namespace Deployer\Command;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
+use Deployer\Host\Localhost;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -17,6 +18,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Question\ChoiceQuestion;
+use function Deployer\localhost;
 
 abstract class SelectCommand extends Command
 {
@@ -43,7 +45,9 @@ abstract class SelectCommand extends Command
         $selectExpression = is_array($selector) ? implode(',', $selector) : $selector;
 
         if (empty($selectExpression)) {
-            if (count($this->deployer->hosts) === 1) {
+            if (count($this->deployer->hosts) === 0) {
+                $hosts = [localhost(Localhost::extraordinary)];
+            } else if (count($this->deployer->hosts) === 1) {
                 $hosts = $this->deployer->hosts->all();
             } else if ($input->isInteractive()) {
                 $hostsAliases = [];
@@ -69,7 +73,11 @@ abstract class SelectCommand extends Command
         }
 
         if (empty($hosts)) {
-            throw new Exception('No host selected');
+            $message = 'No host selected.';
+            if (!empty($selectExpression)) {
+                $message .= " Please, check your selector:\n\n    $selectExpression";
+            }
+            throw new Exception($message);
         }
 
         return $hosts;

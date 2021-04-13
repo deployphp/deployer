@@ -36,7 +36,7 @@
 [Source](https://github.com/deployphp/deployer/search?q=%22static_content_locales%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento2.php)
 
 By default setup:static-content:deploy uses `en_US`.
-To change that, simply put set('static_content_locales', 'en_US de_DE');`
+To change that, simply put `set('static_content_locales', 'en_US de_DE');`
 in you deployer script.
 
 ### content_version

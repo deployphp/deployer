@@ -7,8 +7,6 @@
 
 namespace Deployer\Task;
 
-use Deployer\Host\Host;
-use Deployer\Host\HostCollection;
 use PHPUnit\Framework\TestCase;
 
 class ScriptManagerTest extends TestCase

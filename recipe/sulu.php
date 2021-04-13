@@ -11,7 +11,7 @@ add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/upload
 add('writable_dirs', ['public/uploads']);
 
 set('bin/websiteconsole', function () {
-    return parse('{{bin/php}} {{release_path}}/bin/websiteconsole --no-interaction');
+    return parse('{{bin/php}} {{release_or_current_path}}/bin/websiteconsole --no-interaction');
 });
 
 desc('Migrate PHPCR');

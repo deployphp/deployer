@@ -10,7 +10,6 @@
 
 * Config
   * [`branch`](#branch)
-  * [`git_cache`](#git_cache)
 * Tasks
   * [`deploy:update_code`](#deployupdate_code) — Update code
 
@@ -20,16 +19,6 @@
 
 Determines which branch to deploy. Can be overridden with cli option `--branch`.
 If not specified, will get current git HEAD branch as default branch to deploy.
-
-### git_cache
-[Source](https://github.com/deployphp/deployer/search?q=%22git_cache%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aupdate_code.php)
-
-This config option will if set to true will instructs git to use previous release files,
-and download only changed files from server.
-
-You don't need to set this option, it will automatically detect if your git supports this feature.
-
-Faster cloning by borrowing objects from existing clones.
 
 
 ## Tasks

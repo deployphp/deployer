@@ -8,6 +8,8 @@
 
 
 
+* Require
+  * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
   * [`repository`](#repository)
   * [`release_name`](#release_name)
@@ -35,25 +37,35 @@
 ### repository
 [Source](https://github.com/deployphp/deployer/search?q=%22repository%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
+* Overrides [`repository`](/docs/recipe/common.md#repository) from `recipe/common.php`
+
 
 
 ### release_name
 [Source](https://github.com/deployphp/deployer/search?q=%22release_name%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
+* Overrides [`release_name`](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`
 
 
 
 ### shared_files
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
+* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+
 
 
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
+* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+
 
 
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
+* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 
 

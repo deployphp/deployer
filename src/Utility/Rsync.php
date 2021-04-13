@@ -15,6 +15,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+use function Deployer\writeln;
 
 class Rsync
 {
@@ -30,44 +31,47 @@ class Rsync
     /**
      * Start rsync process.
      *
-     * The `$config` array supports the following keys:
-     *
-     * - `flags` for overriding the default `-azP` passed to the `rsync` command
-     * - `options` with additional flags passed directly to the `rsync` command
-     * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
-     * 
+     * @param string|string[] $source
      * @throws RunException
      */
-    public function call(Host $host, string $source, string $destination, array $config = []): void
+    public function call(Host $host, $source, string $destination, array $config = []): void
     {
         $defaults = [
             'timeout' => null,
             'options' => [],
-            'flags'   => 'azP',
+            'flags' => '-azP',
             'progress_bar' => true,
+            'display_stats' => false
         ];
         $config = array_merge($defaults, $config);
 
         $options = $config['options'] ?? [];
         $flags = $config['flags'];
+        $displayStats = $config['display_stats'] || in_array('--stats', $options, true);
 
-        $connectionOptions = Client::connectionOptions($host);
+        if ($displayStats && !in_array('--stats', $options, true)) {
+            $options[] = '--stats';
+        }
+
+        $connectionOptions = Client::connectionOptionsString($host);
         if ($connectionOptions !== '') {
-            $options[] = "-e 'ssh $connectionOptions'";
+            $options = array_merge($options, ['-e', "ssh $connectionOptions"]);
         }
-
         if ($host->has("become")) {
-            $options[] = "--rsync-path='sudo -H -u {$host->get('become')} rsync'";
+            $options = array_merge($options, ['--rsync-path', "sudo -H -u {$host->get('become')} rsync"]);
         }
+        if (!is_array($source)) {
+            $source = [$source];
+        }
+        $command = array_merge(['rsync', $flags], $options, $source, [$destination]);
 
-        $command = sprintf(
-            "rsync -%s %s %s %s",
-            $flags,
-            implode(' ', $options),
-            escapeshellarg($source),
-            escapeshellarg($destination)
-        );
-        $this->pop->command($host, $command);
+        $commandString = $command[0];
+        for ($i = 1; $i < count($command); $i++) {
+            $commandString .= ' ' . escapeshellarg($command[$i]);
+        }
+        if ($this->output->isVerbose()) {
+            $this->output->writeln("[$host] $commandString");
+        }
 
         $progressBar = null;
         if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL && $config['progress_bar']) {
@@ -77,14 +81,17 @@ class Rsync
             $progressBar->setEmptyBarCharacter('-');
         }
 
-        $callback = function ($type, $buffer) use ($host, $progressBar) {
+        $fullOutput = '';
+
+        $callback = function ($type, $buffer) use ($host, $progressBar, &$fullOutput) {
+            $fullOutput .= $buffer;
             if ($progressBar) {
                 foreach (explode("\n", $buffer) as $line) {
                     if (preg_match('/(to-chk|to-check)=(\d+?)\/(\d+)/', $line, $match)) {
                         $max = intval($match[3]);
                         $step = $max - intval($match[2]);
                         $progressBar->setMaxSteps($max);
-                        $progressBar->setFormat("[{$host->getTag()}] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+                        $progressBar->setFormat("[$host] %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
                         $progressBar->setProgress($step);
                     }
                 }
@@ -95,14 +102,35 @@ class Rsync
             }
         };
 
-        $process = Process::fromShellCommandline($command)
-            ->setTimeout($config['timeout']);
+        $process = new Process($command);
+        $process->setTimeout($config['timeout']);
         try {
             $process->mustRun($callback);
+
+            if ($displayStats) {
+                $stats = [];
+
+                $statsStarted = false;
+                foreach (explode("\n", $fullOutput) as $line) {
+                    if (strpos($line, 'Number of files') === 0) {
+                        $statsStarted = true;
+                    }
+
+                    if ($statsStarted) {
+                        if (empty($line)) {
+                            break;
+                        }
+                        $stats[] = $line;
+                    }
+                }
+
+                writeln("Rsync operation stats\n" . '<comment>' . implode("\n", $stats) . '</comment>');
+            }
+
         } catch (ProcessFailedException $exception) {
             throw new RunException(
                 $host,
-                $command,
+                $commandString,
                 $process->getExitCode(),
                 $process->getOutput(),
                 $process->getErrorOutput()

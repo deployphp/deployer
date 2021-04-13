@@ -9,6 +9,8 @@ namespace Deployer\Host;
 
 class Localhost extends Host
 {
+    const extraordinary = '@localhost';
+
     public function __construct(string $hostname = 'localhost')
     {
         parent::__construct($hostname);

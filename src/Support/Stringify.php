@@ -7,7 +7,6 @@
 
 namespace Deployer\Support;
 
-
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,6 +31,11 @@ class Stringify
                 $option = [$option];
             }
             foreach ($option as $value) {
+                if(is_bool($value)){
+                    $options[] = "--$name ";
+                    continue;
+                }
+
                 $options[] = "--$name " . self::escape($value);
             }
         }

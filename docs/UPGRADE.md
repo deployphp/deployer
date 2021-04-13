@@ -5,7 +5,7 @@
 3. Change `user` to `remote_user`.
 4. Update `host()` definitions:
     1. Add `set` prefix to all setters: `identityFile` -> `setIdentityFile` or `set('identify_file')`
-    2. Update `addSshOption('UserKnownHostsFile', '/dev/null')` to `setSshArguments(['-o UserKnownHostsFile=/dev/null']);`
+    2. Update `host(...)->addSshOption('UserKnownHostsFile', '/dev/null')` to `host(...)->setSshArguments(['-o UserKnownHostsFile=/dev/null']);`
     3. Replace _stage_ with labels, i.e.
        ```php
        host('deployer.org')
@@ -50,7 +50,9 @@
    
      deploy:vendors:
        script: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
-   ```  
+   ``` 
+8. Rename success task in ~~success~~ to `deploy:success`.
+9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
 
 # Upgrade from 5.x to 6.x
 

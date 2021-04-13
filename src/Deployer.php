@@ -10,7 +10,6 @@ namespace Deployer;
 use Deployer\Collection\Collection;
 use Deployer\Command\AutocompleteCommand;
 use Deployer\Command\ConfigCommand;
-use Deployer\Command\ConnectCommand;
 use Deployer\Command\DiceCommand;
 use Deployer\Command\InitCommand;
 use Deployer\Command\MainCommand;
@@ -30,6 +29,7 @@ use Deployer\Executor\Messenger;
 use Deployer\Executor\Server;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
+use Deployer\Host\Localhost;
 use Deployer\Importer\Importer;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
@@ -118,7 +118,12 @@ class Deployer extends Container
         };
         // -l  act as if it had been invoked as a login shell (i.e. source ~/.profile file)
         // -s  commands are read from the standard input (no arguments should remain after this option)
-        $this->config['shell'] = 'bash -ls';
+        $this->config['shell'] = function () {
+            if (currentHost() instanceof Localhost) {
+                return 'bash -s'; // Non-login shell for localhost.
+            }
+            return 'bash -ls';
+        };
         $this->config['forward_agent'] = true;
         $this->config['ssh_multiplexing'] = true;
 
@@ -154,7 +159,7 @@ class Deployer extends Container
             return new Collection();
         };
         $this['messenger'] = function ($c) {
-            return new Messenger($c['input'], $c['output']);
+            return new Messenger($c['input'], $c['output'], $c['logger']);
         };
         $this['server'] = function ($c) {
             return new Server(
@@ -182,8 +187,8 @@ class Deployer extends Container
          ******************************/
 
         $this['log_handler'] = function () {
-            return !empty($this['log_file'])
-                ? new FileHandler($this['log_file'])
+            return !empty($this['log'])
+                ? new FileHandler($this['log'])
                 : new NullHandler();
         };
         $this['logger'] = function () {
@@ -205,7 +210,6 @@ class Deployer extends Container
     {
         $this->addTaskCommands();
         $this->getConsole()->add(new AutocompleteCommand());
-        $this->getConsole()->add(new ConnectCommand($this));
         $this->getConsole()->add(new ConfigCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
         $this->getConsole()->add(new DiceCommand());

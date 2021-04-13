@@ -9,13 +9,11 @@ namespace Deployer\Command;
 
 use Deployer\Component\Ssh\Client;
 use Deployer\Deployer;
-use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -85,7 +83,7 @@ class SshCommand extends Command
         }
 
         Context::push(new Context($host, $input, $output));
-        $options = Client::connectionOptions($host);
+        $options = Client::connectionOptionsString($host);
         $deployPath = $host->get('deploy_path', '~');
 
         passthru("ssh -t $options {$host->getConnectionString()} 'cd '''$deployPath/current'''; $shell_path'");

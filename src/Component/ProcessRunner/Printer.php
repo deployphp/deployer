@@ -8,9 +8,7 @@
 namespace Deployer\Component\ProcessRunner;
 
 use Deployer\Host\Host;
-use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 class Printer
 {
@@ -25,7 +23,7 @@ class Printer
     {
         // -v for run command
         if ($this->output->isVerbose()) {
-            $this->output->writeln("[{$host->getTag()}] <fg=green;options=bold>run</> $command");
+            $this->output->writeln("[$host] <fg=green;options=bold>run</> $command");
         }
     }
 
@@ -34,10 +32,10 @@ class Printer
      *
      * @return callable A function expecting a int $type (e.g. Process::OUT or Process::ERR) and string $buffer parameters.
      */
-    public function callback(Host $host): callable
+    public function callback(Host $host, bool $forceOutput): callable
     {
-        return function ($type, $buffer) use ($host) {
-            if ($this->output->isVerbose()) {
+        return function ($type, $buffer) use ($forceOutput, $host) {
+            if ($this->output->isVerbose() || $forceOutput) {
                 $this->printBuffer($type, $host, $buffer);
             }
         };
@@ -62,12 +60,9 @@ class Printer
             return;
         }
 
-        $this->output->writeln("[{$host->getTag()}] $line");
+        $this->output->writeln("[$host] $line");
     }
 
-    /**
-     * This filtering used only in Ssh\Client, but for simplify putted here.
-     */
     public static function filterOutput(string $output): string
     {
         return preg_replace('/\[exit_code:(.*?)]/', '', $output);

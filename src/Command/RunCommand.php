@@ -14,8 +14,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
+use function Deployer\cd;
+use function Deployer\get;
 use function Deployer\has;
 use function Deployer\run;
+use function Deployer\test;
 
 class RunCommand extends SelectCommand
 {
@@ -29,18 +32,23 @@ class RunCommand extends SelectCommand
 
     protected function configure()
     {
-        parent::configure();
-        $this->addOption(
-            'command',
-            'c',
-            Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Command to run'
+        $this->addArgument(
+            'command-to-run',
+            InputArgument::REQUIRED,
+            'Command to run on a remote host'
         );
+        parent::configure();
         $this->addOption(
             'option',
             'o',
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
             'Set configuration option'
+        );
+        $this->addOption(
+            'timeout',
+            't',
+            Option::VALUE_REQUIRED,
+            'Command timeout in seconds'
         );
     }
 
@@ -49,19 +57,21 @@ class RunCommand extends SelectCommand
         $this->deployer->input = $input;
         $this->deployer->output = $output;
 
-        if ($output->getVerbosity() === Output::VERBOSITY_NORMAL) {
-            $output->setVerbosity(Output::VERBOSITY_VERBOSE);
-        }
-
-        $command = implode('; ', $input->getOption('command') ?? '');
+        $command = $input->getArgument('command-to-run') ?? '';
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));
 
-        $task = new Task($command, function () use ($command) {
+        $task = new Task($command, function () use ($input, $command) {
             if (has('current_path')) {
-                $command = "cd {{current_path}}; $command";
+                $path = get('current_path');
+                if (test("[ -d $path ]")) {
+                    cd($path);
+                }
             }
-            run($command);
+            run($command, [
+                'real_time_output' => true,
+                'timeout' => intval($input->getOption('timeout')),
+            ]);
         });
 
         foreach ($hosts as $host) {

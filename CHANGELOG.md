@@ -46,6 +46,7 @@
 - Boolean options should not go through the `self::escape` function. [#2392]
 - Check if shared file exists before touching it (and fail because no write permission). [#2393]
 - Fixed "dep run" suggestion in ACL error message. [#2501]
+- TypeError, port is int on escapeshellarg. [#2503]
 
 ### Removed
 - Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]
@@ -614,6 +615,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2503]: https://github.com/deployphp/deployer/issues/2503
 [#2501]: https://github.com/deployphp/deployer/pull/2501
 [#2488]: https://github.com/deployphp/deployer/pull/2488
 [#2487]: https://github.com/deployphp/deployer/pull/2487

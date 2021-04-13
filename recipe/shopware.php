@@ -163,7 +163,6 @@ task('sw:deploy', [
     'sw:plugin:activate:all',
     'sw:database:migrate',
     'sw:plugin:migrate:all',
-    'sw:plugin:upgrade:all',
     'sw:theme:compile',
     'sw:cache:clear',
 ]);

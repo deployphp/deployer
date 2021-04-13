@@ -29,6 +29,7 @@
   * [`sw:plugin:refresh`](#swpluginrefresh)
   * [`sw:plugin:activate:all`](#swpluginactivateall)
   * [`sw:plugin:migrate:all`](#swpluginmigrateall)
+  * [`sw:plugin:upgrade:all`](#swpluginupgradeall)
   * [`sw:deploy`](#swdeploy)
   * [`deploy`](#deploy) — Deploy your project
 
@@ -127,6 +128,11 @@
 
 ### sw:plugin:migrate:all
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Amigrate%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
+
+
+### sw:plugin:upgrade:all
+[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aupgrade%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
 
 

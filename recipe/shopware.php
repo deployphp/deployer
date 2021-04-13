@@ -64,6 +64,7 @@ task('sw:database:migrate', static function () {
 task('sw:plugin:refresh', function () {
     run('cd {{release_or_current_path}} && bin/console plugin:refresh');
 });
+
 /**
  * @return array
  * @throws \MJS\TopSort\CircularDependencyException
@@ -167,6 +168,26 @@ task('sw:plugin:migrate:all', static function () {
 
         if ($installed === 'Yes' || $active === 'Yes') {
             run("cd {{release_or_current_path}} && bin/console database:migrate --all $plugin || true");
+        }
+    }
+});
+
+task('sw:plugin:upgrade:all', static function () {
+    invoke('sw:plugin:refresh');
+    foreach (getSortedPlugins() as $pluginInfo) {
+        [
+            $plugin,
+            $label,
+            $version,
+            $upgrade,
+            $author,
+            $installed,
+            $active,
+            $upgradeable,
+        ] = $pluginInfo;
+
+        if ($upgradeable === 'Yes') {
+            run("cd {{release_path}} && bin/console plugin:update $plugin");
         }
     }
 });

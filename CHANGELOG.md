@@ -40,6 +40,7 @@
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
+- Shopware recipe plugin active/update.
 - Fixed incorrect plugin:list parsing (remove duplicate version column). Invoke nested sw:plugin:refresh task instead of redefining it, so that it actually runs.
 - Shopware activates/runs migration in order (respects dependencies in composer.json). [#2423] [#2425]
 - Boolean options should not go through the `self::escape` function. [#2392]

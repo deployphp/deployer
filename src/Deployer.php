@@ -10,7 +10,7 @@ namespace Deployer;
 use Deployer\Collection\Collection;
 use Deployer\Command\AutocompleteCommand;
 use Deployer\Command\ConfigCommand;
-use Deployer\Command\DiceCommand;
+use Deployer\Command\BlackjackCommand;
 use Deployer\Command\InitCommand;
 use Deployer\Command\MainCommand;
 use Deployer\Command\RunCommand;
@@ -210,9 +210,9 @@ class Deployer extends Container
     {
         $this->addTaskCommands();
         $this->getConsole()->add(new AutocompleteCommand());
+        $this->getConsole()->add(new BlackjackCommand());
         $this->getConsole()->add(new ConfigCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
-        $this->getConsole()->add(new DiceCommand());
         $this->getConsole()->add(new InitCommand());
         $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));

@@ -1,9 +1,29 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Parameter \\#4 \\$default of method Symfony\\\\Component\\\\Console\\\\Command\\\\Command\\:\\:addArgument\\(\\) expects array\\<string\\>\\|string\\|null, int given\\.$#"
+			message: "#^Comparison operation \"\\>\" between 100 and 0 is always true\\.$#"
 			count: 1
-			path: ../src/Command/DiceCommand.php
+			path: ../src/Command/BlackjackCommand.php
+
+		-
+			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
+			count: 1
+			path: ../src/Command/BlackjackCommand.php
+
+		-
+			message: "#^If condition is always true\\.$#"
+			count: 1
+			path: ../src/Command/BlackjackCommand.php
+
+		-
+			message: "#^If condition is always false\\.$#"
+			count: 1
+			path: ../src/Command/BlackjackCommand.php
+
+		-
+			message: "#^Comparison operation \"\\>\" between 0 and 0 is always false\\.$#"
+			count: 1
+			path: ../src/Command/BlackjackCommand.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"

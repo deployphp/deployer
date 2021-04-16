@@ -275,6 +275,17 @@ class Deployer extends Container
      */
     public static function run(string $version, ?string $deployFile)
     {
+        if (!defined('DEPLOYER_VERSION')) {
+            die(<<<TXT
+  Warning! Incompatible global and local versions.
+  Please, update your globally installed Deployer,
+  or run locally installed Deployer via:
+  
+      \x1b[36mphp \x1b[38;1mvendor/bin/dep\x1b[0m
+   
+
+TXT);
+        }
         $input = new ArgvInput();
         $output = new ConsoleOutput();
 

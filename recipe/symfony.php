@@ -13,11 +13,10 @@ set('symfony_version', function () {
 
 set('shared_dirs', [
     'var/log',
-    'var/sessions']
-);
+    'var/sessions'
+]);
 
 set('shared_files', [
-    '.env.local.php',
     '.env.local'
 ]);
 
@@ -43,6 +42,11 @@ task('database:migrate', function () {
     run("cd {{release_or_current_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
 });
 
+desc('Compile .env files');
+task('deploy:dump-env', function () {
+    run('cd {{release_or_current_path}} && {{bin/composer}} dump-env {{symfony_env}}');
+});
+
 desc('Clear cache');
 task('deploy:cache:clear', function () {
     run('{{bin/console}} cache:clear {{console_options}} --no-warmup');
@@ -57,6 +61,7 @@ desc('Deploy project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
+    'deploy:dump-env',
     'deploy:cache:clear',
     'deploy:cache:warmup',
     'deploy:publish',

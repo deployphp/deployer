@@ -64,7 +64,7 @@ class DocRecipe
                         $this->require[] = dirname($this->recipePath) . $m['recipe'];
                         break;
                     }
-                    if ($match('^set\([\'"](?<config_name>[\w_:]+?)[\'"]')) {
+                    if ($match('^set\([\'"](?<config_name>[\w_:-]+?)[\'"]')) {
                         $set = new DocConfig();
                         $set->name = $m['config_name'];
                         $set->comment = trim($comment);
@@ -78,7 +78,7 @@ class DocRecipe
                         $desc = $m['desc'];
                         break;
                     }
-                    if ($match('^task\([\'"](?<task_name>[\w_:]+?)[\'"],\s\[$')) {
+                    if ($match('^task\([\'"](?<task_name>[\w_:-]+?)[\'"],\s\[$')) {
                         $task = new DocTask();
                         $task->name = $m['task_name'];
                         $task->desc = $desc;
@@ -92,7 +92,7 @@ class DocRecipe
                         $currentTask = $task;
                         break;
                     }
-                    if ($match('^task\([\'"](?<task_name>[\w_:]+?)[\'"]')) {
+                    if ($match('^task\([\'"](?<task_name>[\w_:-]+?)[\'"]')) {
                         $task = new DocTask();
                         $task->name = $m['task_name'];
                         $task->desc = $desc;
@@ -124,7 +124,7 @@ class DocRecipe
                     break;
 
                 case 'group_task':
-                    if ($match('^\s+\'(?<task_name>[\w_:]+?)\',$')) {
+                    if ($match('^\s+\'(?<task_name>[\w_:-]+?)\',$')) {
                         $currentTask->group[] = $m['task_name'];
                         break;
                     }

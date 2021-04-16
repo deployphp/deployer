@@ -19,6 +19,7 @@
   * [`console_options`](#console_options)
 * Tasks
   * [`database:migrate`](#databasemigrate) — Migrate database
+  * [`deploy:dump-env`](#deploydump-env) — Compile .env files
   * [`deploy:cache:clear`](#deploycacheclear) — Clear cache
   * [`deploy:cache:warmup`](#deploycachewarmup) — Warm up cache
   * [`deploy`](#deploy) — Deploy project
@@ -67,6 +68,11 @@
 
 
 
+### deploy:dump-env
+[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Adump-env%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+
+
+
 ### deploy:cache:clear
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
@@ -85,6 +91,7 @@
 This task is group task which contains next tasks:
 * [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
 * [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
+* [`deploy:dump-env`](/docs/recipe/symfony.md#deploydump-env)
 * [`deploy:cache:clear`](/docs/recipe/symfony.md#deploycacheclear)
 * [`deploy:cache:warmup`](/docs/recipe/symfony.md#deploycachewarmup)
 * [`deploy:publish`](/docs/recipe/common.md#deploypublish)

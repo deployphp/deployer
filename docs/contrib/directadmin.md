@@ -102,6 +102,8 @@ task('deploy', [
   * [`directadmin:deletedb`](#directadmindeletedb) — Delete a database on DirectAdmin
   * [`directadmin:createdomain`](#directadmincreatedomain) — Create a domain on DirectAdmin
   * [`directadmin:deletedomain`](#directadmindeletedomain) — Delete a domain on DirectAdmin
+  * [`directadmin:symlink-private-html`](#directadminsymlink-private-html) — Symlink your private_html to public_html
+  * [`directadmin:php-version`](#directadminphp-version) — Change the PHP version from a domain
 
 
 ## Tasks
@@ -122,6 +124,16 @@ task('deploy', [
 
 ### directadmin:deletedomain
 [Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Adeletedomain%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
+
+
+
+### directadmin:symlink-private-html
+[Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Asymlink-private-html%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
+
+
+
+### directadmin:php-version
+[Source](https://github.com/deployphp/deployer/search?q=%22directadmin%3Aphp-version%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adirectadmin.php)
 
 
 

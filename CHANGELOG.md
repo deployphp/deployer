@@ -48,6 +48,7 @@
 - Fixed "dep run" suggestion in ACL error message. [#2501]
 - TypeError, port is int on escapeshellarg. [#2503]
 - .env.local.php in Symfony recipe. [#2506]
+- Fixed regex identifying "cd" commands in YAML scripts. The regex was not taking into account that multiple commands can be executed within the same line — e.g. "cd {{release_path}} && npm run prod". [#2509]
 
 ### Removed
 - Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]
@@ -616,6 +617,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2509]: https://github.com/deployphp/deployer/issues/2509
 [#2506]: https://github.com/deployphp/deployer/issues/2506
 [#2503]: https://github.com/deployphp/deployer/issues/2503
 [#2501]: https://github.com/deployphp/deployer/pull/2501

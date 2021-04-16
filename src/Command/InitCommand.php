@@ -107,7 +107,12 @@ class InitCommand extends Command
         if (isset($tempHostFile)) {
             $host = file_get_contents($tempHostFile);
         }
-        $hosts = explode(',', $io->ask('Hosts (comma separated)', $host));
+        $hostsString = $io->ask('Hosts (comma separated)', $host);
+        if ($hostsString !== null) {
+            $hosts = explode(',', $hostsString);
+        } else {
+            $hosts = [];
+        }
 
         file_put_contents($recipePath, $this->$language($template, $project, $repository, $hosts));
 

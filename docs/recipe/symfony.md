@@ -11,6 +11,7 @@
 * Require
   * [`recipe/common.php`](/docs/recipe/common.md)
 * Config
+  * [`symfony_env`](#symfony_env)
   * [`symfony_version`](#symfony_version)
   * [`shared_dirs`](#shared_dirs)
   * [`shared_files`](#shared_files)
@@ -25,6 +26,11 @@
   * [`deploy`](#deploy) — Deploy project
 
 ## Config
+### symfony_env
+[Source](https://github.com/deployphp/deployer/search?q=%22symfony_env%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+
+This env config will be used for `bin/console dump-env` command.
+
 ### symfony_version
 [Source](https://github.com/deployphp/deployer/search?q=%22symfony_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 

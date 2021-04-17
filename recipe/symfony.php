@@ -5,6 +5,9 @@ require_once __DIR__ . '/common.php';
 
 add('recipes', ['symfony']);
 
+// This env config will be used for `bin/console dump-env` command.
+set('symfony_env', 'prod');
+
 set('symfony_version', function () {
     $result = run('{{bin/console}} --version');
     preg_match_all('/(\d+\.?)+/', $result, $matches);

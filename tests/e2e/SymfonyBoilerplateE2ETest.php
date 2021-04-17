@@ -7,13 +7,12 @@ class SymfonyBoilerplateE2ETest extends AbstractE2ETest
 
     public function testDeploySymfonyBoilerplate(): void
     {
-        $this->init(self::RECIPE);
-
-        $this->tester->run([
-            'deploy',
-            '-f' => self::RECIPE,
-            'selector' => 'all',
-        ]);
+        $this->tester->setTimeout(180)
+            ->run([
+                '-f' => self::RECIPE,
+                'deploy',
+                'all',
+            ]);
 
         $display = trim($this->tester->getDisplay());
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
@@ -29,9 +28,9 @@ class SymfonyBoilerplateE2ETest extends AbstractE2ETest
 
         if ($this->tester) {
             $this->tester->run([
-                'deploy:unlock',
                 '-f' => self::RECIPE,
-                'selector' => 'all',
+                'deploy:unlock',
+                'all',
             ]);
         }
     }

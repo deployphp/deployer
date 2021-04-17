@@ -1,4 +1,4 @@
-FROM php:8.0-cli-alpine AS composer
+FROM php:7.3-cli-alpine AS composer
 RUN apk add wget
 COPY ./scripts/install-composer.sh /tmp/install-composer.sh
 RUN sh /tmp/install-composer.sh
@@ -7,7 +7,7 @@ RUN sh /tmp/install-composer.sh
 
 
 
-FROM php:8.0-cli-alpine AS deployer
+FROM php:7.3-cli-alpine AS deployer
 RUN apk add \
         git \
         openssh-client \
@@ -22,7 +22,7 @@ RUN ssh-keygen \
 RUN git config --global user.email "e2e@deployer.test" \
     && git config --global user.name "E2E Deployer"
 
-ARG XDEBUG_VERSION=3.0.0
+ARG XDEBUG_VERSION=2.9.8
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
 	pecl install xdebug-$XDEBUG_VERSION; \

@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Deployer;
 
-require __DIR__ . '/deploy.php';
+require_once __DIR__ . '/hosts.php';
 require_once __DIR__ . '/../../../recipe/laravel.php';
 
 getHost('server.test')

@@ -10,16 +10,14 @@ class MiscE2ETest extends AbstractE2ETest
      */
     public function testSudoWithPasswordEnteredInteractively(): void
     {
-        $this->init(self::RECIPE);
-
         // We're adding this to inputs, to have it passed with via the STDIN
         $this->tester->setInputs(['deployer']);
 
         $this->tester->run([
-            'test:misc:sudo-write-user',
             '-f' => self::RECIPE,
-            'selector' => 'all',
-        ], [ 'decorated' => false ]);
+            'test:misc:sudo-write-user',
+            'all',
+        ]);
 
         $display = trim($this->tester->getDisplay());
 
@@ -32,14 +30,12 @@ class MiscE2ETest extends AbstractE2ETest
      */
     public function testSudoWithPasswordProvidedViaArgument(): void
     {
-        $this->init(self::RECIPE);
-
         $this->tester->run([
-            'test:misc:sudo-write-user',
             '-f' => self::RECIPE,
-            '-o' => [ 'sudo_pass=deployer' ],
-            'selector' => 'all',
-        ], [ 'decorated' => false ]);
+            'test:misc:sudo-write-user',
+            '-o' => 'sudo_pass=deployer',
+            'all',
+        ]);
 
         $display = trim($this->tester->getDisplay());
 

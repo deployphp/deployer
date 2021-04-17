@@ -538,6 +538,7 @@ function invoke(string $taskName): void
  *
  * @param string|string[] $source
  * @param array $config
+ * @phpstan-param array{flags?: string, options?: array, timeout?: int|null, progress_bar?: bool, ?display_stats: bool} $config
  *
  * @throws RunException
  */

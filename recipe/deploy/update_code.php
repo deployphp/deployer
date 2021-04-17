@@ -30,7 +30,7 @@ task('deploy:update_code', function () {
     $branch = get('branch');
     $git = get('bin/git');
 
-    $at = '';
+    $at = 'HEAD';
     if (!empty($branch)) {
         $at = $branch;
     }

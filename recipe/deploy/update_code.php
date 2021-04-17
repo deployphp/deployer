@@ -63,20 +63,14 @@ task('deploy:update_code', function () {
     }
 
     // Clone the repository to a bare repo.
-    $bare = parse('{{deploy_path}}/.dep/repo');
+    $bare = parse('{{deploy_path}}/.dep/repo/' . sha1($repository));
     run("[ -d $bare ] || mkdir -p $bare");
     run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1");
 
     cd($bare);
 
-    // If remote url changed, update it in `.git/repo` as well.
-    run("[[ $($git remote get-url origin) == '$repository' ]] || $git remote set-url origin $repository ");
-
-    /*DEBUG*/run("$git remote get-url origin");
-
     // Copy to release_path.
     run("$git remote update 2>&1");
-    /*DEBUG*/run("ls $bare");
     run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
 
     // Save revision in releases log.

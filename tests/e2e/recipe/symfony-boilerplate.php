@@ -12,3 +12,7 @@ set('repository', 'https://github.com/deployphp/test-symfony.git');
 
 task('deploy:dump-env', function () {
 });
+
+after('deploy:update_code', function () {
+    run('ls {{release_path}}');
+});

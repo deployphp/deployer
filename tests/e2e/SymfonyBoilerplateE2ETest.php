@@ -12,6 +12,7 @@ class SymfonyBoilerplateE2ETest extends AbstractE2ETest
                 '-f' => self::RECIPE,
                 'deploy',
                 'all',
+                '-v',
             ]);
 
         $display = trim($this->tester->getDisplay());

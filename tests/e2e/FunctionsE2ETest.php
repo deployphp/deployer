@@ -10,13 +10,11 @@ class FunctionsE2ETest extends AbstractE2ETest
      */
     public function testRunWithPlaceholders(): void
     {
-        $this->init(self::RECIPE);
-
         $this->tester->run([
-            'test:functions:run-with-placeholders',
             '-f' => self::RECIPE,
-            'selector' => 'all',
-        ], [ 'decorated' => false ]);
+            'test:functions:run-with-placeholders',
+            'all',
+        ]);
 
         $display = trim($this->tester->getDisplay());
 

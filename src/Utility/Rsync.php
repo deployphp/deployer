@@ -32,6 +32,7 @@ class Rsync
      * Start rsync process.
      *
      * @param string|string[] $source
+     * @phpstan-param array{flags?: string, options?: array, timeout?: int|null, progress_bar?: bool, ?display_stats: bool} $config
      * @throws RunException
      */
     public function call(Host $host, $source, string $destination, array $config = []): void

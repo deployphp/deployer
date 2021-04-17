@@ -8,3 +8,7 @@ getHost('server.test')
     ->set('timeout', 600);
 
 set('repository', 'https://github.com/deployphp/test-symfony.git');
+
+
+task('deploy:dump-env', function () {
+});

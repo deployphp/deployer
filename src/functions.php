@@ -159,7 +159,7 @@ function desc(?string $title = null): ?string
  * Alternatively get a defined task.
  *
  * @param string $name Name of current task.
- * @param callable|array|string|null $body Callable task, array of other tasks names or nothing to get a defined tasks
+ * @param callable|array|null $body Callable task, array of other tasks names or nothing to get a defined tasks
  */
 function task(string $name, $body = null): Task
 {
@@ -174,7 +174,7 @@ function task(string $name, $body = null): Task
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
     } else {
-        throw new \InvalidArgumentException('Task should be a closure or array of other tasks.');
+        throw new \InvalidArgumentException('Task body should be a function or an array.');
     }
 
     $task->saveSourceLocation();

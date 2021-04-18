@@ -140,7 +140,7 @@ Alternatively get a defined task.
 
   Name of current task.
 - ### body
-  **type**: `callable|array|string|null `
+  **type**: `callable|array|null `
 
   Callable task, array of other tasks names or nothing to get a defined tasks
 

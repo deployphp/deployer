@@ -8,17 +8,10 @@ use Deployer\Exception\RunException;
  * If not specified, will get current git HEAD branch as default branch to deploy.
  */
 set('branch', function () {
-    try {
-        $branch = runLocally('git rev-parse --abbrev-ref HEAD');
-    } catch (\Throwable $e) {
-        $branch = null;
-    }
-
     if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
-        $branch = input()->getOption('branch');
+        return input()->getOption('branch');
     }
-
-    return $branch;
+    return null;
 });
 
 /**
@@ -30,7 +23,7 @@ task('deploy:update_code', function () {
     $branch = get('branch');
     $git = get('bin/git');
 
-    $at = '';
+    $at = 'HEAD';
     if (!empty($branch)) {
         $at = $branch;
     }
@@ -62,15 +55,21 @@ task('deploy:update_code', function () {
         }
     }
 
-    // Clone the repository to a bare repo.
     $bare = parse('{{deploy_path}}/.dep/repo');
+
+    start:
+    // Clone the repository to a bare repo.
     run("[ -d $bare ] || mkdir -p $bare");
     run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1");
 
     cd($bare);
 
-    // If remote url changed, update it in `.git/repo` as well.
-    run("[[ $($git remote get-url origin) == '$repository' ]] || $git remote set-url origin $repository ");
+    // If remote url changed, drop `.git/repo` and reinstall.
+    if (run("$git remote get-url origin") !== $repository) {
+        cd('{{deploy_path}}');
+        run("rm -rf $bare");
+        goto start;
+    }
 
     // Copy to release_path.
     run("$git remote update 2>&1");

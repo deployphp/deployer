@@ -51,7 +51,7 @@ returned. We can place `writeln($output)` call in our task, but there is an
 easier way: just add `-v` option:
 
 ```bash
-dep hello -v
+$ dep hello -v
 task hello
 [deployer.org] run ls -1
 [deployer.org] dev
@@ -75,4 +75,67 @@ task('hello', function () {
 ```
 
 Tasks and hosts are two main concepts of Deployer. We define what to do in tasks
-and hosts define there to run it.
+and hosts define there to run it. Now let's add another host to run out task on:
+
+```php
+host('deployer.org');
+host('beta.deployer.org');
+```
+
+Read more about [host's definition](hosts.md).
+
+Now let's run `dep hello` again. This time Deployer will ask us what hosts do we 
+intend to run on. Let's run this command again this time with special selector 
+**all** which indicated what we're planning to run our task on all defined 
+hosts.
+
+```bash
+$ dep hello all
+task hello
+[deployer.org] Total files: 15
+[beta.deployer.org] error in deploy.php on line 8:
+[beta.deployer.org] run cd ~/deployer.org && (ls -1)
+[beta.deployer.org] err bash: line 1: cd: /home/deployer/deployer.org: 
+[beta.deployer.org] err bash: No such file or directory
+[beta.deployer.org] exit code 1 (General error)
+```
+
+That's right. There is no `~/deployer.org` dir on our beta host. To fix it we 
+need to cd in correct dir on each host. To do that, let's define config per 
+host.
+
+Each host has own configuration parameters. To access it inside task use 
+`get()`/`set()` functions. Also, each Deployer function can parse config 
+parameters via `{{...}}` syntax. 
+
+Read more about [host's configuration](config.md).
+
+```php
+host('deployer.org')
+    ->set('my_path', '~/deployer.org');
+host('beta.deployer.org')
+    ->set('my_path', '~/beta.deployer.org');
+```
+
+And let's use this config in our task:
+
+```diff
+task('hello', function () {
+-   cd('~/deployer.org');
++   cd(get('my_path'));
+    $output = run('ls -1');
+    $lines = substr_count($output, "\n");
+    writeln("Total files: $lines");
+});
+```
+
+Let's test it:
+
+```bash
+$ dep hello all
+task hello
+[deployer.org] Total files: 15
+[beta.deployer.org] Total files: 15
+```
+
+Success!

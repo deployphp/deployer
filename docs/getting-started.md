@@ -234,3 +234,32 @@ Or we can use hooks to add our own tasks:
 ```php
 after('deploy', 'my_task');
 ```
+
+Let's try to connect to host via `dep` command:
+
+```bash
+dep ssh
+```
+
+If everything went well we now can deploy our application:
+
+```bash
+$ dep deploy
+[deploy.pw] info deploying HEAD
+task deploy:setup
+task deploy:lock
+task deploy:release
+task deploy:update_code
+task deploy:shared
+task deploy:writable
+task deploy:vendors
+task artisan:storage:link
+task artisan:view:cache
+task artisan:config:cache
+task deploy:symlink
+task deploy:unlock
+task deploy:cleanup
+[deploy.pw] info successfully deployed!
+```
+
+

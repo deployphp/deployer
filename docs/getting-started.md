@@ -21,6 +21,7 @@ task('hello', function () {
 > We are using namespace `Deployer` as we're going to primarily use functions
 > defined in this namespace. 
 
+Read more about [task's definitions](tasks.md).
 
 Now let's run our task:
 
@@ -138,4 +139,98 @@ task hello
 [beta.deployer.org] Total files: 15
 ```
 
-Success!
+Success! This is a basics of Deployer. We can define hosts with config and 
+tasks. Using those we can create our own deployment recipes. 
+
+Deployer comes with a bunch of recipes for most popular frameworks. Let's use,
+for example, Laravel recipe to deploy our Laravel project. 
+
+```bash
+$ dep init
+```
+
+Follow instructions, choose one of types for your recipe: php or yaml. Read more 
+about writing [yaml recipes here](yaml.md). Let's choose php recipe for our 
+case.
+
+> You can mix php and yaml recipes. For example, you can add yaml recipe to your
+> php recipe via `import()` function, or import php recipes from yaml recipe.
+
+Let's take a look on generated **deploy.php** recipe. It requires Laravel 
+recipe:
+
+```php
+require 'recipe/laravel.php';
+```
+
+> In recipes, you can use `require` to import recipes defined in 
+> [recipes](https://github.com/deployphp/deployer/tree/master/recipe) and
+> [contrib](https://github.com/deployphp/deployer/tree/master/contrib) dirs. But
+> you can always require recipes by absolute path.
+
+Then there are three sections: config, hosts and tasks. All other tasks defined 
+in [Laravel](recipe/laravel.md) or in [common](recipe/common.md) recipes. To get 
+list of all possible tasks let's run `dep` without any arguments:
+
+```
+$ dep
+Available commands:
+  deploy                     Deploy your project
+  init                       Initialize deployer in your project
+  rollback                   Rollback to previous release
+  run                        Run any arbitrary command on hosts
+  ssh                        Connect to host through ssh
+  status                     Show releases status
+  tree                       Display the task-tree for a given task
+ artisan
+  artisan:cache:clear        Flush the application cache
+  ...
+ deploy
+  deploy:update_code         Updates code
+  ...
+```
+
+Let's see what task defined in `deploy` task via `dep tree` command:
+
+```
+$ dep tree deploy
+The task-tree for deploy:
+└── deploy
+    ├── deploy:prepare
+    │   ├── deploy:info
+    │   ├── deploy:setup
+    │   ├── deploy:lock
+    │   ├── deploy:release
+    │   ├── deploy:update_code
+    │   ├── deploy:shared
+    │   └── deploy:writable
+    ├── deploy:vendors
+    ├── artisan:storage:link
+    ├── artisan:view:cache
+    ├── artisan:config:cache
+    └── deploy:publish
+        ├── deploy:symlink
+        ├── deploy:unlock
+        ├── deploy:cleanup
+        └── deploy:success
+```
+
+We can override `deploy` task if we want to in our recipe:
+
+```php
+task('deploy', [
+    'deploy:prepare',
+    'deploy:vendors',
+    'artisan:storage:link',
+    'artisan:view:cache',
+    'artisan:config:cache',
+    'deploy:publish',
+    'my_task',
+]);
+```
+
+Or we can use hooks to add our own tasks:
+
+```php
+after('deploy', 'my_task');
+```

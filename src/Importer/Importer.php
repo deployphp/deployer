@@ -119,7 +119,7 @@ class Importer
                         $wrapRun($script);
                     } else {
                         foreach ($script as $line) {
-                            $containsMultipleCommands = preg_match('/\b&&\b/', $line);
+                            $containsMultipleCommands = preg_match('/\s&&\s/', $line);
                             $startsWithCd = preg_match('/^cd\s(?<path>.+)/i', $line, $matches);
 
                             if ($startsWithCd && ! $containsMultipleCommands) {

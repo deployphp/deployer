@@ -5,9 +5,6 @@ require_once __DIR__ . '/common.php';
 
 add('recipes', ['symfony']);
 
-// This env config will be used for `bin/console dump-env` command.
-set('symfony_env', 'prod');
-
 set('symfony_version', function () {
     $result = run('{{bin/console}} --version');
     preg_match_all('/(\d+\.?)+/', $result, $matches);
@@ -45,11 +42,6 @@ task('database:migrate', function () {
     run("cd {{release_or_current_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
 });
 
-desc('Compile .env files');
-task('deploy:dump-env', function () {
-    run('cd {{release_or_current_path}} && {{bin/composer}} dump-env {{symfony_env}}');
-});
-
 desc('Clear cache');
 task('deploy:cache:clear', function () {
     run('{{bin/console}} cache:clear {{console_options}} --no-warmup');
@@ -64,7 +56,6 @@ desc('Deploy project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
-    'deploy:dump-env',
     'deploy:cache:clear',
     'deploy:cache:warmup',
     'deploy:publish',

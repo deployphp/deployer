@@ -38,6 +38,7 @@
 - Normalize shopware recipe (require common.php).
 - Removed the `min` and `max` constraints on the `artisan:optimize` and `artisan:optimize:clear` tasks. [#2488]
 - Excluded the `shared_files`, `shared_dirs` and `writable_dirs` configs from the `deploy.yaml` default template unless the `common` template was chosen.
+- The way `deploy:update_code` fetched the GIT remote URL from the config.
 
 ### Fixed
 - Lots, and lots of long-standing bugs.

@@ -65,7 +65,7 @@ task('deploy:update_code', function () {
     cd($bare);
 
     // If remote url changed, drop `.git/repo` and reinstall.
-    if (run("$git remote get-url origin") !== $repository) {
+    if (run("$git config --get remote.origin.url") !== $repository) {
         cd('{{deploy_path}}');
         run("rm -rf $bare");
         goto start;

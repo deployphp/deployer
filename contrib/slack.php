@@ -66,8 +66,8 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
-// Channel to publish to, when null the default change of the webhook will be used
-set('slack_channel', null);
+// Channel to publish to, when false the default channel the webhook will be used
+set('slack_channel', false);
 
 // Title of project
 set('slack_title', function () {

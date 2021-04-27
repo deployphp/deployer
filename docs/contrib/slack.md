@@ -91,7 +91,7 @@ after('deploy:failed', 'slack:notify:failure');
 ### slack_channel
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_channel%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
-Channel to publish to, when null the default change of the webhook will be used
+Channel to publish to, when false the default channel the webhook will be used
 
 ### slack_title
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)

@@ -10,10 +10,12 @@ services:
         condition: service_healthy
     volumes:
       - ./../../:/project
-    command: "php vendor/bin/pest --config tests/e2e/phpunit-e2e.xml"
+    command: "sh /project/tests/e2e/coverage/start-e2e-test.sh"
     networks:
       - e2e
-#    environment:
+    environment:
+      PHP_CCOV_START_FILE: '/project/tests/e2e/coverage/coverage-start.php'
+      PHP_CCOV_OUTPUT_FILE: '/project/tests/e2e/report/clover.xml'
 #      # See https://docs.docker.com/docker-for-mac/networking/#i-want-to-connect-from-a-container-to-a-service-on-the-host
 #      # See https://github.com/docker/for-linux/issues/264
 #      # The `remote_host` below may optionally be replaced with `remote_connect_back=1`

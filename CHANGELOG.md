@@ -27,6 +27,7 @@
 - Added tasks `artisan:key:generate` and `artisan:passport:keys` to the Laravel recipe.
 - Added the following artisan tasks: `artisan:route:clear`, `artisan:route:list`, `artisan:horizon`, `artisan:horizon:clear`, `artisan:horizon:continue`, `artisan:horizon:list`, `artisan:horizon:pause`, `artisan:horizon:purge`, `artisan:horizon:status`, `artisan:event:list`, `artisan:queue:failed`, `artisan:queue:flushed`. [#2488]
 - Isolated console application runner for E2E tests.
+- Support for code coverage in E2E tests.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.

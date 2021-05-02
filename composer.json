@@ -57,6 +57,7 @@
     "require-dev": {
         "pestphp/pest": "^1.0",
         "phpstan/phpstan": "^0.12.53",
+        "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^6.4",
         "squizlabs/php_codesniffer": "^3.5"

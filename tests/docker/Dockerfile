@@ -29,6 +29,9 @@ RUN set -eux; \
 	docker-php-ext-enable xdebug; \
 	apk del .build-deps
 
+COPY scripts/php-code-coverage/coverage-start-wrapper.php /usr/local/etc/php/php-code-coverage/
+COPY conf/10-coverage.ini /usr/local/etc/php/conf.d/
+
 COPY --from=composer /tmp/composer /bin/composer
 VOLUME [ "/project" ]
 WORKDIR /project

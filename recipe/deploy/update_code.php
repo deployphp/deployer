@@ -22,6 +22,9 @@ task('deploy:update_code', function () {
     $repository = get('repository');
     $branch = get('branch');
     $git = get('bin/git');
+    $repository_dirs = get('repository_dirs');
+
+    $repository_dirs_src = implode(' ', $repository_dirs);
 
     $at = 'HEAD';
     if (!empty($branch)) {
@@ -73,7 +76,7 @@ task('deploy:update_code', function () {
 
     // Copy to release_path.
     run("$git remote update 2>&1");
-    run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
+    run("$git archive $at $repository_dirs_src | tar -x -f - -C {{release_path}} 2>&1");
 
     // Save revision in releases log.
     $rev = run("$git rev-list $at -1");

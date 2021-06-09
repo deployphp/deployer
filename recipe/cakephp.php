@@ -34,7 +34,7 @@ task('deploy:init', function () {
 task('deploy:run_migrations', function () {
     run('{{release_or_current_path}}/bin/cake migrations migrate');
     run('{{release_or_current_path}}/bin/cake schema_cache clear');
-    run('{{release_or_current_path}}/bin/cake schema_cachebuild');
+    run('{{release_or_current_path}}/bin/cake schema_cache build');
 })->desc('Run migrations');
 
 /**

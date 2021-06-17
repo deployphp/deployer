@@ -91,7 +91,7 @@ class Configuration implements \ArrayAccess
             }
         }
 
-        if ($default !== null) {
+        if (func_num_args() >= 2) {
             return $this->parse($default);
         }
 

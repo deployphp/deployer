@@ -26,6 +26,11 @@ class Task
     private $verbose = false;
 
     /**
+     * @var string[] $watch A list of glob files to check for changes before running the task.
+     */
+    public $watch = [];
+
+    /**
      * Task constructor.
      * @param mixed $name
      */
@@ -48,6 +53,19 @@ class Task
 
             Context::pop();
         }
+    }
+
+    public function shouldSkip(Context $context): bool {
+        // By default, never skip tasks - to maintain backwards compatibility.
+        if (count($this->watch) == 0) {
+            return false;
+        }
+
+        // @todo Implement Task->shouldSkip()
+    }
+
+    public function skip(Context $context): void {
+        // @todo Implement Task->skip()
     }
 
     /**

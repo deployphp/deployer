@@ -35,7 +35,11 @@ class Worker
 
             $context = new Context($host, $this->deployer->input, $this->deployer->output);
             $context->setIsLocal($task->isLocal());
-            $task->run($context);
+            if ($task->shouldSkip($context)) {
+                $task->skip($context);
+            } else {
+                $task->run($context);
+            }
 
             if ($task->getName() !== 'connect') {
                 $this->deployer->messenger->endOnHost($host);

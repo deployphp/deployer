@@ -10,7 +10,7 @@
 
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
-define('DEPLOYER_VERSION', '7.0.0-master');
+define('DEPLOYER_VERSION', '7.0.0-beta.24');
 
 // Check for min. php version requirement
 if (PHP_VERSION_ID < 70300) {

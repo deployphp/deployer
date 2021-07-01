@@ -314,16 +314,15 @@ function within(string $path, callable $callback)
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
- * @param array|null $vars Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
  * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
  * @param bool|null $real_time_output Print command output in real-time.
  *
  * @throws Exception\Exception|RunException|TimeoutException
  */
-function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null, ?bool $real_time_output = false): string
+function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false): string
 {
     $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env', 'real_time_output'] as $arg) {
+    foreach (['timeout', 'idle_timeout', 'secret', 'env', 'real_time_output'] as $arg) {
         if ($$arg !== null) {
             $namedArguments[$arg] = $$arg;
         }
@@ -399,15 +398,14 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
- * @param array|null $vars Array of placeholders to replace in command: `runLocally('echo %key%', vars: ['key' => 'anything does here']);`
  * @param array|null $env Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
  *
  * @throws RunException
  */
-function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
+function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null): string
 {
     $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'vars', 'env'] as $arg) {
+    foreach (['timeout', 'idle_timeout', 'secret', 'env'] as $arg) {
         if ($$arg !== null) {
             $namedArguments[$arg] = $$arg;
         }

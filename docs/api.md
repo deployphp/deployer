@@ -258,7 +258,7 @@ Execute a callback within a specific directory and revert back to the initial wo
 ## run()
 
 ```php
-run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null, ?bool $real_time_output = false): string
+run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false): string
 ```
 
 Executes given command on remote host.
@@ -300,10 +300,6 @@ run("echo $path");
   **type**: `string|null `
 
   Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- ### vars
-  **type**: `array|null `
-
-  Array of placeholders to replace in command: `run('echo %key%', vars: ['key' => 'anything does here']);`
 - ### env
   **type**: `array|null `
 
@@ -316,7 +312,7 @@ run("echo $path");
 ## runLocally()
 
 ```php
-runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $vars = null, ?array $env = null): string
+runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null): string
 ```
 
 Execute commands on a local machine.
@@ -351,10 +347,6 @@ runLocally("echo $user");
   **type**: `string|null `
 
   Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- ### vars
-  **type**: `array|null `
-
-  Array of placeholders to replace in command: `runLocally('echo %key%', vars: ['key' => 'anything does here']);`
 - ### env
   **type**: `array|null `
 

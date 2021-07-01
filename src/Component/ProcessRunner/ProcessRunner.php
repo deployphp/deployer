@@ -37,7 +37,6 @@ class ProcessRunner
             'timeout' => $host->get('default_timeout', 300),
             'idle_timeout' => null,
             'cwd' => defined('DEPLOYER_ROOT') ? DEPLOYER_ROOT : null,
-            'vars' => [],
             'real_time_output' => false,
         ];
         $config = array_merge($defaults, $config);
@@ -50,7 +49,6 @@ class ProcessRunner
             $terminalOutput($type, $buffer);
         };
 
-        $command = $this->replacePlaceholders($command, $config['vars']);
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
 
@@ -80,14 +78,5 @@ class ProcessRunner
                 $exception->getExceededTimeout()
             );
         }
-    }
-
-    private function replacePlaceholders(string $command, array $variables): string
-    {
-        foreach ($variables as $placeholder => $replacement) {
-            $command = str_replace("%$placeholder%", $replacement, $command);
-        }
-
-        return $command;
     }
 }

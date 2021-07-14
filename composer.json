@@ -47,6 +47,7 @@
     ],
     "require": {
         "marcj/topsort": "^2.0",
+        "nikic/iter": "^2.1",
         "psr/http-message": "^1",
         "react/http": "^1",
         "symfony/console": "^5",

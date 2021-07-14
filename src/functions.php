@@ -600,7 +600,7 @@ function warning(string $message): void
 /**
  * Writes a message to the output.
  */
-function write(string|iterable $message, int $options = 0): void
+function write(string $message, int $options = 0): void
 {
     output()->write(parse($message), false, $options);
 }
@@ -608,7 +608,7 @@ function write(string|iterable $message, int $options = 0): void
 /**
  * Writes a message to the output and adds a newline at the end.
  */
-function writeln(string|iterable $message, int $options = 0): void
+function writeln(string $message, int $options = 0): void
 {
     $host = currentHost();
     output()->writeln("[$host] " . parse($message), $options);

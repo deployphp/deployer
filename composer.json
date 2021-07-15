@@ -46,6 +46,7 @@
         "bin/dep"
     ],
     "require": {
+        "php": ">=7.3",
         "marcj/topsort": "^2.0",
         "psr/http-message": "^1",
         "react/http": "^1",

@@ -20,7 +20,6 @@
 * Tasks
   * [`database:migrate`](#databasemigrate) — Migrate database
   * [`deploy:cache:clear`](#deploycacheclear) — Clear cache
-  * [`deploy:cache:warmup`](#deploycachewarmup) — Warm up cache
   * [`deploy`](#deploy) — Deploy project
 
 ## Config
@@ -72,11 +71,6 @@
 
 
 
-### deploy:cache:warmup
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Awarmup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
-
-
-
 ### deploy
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
@@ -86,7 +80,6 @@ This task is group task which contains next tasks:
 * [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
 * [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
 * [`deploy:cache:clear`](/docs/recipe/symfony.md#deploycacheclear)
-* [`deploy:cache:warmup`](/docs/recipe/symfony.md#deploycachewarmup)
 * [`deploy:publish`](/docs/recipe/common.md#deploypublish)
 
 

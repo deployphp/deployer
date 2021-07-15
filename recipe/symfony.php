@@ -44,12 +44,11 @@ task('database:migrate', function () {
 
 desc('Clear cache');
 task('deploy:cache:clear', function () {
-    run('{{bin/console}} cache:clear {{console_options}} --no-warmup');
-});
-
-desc('Warm up cache');
-task('deploy:cache:warmup', function () {
-    run('{{bin/console}} cache:warmup {{console_options}}');
+    // composer install scripts usually clear and warmup symfony cache
+    // so we only need to do it if composer install was run with --no-scripts
+    if (false !== strpos(get('composer_options', ''), '--no-scripts')) {
+        run('{{bin/console}} cache:clear {{console_options}}');
+    }
 });
 
 desc('Deploy project');
@@ -57,6 +56,5 @@ task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'deploy:cache:clear',
-    'deploy:cache:warmup',
     'deploy:publish',
 ]);

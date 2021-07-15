@@ -8,10 +8,10 @@ require 'contrib/cachetool.php';
 
 ## Configuration
 
-- **cachetool** *(optional)*: accepts a *string* with the unix socket or ip address to php5-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
+- **cachetool** *(optional)*: accepts a *string* with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
 
     ```php
-    set('cachetool', '/var/run/php5-fpm.sock');
+    set('cachetool', '/var/run/php-fpm.sock');
     // or
     set('cachetool', '127.0.0.1:9000');
     ```
@@ -22,19 +22,23 @@ host('staging')
     ->set('cachetool', '127.0.0.1:9000');
 
 host('production')
-    ->set('cachetool', '/var/run/php5-fpm.sock');
+    ->set('cachetool', '/var/run/php-fpm.sock');
 ```
 
 By default, if no `cachetool` parameter is provided, this recipe will fallback to the global setting.
 
+If your deployment user does not have permission to access the php-fpm.sock, you can alternatively use
+the web adapter that creates a temporary php file and makes a web request to it with a configuration like
+```php
+set('cachetool_args', '--web --web-path=./public --web-url=https://{{hostname}}');
+```
+
 ## Usage
 
-Since APC/APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
+Since APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
 
 ```php
 after('deploy:symlink', 'cachetool:clear:opcache');
-// or
-after('deploy:symlink', 'cachetool:clear:apc');
 // or
 after('deploy:symlink', 'cachetool:clear:apcu');
 ```
@@ -50,10 +54,10 @@ namespace Deployer;
 set('cachetool', '');
 set('cachetool_args', '');
 set('bin/cachetool', function () {
-    if (!test('[ -f {{release_path}}/cachetool.phar ]')) {
-        run("cd {{release_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar");
+    if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
+        run("cd {{release_or_current_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar");
     }
-    return '{{release_path}}/cachetool.phar';
+    return '{{release_or_current_path}}/cachetool.phar';
 });
 set('cachetool_options', function () {
     $options = get('cachetool');
@@ -68,17 +72,12 @@ set('cachetool_options', function () {
     return $options;
 });
 
-desc('Clearing APC system cache');
-task('cachetool:clear:apc', function () {
-    run("cd {{release_path}} && {{bin/php}} {{bin/cachetool}} apc:cache:clear system {{cachetool_options}}");
-});
-
 /**
  * Clear opcache cache
  */
 desc('Clearing OPcode cache');
 task('cachetool:clear:opcache', function () {
-    run("cd {{release_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_options}}");
+    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_options}}");
 });
 
 /**
@@ -86,7 +85,7 @@ task('cachetool:clear:opcache', function () {
  */
 desc('Clearing APCu system cache');
 task('cachetool:clear:apcu', function () {
-    run("cd {{release_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
+    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
 });
 
 /**
@@ -94,5 +93,5 @@ task('cachetool:clear:apcu', function () {
  */
 desc('Clearing file status and realpath caches');
 task('cachetool:clear:stat', function () {
-    run("cd {{release_path}} && {{bin/php}} {{bin/cachetool}} stat:clear {{cachetool_options}}");
+    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} stat:clear {{cachetool_options}}");
 });

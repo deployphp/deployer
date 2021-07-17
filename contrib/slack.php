@@ -62,6 +62,7 @@ after('deploy:failed', 'slack:notify:failure');
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -86,6 +87,15 @@ set('slack_success_color', '#00c100');
 set('slack_failure_color', '#ff0909');
 set('slack_rollback_color', '#eba211');
 
+function checkSlackAnswer($result)
+{
+    if ('invalid_token' === $result) {
+        warning('Invalid Slack token');
+        return false;
+    }
+    return true;
+}
+
 desc('Notifying Slack');
 task('slack:notify', function () {
     if (!get('slack_webhook', false)) {
@@ -99,7 +109,8 @@ task('slack:notify', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    checkSlackAnswer($result);
 })
     ->once()
     ->shallow()
@@ -118,7 +129,8 @@ task('slack:notify:success', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    checkSlackAnswer($result);
 })
     ->once()
     ->shallow()
@@ -137,7 +149,8 @@ task('slack:notify:failure', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    checkSlackAnswer($result);
 })
     ->once()
     ->shallow()
@@ -156,7 +169,8 @@ task('slack:notify:rollback', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    checkSlackAnswer($result);
 })
     ->once()
     ->shallow()

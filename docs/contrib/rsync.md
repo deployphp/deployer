@@ -6,6 +6,9 @@
 
 [Source](/contrib/rsync.php)
 
+## IMPORTANT
+
+This must not be confused with `/src/Utility/Rsync.php`, deployer's built-in rsync. Their configuration options are also very different, read carefully below.
 
 ## Installing
 

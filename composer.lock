@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b35ae79e1110869b883a0ae6f3961566",
+    "content-hash": "2fe14537806113eee8ac153ee37f5f7a",
     "packages": [
         {
             "name": "evenement/evenement",
@@ -106,6 +106,61 @@
                 }
             ],
             "time": "2020-09-24T12:39:55+00:00"
+        },
+        {
+            "name": "nikic/iter",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/iter.git",
+                "reference": "a7f3aa313c1315e14cf1d7e520c0f781f584a42f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/iter/zipball/a7f3aa313c1315e14cf1d7e520c0f781f584a42f",
+                "reference": "a7f3aa313c1315e14cf1d7e520c0f781f584a42f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~7.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.0-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/iter.func.php",
+                    "src/iter.php",
+                    "src/iter.rewindable.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov",
+                    "email": "nikic@php.net"
+                }
+            ],
+            "description": "Iteration primitives using generators",
+            "keywords": [
+                "functional",
+                "generator",
+                "iterator"
+            ],
+            "support": {
+                "issues": "https://github.com/nikic/iter/issues",
+                "source": "https://github.com/nikic/iter/tree/v2.1.0"
+            },
+            "time": "2020-09-19T15:58:13+00:00"
         },
         {
             "name": "psr/container",
@@ -4435,5 +4490,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.1.0"
 }

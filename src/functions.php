@@ -598,10 +598,17 @@ function warning(string $message): void
 }
 
 /**
- * Writes a message to the output and adds a newline at the end.
- * @param string|array $message
+ * Writes a message to the output.
  */
-function writeln($message, int $options = 0): void
+function write(string $message, int $options = 0): void
+{
+    output()->write(parse($message), false, $options);
+}
+
+/**
+ * Writes a message to the output and adds a newline at the end.
+ */
+function writeln(string $message, int $options = 0): void
 {
     $host = currentHost();
     output()->writeln("[$host] " . parse($message), $options);

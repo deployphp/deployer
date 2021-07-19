@@ -14,7 +14,7 @@ use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
-use Deployer\Support\Stringify;
+use Deployer\Support\Arrayify;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -205,18 +205,22 @@ class Master
 
     protected function createProcess(Host $host, Task $task): Process
     {
-        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $options = Stringify::options($this->input, $this->output);
-        if ($task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
-            $options .= ' -v';
-        }
-        $command = "$dep worker --task $task --host {$host->getAlias()} --port {$this->server->getPort()} {$options}";
-
-        if ($this->output->isDebug()) {
-            $this->output->writeln("[$host] $command");
-        }
-
-        return Process::fromShellCommandline($command);
+        return new Process(array_merge(
+            [
+                PHP_BINARY,
+                DEPLOYER_BIN,
+                'worker',
+                '--task',
+                $task,
+                '--host',
+                $host->getAlias(),
+                '--port',
+                $this->server->getPort(),
+            ],
+            $task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL
+                ? ['-v'] : [],
+            Arrayify::options($this->input)
+        ));
     }
 
     /**

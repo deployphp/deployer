@@ -50,6 +50,9 @@ set('keep_releases', 5);
 // Repository to deploy.
 set('repository', '');
 
+// Repository directories to deploy. Default [] (all directories)
+set('repository_dirs', []);
+
 // List of dirs what will be shared between releases.
 // Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
 // ```php

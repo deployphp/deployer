@@ -196,10 +196,10 @@ task('sw:plugin:upgrade:all', static function () {
  * Grouped SW deploy tasks
  */
 task('sw:deploy', [
-    'sw:build',
     'sw:plugin:activate:all',
     'sw:database:migrate',
     'sw:plugin:migrate:all',
+    'sw:build',
     'sw:theme:compile',
     'sw:cache:clear',
 ]);

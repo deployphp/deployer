@@ -187,7 +187,7 @@ task('sw:plugin:upgrade:all', static function () {
         ] = $pluginInfo;
 
         if ($upgradeable === 'Yes') {
-            run("cd {{release_path}} && bin/console plugin:update $plugin");
+            run("cd {{release_or_current_path}} && bin/console plugin:update $plugin");
         }
     }
 });

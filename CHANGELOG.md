@@ -55,6 +55,7 @@
 - Slack default channel null breaks webhook. [#2525]
 - Support passing `null` as default in get(). [#2545]
 - Shopware recipe: First activate plugins THEN build them to avoid breaking theme:compile with unbuild themes (which were activated AFTER build).
+- Shopware recipe sw:plugin:upgrade:all task.
 
 ### Removed
 - Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]

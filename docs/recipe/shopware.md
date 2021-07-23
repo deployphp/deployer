@@ -142,10 +142,10 @@
 Grouped SW deploy tasks
 
 This task is group task which contains next tasks:
-* [`sw:build`](/docs/recipe/shopware.md#swbuild)
 * [`sw:plugin:activate:all`](/docs/recipe/shopware.md#swpluginactivateall)
 * [`sw:database:migrate`](/docs/recipe/shopware.md#swdatabasemigrate)
 * [`sw:plugin:migrate:all`](/docs/recipe/shopware.md#swpluginmigrateall)
+* [`sw:build`](/docs/recipe/shopware.md#swbuild)
 * [`sw:theme:compile`](/docs/recipe/shopware.md#swthemecompile)
 * [`sw:cache:clear`](/docs/recipe/shopware.md#swcacheclear)
 

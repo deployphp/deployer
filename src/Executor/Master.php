@@ -205,7 +205,7 @@ class Master
 
     protected function createProcess(Host $host, Task $task): Process
     {
-        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
+        $dep = PHP_BINARY . ' ' . "'".str_replace("'", "'\\''", DEPLOYER_BIN)."'";
         $options = Stringify::options($this->input, $this->output);
         if ($task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
             $options .= ' -v';

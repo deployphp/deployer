@@ -15,7 +15,7 @@ task('deploy:pimcore:rebuild-classes', function () {
     run('{{bin/php}} {{bin/console}} pimcore:deployment:classes-rebuild -c -d -n');
 });
 
-desc('Create Custom Layouts')
+desc('Create Custom Layouts');
 task('deploy:pimcore:custom-layouts-rebuild', function () {
     run('{{bin/php}} {{bin/console}} pimcore:deployment:custom-layouts-rebuild -c -d -n');
 });

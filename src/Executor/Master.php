@@ -15,6 +15,7 @@ use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
 use Deployer\Support\Arrayify;
+use Deployer\Support\Stringify;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

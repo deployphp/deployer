@@ -2,6 +2,10 @@
 namespace Deployer\Support;
 
 use Symfony\Component\Console\Input\InputInterface;
+use function iter\flatten;
+use function iter\map;
+use function iter\mapWithKeys;
+use function iter\toArray;
 
 final class Arrayify
 {
@@ -9,11 +13,13 @@ final class Arrayify
     {
         $options = array_filter($input->getOptions());
 
-        return iterator_to_array(
-            \iter\flatten(
-                \iter\zip(
-                    \iter\map(fn ($name) => "--$name", \iter\keys($options)),
-                    \iter\values($options)
+        return toArray(
+            flatten(
+                mapWithKeys(
+                    fn ($v, $k) => is_array($v)
+                        ? map(fn ($v) => ["--$k", $v], $v)
+                        : ["--$k", $v],
+                    $options
                 )
             )
         );

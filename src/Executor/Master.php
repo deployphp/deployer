@@ -205,7 +205,7 @@ class Master
 
     protected function createProcess(Host $host, Task $task): Process
     {
-        return new Process(array_merge(
+        $process = new Process(array_merge(
             [
                 PHP_BINARY,
                 DEPLOYER_BIN,
@@ -221,6 +221,12 @@ class Master
                 ? ['-v'] : [],
             Arrayify::options($this->input)
         ));
+
+        if ($this->output->isDebug()) {
+            $this->output->writeln("[$host] {$process->getCommandLine()}}");
+        }
+
+        return $process;
     }
 
     /**

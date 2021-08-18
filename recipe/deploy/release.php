@@ -96,14 +96,15 @@ set('release_path', function () {
 
 desc('Prepare release. Clean up unfinished releases and prepare next release');
 task('deploy:release', function () {
+    $sudo = get('cleanup_use_sudo') ? 'sudo' : '';
     cd('{{deploy_path}}');
 
     // Clean up if there is unfinished release
     $previousReleaseExist = test('[ -h release ]');
 
     if ($previousReleaseExist) {
-        run('rm -rf "$(readlink release)"'); // Delete release
-        run('rm release'); // Delete symlink
+        run("$sudo rm -rf \"$(readlink release)\""); // Delete release
+        run("$sudo rm release"); // Delete symlink
     }
 
     // We need to get releases_list at same point as release_name,

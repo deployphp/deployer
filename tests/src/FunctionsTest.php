@@ -134,25 +134,6 @@ class FunctionsTest extends TestCase
         self::assertEquals('overwritten', $output);
     }
 
-    public function testRunLocallyWithTwoPlaceholders(): void
-    {
-        $cmd = "echo 'placeholder %foo% %baz%'";
-        $vars = [ 'foo' => '{{bar}}', 'baz' => 'xyz%' ];
-
-        $output = runLocally($cmd, [ 'vars' => $vars ]);
-        self::assertEquals('placeholder {{bar}} xyz%', $output);
-    }
-
-    public function testRunLocallyWithPlaceholdersAndParsedValues(): void
-    {
-        $cmd = "echo 'placeholder %foo%; parsed {{baz}}'";
-        $vars = [ 'foo' => '{{bar}}' ];
-        Context::get()->getConfig()->set('baz', 'xyz');
-
-        $output = runLocally($cmd, [ 'vars' => $vars ]);
-        self::assertEquals("placeholder {{bar}}; parsed xyz", $output);
-    }
-
     public function testWithinSetsWorkingPaths()
     {
         Context::get()->getConfig()->set('working_path', '/foo');

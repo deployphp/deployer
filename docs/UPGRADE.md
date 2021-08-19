@@ -11,6 +11,7 @@
        host('deployer.org')
            ->set('labels', ['stage' => 'prod']); 
        ```
+       When deploying use instead of `vendor/bin/dep deploy prod` now `vendor/bin/dep deploy stage=prod`. 
     4. `alias()` is deleted, `host()` itself sets alias and hostname, to override hostname use `setHostname()`.
 5. Update `task()` definitions.
     1. Replace `onRoles()` with `select()`:

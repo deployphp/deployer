@@ -15,10 +15,10 @@ require 'contrib/cachetool.php';
 
 ## Configuration
 
-- **cachetool** *(optional)*: accepts a *string* with the unix socket or ip address to php5-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
+- **cachetool** *(optional)*: accepts a *string* with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
 
     ```php
-    set('cachetool', '/var/run/php5-fpm.sock');
+    set('cachetool', '/var/run/php-fpm.sock');
     // or
     set('cachetool', '127.0.0.1:9000');
     ```
@@ -29,19 +29,23 @@ host('staging')
     ->set('cachetool', '127.0.0.1:9000');
 
 host('production')
-    ->set('cachetool', '/var/run/php5-fpm.sock');
+    ->set('cachetool', '/var/run/php-fpm.sock');
 ```
 
 By default, if no `cachetool` parameter is provided, this recipe will fallback to the global setting.
 
+If your deployment user does not have permission to access the php-fpm.sock, you can alternatively use
+the web adapter that creates a temporary php file and makes a web request to it with a configuration like
+```php
+set('cachetool_args', '--web --web-path=./public --web-url=https://{{hostname}}');
+```
+
 ## Usage
 
-Since APC/APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
+Since APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
 
 ```php
 after('deploy:symlink', 'cachetool:clear:opcache');
-or
-after('deploy:symlink', 'cachetool:clear:apc');
 or
 after('deploy:symlink', 'cachetool:clear:apcu');
 ```
@@ -57,7 +61,6 @@ http://gordalina.github.io/cachetool/
   * [`cachetool_args`](#cachetool_args)
   * [`cachetool_options`](#cachetool_options)
 * Tasks
-  * [`cachetool:clear:apc`](#cachetoolclearapc) — Clearing APC system cache
   * [`cachetool:clear:opcache`](#cachetoolclearopcache) — Clearing OPcode cache
   * [`cachetool:clear:apcu`](#cachetoolclearapcu) — Clearing APCu system cache
   * [`cachetool:clear:stat`](#cachetoolclearstat) — Clearing file status and realpath caches
@@ -80,11 +83,6 @@ http://gordalina.github.io/cachetool/
 
 
 ## Tasks
-### cachetool:clear:apc
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aapc%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
-
-
-
 ### cachetool:clear:opcache
 [Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aopcache%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 

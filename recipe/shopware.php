@@ -187,7 +187,7 @@ task('sw:plugin:upgrade:all', static function () {
         ] = $pluginInfo;
 
         if ($upgradeable === 'Yes') {
-            run("cd {{release_path}} && bin/console plugin:update $plugin");
+            run("cd {{release_or_current_path}} && bin/console plugin:update $plugin");
         }
     }
 });
@@ -196,10 +196,10 @@ task('sw:plugin:upgrade:all', static function () {
  * Grouped SW deploy tasks
  */
 task('sw:deploy', [
-    'sw:build',
     'sw:plugin:activate:all',
     'sw:database:migrate',
     'sw:plugin:migrate:all',
+    'sw:build',
     'sw:theme:compile',
     'sw:cache:clear',
 ]);

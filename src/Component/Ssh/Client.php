@@ -40,7 +40,6 @@ class Client
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),
             'idle_timeout' => null,
-            'vars' => [],
             'real_time_output' => false,
         ];
         $config = array_merge($defaults, $config);
@@ -69,7 +68,6 @@ class Client
         $this->pop->command($host, $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
-        $command = $this->replacePlaceholders($command, $config['vars']);
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
 
@@ -172,15 +170,6 @@ class Client
             $this->pop->printBuffer(Process::OUT, $host, $output);
         }
         return (bool)preg_match('/Master running/', $output);
-    }
-
-    private function replacePlaceholders(string $command, array $variables): string
-    {
-        foreach ($variables as $placeholder => $replacement) {
-            $command = str_replace("%$placeholder%", $replacement, $command);
-        }
-
-        return $command;
     }
 
     public static function connectionOptionsString(Host $host): string

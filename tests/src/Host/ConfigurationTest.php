@@ -29,6 +29,7 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('value', $config->get('string'));
         $this->assertEquals([1, 'two'], $config->get('array'));
         $this->assertEquals('default', $config->get('no', 'default'));
+        $this->assertEquals(null, $config->get('no', null));
         $this->assertEquals('callback', $config->get('callback'));
         $this->assertEquals('is 42', $config->get('parse'));
         $this->assertEquals('has hyphen', $config->get('parse-hyphen'));

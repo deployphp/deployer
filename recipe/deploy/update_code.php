@@ -45,13 +45,13 @@ task('deploy:update_code', function () {
     }
 
     // Populate known hosts.
-    preg_match('/.*(@|\/\/)([^\/:]+).*/', $repository, $match);
-    if (isset($match[2])) {
-        $repositoryHostname = $match[2];
+    if (preg_match('/(?:@|\/\/)([^\/:]+)(?:\:(\d{1,5}))?/', $repository, $matches)) {
+        $repositoryHostname = $matches[1];
+        $portOptions = isset($matches[2]) ? "-p {$matches[2]}" : null;
         try {
             run("ssh-keygen -F $repositoryHostname");
         } catch (RunException $e) {
-            run("ssh-keyscan -H $repositoryHostname >> ~/.ssh/known_hosts");
+            run("ssh-keyscan $portOptions -H $repositoryHostname >> ~/.ssh/known_hosts");
         }
     }
 
@@ -64,7 +64,7 @@ task('deploy:update_code', function () {
 
     cd($bare);
 
-    // If remote url changed, drop `.git/repo` and reinstall.
+    // If remote url changed, drop `.dep/repo` and reinstall.
     if (run("$git config --get remote.origin.url") !== $repository) {
         cd('{{deploy_path}}');
         run("rm -rf $bare");

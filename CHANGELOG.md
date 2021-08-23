@@ -29,6 +29,7 @@
 - Isolated console application runner for E2E tests.
 - Support for code coverage in E2E tests.
 - Webpack-encore contrib recipe.
+- Recipe for Statamic.
 
 ### Changed
 - Refactored executor engine, up to 2x faster than before.
@@ -54,8 +55,10 @@
 - .env.local.php in Symfony recipe. [#2506]
 - Fixed regex identifying "cd" commands in YAML scripts. The regex was not taking into account that multiple commands can be executed within the same line — e.g. "cd {{release_path}} && npm run prod". [#2509]
 - Slack default channel null breaks webhook. [#2525]
+- Use port for ssh-keyscan when applicable. [#2549]
 - Support passing `null` as default in get(). [#2545]
 - Shopware recipe: First activate plugins THEN build them to avoid breaking theme:compile with unbuild themes (which were activated AFTER build).
+- Shopware recipe sw:plugin:upgrade:all task.
 
 ### Removed
 - Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]
@@ -624,6 +627,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2549]: https://github.com/deployphp/deployer/issues/2549
 [#2545]: https://github.com/deployphp/deployer/issues/2545
 [#2525]: https://github.com/deployphp/deployer/issues/2525
 [#2509]: https://github.com/deployphp/deployer/issues/2509

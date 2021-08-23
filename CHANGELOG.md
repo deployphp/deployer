@@ -28,6 +28,7 @@
 - Added the following artisan tasks: `artisan:route:clear`, `artisan:route:list`, `artisan:horizon`, `artisan:horizon:clear`, `artisan:horizon:continue`, `artisan:horizon:list`, `artisan:horizon:pause`, `artisan:horizon:purge`, `artisan:horizon:status`, `artisan:event:list`, `artisan:queue:failed`, `artisan:queue:flushed`. [#2488]
 - Isolated console application runner for E2E tests.
 - Support for code coverage in E2E tests.
+- Webpack-encore contrib recipe.
 - Recipe for Statamic.
 
 ### Changed

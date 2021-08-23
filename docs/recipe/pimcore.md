@@ -11,18 +11,28 @@
 * Require
   * [`recipe/symfony.php`](/docs/recipe/symfony.md)
 * Tasks
-  * [`deploy:pimcore:rebuild-classes`](#deploypimcorerebuild-classes) — Rebuild Pimcore Classes
-  * [`deploy:pimcore:custom-layouts-rebuild`](#deploypimcorecustom-layouts-rebuild) — Create Custom Layouts
+  * [`pimcore:rebuild-classes`](#pimcorerebuild-classes) — Rebuild Pimcore Classes
+  * [`pimcore:custom-layouts-rebuild`](#pimcorecustom-layouts-rebuild) — Create Custom Layouts
+  * [`pimcore:deploy`](#pimcoredeploy)
 
 
 ## Tasks
-### deploy:pimcore:rebuild-classes
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Apimcore%3Arebuild-classes%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Apimcore.php)
+### pimcore:rebuild-classes
+[Source](https://github.com/deployphp/deployer/search?q=%22pimcore%3Arebuild-classes%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Apimcore.php)
 
 
 
-### deploy:pimcore:custom-layouts-rebuild
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Apimcore%3Acustom-layouts-rebuild%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Apimcore.php)
+### pimcore:custom-layouts-rebuild
+[Source](https://github.com/deployphp/deployer/search?q=%22pimcore%3Acustom-layouts-rebuild%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Apimcore.php)
 
+
+
+### pimcore:deploy
+[Source](https://github.com/deployphp/deployer/search?q=%22pimcore%3Adeploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Apimcore.php)
+
+
+
+This task is group task which contains next tasks:
+* [`pimcore:rebuild-classes`](/docs/recipe/pimcore.md#pimcorerebuild-classes)
 
 

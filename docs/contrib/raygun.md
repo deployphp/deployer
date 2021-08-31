@@ -35,13 +35,14 @@ after('deploy', 'raygun:notify');
 
 
 * Tasks
-  * [raygun:notify](#raygunnotify) — Notifying Raygun of deployment
+  * [raygun:notify](#raygunnotify)
 
 
 ## Tasks
+
 ### raygun:notify
-[Source](https://github.com/deployphp/deployer/search?q=%22raygun%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Araygun.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/raygun.php#L34)
 
-
+Notifying Raygun of deployment
 
 

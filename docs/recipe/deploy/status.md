@@ -9,13 +9,14 @@
 
 
 * Tasks
-  * [status](#status) — Show releases status
+  * [status](#status)
 
 
 ## Tasks
+
 ### status
-[Source](https://github.com/deployphp/deployer/search?q=%22status%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Astatus.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/status.php#L8)
 
-
+Show releases status
 
 

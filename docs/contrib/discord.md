@@ -67,42 +67,42 @@ after('deploy:failed', 'discord:notify:failure');
   * [discord_message](#discord_message)
 * Tasks
   * [discord_send_message](#discord_send_message)
-  * [discord:test](#discordtest) — Just notify your Discord channel with all messages, without deploying
-  * [discord:notify](#discordnotify) — Notify Discord
-  * [discord:notify:success](#discordnotifysuccess) — Notify Discord about deploy finish
-  * [discord:notify:failure](#discordnotifyfailure) — Notify Discord about deploy failure
+  * [discord:test](#discordtest)
+  * [discord:notify](#discordnotify)
+  * [discord:notify:success](#discordnotifysuccess)
+  * [discord:notify:failure](#discordnotifyfailure)
 
 ## Configuration
 ### discord_webhook
-[Source](https://github.com/deployphp/deployer/search?q=%22discord_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L59)
 
 
 
 
 
 ### discord_notify_text
-[Source](https://github.com/deployphp/deployer/search?q=%22discord_notify_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L64)
 
 Deploy messages
 
 
 
 ### discord_success_text
-[Source](https://github.com/deployphp/deployer/search?q=%22discord_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L69)
 
 
 
 
 
 ### discord_failure_text
-[Source](https://github.com/deployphp/deployer/search?q=%22discord_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L74)
 
 
 
 
 
 ### discord_message
-[Source](https://github.com/deployphp/deployer/search?q=%22discord_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L81)
 
 The message
 
@@ -113,33 +113,34 @@ The message
 
 
 ## Tasks
+
 ### discord_send_message
-[Source](https://github.com/deployphp/deployer/search?q=%22discord_send_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L84)
 
 Helpers
 
 
 ### discord:test
-[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Atest%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L92)
 
-Tasks
+Just notify your Discord channel with all messages, without deployingTasks
 
 
 ### discord:notify
-[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L104)
 
-
+Notify Discord
 
 
 ### discord:notify:success
-[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L113)
 
-
+Notify Discord about deploy finish
 
 
 ### discord:notify:failure
-[Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L122)
 
-
+Notify Discord about deploy failure
 
 

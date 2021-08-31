@@ -143,9 +143,7 @@ class DocGen
                     $anchor = anchor($c->name);
                     $toc .= "  * [{$c->name}](#{$anchor})\n";
                     $config .= "### {$c->name}\n";
-                    //$config .= "[Source](https://github.com/deployphp/deployer/blob/master/{$c->recipePath}#L{$c->lineNumber})\n\n";
-                    $searchTerm = urlencode("\"{$c->name}\" in:file language:php path:" . dirname($c->recipePath) . " filename:" . basename($c->recipePath));
-                    $config .= "[Source](https://github.com/deployphp/deployer/search?q={$searchTerm})\n\n";
+                    $config .= "[Source](https://github.com/deployphp/deployer/blob/master/{$c->recipePath}#L{$c->lineNumber})\n\n";
                     $o = $findConfigOverride($recipe, $c->name);
                     if ($o !== null) {
                         $md = php_to_md($o->recipePath);
@@ -169,17 +167,13 @@ class DocGen
             }
             if (count($recipe->tasks) > 0) {
                 $toc .= "* Tasks\n";
-                $tasks .= "## Tasks\n";
+                $tasks .= "## Tasks\n\n";
                 foreach ($recipe->tasks as $t) {
                     $anchor = anchor($t->name);
-                    $desc = "";
-                    if ($t->desc !== "") {
-                        $desc = " — {$t->desc}";
-                    }
-                    $toc .= "  * [{$t->name}](#{$anchor}){$desc}\n";
+                    $toc .= "  * [{$t->name}](#{$anchor})\n";
                     $tasks .= "### {$t->name}\n";
-                    $searchTerm = urlencode("\"{$t->name}\" in:file language:php path:" . dirname($t->recipePath) . " filename:" . basename($t->recipePath));
-                    $tasks .= "[Source](https://github.com/deployphp/deployer/search?q={$searchTerm})\n\n";
+                    $tasks .= "[Source](https://github.com/deployphp/deployer/blob/master/{$t->recipePath}#L{$t->lineNumber})\n\n";
+                    $tasks .= $t->desc;
                     $tasks .= $replaceLinks($t->comment);
                     if (is_array($t->group)) {
                         $tasks .= "\n\n";

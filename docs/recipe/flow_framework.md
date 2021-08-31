@@ -15,13 +15,13 @@
   * [flow_command](#flow_command)
   * [shared_dirs](#shared_dirs)
 * Tasks
-  * [deploy:run_migrations](#deployrun_migrations) — Apply database migrations
-  * [deploy:publish_resources](#deploypublish_resources) — Publish resources
-  * [deploy](#deploy) — Deploy your project
+  * [deploy:run_migrations](#deployrun_migrations)
+  * [deploy:publish_resources](#deploypublish_resources)
+  * [deploy](#deploy)
 
 ## Configuration
 ### flow_context
-[Source](https://github.com/deployphp/deployer/search?q=%22flow_context%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L9)
 
 Flow-Framework application-context
 
@@ -31,7 +31,7 @@ Flow-Framework application-context
 
 
 ### flow_command
-[Source](https://github.com/deployphp/deployer/search?q=%22flow_command%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L12)
 
 Flow-Framework cli-command
 
@@ -41,7 +41,7 @@ Flow-Framework cli-command
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L15)
 
 * Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -58,22 +58,23 @@ Flow-Framework shared directories
 
 
 ## Tasks
-### deploy:run_migrations
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Arun_migrations%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
 
-Apply database migrations
+### deploy:run_migrations
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L25)
+
+Apply database migrationsApply database migrations
 
 
 ### deploy:publish_resources
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Apublish_resources%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L33)
 
-Publish resources
+Publish resourcesPublish resources
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aflow_framework.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L41)
 
-Main task
+Deploy your projectMain task
 
 
 This task is group task which contains next tasks:

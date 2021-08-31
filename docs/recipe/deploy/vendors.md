@@ -12,11 +12,11 @@
   * [composer_action](#composer_action)
   * [composer_options](#composer_options)
 * Tasks
-  * [deploy:vendors](#deployvendors) — Installing vendors
+  * [deploy:vendors](#deployvendors)
 
 ## Configuration
 ### composer_action
-[Source](https://github.com/deployphp/deployer/search?q=%22composer_action%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L5)
 
 
 
@@ -26,7 +26,7 @@
 
 
 ### composer_options
-[Source](https://github.com/deployphp/deployer/search?q=%22composer_options%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L7)
 
 
 
@@ -37,9 +37,10 @@
 
 
 ## Tasks
+
 ### deploy:vendors
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Avendors%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L28)
 
-
+Installing vendors
 
 

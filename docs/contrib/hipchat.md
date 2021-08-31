@@ -40,11 +40,11 @@ after('deploy', 'hipchat:notify');
   * [hipchat_message](#hipchat_message)
   * [hipchat_url](#hipchat_url)
 * Tasks
-  * [hipchat:notify](#hipchatnotify) — Notifying Hipchat channel of deployment
+  * [hipchat:notify](#hipchatnotify)
 
 ## Configuration
 ### hipchat_color
-[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L33)
 
 
 
@@ -54,7 +54,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_from
-[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_from%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L34)
 
 
 
@@ -64,7 +64,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_message
-[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L35)
 
 
 
@@ -74,7 +74,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_url
-[Source](https://github.com/deployphp/deployer/search?q=%22hipchat_url%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L36)
 
 
 
@@ -85,9 +85,10 @@ after('deploy', 'hipchat:notify');
 
 
 ## Tasks
+
 ### hipchat:notify
-[Source](https://github.com/deployphp/deployer/search?q=%22hipchat%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahipchat.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L39)
 
-
+Notifying Hipchat channel of deployment
 
 

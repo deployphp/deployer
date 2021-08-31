@@ -31,11 +31,11 @@
   * [sw:plugin:migrate:all](#swpluginmigrateall)
   * [sw:plugin:upgrade:all](#swpluginupgradeall)
   * [sw:deploy](#swdeploy)
-  * [deploy](#deploy) — Deploy your project
+  * [deploy](#deploy)
 
 ## Configuration
 ### repository
-[Source](https://github.com/deployphp/deployer/search?q=%22repository%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L11)
 
 * Overrides [repository](/docs/recipe/common.md#repository) from `recipe/common.php`
 
@@ -47,7 +47,7 @@
 
 
 ### release_name
-[Source](https://github.com/deployphp/deployer/search?q=%22release_name%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L13)
 
 * Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`
 
@@ -56,7 +56,7 @@
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L17)
 
 * Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
@@ -70,7 +70,7 @@
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L20)
 
 * Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -90,7 +90,7 @@
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L29)
 
 * Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -109,7 +109,7 @@
 
 
 ### static_folders
-[Source](https://github.com/deployphp/deployer/search?q=%22static_folders%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L37)
 
 
 
@@ -117,80 +117,81 @@
 
 
 ## Tasks
+
 ### sw:update_code
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aupdate_code%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L39)
 
 
 
 
 ### sw:system:install
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Asystem%3Ainstall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L42)
 
 
 
 
 ### sw:build
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Abuild%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L45)
 
 
 
 
 ### sw:system:setup
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Asystem%3Asetup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L48)
 
 
 
 
 ### sw:theme:compile
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Atheme%3Acompile%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L51)
 
 
 
 
 ### sw:cache:clear
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L54)
 
 
 
 
 ### sw:cache:warmup
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Acache%3Awarmup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L57)
 
 
 
 
 ### sw:database:migrate
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Adatabase%3Amigrate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L61)
 
 
 
 
 ### sw:plugin:refresh
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Arefresh%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L64)
 
 
 
 
 ### sw:plugin:activate:all
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aactivate%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L134)
 
 
 
 
 ### sw:plugin:migrate:all
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Amigrate%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L155)
 
 
 
 
 ### sw:plugin:upgrade:all
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aupgrade%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L175)
 
 
 
 
 ### sw:deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22sw%3Adeploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L198)
 
 Grouped SW deploy tasks
 
@@ -205,9 +206,9 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L211)
 
-Main task
+Deploy your projectMain task
 
 
 This task is group task which contains next tasks:

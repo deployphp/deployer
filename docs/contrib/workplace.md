@@ -83,13 +83,13 @@ after('deploy:failed', 'workplace:notify:failure');
   * [workplace_failure_text](#workplace_failure_text)
   * [workplace_edit_post](#workplace_edit_post)
 * Tasks
-  * [workplace:notify](#workplacenotify) — Notifying Workplace
-  * [workplace:notify:success](#workplacenotifysuccess) — Notifying Workplace about deploy finish
-  * [workplace:notify:failure](#workplacenotifyfailure) — Notifying Workplace about deploy failure
+  * [workplace:notify](#workplacenotify)
+  * [workplace:notify:success](#workplacenotifysuccess)
+  * [workplace:notify:failure](#workplacenotifyfailure)
 
 ## Configuration
 ### workplace_text
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L77)
 
 Deploy message
 
@@ -99,7 +99,7 @@ Deploy message
 
 
 ### workplace_success_text
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L78)
 
 
 
@@ -109,7 +109,7 @@ Deploy message
 
 
 ### workplace_failure_text
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L79)
 
 
 
@@ -119,7 +119,7 @@ Deploy message
 
 
 ### workplace_edit_post
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace_edit_post%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L82)
 
 By default, create a new post for every message
 
@@ -130,21 +130,22 @@ false
 
 
 ## Tasks
+
 ### workplace:notify
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L85)
 
-
+Notifying Workplace
 
 
 ### workplace:notify:success
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L110)
 
-
+Notifying Workplace about deploy finish
 
 
 ### workplace:notify:failure
-[Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L122)
 
-
+Notifying Workplace about deploy failure
 
 

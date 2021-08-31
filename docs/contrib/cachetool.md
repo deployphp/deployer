@@ -61,27 +61,27 @@ http://gordalina.github.io/cachetool/
   * [cachetool_args](#cachetool_args)
   * [cachetool_options](#cachetool_options)
 * Tasks
-  * [cachetool:clear:opcache](#cachetoolclearopcache) — Clearing OPcode cache
-  * [cachetool:clear:apcu](#cachetoolclearapcu) — Clearing APCu system cache
-  * [cachetool:clear:stat](#cachetoolclearstat) — Clearing file status and realpath caches
+  * [cachetool:clear:opcache](#cachetoolclearopcache)
+  * [cachetool:clear:apcu](#cachetoolclearapcu)
+  * [cachetool:clear:stat](#cachetoolclearstat)
 
 ## Configuration
 ### cachetool
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L54)
 
 
 
 
 
 ### cachetool_args
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool_args%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L55)
 
 
 
 
 
 ### cachetool_options
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool_options%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L62)
 
 
 
@@ -89,21 +89,22 @@ http://gordalina.github.io/cachetool/
 
 
 ## Tasks
-### cachetool:clear:opcache
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aopcache%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
-Clear opcache cache
+### cachetool:clear:opcache
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L79)
+
+Clearing OPcode cacheClear opcache cache
 
 
 ### cachetool:clear:apcu
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aapcu%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L87)
 
-Clear APCU cache
+Clearing APCu system cacheClear APCU cache
 
 
 ### cachetool:clear:stat
-[Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Astat%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L95)
 
-Clear file status cache, including the realpath cache
+Clearing file status and realpath cachesClear file status cache, including the realpath cache
 
 

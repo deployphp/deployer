@@ -9,13 +9,14 @@
 
 
 * Tasks
-  * [deploy:clear_paths](#deployclear_paths) — Cleaning up files and/or directories
+  * [deploy:clear_paths](#deployclear_paths)
 
 
 ## Tasks
+
 ### deploy:clear_paths
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aclear_paths%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aclear_paths.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L5)
 
-
+Cleaning up files and/or directories
 
 

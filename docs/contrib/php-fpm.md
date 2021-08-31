@@ -40,18 +40,18 @@ after('deploy', 'php-fpm:reload');
   * [php_fpm_service](#php_fpm_service)
   * [php_fpm_command](#php_fpm_command)
 * Tasks
-  * [php-fpm:reload](#php-fpmreload) — Reload the php-fpm service
+  * [php-fpm:reload](#php-fpmreload)
 
 ## Configuration
 ### php_fpm_version
-[Source](https://github.com/deployphp/deployer/search?q=%22php_fpm_version%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L32)
 
 
 
 
 
 ### php_fpm_service
-[Source](https://github.com/deployphp/deployer/search?q=%22php_fpm_service%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L41)
 
 
 
@@ -61,7 +61,7 @@ after('deploy', 'php-fpm:reload');
 
 
 ### php_fpm_command
-[Source](https://github.com/deployphp/deployer/search?q=%22php_fpm_command%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L42)
 
 
 
@@ -72,9 +72,10 @@ after('deploy', 'php-fpm:reload');
 
 
 ## Tasks
+
 ### php-fpm:reload
-[Source](https://github.com/deployphp/deployer/search?q=%22php-fpm%3Areload%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L45)
 
-
+Reload the php-fpm service
 
 

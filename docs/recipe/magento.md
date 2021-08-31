@@ -15,13 +15,13 @@
   * [shared_files](#shared_files)
   * [writable_dirs](#writable_dirs)
 * Tasks
-  * [deploy:cache:clear](#deploycacheclear) — Clear cache
+  * [deploy:cache:clear](#deploycacheclear)
   * [deploy:clear_version](#deployclear_version)
-  * [deploy](#deploy) — Deploy your project
+  * [deploy](#deploy)
 
 ## Configuration
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L13)
 
 * Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -33,7 +33,7 @@ Magento shared dirs
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L16)
 
 * Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
@@ -45,7 +45,7 @@ Magento shared files
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L19)
 
 * Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -58,22 +58,23 @@ Magento writable dirs
 
 
 ## Tasks
-### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
 
-Clear cache
+### deploy:cache:clear
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L25)
+
+Clear cacheClear cache
 
 
 ### deploy:clear_version
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aclear_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L32)
 
 Remove files that can be used to compromise Magento
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Amagento.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L46)
 
-Main task
+Deploy your projectMain task
 
 
 This task is group task which contains next tasks:

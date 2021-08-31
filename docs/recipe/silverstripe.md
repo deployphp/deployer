@@ -16,20 +16,20 @@
   * [writable_dirs](#writable_dirs)
   * [silverstripe_cli_script](#silverstripe_cli_script)
 * Tasks
-  * [silverstripe:build](#silverstripebuild) — Run /dev/build
-  * [silverstripe:buildflush](#silverstripebuildflush) — Run /dev/build?flush=all
-  * [deploy](#deploy) — Deploy your project
+  * [silverstripe:build](#silverstripebuild)
+  * [silverstripe:buildflush](#silverstripebuildflush)
+  * [deploy](#deploy)
 
 ## Configuration
 ### shared_assets
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_assets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L12)
 
 
 
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L21)
 
 * Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -43,7 +43,7 @@ Silverstripe shared dirs
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L26)
 
 * Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -57,7 +57,7 @@ Silverstripe writable dirs
 
 
 ### silverstripe_cli_script
-[Source](https://github.com/deployphp/deployer/search?q=%22silverstripe_cli_script%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L31)
 
 Silverstripe cli script
 
@@ -65,22 +65,23 @@ Silverstripe cli script
 
 
 ## Tasks
-### silverstripe:build
-[Source](https://github.com/deployphp/deployer/search?q=%22silverstripe%3Abuild%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
 
-Helper tasks
+### silverstripe:build
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L47)
+
+Run /dev/buildHelper tasks
 
 
 ### silverstripe:buildflush
-[Source](https://github.com/deployphp/deployer/search?q=%22silverstripe%3Abuildflush%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L52)
 
-
+Run /dev/build?flush=all
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asilverstripe.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L60)
 
-Main task
+Deploy your projectMain task
 
 
 This task is group task which contains next tasks:

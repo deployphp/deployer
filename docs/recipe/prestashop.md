@@ -15,11 +15,11 @@
   * [shared_dirs](#shared_dirs)
   * [writable_dirs](#writable_dirs)
 * Tasks
-  * [deploy](#deploy) — Deploy your project
+  * [deploy](#deploy)
 
 ## Configuration
 ### shared_files
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L9)
 
 * Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
@@ -34,7 +34,7 @@
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L13)
 
 * Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
@@ -56,7 +56,7 @@
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L24)
 
 * Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
@@ -81,10 +81,11 @@
 
 
 ## Tasks
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Aprestashop.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L39)
 
-
+Deploy your project
 
 
 This task is group task which contains next tasks:

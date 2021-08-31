@@ -45,13 +45,14 @@ after('deploy:success', 'grafana:annotation');
 
 
 * Tasks
-  * [grafana:annotation](#grafanaannotation) — Create Grafana annotation of deployment
+  * [grafana:annotation](#grafanaannotation)
 
 
 ## Tasks
+
 ### grafana:annotation
-[Source](https://github.com/deployphp/deployer/search?q=%22grafana%3Aannotation%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Agrafana.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/grafana.php#L45)
 
-
+Create Grafana annotation of deployment
 
 

@@ -11,14 +11,15 @@
 * Require
   * [common](/docs/recipe/common.md)
 * Tasks
-  * [deploy](#deploy) — Deploy your project
+  * [deploy](#deploy)
 
 
 ## Tasks
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Acomposer.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/composer.php#L9)
 
-
+Deploy your project
 
 
 This task is group task which contains next tasks:

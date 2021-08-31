@@ -27,13 +27,14 @@ after('deploy:update_code', 'yarn:install');
 
 
 * Tasks
-  * [yarn:install](#yarninstall) — Install Yarn packages
+  * [yarn:install](#yarninstall)
 
 
 ## Tasks
-### yarn:install
-[Source](https://github.com/deployphp/deployer/search?q=%22yarn%3Ainstall%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayarn.php)
 
-In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
+### yarn:install
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L29)
+
+Install Yarn packagesIn there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
 
 

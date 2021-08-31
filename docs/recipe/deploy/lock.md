@@ -9,27 +9,28 @@
 
 
 * Tasks
-  * [deploy:lock](#deploylock) — Lock deploy
-  * [deploy:unlock](#deployunlock) — Unlock deploy
-  * [deploy:is-unlocked](#deployis-unlocked) — Check if deploy is unlocked
+  * [deploy:lock](#deploylock)
+  * [deploy:unlock](#deployunlock)
+  * [deploy:is-unlocked](#deployis-unlocked)
 
 
 ## Tasks
+
 ### deploy:lock
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Alock%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L8)
 
-
+Lock deploy
 
 
 ### deploy:unlock
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aunlock%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L22)
 
-
+Unlock deploy
 
 
 ### deploy:is-unlocked
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Ais-unlocked%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L27)
 
-
+Check if deploy is unlocked
 
 

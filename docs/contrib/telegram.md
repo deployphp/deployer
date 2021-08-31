@@ -81,35 +81,35 @@ after('deploy:failed', 'telegram:notify:failure');
 
 ## Configuration
 ### telegram_title
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L67)
 
 Title of project
 
 
 
 ### telegram_token
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_token%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L72)
 
 Telegram settings
 
 
 
 ### telegram_chat_id
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_chat_id%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L75)
 
 
 
 
 
 ### telegram_url
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_url%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L78)
 
 
 
 
 
 ### telegram_text
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L83)
 
 Deploy message
 
@@ -119,7 +119,7 @@ Deploy message
 
 
 ### telegram_success_text
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L84)
 
 
 
@@ -129,7 +129,7 @@ Deploy message
 
 
 ### telegram_failure_text
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L85)
 
 
 
@@ -140,8 +140,9 @@ Deploy message
 
 
 ## Tasks
+
 ### telegram:notify
-[Source](https://github.com/deployphp/deployer/search?q=%22telegram%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L90)
 
 
 

@@ -72,34 +72,35 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 * Tasks
-  * [phinx:migrate](#phinxmigrate) — Migrating database with phinx
-  * [phinx:rollback](#phinxrollback) — Rollback database migrations with phinx
-  * [phinx:seed](#phinxseed) — Seed database with phinx
-  * [phinx:breakpoint](#phinxbreakpoint) — Set a migrations breakpoint with phinx
+  * [phinx:migrate](#phinxmigrate)
+  * [phinx:rollback](#phinxrollback)
+  * [phinx:seed](#phinxseed)
+  * [phinx:breakpoint](#phinxbreakpoint)
 
 
 ## Tasks
+
 ### phinx:migrate
-[Source](https://github.com/deployphp/deployer/search?q=%22phinx%3Amigrate%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L154)
 
-
+Migrating database with phinx
 
 
 ### phinx:rollback
-[Source](https://github.com/deployphp/deployer/search?q=%22phinx%3Arollback%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L176)
 
-
+Rollback database migrations with phinx
 
 
 ### phinx:seed
-[Source](https://github.com/deployphp/deployer/search?q=%22phinx%3Aseed%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L198)
 
-
+Seed database with phinx
 
 
 ### phinx:breakpoint
-[Source](https://github.com/deployphp/deployer/search?q=%22phinx%3Abreakpoint%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L219)
 
-
+Set a migrations breakpoint with phinx
 
 

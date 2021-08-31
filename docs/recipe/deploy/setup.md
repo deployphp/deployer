@@ -9,13 +9,14 @@
 
 
 * Tasks
-  * [deploy:setup](#deploysetup) — Preparing host for deploy
+  * [deploy:setup](#deploysetup)
 
 
 ## Tasks
+
 ### deploy:setup
-[Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Asetup%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Asetup.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/setup.php#L8)
 
-
+Preparing host for deploy
 
 

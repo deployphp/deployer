@@ -9,13 +9,14 @@
 
 
 * Tasks
-  * [rollback](#rollback) — Rollback to previous release
+  * [rollback](#rollback)
 
 
 ## Tasks
+
 ### rollback
-[Source](https://github.com/deployphp/deployer/search?q=%22rollback%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Arollback.php)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L8)
 
-
+Rollback to previous release
 
 

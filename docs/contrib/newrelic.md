@@ -31,21 +31,25 @@ after('deploy', 'newrelic:notify');
 
 
 
-* Config
-  * [`newrelic_app_id`](#newrelic_app_id)
-  * [`newrelic_description`](#newrelic_description)
-  * [`newrelic_revision`](#newrelic_revision)
+* Configuration
+  * [newrelic_app_id](#newrelic_app_id)
+  * [newrelic_description](#newrelic_description)
+  * [newrelic_revision](#newrelic_revision)
 * Tasks
-  * [`newrelic:notify`](#newrelicnotify) — Notifying New Relic of deployment
+  * [newrelic:notify](#newrelicnotify) — Notifying New Relic of deployment
 
-## Config
+## Configuration
 ### newrelic_app_id
 [Source](https://github.com/deployphp/deployer/search?q=%22newrelic_app_id%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
 
 
 
+
+
 ### newrelic_description
 [Source](https://github.com/deployphp/deployer/search?q=%22newrelic_description%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
+
+
 
 
 
@@ -55,9 +59,12 @@ after('deploy', 'newrelic:notify');
 
 
 
+
+
 ## Tasks
 ### newrelic:notify
 [Source](https://github.com/deployphp/deployer/search?q=%22newrelic%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anewrelic.php)
+
 
 
 

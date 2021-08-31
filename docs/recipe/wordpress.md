@@ -9,34 +9,49 @@
 
 
 * Require
-  * [`recipe/common.php`](/docs/recipe/common.md)
-* Config
-  * [`shared_files`](#shared_files)
-  * [`shared_dirs`](#shared_dirs)
-  * [`writable_dirs`](#writable_dirs)
+  * [common](/docs/recipe/common.md)
+* Configuration
+  * [shared_files](#shared_files)
+  * [shared_dirs](#shared_dirs)
+  * [writable_dirs](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy) — Deploy your project
+  * [deploy](#deploy) — Deploy your project
 
-## Config
+## Configuration
 ### shared_files
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Awordpress.php)
 
-* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
+
+
+```php title="Default value"
+['wp-config.php']
+```
 
 
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Awordpress.php)
 
-* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
+
+
+```php title="Default value"
+['wp-content/uploads']
+```
 
 
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Awordpress.php)
 
-* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
+
+
+```php title="Default value"
+['wp-content/uploads']
+```
 
 
 
@@ -46,8 +61,9 @@
 
 
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

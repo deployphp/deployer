@@ -81,7 +81,8 @@ set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
 
-// Default timeout for `run()` and `runLocally()` functions. Default to 300 seconds.
+// Default timeout for `run()` and `runLocally()` functions.
+//
 // Set to `null` to disable timeout.
 set('default_timeout', 300);
 

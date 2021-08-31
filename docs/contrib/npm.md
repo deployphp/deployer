@@ -28,7 +28,7 @@ after('deploy:update_code', 'npm:install');
 
 
 * Tasks
-  * [`npm:install`](#npminstall) — Install npm packages
+  * [npm:install](#npminstall) — Install npm packages
 
 
 ## Tasks
@@ -36,4 +36,5 @@ after('deploy:update_code', 'npm:install');
 [Source](https://github.com/deployphp/deployer/search?q=%22npm%3Ainstall%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Anpm.php)
 
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
+
 

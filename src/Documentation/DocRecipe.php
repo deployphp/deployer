@@ -53,11 +53,11 @@ class DocRecipe
                 case 'root':
                     if ($match('^/\*\*?')) {
                         $state = 'comment';
-                        $comment .= trimComment($line) . "\n";
+                        $comment .= trim_comment($line) . "\n";
                         break;
                     }
                     if ($match('^//')) {
-                        $comment .= trimComment($line) . "\n";
+                        $comment .= trim_comment($line) . "\n";
                         break;
                     }
                     if ($match('^require.+?[\'"](?<recipe>.+?)[\'"]')) {
@@ -71,6 +71,9 @@ class DocRecipe
                         $comment = '';
                         $set->recipePath = $this->recipePath;
                         $set->lineNumber = $i + 1;
+                        if (preg_match('#^set\(.+?,\s(?<value>.+?)\);$#', $line, $m)) {
+                            $set->defaultValue = $m['value'];
+                        }
                         $this->config[$set->name] = $set;
                         break;
                     }
@@ -120,7 +123,7 @@ class DocRecipe
                         $state = 'root';
                         break;
                     }
-                    $comment .= trimComment($line) . "\n";
+                    $comment .= trim_comment($line) . "\n";
                     break;
 
                 case 'group_task':

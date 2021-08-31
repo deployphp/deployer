@@ -72,10 +72,10 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 * Tasks
-  * [`phinx:migrate`](#phinxmigrate) — Migrating database with phinx
-  * [`phinx:rollback`](#phinxrollback) — Rollback database migrations with phinx
-  * [`phinx:seed`](#phinxseed) — Seed database with phinx
-  * [`phinx:breakpoint`](#phinxbreakpoint) — Set a migrations breakpoint with phinx
+  * [phinx:migrate](#phinxmigrate) — Migrating database with phinx
+  * [phinx:rollback](#phinxrollback) — Rollback database migrations with phinx
+  * [phinx:seed](#phinxseed) — Seed database with phinx
+  * [phinx:breakpoint](#phinxbreakpoint) — Set a migrations breakpoint with phinx
 
 
 ## Tasks
@@ -84,8 +84,10 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 
+
 ### phinx:rollback
 [Source](https://github.com/deployphp/deployer/search?q=%22phinx%3Arollback%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
+
 
 
 
@@ -94,8 +96,10 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 
+
 ### phinx:breakpoint
 [Source](https://github.com/deployphp/deployer/search?q=%22phinx%3Abreakpoint%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphinx.php)
+
 
 
 

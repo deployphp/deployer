@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`push`](#push) — Push local changes to remote host
+  * [push](#push) — Push local changes to remote host
 
 
 ## Tasks
@@ -19,4 +19,5 @@
 Creates patch of local changes and pushes them on host.
 And applies to current_path. Push can be done many times.
 The task purpose to be used only for development.
+
 

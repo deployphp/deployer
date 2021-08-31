@@ -64,21 +64,26 @@ after('deploy:failed', 'yammer:notify:failure');
 
 
 
-* Config
-  * [`yammer_url`](#yammer_url)
-  * [`yammer_title`](#yammer_title)
-  * [`yammer_body`](#yammer_body)
-  * [`yammer_success_body`](#yammer_success_body)
-  * [`yammer_failure_body`](#yammer_failure_body)
+* Configuration
+  * [yammer_url](#yammer_url)
+  * [yammer_title](#yammer_title)
+  * [yammer_body](#yammer_body)
+  * [yammer_success_body](#yammer_success_body)
+  * [yammer_failure_body](#yammer_failure_body)
 * Tasks
-  * [`yammer:notify`](#yammernotify) — Notifying Yammer
-  * [`yammer:notify:success`](#yammernotifysuccess) — Notifying Yammer about deploy finish
-  * [`yammer:notify:failure`](#yammernotifyfailure) — Notifying Yammer about deploy failure
+  * [yammer:notify](#yammernotify) — Notifying Yammer
+  * [yammer:notify:success](#yammernotifysuccess) — Notifying Yammer about deploy finish
+  * [yammer:notify:failure](#yammernotifyfailure) — Notifying Yammer about deploy failure
 
-## Config
+## Configuration
 ### yammer_url
 [Source](https://github.com/deployphp/deployer/search?q=%22yammer_url%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
+
+
+```php title="Default value"
+'https://www.yammer.com/api/v1/messages.json'
+```
 
 
 ### yammer_title
@@ -86,19 +91,36 @@ after('deploy:failed', 'yammer:notify:failure');
 
 Title of project
 
+
+
 ### yammer_body
 [Source](https://github.com/deployphp/deployer/search?q=%22yammer_body%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 Deploy message
+
+```php title="Default value"
+'<em>{{user}}</em> deploying {{branch}} to <strong>{{target}}</strong>'
+```
+
 
 ### yammer_success_body
 [Source](https://github.com/deployphp/deployer/search?q=%22yammer_success_body%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
+```php title="Default value"
+'Deploy to <strong>{{target}}</strong> successful'
+```
+
+
 ### yammer_failure_body
 [Source](https://github.com/deployphp/deployer/search?q=%22yammer_failure_body%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
+
+
+```php title="Default value"
+'Deploy to <strong>{{target}}</strong> failed'
+```
 
 
 
@@ -108,13 +130,16 @@ Deploy message
 
 
 
+
 ### yammer:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22yammer%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
 
 
 
+
 ### yammer:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22yammer%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ayammer.php)
+
 
 
 

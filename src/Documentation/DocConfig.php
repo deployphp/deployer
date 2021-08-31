@@ -11,6 +11,7 @@ namespace Deployer\Documentation;
 class DocConfig
 {
     public $name;
+    public $defaultValue;
     public $comment;
     public $recipePath;
     public $lineNumber;

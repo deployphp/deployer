@@ -77,25 +77,35 @@ after('deploy:failed', 'workplace:notify:failure');
 
 
 
-* Config
-  * [`workplace_text`](#workplace_text)
-  * [`workplace_success_text`](#workplace_success_text)
-  * [`workplace_failure_text`](#workplace_failure_text)
-  * [`workplace_edit_post`](#workplace_edit_post)
+* Configuration
+  * [workplace_text](#workplace_text)
+  * [workplace_success_text](#workplace_success_text)
+  * [workplace_failure_text](#workplace_failure_text)
+  * [workplace_edit_post](#workplace_edit_post)
 * Tasks
-  * [`workplace:notify`](#workplacenotify) — Notifying Workplace
-  * [`workplace:notify:success`](#workplacenotifysuccess) — Notifying Workplace about deploy finish
-  * [`workplace:notify:failure`](#workplacenotifyfailure) — Notifying Workplace about deploy failure
+  * [workplace:notify](#workplacenotify) — Notifying Workplace
+  * [workplace:notify:success](#workplacenotifysuccess) — Notifying Workplace about deploy finish
+  * [workplace:notify:failure](#workplacenotifyfailure) — Notifying Workplace about deploy failure
 
-## Config
+## Configuration
 ### workplace_text
 [Source](https://github.com/deployphp/deployer/search?q=%22workplace_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 Deploy message
 
+```php title="Default value"
+'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+```
+
+
 ### workplace_success_text
 [Source](https://github.com/deployphp/deployer/search?q=%22workplace_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
+
+
+```php title="Default value"
+'Deploy to *{{target}}* successful'
+```
 
 
 ### workplace_failure_text
@@ -103,10 +113,20 @@ Deploy message
 
 
 
+```php title="Default value"
+'Deploy to *{{target}}* failed'
+```
+
+
 ### workplace_edit_post
 [Source](https://github.com/deployphp/deployer/search?q=%22workplace_edit_post%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 By default, create a new post for every message
+
+```php title="Default value"
+false
+```
+
 
 
 ## Tasks
@@ -115,13 +135,16 @@ By default, create a new post for every message
 
 
 
+
 ### workplace:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
 
 
 
+
 ### workplace:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22workplace%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aworkplace.php)
+
 
 
 

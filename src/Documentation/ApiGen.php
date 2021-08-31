@@ -73,7 +73,8 @@ MD;
 
         foreach ($this->fns as $fn) {
             ['funcName' => $funcName] = $fn;
-            $output .= " * [`$funcName()`](#$funcName)\n";
+            $anchor = strtolower($funcName);
+            $output .= " * [`$funcName()`](#$anchor)\n";
         }
         $output .= "\n";
 

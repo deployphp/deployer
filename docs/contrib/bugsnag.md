@@ -29,12 +29,13 @@ after('deploy', 'bugsnag:notify');
 
 
 * Tasks
-  * [`bugsnag:notify`](#bugsnagnotify) — Notifying Bugsnag of deployment
+  * [bugsnag:notify](#bugsnagnotify) — Notifying Bugsnag of deployment
 
 
 ## Tasks
 ### bugsnag:notify
 [Source](https://github.com/deployphp/deployer/search?q=%22bugsnag%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Abugsnag.php)
+
 
 
 

@@ -9,9 +9,9 @@
 
 
 * Require
-  * [`recipe/common.php`](/docs/recipe/common.md)
+  * [common](/docs/recipe/common.md)
 * Tasks
-  * [`deploy`](#deploy) — Deploy your project
+  * [deploy](#deploy) — Deploy your project
 
 
 ## Tasks
@@ -20,9 +20,10 @@
 
 Main task
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

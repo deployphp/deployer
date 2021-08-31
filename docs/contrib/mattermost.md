@@ -87,25 +87,30 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
-* Config
-  * [`mattermost_webhook`](#mattermost_webhook)
-  * [`mattermost_channel`](#mattermost_channel)
-  * [`mattermost_username`](#mattermost_username)
-  * [`mattermost_icon_url`](#mattermost_icon_url)
-  * [`mattermost_success_emoji`](#mattermost_success_emoji)
-  * [`mattermost_failure_emoji`](#mattermost_failure_emoji)
-  * [`mattermost_text`](#mattermost_text)
-  * [`mattermost_success_text`](#mattermost_success_text)
-  * [`mattermost_failure_text`](#mattermost_failure_text)
+* Configuration
+  * [mattermost_webhook](#mattermost_webhook)
+  * [mattermost_channel](#mattermost_channel)
+  * [mattermost_username](#mattermost_username)
+  * [mattermost_icon_url](#mattermost_icon_url)
+  * [mattermost_success_emoji](#mattermost_success_emoji)
+  * [mattermost_failure_emoji](#mattermost_failure_emoji)
+  * [mattermost_text](#mattermost_text)
+  * [mattermost_success_text](#mattermost_success_text)
+  * [mattermost_failure_text](#mattermost_failure_text)
 * Tasks
-  * [`mattermost:notify`](#mattermostnotify) — Notify mattermost
-  * [`mattermost:notify:success`](#mattermostnotifysuccess) — Notifying mattermost about deploy finish
-  * [`mattermost:notify:failure`](#mattermostnotifyfailure) — Notifying mattermost about deploy failure
+  * [mattermost:notify](#mattermostnotify) — Notify mattermost
+  * [mattermost:notify:success](#mattermostnotifysuccess) — Notifying mattermost about deploy finish
+  * [mattermost:notify:failure](#mattermostnotifyfailure) — Notifying mattermost about deploy failure
 
-## Config
+## Configuration
 ### mattermost_webhook
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
+
+
+```php title="Default value"
+null
+```
 
 
 ### mattermost_channel
@@ -113,9 +118,19 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
+```php title="Default value"
+null
+```
+
+
 ### mattermost_username
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost_username%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
+
+
+```php title="Default value"
+'deployer'
+```
 
 
 ### mattermost_icon_url
@@ -123,9 +138,19 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
+```php title="Default value"
+null
+```
+
+
 ### mattermost_success_emoji
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost_success_emoji%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
+
+
+```php title="Default value"
+':&#8203;white_check_mark:'
+```
 
 
 ### mattermost_failure_emoji
@@ -133,9 +158,19 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
+```php title="Default value"
+':&#8203;x:'
+```
+
+
 ### mattermost_text
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
+
+
+```php title="Default value"
+'_{{user}}_ deploying `{{branch}}` to **{{target}}**'
+```
 
 
 ### mattermost_success_text
@@ -143,9 +178,19 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
+```php title="Default value"
+'Deploy to **{{target}}** successful {{mattermost_success_emoji}}'
+```
+
+
 ### mattermost_failure_text
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost_failure_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
+
+
+```php title="Default value"
+'Deploy to **{{target}}** failed {{mattermost_failure_emoji}}'
+```
 
 
 
@@ -155,13 +200,16 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
+
 ### mattermost:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
 
 
 
+
 ### mattermost:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22mattermost%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Amattermost.php)
+
 
 
 

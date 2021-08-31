@@ -50,26 +50,33 @@ after('deploy:failed', 'chat:notify:failure');
 
 
 
-* Config
-  * [`chat_title`](#chat_title)
-  * [`chat_subtitle`](#chat_subtitle)
-  * [`favicon`](#favicon)
-  * [`chat_line1`](#chat_line1)
-  * [`chat_line2`](#chat_line2)
+* Configuration
+  * [chat_title](#chat_title)
+  * [chat_subtitle](#chat_subtitle)
+  * [favicon](#favicon)
+  * [chat_line1](#chat_line1)
+  * [chat_line2](#chat_line2)
 * Tasks
-  * [`chat:notify`](#chatnotify) — Notifying Google Hangouts Chat
-  * [`chat:notify:success`](#chatnotifysuccess) — Notifying Google Hangouts Chat about deploy finish
-  * [`chat:notify:failure`](#chatnotifyfailure)
+  * [chat:notify](#chatnotify) — Notifying Google Hangouts Chat
+  * [chat:notify:success](#chatnotifysuccess) — Notifying Google Hangouts Chat about deploy finish
+  * [chat:notify:failure](#chatnotifyfailure)
 
-## Config
+## Configuration
 ### chat_title
 [Source](https://github.com/deployphp/deployer/search?q=%22chat_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 Title of project
 
+
+
 ### chat_subtitle
 [Source](https://github.com/deployphp/deployer/search?q=%22chat_subtitle%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
+
+
+```php title="Default value"
+get('hostname')
+```
 
 
 ### favicon
@@ -77,14 +84,29 @@ Title of project
 
 If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
+```php title="Default value"
+'http://{{hostname}}/favicon.png'
+```
+
+
 ### chat_line1
 [Source](https://github.com/deployphp/deployer/search?q=%22chat_line1%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 Deploy messages
 
+```php title="Default value"
+'{{branch}}'
+```
+
+
 ### chat_line2
 [Source](https://github.com/deployphp/deployer/search?q=%22chat_line2%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
+
+
+```php title="Default value"
+'{{stage}}'
+```
 
 
 
@@ -94,13 +116,16 @@ Deploy messages
 
 
 
+
 ### chat:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
 
 
 
+
 ### chat:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22chat%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ahangouts.php)
+
 
 
 

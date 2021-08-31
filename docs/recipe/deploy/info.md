@@ -8,21 +8,24 @@
 
 
 
-* Config
-  * [`target`](#target)
+* Configuration
+  * [target](#target)
 * Tasks
-  * [`deploy:info`](#deployinfo)
+  * [deploy:info](#deployinfo)
 
-## Config
+## Configuration
 ### target
 [Source](https://github.com/deployphp/deployer/search?q=%22target%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Ainfo.php)
 
 Holds name of deployed branch, tag or revision.
 
 
+
+
 ## Tasks
 ### deploy:info
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Ainfo%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Ainfo.php)
+
 
 
 

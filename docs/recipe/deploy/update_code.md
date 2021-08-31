@@ -8,12 +8,12 @@
 
 
 
-* Config
-  * [`branch`](#branch)
+* Configuration
+  * [branch](#branch)
 * Tasks
-  * [`deploy:update_code`](#deployupdate_code) — Update code
+  * [deploy:update_code](#deployupdate_code) — Update code
 
-## Config
+## Configuration
 ### branch
 [Source](https://github.com/deployphp/deployer/search?q=%22branch%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aupdate_code.php)
 
@@ -21,9 +21,12 @@ Determines which branch to deploy. Can be overridden with cli option `--branch`.
 If not specified, will get current git HEAD branch as default branch to deploy.
 
 
+
+
 ## Tasks
 ### deploy:update_code
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aupdate_code%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Aupdate_code.php)
 
 Update code at [release_path](/docs/recipe/deploy/release.md#release_path) on host.
+
 

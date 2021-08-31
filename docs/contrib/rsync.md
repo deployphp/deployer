@@ -123,21 +123,23 @@ host('hostname')
 
 
 
-* Config
-  * [`rsync`](#rsync)
-  * [`rsync_src`](#rsync_src)
-  * [`rsync_dest`](#rsync_dest)
-  * [`rsync_excludes`](#rsync_excludes)
-  * [`rsync_includes`](#rsync_includes)
-  * [`rsync_filter`](#rsync_filter)
-  * [`rsync_options`](#rsync_options)
+* Configuration
+  * [rsync](#rsync)
+  * [rsync_src](#rsync_src)
+  * [rsync_dest](#rsync_dest)
+  * [rsync_excludes](#rsync_excludes)
+  * [rsync_includes](#rsync_includes)
+  * [rsync_filter](#rsync_filter)
+  * [rsync_options](#rsync_options)
 * Tasks
-  * [`rsync:warmup`](#rsyncwarmup) — Warmup remote Rsync target
-  * [`rsync`](#rsync) — Rsync local->remote
+  * [rsync:warmup](#rsyncwarmup) — Warmup remote Rsync target
+  * [rsync](#rsync) — Rsync local->remote
 
-## Config
+## Configuration
 ### rsync
 [Source](https://github.com/deployphp/deployer/search?q=%22rsync%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
+
+
 
 
 
@@ -146,13 +148,25 @@ host('hostname')
 
 
 
+```php title="Default value"
+__DIR__
+```
+
+
 ### rsync_dest
 [Source](https://github.com/deployphp/deployer/search?q=%22rsync_dest%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
+```php title="Default value"
+'{{release_path}}'
+```
+
+
 ### rsync_excludes
 [Source](https://github.com/deployphp/deployer/search?q=%22rsync_excludes%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
+
+
 
 
 
@@ -161,13 +175,19 @@ host('hostname')
 
 
 
+
+
 ### rsync_filter
 [Source](https://github.com/deployphp/deployer/search?q=%22rsync_filter%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
 
 
 
+
+
 ### rsync_options
 [Source](https://github.com/deployphp/deployer/search?q=%22rsync_options%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
+
+
 
 
 
@@ -178,8 +198,10 @@ host('hostname')
 
 
 
+
 ### rsync
 [Source](https://github.com/deployphp/deployer/search?q=%22rsync%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Arsync.php)
+
 
 
 

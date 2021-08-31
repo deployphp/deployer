@@ -68,30 +68,36 @@ after('deploy:failed', 'telegram:notify:failure');
 
 
 
-* Config
-  * [`telegram_title`](#telegram_title)
-  * [`telegram_token`](#telegram_token)
-  * [`telegram_chat_id`](#telegram_chat_id)
-  * [`telegram_url`](#telegram_url)
-  * [`telegram_text`](#telegram_text)
-  * [`telegram_success_text`](#telegram_success_text)
-  * [`telegram_failure_text`](#telegram_failure_text)
+* Configuration
+  * [telegram_title](#telegram_title)
+  * [telegram_token](#telegram_token)
+  * [telegram_chat_id](#telegram_chat_id)
+  * [telegram_url](#telegram_url)
+  * [telegram_text](#telegram_text)
+  * [telegram_success_text](#telegram_success_text)
+  * [telegram_failure_text](#telegram_failure_text)
 * Tasks
-  * [`telegram:notify`](#telegramnotify)
+  * [telegram:notify](#telegramnotify)
 
-## Config
+## Configuration
 ### telegram_title
 [Source](https://github.com/deployphp/deployer/search?q=%22telegram_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 Title of project
+
+
 
 ### telegram_token
 [Source](https://github.com/deployphp/deployer/search?q=%22telegram_token%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 Telegram settings
 
+
+
 ### telegram_chat_id
 [Source](https://github.com/deployphp/deployer/search?q=%22telegram_chat_id%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+
+
 
 
 
@@ -100,14 +106,26 @@ Telegram settings
 
 
 
+
+
 ### telegram_text
 [Source](https://github.com/deployphp/deployer/search?q=%22telegram_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
 Deploy message
 
+```php title="Default value"
+'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+```
+
+
 ### telegram_success_text
 [Source](https://github.com/deployphp/deployer/search?q=%22telegram_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
 
+
+
+```php title="Default value"
+'Deploy to *{{target}}* successful'
+```
 
 
 ### telegram_failure_text
@@ -115,10 +133,16 @@ Deploy message
 
 
 
+```php title="Default value"
+'Deploy to *{{target}}* failed'
+```
+
+
 
 ## Tasks
 ### telegram:notify
 [Source](https://github.com/deployphp/deployer/search?q=%22telegram%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Atelegram.php)
+
 
 
 

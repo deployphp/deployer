@@ -32,15 +32,16 @@ after('deploy:update_code', 'webpack_encore:build');
 
 
 * Require
-  * [`contrib/npm.php`](/docs/contrib/npm.md)
-  * [`contrib/yarn.php`](/docs/contrib/yarn.md)
+  * [npm](/docs/contrib/npm.md)
+  * [yarn](/docs/contrib/yarn.md)
 * Tasks
-  * [`webpack_encore:build`](#webpack_encorebuild) — Run webpack encore build
+  * [webpack_encore:build](#webpack_encorebuild) — Run webpack encore build
 
 
 ## Tasks
 ### webpack_encore:build
 [Source](https://github.com/deployphp/deployer/search?q=%22webpack_encore%3Abuild%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Awebpack_encore.php)
+
 
 
 

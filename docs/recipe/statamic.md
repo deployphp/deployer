@@ -9,32 +9,34 @@
 
 
 * Require
-  * [`recipe/laravel.php`](/docs/recipe/laravel.md)
-* Config
-  * [`statamic_version`](#statamic_version)
+  * [laravel](/docs/recipe/laravel.md)
+* Configuration
+  * [statamic_version](#statamic_version)
 * Tasks
-  * [`statamic:addons:discover`](#statamicaddonsdiscover) — Rebuild the cached addon package manifest
-  * [`statamic:assets:generate-presets`](#statamicassetsgenerate-presets) — Generate asset preset manipulations
-  * [`statamic:assets:meta`](#statamicassetsmeta) — Generate asset metadata files
-  * [`statamic:git:commit`](#statamicgitcommit) — Git add and commit tracked content
-  * [`statamic:glide:clear`](#statamicglideclear) — Clear the Glide image cache
-  * [`statamic:responsive:generate`](#statamicresponsivegenerate) — Generate responsive images
-  * [`statamic:responsive:regenerate`](#statamicresponsiveregenerate) — Regenerate responsive images
-  * [`statamic:search:insert`](#statamicsearchinsert) — Insert an item into its search indexes
-  * [`statamic:search:update`](#statamicsearchupdate) — Update a search index
-  * [`statamic:stache:clear`](#statamicstacheclear) — Clear the "Stache" cache
-  * [`statamic:stache:doctor`](#statamicstachedoctor) — Diagnose any problems with the Stache
-  * [`statamic:stache:refresh`](#statamicstacherefresh) — Clear and rebuild the "Stache" cache
-  * [`statamic:stache:warm`](#statamicstachewarm) — Build the "Stache" cache
-  * [`statamic:static:clear`](#statamicstaticclear) — Clear the static page cache
-  * [`statamic:static:warm`](#statamicstaticwarm) — Warms the static cache by visiting all URLs
-  * [`statamic:support:details`](#statamicsupportdetails) — Outputs details helpful for support requests
-  * [`statamic:updates:run`](#statamicupdatesrun) — Run update scripts from specific version
-  * [`deploy`](#deploy) — Deploy your project
+  * [statamic:addons:discover](#statamicaddonsdiscover) — Rebuild the cached addon package manifest
+  * [statamic:assets:generate-presets](#statamicassetsgenerate-presets) — Generate asset preset manipulations
+  * [statamic:assets:meta](#statamicassetsmeta) — Generate asset metadata files
+  * [statamic:git:commit](#statamicgitcommit) — Git add and commit tracked content
+  * [statamic:glide:clear](#statamicglideclear) — Clear the Glide image cache
+  * [statamic:responsive:generate](#statamicresponsivegenerate) — Generate responsive images
+  * [statamic:responsive:regenerate](#statamicresponsiveregenerate) — Regenerate responsive images
+  * [statamic:search:insert](#statamicsearchinsert) — Insert an item into its search indexes
+  * [statamic:search:update](#statamicsearchupdate) — Update a search index
+  * [statamic:stache:clear](#statamicstacheclear) — Clear the "Stache" cache
+  * [statamic:stache:doctor](#statamicstachedoctor) — Diagnose any problems with the Stache
+  * [statamic:stache:refresh](#statamicstacherefresh) — Clear and rebuild the "Stache" cache
+  * [statamic:stache:warm](#statamicstachewarm) — Build the "Stache" cache
+  * [statamic:static:clear](#statamicstaticclear) — Clear the static page cache
+  * [statamic:static:warm](#statamicstaticwarm) — Warms the static cache by visiting all URLs
+  * [statamic:support:details](#statamicsupportdetails) — Outputs details helpful for support requests
+  * [statamic:updates:run](#statamicupdatesrun) — Run update scripts from specific version
+  * [deploy](#deploy) — Deploy your project
 
-## Config
+## Configuration
 ### statamic_version
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
+
 
 
 
@@ -45,8 +47,10 @@
 
 
 
+
 ### statamic:assets:generate-presets
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Aassets%3Agenerate-presets%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -55,8 +59,10 @@
 
 
 
+
 ### statamic:git:commit
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Agit%3Acommit%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -65,8 +71,10 @@
 
 
 
+
 ### statamic:responsive:generate
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Aresponsive%3Agenerate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -75,8 +83,10 @@
 
 
 
+
 ### statamic:search:insert
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Asearch%3Ainsert%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -85,8 +95,10 @@
 
 
 
+
 ### statamic:stache:clear
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Astache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -95,8 +107,10 @@
 
 
 
+
 ### statamic:stache:refresh
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Astache%3Arefresh%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -105,8 +119,10 @@
 
 
 
+
 ### statamic:static:clear
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Astatic%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -115,8 +131,10 @@
 
 
 
+
 ### statamic:support:details
 [Source](https://github.com/deployphp/deployer/search?q=%22statamic%3Asupport%3Adetails%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
+
 
 
 
@@ -125,18 +143,20 @@
 
 
 
+
 ### deploy
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Astatamic.php)
 
 
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
-* [`artisan:storage:link`](/docs/recipe/laravel.md#artisanstoragelink)
-* [`artisan:cache:clear`](/docs/recipe/laravel.md#artisancacheclear)
-* [`statamic:stache:clear`](/docs/recipe/statamic.md#statamicstacheclear)
-* [`statamic:stache:warm`](/docs/recipe/statamic.md#statamicstachewarm)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
+* [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink)
+* [artisan:cache:clear](/docs/recipe/laravel.md#artisancacheclear)
+* [statamic:stache:clear](/docs/recipe/statamic.md#statamicstacheclear)
+* [statamic:stache:warm](/docs/recipe/statamic.md#statamicstachewarm)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

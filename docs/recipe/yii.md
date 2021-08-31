@@ -9,27 +9,37 @@
 
 
 * Require
-  * [`recipe/common.php`](/docs/recipe/common.md)
-* Config
-  * [`shared_dirs`](#shared_dirs)
-  * [`writable_dirs`](#writable_dirs)
+  * [common](/docs/recipe/common.md)
+* Configuration
+  * [shared_dirs](#shared_dirs)
+  * [writable_dirs](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy) — Deploy your project
+  * [deploy](#deploy) — Deploy your project
 
-## Config
+## Configuration
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ayii.php)
 
-* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Yii shared dirs
+
+```php title="Default value"
+['runtime']
+```
+
 
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ayii.php)
 
-* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Yii writable dirs
+
+```php title="Default value"
+['runtime']
+```
+
 
 
 ## Tasks
@@ -38,9 +48,10 @@ Yii writable dirs
 
 Main task
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

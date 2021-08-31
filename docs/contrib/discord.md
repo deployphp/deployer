@@ -28,15 +28,15 @@ before('deploy', 'discord:notify');
 
 - `discord_notify_text` – notification message template, markdown supported, default:
   ```markdown
-  :information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_
+  :&#8203;information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_
   ```
 - `discord_success_text` – success template, default:
   ```markdown
-  :white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully
+  :&#8203;white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully
   ```
 - `discord_failure_text` – failure template, default:
   ```markdown
-  :no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_
+  :&#8203;no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_
 
 ## Usage
 
@@ -59,22 +59,24 @@ after('deploy:failed', 'discord:notify:failure');
 ```
 
 
-* Config
-  * [`discord_webhook`](#discord_webhook)
-  * [`discord_notify_text`](#discord_notify_text)
-  * [`discord_success_text`](#discord_success_text)
-  * [`discord_failure_text`](#discord_failure_text)
-  * [`discord_message`](#discord_message)
+* Configuration
+  * [discord_webhook](#discord_webhook)
+  * [discord_notify_text](#discord_notify_text)
+  * [discord_success_text](#discord_success_text)
+  * [discord_failure_text](#discord_failure_text)
+  * [discord_message](#discord_message)
 * Tasks
-  * [`discord_send_message`](#discord_send_message)
-  * [`discord:test`](#discordtest) — Just notify your Discord channel with all messages, without deploying
-  * [`discord:notify`](#discordnotify) — Notify Discord
-  * [`discord:notify:success`](#discordnotifysuccess) — Notify Discord about deploy finish
-  * [`discord:notify:failure`](#discordnotifyfailure) — Notify Discord about deploy failure
+  * [discord_send_message](#discord_send_message)
+  * [discord:test](#discordtest) — Just notify your Discord channel with all messages, without deploying
+  * [discord:notify](#discordnotify) — Notify Discord
+  * [discord:notify:success](#discordnotifysuccess) — Notify Discord about deploy finish
+  * [discord:notify:failure](#discordnotifyfailure) — Notify Discord about deploy failure
 
-## Config
+## Configuration
 ### discord_webhook
 [Source](https://github.com/deployphp/deployer/search?q=%22discord_webhook%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+
+
 
 
 
@@ -83,8 +85,12 @@ after('deploy:failed', 'discord:notify:failure');
 
 Deploy messages
 
+
+
 ### discord_success_text
 [Source](https://github.com/deployphp/deployer/search?q=%22discord_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+
+
 
 
 
@@ -93,10 +99,17 @@ Deploy messages
 
 
 
+
+
 ### discord_message
 [Source](https://github.com/deployphp/deployer/search?q=%22discord_message%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 The message
+
+```php title="Default value"
+'discord_notify_text'
+```
+
 
 
 ## Tasks
@@ -105,13 +118,16 @@ The message
 
 Helpers
 
+
 ### discord:test
 [Source](https://github.com/deployphp/deployer/search?q=%22discord%3Atest%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
 
 Tasks
 
+
 ### discord:notify
 [Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+
 
 
 
@@ -120,8 +136,10 @@ Tasks
 
 
 
+
 ### discord:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22discord%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Adiscord.php)
+
 
 
 

@@ -29,8 +29,8 @@ add('crontab:jobs', [
 
 
 * Tasks
-  * [`crontab:load`](#crontabload) — Load crontab
-  * [`crontab:sync`](#crontabsync) — Sync crontab jobs
+  * [crontab:load](#crontabload) — Load crontab
+  * [crontab:sync](#crontabsync) — Sync crontab jobs
 
 
 ## Tasks
@@ -39,8 +39,10 @@ add('crontab:jobs', [
 
 
 
+
 ### crontab:sync
 [Source](https://github.com/deployphp/deployer/search?q=%22crontab%3Async%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acrontab.php)
+
 
 
 

@@ -35,16 +35,18 @@ after('deploy', 'php-fpm:reload');
 
 
 
-* Config
-  * [`php_fpm_version`](#php_fpm_version)
-  * [`php_fpm_service`](#php_fpm_service)
-  * [`php_fpm_command`](#php_fpm_command)
+* Configuration
+  * [php_fpm_version](#php_fpm_version)
+  * [php_fpm_service](#php_fpm_service)
+  * [php_fpm_command](#php_fpm_command)
 * Tasks
-  * [`php-fpm:reload`](#php-fpmreload) — Reload the php-fpm service
+  * [php-fpm:reload](#php-fpmreload) — Reload the php-fpm service
 
-## Config
+## Configuration
 ### php_fpm_version
 [Source](https://github.com/deployphp/deployer/search?q=%22php_fpm_version%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
+
+
 
 
 
@@ -53,15 +55,26 @@ after('deploy', 'php-fpm:reload');
 
 
 
+```php title="Default value"
+'php{{php_fpm_version}}-fpm'
+```
+
+
 ### php_fpm_command
 [Source](https://github.com/deployphp/deployer/search?q=%22php_fpm_command%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
 
+
+
+```php title="Default value"
+'echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload'
+```
 
 
 
 ## Tasks
 ### php-fpm:reload
 [Source](https://github.com/deployphp/deployer/search?q=%22php-fpm%3Areload%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aphp-fpm.php)
+
 
 
 

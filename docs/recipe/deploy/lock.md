@@ -9,9 +9,9 @@
 
 
 * Tasks
-  * [`deploy:lock`](#deploylock) — Lock deploy
-  * [`deploy:unlock`](#deployunlock) — Unlock deploy
-  * [`deploy:is-unlocked`](#deployis-unlocked) — Check if deploy is unlocked
+  * [deploy:lock](#deploylock) — Lock deploy
+  * [deploy:unlock](#deployunlock) — Unlock deploy
+  * [deploy:is-unlocked](#deployis-unlocked) — Check if deploy is unlocked
 
 
 ## Tasks
@@ -20,13 +20,16 @@
 
 
 
+
 ### deploy:unlock
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Aunlock%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
 
 
 
+
 ### deploy:is-unlocked
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Ais-unlocked%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Alock.php)
+
 
 
 

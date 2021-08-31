@@ -9,68 +9,83 @@
 
 
 * Require
-  * [`recipe/common.php`](/docs/recipe/common.md)
-* Config
-  * [`repository`](#repository)
-  * [`release_name`](#release_name)
-  * [`shared_files`](#shared_files)
-  * [`shared_dirs`](#shared_dirs)
-  * [`writable_dirs`](#writable_dirs)
-  * [`static_folders`](#static_folders)
+  * [common](/docs/recipe/common.md)
+* Configuration
+  * [repository](#repository)
+  * [release_name](#release_name)
+  * [shared_files](#shared_files)
+  * [shared_dirs](#shared_dirs)
+  * [writable_dirs](#writable_dirs)
+  * [static_folders](#static_folders)
 * Tasks
-  * [`sw:update_code`](#swupdate_code)
-  * [`sw:system:install`](#swsysteminstall)
-  * [`sw:build`](#swbuild)
-  * [`sw:system:setup`](#swsystemsetup)
-  * [`sw:theme:compile`](#swthemecompile)
-  * [`sw:cache:clear`](#swcacheclear)
-  * [`sw:cache:warmup`](#swcachewarmup)
-  * [`sw:database:migrate`](#swdatabasemigrate)
-  * [`sw:plugin:refresh`](#swpluginrefresh)
-  * [`sw:plugin:activate:all`](#swpluginactivateall)
-  * [`sw:plugin:migrate:all`](#swpluginmigrateall)
-  * [`sw:plugin:upgrade:all`](#swpluginupgradeall)
-  * [`sw:deploy`](#swdeploy)
-  * [`deploy`](#deploy) — Deploy your project
+  * [sw:update_code](#swupdate_code)
+  * [sw:system:install](#swsysteminstall)
+  * [sw:build](#swbuild)
+  * [sw:system:setup](#swsystemsetup)
+  * [sw:theme:compile](#swthemecompile)
+  * [sw:cache:clear](#swcacheclear)
+  * [sw:cache:warmup](#swcachewarmup)
+  * [sw:database:migrate](#swdatabasemigrate)
+  * [sw:plugin:refresh](#swpluginrefresh)
+  * [sw:plugin:activate:all](#swpluginactivateall)
+  * [sw:plugin:migrate:all](#swpluginmigrateall)
+  * [sw:plugin:upgrade:all](#swpluginupgradeall)
+  * [sw:deploy](#swdeploy)
+  * [deploy](#deploy) — Deploy your project
 
-## Config
+## Configuration
 ### repository
 [Source](https://github.com/deployphp/deployer/search?q=%22repository%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
-* Overrides [`repository`](/docs/recipe/common.md#repository) from `recipe/common.php`
+* Overrides [repository](/docs/recipe/common.md#repository) from `recipe/common.php`
 
+
+
+```php title="Default value"
+'git@github.com:shopware/production.git'
+```
 
 
 ### release_name
 [Source](https://github.com/deployphp/deployer/search?q=%22release_name%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
-* Overrides [`release_name`](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`
+* Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`
+
+
 
 
 
 ### shared_files
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
-* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+
+
 
 
 
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
-* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+
+
 
 
 
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
 
-* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+
+
 
 
 
 ### static_folders
 [Source](https://github.com/deployphp/deployer/search?q=%22static_folders%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
+
 
 
 
@@ -81,8 +96,10 @@
 
 
 
+
 ### sw:system:install
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Asystem%3Ainstall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
 
 
 
@@ -91,8 +108,10 @@
 
 
 
+
 ### sw:system:setup
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Asystem%3Asetup%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
 
 
 
@@ -101,8 +120,10 @@
 
 
 
+
 ### sw:cache:clear
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
 
 
 
@@ -111,8 +132,10 @@
 
 
 
+
 ### sw:database:migrate
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Adatabase%3Amigrate%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
 
 
 
@@ -121,8 +144,10 @@
 
 
 
+
 ### sw:plugin:activate:all
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aactivate%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
 
 
 
@@ -131,8 +156,10 @@
 
 
 
+
 ### sw:plugin:upgrade:all
 [Source](https://github.com/deployphp/deployer/search?q=%22sw%3Aplugin%3Aupgrade%3Aall%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Ashopware.php)
+
 
 
 
@@ -141,13 +168,14 @@
 
 Grouped SW deploy tasks
 
+
 This task is group task which contains next tasks:
-* [`sw:plugin:activate:all`](/docs/recipe/shopware.md#swpluginactivateall)
-* [`sw:database:migrate`](/docs/recipe/shopware.md#swdatabasemigrate)
-* [`sw:plugin:migrate:all`](/docs/recipe/shopware.md#swpluginmigrateall)
-* [`sw:build`](/docs/recipe/shopware.md#swbuild)
-* [`sw:theme:compile`](/docs/recipe/shopware.md#swthemecompile)
-* [`sw:cache:clear`](/docs/recipe/shopware.md#swcacheclear)
+* [sw:plugin:activate:all](/docs/recipe/shopware.md#swpluginactivateall)
+* [sw:database:migrate](/docs/recipe/shopware.md#swdatabasemigrate)
+* [sw:plugin:migrate:all](/docs/recipe/shopware.md#swpluginmigrateall)
+* [sw:build](/docs/recipe/shopware.md#swbuild)
+* [sw:theme:compile](/docs/recipe/shopware.md#swthemecompile)
+* [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear)
 
 
 ### deploy
@@ -155,11 +183,12 @@ This task is group task which contains next tasks:
 
 Main task
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`sw:deploy`](/docs/recipe/shopware.md#swdeploy)
-* [`deploy:clear_paths`](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
-* [`sw:cache:warmup`](/docs/recipe/shopware.md#swcachewarmup)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [sw:deploy](/docs/recipe/shopware.md#swdeploy)
+* [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
+* [sw:cache:warmup](/docs/recipe/shopware.md#swcachewarmup)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

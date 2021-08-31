@@ -70,32 +70,36 @@ after('deploy:failed', 'cimonitor:notify:failure');
 ```
 
 
-* Config
-  * [`cimonitor_title`](#cimonitor_title)
-  * [`cimonitor_user`](#cimonitor_user)
-  * [`cimonitor_status_info`](#cimonitor_status_info)
-  * [`cimonitor_status_warning`](#cimonitor_status_warning)
-  * [`cimonitor_status_error`](#cimonitor_status_error)
-  * [`cimonitor_status_success`](#cimonitor_status_success)
-  * [`cimonitor_job_state_info`](#cimonitor_job_state_info)
-  * [`cimonitor_job_state_pending`](#cimonitor_job_state_pending)
-  * [`cimonitor_job_state_running`](#cimonitor_job_state_running)
-  * [`cimonitor_job_state_warning`](#cimonitor_job_state_warning)
-  * [`cimonitor_job_state_error`](#cimonitor_job_state_error)
-  * [`cimonitor_job_state_success`](#cimonitor_job_state_success)
+* Configuration
+  * [cimonitor_title](#cimonitor_title)
+  * [cimonitor_user](#cimonitor_user)
+  * [cimonitor_status_info](#cimonitor_status_info)
+  * [cimonitor_status_warning](#cimonitor_status_warning)
+  * [cimonitor_status_error](#cimonitor_status_error)
+  * [cimonitor_status_success](#cimonitor_status_success)
+  * [cimonitor_job_state_info](#cimonitor_job_state_info)
+  * [cimonitor_job_state_pending](#cimonitor_job_state_pending)
+  * [cimonitor_job_state_running](#cimonitor_job_state_running)
+  * [cimonitor_job_state_warning](#cimonitor_job_state_warning)
+  * [cimonitor_job_state_error](#cimonitor_job_state_error)
+  * [cimonitor_job_state_success](#cimonitor_job_state_success)
 * Tasks
-  * [`cimonitor:notify`](#cimonitornotify) — Notifying CIMonitor
-  * [`cimonitor:notify:success`](#cimonitornotifysuccess) — Notifying CIMonitor about deploy finish
-  * [`cimonitor:notify:failure`](#cimonitornotifyfailure) — Notifying CIMonitor about deploy failure
+  * [cimonitor:notify](#cimonitornotify) — Notifying CIMonitor
+  * [cimonitor:notify:success](#cimonitornotifysuccess) — Notifying CIMonitor about deploy finish
+  * [cimonitor:notify:failure](#cimonitornotifyfailure) — Notifying CIMonitor about deploy failure
 
-## Config
+## Configuration
 ### cimonitor_title
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 Title of project based on git repo
 
+
+
 ### cimonitor_user
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_user%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
+
+
 
 
 
@@ -104,9 +108,19 @@ Title of project based on git repo
 
 CI monitor status states and job states
 
+```php title="Default value"
+'info'
+```
+
+
 ### cimonitor_status_warning
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_status_warning%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
+
+
+```php title="Default value"
+'warning'
+```
 
 
 ### cimonitor_status_error
@@ -114,9 +128,19 @@ CI monitor status states and job states
 
 
 
+```php title="Default value"
+'error'
+```
+
+
 ### cimonitor_status_success
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_status_success%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
+
+
+```php title="Default value"
+'success'
+```
 
 
 ### cimonitor_job_state_info
@@ -124,9 +148,19 @@ CI monitor status states and job states
 
 
 
+```php title="Default value"
+get('cimonitor_status_info')
+```
+
+
 ### cimonitor_job_state_pending
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_pending%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
+
+
+```php title="Default value"
+'pending'
+```
 
 
 ### cimonitor_job_state_running
@@ -134,9 +168,19 @@ CI monitor status states and job states
 
 
 
+```php title="Default value"
+'running'
+```
+
+
 ### cimonitor_job_state_warning
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_warning%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
+
+
+```php title="Default value"
+get('cimonitor_status_warning')
+```
 
 
 ### cimonitor_job_state_error
@@ -144,9 +188,19 @@ CI monitor status states and job states
 
 
 
+```php title="Default value"
+get('cimonitor_status_error')
+```
+
+
 ### cimonitor_job_state_success
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor_job_state_success%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
+
+
+```php title="Default value"
+get('cimonitor_status_success')
+```
 
 
 
@@ -156,13 +210,16 @@ CI monitor status states and job states
 
 
 
+
 ### cimonitor:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
 
 
 
+
 ### cimonitor:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22cimonitor%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acimonitor.php)
+
 
 
 

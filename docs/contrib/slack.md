@@ -70,42 +70,59 @@ after('deploy:failed', 'slack:notify:failure');
 
 
 
-* Config
-  * [`slack_channel`](#slack_channel)
-  * [`slack_title`](#slack_title)
-  * [`slack_text`](#slack_text)
-  * [`slack_success_text`](#slack_success_text)
-  * [`slack_failure_text`](#slack_failure_text)
-  * [`slack_rollback_text`](#slack_rollback_text)
-  * [`slack_color`](#slack_color)
-  * [`slack_success_color`](#slack_success_color)
-  * [`slack_failure_color`](#slack_failure_color)
-  * [`slack_rollback_color`](#slack_rollback_color)
+* Configuration
+  * [slack_channel](#slack_channel)
+  * [slack_title](#slack_title)
+  * [slack_text](#slack_text)
+  * [slack_success_text](#slack_success_text)
+  * [slack_failure_text](#slack_failure_text)
+  * [slack_rollback_text](#slack_rollback_text)
+  * [slack_color](#slack_color)
+  * [slack_success_color](#slack_success_color)
+  * [slack_failure_color](#slack_failure_color)
+  * [slack_rollback_color](#slack_rollback_color)
 * Tasks
-  * [`slack:notify`](#slacknotify) — Notifying Slack
-  * [`slack:notify:success`](#slacknotifysuccess) — Notifying Slack about deploy finish
-  * [`slack:notify:failure`](#slacknotifyfailure) — Notifying Slack about deploy failure
-  * [`slack:notify:rollback`](#slacknotifyrollback) — Notifying Slack about rollback
+  * [slack:notify](#slacknotify) — Notifying Slack
+  * [slack:notify:success](#slacknotifysuccess) — Notifying Slack about deploy finish
+  * [slack:notify:failure](#slacknotifyfailure) — Notifying Slack about deploy failure
+  * [slack:notify:rollback](#slacknotifyrollback) — Notifying Slack about rollback
 
-## Config
+## Configuration
 ### slack_channel
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_channel%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 Channel to publish to, when false the default channel the webhook will be used
+
+```php title="Default value"
+false
+```
+
 
 ### slack_title
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 Title of project
 
+
+
 ### slack_text
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
 Deploy message
 
+```php title="Default value"
+'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+```
+
+
 ### slack_success_text
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
+
+
+```php title="Default value"
+'Deploy to *{{target}}* successful'
+```
 
 
 ### slack_failure_text
@@ -113,9 +130,19 @@ Deploy message
 
 
 
+```php title="Default value"
+'Deploy to *{{target}}* failed'
+```
+
+
 ### slack_rollback_text
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_rollback_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
+
+
+```php title="Default value"
+'_{{user}}_ rolled back changes on *{{target}}*'
+```
 
 
 ### slack_color
@@ -123,9 +150,19 @@ Deploy message
 
 Color of attachment
 
+```php title="Default value"
+'#4d91f7'
+```
+
+
 ### slack_success_color
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_success_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
+
+
+```php title="Default value"
+'#00c100'
+```
 
 
 ### slack_failure_color
@@ -133,9 +170,19 @@ Color of attachment
 
 
 
+```php title="Default value"
+'#ff0909'
+```
+
+
 ### slack_rollback_color
 [Source](https://github.com/deployphp/deployer/search?q=%22slack_rollback_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
 
+
+
+```php title="Default value"
+'#eba211'
+```
 
 
 
@@ -145,8 +192,10 @@ Color of attachment
 
 
 
+
 ### slack:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22slack%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
+
 
 
 
@@ -155,8 +204,10 @@ Color of attachment
 
 
 
+
 ### slack:notify:rollback
 [Source](https://github.com/deployphp/deployer/search?q=%22slack%3Anotify%3Arollback%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Aslack.php)
+
 
 
 

@@ -9,7 +9,7 @@
 
 
 * Tasks
-  * [`deploy:check_remote`](#deploycheck_remote) — Check remote head
+  * [deploy:check_remote](#deploycheck_remote) — Check remote head
 
 
 ## Tasks
@@ -18,4 +18,5 @@
 
 Cancel deployment if there would be no change to the codebase.
 This avoids unnecessary releases if the latest commit has already been deployed.
+
 

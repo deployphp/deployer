@@ -8,16 +8,21 @@
 
 
 
-* Config
-  * [`composer_action`](#composer_action)
-  * [`composer_options`](#composer_options)
+* Configuration
+  * [composer_action](#composer_action)
+  * [composer_options](#composer_options)
 * Tasks
-  * [`deploy:vendors`](#deployvendors) — Installing vendors
+  * [deploy:vendors](#deployvendors) — Installing vendors
 
-## Config
+## Configuration
 ### composer_action
 [Source](https://github.com/deployphp/deployer/search?q=%22composer_action%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
 
+
+
+```php title="Default value"
+'install'
+```
 
 
 ### composer_options
@@ -25,10 +30,16 @@
 
 
 
+```php title="Default value"
+'--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader'
+```
+
+
 
 ## Tasks
 ### deploy:vendors
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Avendors%22+in%3Afile+language%3Aphp+path%3Arecipe%2Fdeploy+filename%3Avendors.php)
+
 
 
 

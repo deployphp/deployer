@@ -56,18 +56,20 @@ Read more information about cachetool on the website:
 http://gordalina.github.io/cachetool/
 
 
-* Config
-  * [`cachetool`](#cachetool)
-  * [`cachetool_args`](#cachetool_args)
-  * [`cachetool_options`](#cachetool_options)
+* Configuration
+  * [cachetool](#cachetool)
+  * [cachetool_args](#cachetool_args)
+  * [cachetool_options](#cachetool_options)
 * Tasks
-  * [`cachetool:clear:opcache`](#cachetoolclearopcache) — Clearing OPcode cache
-  * [`cachetool:clear:apcu`](#cachetoolclearapcu) — Clearing APCu system cache
-  * [`cachetool:clear:stat`](#cachetoolclearstat) — Clearing file status and realpath caches
+  * [cachetool:clear:opcache](#cachetoolclearopcache) — Clearing OPcode cache
+  * [cachetool:clear:apcu](#cachetoolclearapcu) — Clearing APCu system cache
+  * [cachetool:clear:stat](#cachetoolclearstat) — Clearing file status and realpath caches
 
-## Config
+## Configuration
 ### cachetool
 [Source](https://github.com/deployphp/deployer/search?q=%22cachetool%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+
+
 
 
 
@@ -76,8 +78,12 @@ http://gordalina.github.io/cachetool/
 
 
 
+
+
 ### cachetool_options
 [Source](https://github.com/deployphp/deployer/search?q=%22cachetool_options%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
+
+
 
 
 
@@ -88,13 +94,16 @@ http://gordalina.github.io/cachetool/
 
 Clear opcache cache
 
+
 ### cachetool:clear:apcu
 [Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Aapcu%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 Clear APCU cache
 
+
 ### cachetool:clear:stat
 [Source](https://github.com/deployphp/deployer/search?q=%22cachetool%3Aclear%3Astat%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Acachetool.php)
 
 Clear file status cache, including the realpath cache
+
 

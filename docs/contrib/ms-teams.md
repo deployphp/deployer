@@ -78,33 +78,45 @@ after('deploy:failed', 'teams:notify:failure');
 ```
 
 
-* Config
-  * [`teams_title`](#teams_title)
-  * [`teams_text`](#teams_text)
-  * [`teams_success_text`](#teams_success_text)
-  * [`teams_failure_text`](#teams_failure_text)
-  * [`teams_color`](#teams_color)
-  * [`teams_success_color`](#teams_success_color)
-  * [`teams_failure_color`](#teams_failure_color)
+* Configuration
+  * [teams_title](#teams_title)
+  * [teams_text](#teams_text)
+  * [teams_success_text](#teams_success_text)
+  * [teams_failure_text](#teams_failure_text)
+  * [teams_color](#teams_color)
+  * [teams_success_color](#teams_success_color)
+  * [teams_failure_color](#teams_failure_color)
 * Tasks
-  * [`teams:notify`](#teamsnotify) — Notifying Teams
-  * [`teams:notify:success`](#teamsnotifysuccess) — Notifying Teams about deploy finish
-  * [`teams:notify:failure`](#teamsnotifyfailure) — Notifying Teams about deploy failure
+  * [teams:notify](#teamsnotify) — Notifying Teams
+  * [teams:notify:success](#teamsnotifysuccess) — Notifying Teams about deploy finish
+  * [teams:notify:failure](#teamsnotifyfailure) — Notifying Teams about deploy failure
 
-## Config
+## Configuration
 ### teams_title
 [Source](https://github.com/deployphp/deployer/search?q=%22teams_title%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Title of project
+
+
 
 ### teams_text
 [Source](https://github.com/deployphp/deployer/search?q=%22teams_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Deploy message
 
+```php title="Default value"
+'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+```
+
+
 ### teams_success_text
 [Source](https://github.com/deployphp/deployer/search?q=%22teams_success_text%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
+
+
+```php title="Default value"
+'Deploy to *{{target}}* successful'
+```
 
 
 ### teams_failure_text
@@ -112,19 +124,39 @@ Deploy message
 
 
 
+```php title="Default value"
+'Deploy to *{{target}}* failed'
+```
+
+
 ### teams_color
 [Source](https://github.com/deployphp/deployer/search?q=%22teams_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 Color of attachment
+
+```php title="Default value"
+'#4d91f7'
+```
+
 
 ### teams_success_color
 [Source](https://github.com/deployphp/deployer/search?q=%22teams_success_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
+```php title="Default value"
+'#00c100'
+```
+
+
 ### teams_failure_color
 [Source](https://github.com/deployphp/deployer/search?q=%22teams_failure_color%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
+
+
+```php title="Default value"
+'#ff0909'
+```
 
 
 
@@ -134,13 +166,16 @@ Color of attachment
 
 
 
+
 ### teams:notify:success
 [Source](https://github.com/deployphp/deployer/search?q=%22teams%3Anotify%3Asuccess%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
 
 
 
+
 ### teams:notify:failure
 [Source](https://github.com/deployphp/deployer/search?q=%22teams%3Anotify%3Afailure%22+in%3Afile+language%3Aphp+path%3Acontrib+filename%3Ams-teams.php)
+
 
 
 

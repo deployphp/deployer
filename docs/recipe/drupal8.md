@@ -9,41 +9,52 @@
 
 
 * Require
-  * [`recipe/common.php`](/docs/recipe/common.md)
-* Config
-  * [`drupal_site`](#drupal_site)
-  * [`shared_dirs`](#shared_dirs)
-  * [`shared_files`](#shared_files)
-  * [`writable_dirs`](#writable_dirs)
+  * [common](/docs/recipe/common.md)
+* Configuration
+  * [drupal_site](#drupal_site)
+  * [shared_dirs](#shared_dirs)
+  * [shared_files](#shared_files)
+  * [writable_dirs](#writable_dirs)
 * Tasks
-  * [`deploy`](#deploy)
+  * [deploy](#deploy)
 
-## Config
+## Configuration
 ### drupal_site
 [Source](https://github.com/deployphp/deployer/search?q=%22drupal_site%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Adrupal8.php)
 
 Set drupal site. Change if you use different site
 
+```php title="Default value"
+'default'
+```
+
+
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Adrupal8.php)
 
-* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
 
 Drupal 8 shared dirs
+
+
 
 ### shared_files
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Adrupal8.php)
 
-* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
 
 Drupal 8 shared files
+
+
 
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Adrupal8.php)
 
-* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
 
 Drupal 8 Writable dirs
+
+
 
 
 ## Tasks
@@ -52,8 +63,9 @@ Drupal 8 Writable dirs
 
 
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

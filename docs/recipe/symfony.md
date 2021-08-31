@@ -9,43 +9,51 @@
 
 
 * Require
-  * [`recipe/common.php`](/docs/recipe/common.md)
-* Config
-  * [`symfony_version`](#symfony_version)
-  * [`shared_dirs`](#shared_dirs)
-  * [`shared_files`](#shared_files)
-  * [`writable_dirs`](#writable_dirs)
-  * [`migrations_config`](#migrations_config)
-  * [`console_options`](#console_options)
+  * [common](/docs/recipe/common.md)
+* Configuration
+  * [symfony_version](#symfony_version)
+  * [shared_dirs](#shared_dirs)
+  * [shared_files](#shared_files)
+  * [writable_dirs](#writable_dirs)
+  * [migrations_config](#migrations_config)
+  * [console_options](#console_options)
 * Tasks
-  * [`database:migrate`](#databasemigrate) — Migrate database
-  * [`deploy:cache:clear`](#deploycacheclear) — Clear cache
-  * [`deploy`](#deploy) — Deploy project
+  * [database:migrate](#databasemigrate) — Migrate database
+  * [deploy:cache:clear](#deploycacheclear) — Clear cache
+  * [deploy](#deploy) — Deploy project
 
-## Config
+## Configuration
 ### symfony_version
 [Source](https://github.com/deployphp/deployer/search?q=%22symfony_version%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+
+
 
 
 
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
-* Overrides [`shared_dirs`](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+
+
 
 
 
 ### shared_files
 [Source](https://github.com/deployphp/deployer/search?q=%22shared_files%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
-* Overrides [`shared_files`](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+
+
 
 
 
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/search?q=%22writable_dirs%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
 
-* Overrides [`writable_dirs`](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+
+
 
 
 
@@ -54,8 +62,12 @@
 
 
 
+
+
 ### console_options
 [Source](https://github.com/deployphp/deployer/search?q=%22console_options%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+
+
 
 
 
@@ -66,8 +78,10 @@
 
 
 
+
 ### deploy:cache:clear
 [Source](https://github.com/deployphp/deployer/search?q=%22deploy%3Acache%3Aclear%22+in%3Afile+language%3Aphp+path%3Arecipe+filename%3Asymfony.php)
+
 
 
 
@@ -76,10 +90,11 @@
 
 
 
+
 This task is group task which contains next tasks:
-* [`deploy:prepare`](/docs/recipe/common.md#deployprepare)
-* [`deploy:vendors`](/docs/recipe/deploy/vendors.md#deployvendors)
-* [`deploy:cache:clear`](/docs/recipe/symfony.md#deploycacheclear)
-* [`deploy:publish`](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
+* [deploy:cache:clear](/docs/recipe/symfony.md#deploycacheclear)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

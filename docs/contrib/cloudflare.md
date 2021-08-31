@@ -30,8 +30,6 @@ if not the, last tasks before cleanup
 
 
 
-* Tasks
-  * [deploy:cloudflare](#deploycloudflare)
 
 
 ## Tasks
@@ -39,6 +37,8 @@ if not the, last tasks before cleanup
 ### deploy:cloudflare
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cloudflare.php#L28)
 
-Clearing Cloudflare Cache
+Clearing Cloudflare Cache.
+
+
 
 

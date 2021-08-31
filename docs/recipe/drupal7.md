@@ -8,17 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [drupal_site](#drupal_site)
-  * [shared_dirs](#shared_dirs)
-  * [shared_files](#shared_files)
-  * [writable_dirs](#writable_dirs)
-* Tasks
-  * [deploy](#deploy)
-  * [drupal:settings](#drupalsettings)
-  * [drupal:upload_files](#drupalupload_files)
 
 ## Configuration
 ### drupal_site
@@ -34,7 +25,7 @@ Set Drupal 7 site. Change if you use different site
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L17)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 Drupal 7 shared dirs
 
@@ -48,7 +39,7 @@ Drupal 7 shared dirs
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L22)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 Drupal 7 shared files
 
@@ -62,7 +53,7 @@ Drupal 7 shared files
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L27)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 Drupal 7 writable dirs
 
@@ -79,6 +70,8 @@ Drupal 7 writable dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L8)
 
+.
+
 
 
 
@@ -90,11 +83,15 @@ This task is group task which contains next tasks:
 ### drupal:settings
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L33)
 
+.
+
 Create and upload Drupal 7 settings.php using values from secrets
 
 
 ### drupal:upload_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L75)
+
+.
 
 Upload Drupal 7 files folder
 

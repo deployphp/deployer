@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:setup](#deploysetup)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### deploy:setup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/setup.php#L8)
 
-Preparing host for deploy
+Preparing host for deploy.
+
+
 
 

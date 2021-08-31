@@ -71,24 +71,6 @@ after('deploy:failed', 'rocketchat:notify:failure');
 
 
 
-* Configuration
-  * [rockchat_title](#rockchat_title)
-  * [rocketchat_icon_emoji](#rocketchat_icon_emoji)
-  * [rocketchat_icon_url](#rocketchat_icon_url)
-  * [rocketchat_channel](#rocketchat_channel)
-  * [rocketchat_room_id](#rocketchat_room_id)
-  * [rocketchat_username](#rocketchat_username)
-  * [rocketchat_webhook](#rocketchat_webhook)
-  * [rocketchat_color](#rocketchat_color)
-  * [rocketchat_success_color](#rocketchat_success_color)
-  * [rocketchat_failure_color](#rocketchat_failure_color)
-  * [rocketchat_text](#rocketchat_text)
-  * [rocketchat_success_text](#rocketchat_success_text)
-  * [rocketchat_failure_text](#rocketchat_failure_text)
-* Tasks
-  * [rocketchat:notify](#rocketchatnotify)
-  * [rocketchat:notify:success](#rocketchatnotifysuccess)
-  * [rocketchat:notify:failure](#rocketchatnotifyfailure)
 
 ## Configuration
 ### rockchat_title
@@ -224,18 +206,24 @@ null
 ### rocketchat:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L91)
 
-Notify RocketChat
+Notify RocketChat.
+
+
 
 
 ### rocketchat:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L121)
 
-Notifying RocketChat about deploy finish
+Notifying RocketChat about deploy finish.
+
+
 
 
 ### rocketchat:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L151)
 
-Notifying RocketChat about deploy failure
+Notifying RocketChat about deploy failure.
+
+
 
 

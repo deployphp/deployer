@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [rollback](#rollback)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### rollback
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L8)
 
-Rollback to previous release
+Rollback to previous release.
+
+
 
 

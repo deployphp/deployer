@@ -70,22 +70,6 @@ after('deploy:failed', 'slack:notify:failure');
 
 
 
-* Configuration
-  * [slack_channel](#slack_channel)
-  * [slack_title](#slack_title)
-  * [slack_text](#slack_text)
-  * [slack_success_text](#slack_success_text)
-  * [slack_failure_text](#slack_failure_text)
-  * [slack_rollback_text](#slack_rollback_text)
-  * [slack_color](#slack_color)
-  * [slack_success_color](#slack_success_color)
-  * [slack_failure_color](#slack_failure_color)
-  * [slack_rollback_color](#slack_rollback_color)
-* Tasks
-  * [slack:notify](#slacknotify)
-  * [slack:notify:success](#slacknotifysuccess)
-  * [slack:notify:failure](#slacknotifyfailure)
-  * [slack:notify:rollback](#slacknotifyrollback)
 
 ## Configuration
 ### slack_channel
@@ -191,24 +175,32 @@ Color of attachment
 ### slack:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L100)
 
-Notifying Slack
+Notifying Slack.
+
+
 
 
 ### slack:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L120)
 
-Notifying Slack about deploy finish
+Notifying Slack about deploy finish.
+
+
 
 
 ### slack:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L140)
 
-Notifying Slack about deploy failure
+Notifying Slack about deploy failure.
+
+
 
 
 ### slack:notify:rollback
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L160)
 
-Notifying Slack about rollback
+Notifying Slack about rollback.
+
+
 
 

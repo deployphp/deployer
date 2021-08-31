@@ -8,18 +8,14 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [shared_dirs](#shared_dirs)
-* Tasks
-  * [deploy](#deploy)
 
 ## Configuration
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L9)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 FuelPHP 1.x shared dirs
 
@@ -36,7 +32,9 @@ FuelPHP 1.x shared dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L17)
 
-Deploy your projectMain task
+Deploy your project.
+
+Main task
 
 
 This task is group task which contains next tasks:

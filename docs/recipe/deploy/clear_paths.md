@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:clear_paths](#deployclear_paths)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### deploy:clear_paths
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L5)
 
-Cleaning up files and/or directories
+Cleaning up files and/or directories.
+
+
 
 

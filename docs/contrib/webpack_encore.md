@@ -31,11 +31,9 @@ after('deploy:update_code', 'webpack_encore:build');
 ```
 
 
-* Require
+* Requires
   * [npm](/docs/contrib/npm.md)
   * [yarn](/docs/contrib/yarn.md)
-* Tasks
-  * [webpack_encore:build](#webpack_encorebuild)
 
 
 ## Tasks
@@ -43,6 +41,8 @@ after('deploy:update_code', 'webpack_encore:build');
 ### webpack_encore:build
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L42)
 
-Run webpack encore build
+Run webpack encore build.
+
+
 
 

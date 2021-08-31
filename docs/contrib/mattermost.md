@@ -87,20 +87,6 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 
 
-* Configuration
-  * [mattermost_webhook](#mattermost_webhook)
-  * [mattermost_channel](#mattermost_channel)
-  * [mattermost_username](#mattermost_username)
-  * [mattermost_icon_url](#mattermost_icon_url)
-  * [mattermost_success_emoji](#mattermost_success_emoji)
-  * [mattermost_failure_emoji](#mattermost_failure_emoji)
-  * [mattermost_text](#mattermost_text)
-  * [mattermost_success_text](#mattermost_success_text)
-  * [mattermost_failure_text](#mattermost_failure_text)
-* Tasks
-  * [mattermost:notify](#mattermostnotify)
-  * [mattermost:notify:success](#mattermostnotifysuccess)
-  * [mattermost:notify:failure](#mattermostnotifyfailure)
 
 ## Configuration
 ### mattermost_webhook
@@ -199,18 +185,24 @@ null
 ### mattermost:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L99)
 
-Notify mattermost
+Notify mattermost.
+
+
 
 
 ### mattermost:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L120)
 
-Notifying mattermost about deploy finish
+Notifying mattermost about deploy finish.
+
+
 
 
 ### mattermost:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L141)
 
-Notifying mattermost about deploy failure
+Notifying mattermost about deploy failure.
+
+
 
 

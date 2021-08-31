@@ -8,29 +8,8 @@
 
 
 
-* Require
+* Requires
   * [laravel](/docs/recipe/laravel.md)
-* Configuration
-  * [statamic_version](#statamic_version)
-* Tasks
-  * [statamic:addons:discover](#statamicaddonsdiscover)
-  * [statamic:assets:generate-presets](#statamicassetsgenerate-presets)
-  * [statamic:assets:meta](#statamicassetsmeta)
-  * [statamic:git:commit](#statamicgitcommit)
-  * [statamic:glide:clear](#statamicglideclear)
-  * [statamic:responsive:generate](#statamicresponsivegenerate)
-  * [statamic:responsive:regenerate](#statamicresponsiveregenerate)
-  * [statamic:search:insert](#statamicsearchinsert)
-  * [statamic:search:update](#statamicsearchupdate)
-  * [statamic:stache:clear](#statamicstacheclear)
-  * [statamic:stache:doctor](#statamicstachedoctor)
-  * [statamic:stache:refresh](#statamicstacherefresh)
-  * [statamic:stache:warm](#statamicstachewarm)
-  * [statamic:static:clear](#statamicstaticclear)
-  * [statamic:static:warm](#statamicstaticwarm)
-  * [statamic:support:details](#statamicsupportdetails)
-  * [statamic:updates:run](#statamicupdatesrun)
-  * [deploy](#deploy)
 
 ## Configuration
 ### statamic_version
@@ -46,109 +25,145 @@
 ### statamic:addons:discover
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L26)
 
-Rebuild the cached addon package manifest
+Rebuild the cached addon package manifest.
+
+
 
 
 ### statamic:assets:generate-presets
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L33)
 
-Generate asset preset manipulations
+Generate asset preset manipulations.
+
+
 
 
 ### statamic:assets:meta
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L36)
 
-Generate asset metadata files
+Generate asset metadata files.
+
+
 
 
 ### statamic:git:commit
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L43)
 
-Git add and commit tracked content
+Git add and commit tracked content.
+
+
 
 
 ### statamic:glide:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L50)
 
-Clear the Glide image cache
+Clear the Glide image cache.
+
+
 
 
 ### statamic:responsive:generate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L57)
 
-Generate responsive images
+Generate responsive images.
+
+
 
 
 ### statamic:responsive:regenerate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L60)
 
-Regenerate responsive images
+Regenerate responsive images.
+
+
 
 
 ### statamic:search:insert
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L67)
 
-Insert an item into its search indexes
+Insert an item into its search indexes.
+
+
 
 
 ### statamic:search:update
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L70)
 
-Update a search index
+Update a search index.
+
+
 
 
 ### statamic:stache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L77)
 
-Clear the "Stache" cache
+Clear the "Stache" cache.
+
+
 
 
 ### statamic:stache:doctor
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L80)
 
-Diagnose any problems with the Stache
+Diagnose any problems with the Stache.
+
+
 
 
 ### statamic:stache:refresh
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L83)
 
-Clear and rebuild the "Stache" cache
+Clear and rebuild the "Stache" cache.
+
+
 
 
 ### statamic:stache:warm
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L86)
 
-Build the "Stache" cache
+Build the "Stache" cache.
+
+
 
 
 ### statamic:static:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L93)
 
-Clear the static page cache
+Clear the static page cache.
+
+
 
 
 ### statamic:static:warm
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L96)
 
-Warms the static cache by visiting all URLs
+Warms the static cache by visiting all URLs.
+
+
 
 
 ### statamic:support:details
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L103)
 
-Outputs details helpful for support requests
+Outputs details helpful for support requests.
+
+
 
 
 ### statamic:updates:run
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L110)
 
-Run update scripts from specific version
+Run update scripts from specific version.
+
+
 
 
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L118)
 
-Deploy your project
+Deploy your project.
+
+
 
 
 This task is group task which contains next tasks:

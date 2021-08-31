@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:symlink](#deploysymlink)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### deploy:symlink
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L5)
 
-Creating symlink to release
+Creating symlink to release.
+
+
 
 

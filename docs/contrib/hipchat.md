@@ -34,13 +34,6 @@ after('deploy', 'hipchat:notify');
 
 
 
-* Configuration
-  * [hipchat_color](#hipchat_color)
-  * [hipchat_from](#hipchat_from)
-  * [hipchat_message](#hipchat_message)
-  * [hipchat_url](#hipchat_url)
-* Tasks
-  * [hipchat:notify](#hipchatnotify)
 
 ## Configuration
 ### hipchat_color
@@ -89,6 +82,8 @@ after('deploy', 'hipchat:notify');
 ### hipchat:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L39)
 
-Notifying Hipchat channel of deployment
+Notifying Hipchat channel of deployment.
+
+
 
 

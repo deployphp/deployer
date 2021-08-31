@@ -55,8 +55,6 @@ before('deploy:end', 'deploy:rabbit');
 ```
 
 
-* Tasks
-  * [deploy:rabbit](#deployrabbit)
 
 
 ## Tasks
@@ -64,6 +62,8 @@ before('deploy:end', 'deploy:rabbit');
 ### deploy:rabbit
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rabbit.php#L58)
 
-Notifying RabbitMQ channel about deployment
+Notifying RabbitMQ channel about deployment.
+
+
 
 

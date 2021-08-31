@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [push](#push)
 
 
 ## Tasks
@@ -17,7 +15,9 @@
 ### push
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/push.php#L9)
 
-Push local changes to remote hostCreates patch of local changes and pushes them on host.
+Push local changes to remote host.
+
+Creates patch of local changes and pushes them on host.
 And applies to current_path. Push can be done many times.
 The task purpose to be used only for development.
 

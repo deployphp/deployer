@@ -77,15 +77,6 @@ after('deploy:failed', 'workplace:notify:failure');
 
 
 
-* Configuration
-  * [workplace_text](#workplace_text)
-  * [workplace_success_text](#workplace_success_text)
-  * [workplace_failure_text](#workplace_failure_text)
-  * [workplace_edit_post](#workplace_edit_post)
-* Tasks
-  * [workplace:notify](#workplacenotify)
-  * [workplace:notify:success](#workplacenotifysuccess)
-  * [workplace:notify:failure](#workplacenotifyfailure)
 
 ## Configuration
 ### workplace_text
@@ -134,18 +125,24 @@ false
 ### workplace:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L85)
 
-Notifying Workplace
+Notifying Workplace.
+
+
 
 
 ### workplace:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L110)
 
-Notifying Workplace about deploy finish
+Notifying Workplace about deploy finish.
+
+
 
 
 ### workplace:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L122)
 
-Notifying Workplace about deploy failure
+Notifying Workplace about deploy failure.
+
+
 
 

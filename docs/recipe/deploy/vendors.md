@@ -8,11 +8,6 @@
 
 
 
-* Configuration
-  * [composer_action](#composer_action)
-  * [composer_options](#composer_options)
-* Tasks
-  * [deploy:vendors](#deployvendors)
 
 ## Configuration
 ### composer_action
@@ -41,6 +36,8 @@
 ### deploy:vendors
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L28)
 
-Installing vendors
+Installing vendors.
+
+
 
 

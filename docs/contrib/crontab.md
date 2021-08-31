@@ -28,9 +28,6 @@ add('crontab:jobs', [
 ```
 
 
-* Tasks
-  * [crontab:load](#crontabload)
-  * [crontab:sync](#crontabsync)
 
 
 ## Tasks
@@ -38,12 +35,16 @@ add('crontab:jobs', [
 ### crontab:load
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L31)
 
-Load crontab
+Load crontab.
+
+
 
 
 ### crontab:sync
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L56)
 
-Sync crontab jobs
+Sync crontab jobs.
+
+
 
 

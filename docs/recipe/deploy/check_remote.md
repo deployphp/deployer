@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:check_remote](#deploycheck_remote)
 
 
 ## Tasks
@@ -17,7 +15,9 @@
 ### deploy:check_remote
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/check_remote.php#L10)
 
-Check remote headCancel deployment if there would be no change to the codebase.
+Check remote head.
+
+Cancel deployment if there would be no change to the codebase.
 This avoids unnecessary releases if the latest commit has already been deployed.
 
 

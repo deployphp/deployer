@@ -8,10 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:lock](#deploylock)
-  * [deploy:unlock](#deployunlock)
-  * [deploy:is-unlocked](#deployis-unlocked)
 
 
 ## Tasks
@@ -19,18 +15,24 @@
 ### deploy:lock
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L8)
 
-Lock deploy
+Lock deploy.
+
+
 
 
 ### deploy:unlock
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L22)
 
-Unlock deploy
+Unlock deploy.
+
+
 
 
 ### deploy:is-unlocked
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L27)
 
-Check if deploy is unlocked
+Check if deploy is unlocked.
+
+
 
 

@@ -34,10 +34,6 @@ after('deploy', 'rollbar:notify');
 
 
 
-* Configuration
-  * [rollbar_comment](#rollbar_comment)
-* Tasks
-  * [rollbar:notify](#rollbarnotify)
 
 ## Configuration
 ### rollbar_comment
@@ -56,6 +52,8 @@ after('deploy', 'rollbar:notify');
 ### rollbar:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L36)
 
-Notifying Rollbar of deployment
+Notifying Rollbar of deployment.
+
+
 
 

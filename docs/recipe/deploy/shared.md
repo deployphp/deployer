@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:shared](#deployshared)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### deploy:shared
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L8)
 
-Creating symlinks for shared files and dirs
+Creating symlinks for shared files and dirs.
+
+
 
 

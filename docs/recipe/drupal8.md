@@ -8,15 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [drupal_site](#drupal_site)
-  * [shared_dirs](#shared_dirs)
-  * [shared_files](#shared_files)
-  * [writable_dirs](#writable_dirs)
-* Tasks
-  * [deploy](#deploy)
 
 ## Configuration
 ### drupal_site
@@ -32,7 +25,7 @@ Set drupal site. Change if you use different site
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal8.php#L18)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 Drupal 8 shared dirs
 
@@ -46,7 +39,7 @@ Drupal 8 shared dirs
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal8.php#L23)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 Drupal 8 shared files
 
@@ -61,7 +54,7 @@ Drupal 8 shared files
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal8.php#L29)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 Drupal 8 Writable dirs
 
@@ -77,6 +70,8 @@ Drupal 8 Writable dirs
 
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal8.php#L8)
+
+.
 
 
 

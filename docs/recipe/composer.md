@@ -8,10 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Tasks
-  * [deploy](#deploy)
 
 
 ## Tasks
@@ -19,7 +17,9 @@
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/composer.php#L9)
 
-Deploy your project
+Deploy your project.
+
+
 
 
 This task is group task which contains next tasks:

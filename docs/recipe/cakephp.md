@@ -8,21 +8,14 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [shared_dirs](#shared_dirs)
-  * [shared_files](#shared_files)
-* Tasks
-  * [deploy:init](#deployinit)
-  * [deploy:run_migrations](#deployrun_migrations)
-  * [deploy](#deploy)
 
 ## Configuration
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L13)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 CakePHP 4 Project Template shared dirs
 
@@ -37,7 +30,7 @@ CakePHP 4 Project Template shared dirs
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L19)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 CakePHP 4 Project Template shared files
 
@@ -55,17 +48,23 @@ CakePHP 4 Project Template shared files
 ### deploy:init
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L27)
 
+.
+
 Create plugins' symlinks
 
 
 ### deploy:run_migrations
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L34)
 
+.
+
 Run migrations
 
 
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L43)
+
+.
 
 Main task
 

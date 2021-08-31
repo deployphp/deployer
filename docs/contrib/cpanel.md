@@ -149,10 +149,6 @@ after('deploy:prepare', 'cpanel:createdb');
 ```
 
 
-* Tasks
-  * [cpanel:createdb](#cpanelcreatedb)
-  * [cpanel:createaddondomain](#cpanelcreateaddondomain)
-  * [cpanel:deleteaddondomain](#cpaneldeleteaddondomain)
 
 
 ## Tasks
@@ -160,18 +156,24 @@ after('deploy:prepare', 'cpanel:createdb');
 ### cpanel:createdb
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L203)
 
-Creating database though CPanel API
+Creating database though CPanel API.
+
+
 
 
 ### cpanel:createaddondomain
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L231)
 
-Creating addon domain though CPanel API
+Creating addon domain though CPanel API.
+
+
 
 
 ### cpanel:deleteaddondomain
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L254)
 
-Delete addon domain though CPanel API
+Delete addon domain though CPanel API.
+
+
 
 

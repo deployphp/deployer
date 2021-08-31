@@ -8,19 +8,14 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [shared_dirs](#shared_dirs)
-  * [writable_dirs](#writable_dirs)
-* Tasks
-  * [deploy](#deploy)
 
 ## Configuration
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter.php#L9)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 CodeIgniter shared dirs
 
@@ -32,7 +27,7 @@ CodeIgniter shared dirs
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter.php#L12)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 CodeIgniter writable dirs
 
@@ -47,7 +42,9 @@ CodeIgniter writable dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter.php#L18)
 
-Deploy your projectMain task
+Deploy your project.
+
+Main task
 
 
 This task is group task which contains next tasks:

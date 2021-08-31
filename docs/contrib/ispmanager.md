@@ -10,31 +10,6 @@
 This recipe for work with ISPManager Lite panel by API.
 
 
-* Configuration
-  * [ispmanager_owner](#ispmanager_owner)
-  * [ispmanager_doc_root](#ispmanager_doc_root)
-  * [ispmanager](#ispmanager)
-  * [vhost](#vhost)
-  * [ispmanager_session](#ispmanager_session)
-  * [ispmanager_databases](#ispmanager_databases)
-  * [ispmanager_domains](#ispmanager_domains)
-  * [ispmanager_phplist](#ispmanager_phplist)
-  * [ispmanager_aliaslist](#ispmanager_aliaslist)
-* Tasks
-  * [ispmanager:init](#ispmanagerinit)
-  * [ispmanager:db-server-list](#ispmanagerdb-server-list)
-  * [ispmanager:db-list](#ispmanagerdb-list)
-  * [ispmanager:domain-list](#ispmanagerdomain-list)
-  * [ispmanager:db-create](#ispmanagerdb-create)
-  * [ispmanager:db-delete](#ispmanagerdb-delete)
-  * [ispmanager:domain-create](#ispmanagerdomain-create)
-  * [ispmanager:get-php-list](#ispmanagerget-php-list)
-  * [ispmanager:print-php-list](#ispmanagerprint-php-list)
-  * [ispmanager:domain-php-select](#ispmanagerdomain-php-select)
-  * [ispmanager:domain-alias-create](#ispmanagerdomain-alias-create)
-  * [ispmanager:domain-alias-delete](#ispmanagerdomain-alias-delete)
-  * [ispmanager:domain-delete](#ispmanagerdomain-delete)
-  * [ispmanager:process](#ispmanagerprocess)
 
 ## Configuration
 ### ispmanager_owner
@@ -155,84 +130,112 @@ Storage
 ### ispmanager:init
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L61)
 
-Initialisation
+Initialisation.
+
+
 
 
 ### ispmanager:db-server-list
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L84)
 
-Take database servers list
+Take database servers list.
+
+
 
 
 ### ispmanager:db-list
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L122)
 
-Take databases list
+Take databases list.
+
+
 
 
 ### ispmanager:domain-list
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L144)
 
-Take domain list
+Take domain list.
+
+
 
 
 ### ispmanager:db-create
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L160)
 
-Create new database
+Create new database.
+
+
 
 
 ### ispmanager:db-delete
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L234)
 
-Delete database
+Delete database.
+
+
 
 
 ### ispmanager:domain-create
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L287)
 
-Create new domain
+Create new domain.
+
+
 
 
 ### ispmanager:get-php-list
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L335)
 
-Get allowed PHP modes and versions
+Get allowed PHP modes and versions.
+
+
 
 
 ### ispmanager:print-php-list
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L381)
 
-Print allowed PHP modes and versions
+Print allowed PHP modes and versions.
+
+
 
 
 ### ispmanager:domain-php-select
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L423)
 
-Switch PHP version for domain
+Switch PHP version for domain.
+
+
 
 
 ### ispmanager:domain-alias-create
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L497)
 
-Create new domain alias
+Create new domain alias.
+
+
 
 
 ### ispmanager:domain-alias-delete
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L568)
 
-Delete domain alias
+Delete domain alias.
+
+
 
 
 ### ispmanager:domain-delete
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L638)
 
-Delete domain
+Delete domain.
+
+
 
 
 ### ispmanager:process
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L688)
 
-Auto task processing
+Auto task processing.
+
+
 
 

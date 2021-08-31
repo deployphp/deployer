@@ -8,10 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Tasks
-  * [deploy](#deploy)
 
 
 ## Tasks
@@ -19,7 +17,9 @@
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/zend_framework.php#L12)
 
-Deploy your projectMain task
+Deploy your project.
+
+Main task
 
 
 This task is group task which contains next tasks:

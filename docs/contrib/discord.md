@@ -59,18 +59,6 @@ after('deploy:failed', 'discord:notify:failure');
 ```
 
 
-* Configuration
-  * [discord_webhook](#discord_webhook)
-  * [discord_notify_text](#discord_notify_text)
-  * [discord_success_text](#discord_success_text)
-  * [discord_failure_text](#discord_failure_text)
-  * [discord_message](#discord_message)
-* Tasks
-  * [discord_send_message](#discord_send_message)
-  * [discord:test](#discordtest)
-  * [discord:notify](#discordnotify)
-  * [discord:notify:success](#discordnotifysuccess)
-  * [discord:notify:failure](#discordnotifyfailure)
 
 ## Configuration
 ### discord_webhook
@@ -117,30 +105,40 @@ The message
 ### discord_send_message
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L84)
 
+.
+
 Helpers
 
 
 ### discord:test
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L92)
 
-Just notify your Discord channel with all messages, without deployingTasks
+Just notify your Discord channel with all messages, without deploying.
+
+Tasks
 
 
 ### discord:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L104)
 
-Notify Discord
+Notify Discord.
+
+
 
 
 ### discord:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L113)
 
-Notify Discord about deploy finish
+Notify Discord about deploy finish.
+
+
 
 
 ### discord:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L122)
 
-Notify Discord about deploy failure
+Notify Discord about deploy failure.
+
+
 
 

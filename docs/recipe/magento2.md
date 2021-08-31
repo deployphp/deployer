@@ -8,28 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [static_content_locales](#static_content_locales)
-  * [content_version](#content_version)
-  * [shared_files](#shared_files)
-  * [shared_dirs](#shared_dirs)
-  * [writable_dirs](#writable_dirs)
-  * [clear_paths](#clear_paths)
-  * [magento_version](#magento_version)
-  * [maintenance_mode_status_active](#maintenance_mode_status_active)
-* Tasks
-  * [magento:compile](#magentocompile)
-  * [magento:deploy:assets](#magentodeployassets)
-  * [magento:sync:content_version](#magentosynccontent_version)
-  * [magento:maintenance:enable](#magentomaintenanceenable)
-  * [magento:maintenance:disable](#magentomaintenancedisable)
-  * [magento:config:import](#magentoconfigimport)
-  * [magento:upgrade:db](#magentoupgradedb)
-  * [magento:cache:flush](#magentocacheflush)
-  * [deploy:magento](#deploymagento)
-  * [deploy](#deploy)
 
 ## Configuration
 ### static_content_locales
@@ -54,7 +34,7 @@ in you deployer script.
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L26)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 
 
@@ -69,7 +49,7 @@ in you deployer script.
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L30)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 
 
@@ -94,7 +74,7 @@ in you deployer script.
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L44)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 
 
@@ -111,7 +91,7 @@ in you deployer script.
 ### clear_paths
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L50)
 
-* Overrides [clear_paths](/docs/recipe/common.md#clear_paths) from `recipe/common.php`
+Overrides [clear_paths](/docs/recipe/common.md#clear_paths) from `recipe/common.php`.
 
 
 
@@ -147,55 +127,73 @@ in you deployer script.
 ### magento:compile
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L74)
 
-Compile magento diTasks
+Compile magento di.
+
+Tasks
 
 
 ### magento:deploy:assets
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L81)
 
-Deploy assets
+Deploy assets.
+
+
 
 
 ### magento:sync:content_version
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L86)
 
-Sync content version
+Sync content version.
+
+
 
 
 ### magento:maintenance:enable
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L96)
 
-Enable maintenance mode
+Enable maintenance mode.
+
+
 
 
 ### magento:maintenance:disable
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L101)
 
-Disable maintenance mode
+Disable maintenance mode.
+
+
 
 
 ### magento:config:import
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L106)
 
-Config Import
+Config Import.
+
+
 
 
 ### magento:upgrade:db
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L141)
 
-Upgrade magento database
+Upgrade magento database.
+
+
 
 
 ### magento:cache:flush
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L168)
 
-Flush Magento Cache
+Flush Magento Cache.
+
+
 
 
 ### deploy:magento
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L173)
 
-Magento2 deployment operations
+Magento2 deployment operations.
+
+
 
 
 This task is group task which contains next tasks:
@@ -208,7 +206,9 @@ This task is group task which contains next tasks:
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L182)
 
-Deploy your project
+Deploy your project.
+
+
 
 
 This task is group task which contains next tasks:

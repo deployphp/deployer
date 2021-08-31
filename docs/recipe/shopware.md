@@ -8,36 +8,14 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [repository](#repository)
-  * [release_name](#release_name)
-  * [shared_files](#shared_files)
-  * [shared_dirs](#shared_dirs)
-  * [writable_dirs](#writable_dirs)
-  * [static_folders](#static_folders)
-* Tasks
-  * [sw:update_code](#swupdate_code)
-  * [sw:system:install](#swsysteminstall)
-  * [sw:build](#swbuild)
-  * [sw:system:setup](#swsystemsetup)
-  * [sw:theme:compile](#swthemecompile)
-  * [sw:cache:clear](#swcacheclear)
-  * [sw:cache:warmup](#swcachewarmup)
-  * [sw:database:migrate](#swdatabasemigrate)
-  * [sw:plugin:refresh](#swpluginrefresh)
-  * [sw:plugin:activate:all](#swpluginactivateall)
-  * [sw:plugin:migrate:all](#swpluginmigrateall)
-  * [sw:plugin:upgrade:all](#swpluginupgradeall)
-  * [sw:deploy](#swdeploy)
-  * [deploy](#deploy)
 
 ## Configuration
 ### repository
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L11)
 
-* Overrides [repository](/docs/recipe/common.md#repository) from `recipe/common.php`
+Overrides [repository](/docs/recipe/common.md#repository) from `recipe/common.php`.
 
 
 
@@ -49,7 +27,7 @@
 ### release_name
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L13)
 
-* Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`
+Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`.
 
 
 
@@ -58,7 +36,7 @@
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L17)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 
 
@@ -72,7 +50,7 @@
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L20)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 
 
@@ -92,7 +70,7 @@
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L29)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 
 
@@ -121,11 +99,15 @@
 ### sw:update_code
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L39)
 
+.
+
 
 
 
 ### sw:system:install
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L42)
+
+.
 
 
 
@@ -133,11 +115,15 @@
 ### sw:build
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L45)
 
+.
+
 
 
 
 ### sw:system:setup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L48)
+
+.
 
 
 
@@ -145,11 +131,15 @@
 ### sw:theme:compile
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L51)
 
+.
+
 
 
 
 ### sw:cache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L54)
+
+.
 
 
 
@@ -157,11 +147,15 @@
 ### sw:cache:warmup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L57)
 
+.
+
 
 
 
 ### sw:database:migrate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L61)
+
+.
 
 
 
@@ -169,11 +163,15 @@
 ### sw:plugin:refresh
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L64)
 
+.
+
 
 
 
 ### sw:plugin:activate:all
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L134)
+
+.
 
 
 
@@ -181,17 +179,23 @@
 ### sw:plugin:migrate:all
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L155)
 
+.
+
 
 
 
 ### sw:plugin:upgrade:all
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L175)
 
+.
+
 
 
 
 ### sw:deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L198)
+
+.
 
 Grouped SW deploy tasks
 
@@ -208,7 +212,9 @@ This task is group task which contains next tasks:
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L211)
 
-Deploy your projectMain task
+Deploy your project.
+
+Main task
 
 
 This task is group task which contains next tasks:

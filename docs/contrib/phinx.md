@@ -71,11 +71,6 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 
-* Tasks
-  * [phinx:migrate](#phinxmigrate)
-  * [phinx:rollback](#phinxrollback)
-  * [phinx:seed](#phinxseed)
-  * [phinx:breakpoint](#phinxbreakpoint)
 
 
 ## Tasks
@@ -83,24 +78,32 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 ### phinx:migrate
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L154)
 
-Migrating database with phinx
+Migrating database with phinx.
+
+
 
 
 ### phinx:rollback
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L176)
 
-Rollback database migrations with phinx
+Rollback database migrations with phinx.
+
+
 
 
 ### phinx:seed
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L198)
 
-Seed database with phinx
+Seed database with phinx.
+
+
 
 
 ### phinx:breakpoint
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L219)
 
-Set a migrations breakpoint with phinx
+Set a migrations breakpoint with phinx.
+
+
 
 

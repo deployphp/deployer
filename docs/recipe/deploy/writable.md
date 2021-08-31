@@ -8,17 +8,6 @@
 
 
 
-* Configuration
-  * [http_user](#http_user)
-  * [http_group](#http_group)
-  * [writable_dirs](#writable_dirs)
-  * [writable_mode](#writable_mode)
-  * [writable_use_sudo](#writable_use_sudo)
-  * [writable_recursive](#writable_recursive)
-  * [writable_chmod_mode](#writable_chmod_mode)
-  * [writable_chmod_recursive](#writable_chmod_recursive)
-* Tasks
-  * [deploy:writable](#deploywritable)
 
 ## Configuration
 ### http_user
@@ -101,6 +90,8 @@ true
 ### deploy:writable
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L41)
 
-Make writable dirs
+Make writable dirs.
+
+
 
 

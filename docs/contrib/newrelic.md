@@ -31,12 +31,6 @@ after('deploy', 'newrelic:notify');
 
 
 
-* Configuration
-  * [newrelic_app_id](#newrelic_app_id)
-  * [newrelic_description](#newrelic_description)
-  * [newrelic_revision](#newrelic_revision)
-* Tasks
-  * [newrelic:notify](#newrelicnotify)
 
 ## Configuration
 ### newrelic_app_id
@@ -66,6 +60,8 @@ after('deploy', 'newrelic:notify');
 ### newrelic:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L43)
 
-Notifying New Relic of deployment
+Notifying New Relic of deployment.
+
+
 
 

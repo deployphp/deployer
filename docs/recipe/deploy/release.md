@@ -8,14 +8,6 @@
 
 
 
-* Configuration
-  * [release_name](#release_name)
-  * [releases_metainfo](#releases_metainfo)
-  * [releases_list](#releases_list)
-  * [release_path](#release_path)
-  * [release_or_current_path](#release_or_current_path)
-* Tasks
-  * [deploy:release](#deployrelease)
 
 ## Configuration
 ### release_name
@@ -60,6 +52,8 @@ but fallback to the current path otherwise.
 ### deploy:release
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L103)
 
-Prepare release. Clean up unfinished releases and prepare next release
+Prepare release. Clean up unfinished releases and prepare next release.
+
+
 
 

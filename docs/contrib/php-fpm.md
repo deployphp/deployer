@@ -35,12 +35,6 @@ after('deploy', 'php-fpm:reload');
 
 
 
-* Configuration
-  * [php_fpm_version](#php_fpm_version)
-  * [php_fpm_service](#php_fpm_service)
-  * [php_fpm_command](#php_fpm_command)
-* Tasks
-  * [php-fpm:reload](#php-fpmreload)
 
 ## Configuration
 ### php_fpm_version
@@ -76,6 +70,8 @@ after('deploy', 'php-fpm:reload');
 ### php-fpm:reload
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L45)
 
-Reload the php-fpm service
+Reload the php-fpm service.
+
+
 
 

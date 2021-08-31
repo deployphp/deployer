@@ -8,15 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [typo3_webroot](#typo3_webroot)
-  * [shared_dirs](#shared_dirs)
-  * [shared_files](#shared_files)
-  * [writable_dirs](#writable_dirs)
-* Tasks
-  * [deploy](#deploy)
 
 ## Configuration
 ### typo3_webroot
@@ -32,7 +25,7 @@ DocumentRoot / WebRoot for the TYPO3 installation
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L26)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 Shared directories
 
@@ -48,7 +41,7 @@ Shared directories
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L35)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 Shared files
 
@@ -62,7 +55,7 @@ Shared files
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L42)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 Writeable directories
 
@@ -82,7 +75,9 @@ Writeable directories
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L17)
 
-Deploy your projectMain TYPO3 task
+Deploy your project.
+
+Main TYPO3 task
 
 
 This task is group task which contains next tasks:

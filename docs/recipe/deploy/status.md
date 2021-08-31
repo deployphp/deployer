@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [status](#status)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### status
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/status.php#L8)
 
-Show releases status
+Show releases status.
+
+
 
 

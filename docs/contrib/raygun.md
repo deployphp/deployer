@@ -34,8 +34,6 @@ after('deploy', 'raygun:notify');
 ```
 
 
-* Tasks
-  * [raygun:notify](#raygunnotify)
 
 
 ## Tasks
@@ -43,6 +41,8 @@ after('deploy', 'raygun:notify');
 ### raygun:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/raygun.php#L34)
 
-Notifying Raygun of deployment
+Notifying Raygun of deployment.
+
+
 
 

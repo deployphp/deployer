@@ -8,7 +8,7 @@
 
 
 
-* Require
+* Requires
   * [check_remote](/docs/recipe/deploy/check_remote.md)
   * [cleanup](/docs/recipe/deploy/cleanup.md)
   * [clear_paths](/docs/recipe/deploy/clear_paths.md)
@@ -25,28 +25,6 @@
   * [update_code](/docs/recipe/deploy/update_code.md)
   * [vendors](/docs/recipe/deploy/vendors.md)
   * [writable](/docs/recipe/deploy/writable.md)
-* Configuration
-  * [user](#user)
-  * [keep_releases](#keep_releases)
-  * [repository](#repository)
-  * [shared_dirs](#shared_dirs)
-  * [shared_files](#shared_files)
-  * [copy_dirs](#copy_dirs)
-  * [clear_paths](#clear_paths)
-  * [clear_use_sudo](#clear_use_sudo)
-  * [use_relative_symlink](#use_relative_symlink)
-  * [use_atomic_symlink](#use_atomic_symlink)
-  * [default_timeout](#default_timeout)
-  * [env](#env)
-  * [dotenv](#dotenv)
-  * [current_path](#current_path)
-  * [sudo_askpass](#sudo_askpass)
-* Tasks
-  * [deploy:prepare](#deployprepare)
-  * [deploy:publish](#deploypublish)
-  * [deploy:success](#deploysuccess)
-  * [deploy:failed](#deployfailed)
-  * [logs](#logs)
 
 ## Configuration
 ### user
@@ -209,6 +187,8 @@ sudo command executed.
 ### deploy:prepare
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L155)
 
+.
+
 
 
 
@@ -225,6 +205,8 @@ This task is group task which contains next tasks:
 ### deploy:publish
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L165)
 
+.
+
 
 
 
@@ -238,11 +220,15 @@ This task is group task which contains next tasks:
 ### deploy:success
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L175)
 
+.
+
 Prints success message
 
 
 ### deploy:failed
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L185)
+
+.
 
 Hook on deploy failure.
 
@@ -250,6 +236,8 @@ Hook on deploy failure.
 ### logs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L194)
 
-Follow latest application logs.Follow latest application logs.
+Follow latest application logs.
+
+Follow latest application logs.
 
 

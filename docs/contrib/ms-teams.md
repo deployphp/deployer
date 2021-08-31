@@ -78,18 +78,6 @@ after('deploy:failed', 'teams:notify:failure');
 ```
 
 
-* Configuration
-  * [teams_title](#teams_title)
-  * [teams_text](#teams_text)
-  * [teams_success_text](#teams_success_text)
-  * [teams_failure_text](#teams_failure_text)
-  * [teams_color](#teams_color)
-  * [teams_success_color](#teams_success_color)
-  * [teams_failure_color](#teams_failure_color)
-* Tasks
-  * [teams:notify](#teamsnotify)
-  * [teams:notify:success](#teamsnotifysuccess)
-  * [teams:notify:failure](#teamsnotifyfailure)
 
 ## Configuration
 ### teams_title
@@ -165,18 +153,24 @@ Color of attachment
 ### teams:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L93)
 
-Notifying Teams
+Notifying Teams.
+
+
 
 
 ### teams:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L108)
 
-Notifying Teams about deploy finish
+Notifying Teams about deploy finish.
+
+
 
 
 ### teams:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L123)
 
-Notifying Teams about deploy failure
+Notifying Teams about deploy failure.
+
+
 
 

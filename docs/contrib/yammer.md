@@ -64,16 +64,6 @@ after('deploy:failed', 'yammer:notify:failure');
 
 
 
-* Configuration
-  * [yammer_url](#yammer_url)
-  * [yammer_title](#yammer_title)
-  * [yammer_body](#yammer_body)
-  * [yammer_success_body](#yammer_success_body)
-  * [yammer_failure_body](#yammer_failure_body)
-* Tasks
-  * [yammer:notify](#yammernotify)
-  * [yammer:notify:success](#yammernotifysuccess)
-  * [yammer:notify:failure](#yammernotifyfailure)
 
 ## Configuration
 ### yammer_url
@@ -129,18 +119,24 @@ Deploy message
 ### yammer:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L76)
 
-Notifying Yammer
+Notifying Yammer.
+
+
 
 
 ### yammer:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L96)
 
-Notifying Yammer about deploy finish
+Notifying Yammer about deploy finish.
+
+
 
 
 ### yammer:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L116)
 
-Notifying Yammer about deploy failure
+Notifying Yammer about deploy failure.
+
+
 
 

@@ -8,12 +8,8 @@
 
 
 
-* Require
+* Requires
   * [symfony](/docs/recipe/symfony.md)
-* Tasks
-  * [phpcr:migrate](#phpcrmigrate)
-  * [deploy:website:cache:clear](#deploywebsitecacheclear)
-  * [deploy:website:cache:warmup](#deploywebsitecachewarmup)
 
 
 ## Tasks
@@ -21,18 +17,24 @@
 ### phpcr:migrate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L18)
 
-Migrate PHPCR
+Migrate PHPCR.
+
+
 
 
 ### deploy:website:cache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L23)
 
-Clear cache
+Clear cache.
+
+
 
 
 ### deploy:website:cache:warmup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L28)
 
-Warm up cache
+Warm up cache.
+
+
 
 

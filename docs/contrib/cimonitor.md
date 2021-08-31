@@ -70,23 +70,6 @@ after('deploy:failed', 'cimonitor:notify:failure');
 ```
 
 
-* Configuration
-  * [cimonitor_title](#cimonitor_title)
-  * [cimonitor_user](#cimonitor_user)
-  * [cimonitor_status_info](#cimonitor_status_info)
-  * [cimonitor_status_warning](#cimonitor_status_warning)
-  * [cimonitor_status_error](#cimonitor_status_error)
-  * [cimonitor_status_success](#cimonitor_status_success)
-  * [cimonitor_job_state_info](#cimonitor_job_state_info)
-  * [cimonitor_job_state_pending](#cimonitor_job_state_pending)
-  * [cimonitor_job_state_running](#cimonitor_job_state_running)
-  * [cimonitor_job_state_warning](#cimonitor_job_state_warning)
-  * [cimonitor_job_state_error](#cimonitor_job_state_error)
-  * [cimonitor_job_state_success](#cimonitor_job_state_success)
-* Tasks
-  * [cimonitor:notify](#cimonitornotify)
-  * [cimonitor:notify:success](#cimonitornotifysuccess)
-  * [cimonitor:notify:failure](#cimonitornotifyfailure)
 
 ## Configuration
 ### cimonitor_title
@@ -209,18 +192,24 @@ get('cimonitor_status_success')
 ### cimonitor:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L95)
 
-Notifying CIMonitor
+Notifying CIMonitor.
+
+
 
 
 ### cimonitor:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L122)
 
-Notifying CIMonitor about deploy finish
+Notifying CIMonitor about deploy finish.
+
+
 
 
 ### cimonitor:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L151)
 
-Notifying CIMonitor about deploy failure
+Notifying CIMonitor about deploy failure.
+
+
 
 

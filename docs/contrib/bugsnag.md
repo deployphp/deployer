@@ -28,8 +28,6 @@ after('deploy', 'bugsnag:notify');
 ```
 
 
-* Tasks
-  * [bugsnag:notify](#bugsnagnotify)
 
 
 ## Tasks
@@ -37,6 +35,8 @@ after('deploy', 'bugsnag:notify');
 ### bugsnag:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/bugsnag.php#L29)
 
-Notifying Bugsnag of deployment
+Notifying Bugsnag of deployment.
+
+
 
 

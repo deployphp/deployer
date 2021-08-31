@@ -8,19 +8,8 @@
 
 
 
-* Require
+* Requires
   * [common](/docs/recipe/common.md)
-* Configuration
-  * [symfony_version](#symfony_version)
-  * [shared_dirs](#shared_dirs)
-  * [shared_files](#shared_files)
-  * [writable_dirs](#writable_dirs)
-  * [migrations_config](#migrations_config)
-  * [console_options](#console_options)
-* Tasks
-  * [database:migrate](#databasemigrate)
-  * [deploy:cache:clear](#deploycacheclear)
-  * [deploy](#deploy)
 
 ## Configuration
 ### symfony_version
@@ -33,7 +22,7 @@
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L14)
 
-* Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`
+Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
 
 
@@ -48,7 +37,7 @@
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L19)
 
-* Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`
+Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
 
 
@@ -62,7 +51,7 @@
 ### writable_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L23)
 
-* Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`
+Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 
 
@@ -93,19 +82,25 @@
 ### database:migrate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L36)
 
-Migrate database
+Migrate database.
+
+
 
 
 ### deploy:cache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L46)
 
-Clear cache
+Clear cache.
+
+
 
 
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L55)
 
-Deploy project
+Deploy project.
+
+
 
 
 This task is group task which contains next tasks:

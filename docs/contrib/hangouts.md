@@ -50,16 +50,6 @@ after('deploy:failed', 'chat:notify:failure');
 
 
 
-* Configuration
-  * [chat_title](#chat_title)
-  * [chat_subtitle](#chat_subtitle)
-  * [favicon](#favicon)
-  * [chat_line1](#chat_line1)
-  * [chat_line2](#chat_line2)
-* Tasks
-  * [chat:notify](#chatnotify)
-  * [chat:notify:success](#chatnotifysuccess)
-  * [chat:notify:failure](#chatnotifyfailure)
 
 ## Configuration
 ### chat_title
@@ -115,17 +105,23 @@ Deploy messages
 ### chat:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L64)
 
-Notifying Google Hangouts Chat
+Notifying Google Hangouts Chat.
+
+
 
 
 ### chat:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L107)
 
-Notifying Google Hangouts Chat about deploy finish
+Notifying Google Hangouts Chat about deploy finish.
+
+
 
 
 ### chat:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L150)
+
+.
 
 
 

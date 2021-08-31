@@ -123,17 +123,6 @@ host('hostname')
 
 
 
-* Configuration
-  * [rsync](#rsync)
-  * [rsync_src](#rsync_src)
-  * [rsync_dest](#rsync_dest)
-  * [rsync_excludes](#rsync_excludes)
-  * [rsync_includes](#rsync_includes)
-  * [rsync_filter](#rsync_filter)
-  * [rsync_options](#rsync_options)
-* Tasks
-  * [rsync:warmup](#rsyncwarmup)
-  * [rsync](#rsync)
 
 ## Configuration
 ### rsync
@@ -214,12 +203,16 @@ __DIR__
 ### rsync:warmup
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L203)
 
-Warmup remote Rsync target
+Warmup remote Rsync target.
+
+
 
 
 ### rsync
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L218)
 
-Rsync local->remote
+Rsync local->remote.
+
+
 
 

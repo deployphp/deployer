@@ -8,10 +8,6 @@
 
 
 
-* Configuration
-  * [cleanup_use_sudo](#cleanup_use_sudo)
-* Tasks
-  * [deploy:cleanup](#deploycleanup)
 
 ## Configuration
 ### cleanup_use_sudo
@@ -30,6 +26,8 @@ false
 ### deploy:cleanup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/cleanup.php#L8)
 
-Cleaning up old releases
+Cleaning up old releases.
+
+
 
 

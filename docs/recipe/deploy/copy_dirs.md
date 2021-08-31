@@ -8,8 +8,6 @@
 
 
 
-* Tasks
-  * [deploy:copy_dirs](#deploycopy_dirs)
 
 
 ## Tasks
@@ -17,6 +15,8 @@
 ### deploy:copy_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/copy_dirs.php#L5)
 
-Copy directories
+Copy directories.
+
+
 
 

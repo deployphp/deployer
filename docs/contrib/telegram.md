@@ -68,16 +68,6 @@ after('deploy:failed', 'telegram:notify:failure');
 
 
 
-* Configuration
-  * [telegram_title](#telegram_title)
-  * [telegram_token](#telegram_token)
-  * [telegram_chat_id](#telegram_chat_id)
-  * [telegram_url](#telegram_url)
-  * [telegram_text](#telegram_text)
-  * [telegram_success_text](#telegram_success_text)
-  * [telegram_failure_text](#telegram_failure_text)
-* Tasks
-  * [telegram:notify](#telegramnotify)
 
 ## Configuration
 ### telegram_title
@@ -143,6 +133,8 @@ Deploy message
 
 ### telegram:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L90)
+
+.
 
 
 

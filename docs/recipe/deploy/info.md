@@ -8,10 +8,6 @@
 
 
 
-* Configuration
-  * [target](#target)
-* Tasks
-  * [deploy:info](#deployinfo)
 
 ## Configuration
 ### target
@@ -26,6 +22,8 @@ Holds name of deployed branch, tag or revision.
 
 ### deploy:info
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L23)
+
+.
 
 
 

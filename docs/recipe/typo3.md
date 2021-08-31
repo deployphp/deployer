@@ -36,6 +36,13 @@ DocumentRoot / WebRoot for the TYPO3 installation
 
 Shared directories
 
+```php title="Default value"
+[
+    '{{typo3_webroot}}/fileadmin',
+    '{{typo3_webroot}}/typo3temp',
+    '{{typo3_webroot}}/uploads'
+]
+```
 
 
 ### shared_files
@@ -45,6 +52,11 @@ Shared directories
 
 Shared files
 
+```php title="Default value"
+[
+    '{{typo3_webroot}}/.htaccess'
+]
+```
 
 
 ### writable_dirs
@@ -54,6 +66,14 @@ Shared files
 
 Writeable directories
 
+```php title="Default value"
+[
+    '{{typo3_webroot}}/fileadmin',
+    '{{typo3_webroot}}/typo3temp',
+    '{{typo3_webroot}}/typo3conf',
+    '{{typo3_webroot}}/uploads'
+]
+```
 
 
 

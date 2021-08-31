@@ -23,6 +23,11 @@
 
 FuelPHP 1.x shared dirs
 
+```php title="Default value"
+[
+    'fuel/app/cache', 'fuel/app/logs',
+]
+```
 
 
 

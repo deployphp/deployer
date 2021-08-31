@@ -37,6 +37,12 @@
 
 
 
+```php title="Default value"
+[
+    'var/log',
+    'var/sessions'
+]
+```
 
 
 ### shared_files
@@ -46,6 +52,11 @@
 
 
 
+```php title="Default value"
+[
+    '.env.local'
+]
+```
 
 
 ### writable_dirs
@@ -55,6 +66,11 @@
 
 
 
+```php title="Default value"
+[
+    'var'
+]
+```
 
 
 ### migrations_config

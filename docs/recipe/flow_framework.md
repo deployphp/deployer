@@ -47,6 +47,13 @@ Flow-Framework cli-command
 
 Flow-Framework shared directories
 
+```php title="Default value"
+[
+    'Data/Persistent',
+    'Data/Logs',
+    'Configuration/{{flow_context}}'
+]
+```
 
 
 

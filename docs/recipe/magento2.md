@@ -58,6 +58,12 @@ in you deployer script.
 
 
 
+```php title="Default value"
+[
+    'app/etc/env.php',
+    'var/.maintenance.ip',
+]
+```
 
 
 ### shared_dirs
@@ -67,6 +73,22 @@ in you deployer script.
 
 
 
+```php title="Default value"
+[
+    'var/composer_home',
+    'var/log',
+    'var/export',
+    'var/report',
+    'var/import',
+    'var/import_history',
+    'var/session',
+    'var/importexport',
+    'var/backups',
+    'var/tmp',
+    'pub/sitemap',
+    'pub/media'
+]
+```
 
 
 ### writable_dirs
@@ -76,6 +98,14 @@ in you deployer script.
 
 
 
+```php title="Default value"
+[
+    'var',
+    'pub/static',
+    'pub/media',
+    'generated'
+]
+```
 
 
 ### clear_paths
@@ -85,6 +115,16 @@ in you deployer script.
 
 
 
+```php title="Default value"
+[
+    'generated/*',
+    'pub/static/_cache/*',
+    'var/generation/*',
+    'var/cache/*',
+    'var/page_cache/*',
+    'var/view_preprocessed/*'
+]
+```
 
 
 ### magento_version

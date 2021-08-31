@@ -62,6 +62,11 @@
 
 
 
+```php title="Default value"
+[
+    '.env',
+]
+```
 
 
 ### shared_dirs
@@ -71,6 +76,17 @@
 
 
 
+```php title="Default value"
+[
+    'custom/plugins',
+    'config/jwt',
+    'files',
+    'var/log',
+    'public/media',
+    'public/thumbnail',
+    'public/sitemap',
+]
+```
 
 
 ### writable_dirs
@@ -80,6 +96,16 @@
 
 
 
+```php title="Default value"
+[
+    'custom/plugins',
+    'files',
+    'var',
+    'public/media',
+    'public/thumbnail',
+    'public/sitemap',
+]
+```
 
 
 ### static_folders

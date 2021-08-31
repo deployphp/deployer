@@ -25,6 +25,12 @@
 
 
 
+```php title="Default value"
+[
+    'config/settings.inc.php',
+    '.htaccess',
+]
+```
 
 
 ### shared_dirs
@@ -34,6 +40,19 @@
 
 
 
+```php title="Default value"
+[
+    'img',
+    'log',
+    'download',
+    'upload',
+    'translations',
+    'mails',
+    'themes/default-bootstrap/lang',
+    'themes/default-bootstrap/mails',
+    'themes/default-bootstrap/pdf/lang',
+]
+```
 
 
 ### writable_dirs
@@ -43,6 +62,21 @@
 
 
 
+```php title="Default value"
+[
+    'img',
+    'log',
+    'cache',
+    'download',
+    'upload',
+    'translations',
+    'mails',
+    'themes/default-bootstrap/lang',
+    'themes/default-bootstrap/mails',
+    'themes/default-bootstrap/pdf/lang',
+    'themes/default-bootstrap/cache',
+]
+```
 
 
 

@@ -44,7 +44,10 @@ class DocRecipe
         $content = str_replace("\r\n", "\n", $content);
 
         $state = 'root';
-        foreach (explode("\n", $content) as $i => $line) {
+        $lines = explode("\n", $content);
+
+        for ($i = 0; $i < count($lines); $i++) {
+            $line = $lines[$i];
             $m = [];
             $match = function ($regexp) use ($line, &$m) {
                 return preg_match("#$regexp#", $line, $m);
@@ -73,6 +76,16 @@ class DocRecipe
                         $set->lineNumber = $i + 1;
                         if (preg_match('#^set\(.+?,\s(?<value>.+?)\);$#', $line, $m)) {
                             $set->defaultValue = $m['value'];
+                        }
+                        if (preg_match('#^set\(.+?,\s\[$#', $line, $m)) {
+                            $multiLineArray = "[\n";
+                            $line = $lines[++$i];
+                            while (!preg_match('/^]/', $line)) {
+                                $multiLineArray .= $line . "\n";
+                                $line = $lines[++$i];
+                            }
+                            $multiLineArray .= "]";
+                            $set->defaultValue = $multiLineArray;
                         }
                         $this->config[$set->name] = $set;
                         break;
@@ -111,7 +124,7 @@ class DocRecipe
                     }
 
                     $desc = '';
-                    if($first && $comment !== '') {
+                    if ($first && $comment !== '') {
                         $this->comment = $comment;
                     }
                     $first = false;

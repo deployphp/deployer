@@ -26,6 +26,12 @@
 
 CakePHP 4 Project Template shared dirs
 
+```php title="Default value"
+[
+    'logs',
+    'tmp',
+]
+```
 
 
 ### shared_files
@@ -35,6 +41,12 @@ CakePHP 4 Project Template shared dirs
 
 CakePHP 4 Project Template shared files
 
+```php title="Default value"
+[
+    'config/.env',
+    'config/app.php',
+]
+```
 
 
 

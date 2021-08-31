@@ -141,6 +141,23 @@ host('hostname')
 
 
 
+```php title="Default value"
+[
+    'exclude' => [
+        '.git',
+        'deploy.php',
+    ],
+    'exclude-file' => false,
+    'include' => [],
+    'include-file' => false,
+    'filter' => [],
+    'filter-file' => false,
+    'filter-perdir' => false,
+    'flags' => 'rz',
+    'options' => ['delete'],
+    'timeout' => 300,
+]
+```
 
 
 ### rsync_src

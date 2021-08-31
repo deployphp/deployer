@@ -35,6 +35,11 @@
 
 Silverstripe shared dirs
 
+```php title="Default value"
+[
+    '{{shared_assets}}'
+]
+```
 
 
 ### writable_dirs
@@ -44,6 +49,11 @@ Silverstripe shared dirs
 
 Silverstripe writable dirs
 
+```php title="Default value"
+[
+    '{{shared_assets}}'
+]
+```
 
 
 ### silverstripe_cli_script

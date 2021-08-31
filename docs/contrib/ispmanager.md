@@ -62,6 +62,22 @@ This recipe for work with ISPManager Lite panel by API.
 
 ISPManager default configuration
 
+```php title="Default value"
+[
+    'api' => [
+        'dsn' => 'https://root:password@localhost:1500/ispmgr',
+        'secure' => true,
+    ],
+    'createDomain' => NULL,
+    'updateDomain' => NULL,
+    'deleteDomain' => NULL,
+    'createDatabase' => NULL,
+    'deleteDatabase' => NULL,
+    'phpSelect' => NULL,
+    'createAlias' => NULL,
+    'deleteAlias' => NULL,
+]
+```
 
 
 ### vhost
@@ -69,6 +85,26 @@ ISPManager default configuration
 
 Vhost default configuration
 
+```php title="Default value"
+[
+    'name' => '{{domain}}',
+    'php_enable' => 'on',
+    'aliases' => 'www.{{domain}}',
+    'home' => 'www/{{domain}}',
+    'owner' => get('ispmanager_owner'),
+    'email' => 'webmaster@{{domain}}',
+    'charset' => 'off',
+    'dirindex' => 'index.php uploaded.html',
+    'ssi' => 'on',
+    'php' => 'on',
+    'php_mode' => 'php_mode_mod',
+    'basedir' => 'on',
+    'php_apache_version' => 'native',
+    'cgi' => 'off',
+    'log_access' => 'on',
+    'log_error' => 'on',
+]
+```
 
 
 ### ispmanager_session
@@ -83,6 +119,13 @@ Storage
 
 
 
+```php title="Default value"
+[
+    'servers' => [],
+    'hosts' => [],
+    'dblist' => [],
+]
+```
 
 
 ### ispmanager_domains

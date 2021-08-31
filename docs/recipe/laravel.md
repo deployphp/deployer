@@ -87,6 +87,19 @@
 
 
 
+```php title="Default value"
+[
+    'bootstrap/cache',
+    'storage',
+    'storage/app',
+    'storage/app/public',
+    'storage/framework',
+    'storage/framework/cache',
+    'storage/framework/sessions',
+    'storage/framework/views',
+    'storage/logs',
+]
+```
 
 
 ### log_files

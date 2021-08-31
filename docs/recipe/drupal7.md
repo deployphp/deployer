@@ -38,6 +38,11 @@ Set Drupal 7 site. Change if you use different site
 
 Drupal 7 shared dirs
 
+```php title="Default value"
+[
+    'sites/{{drupal_site}}/files',
+]
+```
 
 
 ### shared_files
@@ -47,6 +52,11 @@ Drupal 7 shared dirs
 
 Drupal 7 shared files
 
+```php title="Default value"
+[
+    'sites/{{drupal_site}}/settings.php',
+]
+```
 
 
 ### writable_dirs
@@ -56,6 +66,11 @@ Drupal 7 shared files
 
 Drupal 7 writable dirs
 
+```php title="Default value"
+[
+    'sites/{{drupal_site}}/files',
+]
+```
 
 
 

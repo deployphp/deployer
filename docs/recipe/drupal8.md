@@ -36,6 +36,11 @@ Set drupal site. Change if you use different site
 
 Drupal 8 shared dirs
 
+```php title="Default value"
+[
+    'sites/{{drupal_site}}/files',
+]
+```
 
 
 ### shared_files
@@ -45,6 +50,12 @@ Drupal 8 shared dirs
 
 Drupal 8 shared files
 
+```php title="Default value"
+[
+    'sites/{{drupal_site}}/settings.php',
+    'sites/{{drupal_site}}/services.yml',
+]
+```
 
 
 ### writable_dirs
@@ -54,6 +65,11 @@ Drupal 8 shared files
 
 Drupal 8 Writable dirs
 
+```php title="Default value"
+[
+    'sites/{{drupal_site}}/files',
+]
+```
 
 
 

@@ -54,6 +54,10 @@
    ``` 
 8. Rename success task in ~~success~~ to `deploy:success`.
 9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
+10. runLocally() commands are executed relative to the recipe file directory. This behaviour can be overridden via an environment variable:
+    ```bash
+    DEPLOYER_ROOT=. vendor/bin/dep taskname`
+    ```
 
 # Upgrade from 5.x to 6.x
 

@@ -126,3 +126,15 @@ dep autocomplete
 ```
 
 And follow instructions.
+
+### Local root directory
+
+By default `runLocally()` commands are executed relative to the recipe file directory. This can be overridden globally by setting an environment variable:
+```bash
+DEPLOYER_ROOT=. dep taskname`
+```
+
+Alternatively the root directory can be overridden per command via the cwd configuration.
+```php
+runLocally('ls', ['cwd' => '/root/directory']);
+```

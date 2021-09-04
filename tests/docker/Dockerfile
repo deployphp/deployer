@@ -41,7 +41,7 @@ WORKDIR /project
 
 
 
-FROM php:8.0-apache AS server
+FROM php:7.3-apache AS server
 RUN apt-get update && apt-get install -y \
         acl \
         git \

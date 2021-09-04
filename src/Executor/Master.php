@@ -219,6 +219,7 @@ class Master
                 $this->server->getPort(),
             ],
             [Stringify::verbosity($this->output->getVerbosity())],
+            $this->output->isDecorated() ? ['--decorated'] : [],
             Arrayify::options($this->input)
         ));
 

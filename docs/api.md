@@ -28,6 +28,7 @@
  * [`download()`](#download)
  * [`info()`](#info)
  * [`warning()`](#warning)
+ * [`write()`](#write)
  * [`writeln()`](#writeln)
  * [`parse()`](#parse)
  * [`set()`](#set)
@@ -475,10 +476,19 @@ warning(string $message): void
 Writes an warning message.
 
 
+## write()
+
+```php
+write(string $message, int $options = 0): void
+```
+
+Writes a message to the output.
+
+
 ## writeln()
 
 ```php
-writeln($message, int $options = 0): void
+writeln(string $message, int $options = 0): void
 ```
 
 Writes a message to the output and adds a newline at the end.

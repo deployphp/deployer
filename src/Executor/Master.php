@@ -218,13 +218,12 @@ class Master
                 '--port',
                 $this->server->getPort(),
             ],
-            $task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL
-                ? ['-v'] : [],
+            [Stringify::verbosity($this->output->getVerbosity())],
             Arrayify::options($this->input)
         ));
 
         if ($this->output->isDebug()) {
-            $this->output->writeln("[$host] {$process->getCommandLine()}}");
+            $this->output->writeln("[$host] {$process->getCommandLine()}");
         }
 
         return $process;

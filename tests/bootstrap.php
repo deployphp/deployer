@@ -30,10 +30,10 @@ require_once __DIR__ . '/AbstractTest.php';
 // Init repository
 $repository = __REPOSITORY__;
 
-`cd $repository && git init`;
+`cd "$repository" && git init`;
 $branch = trim(`git rev-parse --abbrev-ref HEAD`);
-`cd $repository && git checkout -B $branch 2>&1`;
-`cd $repository && git add .`;
-`cd $repository && git config user.name 'Anton Medvedev'`;
-`cd $repository && git config user.email 'anton.medv@example.com'`;
-`cd $repository && git commit -m 'first commit'`;
+`cd "$repository" && git checkout -B $branch 2>&1`;
+`cd "$repository" && git add .`;
+`cd "$repository" && git config user.name 'Anton Medvedev'`;
+`cd "$repository" && git config user.email 'anton.medv@example.com'`;
+`cd "$repository" && git commit -m 'first commit'`;

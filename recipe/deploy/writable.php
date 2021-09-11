@@ -72,7 +72,7 @@ task('deploy:writable', function () {
         if ($httpGroup === false) {
             throw new \RuntimeException("Please setup `http_group` config parameter.");
         }
-        run("$sudo chgrp -H $recursive $httpGroup $dirs");
+        run("$sudo chgrp -H -f $recursive $httpGroup $dirs");
     } elseif ($mode === 'chmod') {
         // in chmod mode, defined `writable_chmod_recursive` has priority over common `writable_recursive`
         if (is_bool(get('writable_chmod_recursive'))) {

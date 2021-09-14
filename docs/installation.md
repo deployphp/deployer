@@ -63,7 +63,7 @@ composer require deployer/deployer --dev
 Deployer comes with an autocomplete support for bash & zsh, so you don't need to 
 remember task names and options. 
 
-Add next line to you `.bash_profile`:
+Add next line to your `~/.bash_profile` or `~/.zshrc`:
 
 ```shell
 eval "$(dep autocomplete)"

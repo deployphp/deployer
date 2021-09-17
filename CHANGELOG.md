@@ -42,6 +42,7 @@
 - Removed the `min` and `max` constraints on the `artisan:optimize` and `artisan:optimize:clear` tasks. [#2488]
 - Excluded the `shared_files`, `shared_dirs` and `writable_dirs` configs from the `deploy.yaml` default template unless the `common` template was chosen.
 - The way `deploy:update_code` fetched the GIT remote URL from the config.
+- Use cp instead of rsync when copying directories. [#2656]
 
 ### Fixed
 - Lots, and lots of long-standing bugs.
@@ -627,6 +628,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2656]: https://github.com/deployphp/deployer/issues/2656
 [#2549]: https://github.com/deployphp/deployer/issues/2549
 [#2545]: https://github.com/deployphp/deployer/issues/2545
 [#2525]: https://github.com/deployphp/deployer/issues/2525

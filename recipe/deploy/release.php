@@ -3,7 +3,7 @@
 namespace Deployer;
 
 use Deployer\Exception\Exception;
-use Deployer\Support\Csv;
+use Deployer\Utility\Csv;
 
 /**
  * Name of folder in releases.

@@ -5,11 +5,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Support;
+namespace Deployer\Utility;
 
 /**
  * Class Csv
- * @package Deployer\Type
  */
 class Csv
 {

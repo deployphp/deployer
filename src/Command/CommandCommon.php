@@ -20,7 +20,7 @@ trait CommandCommon
      */
     protected function telemetry(array $data = []): void
     {
-        if (getenv('DO_NOT_TRACK') === '1') {
+        if (getenv('DO_NOT_TRACK') === 'true') {
             return;
         }
         try {
@@ -29,8 +29,6 @@ trait CommandCommon
                 'deployer_version' => DEPLOYER_VERSION,
                 'deployer_phar' => Deployer::isPharArchive(),
                 'php_version' => phpversion(),
-                'extension_pcntl' => extension_loaded('pcntl'),
-                'extension_curl' => extension_loaded('curl'),
                 'os' => defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
             ], $data));
         } catch (\Throwable $e) {

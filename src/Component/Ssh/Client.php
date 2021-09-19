@@ -125,18 +125,18 @@ class Client
 
     private function initMultiplexing(Host $host): void
     {
-        $options = self::connectionOptionsString($host);
+        $options = self::connectionOptionsArray($host);
 
         if (!$this->isMasterRunning($host, $options)) {
             $connectionString = $host->getConnectionString();
-            $command = "ssh -N $options $connectionString";
+            $command = array_merge(['ssh', '-N'], $options, [$connectionString]);
 
             if ($this->output->isDebug()) {
-                $this->pop->writeln(Process::OUT, $host, '<info>ssh multiplexing initialization</info>');
-                $this->pop->writeln(Process::OUT, $host, $command);
+                $this->pop->writeln(Process::OUT, $host, '<info>ssh: multiplexing initialization</info>');
+                $this->pop->writeln(Process::OUT, $host, join(' ', $command));
             }
 
-            $process = Process::fromShellCommandline($command);
+            $process = new Process($command);
             $process->setTimeout(30); // Connection timeout (time needed to establish ssh multiplexing)
 
             try {
@@ -155,16 +155,17 @@ class Client
         }
     }
 
-    private function isMasterRunning(Host $host, string $options): bool
+    private function isMasterRunning(Host $host, array $options): bool
     {
-        $command = "ssh -O check $options echo 2>&1";
+        $command = array_merge(['ssh', '-O', 'check'], $options, ['echo']);
         if ($this->output->isDebug()) {
-            $this->pop->printBuffer(Process::OUT, $host, $command);
+            $this->pop->writeln(Process::OUT, $host, '<info>ssh: is master running?</info>');
+            $this->pop->printBuffer(Process::OUT, $host, join(' ', $command));
         }
 
-        $process = Process::fromShellCommandline($command);
+        $process = new Process($command);
         $process->run();
-        $output = $process->getOutput();
+        $output = $process->getErrorOutput();
 
         if ($this->output->isDebug()) {
             $this->pop->printBuffer(Process::OUT, $host, $output);

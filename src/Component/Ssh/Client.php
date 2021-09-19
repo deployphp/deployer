@@ -32,7 +32,7 @@ class Client
     }
 
     /**
-     * @throws RunException|TimeoutException
+     * @throws RunException|TimeoutException|Exception
      */
     public function run(Host $host, string $command, array $config = []): string
     {

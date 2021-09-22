@@ -73,7 +73,7 @@ task('deploy:update_code', function () {
 
     // Copy to release_path.
     run("$git remote update 2>&1");
-    run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
+    run("$git --work-tree={{release_path}} checkout $at");
 
     // Save revision in releases log.
     $rev = run("$git rev-list $at -1");

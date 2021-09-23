@@ -44,10 +44,11 @@ task('deploy:update_code', function () {
         }
     }
 
-    // Populate known hosts.
-    if (preg_match('/(?:@|\/\/)([^\/:]+)(?:\:(\d{1,5}))?/', $repository, $matches)) {
-        $repositoryHostname = $matches[1];
-        $portOptions = isset($matches[2]) ? "-p {$matches[2]}" : null;
+    $url = parse_url($repository);
+
+    if (isset($url['scheme']) && $url['scheme'] === 'ssh') {
+        $repositoryHostname = $url['host'];
+        $portOptions = $url['port'] !== 22 ? "-p {$url['port']}" : null;
         try {
             run("ssh-keygen -F $repositoryHostname");
         } catch (RunException $e) {

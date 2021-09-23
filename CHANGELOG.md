@@ -59,6 +59,7 @@
 - Support passing `null` as default in get(). [#2545]
 - Shopware recipe: First activate plugins THEN build them to avoid breaking theme:compile with unbuild themes (which were activated AFTER build).
 - Shopware recipe sw:plugin:upgrade:all task.
+- Only perform keyscan for repos that are pulled over ssh. Better detection of hostname. [#2667]
 
 ### Removed
 - Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]

@@ -5,44 +5,40 @@ namespace Deployer;
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Helper\Table;
 
-/**
- * The name of the release.
- */
+// The name of the release.
 set('release_name', function () {
     $latest = run('cat .dep/latest_release || echo 0');
-    return strval(intval($latest) + 1);
+    $releaseName = strval(intval($latest) + 1);
+    run("echo $releaseName > .dep/latest_release");
+    return $releaseName;
 });
 
-/**
- * Holds metainfo about releases from `.dep/releases_metainfo` file.
- */
-set('releases_metainfo', function () {
+// Holds releases log from `.dep/releases_log` file.
+set('releases_log', function () {
     cd('{{deploy_path}}');
 
-    if (!test('[ -f .dep/releases_metainfo ]')) {
+    if (!test('[ -f .dep/releases_log ]')) {
         return [];
     }
 
     $keepReleases = get('keep_releases');
     if ($keepReleases === -1) {
-        $data = run('cat .dep/releases_metainfo');
+        $data = run('cat .dep/releases_log');
     } else {
-        $data = run("tail -n " . ($keepReleases + 5) . " .dep/releases_metainfo");
+        $data = run("tail -n " . ($keepReleases + 5) . " .dep/releases_log");
     }
 
-    $releasesMetainfo = [];
+    $releasesLog = [];
     foreach (explode("\n", $data) as $line) {
         $metainfo = json_decode($line, true);
         if (!empty($metainfo)) {
-            $releasesMetainfo[] = $metainfo;
+            $releasesLog[] = $metainfo;
         }
     }
-    return $releasesMetainfo;
+    return $releasesLog;
 });
 
-/**
- * Return list of releases on host.
- */
+// Return list of release names on host.
 set('releases_list', function () {
     cd('{{deploy_path}}');
 
@@ -57,11 +53,11 @@ set('releases_list', function () {
         return basename(rtrim(trim($release), '/'));
     }, $ll);
 
-    $releasesMetainfo = get('releases_metainfo');
+    $releasesLog = get('releases_log');
 
     $releases = [];
-    for ($i = count($releasesMetainfo) - 1; $i >= 0; --$i) {
-        $release = $releasesMetainfo[$i]['release_name'];
+    for ($i = count($releasesLog) - 1; $i >= 0; --$i) {
+        $release = $releasesLog[$i]['release_name'];
         if (in_array($release, $ll, true)) {
             $releases[] = $release;
         }
@@ -69,9 +65,7 @@ set('releases_list', function () {
     return $releases;
 });
 
-/**
- * Return release path.
- */
+// Return release path.
 set('release_path', function () {
     $releaseExists = test('[ -h {{deploy_path}}/release ]');
     if ($releaseExists) {
@@ -82,16 +76,15 @@ set('release_path', function () {
     }
 });
 
-/**
- * Return the release path during a deployment
- * but fallback to the current path otherwise.
- */
+// Return the release path during a deployment
+// but fallback to the current path otherwise.
 set('release_or_current_path', function () {
     $releaseExists = test('[ -h {{deploy_path}}/release ]');
     return $releaseExists ? get('release_path') : get('current_path');
 });
 
-desc('Prepare release. Clean up unfinished releases and prepare next release');
+// Clean up unfinished releases and prepare next release
+desc('Prepare release');
 task('deploy:release', function () {
     cd('{{deploy_path}}');
 
@@ -120,13 +113,11 @@ task('deploy:release', function () {
         'release_name' => $releaseName,
         'user' => get('user'),
         'target' => get('target'),
-        'revision' => "__REVISION__"
     ];
 
     // Save metainfo about release.
     $json = json_encode($metainfo);
-    run("echo '$json' >> .dep/releases_metainfo");
-    run("echo '$releaseName' > .dep/latest_release");
+    run("echo '$json' >> .dep/releases_log");
 
     // Make new release.
     run("mkdir -p $releasePath");
@@ -146,12 +137,15 @@ desc('Show releases list');
 task('releases', function () {
     cd('{{deploy_path}}');
 
-    $releasesMetainfo = get('releases_metainfo');
+    $releasesLog = get('releases_log');
     $currentRelease = basename(run('readlink {{current_path}}'));
     $releasesList = get('releases_list');
 
     $table = [];
-    foreach ($releasesMetainfo as &$metainfo) {
+    foreach ($releasesLog as &$metainfo) {
+        $tz = !empty(getenv('TIMEZONE')) ? getenv('TIMEZONE') : date_default_timezone_get();
+        $date = \DateTime::createFromFormat(\DateTimeInterface::ISO8601, $metainfo['created_at']);
+        $date->setTimezone(new \DateTimeZone($tz));
         $status = $release = $metainfo['release_name'];
         if (in_array($release, $releasesList, true)) {
             if (test("[ -f releases/$release/BAD_RELEASE ]")) {
@@ -163,18 +157,23 @@ task('releases', function () {
         if ($release === $currentRelease) {
             $status .= ' (current)';
         }
+        try {
+            $revision = run("cat releases/$release/REVISION");
+        } catch (\Throwable $e) {
+            $revision = 'unknown';
+        }
         $table[] = [
-            \DateTime::createFromFormat(\DateTime::ISO8601, $metainfo['created_at'])->format("Y-m-d H:i:s"),
+            $date->format("Y-m-d H:i:s"),
             $status,
             $metainfo['user'],
             $metainfo['target'],
-            $metainfo['revision'],
+            $revision,
         ];
     }
 
     (new Table(output()))
         ->setHeaderTitle(currentHost()->getAlias())
-        ->setHeaders(['Date', 'Release', 'Author', 'Target', 'Commit'])
+        ->setHeaders(["Date ($tz)", 'Release', 'Author', 'Target', 'Commit'])
         ->setRows($table)
         ->render();
 });

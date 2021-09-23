@@ -41,7 +41,7 @@ otherwise output of `whoami` command.
 Number of releases to preserve in releases folder.
 
 ```php title="Default value"
-5
+10
 ```
 
 

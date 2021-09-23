@@ -75,7 +75,7 @@ task('deploy:update_code', function () {
     run("$git remote update 2>&1");
     run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
 
-    // Save revision in releases log.
-    $rev = run("$git rev-list $at -1");
-    run("sed -ibak 's/__REVISION__/$rev/' {{deploy_path}}/.dep/releases_metainfo");
+    // Save revision in .dep and in variable for later usage in scripts.
+    $rev = escapeshellarg(run("$git rev-list $at -1"));
+    run("echo $rev > {{release_path}}/REVISION");
 });

@@ -43,7 +43,7 @@ set('user', function () {
 });
 
 // Number of releases to preserve in releases folder.
-set('keep_releases', 5);
+set('keep_releases', 10);
 
 // Repository to deploy.
 set('repository', '');

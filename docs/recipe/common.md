@@ -179,11 +179,18 @@ sudo command executed.
 
 
 
+### target
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L151)
+
+The deploy target: a branch, a tag or a revision.
+
+
+
 
 ## Tasks
 
 ### deploy:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L153)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L169)
 
 .
 
@@ -201,7 +208,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L163)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L179)
 
 .
 
@@ -216,7 +223,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L173)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L189)
 
 .
 
@@ -224,7 +231,7 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L183)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L199)
 
 .
 
@@ -232,7 +239,7 @@ Hook on deploy failure.
 
 
 ### logs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L192)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L208)
 
 Follow latest application logs.
 

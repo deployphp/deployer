@@ -9,19 +9,11 @@
 
 
 
-## Configuration
-### target
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L5)
-
-Holds name of deployed branch, tag or revision.
-
-
-
 
 ## Tasks
 
 ### deploy:info
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L4)
 
 .
 

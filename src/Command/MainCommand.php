@@ -17,7 +17,6 @@ use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use function Deployer\Support\find_config_line;
-use function Deployer\Support\fork;
 use function Deployer\warning;
 
 class MainCommand extends SelectCommand
@@ -142,13 +141,13 @@ class MainCommand extends SelectCommand
 
     private function checkUpdates()
     {
-        fork(function () {
+        if (rand(1, 6) === 1) {
             try {
                 fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send());
             } catch (\Throwable $e) {
                 // Meh
             }
-        });
+        }
     }
 
     private function validateConfig(): void

@@ -5,52 +5,54 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Support;
+namespace Deployer\Component\Ssh;
 
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Stringify
+class IOArguments
 {
-    public static function options(InputInterface $input, OutputInterface $output): string
+    public static function collect(InputInterface $input, OutputInterface $output): array
     {
-        $options = [];
-        foreach ($input->getOptions() as $name => $option) {
+        $arguments = [];
+        foreach ($input->getOptions() as $name => $value) {
             if (!$input->getOption($name)) {
                 continue;
             }
             if ($name === 'file') {
-                $options[] = "--file=" .self::escape(ltrim($option, '='));
+                $arguments[] = "--file";
+                $arguments[] = ltrim($value, '=');
                 continue;
             }
             if (in_array($name, ['verbose'], true)) {
                 continue;
             }
-            if (!is_array($option)) {
-                $option = [$option];
+            if (!is_array($value)) {
+                $value = [$value];
             }
-            foreach ($option as $value) {
-                if(is_bool($value)){
-                    $options[] = "--$name ";
+            foreach ($value as $v) {
+                if (is_bool($v)) {
+                    $arguments[] = "--$name";
                     continue;
                 }
 
-                $options[] = "--$name " . self::escape($value);
+                $arguments[] = "--$name";
+                $arguments[] = $v;
             }
         }
 
         if ($output->isDecorated()) {
-            $options[] = '--decorated';
+            $arguments[] = '--decorated';
         }
         $verbosity = self::verbosity($output->getVerbosity());
         if (!empty($verbosity)) {
-            $options[] = $verbosity;
+            $arguments[] = $verbosity;
         }
-        return implode(' ', $options);
+        return $arguments;
     }
 
-    public static function verbosity(int $verbosity): string
+    private static function verbosity(int $verbosity): string
     {
         switch ($verbosity) {
             case OutputInterface::VERBOSITY_QUIET:
@@ -66,10 +68,5 @@ class Stringify
             default:
                 throw new Exception('Unknown verbosity level: ' . $verbosity);
         }
-    }
-
-    private static function escape(string $token): string
-    {
-        return preg_match('{^[\w-]+$}', $token) ? $token : escapeshellarg($token);
     }
 }

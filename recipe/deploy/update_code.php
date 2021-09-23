@@ -44,10 +44,11 @@ task('deploy:update_code', function () {
         }
     }
 
-    // Populate known hosts.
-    if (preg_match('/(?:@|\/\/)([^\/:]+)(?:\:(\d{1,5}))?/', $repository, $matches)) {
-        $repositoryHostname = $matches[1];
-        $portOptions = isset($matches[2]) ? "-p {$matches[2]}" : null;
+    $url = parse_url($repository);
+
+    if (isset($url['scheme']) && $url['scheme'] === 'ssh') {
+        $repositoryHostname = $url['host'];
+        $portOptions = $url['port'] !== 22 ? "-p {$url['port']}" : null;
         try {
             run("ssh-keygen -F $repositoryHostname");
         } catch (RunException $e) {
@@ -75,7 +76,7 @@ task('deploy:update_code', function () {
     run("$git remote update 2>&1");
     run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
 
-    // Save revision in releases log.
-    $rev = run("$git rev-list $at -1");
-    run("sed -ibak 's/revision/$rev/' {{deploy_path}}/.dep/releases");
+    // Save revision in .dep and in variable for later usage in scripts.
+    $rev = escapeshellarg(run("$git rev-list $at -1"));
+    run("echo $rev > {{release_path}}/REVISION");
 });

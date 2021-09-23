@@ -8,6 +8,7 @@
 namespace Deployer\Executor;
 
 use Deployer\Component\Ssh\Client;
+use Deployer\Component\Ssh\IOArguments;
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
@@ -18,6 +19,7 @@ use Deployer\Support\Stringify;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'];
@@ -36,14 +38,15 @@ class Master
     private $messenger;
     private $client;
     private $config;
+    private $phpBin;
 
     public function __construct(
-        InputInterface $input,
+        InputInterface  $input,
         OutputInterface $output,
-        Server $server,
-        Messenger $messenger,
-        Client $client,
-        Configuration $config
+        Server          $server,
+        Messenger       $messenger,
+        Client          $client,
+        Configuration   $config
     )
     {
         $this->input = $input;
@@ -52,6 +55,7 @@ class Master
         $this->messenger = $messenger;
         $this->client = $client;
         $this->config = $config;
+        $this->phpBin = (new PhpExecutableFinder())->find();
     }
 
     /**
@@ -205,18 +209,20 @@ class Master
 
     protected function createProcess(Host $host, Task $task): Process
     {
-        $dep = PHP_BINARY . ' ' . DEPLOYER_BIN;
-        $options = Stringify::options($this->input, $this->output);
+        $command = [
+            $this->phpBin, DEPLOYER_BIN,
+            'worker', '--port', $this->server->getPort(),
+            '--task', $task,
+            '--host', $host->getAlias(),
+        ];
+        $command = array_merge($command, IOArguments::collect($this->input, $this->output));
         if ($task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
-            $options .= ' -v';
+            $command[] = ' -v';
         }
-        $command = "$dep worker --task $task --host {$host->getAlias()} --port {$this->server->getPort()} {$options}";
-
         if ($this->output->isDebug()) {
-            $this->output->writeln("[$host] $command");
+            $this->output->writeln("[$host] " . join(' ', $command));
         }
-
-        return Process::fromShellCommandline($command);
+        return new Process($command);
     }
 
     /**

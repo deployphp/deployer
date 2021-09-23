@@ -12,7 +12,6 @@ require __DIR__ . '/deploy/release.php';
 require __DIR__ . '/deploy/rollback.php';
 require __DIR__ . '/deploy/setup.php';
 require __DIR__ . '/deploy/shared.php';
-require __DIR__ . '/deploy/status.php';
 require __DIR__ . '/deploy/symlink.php';
 require __DIR__ . '/deploy/update_code.php';
 require __DIR__ . '/deploy/vendors.php';
@@ -25,7 +24,6 @@ use Symfony\Component\Console\Output\Output;
 add('recipes', ['common']);
 
 // Name of current user who is running deploy.
-// It will be shown in `dep status` command as author.
 // If not set will try automatically get git user name,
 // otherwise output of `whoami` command.
 set('user', function () {
@@ -45,7 +43,7 @@ set('user', function () {
 });
 
 // Number of releases to preserve in releases folder.
-set('keep_releases', 5);
+set('keep_releases', 10);
 
 // Repository to deploy.
 set('repository', '');

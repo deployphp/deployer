@@ -143,25 +143,6 @@ function parse_home_dir(string $path): string
     return $path;
 }
 
-function fork(callable $callable)
-{
-    $pid = null;
-    // Make sure function is not disabled via php.ini "disable_functions"
-    if (extension_loaded('pcntl') && function_exists('pcntl_fork')) {
-        declare(ticks=1);
-        $pid = pcntl_fork();
-    }
-    if (is_null($pid) || $pid === -1) {
-        // Fork fails or there is no `pcntl` extension.
-        $callable();
-    } elseif ($pid === 0) {
-        // Child process.
-        posix_setsid();
-        $callable();
-        exit(0);
-    }
-}
-
 function find_line_number(string $source, string $string): int
 {
     $string = explode(PHP_EOL, $string)[0];

@@ -7,15 +7,14 @@
 
 namespace Deployer\Command;
 
-use Deployer\Utility\Httpie;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Process\PhpProcess;
 use Symfony\Component\Process\Process;
-use function Deployer\Support\fork;
 
 class InitCommand extends Command
 {
@@ -79,15 +78,23 @@ class InitCommand extends Command
         if (preg_match('/github.com:(?<org>[A-Za-z0-9_.\-]+)\//', $repository, $m)) {
             $org = $m['org'];
             $tempHostFile = tempnam(sys_get_temp_dir(), 'temp-host-file');
-            fork(function () use ($org, $tempHostFile) {
-                try {
-                    ['blog' => $blog] = Httpie::get('https://api.github.com/orgs/' . $org)->getJson();
-                    $host = parse_url($blog, PHP_URL_HOST);
-                    file_put_contents($tempHostFile, $host);
-                } catch (\Throwable $e) {
-                    // ¯\_(ツ)_/¯
-                }
-            });
+            $php = new PhpProcess(<<<EOF
+<?php
+\$ch = curl_init('https://api.github.com/orgs/$org');
+curl_setopt(\$ch, CURLOPT_USERAGENT, 'Deployer');
+curl_setopt(\$ch, CURLOPT_CUSTOMREQUEST, 'GET');
+curl_setopt(\$ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt(\$ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt(\$ch, CURLOPT_MAXREDIRS, 10);
+curl_setopt(\$ch, CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt(\$ch, CURLOPT_TIMEOUT, 5);
+\$result = curl_exec(\$ch);
+curl_close(\$ch);
+\$json = json_decode(\$result);
+\$host = parse_url(\$json->blog, PHP_URL_HOST);
+file_put_contents('$tempHostFile', \$host);
+EOF);
+            $php->start();
         }
 
         // Project

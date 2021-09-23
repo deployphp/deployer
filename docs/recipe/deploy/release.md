@@ -11,35 +11,35 @@
 
 ## Configuration
 ### release_name
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L11)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L9)
 
-Name of folder in releases.
+The name of the release.
 
 
 
-### releases_metainfo
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L32)
+### releases_log
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L17)
 
-Holds metainfo about releases from `.dep/releases` file.
+Holds releases log from `.dep/releases_log` file.
 
 
 
 ### releases_list
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L51)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L42)
 
-Return list of releases on host.
+Return list of release names on host.
 
 
 
 ### release_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L69)
 
 Return release path.
 
 
 
 ### release_or_current_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L96)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L81)
 
 Return the release path during a deployment
 but fallback to the current path otherwise.
@@ -50,9 +50,17 @@ but fallback to the current path otherwise.
 ## Tasks
 
 ### deploy:release
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L103)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L88)
 
-Prepare release. Clean up unfinished releases and prepare next release.
+Prepare release.
+
+Clean up unfinished releases and prepare next release
+
+
+### releases
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L137)
+
+Show releases list.
 
 
 

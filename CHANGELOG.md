@@ -60,6 +60,7 @@
 - Support passing `null` as default in get(). [#2545]
 - Shopware recipe: First activate plugins THEN build them to avoid breaking theme:compile with unbuild themes (which were activated AFTER build).
 - Shopware recipe sw:plugin:upgrade:all task.
+- Only perform keyscan for repos that are pulled over ssh. Better detection of hostname. [#2667]
 
 ### Removed
 - Removed the `artisan:public_disk` task. Use the `artisan:storage:link` task instead. [#2488]
@@ -628,6 +629,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
+[#2667]: https://github.com/deployphp/deployer/pull/2667 
 [#2656]: https://github.com/deployphp/deployer/issues/2656
 [#2549]: https://github.com/deployphp/deployer/issues/2549
 [#2545]: https://github.com/deployphp/deployer/issues/2545

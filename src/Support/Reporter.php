@@ -8,48 +8,37 @@
 namespace Deployer\Support;
 
 use Deployer\Utility\Httpie;
+use Symfony\Component\Process\PhpProcess;
 
 /**
  * @codeCoverageIgnore
  */
 class Reporter
 {
-    const ENDPOINT = 'https://deployer.org/api/stats';
-
     public static function report(array $stats): void
     {
-        $pid = null;
-        // make sure function is not disabled via php.ini "disable_functions"
-        if (extension_loaded('pcntl') && function_exists('pcntl_fork')) {
-            declare(ticks = 1);
-            $pid = pcntl_fork();
-        }
-
-        if (is_null($pid) || $pid === -1) {
-            // Fork fails or there is no `pcntl` extension.
-            try {
-                self::send($stats);
-            } catch (\Throwable $e) {
-                // pass
-            }
-        } elseif ($pid === 0) {
-            // Child process.
-            posix_setsid();
-            try {
-                self::send($stats);
-            } catch (\Throwable $e) {
-                // pass
-            }
-            // Close child process after doing job.
-            exit(0);
-        }
-    }
-
-    public static function send(array $stats): void
-    {
-        Httpie::post(self::ENDPOINT)
-            ->body($stats)
-            ->setopt(CURLOPT_SSL_VERIFYPEER, false)
-            ->send();
+        $version = DEPLOYER_VERSION;
+        $body = json_encode($stats);
+        $length = strlen($body);
+        $php = new PhpProcess(<<<EOF
+<?php
+\$ch = curl_init('https://deployer.org/api/stats');
+curl_setopt(\$ch, CURLOPT_USERAGENT, 'Deployer/$version');
+curl_setopt(\$ch, CURLOPT_CUSTOMREQUEST, 'POST');
+curl_setopt(\$ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'Content-Length: $length',
+]);
+curl_setopt(\$ch, CURLOPT_POSTFIELDS, '$body');
+curl_setopt(\$ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt(\$ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt(\$ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt(\$ch, CURLOPT_MAXREDIRS, 10);
+curl_setopt(\$ch, CURLOPT_CONNECTTIMEOUT, 5);
+curl_setopt(\$ch, CURLOPT_TIMEOUT, 5);
+\$result = curl_exec(\$ch);
+curl_close(\$ch);
+EOF);
+        $php->start();
     }
 }

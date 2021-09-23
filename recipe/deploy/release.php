@@ -3,51 +3,42 @@
 namespace Deployer;
 
 use Deployer\Exception\Exception;
-use Deployer\Support\Csv;
+use Symfony\Component\Console\Helper\Table;
 
-/**
- * Name of folder in releases.
- */
+// The name of the release.
 set('release_name', function () {
-    $list = array_map(function ($r) {
-        return $r[1];
-    }, get('releases_metainfo'));
-
-    // Filter out anything that does not look like a number.
-    $list = array_filter($list, function ($release) {
-        return preg_match('/^\d+$/', $release);
-    });
-
-    $nextReleaseNumber = 1;
-    if (count($list) > 0) {
-        $nextReleaseNumber = (int)max($list) + 1;
-    }
-
-    return (string)$nextReleaseNumber;
+    $latest = run('cat .dep/latest_release || echo 0');
+    $releaseName = strval(intval($latest) + 1);
+    run("echo $releaseName > .dep/latest_release");
+    return $releaseName;
 });
 
-/**
- * Holds metainfo about releases from `.dep/releases` file.
- */
-set('releases_metainfo', function () {
+// Holds releases log from `.dep/releases_log` file.
+set('releases_log', function () {
     cd('{{deploy_path}}');
 
-    if (!test('[ -f .dep/releases ]')) {
+    if (!test('[ -f .dep/releases_log ]')) {
         return [];
     }
 
     $keepReleases = get('keep_releases');
     if ($keepReleases === -1) {
-        $csv = run('cat .dep/releases');
+        $data = run('cat .dep/releases_log');
     } else {
-        $csv = run("tail -n " . ($keepReleases + 5) . " .dep/releases");
+        $data = run("tail -n " . ($keepReleases + 5) . " .dep/releases_log");
     }
-    return Csv::parse($csv);
+
+    $releasesLog = [];
+    foreach (explode("\n", $data) as $line) {
+        $metainfo = json_decode($line, true);
+        if (!empty($metainfo)) {
+            $releasesLog[] = $metainfo;
+        }
+    }
+    return $releasesLog;
 });
 
-/**
- * Return list of releases on host.
- */
+// Return list of release names on host.
 set('releases_list', function () {
     cd('{{deploy_path}}');
 
@@ -62,23 +53,19 @@ set('releases_list', function () {
         return basename(rtrim(trim($release), '/'));
     }, $ll);
 
-    $metainfo = get('releases_metainfo');
+    $releasesLog = get('releases_log');
 
     $releases = [];
-    for ($i = count($metainfo) - 1; $i >= 0; --$i) {
-        if (is_array($metainfo[$i]) && count($metainfo[$i]) >= 2) {
-            list(, $release) = $metainfo[$i];
-            if (in_array($release, $ll, true)) {
-                $releases[] = $release;
-            }
+    for ($i = count($releasesLog) - 1; $i >= 0; --$i) {
+        $release = $releasesLog[$i]['release_name'];
+        if (in_array($release, $ll, true)) {
+            $releases[] = $release;
         }
     }
     return $releases;
 });
 
-/**
- * Return release path.
- */
+// Return release path.
 set('release_path', function () {
     $releaseExists = test('[ -h {{deploy_path}}/release ]');
     if ($releaseExists) {
@@ -89,24 +76,22 @@ set('release_path', function () {
     }
 });
 
-/**
- * Return the release path during a deployment
- * but fallback to the current path otherwise.
- */
+// Return the release path during a deployment
+// but fallback to the current path otherwise.
 set('release_or_current_path', function () {
     $releaseExists = test('[ -h {{deploy_path}}/release ]');
-
     return $releaseExists ? get('release_path') : get('current_path');
 });
 
-desc('Prepare release. Clean up unfinished releases and prepare next release');
+// Clean up unfinished releases and prepare next release
+desc('Prepare release');
 task('deploy:release', function () {
     cd('{{deploy_path}}');
 
-    // Clean up if there is unfinished release
+    // Clean up if there is unfinished release.
     if (test('[ -h release ]')) {
-        run('rm -rf "$(readlink release)"'); // Delete release
-        run('rm release'); // Delete symlink
+        run('rm -rf "$(readlink release)"'); // Delete release.
+        run('rm release'); // Delete symlink.
     }
 
     // We need to get releases_list at same point as release_name,
@@ -114,32 +99,82 @@ task('deploy:release', function () {
     // if user overrides it, we need to get releases_list manually.
     $releasesList = get('releases_list');
     $releaseName = get('release_name');
+    $releasePath = "releases/$releaseName";
 
-    // Fix collisions
-    $i = 0;
-    while (test("[ -d {{deploy_path}}/releases/$releaseName ]")) {
-        $releaseName .= '.' . ++$i;
-        set('release_name', $releaseName);
+    // Check what there is no such release path.
+    if (test("[ -d $releasePath ]")) {
+        throw new Exception("Release name \"$releaseName\" already exists.");
     }
 
-    $releasePath = parse("{{deploy_path}}/releases/{{release_name}}");
-
     // Metainfo.
-    $date = run('date +"%Y%m%d%H%M%S"');
+    $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601);
+    $metainfo = [
+        'created_at' => $timestamp,
+        'release_name' => $releaseName,
+        'user' => get('user'),
+        'target' => get('target'),
+    ];
 
-    // Save metainfo about release
-    run("echo '$date,{{release_name}},{{user}},{{target}},revision' >> .dep/releases");
+    // Save metainfo about release.
+    $json = json_encode($metainfo);
+    run("echo '$json' >> .dep/releases_log");
 
-    // Make new release
+    // Make new release.
     run("mkdir -p $releasePath");
     run("{{bin/symlink}} $releasePath {{deploy_path}}/release");
 
-    // Add to releases list
+    // Add to releases list.
     array_unshift($releasesList, $releaseName);
     set('releases_list', $releasesList);
 
-    // Set previous_release
+    // Set previous_release.
     if (isset($releasesList[1])) {
         set('previous_release', "{{deploy_path}}/releases/{$releasesList[1]}");
     }
+});
+
+desc('Show releases list');
+task('releases', function () {
+    cd('{{deploy_path}}');
+
+    $releasesLog = get('releases_log');
+    $currentRelease = basename(run('readlink {{current_path}}'));
+    $releasesList = get('releases_list');
+
+    $table = [];
+    $tz = !empty(getenv('TIMEZONE')) ? getenv('TIMEZONE') : date_default_timezone_get();
+
+    foreach ($releasesLog as &$metainfo) {
+        $date = \DateTime::createFromFormat(\DateTimeInterface::ISO8601, $metainfo['created_at']);
+        $date->setTimezone(new \DateTimeZone($tz));
+        $status = $release = $metainfo['release_name'];
+        if (in_array($release, $releasesList, true)) {
+            if (test("[ -f releases/$release/BAD_RELEASE ]")) {
+                $status = "<error>$release</error> (bad)";
+            } else {
+                $status = "<info>$release</info>";
+            }
+        }
+        if ($release === $currentRelease) {
+            $status .= ' (current)';
+        }
+        try {
+            $revision = run("cat releases/$release/REVISION");
+        } catch (\Throwable $e) {
+            $revision = 'unknown';
+        }
+        $table[] = [
+            $date->format("Y-m-d H:i:s"),
+            $status,
+            $metainfo['user'],
+            $metainfo['target'],
+            $revision,
+        ];
+    }
+
+    (new Table(output()))
+        ->setHeaderTitle(currentHost()->getAlias())
+        ->setHeaders(["Date ($tz)", 'Release', 'Author', 'Target', 'Commit'])
+        ->setRows($table)
+        ->render();
 });

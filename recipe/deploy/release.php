@@ -142,8 +142,9 @@ task('releases', function () {
     $releasesList = get('releases_list');
 
     $table = [];
+    $tz = !empty(getenv('TIMEZONE')) ? getenv('TIMEZONE') : date_default_timezone_get();
+
     foreach ($releasesLog as &$metainfo) {
-        $tz = !empty(getenv('TIMEZONE')) ? getenv('TIMEZONE') : date_default_timezone_get();
         $date = \DateTime::createFromFormat(\DateTimeInterface::ISO8601, $metainfo['created_at']);
         $date->setTimezone(new \DateTimeZone($tz));
         $status = $release = $metainfo['release_name'];

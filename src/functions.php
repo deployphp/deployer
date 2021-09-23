@@ -580,7 +580,7 @@ function download(string $source, string $destination, array $config = []): void
  */
 function info(string $message): void
 {
-    writeln("<fg=green;options=bold>info</> " . parse($message));
+    writeln("<fg=black;bg=green;options=bold>info</> " . parse($message));
 }
 
 /**

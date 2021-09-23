@@ -193,7 +193,6 @@ class BlackjackCommand extends Command
                 $this->print("You can leave a tip here:");
                 $this->print();
                 $this->print("- https://github.com/sponsors/antonmedv");
-                $this->print("- https://www.patreon.com/deployer");
                 $this->print("- https://paypal.me/antonmedv");
                 $this->print();
             }

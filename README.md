@@ -23,12 +23,6 @@ Do you want to contribute to this project? Start working on one of those:
 
 See also the list of [contributors](https://github.com/deployphp/deployer/graphs/contributors) who participated in this project.
 
-## Sponsorship
-
-* Daniel Knoch
-
-See a full [list of sponsors](https://github.com/deployphp/deployer/blob/master/SPONSORS.md).
-
 ## Related
 
 * [GitHub Action for Deployer](https://github.com/deployphp/action)

@@ -629,7 +629,7 @@
 - Fixed `DotArray` syntax in `Collection`.
 
 
-[#2667]: https://github.com/deployphp/deployer/pull/2667 
+[#2667]: https://github.com/deployphp/deployer/pull/2667
 [#2656]: https://github.com/deployphp/deployer/issues/2656
 [#2549]: https://github.com/deployphp/deployer/issues/2549
 [#2545]: https://github.com/deployphp/deployer/issues/2545

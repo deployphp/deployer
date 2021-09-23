@@ -201,7 +201,7 @@ class Client
         }
 
         if ($host->has('identity_file')) {
-            $options = array_merge($options, ['-i', $host->getIdentityFile()]);
+            $options = array_merge($options, ['-i', parse_home_dir($host->getIdentityFile())]);
         }
 
         if ($host->has('forward_agent') && $host->getForwardAgent()) {

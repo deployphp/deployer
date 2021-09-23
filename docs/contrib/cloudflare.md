@@ -22,6 +22,7 @@ require 'contrib/cloudflare.php';
     - `api_key` – Cloudflare API key generated on the "My Account" page.
     - `email` – Cloudflare Email address associated with your account.
     - `domain` – The domain you want to clear
+    - `zone_id` – Cloudflare Zone ID (optional).
 
 ### Usage
 

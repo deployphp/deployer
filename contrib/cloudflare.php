@@ -15,6 +15,7 @@ require 'contrib/cloudflare.php';
     - `api_key` – Cloudflare API key generated on the "My Account" page.
     - `email` – Cloudflare Email address associated with your account.
     - `domain` – The domain you want to clear
+    - `zone_id` – Cloudflare Zone ID (optional).
 
 ### Usage
 
@@ -75,15 +76,18 @@ task('deploy:cloudflare', function () {
         return $res;
     };
 
-    // get the mysterious zone id from Cloud Flare
-    $zones = json_decode($makeRequest(
-        "zones?name={$config['domain']}"
-    ), true);
+    $zoneId = $config['zone_id'];
+    if (empty($zoneId)) {
+        // get the mysterious zone id from Cloud Flare
+        $zones = json_decode($makeRequest(
+            "zones?name={$config['domain']}"
+        ), true);
 
-    if (empty($zones['success']) || !empty($zones['errors'])) {
-        throw new \RuntimeException("Problem with zone data");
-    } else {
-        $zoneId = current($zones['result'])['id'];
+        if (!empty($zones['errors'])) {
+            throw new \RuntimeException('Problem with zone data');
+        } else {
+            $zoneId = current($zones['result'])['id'];
+        }
     }
 
     // make purge request

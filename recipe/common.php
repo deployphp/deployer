@@ -143,12 +143,28 @@ set('sudo_askpass', function () {
     }
 });
 
-/**
- * Default options
- */
 option('tag', null, InputOption::VALUE_REQUIRED, 'Tag to deploy');
 option('revision', null, InputOption::VALUE_REQUIRED, 'Revision to deploy');
 option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
+
+// The deploy target: a branch, a tag or a revision.
+set('target', function () {
+    $target = '';
+    $branch = get('branch');
+    if (!empty($branch)) {
+        $target = $branch;
+    }
+    if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
+        $target = input()->getOption('tag');
+    }
+    if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
+        $target = input()->getOption('revision');
+    }
+    if (empty($target)) {
+        $target = "HEAD";
+    }
+    return $target;
+});
 
 task('deploy:prepare', [
     'deploy:info',

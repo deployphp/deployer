@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 use Deployer\Exception\Exception;
@@ -16,6 +17,7 @@ task('deploy:setup', function () {
     }
 
     run('if [ ! -d {{deploy_path}} ]; then mkdir -p {{deploy_path}}; fi');
+    cd('{{deploy_path}}');
 
     // Check for existing /current directory (not symlink)
     $result = test('[ ! -L {{current_path}} ] && [ -d {{current_path}} ]');
@@ -24,11 +26,11 @@ task('deploy:setup', function () {
     }
 
     // Create metadata .dep dir.
-    run("cd {{deploy_path}} && if [ ! -d .dep ]; then mkdir .dep; fi");
+    run("if [ ! -d .dep ]; then mkdir .dep; fi");
 
     // Create releases dir.
-    run("cd {{deploy_path}} && if [ ! -d releases ]; then mkdir releases; fi");
+    run("if [ ! -d releases ]; then mkdir releases; fi");
 
     // Create shared dir.
-    run("cd {{deploy_path}} && if [ ! -d shared ]; then mkdir shared; fi");
+    run("if [ ! -d shared ]; then mkdir shared; fi");
 });

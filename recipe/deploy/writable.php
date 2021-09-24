@@ -1,11 +1,14 @@
 <?php
 namespace Deployer;
 
-// The config used to make a writable directory by a server.
+// Used to make a writable directory by a server.
+// Used in `chown` and `acl` modes of {{writable_mode}}.
 // Attempts automatically to detect http user in process list.
+use Deployer\Exception\RunException;
+
 set('http_user', function () {
-    $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx|[c]addy' | grep -v root | sort | awk '{print \$NF}' | uniq"));
-    $httpUser = array_shift($httpUserCandidates);
+    $candidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx|[c]addy' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+    $httpUser = array_shift($candidates);
 
     if (empty($httpUser)) {
         throw new \RuntimeException(
@@ -17,8 +20,22 @@ set('http_user', function () {
     return $httpUser;
 });
 
-// Used in `chgrp` of {{writable_mode}} only.
-set('http_group', false);
+// Used to make a writable directory by a server.
+// Used in `chgrp` mode of {{writable_mode}} only.
+// Attempts automatically to detect http user in process list.
+set('http_group', function () {
+    $candidates = explode("\n", run("ps axo comm,group | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx|[c]addy' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+    $httpGroup = array_shift($candidates);
+
+    if (empty($httpGroup)) {
+        throw new \RuntimeException(
+            "Can't detect http user name.\n" .
+            "Please setup `http_group` config parameter."
+        );
+    }
+
+    return $httpGroup;
+});
 
 // List of writable dirs.
 set('writable_dirs', []);
@@ -28,7 +45,7 @@ set('writable_dirs', []);
 // - chgrp
 // - chmod
 // - acl
-set('writable_mode', 'chown');
+set('writable_mode', 'chgrp');
 
 // Using sudo in writable commands?
 set('writable_use_sudo', false);
@@ -45,8 +62,6 @@ task('deploy:writable', function () {
     $mode = get('writable_mode');
     $recursive = get('writable_recursive') ? '-R' : '';
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
-    $httpUser = get('http_user');
-    $httpGroup = get('http_group');
 
     if (empty($dirs)) {
         return;
@@ -62,9 +77,15 @@ task('deploy:writable', function () {
     run("mkdir -p $dirs");
 
     if ($mode === 'chown') {
+        $httpUser = get('http_user');
         // Change owner.
         // -L   traverse every symbolic link to a directory encountered
-        run("$sudo chown -L $recursive $httpUser $dirs");
+        try {
+            run("$sudo chown -L $recursive $httpUser $dirs");
+        } catch (RunException $exception) {
+            warning("Make sure `{{remote_user}}` is in `{{http_group}}`.\n$ useradd -g{{http_group}} {{remote_user}}");
+            throw  $exception;
+        }
     } elseif ($mode === 'chgrp') {
         if (empty($httpGroup)) {
             throw new \RuntimeException("Please setup `http_group` config parameter.");
@@ -75,6 +96,7 @@ task('deploy:writable', function () {
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {
+        $httpUser = get('http_user');
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
             // Try OS-X specific setting of access-rights
 

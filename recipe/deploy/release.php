@@ -75,6 +75,11 @@ set('release_path', function () {
     }
 });
 
+// Current release revision. Usually a git hash.
+set('release_revision', function () {
+    return run('cat {{release_path}}/REVISION');
+});
+
 // Return the release path during a deployment
 // but fallback to the current path otherwise.
 set('release_or_current_path', function () {

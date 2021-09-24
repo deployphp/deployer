@@ -29,7 +29,7 @@ task('deploy:shared', function () {
             run("mkdir -p $sharedPath/$dir");
             // If release contains shared dir, copy that dir from release to shared.
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
-                run("cp -r{$copyVerbosity} {{release_path}}/{$dir} {$sharedPath}/" . dirname(parse($dir)));
+                run("cp -r$copyVerbosity {{release_path}}/$dir $sharedPath/" . dirname($dir));
             }
         }
 
@@ -48,17 +48,15 @@ task('deploy:shared', function () {
         $dirname = dirname(parse($file));
 
         // Create dir of shared file if not existing
-        if (!test("[ -d {$sharedPath}/{$dirname} ]")) {
-            run("mkdir -p {$sharedPath}/{$dirname}");
+        if (!test("[ -d $sharedPath/$dirname ]")) {
+            run("mkdir -p $sharedPath/$dirname");
         }
 
         // Check if shared file does not exist in shared.
         // and file exist in release
         if (!test("[ -f $sharedPath/$file ]") && test("[ -f {{release_path}}/$file ]")) {
             // Copy file in shared dir if not present
-            run(
-                "cp -r{$copyVerbosity} {{release_path}}/{$file} {$sharedPath}/{$file}"
-            );
+            run("cp -r$copyVerbosity {{release_path}}/$file $sharedPath/$file");
         }
 
         // Remove from source.
@@ -68,7 +66,7 @@ task('deploy:shared', function () {
         run("if [ ! -d $(echo {{release_path}}/$dirname) ]; then mkdir -p {{release_path}}/$dirname;fi");
 
         // Touch shared
-        run("[[ -f $sharedPath/$file ]] || touch $sharedPath/$file");
+        run("[ -f $sharedPath/$file ] || touch $sharedPath/$file");
 
         // Symlink shared dir to release dir
         run("{{bin/symlink}} $sharedPath/$file {{release_path}}/$file");

@@ -14,7 +14,13 @@ task('deploy:copy_dirs', function () {
                     $destinationDir = substr($dir, 0, strrpos($dir, '/') + 1);
                 }
                 run("mkdir -p {{release_path}}/$dir");
-                run("cp -rpf {{previous_release}}/$dir {{release_path}}/$destinationDir");
+                // -a, --archive
+                //        copy directories recursively, preserve all attributes,
+                //        never follow symbolic links in SOURCE
+                // -f, --force
+                //        if  an existing destination file cannot be opened, remove it and try again (this option is ignored when the -n
+                //        option is also used)
+                run("cp -af {{previous_release}}/$dir {{release_path}}/$destinationDir");
             }
         }
     }

@@ -80,16 +80,17 @@ task('deploy:writable', function () {
         $httpUser = get('http_user');
         // Change owner.
         // -L   traverse every symbolic link to a directory encountered
-        try {
-            run("$sudo chown -L $recursive $httpUser $dirs");
-        } catch (RunException $exception) {
-            warning("Make sure `{{remote_user}}` is in `{{http_group}}`.\n$ useradd -g{{http_group}} {{remote_user}}");
-            throw  $exception;
-        }
+
+        run("$sudo chown -L $recursive $httpUser $dirs");
     } elseif ($mode === 'chgrp') {
         // Change group ownership.
-        // -L    traverse every symbolic link to a directory encountered
-        run("$sudo chgrp -H $recursive {{http_group}} $dirs");
+        try {
+            // -L    traverse every symbolic link to a directory encountered
+            run("$sudo chgrp -H $recursive {{http_group}} $dirs");
+        } catch (RunException $exception) {
+            warning("Make sure `{{remote_user}}` is in `{{http_group}}`.\n$ useradd -g {{http_group}} {{remote_user}}");
+            throw  $exception;
+        }
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {

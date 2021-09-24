@@ -54,7 +54,7 @@ task('deploy:update_code', function () {
             $host = $matches[1];
             $port = $matches[2] ?? '22';
         } else {
-            warning("Can't parse repository url ($repository)");
+            warning("Can't parse repository url ($repository).");
         }
         if (isset($host) && isset($port)) {
             run("ssh-keygen -F $host:$port || ssh-keyscan -p $port -H $host >> ~/.ssh/known_hosts");

@@ -1,9 +1,10 @@
 <?php
 namespace Deployer;
 
+// The config used to make a writable directory by a server.
 // Attempts automatically to detect http user in process list.
 set('http_user', function () {
-    $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+    $httpUserCandidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx|[c]addy' | grep -v root | sort | awk '{print \$NF}' | uniq"));
     $httpUser = array_shift($httpUserCandidates);
 
     if (empty($httpUser)) {
@@ -16,32 +17,36 @@ set('http_user', function () {
     return $httpUser;
 });
 
+// Used in `chgrp` of {{writable_mode}} only.
 set('http_group', false);
 
 // List of writable dirs.
 set('writable_dirs', []);
 
-// chmod, chown, chgrp or acl.
-set('writable_mode', 'acl');
+// One of:
+// - chown
+// - chgrp
+// - chmod
+// - acl
+set('writable_mode', 'chown');
 
 // Using sudo in writable commands?
 set('writable_use_sudo', false);
 
-// Common for all modes
-set('writable_recursive', true);
+// Use recursive mode (-R)?
+set('writable_recursive', false);
 
-// For chmod mode
+// The chmod mode.
 set('writable_chmod_mode', '0755');
-
-// For chmod mode only (if is boolean, it has priority over `writable_recursive`)
-set('writable_chmod_recursive', true);
 
 desc('Make writable dirs');
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $mode = get('writable_mode');
+    $recursive = get('writable_recursive') ? '-R' : '';
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
     $httpUser = get('http_user');
+    $httpGroup = get('http_group');
 
     if (empty($dirs)) {
         return;
@@ -56,27 +61,18 @@ task('deploy:writable', function () {
     // Create directories if they don't exist
     run("mkdir -p $dirs");
 
-    $recursive = get('writable_recursive') ? '-R' : '';
-
     if ($mode === 'chown') {
         // Change owner.
-        // -R   operate on files and directories recursively
         // -L   traverse every symbolic link to a directory encountered
         run("$sudo chown -L $recursive $httpUser $dirs");
     } elseif ($mode === 'chgrp') {
-        // Change group ownership.
-        // -R   operate on files and directories recursively
-        // -L   if a command line argument is a symbolic link to a directory, traverse it
-        $httpGroup = get('http_group', false);
-        if ($httpGroup === false) {
+        if (empty($httpGroup)) {
             throw new \RuntimeException("Please setup `http_group` config parameter.");
         }
-        run("$sudo chgrp -H -f $recursive $httpGroup $dirs");
+        // Change group ownership.
+        // -L    traverse every symbolic link to a directory encountered
+        run("$sudo chgrp -H $recursive $httpGroup $dirs");
     } elseif ($mode === 'chmod') {
-        // in chmod mode, defined `writable_chmod_recursive` has priority over common `writable_recursive`
-        if (is_bool(get('writable_chmod_recursive'))) {
-            $recursive = get('writable_chmod_recursive') ? '-R' : '';
-        }
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {

@@ -47,7 +47,7 @@ class SshCommand extends Command
         $this->telemetry();
         $hostname = $input->getArgument('hostname');
         if (!empty($hostname)) {
-            $host = $this->deployer->hosts->get($hostname);
+            $host = $this->deployer->hosts->findOneByAlias($hostname);
         } else {
             $hostsAliases = [];
             foreach ($this->deployer->hosts as $host) {
@@ -73,7 +73,7 @@ class SshCommand extends Command
                 $question->setErrorMessage('There is no "%s" host.');
 
                 $hostname = $helper->ask($input, $output, $question);
-                $host = $this->deployer->hosts->get($hostname);
+                $host = $this->deployer->hosts->findOneByAlias($hostname);
             }
         }
 

@@ -74,7 +74,8 @@ RUN useradd \
     && touch ~deployer/.ssh/authorized_keys \
     && chown -R deployer:deployer ~deployer/.ssh \
     && chmod 700 ~deployer/.ssh \
-    && chmod 600 ~deployer/.ssh/authorized_keys
+    && chmod 600 ~deployer/.ssh/authorized_keys \
+    && useradd -g www-data deployer
 
 RUN useradd \
         --create-home \

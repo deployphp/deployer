@@ -88,7 +88,7 @@ task('deploy:writable', function () {
             // -L    traverse every symbolic link to a directory encountered
             run("$sudo chgrp -H $recursive {{http_group}} $dirs");
         } catch (RunException $exception) {
-            warning("Make sure `{{remote_user}}` is in `{{http_group}}`.\n$ useradd -g {{http_group}} {{remote_user}}");
+            warning("Make sure `{{remote_user}}` is in `{{http_group}}` group: `useradd -g {{http_group}} {{remote_user}}`");
             throw  $exception;
         }
     } elseif ($mode === 'chmod') {

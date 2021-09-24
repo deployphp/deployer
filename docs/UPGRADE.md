@@ -58,6 +58,7 @@
     ```bash
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```
+11. Make sure to set `http_group` config as new default `writable_mode` is `chgrp`.
 
 # Upgrade from 5.x to 6.x
 

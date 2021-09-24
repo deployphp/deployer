@@ -87,12 +87,9 @@ task('deploy:writable', function () {
             throw  $exception;
         }
     } elseif ($mode === 'chgrp') {
-        if (empty($httpGroup)) {
-            throw new \RuntimeException("Please setup `http_group` config parameter.");
-        }
         // Change group ownership.
         // -L    traverse every symbolic link to a directory encountered
-        run("$sudo chgrp -H $recursive $httpGroup $dirs");
+        run("$sudo chgrp -H $recursive {{http_group}} $dirs");
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {

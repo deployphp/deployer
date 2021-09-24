@@ -5,9 +5,9 @@ desc('Copy directories');
 task('deploy:copy_dirs', function () {
     if (has('previous_release')) {
         foreach (get('copy_dirs') as $dir) {
-            if (substr($dir, -1) === '/') {
-                throw new \RuntimeException('Entries in config parameter "copy_dirs" must not end with "/"');
-            }
+            // Make sure all path without tailing slash.
+            $dir = trim($dir, '/');
+
             if (test("[ -d {{previous_release}}/$dir ]")) {
                 $destinationDir = '';
                 if (strpos($dir, '/') !== false) {

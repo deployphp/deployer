@@ -1,6 +1,8 @@
 <?php
 namespace Deployer;
 
+use Deployer\Exception\ConfigurationException;
+
 /**
  * Determines which branch to deploy. Can be overridden with cli option `--branch`.
  * If not specified, will get current git HEAD branch as default branch to deploy.
@@ -14,6 +16,12 @@ set('branch', function () {
 
 // Automatically populate `known_hosts` file based on {{repository}} config.
 set('auto_ssh_keygen', true);
+
+// Sets deploy:update_code strategy.
+// Can we one of:
+// - archive
+// - checkout (if you need `.git` dir in your {{release_path}})
+set('update_code_strategy', 'archive');
 
 /**
  * Update code at {{release_path}} on host.
@@ -79,9 +87,16 @@ task('deploy:update_code', function () {
         goto start;
     }
 
-    // Copy to release_path.
     run("$git remote update 2>&1");
-    run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
+
+    // Copy to release_path.
+    if (get('update_code_strategy') === 'archive') {
+        run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
+    } else if (get('update_code_strategy') === 'checkout') {
+        run("$git --work-tree {{release_path}} checkout --force $at");
+    } else {
+        throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
+    }
 
     // Save revision in .dep and in variable for later usage in scripts.
     $rev = escapeshellarg(run("$git rev-list $at -1"));

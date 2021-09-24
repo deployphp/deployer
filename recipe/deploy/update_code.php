@@ -14,6 +14,9 @@ set('branch', function () {
     return null;
 });
 
+// Automatically populate `known_hosts` file based on {{repository}} config.
+set('auto_ssh_keygen', true);
+
 /**
  * Update code at {{release_path}} on host.
  */
@@ -44,15 +47,21 @@ task('deploy:update_code', function () {
         }
     }
 
-    $url = parse_url($repository);
-
-    if (isset($url['scheme']) && $url['scheme'] === 'ssh') {
-        $repositoryHostname = $url['host'];
-        $portOptions = $url['port'] !== 22 ? "-p {$url['port']}" : null;
-        try {
-            run("ssh-keygen -F $repositoryHostname");
-        } catch (RunException $e) {
-            run("ssh-keyscan $portOptions -H $repositoryHostname >> ~/.ssh/known_hosts");
+    if (get('auto_ssh_keygen')) {
+        $url = parse_url($repository);
+        if (isset($url['scheme']) && $url['scheme'] === 'ssh') {
+            $host = $url['host'];
+            $port = $url['port'] ?? '22';
+        } else if (preg_match('/(?:@|\/\/)([^\/:]+)(?:\:(\d{1,5}))?/', $repository, $matches)) {
+            $host = $matches[1];
+            $port = $matches[2] ?? '22';
+        } else {
+            warning("Can't parse repository url ($repository)");
+        }
+        if (isset($host) && isset($port)) {
+            run("ssh-keygen -F $host:$port || ssh-keyscan -p $port -H $host >> ~/.ssh/known_hosts");
+        } else {
+            warning("Please, make sure your server can connect to $host to clone repo.");
         }
     }
 

@@ -13,7 +13,7 @@
 ## Tasks
 
 ### push
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/push.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/push.php#L8)
 
 Push local changes to remote host.
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 use Deployer\Exception\Exception;

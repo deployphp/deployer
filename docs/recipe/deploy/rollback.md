@@ -11,7 +11,7 @@
 
 ## Configuration
 ### rollback_candidate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L7)
 
 
 
@@ -21,7 +21,7 @@
 ## Tasks
 
 ### rollback
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L39)
 
 Rollback to previous release.
 

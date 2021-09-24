@@ -11,7 +11,7 @@
 
 ## Configuration
 ### composer_action
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L4)
 
 
 
@@ -21,7 +21,7 @@
 
 
 ### composer_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L7)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L6)
 
 
 
@@ -34,7 +34,7 @@
 ## Tasks
 
 ### deploy:vendors
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L28)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L27)
 
 Installing vendors.
 

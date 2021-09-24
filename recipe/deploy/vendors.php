@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 set('composer_action', 'install');

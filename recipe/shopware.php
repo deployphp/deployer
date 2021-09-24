@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 use MJS\TopSort\Implementations\FixedArraySort;

@@ -15,7 +15,7 @@
 ## Tasks
 
 ### phpcr:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L18)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L17)
 
 Migrate PHPCR.
 
@@ -23,7 +23,7 @@ Migrate PHPCR.
 
 
 ### deploy:website:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L22)
 
 Clear cache.
 
@@ -31,7 +31,7 @@ Clear cache.
 
 
 ### deploy:website:cache:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L28)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L27)
 
 Warm up cache.
 

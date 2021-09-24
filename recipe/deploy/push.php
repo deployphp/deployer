@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 // Creates patch of local changes and pushes them on host.

@@ -1,5 +1,4 @@
 <?php
-
 namespace Deployer;
 
 // Attempts automatically to detect http user in process list.

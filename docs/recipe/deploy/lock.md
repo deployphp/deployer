@@ -13,7 +13,7 @@
 ## Tasks
 
 ### deploy:lock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L7)
 
 Lock deploy.
 
@@ -21,7 +21,7 @@ Lock deploy.
 
 
 ### deploy:unlock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L21)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L20)
 
 Unlock deploy.
 
@@ -29,7 +29,7 @@ Unlock deploy.
 
 
 ### deploy:is-unlocked
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L25)
 
 Check if deploy is unlocked.
 

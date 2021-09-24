@@ -13,7 +13,7 @@
 
 ## Configuration
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L8)
 
 Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
 
@@ -28,7 +28,7 @@ Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/commo
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L13)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L12)
 
 Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
 
@@ -50,7 +50,7 @@ Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L24)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L23)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -77,7 +77,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L39)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L38)
 
 Deploy your project.
 

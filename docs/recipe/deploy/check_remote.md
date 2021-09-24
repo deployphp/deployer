@@ -13,7 +13,7 @@
 ## Tasks
 
 ### deploy:check_remote
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/check_remote.php#L11)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/check_remote.php#L10)
 
 Check remote head.
 

@@ -11,14 +11,14 @@
 
 ## Configuration
 ### http_user
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L6)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L5)
 
 Attempts automatically to detect http user in process list.
 
 
 
 ### http_group
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L20)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L19)
 
 
 
@@ -28,14 +28,14 @@ false
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L22)
 
 List of writable dirs.
 
 
 
 ### writable_mode
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L25)
 
 chmod, chown, chgrp or acl.
 
@@ -45,7 +45,7 @@ chmod, chown, chgrp or acl.
 
 
 ### writable_use_sudo
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L28)
 
 Using sudo in writable commands?
 
@@ -55,7 +55,7 @@ false
 
 
 ### writable_recursive
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L32)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L31)
 
 Common for all modes
 
@@ -65,7 +65,7 @@ true
 
 
 ### writable_chmod_mode
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L34)
 
 For chmod mode
 
@@ -75,7 +75,7 @@ For chmod mode
 
 
 ### writable_chmod_recursive
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L38)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L37)
 
 For chmod mode only (if is boolean, it has priority over `writable_recursive`)
 
@@ -88,7 +88,7 @@ true
 ## Tasks
 
 ### deploy:writable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L40)
 
 Make writable dirs.
 

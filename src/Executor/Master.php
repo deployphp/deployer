@@ -268,22 +268,4 @@ class Master
         }
         return 0;
     }
-
-    private static function stringifyVerbosity(int $verbosity): string
-    {
-        switch ($verbosity) {
-            case OutputInterface::VERBOSITY_QUIET:
-                return '-q';
-            case OutputInterface::VERBOSITY_NORMAL:
-                return '';
-            case OutputInterface::VERBOSITY_VERBOSE:
-                return '-v';
-            case OutputInterface::VERBOSITY_VERY_VERBOSE:
-                return '-vv';
-            case OutputInterface::VERBOSITY_DEBUG:
-                return '-vvv';
-            default:
-                throw new Exception('Unknown verbosity level: ' . $verbosity);
-        }
-    }
 }

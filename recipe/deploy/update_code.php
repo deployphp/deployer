@@ -1,8 +1,6 @@
 <?php
 namespace Deployer;
 
-use Deployer\Exception\RunException;
-
 /**
  * Determines which branch to deploy. Can be overridden with cli option `--branch`.
  * If not specified, will get current git HEAD branch as default branch to deploy.
@@ -61,7 +59,7 @@ task('deploy:update_code', function () {
         if (isset($host) && isset($port)) {
             run("ssh-keygen -F $host:$port || ssh-keyscan -p $port -H $host >> ~/.ssh/known_hosts");
         } else {
-            warning("Please, make sure your server can connect to $host to clone repo.");
+            warning("Please, make sure your server can clone the repo.");
         }
     }
 

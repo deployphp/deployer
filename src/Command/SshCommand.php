@@ -86,7 +86,7 @@ class SshCommand extends Command
         $options = Client::connectionOptionsString($host);
         $deployPath = $host->get('deploy_path', '~');
 
-        passthru("ssh -t $options {$host->getConnectionString()} 'cd '''$deployPath/current'''; $shell_path'");
+        passthru("ssh -t $options {$host->getConnectionString()} 'cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path'");
         return 0;
     }
 }

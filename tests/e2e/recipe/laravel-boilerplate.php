@@ -9,7 +9,6 @@ getHost('server.test')
 
 set('repository', 'https://github.com/deployphp/test-laravel.git');
 set('branch', 'main');
-set('http_group', 'www-data');
 
 task('laravel:setup-env', function(): void {
     $sharedPath = "{{deploy_path}}/shared";

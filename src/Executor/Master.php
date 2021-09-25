@@ -217,7 +217,7 @@ class Master
         ];
         $command = array_merge($command, IOArguments::collect($this->input, $this->output));
         if ($task->isVerbose() && $this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
-            $command[] = ' -v';
+            $command[] = '-v';
         }
         if ($this->output->isDebug()) {
             $this->output->writeln("[$host] " . join(' ', $command));

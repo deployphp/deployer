@@ -9,6 +9,7 @@ namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
+use Deployer\Exception\ConfigurationException;
 use Deployer\Task\Context;
 
 class Host
@@ -25,7 +26,7 @@ class Host
             $parent = Deployer::get()->config;
         }
         $this->config = new Configuration($parent);
-        $this->set('alias', $hostname);
+        $this->set('#alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
     }
 
@@ -48,6 +49,12 @@ class Host
      */
     public function set(string $name, $value): self
     {
+        if ($name === 'alias') {
+            throw new ConfigurationException("Can not update alias of the host.\nThis will change only host own alias,\nbut not the key it is stored in HostCollection.");
+        }
+        if ($name === '#alias') {
+            $name = 'alias';
+        }
         $this->config->set($name, $value);
         return $this;
     }

@@ -244,8 +244,11 @@ function remove_text_emoji(string $text): string
 
 function add_tailing_dot(string $sentence): string
 {
-    if (!str_ends_with($sentence, '.')) {
-        $sentence .= '.';
+    if (empty($sentence)) {
+        return $sentence;
     }
-    return $sentence;
+    if (str_ends_with($sentence, '.')) {
+        return $sentence;
+    }
+    return $sentence . '.';
 }

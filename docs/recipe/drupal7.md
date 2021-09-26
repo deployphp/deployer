@@ -70,7 +70,7 @@ Drupal 7 writable dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L8)
 
-.
+
 
 
 
@@ -83,7 +83,7 @@ This task is group task which contains next tasks:
 ### drupal:settings
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L33)
 
-.
+
 
 Create and upload Drupal 7 settings.php using values from secrets
 
@@ -91,7 +91,7 @@ Create and upload Drupal 7 settings.php using values from secrets
 ### drupal:upload_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L75)
 
-.
+
 
 Upload Drupal 7 files folder
 

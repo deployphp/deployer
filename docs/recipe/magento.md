@@ -62,7 +62,7 @@ Clear cache
 ### deploy:clear_version
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L32)
 
-.
+
 
 Remove files that can be used to compromise Magento
 

@@ -10,11 +10,9 @@ namespace Deployer;
 
 use Deployer\Documentation\ApiGen;
 use Deployer\Documentation\DocGen;
-use Deployer\Support\Changelog\Parser;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
 
 require __DIR__ . '/../vendor/autoload.php';
 

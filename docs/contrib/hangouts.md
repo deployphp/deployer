@@ -121,7 +121,7 @@ Notifying Google Hangouts Chat about deploy finish.
 ### chat:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L150)
 
-.
+
 
 
 

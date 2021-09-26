@@ -841,3 +841,21 @@ function locateBinaryPath(string $name): string
     return trim(str_replace("$name is", "", $path));
 
 }
+
+/**
+ * Returns remote environments variables as an array.
+ * ```php
+ * $remotePath = remoteEnv()['PATH'];
+ * run('echo $PATH', env: ['PATH' => "/home/user/bin:$remotePath"]);
+ * ```
+ */
+function remoteEnv(): array
+{
+    $vars = [];
+    $data = run('env');
+    foreach (explode("\n", $data) as $line) {
+        list($name, $value) = explode('=', $line, 2);
+        $vars[$name] = $value;
+    }
+    return $vars;
+}

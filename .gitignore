@@ -1,7 +1,4 @@
 /vendor/
-/docs/recipe/
-/docs/contrib/
-/docs/api.md
 *.phar
 .phpunit.result.cache
 docker-compose.override.yml

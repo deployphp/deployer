@@ -76,7 +76,7 @@ set('slack_title', function () {
 });
 
 // Deploy message
-set('slack_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+set('slack_text', '_{{user}}_ deploying `{{target}}` to *{{hostname}}*');
 set('slack_success_text', 'Deploy to *{{target}}* successful');
 set('slack_failure_text', 'Deploy to *{{target}}* failed');
 set('slack_rollback_text', '_{{user}}_ rolled back changes on *{{target}}*');

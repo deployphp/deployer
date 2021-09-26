@@ -1,10 +1,8 @@
 - [ ] Bug fix #…?
 - [ ] New feature?
 - [ ] BC breaks?
-- [ ] Deprecations?
 - [ ] Tests added?
-- [ ] Docs updated?
-- [ ] Changelog updated?
+- [ ] Docs added?
 
-      Please, update CHANGELOG.md by running next command:
-      $ php bin/changelog
+      Please, regenerate docs by running next command:
+      $ php bin/docgen

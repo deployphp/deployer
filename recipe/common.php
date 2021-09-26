@@ -1,6 +1,7 @@
 <?php
 namespace Deployer;
 
+require __DIR__ . '/provision/provision.php';
 require __DIR__ . '/deploy/check_remote.php';
 require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/clear_paths.php';

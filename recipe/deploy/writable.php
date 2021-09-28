@@ -45,7 +45,7 @@ set('writable_dirs', []);
 // - chgrp
 // - chmod
 // - acl
-set('writable_mode', 'chgrp');
+set('writable_mode', 'acl');
 
 // Using sudo in writable commands?
 set('writable_use_sudo', false);

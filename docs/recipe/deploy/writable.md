@@ -43,7 +43,7 @@ One of:
 - acl
 
 ```php title="Default value"
-'chgrp'
+'acl'
 ```
 
 

@@ -4,6 +4,8 @@ TODO
 
 
 ## General Example
+
+To be added
 ## Laravel PHP Example
 
 Here is an example `yaml` file for a Laravel PHP setup using the Laravel recipe `recipes/laravel.php` as well as PHP FPM & NPM from the `contrib` directory. The repository is a dummy one in this example, but all else is useful for most Laravel setups:

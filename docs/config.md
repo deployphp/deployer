@@ -19,7 +19,7 @@ application: 'domain'
 
 ## Respository
 
-Using `respository` you can set the repository you would like to use for deployemnt. Example:
+Using `repository` you can set the repository you would like to use for deployment. Example:
 
 ```yml
 repository: 'git@github.com:user/domain.git'

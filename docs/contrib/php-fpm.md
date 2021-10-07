@@ -26,13 +26,20 @@ require 'contrib/php-fpm.php';
 Start by explicitely providing the current version of PHP-version using the `php_fpm_version`.
 Alternatively, you may use any of the options above to configure how PHP-fpm should reload.
 
+### Deployer 6
 Then, add the `php-fpm:reload` task at the end of your deployments by using the `after` method like so.
 
 ```php
 set('php_fpm_version', '8.0');
 after('deploy', 'php-fpm:reload');
 ```
+### Deployer 7
 
+To set the appropriate PHP FPM version you add a line starting with `php_fpm_version` followed by the version needed. Example:
+
+```yml
+php_fpm_version: 7.4
+```
 
 
 

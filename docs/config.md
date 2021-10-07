@@ -25,13 +25,6 @@ Using `repository` you can set the repository you would like to use for deployme
 repository: 'git@github.com:user/domain.git'
 ```
 
-## PHP FPM Version 
-
-To set the appropriate PHP FPM version you add a line starting with `php_fpm_version` followed by the version needed. Example:
-
-```yml
-php_fpm_version: '7.4'
-```
 
 ## Releases
 

@@ -32,7 +32,8 @@ To set the appropriate PHP FPM version you add a line starting with `php_fpm_ver
 ```yml
 php_fpm_version: '7.4'
 ```
-## Releasese
+
+## Releases
 
 How many releases to keep can be set with `keep_releases`:
 

@@ -29,7 +29,7 @@ repository: 'git@github.com:user/domain.git'
 
 To set the appropriate PHP FPM version you add a line starting with `php_fpm_version` followed by the version needed. Example:
 
-yml```
+```yml
 php_fpm_version: '7.4'
 ```
 ## Releasese

@@ -38,7 +38,7 @@ php_fpm_version: '7.4'
 How many releases to keep can be set with `keep_releases`:
 
 ```yml
-keep_releases: '10'
+keep_releases: 10
 ```
 
 ## Shared Files

@@ -80,14 +80,13 @@ task('deploy:writable', function () {
         $httpUser = get('http_user');
         // Change owner.
         // -L   traverse every symbolic link to a directory encountered
-
         run("$sudo chown -L $recursive $httpUser $dirs");
-        run("chmod g+rwx $dirs");
     } elseif ($mode === 'chgrp') {
-        // Change group ownership.
         try {
+            // Change group ownership.
             // -L    traverse every symbolic link to a directory encountered
             run("$sudo chgrp -H $recursive {{http_group}} $dirs");
+            run("$sudo chmod g+rwx $dirs");
         } catch (RunException $exception) {
             warning("Make sure `{{remote_user}}` is in `{{http_group}}` group: `usermod -a -G {{http_group}} {{remote_user}}`");
             throw  $exception;
@@ -100,11 +99,11 @@ task('deploy:writable', function () {
             // Try OS-X specific setting of access-rights
 
             run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-            run("$sudo chmod +a \"`whoami` allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            run("$sudo chmod +a \"{{remote_user}} allow delete,write,append,file_inherit,directory_inherit\" $dirs");
         } elseif (commandExist('setfacl')) {
             if (!empty($sudo)) {
-                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
-                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dirs");
+                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
+                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
             } else {
                 // When running without sudo, exception may be thrown
                 // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -116,8 +115,8 @@ task('deploy:writable', function () {
                     $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                     // Set ACL for directory if it has not been set before
                     if (!$hasfacl) {
-                        run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
-                        run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:`whoami`:rwX $dir");
+                        run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dir");
+                        run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dir");
                     }
                 }
             }

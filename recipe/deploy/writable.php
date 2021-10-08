@@ -101,10 +101,7 @@ task('deploy:writable', function () {
             run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             run("$sudo chmod +a \"{{remote_user}} allow delete,write,append,file_inherit,directory_inherit\" $dirs");
         } elseif (commandExist('setfacl')) {
-            if (!empty($sudo)) {
-                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
-                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
-            } else {
+            if (empty($sudo)) {
                 // When running without sudo, exception may be thrown
                 // if executing setfacl on files created by http user (in directory that has been setfacl before).
                 // These directories/files should be skipped.
@@ -119,6 +116,9 @@ task('deploy:writable', function () {
                         run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dir");
                     }
                 }
+            } else {
+                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
+                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
             }
         } else {
             $alias = currentHost()->getAlias();

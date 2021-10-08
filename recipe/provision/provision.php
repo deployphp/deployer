@@ -43,7 +43,7 @@ desc('Upgrade all packages');
 task('provision:upgrade', function () {
     run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
     run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-});
+})->verbose();
 
 task('provision:add-repositories', function () {
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);

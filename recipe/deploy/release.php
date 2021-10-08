@@ -111,7 +111,7 @@ task('deploy:release', function () {
     }
 
     // Metainfo.
-    $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601);
+    $timestamp = timestamp();
     $metainfo = [
         'created_at' => $timestamp,
         'release_name' => $releaseName,

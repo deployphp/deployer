@@ -60,7 +60,7 @@ task('rollback', function () {
     run("{{bin/symlink}} releases/$candidate {{current_path}}");
 
     // Mark release as bad.
-    $timestamp = (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601);
+    $timestamp = timestamp();
     run("echo '$timestamp,{{user}}' > releases/$currentRelease/BAD_RELEASE");
 
     writeln("<info>rollback</info> to release <info>$candidate</info> was <success>successful</success>");

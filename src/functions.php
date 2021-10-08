@@ -859,3 +859,10 @@ function remoteEnv(): array
     }
     return $vars;
 }
+
+/**
+ * Returns current timestamp in UTC timezone in ISO8601 format.
+ */
+function timestamp(): string {
+    return (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601);
+}

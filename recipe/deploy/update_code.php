@@ -98,7 +98,7 @@ task('deploy:update_code', function () {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }
 
-    // Save revision in .dep and in variable for later usage in scripts.
+    // Save git revision in REVISION file.
     $rev = escapeshellarg(run("$git rev-list $at -1"));
     run("echo $rev > {{release_path}}/REVISION");
 });

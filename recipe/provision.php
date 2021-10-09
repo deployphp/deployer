@@ -1,8 +1,8 @@
 <?php
 namespace Deployer;
 
-require __DIR__ . '/php.php';
-require __DIR__ . '/website.php';
+require __DIR__ . '/provision/php.php';
+require __DIR__ . '/provision/website.php';
 
 use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\parse_home_dir;

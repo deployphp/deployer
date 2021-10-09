@@ -4,7 +4,7 @@
 
 # provision
 
-[Source](/recipe/provision/provision.php)
+[Source](/recipe/provision.php)
 
 
 

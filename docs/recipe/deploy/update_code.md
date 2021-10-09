@@ -21,7 +21,7 @@ If not specified, will get current git HEAD branch as default branch to deploy.
 ### auto_ssh_keygen
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L18)
 
-Automatically populate `known_hosts` file based on [repository](/docs/recipe/common.md#repository) config.
+Automatically populate `known_hosts` file based on [repository](/docs/recipe/shopware.md#repository) config.
 
 ```php title="Default value"
 true

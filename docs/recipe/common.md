@@ -9,7 +9,7 @@
 
 
 * Requires
-  * [provision](/docs/recipe/provision/provision.md)
+  * [provision](/docs/recipe/provision.md)
   * [check_remote](/docs/recipe/deploy/check_remote.md)
   * [cleanup](/docs/recipe/deploy/cleanup.md)
   * [clear_paths](/docs/recipe/deploy/clear_paths.md)

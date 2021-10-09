@@ -31,5 +31,5 @@ jobs:
         uses: EndBug/add-and-commit@v7
         with:
           add: 'docs'
-          message: 'Update docs with bin/docgen'
+          message: '[automatic] Update docs with bin/docgen'
 

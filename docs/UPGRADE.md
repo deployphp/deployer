@@ -58,7 +58,7 @@
     ```bash
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```
-11. Make sure to set `http_group` config as new default `writable_mode` is `chgrp`.
+11. Create a `{{deploy_path}}/.dep/latest_release` file with next release number.
 
 # Upgrade from 5.x to 6.x
 

@@ -172,7 +172,7 @@ set('current_path', '/var/public_html');
 
 
 ### sudo_askpass
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L139)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L142)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -181,7 +181,7 @@ sudo command executed.
 
 
 ### target
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L152)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L155)
 
 The deploy target: a branch, a tag or a revision.
 
@@ -191,9 +191,9 @@ The deploy target: a branch, a tag or a revision.
 ## Tasks
 
 ### deploy:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L170)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L174)
 
-
+Prepare a new release.
 
 
 
@@ -209,9 +209,9 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L180)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L185)
 
-
+Publish the release.
 
 
 
@@ -224,7 +224,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L190)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L195)
 
 
 
@@ -232,17 +232,17 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L200)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L205)
 
 
 
 Hook on deploy failure.
 
 
-### logs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L209)
+### logs:app
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L214)
 
-Follow latest application logs.
+Show application logs.
 
 Follow latest application logs.
 

@@ -208,16 +208,12 @@ fail('deploy', 'deploy:failed');
 /**
  * Follow latest application logs.
  */
-desc('Follow latest application logs.');
-task('logs', function () {
+desc('Show application logs');
+task('logs:app', function () {
     if (!has('log_files')) {
         warning("Please, specify \"log_files\" option.");
         return;
     }
-
-    if (output()->getVerbosity() === Output::VERBOSITY_NORMAL) {
-        output()->setVerbosity(Output::VERBOSITY_VERBOSE);
-    }
     cd('{{current_path}}');
     run('tail -f {{log_files}}');
-});
+})->verbose();

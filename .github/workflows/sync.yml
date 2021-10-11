@@ -1,4 +1,4 @@
-name: update
+name: sync
 
 on: push
 

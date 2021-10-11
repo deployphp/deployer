@@ -5,6 +5,7 @@ namespace Deployer;
 set('application', 'deployer-e2e');
 host('server.test')
     ->setDeployPath('/var/www/html')
+    ->set('bin/php', '/usr/local/bin/php')
     ->setTag('e2e')
     ->setRemoteUser('deployer')
     ->setSshArguments([

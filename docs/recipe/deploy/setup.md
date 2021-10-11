@@ -13,7 +13,7 @@
 ## Tasks
 
 ### deploy:setup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/setup.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/setup.php#L7)
 
 Preparing host for deploy.
 

@@ -1,6 +1,7 @@
 <?php
 namespace Deployer;
 
+desc('Display info about deployment');
 task('deploy:info', function () {
     $what = '';
     $branch = get('branch');

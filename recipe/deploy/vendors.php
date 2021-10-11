@@ -23,7 +23,7 @@ set('bin/composer', function () {
     return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
 });
 
-desc('Installing vendors');
+desc('Install vendors');
 task('deploy:vendors', function () {
     if (!commandExist('unzip')) {
         warning('To speed up composer installation setup "unzip" command with PHP zip extension.');

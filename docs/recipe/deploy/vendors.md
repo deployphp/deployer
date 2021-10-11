@@ -36,7 +36,7 @@
 ### deploy:vendors
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L27)
 
-Installing vendors.
+Install vendors.
 
 
 

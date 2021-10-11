@@ -30,3 +30,7 @@ task('artisan:key:generate', artisan('key:generate'));
 
 before('deploy:shared', 'laravel:setup-env');
 before('artisan:storage:link', 'artisan:key:generate');
+
+before('deploy:vendors', function () {
+    var_dump(get('php_version'));
+});

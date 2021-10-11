@@ -28,10 +28,10 @@ Unlock deploy.
 
 
 
-### deploy:is-unlocked
+### deploy:is_locked
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L25)
 
-Check if deploy is unlocked.
+Check if deploy is locked.
 
 
 

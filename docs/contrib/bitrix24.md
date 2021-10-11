@@ -15,7 +15,7 @@ With ❤ by Alexander Kalchenko <supergulman09@gmail.com>
 ### bitrix_text
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/bitrix24.php#L91)
 
-Sets 'bitrix_message' if it
+Sets 'bitrix_message' if it didn't set before
 
 ```php title="Default value"
 '_{{user}}_ deploying [I]{{branch}}[/I] to [B]{{target}}[/B]'

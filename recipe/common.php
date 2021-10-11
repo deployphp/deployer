@@ -170,6 +170,7 @@ set('target', function () {
     return $target;
 });
 
+desc('Prepare a new release');
 task('deploy:prepare', [
     'deploy:info',
     'deploy:setup',
@@ -180,6 +181,7 @@ task('deploy:prepare', [
     'deploy:writable',
 ]);
 
+desc('Publish the release');
 task('deploy:publish', [
     'deploy:symlink',
     'deploy:unlock',

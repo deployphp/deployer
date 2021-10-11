@@ -44,6 +44,7 @@
  * [`commandSupportsOption()`](#commandsupportsoption)
  * [`locateBinaryPath()`](#locatebinarypath)
  * [`remoteEnv()`](#remoteenv)
+ * [`timestamp()`](#timestamp)
 
 ## host()
 
@@ -620,5 +621,14 @@ Returns remote environments variables as an array.
 $remotePath = remoteEnv()['PATH'];
 run('echo $PATH', env: ['PATH' => "/home/user/bin:$remotePath"]);
 ```
+
+
+## timestamp()
+
+```php
+timestamp(): string {
+```
+
+Returns current timestamp in UTC timezone in ISO8601 format.
 
 

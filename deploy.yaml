@@ -49,10 +49,15 @@ tasks:
       - cd {{dist}}
       - php update
 
+  create:notify_banner:
+    script:
+      - echo $'{{banner}}' > {{site}}/check-updates/{{old_version}}
+
   release:
     - release:composer
     - release:phar
     - release:dist
+    - create:notify_banner
 
 before:
   release:

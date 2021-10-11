@@ -120,6 +120,9 @@ set('current_path', '{{deploy_path}}/current');
 
 // Custom php bin of remote host.
 set('bin/php', function () {
+    if (has('php_version')) {
+        return '/usr/bin/php{{php_version}}';
+    }
     return locateBinaryPath('php');
 });
 

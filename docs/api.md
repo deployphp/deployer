@@ -44,6 +44,7 @@
  * [`commandSupportsOption()`](#commandsupportsoption)
  * [`locateBinaryPath()`](#locatebinarypath)
  * [`remoteEnv()`](#remoteenv)
+ * [`error()`](#error)
  * [`timestamp()`](#timestamp)
 
 ## host()
@@ -260,7 +261,7 @@ Execute a callback within a specific directory and revert back to the initial wo
 ## run()
 
 ```php
-run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false): string
+run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false, ?bool $no_throw = false): string
 ```
 
 Executes given command on remote host.
@@ -310,6 +311,10 @@ run("echo $path");
   **type**: `bool|null `
 
   Print command output in real-time.
+- ### no_throw
+  **type**: `bool|null `
+
+  Don't throw an exception of non-zero exit code.
 
 ## runLocally()
 
@@ -546,9 +551,8 @@ ask(string $message, ?string $default = null, ?array $autocomplete = null): ?str
 ## askChoice()
 
 ```php
-askChoice(string $message, array $availableChoices, ?string $default = null, bool $multiselect = false)
+askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
 ```
-
 
 
 
@@ -623,10 +627,19 @@ run('echo $PATH', env: ['PATH' => "/home/user/bin:$remotePath"]);
 ```
 
 
+## error()
+
+```php
+error(string $message): Exception
+```
+
+Creates a new exception.
+
+
 ## timestamp()
 
 ```php
-timestamp(): string {
+timestamp(): string
 ```
 
 Returns current timestamp in UTC timezone in ISO8601 format.

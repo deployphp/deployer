@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
@@ -316,13 +317,14 @@ function within(string $path, callable $callback)
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
  * @param bool|null $real_time_output Print command output in real-time.
+ * @param bool|null $no_throw Don't throw an exception of non-zero exit code.
  *
- * @throws Exception\Exception|RunException|TimeoutException
+ * @throws Exception|RunException|TimeoutException
  */
-function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false): string
+function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false, ?bool $no_throw = false): string
 {
     $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'env', 'real_time_output'] as $arg) {
+    foreach (['timeout', 'idle_timeout', 'secret', 'env', 'real_time_output', 'no_throw'] as $arg) {
         if ($$arg !== null) {
             $namedArguments[$arg] = $$arg;
         }
@@ -368,7 +370,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
             $password = get('sudo_pass', false);
             if ($password === false) {
                 writeln("<fg=green;options=bold>run</> $command");
-                $password = askHiddenResponse('Password:');
+                $password = askHiddenResponse(" [sudo] password for {{remote_user}}: ");
             }
             $run("echo -e '#!/bin/sh\necho \"\$PASSWORD\"' > $askpass");
             $run("chmod a+x $askpass");
@@ -436,11 +438,11 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
  * }
  * ```
  *
- * @throws RunException
  */
 function test(string $command): bool
 {
-    return run("if $command; then echo 'true'; fi") === 'true';
+    $true = '+' . array_rand(array_flip(['accurate', 'appropriate', 'correct', 'legitimate', 'precise', 'right', 'true', 'yes', 'indeed']));
+    return run("if $command; then echo $true; fi") === $true;
 }
 
 /**
@@ -449,11 +451,10 @@ function test(string $command): bool
  *
  *     testLocally('[ -d {{local_release_path}} ]')
  *
- * @throws RunException
  */
 function testLocally(string $command): bool
 {
-    return runLocally("if $command; then echo 'true'; fi") === 'true';
+    return runLocally("if $command; then echo +true; fi") === '+true';
 }
 
 /**
@@ -671,9 +672,6 @@ function has(string $name): bool
     }
 }
 
-/**
- * @param string[]|null $autocomplete
- */
 function ask(string $message, ?string $default = null, ?array $autocomplete = null): ?string
 {
     Context::required(__FUNCTION__);
@@ -690,6 +688,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
+    $message = parse($message);
     $message = "[$tag] <question>$message</question> " . (($default === null) ? "" : "(default: $default) ");
 
     $question = new Question($message, $default);
@@ -700,13 +699,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
     return $helper->ask(input(), output(), $question);
 }
 
-/**
- * @param string[] $availableChoices
- * @param bool|false $multiselect
- *
- * @return string|string[]
- */
-function askChoice(string $message, array $availableChoices, ?string $default = null, bool $multiselect = false)
+function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
 {
     Context::required(__FUNCTION__);
 
@@ -733,6 +726,7 @@ function askChoice(string $message, array $availableChoices, ?string $default = 
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
+    $message = parse($message);
     $message = "[$tag] <question>$message</question> " . (($default === null) ? "" : "(default: $default) ");
 
     $question = new ChoiceQuestion($message, $availableChoices, $default);
@@ -758,6 +752,7 @@ function askConfirmation(string $message, bool $default = false): bool
 
     $yesOrNo = $default ? 'Y/n' : 'y/N';
     $tag = currentHost()->getTag();
+    $message = parse($message);
     $message = "[$tag] <question>$message</question> [$yesOrNo] ";
 
     $question = new ConfirmationQuestion($message, $default);
@@ -781,6 +776,7 @@ function askHiddenResponse(string $message): string
     $helper = Deployer::get()->getHelper('question');
 
     $tag = currentHost()->getTag();
+    $message = parse($message);
     $message = "[$tag] <question>$message</question> ";
 
     $question = new Question($message);
@@ -861,8 +857,17 @@ function remoteEnv(): array
 }
 
 /**
+ * Creates a new exception.
+ */
+function error(string $message): Exception
+{
+    return new Exception(parse($message));
+}
+
+/**
  * Returns current timestamp in UTC timezone in ISO8601 format.
  */
-function timestamp(): string {
+function timestamp(): string
+{
     return (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601);
 }

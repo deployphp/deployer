@@ -86,7 +86,7 @@ function sendMessage(string $msg): void
 }
 
 /**
- * Sets 'bitrix_message' if it
+ * Sets 'bitrix_message' if it didn't set before
  */
 set('bitrix_text', '_{{user}}_ deploying [I]{{branch}}[/I] to [B]{{target}}[/B]');
 

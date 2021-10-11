@@ -9,6 +9,7 @@ namespace Deployer;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
 abstract class AbstractTest extends TestCase
@@ -51,5 +52,19 @@ abstract class AbstractTest extends TestCase
         $this->deployer->importer->import($recipe);
         $this->deployer->init();
         $this->deployer->config->set('deploy_path', __TEMP_DIR__ . '/{{hostname}}');
+    }
+
+    protected function dep(string $recipe, string $task)
+    {
+        $this->init($recipe);
+        $this->tester->run([
+            $task,
+            'selector' => 'all',
+            '-f' => $recipe,
+            '-l' => 1
+        ], [
+            'verbosity' => Output::VERBOSITY_VERBOSE,
+            'interactive' => false,
+        ]);
     }
 }

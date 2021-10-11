@@ -699,7 +699,12 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
     return $helper->ask(input(), output(), $question);
 }
 
-function askChoice(string $message, array $availableChoices, mixed $default = null, bool $multiselect = false): mixed
+/**
+ * @param mixed $default
+ * @return mixed
+ * @throws Exception
+ */
+function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
 {
     Context::required(__FUNCTION__);
 

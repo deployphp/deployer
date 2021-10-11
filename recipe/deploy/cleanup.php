@@ -4,7 +4,7 @@ namespace Deployer;
 // Use sudo in deploy:cleanup task for rm command.
 set('cleanup_use_sudo', false);
 
-desc('Cleaning up old releases');
+desc('Clean up old releases');
 task('deploy:cleanup', function () {
     $releases = get('releases_list');
     $keep = get('keep_releases');

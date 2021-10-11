@@ -10,7 +10,7 @@
 
 
 ## Configuration
-### php_versions
+### php_version
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L4)
 
 
@@ -21,15 +21,23 @@
 ## Tasks
 
 ### provision:php
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L17)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L9)
 
 Install PHP packages.
 
 
 
 
+### logs:php-fpm
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L59)
+
+Show php-fpm logs.
+
+
+
+
 ### provision:composer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L69)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L64)
 
 Install Composer.
 

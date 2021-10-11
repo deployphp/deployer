@@ -14,14 +14,14 @@
 
 ## Configuration
 ### sudo_password
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L102)
 
 
 
 
 
 ### ssh_copy_id
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L101)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L112)
 
 Specify which key to copy to server.
 Set to `false` to disable copy of key.
@@ -44,51 +44,60 @@ Provision the server.
 
 This task is group task which contains next tasks:
 * [provision:check](/docs/recipe/provision.md#provisioncheck)
-* [provision:add-repositories](/docs/recipe/provision.md#provisionadd-repositories)
+* [provision:update](/docs/recipe/provision.md#provisionupdate)
 * [provision:upgrade](/docs/recipe/provision.md#provisionupgrade)
-* [provision:essentials](/docs/recipe/provision.md#provisionessentials)
+* [provision:install](/docs/recipe/provision.md#provisioninstall)
 * [provision:ssh](/docs/recipe/provision.md#provisionssh)
 * [provision:firewall](/docs/recipe/provision.md#provisionfirewall)
 * [provision:deployer](/docs/recipe/provision.md#provisiondeployer)
+* [provision:server](/docs/recipe/provision.md#provisionserver)
 * [provision:php](/docs/recipe/provision/php.md#provisionphp)
 * [provision:composer](/docs/recipe/provision/php.md#provisioncomposer)
-* [provision:websites](/docs/recipe/provision/website.md#provisionwebsites)
+* [provision:website](/docs/recipe/provision/website.md#provisionwebsite)
 
 
 ### provision:check
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L28)
 
 Check pre-required state.
 
 
 
 
+### provision:update
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L47)
+
+Add repositories and update.
+
+
+
+
 ### provision:upgrade
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L55)
 
 Upgrade all packages.
 
 
 
 
-### provision:add-repositories
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L48)
+### provision:install
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L60)
+
+Install packages.
 
 
 
 
+### provision:server
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L87)
 
-
-### provision:essentials
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L55)
-
-Install essential packages.
+Configure server.
 
 
 
 
 ### provision:ssh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L92)
 
 Configure SSH.
 
@@ -96,7 +105,7 @@ Configure SSH.
 
 
 ### provision:deployer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L104)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L115)
 
 Setup deployer user.
 
@@ -104,7 +113,7 @@ Setup deployer user.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L147)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L159)
 
 Setup firewall.
 

@@ -10,8 +10,15 @@
 
 
 ## Configuration
-### websites
+### domain
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L4)
+
+
+
+
+
+### public_path
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L8)
 
 
 
@@ -20,10 +27,26 @@
 
 ## Tasks
 
-### provision:websites
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L18)
+### provision:website
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L14)
 
-Provision websites.
+Provision website.
+
+
+
+
+### logs:caddy
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L68)
+
+Show caddy logs.
+
+
+
+
+### logs:caddy:syslog
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L73)
+
+Show caddy syslog.
 
 
 

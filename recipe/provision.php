@@ -12,50 +12,57 @@ add('recipes', ['provision']);
 desc('Provision the server');
 task('provision', [
     'provision:check',
-    'provision:add-repositories',
+    'provision:update',
     'provision:upgrade',
-    'provision:essentials',
+    'provision:install',
     'provision:ssh',
     'provision:firewall',
     'provision:deployer',
+    'provision:server',
     'provision:php',
     'provision:composer',
-    'provision:websites',
+    'provision:website',
 ]);
 
 desc('Check pre-required state');
 task('provision:check', function () {
-    $ok = true;
-    $release = run('cat /etc/os-release');
-    ['NAME' => $name, 'VERSION_ID' => $version] = parse_ini_string($release);
-
-    if ($name !== 'Ubuntu' || $version !== '20.04') {
-        $ok = false;
-        warning('Only Ubuntu 20.04 LTS supported.');
+    if (get('remote_user') !== 'root') {
+        warning('');
+        warning('Run provision as root: -o remote_user=root');
+        warning('');
     }
 
-    if (!$ok) {
-        throw new GracefulShutdownException('Missing some pre-required state. Please check warnings.');
+    $release = run('cat /etc/os-release');
+    ['NAME' => $name, 'VERSION_ID' => $version] = parse_ini_string($release);
+    if ($name !== 'Ubuntu' || $version !== '20.04') {
+        warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        warning('!!                                    !!');
+        warning('!!  Only Ubuntu 20.04 LTS supported!  !!');
+        warning('!!                                    !!');
+        warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     }
 });
 
-desc('Upgrade all packages');
-task('provision:upgrade', function () {
-    run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-})->verbose();
-
-task('provision:add-repositories', function () {
+desc('Add repositories and update');
+task('provision:update', function () {
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' > /etc/apt/trusted.gpg.d/caddy-stable.asc");
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
-});
+    run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+})->verbose();
 
-desc('Install essential packages');
-task('provision:essentials', function () {
+desc('Upgrade all packages');
+task('provision:upgrade', function () {
+    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+})->verbose();
+
+desc('Install packages');
+task('provision:install', function () {
     $packages = [
+        'acl',
         'apt-transport-https',
         'build-essential',
+        'caddy',
         'curl',
         'debian-archive-keyring',
         'debian-keyring',
@@ -76,6 +83,10 @@ task('provision:essentials', function () {
     run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 });
 
+desc('Configure server');
+task('provision:server', function () {
+    run('usermod -a -G www-data caddy');
+});
 
 desc('Configure SSH');
 task('provision:ssh', function () {
@@ -103,6 +114,9 @@ set('ssh_copy_id', '~/.ssh/id_rsa.pub');
 desc('Setup deployer user');
 task('provision:deployer', function () {
     if (test('id deployer >/dev/null 2>&1')) {
+        // TODO: Check what created deployer user configured correctly.
+        // TODO: Update sudo_password of deployer user.
+        // TODO: Copy ssh_copy_id to deployer ssh dir.
         info('deployer user already exist');
     } else {
         run('useradd deployer');
@@ -118,7 +132,7 @@ task('provision:deployer', function () {
         run("usermod --password '%secret%' deployer", ['secret' => $password]);
 
         if (!empty(get('ssh_copy_id'))) {
-            $file = get('ssh_copy_id');
+            $file = parse_home_dir(get('ssh_copy_id'));
             if (!file_exists($file)) {
                 info('Configure path to your public key.');
                 writeln("");
@@ -129,16 +143,14 @@ task('provision:deployer', function () {
             run('echo "$KEY" >> /root/.ssh/authorized_keys', ['env' => ['KEY' => file_get_contents(parse_home_dir($file))]]);
         }
         run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
-
         run('ssh-keygen -f /home/deployer/.ssh/id_rsa -t rsa -N ""');
 
         run('chown -R deployer:deployer /home/deployer');
         run('chmod -R 755 /home/deployer');
         run('chmod 700 /home/deployer/.ssh/id_rsa');
 
-        run('echo "deployer ALL=NOPASSWD: /usr/sbin/service php-fpm reload" > /etc/sudoers.d/php-fpm');
-
         run('usermod -a -G www-data deployer');
+        run('usermod -a -G caddy deployer');
         run('groups deployer');
     }
 });

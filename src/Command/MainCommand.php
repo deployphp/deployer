@@ -141,12 +141,10 @@ class MainCommand extends SelectCommand
 
     private function checkUpdates()
     {
-        if (rand(1, 6) === 1) {
-            try {
-                fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send());
-            } catch (\Throwable $e) {
-                // Meh
-            }
+        try {
+            fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send());
+        } catch (\Throwable $e) {
+            // Meh
         }
     }
 

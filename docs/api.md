@@ -551,7 +551,7 @@ ask(string $message, ?string $default = null, ?array $autocomplete = null): ?str
 ## askChoice()
 
 ```php
-askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
+askChoice(string $message, array $availableChoices, mixed $default = null, bool $multiselect = false): mixed
 ```
 
 

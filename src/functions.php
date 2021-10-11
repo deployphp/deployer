@@ -133,7 +133,7 @@ function select(string $selector): array
  * import(__DIR__ . '/config/hosts.yaml');
  * ```
  *
- * @throws Exception\Exception
+ * @throws Exception
  */
 function import(string $file): void
 {
@@ -510,7 +510,7 @@ function on($hosts, callable $callback): void
  * invoke('deploy:symlink');
  * ```
  *
- * @throws Exception\Exception
+ * @throws Exception
  */
 function invoke(string $taskName): void
 {
@@ -699,7 +699,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
     return $helper->ask(input(), output(), $question);
 }
 
-function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
+function askChoice(string $message, array $availableChoices, mixed $default = null, bool $multiselect = false): mixed
 {
     Context::required(__FUNCTION__);
 

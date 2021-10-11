@@ -41,6 +41,7 @@ class Client
             'timeout' => $host->get('default_timeout', 300),
             'idle_timeout' => null,
             'real_time_output' => false,
+            'no_throw' => false,
         ];
         $config = array_merge($defaults, $config);
 
@@ -97,7 +98,7 @@ class Client
         $output = $this->pop->filterOutput($process->getOutput());
         $exitCode = $this->parseExitStatus($process);
 
-        if ($exitCode !== 0) {
+        if ($exitCode !== 0 && !$config['no_throw']) {
             throw new RunException(
                 $host,
                 $command,

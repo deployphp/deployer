@@ -15,15 +15,7 @@ class DeployTest extends AbstractTest
 
     public function testDeploy()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run([
-            'deploy',
-            'selector' => 'all',
-            '-f' => self::RECIPE
-        ], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
+        $display = $this->dep(self::RECIPE, 'deploy');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
@@ -63,13 +55,7 @@ class DeployTest extends AbstractTest
     public function testKeepReleases()
     {
         for ($i = 0; $i < 3; $i++) {
-            $this->init(self::RECIPE);
-
-            $this->tester->run(['deploy', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-                'verbosity' => Output::VERBOSITY_VERBOSE,
-                'interactive' => false,
-            ]);
-
+            $this->dep(self::RECIPE, 'deploy');
             self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
         }
 
@@ -85,11 +71,7 @@ class DeployTest extends AbstractTest
      */
     public function testRollback()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run(['rollback', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
+        $this->dep(self::RECIPE, 'rollback');
 
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
 
@@ -102,11 +84,7 @@ class DeployTest extends AbstractTest
 
     public function testFail()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run(['deploy:fail', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
+        $this->dep(self::RECIPE, 'deploy:fail');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(1, $this->tester->getStatusCode(), $display);
@@ -123,11 +101,7 @@ class DeployTest extends AbstractTest
      */
     public function testCleanup()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run(['deploy:cleanup', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
+        $this->dep(self::RECIPE, 'deploy:cleanup');
 
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
 
@@ -140,39 +114,21 @@ class DeployTest extends AbstractTest
 
     public function testIsUnlockedExitsWithOneWhenDeployIsLocked()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run(['deploy:lock', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
-
-        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
-
+        $this->dep(self::RECIPE, 'deploy:lock');
+        $this->dep(self::RECIPE, 'deploy:is_locked');
         $display = $this->tester->getDisplay();
 
-        self::assertStringContainsString('Deploy is currently locked.', $display);
+        self::assertStringContainsString('Deploy is locked.', $display);
         self::assertSame(1, $this->tester->getStatusCode());
     }
 
     public function testIsUnlockedExitsWithZeroWhenDeployIsNotLocked()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run(['deploy:unlock', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
-
-        $this->tester->run(['deploy:is-unlocked', 'selector' => 'all', '-f' => self::RECIPE, '-l' => 1], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
-            'interactive' => false,
-        ]);
-
+        $this->dep(self::RECIPE, 'deploy:unlock');
+        $this->dep(self::RECIPE, 'deploy:is_locked');
         $display = $this->tester->getDisplay();
 
-        self::assertStringContainsString('Deploy is currently unlocked.', $display);
+        self::assertStringContainsString('Deploy is unlocked.', $display);
         self::assertSame(0, $this->tester->getStatusCode());
     }
 }

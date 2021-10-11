@@ -29,7 +29,7 @@ class BlackjackCommand extends Command
 
     public function __construct()
     {
-        parent::__construct('play:blackjack');
+        parent::__construct('blackjack');
         $this->setDescription('Play blackjack');
     }
 

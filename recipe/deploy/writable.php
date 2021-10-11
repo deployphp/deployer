@@ -7,7 +7,7 @@ namespace Deployer;
 use Deployer\Exception\RunException;
 
 set('http_user', function () {
-    $candidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx|[c]addy' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+    $candidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
     $httpUser = array_shift($candidates);
 
     if (empty($httpUser)) {
@@ -24,7 +24,7 @@ set('http_user', function () {
 // Used in `chgrp` mode of {{writable_mode}} only.
 // Attempts automatically to detect http user in process list.
 set('http_group', function () {
-    $candidates = explode("\n", run("ps axo comm,group | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx|[c]addy' | grep -v root | sort | awk '{print \$NF}' | uniq"));
+    $candidates = explode("\n", run("ps axo comm,group | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
     $httpGroup = array_shift($candidates);
 
     if (empty($httpGroup)) {

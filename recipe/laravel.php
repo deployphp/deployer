@@ -229,3 +229,20 @@ task('deploy', [
     'artisan:config:cache',
     'deploy:publish',
 ]);
+
+desc('Check existing of .env file in shared dir');
+task('deploy:check_env', function () {
+    if (test('[ ! -f {{deploy_path}}/shared/.env ]')) {
+        run("cp {{release_path}}/.env.example {{deploy_path}}/shared/.env");
+        set('regenerate_key', true);
+    }
+});
+before('deploy:shared', 'deploy:check_env');
+
+desc('Regenerate APP_KEY if a new .env created');
+task('deploy:regenerate_key', function () {
+    if (get('regenerate_key', false)) {
+        invoke('artisan:key:generate');
+    }
+});
+after('deploy:vendors', 'deploy:regenerate_key');

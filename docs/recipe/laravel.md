@@ -383,3 +383,19 @@ This task is group task which contains next tasks:
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 
+### deploy:check_env
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L234)
+
+Check existing of .env file in shared dir.
+
+
+
+
+### deploy:regenerate_key
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L243)
+
+Regenerate APP_KEY if a new .env created.
+
+
+
+

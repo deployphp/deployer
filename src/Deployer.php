@@ -165,7 +165,6 @@ class Deployer extends Container
             return new Server(
                 $c['input'],
                 $c['output'],
-                $c['questionHelper'],
             );
         };
         $this['master'] = function ($c) {
@@ -175,7 +174,6 @@ class Deployer extends Container
                 $c['server'],
                 $c['messenger'],
                 $c['sshClient'],
-                $c['config']
             );
         };
         $this['importer'] = function () {

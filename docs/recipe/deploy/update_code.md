@@ -34,7 +34,7 @@ true
 Sets deploy:update_code strategy.
 Can we one of:
 - archive
-- checkout (if you need `.git` dir in your [release_path](/docs/recipe/deploy/release.md#release_path))
+- clone (if you need `.git` dir in your [release_path](/docs/recipe/deploy/release.md#release_path))
 
 ```php title="Default value"
 'archive'

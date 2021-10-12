@@ -12,8 +12,9 @@ use Deployer\Exception\Exception;
 use Deployer\Task\Context;
 use Psr\Http\Message\ServerRequestInterface;
 use React;
+use React\EventLoop\Loop;
+use React\Http\HttpServer;
 use React\Http\Message\Response;
-use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
@@ -21,27 +22,39 @@ use function Deployer\getHost;
 
 class Server
 {
+    /**
+     * @var InputInterface
+     */
     private $input;
+
+    /**
+     * @var OutputInterface
+     */
     private $output;
-    private $questionHelper;
-    private $loop;
+
+    /**
+     * @var React\EventLoop\LoopInterface
+     */
+    public $loop;
+
+    /**
+     * @var int
+     */
     private $port;
 
     public function __construct(
         InputInterface $input,
         OutputInterface $output,
-        QuestionHelper $questionHelper
     )
     {
         $this->input = $input;
         $this->output = $output;
-        $this->questionHelper = $questionHelper;
     }
 
     public function start()
     {
-        $this->loop = React\EventLoop\Factory::create();
-        $server = new React\Http\Server($this->loop, function (ServerRequestInterface $request) {
+        $this->loop = Loop::get();
+        $server = new HttpServer($this->loop, function (ServerRequestInterface $request) {
             try {
                 return $this->router($request);
             } catch (Throwable $exception) {
@@ -87,37 +100,6 @@ class Server
             default:
                 throw new Exception('Server path not found: ' . $request->getUri()->getPath());
         }
-    }
-
-    /**
-     * @param int|float $interval
-     */
-    public function addPeriodicTimer($interval, callable $callback): void
-    {
-        $this->loop->addPeriodicTimer($interval, $callback);
-    }
-
-    /**
-     * @param int|float $interval
-     */
-    public function addTimer($interval, callable $callback): void
-    {
-        $this->loop->addTimer($interval, $callback);
-    }
-
-    public function cancelTimer(React\EventLoop\TimerInterface  $timer): void
-    {
-        $this->loop->cancelTimer($timer);
-    }
-
-    public function run(): void
-    {
-        $this->loop->run();
-    }
-
-    public function stop(): void
-    {
-        $this->loop->stop();
     }
 
     public function getPort(): int

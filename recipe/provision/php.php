@@ -53,7 +53,7 @@ task('provision:php', function () {
     // Configure PHP sessions directory
     run('chmod 733 /var/lib/php/sessions');
     run('chmod +t /var/lib/php/sessions');
-});
+})->limit(1);
 
 desc('Show php-fpm logs');
 task('logs:php-fpm', function () {
@@ -64,5 +64,5 @@ desc('Install Composer');
 task('provision:composer', function () {
     run('curl -sS https://getcomposer.org/installer | php');
     run('mv composer.phar /usr/local/bin/composer');
-});
+})->oncePerNode();
 

@@ -41,7 +41,7 @@ task('provision:check', function () {
         warning('!!                                    !!');
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     }
-});
+})->oncePerNode();
 
 desc('Add repositories and update');
 task('provision:update', function () {
@@ -49,12 +49,16 @@ task('provision:update', function () {
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' > /etc/apt/trusted.gpg.d/caddy-stable.asc");
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
     run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-})->verbose();
+})
+    ->oncePerNode()
+    ->verbose();
 
 desc('Upgrade all packages');
 task('provision:upgrade', function () {
     run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-})->verbose();
+})
+    ->oncePerNode()
+    ->verbose();
 
 desc('Install packages');
 task('provision:install', function () {
@@ -81,12 +85,12 @@ task('provision:install', function () {
         'whois',
     ];
     run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-});
+})->oncePerNode();
 
 desc('Configure server');
 task('provision:server', function () {
     run('usermod -a -G www-data caddy');
-});
+})->oncePerNode();
 
 desc('Configure SSH');
 task('provision:ssh', function () {
@@ -97,7 +101,7 @@ task('provision:ssh', function () {
         run('mkdir -p /root/.ssh');
         run('touch /root/.ssh/authorized_keys');
     }
-});
+})->oncePerNode();
 
 set('sudo_password', function () {
     info('Configure sudo_password:');
@@ -153,7 +157,7 @@ task('provision:deployer', function () {
         run('usermod -a -G caddy deployer');
         run('groups deployer');
     }
-});
+})->oncePerNode();
 
 desc('Setup firewall');
 task('provision:firewall', function () {
@@ -161,4 +165,4 @@ task('provision:firewall', function () {
     run('ufw allow 80');
     run('ufw allow 443');
     run('ufw --force enable');
-});
+})->oncePerNode();

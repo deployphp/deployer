@@ -70,6 +70,11 @@ class Host
         return $this->config->has($name);
     }
 
+    public function hasOwn(string $name): bool
+    {
+        return $this->config->hasOwn($name);
+    }
+
     /**
      * @param mixed|null $default
      * @return mixed|null

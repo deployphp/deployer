@@ -53,6 +53,11 @@ class Configuration implements \ArrayAccess
         return false;
     }
 
+    public function hasOwn(string $name): bool
+    {
+        return array_key_exists($name, $this->values);
+    }
+
     public function add(string $name, array $array): void
     {
         if ($this->has($name)) {
@@ -129,6 +134,11 @@ class Configuration implements \ArrayAccess
     public function ownValues(): array
     {
         return $this->values;
+    }
+
+    public function keys(): array
+    {
+        return array_keys($this->values);
     }
 
     /**

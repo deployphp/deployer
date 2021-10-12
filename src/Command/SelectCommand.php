@@ -35,6 +35,9 @@ abstract class SelectCommand extends Command
         $this->addArgument('selector', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Host selector');
     }
 
+    /**
+     * @return Host[]
+     */
     protected function selectHosts(Input $input, Output $output): array
     {
         $output->getFormatter()->setStyle('success', new OutputFormatterStyle('green'));

@@ -7,16 +7,13 @@
 
 namespace Deployer;
 
-use Symfony\Component\Console\Output\Output;
-
 class EnvTest extends AbstractTest
 {
     const RECIPE = __DIR__ . '/recipe/env.php';
 
     public function testOnce()
     {
-        $this->init(self::RECIPE);
-        $this->tester->run(['test', '-f' => self::RECIPE], ['verbosity' => Output::VERBOSITY_DEBUG]);
+        $this->dep(self::RECIPE, 'test');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);

@@ -62,7 +62,7 @@ EOF;
     }
 
     info("Website $domain configured!");
-});
+})->limit(1);
 
 desc('Show caddy logs');
 task('logs:caddy', function () {

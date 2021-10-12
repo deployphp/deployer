@@ -44,7 +44,7 @@ class Server
 
     public function __construct(
         InputInterface $input,
-        OutputInterface $output,
+        OutputInterface $output
     )
     {
         $this->input = $input;

@@ -9,13 +9,10 @@ namespace Deployer\Executor;
 
 use Deployer\Component\Ssh\Client;
 use Deployer\Component\Ssh\IOArguments;
-use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
-use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
-use Deployer\Support\Stringify;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -32,12 +29,34 @@ function spinner(string $message = ''): string
 
 class Master
 {
+    /**
+     * @var InputInterface
+     */
     private $input;
+
+    /**
+     * @var OutputInterface
+     */
     private $output;
+
+    /**
+     * @var Server
+     */
     private $server;
+
+    /**
+     * @var Messenger
+     */
     private $messenger;
+
+    /**
+     * @var Client
+     */
     private $client;
-    private $config;
+
+    /**
+     * @var false|string
+     */
     private $phpBin;
 
     public function __construct(
@@ -46,7 +65,6 @@ class Master
         Server          $server,
         Messenger       $messenger,
         Client          $client,
-        Configuration   $config
     )
     {
         $this->input = $input;
@@ -54,7 +72,6 @@ class Master
         $this->server = $server;
         $this->messenger = $messenger;
         $this->client = $client;
-        $this->config = $config;
         $this->phpBin = (new PhpExecutableFinder())->find();
     }
 
@@ -81,6 +98,21 @@ class Master
                         break;
                     }
                 }
+            } else if ($task->isOncePerNode()) {
+                $plannedHosts = [];
+                foreach ($hosts as $currentHost) {
+                    if (Selector::apply($task->getSelector(), $currentHost)) {
+                        $nodeLabel = $currentHost->getHostname();
+                        $labels = $currentHost->config()->get('labels', []);
+                        if (is_array($labels) && array_key_exists('node', $labels)) {
+                            $nodeLabel = $labels['node'];
+                        }
+                        if (array_key_exists($nodeLabel, $plannedHosts)) {
+                            continue;
+                        }
+                        $plannedHosts[$nodeLabel] = $currentHost;
+                    }
+                }
             }
 
             if ($limit === 1 || count($plannedHosts) === 1) {
@@ -103,7 +135,7 @@ class Master
                     }
                 }
             } else {
-                foreach (array_chunk($hosts, $limit) as $chunk) {
+                foreach (array_chunk($plannedHosts, $limit) as $chunk) {
                     $selectedHosts = [];
                     foreach ($chunk as $currentHost) {
                         if (Selector::apply($task->getSelector(), $currentHost)) {
@@ -178,7 +210,7 @@ class Master
         /** @var Process[] $processes */
         $processes = [];
 
-        $this->server->addTimer(0, function () use (&$processes, $hosts, $task) {
+        $this->server->loop->futureTick(function () use (&$processes, $hosts, $task) {
             foreach ($hosts as $host) {
                 $processes[] = $this->createProcess($host, $task);
             }
@@ -188,18 +220,18 @@ class Master
             }
         });
 
-        $this->server->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback) {
+        $this->server->loop->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback) {
             $this->gatherOutput($processes, $callback);
             if ($this->output->isDecorated()) {
                 $this->output->write(spinner());
             }
             if ($this->allFinished($processes)) {
-                $this->server->stop();
-                $this->server->cancelTimer($timer);
+                $this->server->loop->stop();
+                $this->server->loop->cancelTimer($timer);
             }
         });
 
-        $this->server->run();
+        $this->server->loop->run();
 
         $this->output->write("    \r"); // clear spinner
         $this->gatherOutput($processes, $callback);

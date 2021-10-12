@@ -84,7 +84,9 @@ class Master
         $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
-            $plan || $this->messenger->startTask($task);
+            if (!$plan) {
+                $this->messenger->startTask($task);
+            }
 
             $plannedHosts = $hosts;
 

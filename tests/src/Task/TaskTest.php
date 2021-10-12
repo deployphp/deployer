@@ -50,6 +50,9 @@ class TaskTest extends TestCase
 
         $task->once();
         self::assertTrue($task->isOnce());
+
+        $task->oncePerNode();
+        self::assertTrue($task->isOncePerNode());
     }
 
     public function testInit()

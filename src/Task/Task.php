@@ -20,6 +20,7 @@ class Task
     private $after = [];
     private $hidden = false;
     private $once = false;
+    private $oncePerNode = false;
     private $shallow = false;
     private $limit = null;
     private $selector = null;
@@ -118,6 +119,21 @@ class Task
     public function isOnce(): bool
     {
         return $this->once;
+    }
+
+    /**
+     * Mark task to only run once per node.
+     * Node is a group of hosts with same hostname or with same node label.
+     */
+    public function oncePerNode(bool $once = true): self
+    {
+        $this->oncePerNode = $once;
+        return $this;
+    }
+
+    public function isOncePerNode(): bool
+    {
+        return $this->oncePerNode;
     }
 
     /**

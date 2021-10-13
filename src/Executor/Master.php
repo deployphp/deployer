@@ -64,7 +64,7 @@ class Master
         OutputInterface $output,
         Server          $server,
         Messenger       $messenger,
-        Client          $client,
+        Client          $client
     )
     {
         $this->input = $input;

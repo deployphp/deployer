@@ -44,7 +44,7 @@ $binaries = [
     dirname($deployFile) . '/deployer.phar',
 ];
 foreach ($binaries as $binary) {
-    if (file_exists($binary)) {
+    if (file_exists($binary) && $binary !== __FILE__) {
         require $binary;
         exit;
     }

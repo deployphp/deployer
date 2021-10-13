@@ -19,12 +19,20 @@ if (file_exists($pharFile)) {
     unlink($pharFile);
 }
 
+$ignore = [
+    '.anton',
+    '.git',
+    'Tests',
+    'tests',
+    'deploy.php',
+];
+
 $phar = new \Phar($pharFile, 0, $pharName);
 $phar->setSignatureAlgorithm(\Phar::SHA1);
 $phar->startBuffering();
 $iterator = new RecursiveDirectoryIterator(__ROOT__, FilesystemIterator::SKIP_DOTS);
-$iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
-    return !in_array($fileInfo->getBasename(), ['.git', 'Tests', 'test'], true);
+$iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) use ($ignore) {
+    return !in_array($fileInfo->getBasename(), $ignore, true);
 });
 $iterator = new RecursiveIteratorIterator($iterator);
 $iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
@@ -38,7 +46,7 @@ foreach ($iterator as $fileInfo) {
 
     if (!array_key_exists('nozip', $opt)) {
         $phar[$file]->compress(Phar::GZ);
-    
+
         if (!$phar[$file]->isCompressed()) {
             echo "Could not compress File: {$file}\n";
         }
@@ -56,7 +64,8 @@ $phar->setStub(<<<STUB
 Phar::mapPhar('{$pharName}');
 require 'phar://{$pharName}/bin/dep';
 __HALT_COMPILER();
-STUB);
+STUB
+);
 $phar->stopBuffering();
 unset($phar);
 

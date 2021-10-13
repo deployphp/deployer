@@ -6,35 +6,7 @@
  * file that was distributed with this source code.
  */
 
-// Deployer constants
-
-define('DEPLOYER', true);
-define('DEPLOYER_BIN', __FILE__);
-define('DEPLOYER_VERSION', '7.0.0-master');
-
-// Check for min. php version requirement
-if (PHP_VERSION_ID < 70300) {
-    fwrite(
-        STDERR,
-        'Upgrade to php 7.3' . PHP_EOL .
-        'Deployer supports only php 7.3 and above.' . PHP_EOL .
-        'If you want to use older php versions you should use older Deployer versions' . PHP_EOL
-    );
-    exit(1);
-}
-
-// Errors to exception
-
-set_error_handler(function ($severity, $message, $filename, $lineno) {
-    if (error_reporting() == 0) {
-        return;
-    }
-    if (error_reporting() & $severity) {
-        throw new ErrorException($message, 0, $severity, $filename, $lineno);
-    }
-});
-
-// Detect deploy.php script
+// Detect deploy.php location
 $deployFile = null;
 foreach ($argv as $i => $arg) {
     if (preg_match('/^(-f|--file)$/', $arg, $match) && $i + 1 < count($argv)) {
@@ -48,8 +20,7 @@ foreach ($argv as $i => $arg) {
         $deployFile = ($deployFile[0] === '/' ? '' : getcwd() . '/') . $deployFile;
     }
 }
-$lookUp = function (string $name): ?string
-{
+$lookUp = function (string $name): ?string {
     $dir = getcwd();
     for ($i = 0; $i < 10; $i++) {
         $path = "$dir/$name";
@@ -67,39 +38,64 @@ if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.yaml');
 }
 
-// Detect autoload location
-
-$autoload = [
-    dirname($deployFile) . '/vendor/autoload.php',
-    __DIR__ . '/../../../autoload.php',
-    __DIR__ . '/../vendor/autoload.php'
+// Find project local Deployer installation
+$binaries = [
+    dirname($deployFile) . '/vendor/bin/dep',
+    dirname($deployFile) . '/deployer.phar',
 ];
-
-$includes = [
-    dirname($deployFile) . '/vendor/deployer/deployer',
-    __DIR__ . '/../../../deployer/deployer',
-    __DIR__ . '/../'
-];
-
-$includePath = false;
-for ($i = 0; $i < count($autoload); $i++) {
-    if (file_exists($autoload[$i]) && file_exists($includes[$i])) {
-        require $autoload[$i];
-        $includePath = $includes[$i];
-        goto run;
+foreach ($binaries as $binary) {
+    if (file_exists($binary)) {
+        require $binary;
+        exit;
     }
 }
 
-fwrite(
-    STDERR,
-    'You need to set up the project dependencies using the following commands:' . PHP_EOL .
-    'wget http://getcomposer.org/composer.phar' . PHP_EOL .
-    'php composer.phar install' . PHP_EOL
-);
-exit(1);
+// Detect autoload location
+$autoload = [
+    __DIR__ . '/../vendor/autoload.php', // The dep located at "deployer.phar/bin" or in development.
+    __DIR__ . '/../../../autoload.php', // The dep located at "vendor/deployer/deployer/bin".
+];
+$includes = [
+    __DIR__ . '/..',
+    __DIR__ . '/../../../deployer/deployer',
+];
+$includePath = false;
+for ($i = 0; $i < count($autoload); $i++) {
+    if (file_exists($autoload[$i]) && is_dir($includes[$i])) {
+        require $autoload[$i];
+        $includePath = $includes[$i];
+        break;
+    }
+}
+if (empty($includePath)) {
+    fwrite(STDERR, "Error: The `autoload.php` file not found in:\n");
+    for ($i = 0; $i < count($autoload); $i++) {
+        $a = file_exists($autoload[$i]) ? 'true' : 'false';
+        $b = is_dir($includes[$i]) ? 'true' : 'false';
+        fwrite(STDERR, "  - file_exists($autoload[$i]) = $a\n");
+        fwrite(STDERR, "    is_dir($includes[$i]) = $b\n");
+    }
+    exit(1);
+}
 
-run:
+// Errors to exception
+set_error_handler(function ($severity, $message, $filename, $lineno) {
+    if (error_reporting() == 0) {
+        return;
+    }
+    if (error_reporting() & $severity) {
+        throw new ErrorException($message, 0, $severity, $filename, $lineno);
+    }
+});
+
+// Enable recipe loading
 set_include_path($includePath . PATH_SEPARATOR . get_include_path());
+
+// Deployer constants
+define('DEPLOYER', true);
+define('DEPLOYER_BIN', __FILE__);
+define('DEPLOYER_VERSION', '7.0.0-master');
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
 define('DEPLOYER_ROOT', getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname($deployFile));
-\Deployer\Deployer::run(DEPLOYER_VERSION, $deployFile);
+
+Deployer\Deployer::run(DEPLOYER_VERSION, $deployFile);

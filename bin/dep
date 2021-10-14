@@ -99,7 +99,7 @@ set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 // Deployer constants
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
-define('DEPLOYER_VERSION', '7.0.0-beta.30');
+define('DEPLOYER_VERSION', '7.0.0-master');
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
 define('DEPLOYER_ROOT', getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname($deployFile));
 

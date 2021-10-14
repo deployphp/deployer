@@ -38,13 +38,18 @@ if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.yaml');
 }
 
-// Find project local Deployer installation
+// Find project-local Deployer installation
 $binaries = [
     dirname($deployFile) . '/vendor/bin/dep',
     dirname($deployFile) . '/deployer.phar',
+    getcwd() . '/vendor/bin/dep',
+    getcwd() . '/deployer.phar',
 ];
 foreach ($binaries as $binary) {
-    if (file_exists($binary) && $binary !== __FILE__) {
+    if (file_exists($binary)) {
+        if (realpath($binary) === __FILE__) {
+            break; // Already required this binary
+        }
         require $binary;
         exit;
     }

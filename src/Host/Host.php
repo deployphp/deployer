@@ -11,6 +11,7 @@ use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Task\Context;
+use function Deployer\Support\colorize_host;
 
 class Host
 {
@@ -32,11 +33,10 @@ class Host
 
     public function __toString(): string
     {
-        $asterisks = '';
         if (Context::has() && Context::get()->isLocal()) {
-            $asterisks = '*';
+            return 'local//' . $this->getTag() . '';
         }
-        return "$asterisks{$this->getTag()}";
+        return $this->getTag();
     }
 
     public function config(): Configuration
@@ -97,7 +97,7 @@ class Host
 
     public function getTag(): ?string
     {
-        return $this->config->get('tag', $this->generateTag());
+        return $this->config->get('tag', colorize_host($this->getAlias()));
     }
 
     public function setHostname(string $hostname): self
@@ -227,93 +227,5 @@ class Host
     public function getSshArguments(): ?array
     {
         return $this->config->get('ssh_arguments');
-    }
-
-    private function generateTag(): ?string
-    {
-        if (defined('NO_ANSI')) {
-            return $this->getAlias();
-        }
-
-        if (in_array($this->getAlias(), ['localhost', 'local'])) {
-            return $this->getAlias();
-        }
-
-        if (getenv('COLORTERM') === 'truecolor') {
-            $hsv = function ($h, $s, $v) {
-                $r = $g = $b = $i = $f = $p = $q = $t = 0;
-                $i = floor($h * 6);
-                $f = $h * 6 - $i;
-                $p = $v * (1 - $s);
-                $q = $v * (1 - $f * $s);
-                $t = $v * (1 - (1 - $f) * $s);
-                switch ($i % 6) {
-                    case 0:
-                        $r = $v;
-                        $g = $t;
-                        $b = $p;
-                        break;
-                    case 1:
-                        $r = $q;
-                        $g = $v;
-                        $b = $p;
-                        break;
-                    case 2:
-                        $r = $p;
-                        $g = $v;
-                        $b = $t;
-                        break;
-                    case 3:
-                        $r = $p;
-                        $g = $q;
-                        $b = $v;
-                        break;
-                    case 4:
-                        $r = $t;
-                        $g = $p;
-                        $b = $v;
-                        break;
-                    case 5:
-                        $r = $v;
-                        $g = $p;
-                        $b = $q;
-                        break;
-                }
-                $r = round($r * 255);
-                $g = round($g * 255);
-                $b = round($b * 255);
-                return "\x1b[38;2;{$r};{$g};{$b}m";
-            };
-
-            $total = 100;
-            $colors = [];
-            for ($i = 0; $i < $total; $i++) {
-                $colors[] = $hsv($i / $total, 1, .9);
-            }
-
-            $alias = $this->getAlias();
-            $tag = $colors[abs(crc32($alias)) % count($colors)];
-
-            return "{$tag}{$alias}\x1b[0m";
-        }
-
-
-        $colors = [
-            'fg=cyan;options=bold',
-            'fg=green;options=bold',
-            'fg=yellow;options=bold',
-            'fg=cyan',
-            'fg=blue',
-            'fg=yellow',
-            'fg=magenta',
-            'fg=blue;options=bold',
-            'fg=green',
-            'fg=magenta;options=bold',
-            'fg=red;options=bold',
-        ];
-        $alias = $this->getAlias();
-        $tag = $colors[abs(crc32($alias)) % count($colors)];
-
-        return "<{$tag}>{$alias}</>";
     }
 }

@@ -331,7 +331,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
     }
     $options = array_merge($namedArguments, $options);
     $run = function ($command, $options = []): string {
-        $host = Context::get()->getHost();
+        $host = currentHost();
 
         $command = parse($command);
         $workingPath = get('working_path', '');
@@ -423,7 +423,7 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
         $command = "export $env; $command";
     }
 
-    $output = $process->run(new Localhost(), $command, $options);
+    $output = $process->run(currentHost(), $command, $options);
 
     return rtrim($output);
 }

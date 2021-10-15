@@ -11,7 +11,7 @@ EOF
 );
 
 set('old_version', function (): string {
-    return explode(' ', run("bin/dep --version"))[1];
+    return str_replace('-master', '', explode(' ', run("bin/dep --version"))[1]);
 });
 
 set('version', function (): string {

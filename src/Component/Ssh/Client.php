@@ -66,7 +66,7 @@ class Client
             $this->output->writeln("[$host] $sshString");
         }
 
-        $this->pop->command($host, $command);
+        $this->pop->command($host, 'run', $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);

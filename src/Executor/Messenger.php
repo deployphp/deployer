@@ -38,7 +38,11 @@ class Messenger
     {
         $this->startTime = round(microtime(true) * 1000);
         if (!$task->isShallow()) {
-            $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
+            if (getenv('GITHUB_WORKFLOW')) {
+                $this->output->writeln("::group::task {$task->getName()}");
+            } else {
+                $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
+            }
             $this->logger->log("task {$task->getName()}");
         }
     }
@@ -61,7 +65,9 @@ class Messenger
         $millis = $millis - $seconds * 1000;
         $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
 
-        if ($this->output->isVeryVerbose()) {
+        if (getenv('GITHUB_WORKFLOW')) {
+            $this->output->writeln("::endgroup::");
+        } else if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
         }
         $this->logger->log("done {$task->getName()} $taskTime");

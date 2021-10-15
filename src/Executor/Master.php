@@ -175,9 +175,15 @@ class Master
             if ($host instanceof Localhost) {
                 continue;
             }
-            $this->output->write("  connecting $host\r");
+            if ($this->output->isDecorated() && !getenv('CI')) {
+                $this->output->write("  connecting $host\r");
+            } else {
+                $this->output->writeln("connecting $host");
+            }
             $this->client->connect($host);
-            $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
+            if ($this->output->isDecorated() && !getenv('CI')) {
+                $this->output->write(str_repeat(' ', intval(getenv('COLUMNS')) - 1) . "\r");
+            }
         }
     }
 
@@ -224,7 +230,7 @@ class Master
 
         $this->server->loop->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback) {
             $this->gatherOutput($processes, $callback);
-            if ($this->output->isDecorated()) {
+            if ($this->output->isDecorated() && !getenv('CI')) {
                 $this->output->write(spinner());
             }
             if ($this->allFinished($processes)) {
@@ -235,7 +241,9 @@ class Master
 
         $this->server->loop->run();
 
-        $this->output->write("    \r"); // clear spinner
+        if ($this->output->isDecorated() && !getenv('CI')) {
+            $this->output->write("    \r"); // clear spinner
+        }
         $this->gatherOutput($processes, $callback);
 
         return $this->cumulativeExitCode($processes);

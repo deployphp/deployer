@@ -19,11 +19,11 @@ class Printer
         $this->output = $output;
     }
 
-    public function command(Host $host, string $command): void
+    public function command(Host $host, string $type, string $command): void
     {
         // -v for run command
         if ($this->output->isVerbose()) {
-            $this->output->writeln("[$host] <fg=green;options=bold>run</> $command");
+            $this->output->writeln("[$host] <fg=green;options=bold>$type</> $command");
         }
     }
 

@@ -33,9 +33,6 @@ class Host
 
     public function __toString(): string
     {
-        if (Context::has() && Context::get()->isLocal()) {
-            return 'local//' . $this->getTag() . '';
-        }
         return $this->getTag();
     }
 

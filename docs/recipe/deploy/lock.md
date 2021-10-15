@@ -21,7 +21,7 @@ Lock deploy.
 
 
 ### deploy:unlock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L20)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L19)
 
 Unlock deploy.
 
@@ -29,7 +29,7 @@ Unlock deploy.
 
 
 ### deploy:is_locked
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L24)
 
 Check if deploy is locked.
 

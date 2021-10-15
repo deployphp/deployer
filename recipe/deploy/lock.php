@@ -5,14 +5,13 @@ use Deployer\Exception\GracefulShutdownException;
 
 desc('Lock deploy');
 task('deploy:lock', function () {
-    $locked = test("[ -f {{deploy_path}}/.dep/deploy.lock ]");
-    if ($locked) {
+    $user = escapeshellarg(get('user'));
+    $locked = run("[ -f {{deploy_path}}/.dep/deploy.lock ] && echo +locked || echo $user > {{deploy_path}}/.dep/deploy.lock");
+    if ($locked === '+locked') {
         throw new GracefulShutdownException(
             "Deploy locked.\n" .
             "Execute \"deploy:unlock\" task to unlock."
         );
-    } else {
-        run("echo \"{{user}}\" > {{deploy_path}}/.dep/deploy.lock");
     }
 });
 

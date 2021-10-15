@@ -32,11 +32,7 @@ class FunctionsTest extends TestCase
 
         $input = $this->createMock(Input::class);
         $output = $this->createMock(Output::class);
-        $host = $this->getMockBuilder(Host::class)->disableOriginalConstructor()->getMock();
-        $host
-            ->expects($this->any())
-            ->method('config')
-            ->willReturn(new Configuration());
+        $host = new Localhost();
 
         $this->deployer = new Deployer($console);
         $this->deployer['input'] = $input;

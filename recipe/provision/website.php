@@ -61,6 +61,8 @@ EOF;
         run('caddy reload');
     }
 
+    set('remote_user', 'root');
+
     info("Website $domain configured!");
 })->limit(1);
 

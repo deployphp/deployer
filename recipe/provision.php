@@ -1,6 +1,7 @@
 <?php
 namespace Deployer;
 
+require __DIR__ . '/provision/nodejs.php';
 require __DIR__ . '/provision/php.php';
 require __DIR__ . '/provision/website.php';
 
@@ -8,6 +9,12 @@ use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\parse_home_dir;
 
 add('recipes', ['provision']);
+
+// Name of lsb_release like: focal, bionic, etc.
+// As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
+set('lsb_release', function () {
+    return run("lsb_release -s -c");
+});
 
 desc('Provision the server');
 task('provision', [
@@ -21,6 +28,7 @@ task('provision', [
     'provision:server',
     'provision:php',
     'provision:composer',
+    'provision:npm',
     'provision:website',
 ]);
 
@@ -45,9 +53,21 @@ task('provision:check', function () {
 
 desc('Add repositories and update');
 task('provision:update', function () {
+    // PHP
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+
+    // Caddy
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' > /etc/apt/trusted.gpg.d/caddy-stable.asc");
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
+
+    // Nodejs
+    $keyring = '/usr/share/keyrings/nodesource.gpg';
+    run("curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | sudo tee '$keyring' >/dev/null");
+    run("gpg --no-default-keyring --keyring '$keyring' --list-keys");
+    run("echo 'deb [signed-by=$keyring] https://deb.nodesource.com/{{nodejs_version}} {{lsb_release}} main' | sudo tee /etc/apt/sources.list.d/nodesource.list");
+    run("echo 'deb-src [signed-by=$keyring] https://deb.nodesource.com/{{nodejs_version}} {{lsb_release}} main' | sudo tee -a /etc/apt/sources.list.d/nodesource.list");
+
+    // Update
     run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 })
     ->oncePerNode()
@@ -77,7 +97,9 @@ task('provision:install', function () {
         'libpcre3-dev',
         'make',
         'ncdu',
+        'nodejs',
         'pkg-config',
+        'redis',
         'sendmail',
         'ufw',
         'unzip',
@@ -85,7 +107,9 @@ task('provision:install', function () {
         'whois',
     ];
     run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-})->oncePerNode();
+})
+    ->verbose()
+    ->oncePerNode();
 
 desc('Configure server');
 task('provision:server', function () {

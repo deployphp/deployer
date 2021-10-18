@@ -43,6 +43,12 @@ set('user', function () {
     }
 });
 
+// Name of remote user used for SSH connection.
+// Usually overridden per host. Otherwise, output of `whoami` will be used.
+set('remote_user', function () {
+    return run('whoami');
+});
+
 // Number of releases to preserve in releases folder.
 set('keep_releases', 10);
 

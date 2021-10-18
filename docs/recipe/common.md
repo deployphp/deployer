@@ -36,8 +36,16 @@ otherwise output of `whoami` command.
 
 
 
+### remote_user
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L48)
+
+Name of remote user used for SSH connection.
+Usually overridden per host. Otherwise, output of `whoami` will be used.
+
+
+
 ### keep_releases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L47)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L53)
 
 Number of releases to preserve in releases folder.
 
@@ -47,14 +55,14 @@ Number of releases to preserve in releases folder.
 
 
 ### repository
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L56)
 
 Repository to deploy.
 
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L57)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L63)
 
 List of dirs what will be shared between releases.
 Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
@@ -65,7 +73,7 @@ set('shared_dirs', ['storage']);
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L70)
 
 List of files what will be shared between releases.
 Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
@@ -76,7 +84,7 @@ set('shared_files', ['.env']);
 
 
 ### copy_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L68)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L74)
 
 List of dirs to copy between releases.
 For example you can copy `node_modules` to speedup npm install.
@@ -84,14 +92,14 @@ For example you can copy `node_modules` to speedup npm install.
 
 
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L77)
 
 List of paths to remove from [release_path](/docs/recipe/deploy/release.md#release_path).
 
 
 
 ### clear_use_sudo
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L80)
 
 Use sudo for deploy:clear_path task?
 
@@ -101,21 +109,21 @@ false
 
 
 ### use_relative_symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L76)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L82)
 
 
 
 
 
 ### use_atomic_symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L79)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L85)
 
 
 
 
 
 ### default_timeout
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L92)
 
 Default timeout for `run()` and `runLocally()` functions.
 
@@ -127,7 +135,7 @@ Set to `null` to disable timeout.
 
 
 ### env
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L102)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L108)
 
 Remote environment variables.
 ```php
@@ -145,7 +153,7 @@ run('echo $KEY', ['env' => ['KEY' => 'over']]
 
 
 ### dotenv
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L111)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L117)
 
 Path to `.env` file which will be used as environment variables for each command per `run()`.
 
@@ -159,7 +167,7 @@ false
 
 
 ### current_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L119)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L125)
 
 Return current release path. Default to {{deploy_path}}/`current`.
 ```php
@@ -172,7 +180,7 @@ set('current_path', '/var/public_html');
 
 
 ### sudo_askpass
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L142)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L148)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -181,7 +189,7 @@ sudo command executed.
 
 
 ### target
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L155)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L161)
 
 The deploy target: a branch, a tag or a revision.
 
@@ -191,7 +199,7 @@ The deploy target: a branch, a tag or a revision.
 ## Tasks
 
 ### deploy:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L174)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L180)
 
 Prepare a new release.
 
@@ -209,7 +217,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L185)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L191)
 
 Publish the release.
 
@@ -224,7 +232,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L195)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L201)
 
 
 
@@ -232,7 +240,7 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L205)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L211)
 
 
 
@@ -240,7 +248,7 @@ Hook on deploy failure.
 
 
 ### logs:app
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L214)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L220)
 
 Show application logs.
 

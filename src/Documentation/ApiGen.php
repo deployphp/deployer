@@ -47,7 +47,7 @@ class ApiGen
                         break;
                     }
                     if (preg_match('/^\s\*\s@param\s(?<type>.+?)\$(?<name>.+?)\s(?<comment>.+)$/', $line, $matches)) {
-                        $params .= "- ### {$matches['name']}\n  **type**: `{$matches['type']}`\n\n  {$matches['comment']}\n";
+                        $params .= "- **{$matches['name']}**: `{$matches['type']}`  {$matches['comment']}\n";
                         break;
                     }
                     if (str_starts_with($line, ' * @')) {
@@ -72,13 +72,6 @@ class ApiGen
 MD;
 
         foreach ($this->fns as $fn) {
-            ['funcName' => $funcName] = $fn;
-            $anchor = strtolower($funcName);
-            $output .= " * [`$funcName()`](#$anchor)\n";
-        }
-        $output .= "\n";
-
-        foreach ($this->fns as $fn) {
             [
                 'comment' => $comment,
                 'params' => $params,
@@ -87,7 +80,7 @@ MD;
             ] = $fn;
 
             if (!empty($params)) {
-                $params = "### Arguments:\n$params";
+                $params = "\n$params";
             }
 
             $output .= <<<MD

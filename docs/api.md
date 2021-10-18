@@ -4,49 +4,6 @@
 
 # API Reference
 
- * [`host()`](#host)
- * [`localhost()`](#localhost)
- * [`getHost()`](#gethost)
- * [`currentHost()`](#currenthost)
- * [`select()`](#select)
- * [`import()`](#import)
- * [`desc()`](#desc)
- * [`task()`](#task)
- * [`before()`](#before)
- * [`after()`](#after)
- * [`fail()`](#fail)
- * [`option()`](#option)
- * [`cd()`](#cd)
- * [`within()`](#within)
- * [`run()`](#run)
- * [`runLocally()`](#runlocally)
- * [`test()`](#test)
- * [`testLocally()`](#testlocally)
- * [`on()`](#on)
- * [`invoke()`](#invoke)
- * [`upload()`](#upload)
- * [`download()`](#download)
- * [`info()`](#info)
- * [`warning()`](#warning)
- * [`writeln()`](#writeln)
- * [`parse()`](#parse)
- * [`set()`](#set)
- * [`add()`](#add)
- * [`get()`](#get)
- * [`has()`](#has)
- * [`ask()`](#ask)
- * [`askChoice()`](#askchoice)
- * [`askConfirmation()`](#askconfirmation)
- * [`askHiddenResponse()`](#askhiddenresponse)
- * [`input()`](#input)
- * [`output()`](#output)
- * [`commandExist()`](#commandexist)
- * [`commandSupportsOption()`](#commandsupportsoption)
- * [`locateBinaryPath()`](#locatebinarypath)
- * [`remoteEnv()`](#remoteenv)
- * [`error()`](#error)
- * [`timestamp()`](#timestamp)
-
 ## host()
 
 ```php
@@ -137,15 +94,9 @@ Define a new task and save to tasks list.
 Alternatively get a defined task.
 
 
-### Arguments:
-- ### name
-  **type**: `string `
 
-  Name of current task.
-- ### body
-  **type**: `callable|array|null `
-
-  Callable task, array of other tasks names or nothing to get a defined tasks
+- **name**: `string `  Name of current task.
+- **body**: `callable|array|null `  Callable task, array of other tasks names or nothing to get a defined tasks
 
 ## before()
 
@@ -157,15 +108,9 @@ Call that task before specified task runs.
 
 
 
-### Arguments:
-- ### task
-  **type**: `string `
 
-  The task before $that should be run.
-- ### do
-  **type**: `string|callable `
-
-  The task to be run.
+- **task**: `string `  The task before $that should be run.
+- **do**: `string|callable `  The task to be run.
 
 ## after()
 
@@ -177,15 +122,9 @@ Call that task after specified task runs.
 
 
 
-### Arguments:
-- ### task
-  **type**: `string `
 
-  The task after $that should be run.
-- ### do
-  **type**: `string|callable `
-
-  The task to be run.
+- **task**: `string `  The task after $that should be run.
+- **do**: `string|callable `  The task to be run.
 
 ## fail()
 
@@ -198,15 +137,9 @@ When called multiple times for a task, previous fail() definitions will be overr
 
 
 
-### Arguments:
-- ### task
-  **type**: `string `
 
-  The task which need to fail so $that should be run.
-- ### do
-  **type**: `string|callable `
-
-  The task to be run.
+- **task**: `string `  The task which need to fail so $that should be run.
+- **do**: `string|callable `  The task to be run.
 
 ## option()
 
@@ -217,27 +150,12 @@ option(string $name, $shortcut = null, ?int $mode = null, string $description = 
 Add users options.
 
 
-### Arguments:
-- ### name
-  **type**: `string `
 
-  The option name
-- ### shortcut
-  **type**: `string|array|null `
-
-  The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-- ### mode
-  **type**: `int|null `
-
-  The option mode: One of the VALUE_* constants
-- ### description
-  **type**: `string `
-
-  A description text
-- ### default
-  **type**: `string|string[]|int|bool|null `
-
-  The default value (must be null for self::VALUE_NONE)
+- **name**: `string `  The option name
+- **shortcut**: `string|array|null `  The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+- **mode**: `int|null `  The option mode: One of the VALUE_* constants
+- **description**: `string `  A description text
+- **default**: `string|string[]|int|bool|null `  The default value (must be null for self::VALUE_NONE)
 
 ## cd()
 
@@ -282,39 +200,15 @@ run("echo $path");
 
 
 
-### Arguments:
-- ### command
-  **type**: `string `
 
-  Command to run on remote host.
-- ### options
-  **type**: `array|null `
-
-  Array of options will override passed named arguments.
-- ### timeout
-  **type**: `int|null `
-
-  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
-- ### idle_timeout
-  **type**: `int|null `
-
-  Sets the process idle timeout (max. time since last output) in seconds.
-- ### secret
-  **type**: `string|null `
-
-  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- ### env
-  **type**: `array|null `
-
-  Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
-- ### real_time_output
-  **type**: `bool|null `
-
-  Print command output in real-time.
-- ### no_throw
-  **type**: `bool|null `
-
-  Don't throw an exception of non-zero exit code.
+- **command**: `string `  Command to run on remote host.
+- **options**: `array|null `  Array of options will override passed named arguments.
+- **timeout**: `int|null `  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+- **idle_timeout**: `int|null `  Sets the process idle timeout (max. time since last output) in seconds.
+- **secret**: `string|null `  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+- **env**: `array|null `  Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+- **real_time_output**: `bool|null `  Print command output in real-time.
+- **no_throw**: `bool|null `  Don't throw an exception of non-zero exit code.
 
 ## runLocally()
 
@@ -333,31 +227,13 @@ runLocally("echo $user");
 
 
 
-### Arguments:
-- ### command
-  **type**: `string `
 
-  Command to run on localhost.
-- ### options
-  **type**: `array|null `
-
-  Array of options will override passed named arguments.
-- ### timeout
-  **type**: `int|null `
-
-  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
-- ### idle_timeout
-  **type**: `int|null `
-
-  Sets the process idle timeout (max. time since last output) in seconds.
-- ### secret
-  **type**: `string|null `
-
-  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- ### env
-  **type**: `array|null `
-
-  Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
+- **command**: `string `  Command to run on localhost.
+- **options**: `array|null `  Array of options will override passed named arguments.
+- **timeout**: `int|null `  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+- **idle_timeout**: `int|null `  Sets the process idle timeout (max. time since last output) in seconds.
+- **secret**: `string|null `  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+- **env**: `array|null `  Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
 
 ## test()
 

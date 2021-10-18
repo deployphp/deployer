@@ -1,6 +1,10 @@
 <?php
 namespace Deployer;
 
+// List of dirs to copy between releases.
+// For example you can copy `node_modules` to speedup npm install.
+set('copy_dirs', []);
+
 desc('Copy directories');
 task('deploy:copy_dirs', function () {
     if (has('previous_release')) {

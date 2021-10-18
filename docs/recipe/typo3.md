@@ -25,7 +25,7 @@ DocumentRoot / WebRoot for the TYPO3 installation
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L26)
 
-Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
+Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
 Shared directories
 
@@ -41,7 +41,7 @@ Shared directories
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L35)
 
-Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
+Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
 Shared files
 

@@ -28,6 +28,14 @@ after('deploy:update_code', 'npm:install');
 
 
 
+## Configuration
+### bin/npm
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L24)
+
+
+
+
+
 
 ## Tasks
 

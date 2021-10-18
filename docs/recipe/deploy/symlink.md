@@ -9,11 +9,19 @@
 
 
 
+## Configuration
+### use_atomic_symlink
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L5)
+
+Use mv -T if available. Will check automatically.
+
+
+
 
 ## Tasks
 
 ### deploy:symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L10)
 
 Creating symlink to release.
 

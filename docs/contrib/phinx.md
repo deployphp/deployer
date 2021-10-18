@@ -72,6 +72,14 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 
 
+## Configuration
+### bin/phinx
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L87)
+
+Path to Phinx
+
+
+
 
 ## Tasks
 

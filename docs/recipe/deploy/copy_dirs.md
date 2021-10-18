@@ -9,11 +9,20 @@
 
 
 
+## Configuration
+### copy_dirs
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/copy_dirs.php#L6)
+
+List of dirs to copy between releases.
+For example you can copy `node_modules` to speedup npm install.
+
+
+
 
 ## Tasks
 
 ### deploy:copy_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/copy_dirs.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/copy_dirs.php#L9)
 
 Copy directories.
 

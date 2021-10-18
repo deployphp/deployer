@@ -35,6 +35,24 @@ after('deploy:update_code', 'webpack_encore:build');
   * [npm](/docs/contrib/npm.md)
   * [yarn](/docs/contrib/yarn.md)
 
+## Configuration
+### webpack_encore/package_manager
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L31)
+
+
+
+
+
+### webpack_encore/env
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L39)
+
+
+
+```php title="Default value"
+'production'
+```
+
+
 
 ## Tasks
 

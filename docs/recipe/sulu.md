@@ -11,6 +11,14 @@
 * Requires
   * [symfony](/docs/recipe/symfony.md)
 
+## Configuration
+### bin/websiteconsole
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L12)
+
+
+
+
+
 
 ## Tasks
 

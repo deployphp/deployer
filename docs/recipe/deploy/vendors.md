@@ -30,6 +30,15 @@
 ```
 
 
+### bin/composer
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L11)
+
+Returns Composer binary path in found. Otherwise try to install latest
+composer version to `.dep/composer.phar`. To use specific composer version
+download desired phar and place it at `.dep/composer.phar`.
+
+
+
 
 ## Tasks
 

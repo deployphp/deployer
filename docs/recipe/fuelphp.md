@@ -15,7 +15,7 @@
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L9)
 
-Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
+Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
 FuelPHP 1.x shared dirs
 

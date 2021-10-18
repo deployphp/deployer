@@ -72,6 +72,13 @@ http://gordalina.github.io/cachetool/
 
 
 
+### bin/cachetool
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L56)
+
+
+
+
+
 ### cachetool_options
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L62)
 

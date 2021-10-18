@@ -25,7 +25,7 @@ Set drupal site. Change if you use different site
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal8.php#L18)
 
-Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
+Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
 Drupal 8 shared dirs
 
@@ -39,7 +39,7 @@ Drupal 8 shared dirs
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal8.php#L23)
 
-Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
+Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
 Drupal 8 shared files
 

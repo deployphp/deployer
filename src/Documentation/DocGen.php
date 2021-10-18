@@ -89,7 +89,7 @@ class DocGen
                         $output .= "\n";
                         continue;
                     }
-                    $output .= preg_replace_callback('#(\{\{(?<name>[\w_:]+)\}\})#', function ($m) use ($findConfig) {
+                    $output .= preg_replace_callback('#(\{\{(?<name>[\w_:\-/]+)\}\})#', function ($m) use ($findConfig) {
                         $name = $m['name'];
                         $config = $findConfig($name);
                         if ($config !== null) {

@@ -4,6 +4,20 @@ namespace Deployer;
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Output\OutputInterface;
 
+// List of dirs what will be shared between releases.
+// Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
+// ```php
+// set('shared_dirs', ['storage']);
+// ```
+set('shared_dirs', []);
+
+// List of files what will be shared between releases.
+// Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
+// ```php
+// set('shared_files', ['.env']);
+// ```
+set('shared_files', []);
+
 desc('Creating symlinks for shared files and dirs');
 task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";

@@ -67,7 +67,7 @@ class DocRecipe
                         $this->require[] = dirname($this->recipePath) . $m['recipe'];
                         break;
                     }
-                    if ($match('^set\([\'"](?<config_name>[\w_:-]+?)[\'"]')) {
+                    if ($match('^set\([\'"](?<config_name>[\w_:\-/]+?)[\'"]')) {
                         $set = new DocConfig();
                         $set->name = $m['config_name'];
                         $set->comment = trim($comment);

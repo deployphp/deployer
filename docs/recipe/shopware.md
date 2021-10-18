@@ -24,7 +24,7 @@ Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `reci
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L21)
 
-Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
+Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
 
 
@@ -38,7 +38,7 @@ Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/commo
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L24)
 
-Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
+Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
 
 

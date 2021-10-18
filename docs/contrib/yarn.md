@@ -27,6 +27,14 @@ after('deploy:update_code', 'yarn:install');
 
 
 
+## Configuration
+### bin/yarn
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L23)
+
+
+
+
+
 
 ## Tasks
 

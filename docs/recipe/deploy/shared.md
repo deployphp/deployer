@@ -9,11 +9,34 @@
 
 
 
+## Configuration
+### shared_dirs
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L12)
+
+List of dirs what will be shared between releases.
+Each release will have symlink to those dirs stored in [deploy_path](/docs/recipe/common.md#deploy_path)/shared dir.
+```php
+set('shared_dirs', ['storage']);
+```
+
+
+
+### shared_files
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L19)
+
+List of files what will be shared between releases.
+Each release will have symlink to those files stored in [deploy_path](/docs/recipe/common.md#deploy_path)/shared dir.
+```php
+set('shared_files', ['.env']);
+```
+
+
+
 
 ## Tasks
 
 ### deploy:shared
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L22)
 
 Creating symlinks for shared files and dirs.
 

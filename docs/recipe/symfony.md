@@ -22,7 +22,7 @@
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L14)
 
-Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.php`.
+Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
 
 
@@ -37,7 +37,7 @@ Overrides [shared_dirs](/docs/recipe/common.md#shared_dirs) from `recipe/common.
 ### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L19)
 
-Overrides [shared_files](/docs/recipe/common.md#shared_files) from `recipe/common.php`.
+Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
 
 
@@ -67,6 +67,16 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 
+
+
+### bin/console
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
+
+
+
+```php title="Default value"
+'{{bin/php}} {{release_or_current_path}}/bin/console'
+```
 
 
 ### console_options

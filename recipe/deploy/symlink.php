@@ -1,6 +1,11 @@
 <?php
 namespace Deployer;
 
+// Use mv -T if available. Will check automatically.
+set('use_atomic_symlink', function () {
+    return commandSupportsOption('mv', '--no-target-directory');
+});
+
 desc('Creating symlink to release');
 task('deploy:symlink', function () {
     if (get('use_atomic_symlink')) {

@@ -9,11 +9,29 @@
 
 
 
+## Configuration
+### clear_paths
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L5)
+
+List of paths to remove from [release_path](/docs/recipe/deploy/release.md#release_path).
+
+
+
+### clear_use_sudo
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L8)
+
+Use sudo for deploy:clear_path task?
+
+```php title="Default value"
+false
+```
+
+
 
 ## Tasks
 
 ### deploy:clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L11)
 
 Cleaning up files and/or directories.
 

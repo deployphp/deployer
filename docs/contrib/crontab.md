@@ -29,6 +29,14 @@ add('crontab:jobs', [
 
 
 
+## Configuration
+### bin/crontab
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L26)
+
+Get path to bin
+
+
+
 
 ## Tasks
 

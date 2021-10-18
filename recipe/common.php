@@ -18,6 +18,7 @@ require __DIR__ . '/deploy/update_code.php';
 require __DIR__ . '/deploy/vendors.php';
 require __DIR__ . '/deploy/writable.php';
 
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\RunException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\Output;
@@ -55,37 +56,6 @@ set('keep_releases', 10);
 // Repository to deploy.
 set('repository', '');
 
-// List of dirs what will be shared between releases.
-// Each release will have symlink to those dirs stored in {{deploy_path}}/shared dir.
-// ```php
-// set('shared_dirs', ['storage']);
-// ```
-set('shared_dirs', []);
-
-// List of files what will be shared between releases.
-// Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
-// ```php
-// set('shared_files', ['.env']);
-// ```
-set('shared_files', []);
-
-// List of dirs to copy between releases.
-// For example you can copy `node_modules` to speedup npm install.
-set('copy_dirs', []);
-
-// List of paths to remove from {{release_path}}.
-set('clear_paths', []);
-
-// Use sudo for deploy:clear_path task?
-set('clear_use_sudo', false);
-
-set('use_relative_symlink', function () {
-    return commandSupportsOption('ln', '--relative');
-});
-set('use_atomic_symlink', function () {
-    return commandSupportsOption('mv', '--no-target-directory');
-});
-
 // Default timeout for `run()` and `runLocally()` functions.
 //
 // Set to `null` to disable timeout.
@@ -117,6 +87,18 @@ set('env', []);
 set('dotenv', false);
 
 /**
+ * The deploy path.
+ *
+ * For example can be set for a bunch of host once as:
+ * ```php
+ * set('deploy_path', '~/{{alias}}');
+ * ```
+ */
+set('deploy_path', function () {
+    throw new ConfigurationException('Please, specify `deploy_path`.');
+});
+
+/**
  * Return current release path. Default to {{deploy_path}}/`current`.
  * ```php
  * set('current_path', '/var/public_html');
@@ -124,7 +106,7 @@ set('dotenv', false);
  */
 set('current_path', '{{deploy_path}}/current');
 
-// Custom php bin of remote host.
+// Path to the `php` bin.
 set('bin/php', function () {
     if (currentHost()->hasOwn('php_version')) {
         return '/usr/bin/php{{php_version}}';
@@ -132,12 +114,18 @@ set('bin/php', function () {
     return locateBinaryPath('php');
 });
 
-// Custom git bin of remote host.
+// Path to the `git` bin.
 set('bin/git', function () {
     return locateBinaryPath('git');
 });
 
-// Custom ln bin of remote host.
+// Should {{bin/symlink}} use `--relative` option or not. Will detect
+// automatically.
+set('use_relative_symlink', function () {
+    return commandSupportsOption('ln', '--relative');
+});
+
+// Path to the `ln` bin. With predefined options `-nfs`.
 set('bin/symlink', function () {
     return get('use_relative_symlink') ? 'ln -nfs --relative' : 'ln -nfs';
 });

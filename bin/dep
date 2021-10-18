@@ -59,10 +59,12 @@ foreach ($binaries as $binary) {
 $autoload = [
     __DIR__ . '/../vendor/autoload.php', // The dep located at "deployer.phar/bin" or in development.
     __DIR__ . '/../../../autoload.php', // The dep located at "vendor/deployer/deployer/bin".
+    __DIR__ . '/../autoload.php', // The dep located at "vendor/bin".
 ];
 $includes = [
     __DIR__ . '/..',
     __DIR__ . '/../../../deployer/deployer',
+    __DIR__ . '/../deployer/deployer',
 ];
 $includePath = false;
 for ($i = 0; $i < count($autoload); $i++) {

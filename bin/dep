@@ -48,6 +48,9 @@ if (!isset($localBinaryOverrideFound)) {
     ];
     foreach ($binaries as $binary) {
         if (file_exists($binary)) {
+            if (realpath($binary) === realpath(__FILE__)) {
+                break; // Already required this binary
+            }
             $localBinaryOverrideFound = true; // Only do it once.
             require $binary;
             exit;

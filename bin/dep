@@ -39,19 +39,19 @@ if (empty($deployFile)) {
 }
 
 // Find project-local Deployer installation
-$binaries = [
-    dirname($deployFile) . '/vendor/bin/dep',
-    dirname($deployFile) . '/deployer.phar',
-    getcwd() . '/vendor/bin/dep',
-    getcwd() . '/deployer.phar',
-];
-foreach ($binaries as $binary) {
-    if (file_exists($binary)) {
-        if (realpath($binary) === __FILE__) {
-            break; // Already required this binary
+if (!isset($localBinaryOverrideFound)) {
+    $binaries = [
+        dirname($deployFile) . '/vendor/bin/dep',
+        dirname($deployFile) . '/deployer.phar',
+        getcwd() . '/vendor/bin/dep',
+        getcwd() . '/deployer.phar',
+    ];
+    foreach ($binaries as $binary) {
+        if (file_exists($binary)) {
+            $localBinaryOverrideFound = true; // Only do it once.
+            require $binary;
+            exit;
         }
-        require $binary;
-        exit;
     }
 }
 

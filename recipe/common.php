@@ -72,7 +72,7 @@ set('default_timeout', 300);
  * It is possible to override it per `run()` call.
  *
  * ```php
- * run('echo $KEY', ['env' => ['KEY' => 'over']]
+ * run('echo $KEY', env: ['KEY' => 'over']);
  * ```
  */
 set('env', []);

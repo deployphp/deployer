@@ -47,7 +47,8 @@ class ApiGen
                         break;
                     }
                     if (preg_match('/^\s\*\s@param\s(?<type>.+?)\$(?<name>.+?)\s(?<comment>.+)$/', $line, $matches)) {
-                        $params .= "- **{$matches['name']}**: `{$matches['type']}`  {$matches['comment']}\n";
+                        $type = trim($matches['type'], ' ');
+                        $params .= "- **{$matches['name']}** `{$type}` — {$matches['comment']}\n";
                         break;
                     }
                     if (str_starts_with($line, ' * @')) {

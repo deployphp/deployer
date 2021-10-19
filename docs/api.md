@@ -95,8 +95,8 @@ Alternatively get a defined task.
 
 
 
-- **name**: `string `  Name of current task.
-- **body**: `callable|array|null `  Callable task, array of other tasks names or nothing to get a defined tasks
+- **name** `string` — Name of current task.
+- **body** `callable|array|null` — Callable task, array of other tasks names or nothing to get a defined tasks
 
 ## before()
 
@@ -109,8 +109,8 @@ Call that task before specified task runs.
 
 
 
-- **task**: `string `  The task before $that should be run.
-- **do**: `string|callable `  The task to be run.
+- **task** `string` — The task before $that should be run.
+- **do** `string|callable` — The task to be run.
 
 ## after()
 
@@ -123,8 +123,8 @@ Call that task after specified task runs.
 
 
 
-- **task**: `string `  The task after $that should be run.
-- **do**: `string|callable `  The task to be run.
+- **task** `string` — The task after $that should be run.
+- **do** `string|callable` — The task to be run.
 
 ## fail()
 
@@ -138,8 +138,8 @@ When called multiple times for a task, previous fail() definitions will be overr
 
 
 
-- **task**: `string `  The task which need to fail so $that should be run.
-- **do**: `string|callable `  The task to be run.
+- **task** `string` — The task which need to fail so $that should be run.
+- **do** `string|callable` — The task to be run.
 
 ## option()
 
@@ -151,11 +151,11 @@ Add users options.
 
 
 
-- **name**: `string `  The option name
-- **shortcut**: `string|array|null `  The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-- **mode**: `int|null `  The option mode: One of the VALUE_* constants
-- **description**: `string `  A description text
-- **default**: `string|string[]|int|bool|null `  The default value (must be null for self::VALUE_NONE)
+- **name** `string` — The option name
+- **shortcut** `string|array|null` — The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+- **mode** `int|null` — The option mode: One of the VALUE_* constants
+- **description** `string` — A description text
+- **default** `string|string[]|int|bool|null` — The default value (must be null for self::VALUE_NONE)
 
 ## cd()
 
@@ -201,14 +201,14 @@ run("echo $path");
 
 
 
-- **command**: `string `  Command to run on remote host.
-- **options**: `array|null `  Array of options will override passed named arguments.
-- **timeout**: `int|null `  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
-- **idle_timeout**: `int|null `  Sets the process idle timeout (max. time since last output) in seconds.
-- **secret**: `string|null `  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- **env**: `array|null `  Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
-- **real_time_output**: `bool|null `  Print command output in real-time.
-- **no_throw**: `bool|null `  Don't throw an exception of non-zero exit code.
+- **command** `string` — Command to run on remote host.
+- **options** `array|null` — Array of options will override passed named arguments.
+- **timeout** `int|null` — Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
+- **idle_timeout** `int|null` — Sets the process idle timeout (max. time since last output) in seconds.
+- **secret** `string|null` — Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+- **env** `array|null` — Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
+- **real_time_output** `bool|null` — Print command output in real-time.
+- **no_throw** `bool|null` — Don't throw an exception of non-zero exit code.
 
 ## runLocally()
 
@@ -228,12 +228,12 @@ runLocally("echo $user");
 
 
 
-- **command**: `string `  Command to run on localhost.
-- **options**: `array|null `  Array of options will override passed named arguments.
-- **timeout**: `int|null `  Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
-- **idle_timeout**: `int|null `  Sets the process idle timeout (max. time since last output) in seconds.
-- **secret**: `string|null `  Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- **env**: `array|null `  Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
+- **command** `string` — Command to run on localhost.
+- **options** `array|null` — Array of options will override passed named arguments.
+- **timeout** `int|null` — Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
+- **idle_timeout** `int|null` — Sets the process idle timeout (max. time since last output) in seconds.
+- **secret** `string|null` — Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+- **env** `array|null` — Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
 
 ## test()
 

@@ -86,7 +86,7 @@ set('env', [
 It is possible to override it per `run()` call.
 
 ```php
-run('echo $KEY', ['env' => ['KEY' => 'over']]
+run('echo $KEY', env: ['KEY' => 'over']);
 ```
 
 

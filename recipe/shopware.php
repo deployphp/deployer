@@ -8,8 +8,6 @@
 
 namespace Deployer;
 
-use MJS\TopSort\Implementations\FixedArraySort;
-
 require_once __DIR__ . '/common.php';
 
 add('recipes', ['shopware']);
@@ -69,11 +67,6 @@ task('sw:plugin:refresh', function () {
     run('cd {{release_or_current_path}} && bin/console plugin:refresh');
 });
 
-/**
- * @return array
- * @throws \MJS\TopSort\CircularDependencyException
- * @throws \MJS\TopSort\ElementNotFoundException
- */
 function getSortedPlugins(): array
 {
     cd('{{release_or_current_path}}');
@@ -125,14 +118,12 @@ function getSortedPlugins(): array
         }
     }
 
-    $sorter = new FixedArraySort();
-    foreach ($dependencies as $name => $dep) {
-        $sorter->add($name, $dep);
-    }
+    // TODO: Sort $dependencies.
+    $sorted = array_keys($dependencies);
 
     return array_map(static function ($name) use ($parsedPlugins, $pluginMapping) {
         return $parsedPlugins[$pluginMapping[$name]];
-    }, $sorter->sort());
+    }, $sorted);
 }
 
 task('sw:plugin:activate:all', static function () {

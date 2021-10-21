@@ -13,7 +13,7 @@
 
 ## Configuration
 ### release_name
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L17)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L15)
 
 Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `recipe/deploy/release.php`.
 
@@ -22,7 +22,7 @@ Overrides [release_name](/docs/recipe/deploy/release.md#release_name) from `reci
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L21)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L19)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -36,7 +36,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L24)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L22)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -56,7 +56,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L31)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -75,7 +75,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### static_folders
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L39)
 
 
 
@@ -85,7 +85,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ## Tasks
 
 ### sw:update_code
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L41)
 
 
 
@@ -93,7 +93,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:system:install
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L46)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L44)
 
 
 
@@ -101,7 +101,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L49)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L47)
 
 
 
@@ -109,7 +109,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:system:setup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L52)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L50)
 
 
 
@@ -117,7 +117,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:theme:compile
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L53)
 
 
 
@@ -125,7 +125,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L58)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L56)
 
 
 
@@ -133,7 +133,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:cache:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L61)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L59)
 
 
 
@@ -141,7 +141,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L63)
 
 
 
@@ -149,7 +149,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:plugin:refresh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L68)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L66)
 
 
 
@@ -157,7 +157,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:plugin:activate:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L138)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L129)
 
 
 
@@ -165,7 +165,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:plugin:migrate:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L159)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L150)
 
 
 
@@ -173,7 +173,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:plugin:upgrade:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L179)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L170)
 
 
 
@@ -181,7 +181,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### sw:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L202)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L193)
 
 
 
@@ -198,7 +198,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L215)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L206)
 
 Deploy your project.
 

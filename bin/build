@@ -13,14 +13,15 @@ $opt = getopt('v:', ['nozip']);
 
 $version = $opt['v'] ?? null;
 if (empty($version)) {
-    die("Please, specify version as -v7.0.0-beta.\n");
+    echo "Please, specify version as \"-v7.0.0-beta.42\".\n";
+    exit(1);
 }
 if (!preg_match('/^\d+\.\d+\.\d+(\-\w+(\.\d+)?)?$/', $version)) {
-    echo "Version must be \"7.0.0-beta.1\". Got \"$version\".\n";
+    echo "Version must be \"7.0.0-beta.42\". Got \"$version\".\n";
     exit(1);
 }
 
-`composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts --ignore-platform-reqs`;
+`composer install --no-dev --prefer-dist --optimize-autoloader --no-scripts --ignore-platform-reqs`;
 
 $pharName = "deployer.phar";
 $pharFile = __ROOT__ . '/' . $pharName;

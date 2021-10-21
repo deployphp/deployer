@@ -36,6 +36,6 @@ jobs:
       - name: Deploy docs
         run: gh --repo "$REPO" workflow run deploy-docs
         env:
-          GITHUB_TOKEN: ${{ secrets.DOCS_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
           REPO: ${{ secrets.DOCS_REPO }}
 

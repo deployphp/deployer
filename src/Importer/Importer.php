@@ -16,6 +16,7 @@ use function Deployer\download;
 use function Deployer\host;
 use function Deployer\localhost;
 use function Deployer\run;
+use function Deployer\runLocally;
 use function Deployer\set;
 use function Deployer\Support\find_line_number;
 use function Deployer\task;
@@ -93,83 +94,94 @@ class Importer
 
     protected static function tasks(array $tasks)
     {
-        $buildTask = function ($name, $config) {
-            extract($config);
-
-            $body = null;
-            if (isset($script)) {
-                if (!is_string($script)) {
-                    foreach ($script as $line) {
-                        if (!is_string($line)) {
-                            throw new Exception("Script should be a string: $line");
-                        }
-                    }
-                }
-                $wrapRun = function ($cmd) {
-                    try {
-                        run($cmd);
-                    } catch (Exception $e) {
-                        $e->setTaskFilename(self::$recipeFilename);
-                        $e->setTaskLineNumber(find_line_number(self::$recipeSource, $cmd));
-                        throw $e;
-                    }
-                };
-                $body = function () use ($wrapRun, $script) {
-                    if (is_string($script)) {
-                        $wrapRun($script);
-                    } else {
-                        foreach ($script as $line) {
-                            $containsMultipleCommands = preg_match('/\s&&\s/', $line);
-                            $startsWithCd = preg_match('/^cd\s(?<path>.+)/i', $line, $matches);
-
-                            if ($startsWithCd && ! $containsMultipleCommands) {
-                                cd($matches['path']);
-                            } else {
-                                $wrapRun($line);
-                            }
-                        }
-                    }
-                };
-            }
-            if (isset($upload)) {
-                if (!isset($upload['src']) || !isset($upload['dest'])) {
-                    throw new Exception("Upload should have `src:` and `dest:` fields");
-                }
-                $prev = $body;
-                $body = function () use ($upload, $prev) {
-                    upload($upload['src'], $upload['dest']);
-                    if (!empty($prev)) {
-                        $prev();
-                    }
-                };
-            }
-            if (isset($download)) {
-                if (!isset($download['src']) || !isset($download['dest'])) {
-                    throw new Exception("Download should have `src:` and `dest:` fields");
-                }
-                $prev = $body;
-                $body = function () use ($download, $prev) {
-                    download($download['src'], $download['dest']);
-                    if (!empty($prev)) {
-                        $prev();
-                    }
-                };
-            }
-
+        $buildTask = function ($name, $steps) {
+            $body = function () {};
             $task = task($name, $body);
-            $methods = [
-                'desc',
-                'local',
-                'once',
-                'hidden',
-                'shallow',
-                'limit',
-                'select',
-            ];
-            foreach ($methods as $method) {
-                if (isset($$method)) {
-                    $task->$method($$method);
-                }
+
+            foreach ($steps as $step) {
+                $buildStep = function ($step) use (&$body, $task) {
+                    extract($step);
+
+                    if (isset($cd)) {
+                        if (!is_string($cd)) {
+                            throw new Exception("The \"cd\" should be a string.");
+                        }
+                        $prev = $body;
+                        $body = function () use ($cd, $prev) {
+                            $prev();
+                            cd($cd);
+                        };
+                    }
+                    if (isset($run)) {
+                        if (!is_string($run)) {
+                            throw new Exception("The \"run\" should be a string.");
+                        }
+                        $prev = $body;
+                        $body = function () use ($run, $prev) {
+                            $prev();
+                            try {
+                                run($run);
+                            } catch (Exception $e) {
+                                $e->setTaskFilename(self::$recipeFilename);
+                                $e->setTaskLineNumber(find_line_number(self::$recipeSource, $run));
+                                throw $e;
+                            }
+                        };
+                    }
+                    if (isset($run_locally)) {
+                        if (!is_string($run_locally)) {
+                            throw new Exception("The \"run_locally\" should be a string.");
+                        }
+                        $prev = $body;
+                        $body = function () use ($run_locally, $prev) {
+                            $prev();
+                            try {
+                                runLocally($run_locally);
+                            } catch (Exception $e) {
+                                $e->setTaskFilename(self::$recipeFilename);
+                                $e->setTaskLineNumber(find_line_number(self::$recipeSource, $run_locally));
+                                throw $e;
+                            }
+                        };
+                    }
+                    if (isset($upload)) {
+                        if (!isset($upload['src']) || !isset($upload['dest'])) {
+                            throw new Exception("Upload should have `src:` and `dest:` fields");
+                        }
+                        $prev = $body;
+                        $body = function () use ($upload, $prev) {
+                            $prev();
+                            upload($upload['src'], $upload['dest']);
+                        };
+                    }
+                    if (isset($download)) {
+                        if (!isset($download['src']) || !isset($download['dest'])) {
+                            throw new Exception("Download should have `src:` and `dest:` fields");
+                        }
+                        $prev = $body;
+                        $body = function () use ($download, $prev) {
+                            $prev();
+                            download($download['src'], $download['dest']);
+                        };
+                    }
+
+                    $methods = [
+                        'desc',
+                        'once',
+                        'hidden',
+                        'shallow',
+                        'limit',
+                        'select',
+                    ];
+                    foreach ($methods as $method) {
+                        if (isset($$method)) {
+                            $task->$method($$method);
+                        }
+                    }
+                };
+
+                $buildStep($step);
+                $task->setCallback($body);
             }
         };
 

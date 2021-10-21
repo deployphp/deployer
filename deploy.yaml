@@ -1,5 +1,6 @@
 hosts:
-  deployer.org: ~
+  deployer.org:
+    remote_user: anton
 
 config:
   banner: |

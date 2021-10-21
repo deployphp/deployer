@@ -11,19 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache Composer packages
-        id: composer-cache
-        uses: actions/cache@v2
-        with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-php-
-
-      - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress
-
       - name: Get version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
 
@@ -35,3 +22,5 @@ jobs:
 
       - name: Upload phar
         run: gh release upload "$RELEASE_VERSION" deployer.phar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

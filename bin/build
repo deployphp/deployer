@@ -9,9 +9,18 @@
 define('__ROOT__', realpath(__DIR__ . '/..'));
 chdir(__ROOT__);
 
-$opt = getopt('', ['nozip']);
+$opt = getopt('v:', ['nozip']);
 
-`composer install --no-dev`;
+$version = $opt['v'] ?? null;
+if (empty($version)) {
+    die("Please, specify version as -v7.0.0-beta.\n");
+}
+if (!preg_match('/^\d+\.\d+\.\d+(\-\w+(\.\d+)?)?$/', $version)) {
+    echo "Version must be \"7.0.0-beta.1\". Got \"$version\".\n";
+    exit(1);
+}
+
+`composer install --no-dev --verbose --prefer-dist --optimize-autoloader --no-progress --no-scripts --ignore-platform-reqs`;
 
 $pharName = "deployer.phar";
 $pharFile = __ROOT__ . '/' . $pharName;
@@ -48,15 +57,17 @@ foreach ($iterator as $fileInfo) {
         $phar[$file]->compress(Phar::GZ);
 
         if (!$phar[$file]->isCompressed()) {
-            echo "Could not compress File: {$file}\n";
+            echo "Could not compress File: $file\n";
         }
     }
 }
 
 // Add bin/dep file
+echo "Add file: /bin/dep\n";
 $depContent = file_get_contents(__ROOT__ . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
+$depContent = preg_replace("/run\('.+?'/", "run('$version'", $depContent);
 $phar->addFromString('bin/dep', $depContent);
 $phar->setStub(<<<STUB
 #!/usr/bin/env php

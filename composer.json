@@ -30,8 +30,6 @@
         ]
     },
     "scripts": {
-        "dep": "bin/dep -f deploy.yaml",
-        "release": "@dep release",
         "test": "pest",
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "phpcs": "phpcs",

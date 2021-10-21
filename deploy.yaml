@@ -1,67 +1,20 @@
-import:
-  - src/Support/Config/version.php
-  - src/Support/Config/verification.php
-
-config:
-  depl: ~/dev/deployer
-  site: ~/deployer.org
-  dist: ~/dev/dist
-
 hosts:
   deployer.org: ~
 
+config:
+  banner: |
+    ╭──────────────────────────────────────────────────────╮
+    │                                                      │
+    │   Update available! https://deployer.org/download    │
+    │                                                      │
+    ╰──────────────────────────────────────────────────────╯
+
 tasks:
-  check_master:
-    local: true
-    script:
-      - "[[ $(git branch --show-current) == 'master' ]] || { echo 'Checkout master branch to release Deployer.'; exit 1; }"
+  update_manifest:
+    - desc: Create a new record in manifest.json
+    - cd: ~/deployer.org/artifacts
+      run: "fx manifest.json '[...this, {name: `deployer.org`, sha1: `{{sha1}}`, url: `{{url}}`, version: `{{version}}`}]'" #save
 
-  pull:
-    script:
-      - cd {{depl}}
-      - git pull --rebase
-      - git status
-
-  test:
-    script:
-      - cd {{depl}}
-      - composer install
-      - composer test
-      - bin/build
-      - php deployer.phar --version
-
-  release:composer:
-    script:
-      - cd {{depl}}
-      - bin/release {{version}}
-      - git push
-      - git push --tags
-
-  release:phar:
-    script:
-      - cd {{site}}
-      - php scripts/sync-artifacts.php
-      - git add artifacts
-      - git commit -m "Release {{version}}"
-
-  release:dist:
-    script:
-      - cd {{dist}}
-      - php update
-
-  create:notify_banner:
-    script:
-      - echo $'{{banner}}' > {{site}}/check-updates/{{old_version}}
-
-  release:
-    - release:composer
-    - release:phar
-    - release:dist
-    - create:notify_banner
-
-before:
-  release:
-    - check_master
-    - pull
-    - test
-    - verification
+  create_banner:
+    - desc: Create an update banner
+    - run: echo $'{{banner}}' #> {{site}}/check-updates/{{old_version}}

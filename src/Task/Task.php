@@ -36,6 +36,11 @@ class Task
         $this->callback = $callback;
     }
 
+    public function setCallback(callable $callback): void
+    {
+        $this->callback = $callback;
+    }
+
     public function run(Context $context): void
     {
         Context::push($context);

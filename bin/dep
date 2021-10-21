@@ -37,6 +37,9 @@ if (empty($deployFile)) {
 if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.yaml');
 }
+if (empty($deployFile)) {
+    $deployFile = $lookUp('deploy.yml');
+}
 
 // Find project-local Deployer installation
 if (!isset($localBinaryOverrideFound)) {
@@ -104,8 +107,7 @@ set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 // Deployer constants
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
-define('DEPLOYER_VERSION', '7.0.0-master');
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
 define('DEPLOYER_ROOT', getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname($deployFile));
 
-Deployer\Deployer::run(DEPLOYER_VERSION, $deployFile);
+Deployer\Deployer::run('7-master', $deployFile);

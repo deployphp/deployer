@@ -274,17 +274,24 @@ class Deployer extends Container
      */
     public static function run(string $version, ?string $deployFile)
     {
-        if (!defined('DEPLOYER_VERSION')) {
-            die(<<<TXT
-  Warning! Incompatible global and local versions.
-  Please, update your globally installed Deployer,
-  or run locally installed Deployer via:
-  
-      \x1b[36mphp \x1b[38;1mvendor/bin/dep\x1b[0m
-   
-
-TXT);
+        if (str_contains($version, 'master')) {
+            // Get version from composer.lock
+            $lockFile = __DIR__ . '/../../../../composer.lock';
+            if (file_exists($lockFile)) {
+                $content = file_get_contents($lockFile);
+                $json = json_decode($content);
+                foreach ($json->packages as $package) {
+                    if ($package->name === 'deployer/deployer') {
+                        $version = $package->version;
+                    }
+                }
+            }
         }
+
+        if (!defined('DEPLOYER_VERSION')) {
+            define('DEPLOYER_VERSION', $version);
+        }
+
         $input = new ArgvInput();
         $output = new ConsoleOutput();
 

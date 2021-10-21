@@ -23,4 +23,5 @@ tasks:
     - deploy:publish
 
   deploy:vendors:
-    script: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
+    - cd: '{{release_path}}'
+    - run: echo {{bin/composer}} {{composer_options}} 2>&1

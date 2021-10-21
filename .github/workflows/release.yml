@@ -1,0 +1,34 @@
+name: release
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Composer packages
+        id: composer-cache
+        uses: actions/cache@v2
+        with:
+          path: vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress
+
+      - name: Build phar
+        run: php -d phar.readonly=0 bin/docgen -${{ env.GITHUB_REF }}
+
+      - name: Version
+        run: php deployer.phar -V
+
+      - name: Upload phar
+        run: gh release upload ${{ env.GITHUB_REF }} deployer.phar

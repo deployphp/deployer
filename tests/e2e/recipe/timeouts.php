@@ -12,7 +12,7 @@ task('test:timeouts', function () {
         run("php -r 'while(true){}'", [ 'timeout' => 1 ] );
     } catch (TimeoutException $e) {
         $ps = run("if ps aux | grep '[p]hp -r while(true){}'; then echo still running; else echo +timeout; fi");
-        if ($ps != 'ok') {
+        if ($ps != '+timeout') {
             throw new \Exception('Process still running.');
         }
     }

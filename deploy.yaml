@@ -16,6 +16,11 @@ tasks:
     - cd: ~/deployer.org/artifacts
       run: "fx manifest.json '[...this, {name: `deployer.org`, sha1: `{{sha1}}`, url: `{{url}}`, version: `{{version}}`}]' save"
 
+  release_dist:
+    - desc: Release deployer/dist
+    - cd: ~/dev/dist
+      run: php update
+
   create_banner:
     - desc: Create an update banner
     - run: echo $'{{banner}}' > {{site}}/check-updates/{{old_version}}

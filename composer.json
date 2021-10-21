@@ -43,7 +43,7 @@
     ],
     "require": {
         "php": "^8.0|^7.3",
-        "marcj/topsort": "^2.0",
+        "ext-json": "*",
         "psr/http-message": "^1",
         "react/http": "^1",
         "symfony/console": "^5",

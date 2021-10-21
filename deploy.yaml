@@ -1,3 +1,6 @@
+import:
+  - src/Support/update_manifest.php
+
 hosts:
   deployer.org:
     remote_user: anton
@@ -11,10 +14,9 @@ config:
     ╰──────────────────────────────────────────────────────╯
 
 tasks:
-  update_manifest:
-    - desc: Create a new record in manifest.json
-    - cd: ~/deployer.org/artifacts
-      run: "fx manifest.json '[...this, {name: `deployer.org`, sha1: `{{sha1}}`, url: `{{url}}`, version: `{{version}}`}]' save"
+  release:
+    - update_manifest
+    - release_dist
 
   release_dist:
     - desc: Release deployer/dist

@@ -14,6 +14,7 @@ class TimeoutsE2ETest extends AbstractE2ETest
             '-f' => self::RECIPE,
             'test:timeouts',
             'all',
+            '-v',
         ]);
 
         $display = trim($this->tester->getDisplay());

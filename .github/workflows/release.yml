@@ -32,5 +32,5 @@ jobs:
         uses: deployphp/action@v1
         with:
           private-key: ${{ secrets.PRIVATE_KEY }}
-          deployer-version: 7.0.0-beta.34
+          deployer-binary: bin/dep
           dep: -f deploy.yaml update_manifest -o sha1="$SHA1" -o url="https://github.com/deployphp/deployer/releases/download/$RELEASE_VERSION/deployer.phar" -o version="$RELEASE_VERSION"

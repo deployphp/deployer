@@ -13,7 +13,7 @@ tasks:
   update_manifest:
     - desc: Create a new record in manifest.json
     - cd: ~/deployer.org/artifacts
-      run: "fx manifest.json '[...this, {name: `deployer.org`, sha1: `{{sha1}}`, url: `{{url}}`, version: `{{version}}`}]'" save
+      run: "fx manifest.json '[...this, {name: `deployer.org`, sha1: `{{sha1}}`, url: `{{url}}`, version: `{{version}}`}]' save"
 
   create_banner:
     - desc: Create an update banner

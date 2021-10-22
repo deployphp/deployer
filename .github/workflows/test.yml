@@ -20,7 +20,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
-          ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
 
       - name: Validate composer.json and composer.lock

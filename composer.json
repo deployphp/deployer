@@ -60,6 +60,9 @@
     },
     "config": {
         "sort-packages": true,
-        "process-timeout": 0
+        "process-timeout": 0,
+        "platform": {
+            "php": "7.3.0"
+        }
     }
 }

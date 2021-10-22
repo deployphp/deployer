@@ -55,10 +55,18 @@ if (!isset($localBinaryOverrideFound)) {
                 break; // Already required this binary
             }
             $localBinaryOverrideFound = true; // Only do it once.
+            if (getenv('DEPLOYER_DEBUG_PATHS')) {
+                echo "# require \"$binary\"\n";
+            }
             require $binary;
             exit;
         }
     }
+}
+
+if (getenv('DEPLOYER_DEBUG_PATHS')) {
+    $path = realpath(__FILE__);
+    echo "# using \"$path\"\n";
 }
 
 // Detect autoload location
@@ -110,4 +118,4 @@ define('DEPLOYER_BIN', __FILE__);
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
 define('DEPLOYER_ROOT', getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname($deployFile));
 
-Deployer\Deployer::run('7-master', $deployFile);
+Deployer\Deployer::run('v7-master', $deployFile);

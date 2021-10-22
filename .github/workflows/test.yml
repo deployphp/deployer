@@ -8,67 +8,69 @@ on:
 
 jobs:
   unit:
-
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         php-versions: [ '7.3', '7.4', '8.0' ]
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-        extensions: mbstring, intl
-        ini-values: post_max_size=256M, max_execution_time=180
-        coverage: xdebug
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-    - name: Run test suite
-      run: composer test
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run test suite
+        run: composer test
 
   e2e:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - uses: satackey/action-docker-layer-caching@v0.0.8
-      continue-on-error: true
+      - uses: satackey/action-docker-layer-caching@v0.0.8
+        continue-on-error: true
 
-    - name: Build the docker-compose stack
-      run: cd tests/docker && docker-compose build
+      - name: Build the docker-compose stack
+        run: cd tests/docker && docker-compose build
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-    - name: Run E2E test suite
-      run: cd tests/docker && docker-compose up --abort-on-container-exit
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress
+
+      - name: Run E2E test suite
+        run: cd tests/docker && docker-compose up --abort-on-container-exit

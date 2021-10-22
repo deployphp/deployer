@@ -8,36 +8,37 @@ on:
 
 jobs:
   docgen:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Validate composer.json and composer.lock
-      run: composer validate
+      - name: Validate composer.json and composer.lock
+        run: composer validate
 
-    - name: Cache Composer packages
-      id: composer-cache
-      uses: actions/cache@v2
-      with:
-        path: vendor
-        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-php-
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
 
-    - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-    - name: Run docgen
-      run: php bin/docgen
+      - name: Install dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress
 
-    - name: Check for uncommitted changes
-      run: |
-        status=$(git status --porcelain docs/);
-        [ -z "$status" ] || {
-          echo "Please, run bin/docgen and commit next files:";
-          echo $status;
-          exit 1;
-        }
+      - name: Run docgen
+        run: php bin/docgen
+
+      - name: Check for uncommitted changes
+        run: |
+          status=$(git status --porcelain docs/);
+          [ -z "$status" ] || {
+            echo "Please, run bin/docgen and commit next files:";
+            echo $status;
+            exit 1;
+          }

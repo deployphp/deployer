@@ -1,6 +1,8 @@
 name: sync
 
-on: push
+on:
+  push:
+    branches: [ master ]
 
 jobs:
   docs:
@@ -11,14 +13,17 @@ jobs:
       - name: Validate composer.json and composer.lock
         run: composer validate
 
-      - name: Cache Composer packages
+      - name: Get Composer Cache Directory
         id: composer-cache
-        uses: actions/cache@v2
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - uses: actions/cache@v2
         with:
-          path: vendor
-          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
-            ${{ runner.os }}-php-
+            ${{ runner.os }}-composer-
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'

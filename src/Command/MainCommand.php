@@ -123,6 +123,7 @@ class MainCommand extends SelectCommand
         }
 
         if ($exitCode === 0) {
+            $this->showBanner();
             return 0;
         }
         if ($exitCode === GracefulShutdownException::EXIT_CODE) {
@@ -143,6 +144,16 @@ class MainCommand extends SelectCommand
     {
         try {
             fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send());
+        } catch (\Throwable $e) {
+            // Meh
+        }
+    }
+
+    private function showBanner()
+    {
+        try {
+            $withColors = getenv('COLORTERM') === 'truecolor' ? '_with_colors' : '';
+            fwrite(STDERR, Httpie::get("https://deployer.org/banners/" . $this->getName() . $withColors)->send());
         } catch (\Throwable $e) {
             // Meh
         }

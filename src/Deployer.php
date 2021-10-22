@@ -9,8 +9,8 @@ namespace Deployer;
 
 use Deployer\Collection\Collection;
 use Deployer\Command\AutocompleteCommand;
-use Deployer\Command\ConfigCommand;
 use Deployer\Command\BlackjackCommand;
+use Deployer\Command\ConfigCommand;
 use Deployer\Command\InitCommand;
 use Deployer\Command\MainCommand;
 use Deployer\Command\RunCommand;

@@ -2,6 +2,14 @@
 /*
 ## Installing
 
+:::caution
+Do **not** reload php-fpm. Some user requests could fail or not complete in the
+process of reloading.
+
+Instead, configure your server [properly](https://ï.at/avoid-php-fpm-reloading). If you're using Deployer's provision
+recipe, it's already configured the right way and no php-fpm reload is needed.
+:::
+
 Add to your _deploy.php_
 
 ```php
@@ -43,5 +51,6 @@ set('php_fpm_command', 'echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} 
 
 desc('Reload the php-fpm service');
 task('php-fpm:reload', function () {
+    warning('Avoid reloading php-fpm [ï.at/avoid-php-fpm-reloading]');
     run('{{php_fpm_command}}');
 });

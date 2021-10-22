@@ -9,6 +9,14 @@
 
 ## Installing
 
+:::caution
+Do **not** reload php-fpm. Some user requests could fail or not complete in the
+process of reloading.
+
+Instead, configure your server [properly](https://ï.at/avoid-php-fpm-reloading). If you're using Deployer's provision
+recipe, it's already configured the right way and no php-fpm reload is needed.
+:::
+
 Add to your _deploy.php_
 
 ```php
@@ -38,14 +46,14 @@ after('deploy', 'php-fpm:reload');
 
 ## Configuration
 ### php_fpm_version
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L32)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L40)
 
 
 
 
 
 ### php_fpm_service
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L49)
 
 
 
@@ -55,7 +63,7 @@ after('deploy', 'php-fpm:reload');
 
 
 ### php_fpm_command
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L42)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L50)
 
 
 
@@ -68,7 +76,7 @@ after('deploy', 'php-fpm:reload');
 ## Tasks
 
 ### php-fpm:reload
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L53)
 
 Reload the php-fpm service.
 

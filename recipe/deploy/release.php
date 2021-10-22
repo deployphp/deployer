@@ -7,9 +7,7 @@ use Symfony\Component\Console\Helper\Table;
 // The name of the release.
 set('release_name', function () {
     $latest = run('cat .dep/latest_release || echo 0');
-    $releaseName = strval(intval($latest) + 1);
-    run("echo $releaseName > .dep/latest_release");
-    return $releaseName;
+    return strval(intval($latest) + 1);
 });
 
 // Holds releases log from `.dep/releases_log` file.
@@ -110,6 +108,11 @@ task('deploy:release', function () {
         throw new Exception("Release name \"$releaseName\" already exists.\nRelease name can be overridden via:\n dep deploy -o release_name=$releaseName");
     }
 
+    // Save release_name.
+    if (is_numeric($releaseName) && is_integer(intval($releaseName))) {
+        run("echo $releaseName > .dep/latest_release");
+    }
+
     // Metainfo.
     $timestamp = timestamp();
     $metainfo = [
@@ -155,6 +158,8 @@ task('releases', function () {
         if (in_array($release, $releasesList, true)) {
             if (test("[ -f releases/$release/BAD_RELEASE ]")) {
                 $status = "<error>$release</error> (bad)";
+            } else if (test("[ -f releases/$release/DIRTY_RELEASE ]")) {
+                $status = "<error>$release</error> (dirty)";
             } else {
                 $status = "<info>$release</info>";
             }

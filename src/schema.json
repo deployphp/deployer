@@ -64,6 +64,10 @@
                   },
                   "upload": {
                     "type": "object",
+                    "required": [
+                      "src",
+                      "dest"
+                    ],
                     "properties": {
                       "src": {
                         "type": "string"
@@ -75,6 +79,10 @@
                   },
                   "download": {
                     "type": "object",
+                    "required": [
+                      "src",
+                      "dest"
+                    ],
                     "properties": {
                       "src": {
                         "type": "string"

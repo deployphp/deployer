@@ -63,6 +63,10 @@ foreach ($iterator as $fileInfo) {
     }
 }
 
+// Add schema.json
+echo "Add file: /src/schema.json\n";
+$phar->addFile(realpath(__DIR__ . '/../src/schema.json'), '/src/schema.json');
+
 // Add bin/dep file
 echo "Add file: /bin/dep\n";
 $depContent = file_get_contents(__ROOT__ . '/bin/dep');

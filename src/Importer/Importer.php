@@ -7,7 +7,13 @@
 
 namespace Deployer\Importer;
 
+use Deployer\Deployer;
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
+use JsonSchema\Constraints\Constraint;
+use JsonSchema\Constraints\Factory;
+use JsonSchema\SchemaStorage;
+use JsonSchema\Validator;
 use Symfony\Component\Yaml\Yaml;
 use function Deployer\after;
 use function Deployer\before;
@@ -56,12 +62,26 @@ class Importer
                 self::$recipeFilename = basename($path);
                 self::$recipeSource = file_get_contents($path);
                 $root = Yaml::parse(self::$recipeSource);
-                foreach (array_keys($root) as $key) {
-                    try {
-                        self::$key($root[$key]);
-                    } catch (\Throwable $exception) {
-                        throw new Exception("Wrong syntax in \"$key:\" section.", 0, $exception);
+
+                $schema = 'file://' . __DIR__ . '/../schema.json';
+                if (Deployer::isPharArchive()) {
+                    $schema = __DIR__ . '/../schema.json';
+                }
+                $yamlSchema = json_decode(file_get_contents($schema));
+                $schemaStorage = new SchemaStorage();
+                $schemaStorage->addSchema('file://schema', $yamlSchema);
+                $validator = new Validator(new Factory($schemaStorage));
+                $validator->validate($root, $yamlSchema, Constraint::CHECK_MODE_TYPE_CAST);
+                if (!$validator->isValid()) {
+                    $msg = "YAML " . self::$recipeFilename . " does not validate. Violations:\n";
+                    foreach ($validator->getErrors() as $error) {
+                        $msg .= "[{$error['property']}] {$error['message']}\n";
                     }
+                    throw new ConfigurationException($msg);
+                }
+
+                foreach (array_keys($root) as $key) {
+                    self::$key($root[$key]);
                 }
             } else {
                 throw new Exception("Unknown file format: $path\nOnly .php and .yaml supported.");
@@ -95,7 +115,8 @@ class Importer
     protected static function tasks(array $tasks)
     {
         $buildTask = function ($name, $steps) {
-            $body = function () {};
+            $body = function () {
+            };
             $task = task($name, $body);
 
             foreach ($steps as $step) {
@@ -103,19 +124,15 @@ class Importer
                     extract($step);
 
                     if (isset($cd)) {
-                        if (!is_string($cd)) {
-                            throw new Exception("The \"cd\" should be a string.");
-                        }
                         $prev = $body;
                         $body = function () use ($cd, $prev) {
                             $prev();
                             cd($cd);
                         };
                     }
+
                     if (isset($run)) {
-                        if (!is_string($run)) {
-                            throw new Exception("The \"run\" should be a string.");
-                        }
+                        $has = 'run';
                         $prev = $body;
                         $body = function () use ($run, $prev) {
                             $prev();
@@ -128,10 +145,12 @@ class Importer
                             }
                         };
                     }
+
                     if (isset($run_locally)) {
-                        if (!is_string($run_locally)) {
-                            throw new Exception("The \"run_locally\" should be a string.");
+                        if (isset($has)) {
+                            throw new ConfigurationException("Task step can not have both $has and run_locally.");
                         }
+                        $has = 'run_locally';
                         $prev = $body;
                         $body = function () use ($run_locally, $prev) {
                             $prev();
@@ -144,20 +163,24 @@ class Importer
                             }
                         };
                     }
+
                     if (isset($upload)) {
-                        if (!isset($upload['src']) || !isset($upload['dest'])) {
-                            throw new Exception("Upload should have `src:` and `dest:` fields");
+                        if (isset($has)) {
+                            throw new ConfigurationException("Task step can not have both $has and upload.");
                         }
+                        $has = 'upload';
                         $prev = $body;
                         $body = function () use ($upload, $prev) {
                             $prev();
                             upload($upload['src'], $upload['dest']);
                         };
                     }
+
                     if (isset($download)) {
-                        if (!isset($download['src']) || !isset($download['dest'])) {
-                            throw new Exception("Download should have `src:` and `dest:` fields");
+                        if (isset($has)) {
+                            throw new ConfigurationException("Task step can not have both $has and downlaod.");
                         }
+                        $has = 'downlaod';
                         $prev = $body;
                         $body = function () use ($download, $prev) {
                             $prev();

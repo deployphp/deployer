@@ -1,9 +1,16 @@
 module.exports = [
-  'getting-started',
   'installation',
-  'hosts',
-  'tasks',
-  'config',
+  'getting-started',
+  'basics',
+  {
+    type: 'category',
+    label: 'Main Concepts',
+    items: [
+      'hosts',
+      'tasks',
+      'config',
+    ],
+  },
   'yaml',
   'cli',
   'api',

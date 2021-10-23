@@ -1,5 +1,6 @@
 # Upgrade from 6.x to 7.x
 
+## Step 1: Update `deploy.php`
 1. Change `hostname` to `alias`.
 2. Change `real_hostname` to `hostname`.
 3. Change `user` to `remote_user`.
@@ -50,7 +51,7 @@
        - deploy:publish
    
      deploy:vendors:
-       script: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
+       - run: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
    ``` 
 8. Rename success task in ~~success~~ to `deploy:success`.
 9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
@@ -58,7 +59,22 @@
     ```bash
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```
-11. Create a `{{deploy_path}}/.dep/latest_release` file with next release number.
+
+## Step 2: Deploy
+
+1. Find out next release name (ssh to the host, `ls` releases dir, find the bigget number). Example: `42`.
+2. Deploy with release_name:
+   ```
+   dep deploy -o release_name=43
+   ```
+   > **Note**
+   >
+   > In case a rollback is needed, manually change the `current` symlink:
+   > ```
+   > ln -nfs releases/42 current
+   > ```
+
+
 
 # Upgrade from 5.x to 6.x
 

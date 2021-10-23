@@ -1,6 +1,6 @@
 # Upgrade from 6.x to 7.x
 
-## Step 1: Update `deploy.php`
+### Step 1: Update `deploy.php`
 1. Change `hostname` to `alias`.
 2. Change `real_hostname` to `hostname`.
 3. Change `user` to `remote_user`.
@@ -60,7 +60,7 @@
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```
 
-## Step 2: Deploy
+### Step 2: Deploy
 
 1. Find out next release name (ssh to the host, `ls` releases dir, find the bigget number). Example: `42`.
 2. Deploy with release_name:

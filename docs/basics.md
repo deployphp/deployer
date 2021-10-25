@@ -19,7 +19,7 @@ $ dep deploy deployer.org
 Then Deployer takes the given task, performs some preparation (described later),
 and executes the task on all specified hosts.
 
-:::note
+:::info
 The `dep` CLI looks for `deploy.php` or `deploy.yaml` file in current directory.
 Or recipe can be specified explicitly via `-f` or `--file` option.
 ```bash

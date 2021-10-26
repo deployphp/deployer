@@ -5,25 +5,23 @@ namespace Deployer\Importer;
 
 use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 
 class ImporterTest extends TestCase
 {
-    private $deployer;
+    private $previousInput;
+    private $previousOutput;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
-        $console = new Application();
-        $input = $this->createMock(InputInterface::class);
-        $output = $this->createMock(OutputInterface::class);
-        $this->deployer = new Deployer($console, $input, $output);
+        $deployer = Deployer::get();
+        $this->previousInput = $deployer->input;
+        $this->previousOutput = $deployer->output;
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
-        unset($this->deployer);
+        Deployer::get()->input = $this->previousInput;
+        Deployer::get()->output = $this->previousOutput;
     }
 
     public function testImporterIgnoresYamlHiddenKeys(): void

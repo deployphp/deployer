@@ -40,6 +40,8 @@ class Messenger
         if (!$task->isShallow()) {
             if (getenv('GITHUB_WORKFLOW')) {
                 $this->output->writeln("::group::task {$task->getName()}");
+            } else if (getenv('GITLAB_CI')) {
+                $this->output->writeln("\e[OKsection_start:task {$task->getName()}[collapsed=true]\r\e[OK{$task->getName()}");
             } else {
                 $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
             }
@@ -67,6 +69,8 @@ class Messenger
 
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::endgroup::");
+        } if (getenv('GITLAB_CI')) {
+            $this->output->writeln("\e[OKsection_end:{$taskTime}:{$task->getName()}");
         } else if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
         }

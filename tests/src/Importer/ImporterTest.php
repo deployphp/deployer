@@ -43,12 +43,16 @@ hosts:
   production:
     <<: *base
     remote_user: bar
+  
+  production.beta:
+    <<: *base
 # test.yaml
 EOL;
 
         Importer::import("data:text/yaml,$data");
         self::assertTrue(Deployer::get()->hosts->has('production'));
         self::assertTrue(Deployer::get()->hosts->has('acceptance'));
+        self::assertTrue(Deployer::get()->hosts->has('production.beta'));
         self::assertEquals('acceptance', Deployer::get()->hosts->get('acceptance')->getLabels()['stage']);
         self::assertEquals('production', Deployer::get()->hosts->get('production')->getLabels()['stage']);
         self::assertEquals('foo', Deployer::get()->hosts->get('acceptance')->getRemoteUser());

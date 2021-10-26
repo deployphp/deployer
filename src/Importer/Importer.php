@@ -29,6 +29,7 @@ use function Deployer\set;
 use function Deployer\Support\find_line_number;
 use function Deployer\task;
 use function Deployer\upload;
+use function substr;
 use const ARRAY_FILTER_USE_KEY;
 
 class Importer
@@ -65,7 +66,7 @@ class Importer
                 self::$recipeFilename = basename($path);
                 self::$recipeSource = file_get_contents($path);
                 $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
-                    return strpos($key, '.') === false;
+                    return substr($key, 0, 1) !== '.';
                 }, ARRAY_FILTER_USE_KEY);
 
                 $schema = 'file://' . __DIR__ . '/../schema.json';

@@ -63,6 +63,11 @@ task('deploy:writable', function () {
     $recursive = get('writable_recursive') ? '-R' : '';
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
 
+    $remoteUser = get('remote_user', false);
+    if (empty($remoteUser)) {
+        $remoteUser = run('whoami');
+    }
+
     if (empty($dirs)) {
         return;
     }
@@ -88,7 +93,7 @@ task('deploy:writable', function () {
             run("$sudo chgrp -H $recursive {{http_group}} $dirs");
             run("$sudo chmod g+rwx $dirs");
         } catch (RunException $exception) {
-            warning("Make sure `{{remote_user}}` is in `{{http_group}}` group: `usermod -a -G {{http_group}} {{remote_user}}`");
+            warning("Make sure `$remoteUser` is in `{{http_group}}` group: `usermod -a -G {{http_group}} $remoteUser`");
             throw  $exception;
         }
     } elseif ($mode === 'chmod') {
@@ -99,7 +104,7 @@ task('deploy:writable', function () {
             // Try OS-X specific setting of access-rights
 
             run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
-            run("$sudo chmod +a \"{{remote_user}} allow delete,write,append,file_inherit,directory_inherit\" $dirs");
+            run("$sudo chmod +a \"$remoteUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
         } elseif (commandExist('setfacl')) {
             if (empty($sudo)) {
                 // When running without sudo, exception may be thrown
@@ -112,13 +117,13 @@ task('deploy:writable', function () {
                     $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                     // Set ACL for directory if it has not been set before
                     if (!$hasfacl) {
-                        run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dir");
-                        run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dir");
+                        run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dir");
+                        run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dir");
                     }
                 }
             } else {
-                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
-                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:{{remote_user}}:rwX $dirs");
+                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dirs");
+                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dirs");
             }
         } else {
             $alias = currentHost()->getAlias();

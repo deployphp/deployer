@@ -34,7 +34,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L19)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L18)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -48,7 +48,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L22)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -62,14 +62,14 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### migrations_config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L26)
 
 
 
 
 
 ### bin/console
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L28)
 
 
 
@@ -79,7 +79,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L31)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L30)
 
 
 
@@ -89,7 +89,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ## Tasks
 
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L36)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
 
 Migrate database.
 
@@ -97,7 +97,7 @@ Migrate database.
 
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L46)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L45)
 
 Clear cache.
 
@@ -105,7 +105,7 @@ Clear cache.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L54)
 
 Deploy project.
 

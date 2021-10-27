@@ -29,7 +29,6 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 ```php title="Default value"
 [
     'var/log',
-    'var/sessions'
 ]
 ```
 

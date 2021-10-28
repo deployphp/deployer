@@ -62,7 +62,9 @@
 
 ### Step 2: Deploy
 
-1. Find out next release name (ssh to the host, `ls` releases dir, find the bigget number). Example: `42`.
+Since the release history numbering is not compatible between v6 and v7, you need to specify the `release_name` manually for the first time. Otherwise you start with release 1.
+
+1. Find out next release name (ssh to the host, `ls` releases dir, find the biggest number). Example: `42`.
 2. Deploy with release_name:
    ```
    dep deploy -o release_name=43

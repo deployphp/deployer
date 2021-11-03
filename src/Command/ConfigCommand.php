@@ -8,8 +8,10 @@
 namespace Deployer\Command;
 
 use Deployer\Deployer;
+use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Yaml\Yaml;
 
@@ -18,30 +20,49 @@ class ConfigCommand extends SelectCommand
     public function __construct(Deployer $deployer)
     {
         parent::__construct('config', $deployer);
-        $this->setDescription('Get config for hosts');
+        $this->setDescription('Get all configuration options for hosts');
     }
 
     protected function configure()
     {
         parent::configure();
-        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'The output format (json, yaml)', 'json');
+        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'The output format (json, yaml)', 'yaml');
+        $this->getDefinition()->getArgument('selector')->setDefault(['all']);
     }
 
     protected function execute(Input $input, Output $output): int
     {
+        $this->deployer->input = $input;
+        $this->deployer->output = new NullOutput();
         $hosts = $this->selectHosts($input, $output);
-        $config = [];
+        $data = [];
+        $keys = $this->deployer->config->keys();
+        define('DEPLOYER_NO_ASK', true);
         foreach ($hosts as $host) {
-            $config[$host->getAlias()] = $host->config()->persist();
+            Context::push(new Context($host, $this->deployer->input, $this->deployer->output));
+            $values = [];
+            foreach ($keys as $key) {
+                try {
+                    $values[$key] = $host->get($key);
+                } catch (\Throwable $exception) {
+                    $values[$key] = [ 'error' => $exception->getMessage()];
+                }
+            }
+            foreach ($host->config()->persist() as $k => $v) {
+                $values[$k] = $v;
+            }
+            ksort($values);
+            $data[$host->getAlias()] = $values;
+            Context::pop();
         }
         $format = $input->getOption('format');
         switch ($format) {
             case 'json':
-                $output->writeln(json_encode($config, JSON_PRETTY_PRINT));
+                $output->writeln(json_encode($data, JSON_PRETTY_PRINT));
                 break;
 
             case 'yaml':
-                $output->write(Yaml::dump($config));
+                $output->write(Yaml::dump($data));
                 break;
 
             default:

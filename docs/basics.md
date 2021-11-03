@@ -53,9 +53,10 @@ task my_task
 $  
 ```
 
-:::note
+:::tip
 If no host provided, Deployer will show an interactive prompt for selecting hosts.
 If your recipe contains only one host, Deployer will automatically choose it. 
+To select all hosts specify `all`.
 :::
 
 But there is our `whoami` command? By default, Deployer runs with normal verbosity 
@@ -81,7 +82,7 @@ host('deployer.org');
 host('medv.io');
 ```
 
-:::note Connection options
+:::info Connection options
 How Deployer knows hot to connect to a host? It uses same `~/.ssh/config` file as
 the `ssh` command. Or you can specify [connection options](hosts.md) in recipe.
 :::
@@ -175,3 +176,56 @@ host('medv.io');
 ```
 
 So `my_config` will be equal to `'global'` on both hosts.
+
+Also, config option value can be specified as a callback, such callback
+executed on first access and returned result saved in host configuration.
+
+```
+set('whoami', function () {
+    return run('whoami');
+});
+
+task('my_task', function () {
+    writeln('Who am I? {{whoami}}');
+});
+```
+
+Let's try to run it:
+
+```
+dep my_task all
+task my_task
+[deployer.org] Who am I? deployer
+[medv.io] Who am I? anton
+```
+
+This was we can create dynamic configuration which uses current host information.
+
+Only first call triggers callback execution. All consequential use saved value.
+
+Here is an example:
+
+```phpr
+set('current_date', function () {
+    return run('date');
+});
+
+task('my_task', function () {
+    writeln('What time is it? {{current_date}}');
+    run('sleep 5');
+    writeln('What time is it? {{current_date}}');
+});
+```
+
+If we run my_task we will see what `date` is called only once on `{{current_date}}` 
+access.
+
+```
+dep my_task deployer.org -v
+task my_task
+[deployer.org] run date
+[deployer.org] Wed 03 Nov 2021 01:16:53 PM UTC
+[deployer.org] What time is it? Wed 03 Nov 2021 01:16:53 PM UTC
+[deployer.org] run sleep 5
+[deployer.org] What time is it? Wed 03 Nov 2021 01:16:53 PM UTC
+```

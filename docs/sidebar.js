@@ -14,4 +14,11 @@ module.exports = [
   'yaml',
   'cli',
   'api',
+  {
+    type: 'category',
+    label: 'Other',
+    items: [
+      'UPGRADE',
+    ],
+  },
 ]

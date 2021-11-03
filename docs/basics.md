@@ -229,3 +229,14 @@ task my_task
 [deployer.org] run sleep 5
 [deployer.org] What time is it? Wed 03 Nov 2021 01:16:53 PM UTC
 ```
+
+We can override config option via CLI option `-o` like this:
+
+```
+dep my_task deployer.org -v -o current_date="I don't know"
+task my_task
+[deployer.org] What time is it? I don't know
+[deployer.org] run sleep 5
+[deployer.org] What time is it? I don't know
+```
+

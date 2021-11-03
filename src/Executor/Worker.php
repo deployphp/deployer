@@ -34,7 +34,6 @@ class Worker
             Exception::setTaskSourceLocation($task->getSourceLocation());
 
             $context = new Context($host, $this->deployer->input, $this->deployer->output);
-            $context->setIsLocal($task->isLocal());
             $task->run($context);
 
             if ($task->getName() !== 'connect') {

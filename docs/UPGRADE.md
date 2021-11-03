@@ -59,6 +59,7 @@
     ```bash
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```
+11. Replace `local()` tasks with combination of `once()` and `runLocally()` func.
 
 ## Step 2: Deploy
 

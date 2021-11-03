@@ -42,9 +42,6 @@ class TaskTest extends TestCase
         $task->desc('Task description.');
         self::assertEquals('Task description.', $task->getDescription());
 
-        $task->local();
-        self::assertTrue($task->isLocal());
-
         $task->hidden();
         self::assertTrue($task->isHidden());
 

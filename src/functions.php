@@ -351,7 +351,7 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
             $command = ". $dotenv; $command";
         }
 
-        if ($host instanceof Localhost || Context::get()->isLocal()) {
+        if ($host instanceof Localhost) {
             $process = Deployer::get()->processRunner;
             $output = $process->run($host, $command, $options);
         } else {

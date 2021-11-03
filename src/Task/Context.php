@@ -31,11 +31,6 @@ class Context
     private $output;
 
     /**
-     * @var bool
-     */
-    private $isLocal = false;
-
-    /**
      * @var Context[]
      */
     private static $contexts = [];
@@ -107,15 +102,5 @@ class Context
     public function getHost(): Host
     {
         return $this->host;
-    }
-
-    public function isLocal(): bool
-    {
-        return $this->isLocal;
-    }
-
-    public function setIsLocal(bool $isLocal): void
-    {
-        $this->isLocal = $isLocal;
     }
 }

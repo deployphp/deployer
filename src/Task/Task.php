@@ -15,7 +15,6 @@ class Task
     private $callback;
     private $description;
     private $sourceLocation = '';
-    private $local = false;
     private $before = [];
     private $after = [];
     private $hidden = false;
@@ -96,20 +95,6 @@ class Task
             $trace = debug_backtrace();
             $this->sourceLocation = $trace[1]['file'];
         }
-    }
-
-    /**
-     * Mark this task local.
-     */
-    public function local(bool $local = true): self
-    {
-        $this->local = $local;
-        return $this;
-    }
-
-    public function isLocal(): bool
-    {
-        return $this->local;
     }
 
     /**

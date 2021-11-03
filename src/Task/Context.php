@@ -21,25 +21,13 @@ class Context
     private $host;
 
     /**
-     * @var InputInterface
-     */
-    private $input;
-
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
-    /**
      * @var Context[]
      */
     private static $contexts = [];
 
-    public function __construct(Host $host, InputInterface $input = null, OutputInterface $output = null)
+    public function __construct(Host $host)
     {
         $this->host = $host;
-        $this->input = $input;
-        $this->output = $output;
     }
 
     public static function push(Context $context): void
@@ -87,16 +75,6 @@ class Context
     public function getConfig(): Configuration
     {
         return $this->host->config();
-    }
-
-    public function getInput(): InputInterface
-    {
-        return $this->input;
-    }
-
-    public function getOutput(): OutputInterface
-    {
-        return $this->output;
     }
 
     public function getHost(): Host

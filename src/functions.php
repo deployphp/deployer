@@ -805,12 +805,12 @@ function askHiddenResponse(string $message): string
 
 function input(): InputInterface
 {
-    return Context::get()->getInput();
+    return Deployer::get()->input;
 }
 
 function output(): OutputInterface
 {
-    return Context::get()->getOutput();
+    return Deployer::get()->output;
 }
 
 /**

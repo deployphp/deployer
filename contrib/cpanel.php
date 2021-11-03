@@ -154,7 +154,7 @@ function getCpanel()
 {
     $config = get('cpanel', []);
     $allowInStage = $config['allowInStage'];
-    $stage = Context::get()->getInput()->getArgument('stage');
+    $stage = input()->getArgument('stage');
 
     if (!class_exists('\Gufy\CpanelPhp\Cpanel')) {
         throw new \RuntimeException("<comment>Please install php package</comment> <info>gufy/cpanel-php</info> <comment>to use CPanel API</comment>");

@@ -241,3 +241,5 @@ task my_task
 [deployer.org] What time is it? I don't know
 ```
 
+With overridden config option `current_date` there is no need to call the callback.
+So there is no 'run date'.

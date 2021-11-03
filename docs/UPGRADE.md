@@ -1,6 +1,6 @@
 # Upgrade from 6.x to 7.x
 
-### Step 1: Update `deploy.php`
+## Step 1: Update `deploy.php`
 1. Change `hostname` to `alias`.
 2. Change `real_hostname` to `hostname`.
 3. Change `user` to `remote_user`.
@@ -60,7 +60,7 @@
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```
 
-### Step 2: Deploy
+## Step 2: Deploy
 
 Since the release history numbering is not compatible between v6 and v7, you need to specify the `release_name` manually for the first time. Otherwise you start with release 1.
 
@@ -77,8 +77,9 @@ Since the release history numbering is not compatible between v6 and v7, you nee
    > ```
 
 
+## Other versions
 
-# Upgrade from 5.x to 6.x
+### Upgrade from 5.x to 6.x
 
 1. Changed branch option priority
 
@@ -117,7 +118,7 @@ Since the release history numbering is not compatible between v6 and v7, you nee
     
     * `set('env', 'prod');` → `set('symfony_env', 'prod');`
 
-# Upgrade from 4.x to 5.x
+### Upgrade from 4.x to 5.x
 
 1. Servers to Hosts
    
@@ -191,7 +192,7 @@ Since the release history numbering is not compatible between v6 and v7, you nee
    * `onlyOnStage` to `onStage`
    
 
-# Upgrade from 3.x to 4.x
+### Upgrade from 3.x to 4.x
 
 1. Namespace for functions
 
@@ -223,7 +224,7 @@ Since the release history numbering is not compatible between v6 and v7, you nee
 
    Due to changes in release management, the new cleanup task will ignore any prior releases deployed with 3.x.  These will need to be manually removed after migrating to and successfully releasing via 4.x.
 
-# Upgrade from 2.x to 3.x
+### Upgrade from 2.x to 3.x
 
 1. ### `->path('...')`
 

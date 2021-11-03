@@ -8,6 +8,7 @@
 namespace Deployer\Command;
 
 use Deployer\Deployer;
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
@@ -49,7 +50,7 @@ abstract class SelectCommand extends Command
 
         if (empty($selectExpression)) {
             if (count($this->deployer->hosts) === 0) {
-                $hosts = [localhost(Localhost::extraordinary)];
+                throw new ConfigurationException("No host configured.\nSpecify at least one host: `localhost();`.");
             } else if (count($this->deployer->hosts) === 1) {
                 $hosts = $this->deployer->hosts->all();
             } else if ($input->isInteractive()) {

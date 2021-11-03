@@ -15,6 +15,8 @@ use JsonSchema\Constraints\Factory;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
 use Symfony\Component\Yaml\Yaml;
+use function array_filter;
+use function array_keys;
 use function Deployer\after;
 use function Deployer\before;
 use function Deployer\cd;
@@ -27,6 +29,8 @@ use function Deployer\set;
 use function Deployer\Support\find_line_number;
 use function Deployer\task;
 use function Deployer\upload;
+use function substr;
+use const ARRAY_FILTER_USE_KEY;
 
 class Importer
 {
@@ -61,7 +65,9 @@ class Importer
             } else if (preg_match('/\.ya?ml$/i', $path)) {
                 self::$recipeFilename = basename($path);
                 self::$recipeSource = file_get_contents($path);
-                $root = Yaml::parse(self::$recipeSource);
+                $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
+                    return substr($key, 0, 1) !== '.';
+                }, ARRAY_FILTER_USE_KEY);
 
                 $schema = 'file://' . __DIR__ . '/../schema.json';
                 if (Deployer::isPharArchive()) {

@@ -112,8 +112,8 @@ class MainCommand extends SelectCommand
         if (!$plan) {
             $this->checkUpdates();
             $this->validateConfig();
-            $this->deployer->server->start();
             $this->deployer->master->connect($hosts);
+            $this->deployer->server->start();
         }
         $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);
 

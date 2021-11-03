@@ -135,8 +135,8 @@ Or with [get](api.md#get) function:
 
 ```diff
 task('my_task', function () {
--    $myConfig = currentHost()->get('my_config');
-+    $myConfig = get('my_config');
+-   $myConfig = currentHost()->get('my_config');
++   $myConfig = get('my_config');
     writeln("my_config: " . $myConfig);
 });
 ```
@@ -151,8 +151,9 @@ internally. So you don't need to call **parse** function by your self.
 
 ```diff
 task('my_task', function () {
--    $myConfig = get('my_config');
-    writeln("my_config: {{my_config}}");
+-   $myConfig = get('my_config');
+-   writeln("my_config: " . $myConfig);
++   writeln("my_config: {{my_config}}");
 });
 ```
 
@@ -175,7 +176,7 @@ host('deployer.org');
 host('medv.io');
 ```
 
-So `my_config` will be equal to `'global'` on both hosts.
+The config option `my_config` will be equal to `global` on both hosts.
 
 Also, config option value can be specified as a callback, such callback
 executed on first access and returned result saved in host configuration.

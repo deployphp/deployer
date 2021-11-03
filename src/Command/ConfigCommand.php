@@ -44,19 +44,6 @@ class ConfigCommand extends SelectCommand
                 $output->write(Yaml::dump($config));
                 break;
 
-            case 'list':
-                $txt = [
-                    'all'
-                ];
-                foreach ($config as $alias => $c) {
-                    $txt[] = $alias;
-                    foreach ($c['labels'] ?? [] as $label => $value) {
-                        $txt[] = "$label=$value";
-                    }
-                }
-                $output->writeln(array_unique($txt));
-                break;
-
             default:
                 throw new \Exception("Unknown format: $format.");
         }

@@ -7,6 +7,7 @@
 
 namespace Deployer\Command;
 
+use Deployer\Deployer;
 use InvalidArgumentException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,18 +16,30 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AutocompleteCommand extends Command
 {
+    private $deployer;
+
+    public function __construct(Deployer $deployer)
+    {
+        $this->deployer = $deployer;
+        parent::__construct('autocomplete');
+    }
+
     protected function configure()
     {
         $this
-            ->setName('autocomplete')
             ->setDescription('Add CLI autocomplete')
             ->setDefinition(array(
                 new InputOption('shell', null, InputOption::VALUE_REQUIRED, 'Shell type ("bash" or "zsh")', isset($_SERVER['SHELL']) ? basename($_SERVER['SHELL'], '.exe') : null),
+                new InputOption('query', null, InputOption::VALUE_NONE),
             ));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        if (!empty($input->getOption('query'))) {
+            return $this->query($input, $output);
+        }
+
         $shell = $input->getOption('shell');
         if (!in_array($shell, ['bash', 'zsh'])) {
             throw new InvalidArgumentException("Completion is only available for bash and zsh, \"{$shell}\" given.");
@@ -82,7 +95,7 @@ _dep()
     fi
     
     # completing for a host
-    hosts=$($script config all --format list)
+    hosts=$($script autocomplete --query)
     [[ $? -eq 0 ]] || return 0;
     COMPREPLY=($(compgen -W "${hosts}" -- ${cur}))
     __ltrim_colon_completions "$cur"
@@ -125,7 +138,7 @@ _dep()
             _describe 'option' options
         ;;
         hosts)
-            hosts=("${(@f)$(${words[1]} config all --format list)}")
+            hosts=("${(@f)$(${words[1]} autocomplete --query)}")
             _describe 'hosts' hosts
         *)
             # fallback to file completion
@@ -136,5 +149,22 @@ _dep()
 compdef _dep dep
 
 ZSH;
+    }
+
+    private function query(InputInterface $input, OutputInterface $output): int
+    {
+        $response = ['all'];
+        $configs = [];
+        foreach ($this->deployer->hosts as $host) {
+            $configs[$host->getAlias()] = $host->config()->persist();
+        }
+        foreach ($configs as $alias => $c) {
+            $response[] = $alias;
+            foreach ($c['labels'] ?? [] as $label => $value) {
+                $response[] = "$label=$value";
+            }
+        }
+        $output->writeln(array_unique($response));
+        return 0;
     }
 }

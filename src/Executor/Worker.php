@@ -33,7 +33,7 @@ class Worker
         try {
             Exception::setTaskSourceLocation($task->getSourceLocation());
 
-            $context = new Context($host, $this->deployer->input, $this->deployer->output);
+            $context = new Context($host);
             $task->run($context);
 
             if ($task->getName() !== 'connect') {

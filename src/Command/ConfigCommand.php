@@ -39,7 +39,7 @@ class ConfigCommand extends SelectCommand
         $keys = $this->deployer->config->keys();
         define('DEPLOYER_NO_ASK', true);
         foreach ($hosts as $host) {
-            Context::push(new Context($host, $this->deployer->input, $this->deployer->output));
+            Context::push(new Context($host));
             $values = [];
             foreach ($keys as $key) {
                 try {

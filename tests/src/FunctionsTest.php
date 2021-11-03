@@ -37,7 +37,7 @@ class FunctionsTest extends TestCase
         $this->deployer = new Deployer($console);
         $this->deployer['input'] = $input;
         $this->deployer['output'] = $output;
-        Context::push(new Context($host, $input, $output));
+        Context::push(new Context($host));
     }
 
     protected function tearDown(): void

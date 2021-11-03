@@ -489,7 +489,7 @@ function on($hosts, callable $callback): void
     foreach ($hosts as $host) {
         if ($host instanceof Host) {
             $host->config()->load();
-            Context::push(new Context($host, input(), output()));
+            Context::push(new Context($host));
             try {
                 $callback($host);
                 $host->config()->save();

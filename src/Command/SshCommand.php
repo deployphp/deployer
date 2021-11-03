@@ -82,7 +82,7 @@ class SshCommand extends Command
             $shell_path = 'exec ' . $host->get('shell_path') . ' -l';
         }
 
-        Context::push(new Context($host, $input, $output));
+        Context::push(new Context($host));
         $options = Client::connectionOptionsString($host);
         $deployPath = $host->get('deploy_path', '~');
 

@@ -91,7 +91,7 @@ class Server
             case '/proxy':
                 ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($request->getBody()->getContents(), true);
 
-                Context::push(new Context(getHost($host), $this->input, $this->output));
+                Context::push(new Context(getHost($host)));
                 $answer = call_user_func($func, ...$arguments);
                 Context::pop();
 

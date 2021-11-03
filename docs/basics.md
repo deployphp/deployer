@@ -90,7 +90,7 @@ the `ssh` command. Or you can specify [connection options](hosts.md) in recipe.
 Let's run `my_task` task on both hosts:
 
 ```
-dep my_task -v all
+$ dep my_task -v all
 task my_task
 [deployer.org] run whoami
 [medv.io] run whoami
@@ -102,7 +102,7 @@ Deployer runs a task in parallel on each host. This is why output mixed. We can
 limit it to run only one host.
 
 ```
-dep my_task -v all --limit 1
+$ dep my_task -v all --limit 1
 task my_task
 [deployer.org] run whoami
 [deployer.org] deployer
@@ -160,7 +160,7 @@ task('my_task', function () {
 Let's try to run our task:
 
 ```
-dep my_task all
+$ dep my_task all
 task my_task
 [deployer.org] my_config: foo
 [medv.io] my_config: bar
@@ -194,7 +194,7 @@ task('my_task', function () {
 Let's try to run it:
 
 ```
-dep my_task all
+$ dep my_task all
 task my_task
 [deployer.org] Who am I? deployer
 [medv.io] Who am I? anton
@@ -222,7 +222,7 @@ If we run my_task we will see what `date` is called only once on `{{current_date
 access.
 
 ```
-dep my_task deployer.org -v
+$ dep my_task deployer.org -v
 task my_task
 [deployer.org] run date
 [deployer.org] Wed 03 Nov 2021 01:16:53 PM UTC
@@ -234,7 +234,7 @@ task my_task
 We can override config option via CLI option `-o` like this:
 
 ```
-dep my_task deployer.org -v -o current_date="I don't know"
+$ dep my_task deployer.org -v -o current_date="I don't know"
 task my_task
 [deployer.org] What time is it? I don't know
 [deployer.org] run sleep 5

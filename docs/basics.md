@@ -181,7 +181,7 @@ The config option `my_config` will be equal to `global` on both hosts.
 Also, config option value can be specified as a callback, such callback
 executed on first access and returned result saved in host configuration.
 
-```
+```php
 set('whoami', function () {
     return run('whoami');
 });
@@ -206,7 +206,7 @@ Only first call triggers callback execution. All consequential use saved value.
 
 Here is an example:
 
-```phpr
+```php
 set('current_date', function () {
     return run('date');
 });

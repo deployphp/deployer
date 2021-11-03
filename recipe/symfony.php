@@ -13,7 +13,6 @@ set('symfony_version', function () {
 
 set('shared_dirs', [
     'var/log',
-    'var/sessions'
 ]);
 
 set('shared_files', [

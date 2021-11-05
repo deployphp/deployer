@@ -43,25 +43,25 @@ Provision databases.
 
 
 ### provision:mysql
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L36)
 
-
+Provision MySQL.
 
 
 
 
 ### provision:mariadb
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L41)
 
-
+Provision MariaDB.
 
 
 
 
 ### provision:postgresql
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L44)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L46)
 
-
+Provision PostgreSQL.
 
 
 

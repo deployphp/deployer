@@ -1,6 +1,7 @@
 <?php
 namespace Deployer;
 
+require __DIR__ . '/provision/databases.php';
 require __DIR__ . '/provision/nodejs.php';
 require __DIR__ . '/provision/php.php';
 require __DIR__ . '/provision/website.php';

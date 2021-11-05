@@ -32,15 +32,17 @@ task('provision:databases', function () {
     ->limit(1);
 
 
+desc('Provision MySQL');
 task('provision:mysql', function () {
     run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-
 });
 
+desc('Provision MariaDB');
 task('provision:mariadb', function () {
     warning('mariadb db provision not ready yet');
 });
 
+desc('Provision PostgreSQL');
 task('provision:postgresql', function () {
     warning('postgresql db provision not ready yet');
 });

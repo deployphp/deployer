@@ -5,7 +5,7 @@ namespace Deployer;
 require_once __DIR__ . '/hosts.php';
 
 task('test:misc:sudo-write-user', function (): void {
-    $cmd = 'sudo bash -s \'echo Current user is: $USER\'';
+    $cmd = 'sudo bash -c \'echo Current user is: $USER\'';
     $output = run($cmd);
     writeln($output);
 })->shallow();

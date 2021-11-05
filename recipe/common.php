@@ -105,12 +105,12 @@ set('bin/php', function () {
     if (currentHost()->hasOwn('php_version')) {
         return '/usr/bin/php{{php_version}}';
     }
-    return locateBinaryPath('php');
+    return which('php');
 });
 
 // Path to the `git` bin.
 set('bin/git', function () {
-    return locateBinaryPath('git');
+    return which('git');
 });
 
 // Should {{bin/symlink}} use `--relative` option or not. Will detect

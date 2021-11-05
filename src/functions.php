@@ -839,7 +839,7 @@ function commandSupportsOption(string $command, string $option): bool
 /**
  * @throws RunException
  */
-function locateBinaryPath(string $name): string
+function which(string $name): string
 {
     $nameEscaped = escapeshellarg($name);
 

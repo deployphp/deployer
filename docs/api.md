@@ -483,10 +483,10 @@ commandSupportsOption(string $command, string $option): bool
 
 
 
-## locateBinaryPath()
+## which()
 
 ```php
-locateBinaryPath(string $name): string
+which(string $name): string
 ```
 
 

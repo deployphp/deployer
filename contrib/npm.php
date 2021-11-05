@@ -22,7 +22,7 @@ after('deploy:update_code', 'npm:install');
 namespace Deployer;
 
 set('bin/npm', function () {
-    return locateBinaryPath('npm');
+    return which('npm');
 });
 
 // In there is a {{previous_release}}, node_modules will be copied from it before installing deps.

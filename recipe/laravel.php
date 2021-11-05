@@ -33,7 +33,6 @@ set('laravel_version', function () {
  * - 'max' => #.#: The maximum Laravel version required (included).
  * - 'skipIfNoEnv': Skip and warn the user if `.env` file is inexistant or empty.
  * - 'failIfNoEnv': Fail the command if `.env` file is inexistant or empty.
- * - 'runInCurrent': Run the artisan command in the current directory.
  * - 'showOutput': Show the output of the command if given.
  *
  * @param string $command The artisan command (with cli options if any).
@@ -65,10 +64,7 @@ function artisan($command, $options = [])
             return;
         }
 
-        // Use the release_path by default unless it does not exist or specified otherwise.
-        $artisan = in_array('runInCurrent', $options)
-            ? '{{current_path}}/artisan'
-            : '{{release_or_current_path}}/artisan';
+        $artisan = '{{release_or_current_path}}/artisan';
 
         // Run the artisan command.
         $output = run("{{bin/php}} $artisan $command");
@@ -90,10 +86,10 @@ function laravel_version_compare($version, $comparator)
  */
 
 desc('Put the application into maintenance / demo mode');
-task('artisan:down', artisan('down', ['runInCurrent', 'showOutput']));
+task('artisan:down', artisan('down', ['showOutput']));
 
 desc('Bring the application out of maintenance mode');
-task('artisan:up', artisan('up', ['runInCurrent', 'showOutput']));
+task('artisan:up', artisan('up', ['showOutput']));
 
 /*
  * Generate keys.
@@ -224,6 +220,7 @@ desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
+    'deploy:check_key',
     'artisan:storage:link',
     'artisan:view:cache',
     'artisan:config:cache',
@@ -240,9 +237,8 @@ task('deploy:check_env', function () {
 before('deploy:shared', 'deploy:check_env');
 
 desc('Regenerate APP_KEY if a new .env created');
-task('deploy:regenerate_key', function () {
+task('deploy:check_key', function () {
     if (get('regenerate_key', false)) {
         invoke('artisan:key:generate');
     }
 });
-after('deploy:vendors', 'deploy:regenerate_key');

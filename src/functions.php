@@ -11,6 +11,7 @@ use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
+use Deployer\Exception\WillAskUser;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
@@ -676,7 +677,7 @@ function has(string $name): bool
 function ask(string $message, ?string $default = null, ?array $autocomplete = null): ?string
 {
     if (defined('DEPLOYER_NO_ASK')) {
-        throw new Exception('Will ask user.');
+        throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
 
@@ -711,7 +712,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
 function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
 {
     if (defined('DEPLOYER_NO_ASK')) {
-        throw new Exception('Will ask user.');
+        throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
 
@@ -750,7 +751,7 @@ function askChoice(string $message, array $availableChoices, $default = null, bo
 function askConfirmation(string $message, bool $default = false): bool
 {
     if (defined('DEPLOYER_NO_ASK')) {
-        throw new Exception('Will ask user.');
+        throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
 
@@ -778,7 +779,7 @@ function askConfirmation(string $message, bool $default = false): bool
 function askHiddenResponse(string $message): string
 {
     if (defined('DEPLOYER_NO_ASK')) {
-        throw new Exception('Will ask user.');
+        throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
 

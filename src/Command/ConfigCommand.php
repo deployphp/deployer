@@ -8,6 +8,7 @@
 namespace Deployer\Command;
 
 use Deployer\Deployer;
+use Deployer\Exception\WillAskUser;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption;
@@ -44,8 +45,10 @@ class ConfigCommand extends SelectCommand
             foreach ($keys as $key) {
                 try {
                     $values[$key] = $host->get($key);
+                } catch (WillAskUser $exception) {
+                    $values[$key] = ['ask' => $exception->getMessage()];
                 } catch (\Throwable $exception) {
-                    $values[$key] = [ 'error' => $exception->getMessage()];
+                    $values[$key] = ['error' => $exception->getMessage()];
                 }
             }
             foreach ($host->config()->persist() as $k => $v) {

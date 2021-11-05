@@ -7,6 +7,9 @@
 
 namespace Deployer\Exception;
 
-class ConnectException extends \RuntimeException
+class WillAskUser extends Exception
 {
+    public function __construct(string $message) {
+        parent::__construct($message);
+    }
 }

@@ -15,6 +15,10 @@ set('db_name', function () {
     return ask(' DB name: ');
 });
 
+set('db_user', function () {
+    return ask(' DB user: ', 'deployer');
+});
+
 set('db_password', function () {
     return askHiddenResponse(' DB password: ');
 });
@@ -25,8 +29,6 @@ task('provision:databases', function () {
     if ($dbType === 'none') {
         return;
     }
-    get('db_name');
-    get('db_password');
     invoke('provision:' . $dbType);
 })
     ->limit(1);
@@ -34,7 +36,16 @@ task('provision:databases', function () {
 
 desc('Provision MySQL');
 task('provision:mysql', function () {
-    run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    //run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    get('db_user');
+    get('db_name');
+    get('db_password');
+    run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'0.0.0.0' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
+    run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'%' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
+    run("mysql --user=\"root\" -e \"GRANT ALL PRIVILEGES ON *.* TO '{{db_user}}'@'0.0.0.0' WITH GRANT OPTION;\"");
+    run("mysql --user=\"root\" -e \"GRANT ALL PRIVILEGES ON *.* TO '{{db_user}}'@'%' WITH GRANT OPTION;\"");
+    run("mysql --user=\"root\" -e \"FLUSH PRIVILEGES;\"");
+    run("mysql --user=\"root\" -e \"CREATE DATABASE IF NOT EXISTS {{db_name}} character set UTF8mb4 collate utf8mb4_bin;\"");
 });
 
 desc('Provision MariaDB');

@@ -124,7 +124,7 @@ Setup deployer user.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L190)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L193)
 
 Setup firewall.
 

@@ -23,14 +23,14 @@ As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
 
 
 ### sudo_password
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L130)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L132)
 
 
 
 
 
 ### ssh_copy_id
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L140)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L142)
 
 Specify which key to copy to server.
 Set to `false` to disable copy of key.
@@ -99,7 +99,7 @@ Install packages.
 
 
 ### provision:server
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L115)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L117)
 
 Configure server.
 
@@ -107,7 +107,7 @@ Configure server.
 
 
 ### provision:ssh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L122)
 
 Configure SSH.
 
@@ -115,7 +115,7 @@ Configure SSH.
 
 
 ### provision:deployer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L143)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L145)
 
 Setup deployer user.
 
@@ -123,7 +123,7 @@ Setup deployer user.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L187)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L189)
 
 Setup firewall.
 

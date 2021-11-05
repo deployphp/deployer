@@ -38,7 +38,7 @@ class ProcessRunner
             'idle_timeout' => null,
             'cwd' => defined('DEPLOYER_ROOT') ? DEPLOYER_ROOT : null,
             'real_time_output' => false,
-            'shell' => 'bash -c',
+            'shell' => 'bash -s',
         ];
         $config = array_merge($defaults, $config);
 

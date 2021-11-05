@@ -11,9 +11,19 @@
 
 ## Configuration
 ### rollback_candidate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L7)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L19)
 
+Rollback candidate automatically will be automatically chosen by
+looking at output of `ls` command and content of `.dep/releases_log`.
 
+If rollback candidate marked as **BAD_RELEASE**, it will be skipped.
+
+:::tip
+You can override rollback candidate via:
+```bash
+dep rollback -o rollback_candidate=123
+```
+:::
 
 
 
@@ -21,10 +31,18 @@
 ## Tasks
 
 ### rollback
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L39)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L62)
 
-Rollback to previous release.
+Rollback to the previous release.
 
+Uses [rollback_candidate](/docs/recipe/deploy/rollback.md#rollback_candidate) for symlinking. Current release will be marked as
+bad by creating file **BAD_RELEASE** with timestamp and [user](/docs/recipe/common.md#user).
 
+:::warning
+You can always manually symlink [current_path](/docs/recipe/common.md#current_path) to proper release.
+```bash
+dep run '{{bin/symlink}} releases/123 {{current_path}}'
+```
+:::
 
 

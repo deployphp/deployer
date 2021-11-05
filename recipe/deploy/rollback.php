@@ -3,7 +3,19 @@ namespace Deployer;
 
 use Deployer\Exception\Exception;
 
-desc('');
+/*
+ * Rollback candidate automatically will be automatically chosen by
+ * looking at output of `ls` command and content of `.dep/releases_log`.
+ *
+ * If rollback candidate marked as **BAD_RELEASE**, it will be skipped.
+ *
+ * :::tip
+ * You can override rollback candidate via:
+ * ```bash
+ * dep rollback -o rollback_candidate=123
+ * ```
+ * :::
+ */
 set('rollback_candidate', function () {
     $currentRelease = basename(run('readlink {{current_path}}'));
     $releases = get('releases_list');
@@ -35,7 +47,18 @@ set('rollback_candidate', function () {
     throw new Exception("No more releases you can revert to.");
 });
 
-desc('Rollback to previous release');
+desc('Rollback to the previous release.');
+/*
+ * Uses {{rollback_candidate}} for symlinking. Current release will be marked as
+ * bad by creating file **BAD_RELEASE** with timestamp and {{user}}.
+ *
+ * :::warning
+ * You can always manually symlink {{current_path}} to proper release.
+ * ```bash
+ * dep run '{{bin/symlink}} releases/123 {{current_path}}'
+ * ```
+ * :::
+ */
 task('rollback', function () {
     cd('{{deploy_path}}');
 

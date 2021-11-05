@@ -30,3 +30,17 @@ task('provision:databases', function () {
     invoke('provision:' . $dbType);
 })
     ->limit(1);
+
+
+task('provision:mysql', function () {
+    run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+
+});
+
+task('provision:mariadb', function () {
+    warning('mariadb db provision not ready yet');
+});
+
+task('provision:postgresql', function () {
+    warning('postgresql db provision not ready yet');
+});

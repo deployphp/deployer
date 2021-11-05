@@ -20,6 +20,7 @@ set('lsb_release', function () {
 desc('Provision the server');
 task('provision', [
     'provision:check',
+    'provision:configure',
     'provision:update',
     'provision:upgrade',
     'provision:install',
@@ -31,6 +32,7 @@ task('provision', [
     'provision:composer',
     'provision:npm',
     'provision:website',
+    'provision:banner',
 ]);
 
 desc('Check pre-required state');
@@ -51,6 +53,27 @@ task('provision:check', function () {
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     }
 })->oncePerNode();
+
+desc('Collect required params');
+task('provision:configure', function () {
+    $params = [
+        'sudo_password',
+        'domain',
+        'php_version',
+        'db_user',
+        'db_name',
+        'db_password',
+    ];
+    $code = "\n\n    host(<info>'{{alias}}'</info>)";
+    foreach ($params as $name) {
+        $code .= "\n        ->set(<info>'$name'</info>, <info>'…'</info>)";
+    }
+    $code .= ";\n\n";
+    writeln($code);
+    foreach ($params as $name) {
+        get($name);
+    }
+});
 
 desc('Add repositories and update');
 task('provision:update', function () {
@@ -131,10 +154,6 @@ task('provision:ssh', function () {
 })->oncePerNode();
 
 set('sudo_password', function () {
-    info('Configure sudo_password:');
-    writeln("");
-    writeln("    set(<info>'sudo_password'</info>, ...);");
-    writeln("");
     return askHiddenResponse(' Password for sudo: ');
 });
 
@@ -196,3 +215,22 @@ task('provision:firewall', function () {
     run('ufw allow 443');
     run('ufw --force enable');
 })->oncePerNode();
+
+desc('Show banner');
+task('provision:banner', function () {
+    output()->write(<<<EOF
+╭──────────────────────────────────────────────────╮
+│                                                  │
+│   Hello, my name is Anton Medvedev.              │
+│   I'm the creator of the Deployer. I maintain    │
+│   this open source project in my spare time.     │
+│   Supporters on GitHub gives me an extra         │
+│   motivation to work on the project.             │
+│                                                  │
+│   Consider supporting Deployer:                  │
+│                                                  │
+│   https://github.com/sponsors/antonmedv          │
+│                                                  │
+╰──────────────────────────────────────────────────╯
+EOF);
+})->once();

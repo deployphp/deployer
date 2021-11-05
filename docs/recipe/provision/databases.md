@@ -24,8 +24,15 @@
 
 
 
-### db_password
+### db_user
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L18)
+
+
+
+
+
+### db_password
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L22)
 
 
 
@@ -35,7 +42,7 @@
 ## Tasks
 
 ### provision:databases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L27)
 
 Provision databases.
 
@@ -43,7 +50,7 @@ Provision databases.
 
 
 ### provision:mysql
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L36)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L38)
 
 Provision MySQL.
 
@@ -51,7 +58,7 @@ Provision MySQL.
 
 
 ### provision:mariadb
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L52)
 
 Provision MariaDB.
 
@@ -59,7 +66,7 @@ Provision MariaDB.
 
 
 ### provision:postgresql
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L46)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L57)
 
 Provision PostgreSQL.
 

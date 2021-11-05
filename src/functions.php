@@ -401,13 +401,14 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $env Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
+ * @param string|null $shell Shell to run in. Default is `bash -c`.
  *
  * @throws RunException
  */
-function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null): string
+function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?string $shell = null): string
 {
     $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'env'] as $arg) {
+    foreach (['timeout', 'idle_timeout', 'secret', 'env', 'shell'] as $arg) {
         if ($$arg !== null) {
             $namedArguments[$arg] = $$arg;
         }

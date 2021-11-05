@@ -213,7 +213,7 @@ run("echo $path");
 ## runLocally()
 
 ```php
-runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null): string
+runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?string $shell = null): string
 ```
 
 Execute commands on a local machine.
@@ -234,6 +234,7 @@ runLocally("echo $user");
 - **idle_timeout** `int|null` — Sets the process idle timeout (max. time since last output) in seconds.
 - **secret** `string|null` — Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
 - **env** `array|null` — Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
+- **shell** `string|null` — Shell to run in. Default is `bash -c`.
 
 ## test()
 

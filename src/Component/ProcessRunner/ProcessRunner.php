@@ -38,6 +38,7 @@ class ProcessRunner
             'idle_timeout' => null,
             'cwd' => defined('DEPLOYER_ROOT') ? DEPLOYER_ROOT : null,
             'real_time_output' => false,
+            'shell' => 'bash -c',
         ];
         $config = array_merge($defaults, $config);
 
@@ -52,7 +53,7 @@ class ProcessRunner
         $command = str_replace('%secret%', $config['secret'] ?? '', $command);
         $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
 
-        $process = Process::fromShellCommandline($host->getShell())
+        $process = Process::fromShellCommandline($config['shell'])
             ->setInput($command)
             ->setTimeout($config['timeout'])
             ->setIdleTimeout($config['idle_timeout']);

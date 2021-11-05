@@ -90,7 +90,7 @@ Also, Deployer has a useful task for examine what is currently deployed.
 ```bash
 $ dep releases
 task releases
-+---------------------+-------------+------ exemple.org ------------------+
++---------------------+--------- deployer.org -------+--------+-----------+
 | Date (UTC)          | Release     | Author         | Target | Commit    |
 +---------------------+-------------+----------------+--------+-----------+
 | 2021-11-05 14:00:22 | 1 (current) | Anton Medvedev | HEAD   | 943ded2be |

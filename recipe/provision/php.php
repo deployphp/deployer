@@ -53,7 +53,9 @@ task('provision:php', function () {
     // Configure PHP sessions directory
     run('chmod 733 /var/lib/php/sessions');
     run('chmod +t /var/lib/php/sessions');
-})->limit(1);
+})
+    ->verbose()
+    ->limit(1);
 
 desc('Show php-fpm logs');
 task('logs:php-fpm', function () {

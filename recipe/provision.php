@@ -159,6 +159,9 @@ task('provision:deployer', function () {
         run('cp /root/.profile /home/deployer/.profile');
         run('cp /root/.bashrc /home/deployer/.bashrc');
 
+        // Make color prompt.
+        run("sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' /home/deployer/.bashrc");
+
         $password = run("mkpasswd -m sha-512 '%secret%'", ['secret' => get('sudo_password')]);
         run("usermod --password '%secret%' deployer", ['secret' => $password]);
 

@@ -141,6 +141,19 @@ task('deploy:release', function () {
 });
 
 desc('Show releases list');
+/*
+ * Example output:
+ * ```
+ * +---------------------+------example.org ------------+--------+-----------+
+ * | Date (UTC)          | Release     | Author         | Target | Commit    |
+ * +---------------------+-------------+----------------+--------+-----------+
+ * | 2021-11-06 20:51:45 | 1           | Anton Medvedev | HEAD   | 34d24192e |
+ * | 2021-11-06 21:00:50 | 2 (bad)     | Anton Medvedev | HEAD   | 392948a40 |
+ * | 2021-11-06 23:19:20 | 3           | Anton Medvedev | HEAD   | a4057a36c |
+ * | 2021-11-06 23:24:30 | 4 (current) | Anton Medvedev | HEAD   | s3wa45ca6 |
+ * +---------------------+-------------+----------------+--------+-----------+
+ * ```
+ */
 task('releases', function () {
     cd('{{deploy_path}}');
 

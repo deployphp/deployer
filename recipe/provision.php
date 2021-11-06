@@ -32,7 +32,6 @@ task('provision', [
     'provision:composer',
     'provision:npm',
     'provision:website',
-    'provision:banner',
 ]);
 
 desc('Check pre-required state');
@@ -273,16 +272,3 @@ task('provision:firewall', function () {
     run('ufw allow 443');
     run('ufw --force enable');
 })->oncePerNode();
-
-desc('Show banner');
-task('provision:banner', function () {
-    output()->write(<<<EOF
-╭──────────────────────────────────────╮
-│                                      │
-│   Supporting Deployer Development    │
-│                                      │
-│    https://ï.at/support-deployer     │
-│                                      │
-╰──────────────────────────────────────╯
-EOF);
-})->once();

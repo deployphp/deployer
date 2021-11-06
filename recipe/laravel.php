@@ -220,7 +220,6 @@ desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
-    'deploy:check_key',
     'artisan:storage:link',
     'artisan:view:cache',
     'artisan:config:cache',

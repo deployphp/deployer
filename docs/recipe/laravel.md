@@ -375,7 +375,6 @@ Main deploy task.
 This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare)
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
-* `deploy:check_key`
 * [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink)
 * [artisan:view:cache](/docs/recipe/laravel.md#artisanviewcache)
 * [artisan:config:cache](/docs/recipe/laravel.md#artisanconfigcache)

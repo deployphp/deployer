@@ -61,6 +61,7 @@ task('provision:configure', function () {
         'domain',
         'public_path',
         'php_version',
+        'db_type',
         'db_user',
         'db_name',
         'db_password',

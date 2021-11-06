@@ -33,13 +33,9 @@ task('provision:databases', function () {
 })
     ->limit(1);
 
-
 desc('Provision MySQL');
 task('provision:mysql', function () {
-    //run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
-    get('db_user');
-    get('db_name');
-    get('db_password');
+    run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
     run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'0.0.0.0' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
     run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'%' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
     run("mysql --user=\"root\" -e \"GRANT ALL PRIVILEGES ON *.* TO '{{db_user}}'@'0.0.0.0' WITH GRANT OPTION;\"");

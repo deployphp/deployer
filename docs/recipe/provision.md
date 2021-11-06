@@ -22,14 +22,14 @@ As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
 
 
 ### sudo_password
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L157)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L158)
 
 
 
 
 
 ### ssh_copy_id
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L163)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L164)
 
 Specify which key to copy to server.
 Set to `false` to disable copy of key.
@@ -84,7 +84,7 @@ Collect required params.
 
 
 ### provision:update
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L80)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L81)
 
 Add repositories and update.
 
@@ -92,7 +92,7 @@ Add repositories and update.
 
 
 ### provision:upgrade
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L102)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L103)
 
 Upgrade all packages.
 
@@ -100,7 +100,7 @@ Upgrade all packages.
 
 
 ### provision:install
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L109)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L110)
 
 Install packages.
 
@@ -108,7 +108,7 @@ Install packages.
 
 
 ### provision:server
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L142)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L143)
 
 Configure server.
 
@@ -116,7 +116,7 @@ Configure server.
 
 
 ### provision:ssh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L147)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L148)
 
 Configure SSH.
 
@@ -124,7 +124,7 @@ Configure SSH.
 
 
 ### provision:deployer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L166)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L167)
 
 Setup deployer user.
 
@@ -132,7 +132,7 @@ Setup deployer user.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L213)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L214)
 
 Setup firewall.
 
@@ -140,7 +140,7 @@ Setup firewall.
 
 
 ### provision:banner
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L221)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L222)
 
 Show banner.
 

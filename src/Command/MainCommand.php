@@ -93,8 +93,20 @@ class MainCommand extends SelectCommand
             'hosts_count' => $this->deployer->hosts->count(),
             'recipes' => $this->deployer->config->get('recipes', []),
         ]);
+
         $hosts = $this->selectHosts($input, $output);
         $this->applyOverrides($hosts, $input->getOption('option'));
+
+        // Save selected_hosts for selectedHosts() func.
+        $hostsAliases = [];
+        foreach ($hosts as $host) {
+            $hostsAliases[] = $host->getAlias();
+        }
+        // Save selected_hosts per each host, and not globally. Otherwise it will
+        // not be accessible for workers.
+        foreach ($hosts as $host) {
+            $host->set('selected_hosts', $hostsAliases);
+        }
 
         $plan = $input->getOption('plan') ? new Planner($output, $hosts) : null;
 

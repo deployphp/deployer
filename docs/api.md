@@ -49,10 +49,20 @@ select(string $selector): array
 Returns hosts based on provided selector.
 
 ```php
-on(select('stage=prod, role=db'), function ($host) {
+on(select('stage=prod, role=db'), function (Host $host) {
     ...
 });
 ```
+
+
+
+## selectedHosts()
+
+```php
+selectedHosts(): array {
+```
+
+Returns array of hosts selected by user via CLI.
 
 
 

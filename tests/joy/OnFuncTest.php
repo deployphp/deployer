@@ -25,14 +25,14 @@ task('first', function () {
 });
 
 task('second', function () {
-    on(select('all'), function () {
+    on(selectedHosts(), function () {
         writeln('foo = {{foo}}');
     }); 
 })->once();
 PHP;
     }
 
-    public function testDeploy()
+    public function testOnFunc()
     {
         putenv('DEPLOYER_LOCAL_WORKER=false');
         $this->dep('test');

@@ -111,7 +111,7 @@ function currentHost(): Host
  * Returns hosts based on provided selector.
  *
  * ```php
- * on(select('stage=prod, role=db'), function ($host) {
+ * on(select('stage=prod, role=db'), function (Host $host) {
  *     ...
  * });
  * ```
@@ -121,6 +121,19 @@ function currentHost(): Host
 function select(string $selector): array
 {
     return Deployer::get()->selector->select($selector);
+}
+
+/**
+ * Returns array of hosts selected by user via CLI.
+ *
+ * @return Host[]
+ */
+function selectedHosts(): array {
+    $hosts = [];
+    foreach (get('selected_hosts', []) as $alias) {
+        $hosts[] = Deployer::get()->hosts->get($alias);
+    }
+    return $hosts;
 }
 
 /**

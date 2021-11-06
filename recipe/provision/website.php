@@ -37,6 +37,16 @@ php_fastcgi * unix/run/php/php$phpVersion-fpm.sock {
 log {
 \toutput file $deployPath/log/access.log
 }
+
+handle_errors {
+\t@404 {
+\t\texpression {http.error.status_code} == 404
+\t}
+\trewrite @404 /404.html
+\tfile_server {
+\t\troot /var/dep/html
+\t}
+}
 EOF;
 
     if (test('[ -f Caddyfile ]')) {

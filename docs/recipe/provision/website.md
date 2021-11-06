@@ -34,7 +34,7 @@ Provision website.
 
 
 ### logs:caddy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L69)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L79)
 
 Show caddy logs.
 
@@ -42,7 +42,7 @@ Show caddy logs.
 
 
 ### logs:caddy:syslog
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L84)
 
 Show caddy syslog.
 

@@ -26,6 +26,7 @@ define('__REPOSITORY__', __DIR__ . '/fixtures/repository');
 define('__TEMP_DIR__', sys_get_temp_dir() . '/deployer');
 
 require_once __DIR__ . '/AbstractTest.php';
+require_once __DIR__ . '/JoyTest.php';
 
 // Init repository
 $repository = __REPOSITORY__;

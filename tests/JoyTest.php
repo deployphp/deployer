@@ -5,17 +5,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Deployer;
-
+use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\ApplicationTester;
 
-/**
- * @deprecated Use JoyTest instead.
- */
-abstract class AbstractTest extends TestCase
+abstract class JoyTest extends TestCase
 {
     /**
      * @var ApplicationTester
@@ -57,17 +53,21 @@ abstract class AbstractTest extends TestCase
         $this->deployer->config->set('deploy_path', __TEMP_DIR__ . '/{{hostname}}');
     }
 
-    protected function dep(string $recipe, string $task)
+    protected function dep(string $task, array $args = []): int
     {
+        $recipe = __TEMP_DIR__ . '/' . get_called_class() . '.php';
+        file_put_contents($recipe, $this->recipe());
         $this->init($recipe);
-        $this->tester->run([
+        return $this->tester->run(array_merge([
             $task,
             'selector' => 'all',
-            '-f' => $recipe,
-            '-l' => 1
-        ], [
-            'verbosity' => Output::VERBOSITY_VERBOSE,
+            '--file' => $recipe,
+            '--limit' => 1
+        ], $args), [
+            'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
             'interactive' => false,
         ]);
     }
+
+    abstract protected function recipe(): string;
 }

@@ -6,8 +6,7 @@ set('domain', function () {
 });
 
 set('public_path', function () {
-    $path = run("realpath {{deploy_path}}");
-    return "$path/current/public";
+    return ask(' Public path: ', 'public');
 });
 
 desc('Provision website');
@@ -18,7 +17,7 @@ task('provision:website', function () {
 
     $domain = get('domain');
     $phpVersion = get('php_version');
-    $deployPath = get('deploy_path');
+    $deployPath = run("realpath {{deploy_path}}");
     $publicPath = get('public_path');
 
     cd($deployPath);
@@ -29,7 +28,7 @@ task('provision:website', function () {
     $caddyfile = <<<EOF
 $domain
 
-root * $publicPath
+root * $deployPath/current/$publicPath
 file_server
 php_fastcgi * unix/run/php/php$phpVersion-fpm.sock {
 \tresolve_root_symlink

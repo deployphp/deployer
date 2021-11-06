@@ -59,6 +59,7 @@ task('provision:configure', function () {
     $params = [
         'sudo_password',
         'domain',
+        'public_path',
         'php_version',
         'db_user',
         'db_name',
@@ -219,18 +220,12 @@ task('provision:firewall', function () {
 desc('Show banner');
 task('provision:banner', function () {
     output()->write(<<<EOF
-╭──────────────────────────────────────────────────╮
-│                                                  │
-│   Hello, my name is Anton Medvedev.              │
-│   I'm the creator of the Deployer. I maintain    │
-│   this open source project in my spare time.     │
-│   Supporters on GitHub gives me an extra         │
-│   motivation to work on the project.             │
-│                                                  │
-│   Consider supporting Deployer:                  │
-│                                                  │
-│   https://github.com/sponsors/antonmedv          │
-│                                                  │
-╰──────────────────────────────────────────────────╯
+╭──────────────────────────────────────╮
+│                                      │
+│   Supporting Deployer Development    │
+│                                      │
+│    https://ï.at/support-deployer     │
+│                                      │
+╰──────────────────────────────────────╯
 EOF);
 })->once();

@@ -7,6 +7,7 @@
 [Source](/contrib/rabbit.php)
 
 
+
 ### Installing
 
 ```php
@@ -53,7 +54,6 @@ deploy.php
 
 before('deploy:end', 'deploy:rabbit');
 ```
-
 
 
 

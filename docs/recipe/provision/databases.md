@@ -7,8 +7,6 @@
 [Source](/recipe/provision/databases.php)
 
 
-
-
 ## Configuration
 ### db_type
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L4)

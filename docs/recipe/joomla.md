@@ -6,8 +6,6 @@
 
 [Source](/recipe/joomla.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

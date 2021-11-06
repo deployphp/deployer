@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/copy_dirs.php)
 
 
-
-
 ## Configuration
 ### copy_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/copy_dirs.php#L6)

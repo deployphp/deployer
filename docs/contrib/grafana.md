@@ -7,6 +7,7 @@
 [Source](/contrib/grafana.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -41,7 +42,6 @@ If you want to create annotation about successful end of deployment.
 ```php
 after('deploy:success', 'grafana:annotation');
 ```
-
 
 
 

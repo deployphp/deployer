@@ -7,6 +7,7 @@
 [Source](/contrib/cimonitor.php)
 
 
+
 # CIMonitor recipe
 
 Monitor your deployments on [CIMonitor](https://github.com/CIMonitor/CIMonitor).
@@ -68,7 +69,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'cimonitor:notify:failure');
 ```
-
 
 
 ## Configuration

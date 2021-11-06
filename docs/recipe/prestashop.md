@@ -6,8 +6,6 @@
 
 [Source](/recipe/prestashop.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

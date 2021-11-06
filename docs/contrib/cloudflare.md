@@ -7,6 +7,7 @@
 [Source](/contrib/cloudflare.php)
 
 
+
 ### Installing
 
 Add to your _deploy.php_
@@ -28,7 +29,6 @@ require 'contrib/cloudflare.php';
 
 Since the website should be built and some load is likely about to be applied to your server, this should be one of,
 if not the, last tasks before cleanup
-
 
 
 

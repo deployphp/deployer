@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/cleanup.php)
 
 
-
-
 ## Configuration
 ### cleanup_use_sudo
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/cleanup.php#L5)

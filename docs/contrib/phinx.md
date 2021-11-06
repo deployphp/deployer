@@ -7,6 +7,7 @@
 [Source](/contrib/phinx.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -68,7 +69,6 @@ to run it after the `deploy:update_code` task is completed.
 ## Read more
 
 For further reading see [phinx.org](https://phinx.org). Complete descriptions of all possible options can be found on the [commands page](http://docs.phinx.org/en/latest/commands.html).
-
 
 
 

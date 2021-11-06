@@ -7,6 +7,7 @@
 [Source](/contrib/cpanel.php)
 
 
+
 ### Installing
 
 Add to your _deploy.php_
@@ -147,7 +148,6 @@ task('build', function () {
 after('deploy:prepare', 'cpanel:createaddondomain');
 after('deploy:prepare', 'cpanel:createdb');
 ```
-
 
 
 

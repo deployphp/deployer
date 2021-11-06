@@ -6,8 +6,6 @@
 
 [Source](/recipe/flow_framework.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

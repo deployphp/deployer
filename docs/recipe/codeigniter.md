@@ -6,8 +6,6 @@
 
 [Source](/recipe/codeigniter.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

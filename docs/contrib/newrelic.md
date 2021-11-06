@@ -7,6 +7,7 @@
 [Source](/contrib/newrelic.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -28,7 +29,6 @@ Since you should only notify New Relic of a successful deployment, the `newrelic
 ```php
 after('deploy', 'newrelic:notify');
 ```
-
 
 
 

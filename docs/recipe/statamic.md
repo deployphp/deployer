@@ -6,8 +6,6 @@
 
 [Source](/recipe/statamic.php)
 
-
-
 * Requires
   * [laravel](/docs/recipe/laravel.md)
 

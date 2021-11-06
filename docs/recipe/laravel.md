@@ -6,8 +6,6 @@
 
 [Source](/recipe/laravel.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

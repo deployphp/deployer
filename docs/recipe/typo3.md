@@ -6,8 +6,6 @@
 
 [Source](/recipe/typo3.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

@@ -6,8 +6,6 @@
 
 [Source](/recipe/symfony.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

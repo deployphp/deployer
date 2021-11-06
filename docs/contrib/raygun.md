@@ -7,6 +7,7 @@
 [Source](/contrib/raygun.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -32,7 +33,6 @@ To notify Raygun of a successful deployment, you can use the 'raygun:notify' tas
 ```php
 after('deploy', 'raygun:notify');
 ```
-
 
 
 

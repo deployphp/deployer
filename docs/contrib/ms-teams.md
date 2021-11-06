@@ -7,6 +7,7 @@
 [Source](/contrib/ms-teams.php)
 
 
+
 ## Installing
 
 Require ms-teams recipe in your `deploy.php` file:
@@ -76,7 +77,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'teams:notify:failure');
 ```
-
 
 
 ## Configuration

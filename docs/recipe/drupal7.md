@@ -6,8 +6,6 @@
 
 [Source](/recipe/drupal7.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

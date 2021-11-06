@@ -7,6 +7,7 @@
 [Source](/contrib/yarn.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -24,7 +25,6 @@ require 'contrib/yarn.php';
 ```php
 after('deploy:update_code', 'yarn:install');
 ```
-
 
 
 ## Configuration

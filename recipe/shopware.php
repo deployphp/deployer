@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ## Usage
  *
@@ -9,10 +8,11 @@
  * set('repository', 'git@github.com:shopware/production.git');
  * ```
  *
+ * :::note
  * Please remember that the installation must be modified so that it can be
  * [build without database](https://developer.shopware.com/docs/guides/hosting/installation-updates/deployments/build-w-o-db#compiling-the-storefront-without-database).
+ * :::
  */
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';

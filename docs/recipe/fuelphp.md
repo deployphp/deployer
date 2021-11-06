@@ -6,8 +6,6 @@
 
 [Source](/recipe/fuelphp.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

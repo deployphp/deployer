@@ -7,6 +7,7 @@
 [Source](/contrib/chatwork.php)
 
 
+
 # Chatwork Recipe
 
 ## Installing
@@ -90,7 +91,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'chatwork:notify:failure');
 ```
-
 
 
 ## Configuration

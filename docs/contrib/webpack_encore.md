@@ -6,6 +6,10 @@
 
 [Source](/contrib/webpack_encore.php)
 
+* Requires
+  * [npm](/docs/contrib/npm.md)
+  * [yarn](/docs/contrib/yarn.md)
+
 
 ## Installing
 
@@ -30,10 +34,6 @@ after('deploy:update_code', 'npm:install');
 after('deploy:update_code', 'webpack_encore:build');
 ```
 
-
-* Requires
-  * [npm](/docs/contrib/npm.md)
-  * [yarn](/docs/contrib/yarn.md)
 
 ## Configuration
 ### webpack_encore/package_manager

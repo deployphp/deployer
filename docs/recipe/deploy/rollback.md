@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/rollback.php)
 
 
-
-
 ## Configuration
 ### rollback_candidate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L19)

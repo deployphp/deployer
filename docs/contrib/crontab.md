@@ -7,6 +7,7 @@
 [Source](/contrib/crontab.php)
 
 
+
 Recipe for adding crontab jobs.
 
 It checks for duplicates by the command part of the job. Changing the schedule will update the crontab. So when you change the command part you have to manually remove the old one. Use `crontab -e` on the server to remove it.
@@ -26,7 +27,6 @@ add('crontab:jobs', [
     '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
 ]);
 ```
-
 
 
 ## Configuration

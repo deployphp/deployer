@@ -7,8 +7,6 @@
 [Source](/recipe/provision/website.php)
 
 
-
-
 ## Configuration
 ### domain
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L4)

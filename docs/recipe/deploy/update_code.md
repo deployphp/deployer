@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/update_code.php)
 
 
-
-
 ## Configuration
 ### branch
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L10)

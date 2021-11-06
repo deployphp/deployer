@@ -7,6 +7,7 @@
 [Source](/contrib/rsync.php)
 
 
+
 ## IMPORTANT
 
 This must not be confused with `/src/Utility/Rsync.php`, deployer's built-in rsync. Their configuration options are also very different, read carefully below.
@@ -124,7 +125,6 @@ host('hostname')
     ```
 
     And Your `rsync_dest` is set to `{{release_path}}` then You could add this task to run before `rsync` task or after `deploy:release`, whatever is more convenient.
-
 
 
 

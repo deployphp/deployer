@@ -7,6 +7,7 @@
 [Source](/contrib/rollbar.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -31,7 +32,6 @@ Since you should only notify Rollbar channel of a successful deployment, the `ro
 ```php
 after('deploy', 'rollbar:notify');
 ```
-
 
 
 

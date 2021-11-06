@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/vendors.php)
 
 
-
-
 ## Configuration
 ### composer_action
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L4)

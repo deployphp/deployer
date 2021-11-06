@@ -6,8 +6,6 @@
 
 [Source](/recipe/cakephp.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

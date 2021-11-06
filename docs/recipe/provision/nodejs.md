@@ -7,8 +7,6 @@
 [Source](/recipe/provision/nodejs.php)
 
 
-
-
 ## Configuration
 ### nodejs_version
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L5)

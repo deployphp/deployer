@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/shared.php)
 
 
-
-
 ## Configuration
 ### shared_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L12)

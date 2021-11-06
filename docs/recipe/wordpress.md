@@ -6,8 +6,6 @@
 
 [Source](/recipe/wordpress.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

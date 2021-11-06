@@ -7,6 +7,7 @@
 [Source](/contrib/hipchat.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -31,7 +32,6 @@ Since you should only notify Hipchat room of a successful deployment, the `hipch
 ```php
 after('deploy', 'hipchat:notify');
 ```
-
 
 
 

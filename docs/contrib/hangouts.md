@@ -7,6 +7,7 @@
 [Source](/contrib/hangouts.php)
 
 
+
 Require the Google Hangouts Chat recipe in your `deploy.php` file:
 
 ```php
@@ -47,7 +48,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'chat:notify:failure');
 ```
-
 
 
 

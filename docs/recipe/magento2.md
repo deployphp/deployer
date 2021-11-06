@@ -6,8 +6,6 @@
 
 [Source](/recipe/magento2.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

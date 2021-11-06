@@ -7,6 +7,7 @@
 [Source](/contrib/php-fpm.php)
 
 
+
 ## Installing
 
 :::caution
@@ -40,7 +41,6 @@ Then, add the `php-fpm:reload` task at the end of your deployments by using the 
 set('php_fpm_version', '8.0');
 after('deploy', 'php-fpm:reload');
 ```
-
 
 
 

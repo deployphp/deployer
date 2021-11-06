@@ -7,6 +7,7 @@
 [Source](/contrib/rocketchat.php)
 
 
+
 ## Installing
 
 Create a RocketChat incoming webhook, through the administration panel.
@@ -68,7 +69,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'rocketchat:notify:failure');
 ```
-
 
 
 

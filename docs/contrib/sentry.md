@@ -7,6 +7,7 @@
 [Source](/contrib/sentry.php)
 
 
+
 ### Installing
 
 ```php
@@ -66,7 +67,6 @@ deploy.php
 
 after('deploy', 'deploy:sentry');
 ```
-
 
 
 

@@ -6,8 +6,6 @@
 
 [Source](/recipe/yii.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

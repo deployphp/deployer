@@ -6,8 +6,6 @@
 
 [Source](/recipe/zend_framework.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

@@ -7,6 +7,7 @@
 [Source](/contrib/mattermost.php)
 
 
+
 ## Installing
 
 Create a Mattermost incoming webhook, through the administration panel.
@@ -84,7 +85,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'mattermost:notify:failure');
 ```
-
 
 
 

@@ -6,8 +6,6 @@
 
 [Source](/recipe/pimcore.php)
 
-
-
 * Requires
   * [symfony](/docs/recipe/symfony.md)
 

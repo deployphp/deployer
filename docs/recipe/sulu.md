@@ -6,8 +6,6 @@
 
 [Source](/recipe/sulu.php)
 
-
-
 * Requires
   * [symfony](/docs/recipe/symfony.md)
 

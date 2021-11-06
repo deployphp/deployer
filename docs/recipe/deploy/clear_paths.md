@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/clear_paths.php)
 
 
-
-
 ## Configuration
 ### clear_paths
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L5)

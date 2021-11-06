@@ -7,6 +7,7 @@
 [Source](/contrib/workplace.php)
 
 
+
 ## Installing
 
 This recipes works with Custom Integrations and Publishing Bots.
@@ -74,7 +75,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'workplace:notify:failure');
 ```
-
 
 
 

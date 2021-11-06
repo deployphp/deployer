@@ -37,7 +37,6 @@ class DocRecipe
     public function parse(string $content)
     {
         $comment = '';
-        $first = true;
         $desc = '';
         $currentTask = null;
 
@@ -122,12 +121,12 @@ class DocRecipe
                     if ($match('^<\?php')) {
                         break;
                     }
+                    if ($match('^namespace Deployer;$')) {
+                        $this->comment = $comment;
+                        break;
+                    }
 
                     $desc = '';
-                    if ($first && $comment !== '') {
-                        $this->comment = $comment;
-                    }
-                    $first = false;
                     $comment = '';
                     break;
 

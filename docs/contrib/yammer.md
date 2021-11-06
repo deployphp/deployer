@@ -7,6 +7,7 @@
 [Source](/contrib/yammer.php)
 
 
+
 # Yammer recipe
 
 ## Installing
@@ -61,7 +62,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'yammer:notify:failure');
 ```
-
 
 
 

@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/symlink.php)
 
 
-
-
 ## Configuration
 ### use_atomic_symlink
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L5)

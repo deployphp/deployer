@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/writable.php)
 
 
-
-
 ## Configuration
 ### http_user
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L9)

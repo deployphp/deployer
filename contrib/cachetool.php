@@ -48,7 +48,6 @@ after('deploy:symlink', 'cachetool:clear:apcu');
 Read more information about cachetool on the website:
 http://gordalina.github.io/cachetool/
  */
-
 namespace Deployer;
 
 set('cachetool', '');

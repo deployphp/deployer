@@ -7,8 +7,6 @@
 [Source](/recipe/provision/php.php)
 
 
-
-
 ## Configuration
 ### php_version
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L4)

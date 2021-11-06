@@ -7,6 +7,7 @@
 [Source](/contrib/npm.php)
 
 
+
 ## Installing
 
 Add to your _deploy.php_
@@ -24,7 +25,6 @@ require 'contrib/npm.php';
 ```php
 after('deploy:update_code', 'npm:install');
 ```
-
 
 
 

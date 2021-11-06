@@ -7,6 +7,7 @@
 [Source](/contrib/telegram.php)
 
 
+
 ## Installing
   1. Create telegram bot with [BotFather](https://t.me/BotFather) and grab the token provided
   2. Send `/start` to your bot and open https://api.telegram.org/bot{$TELEGRAM_TOKEN_HERE}/getUpdates
@@ -64,7 +65,6 @@ If you want to notify about failed deployment add this too:
 
 ```php
 after('deploy:failed', 'telegram:notify:failure');
-
 
 
 

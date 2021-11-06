@@ -6,8 +6,6 @@
 
 [Source](/recipe/composer.php)
 
-
-
 * Requires
   * [common](/docs/recipe/common.md)
 

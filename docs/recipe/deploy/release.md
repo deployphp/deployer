@@ -7,8 +7,6 @@
 [Source](/recipe/deploy/release.php)
 
 
-
-
 ## Configuration
 ### release_name
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L8)

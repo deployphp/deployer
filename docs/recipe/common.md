@@ -6,8 +6,6 @@
 
 [Source](/recipe/common.php)
 
-
-
 * Requires
   * [provision](/docs/recipe/provision.md)
   * [check_remote](/docs/recipe/deploy/check_remote.md)

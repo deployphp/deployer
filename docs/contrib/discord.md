@@ -7,6 +7,7 @@
 [Source](/contrib/discord.php)
 
 
+
 ## Installing
 
 Require discord recipe in your `deploy.php` file:
@@ -57,7 +58,6 @@ If you want to notify about failed deployment add this too:
 ```php
 after('deploy:failed', 'discord:notify:failure');
 ```
-
 
 
 ## Configuration

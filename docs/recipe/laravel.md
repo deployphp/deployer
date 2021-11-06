@@ -377,26 +377,10 @@ Main deploy task.
 This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare)
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
-* [deploy:check_key](/docs/recipe/laravel.md#deploycheck_key)
+* `deploy:check_key`
 * [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink)
 * [artisan:view:cache](/docs/recipe/laravel.md#artisanviewcache)
 * [artisan:config:cache](/docs/recipe/laravel.md#artisanconfigcache)
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
-
-
-### deploy:check_env
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L231)
-
-Check existing of .env file in shared dir.
-
-
-
-
-### deploy:check_key
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L240)
-
-Regenerate APP_KEY if a new .env created.
-
-
 
 

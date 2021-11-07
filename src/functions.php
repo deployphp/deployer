@@ -34,6 +34,19 @@ use function Deployer\Support\is_closure;
 use function Deployer\Support\str_contains;
 
 /**
+ * Defines a host or hosts.
+ * ```php
+ * host('example.org');
+ * host('prod.example.org', 'staging.example.org');
+ * ```
+ *
+ * Inside task can be used to get `Host` instance of an alias.
+ * ```php
+ * task('test', function () {
+ *     $port = host('example.org')->get('port');
+ * });
+ * ```
+ *
  * @return Host|ObjectProxy
  */
 function host(string ...$hostname)
@@ -93,7 +106,6 @@ function localhost(string ...$hostnames)
 
 /**
  * Returns current host.
- *
  */
 function currentHost(): Host
 {

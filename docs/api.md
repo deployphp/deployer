@@ -10,6 +10,19 @@
 host(string ...$hostname)
 ```
 
+Defines a host or hosts.
+```php
+host('example.org');
+host('prod.example.org', 'staging.example.org');
+```
+
+Inside task can be used to get `Host` instance of an alias.
+```php
+task('test', function () {
+    $port = host('example.org')->get('port');
+});
+```
+
 
 
 ## localhost()
@@ -27,7 +40,6 @@ currentHost(): Host
 ```
 
 Returns current host.
-
 
 
 ## select()

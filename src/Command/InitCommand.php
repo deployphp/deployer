@@ -205,13 +205,13 @@ import:
 
 config:
   repository: '$repository'
-{$additionalConfigs}
+$additionalConfigs
 hosts:
-{$h}
+$h
 tasks:
   build:
-    script:
-      - 'cd {{release_path}} && npm run build'
+    - cd: '{{release_path}}'
+    - run: 'npm run build'  
 
 after:
   deploy:failed: deploy:unlock

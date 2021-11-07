@@ -22,15 +22,28 @@ in you deployer script.
 ```
 
 
+### push_strategy
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L26)
+
+By default, the deployment strategy for this recipe is
+pull instead of push, to make it backwards compatible with Deployer 6.
+If you change this to push, you will have to push the generated & compiled
+files yourself, for example by adding a rsync hook after deploy:release
+
+```php title="Default value"
+false
+```
+
+
 ### content_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L22)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L28)
 
 
 
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L32)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -45,7 +58,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L36)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -70,7 +83,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L44)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L50)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -87,7 +100,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L56)
 
 Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `recipe/deploy/clear_paths.php`.
 
@@ -106,14 +119,14 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 ### magento_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L65)
 
 
 
 
 
 ### maintenance_mode_status_active
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L72)
 
 
 
@@ -123,7 +136,7 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 ## Tasks
 
 ### magento:compile
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L80)
 
 Compile magento di.
 
@@ -131,7 +144,7 @@ Tasks
 
 
 ### magento:deploy:assets
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L87)
 
 Deploy assets.
 
@@ -139,7 +152,7 @@ Deploy assets.
 
 
 ### magento:sync:content_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L92)
 
 Sync content version.
 
@@ -147,7 +160,7 @@ Sync content version.
 
 
 ### magento:maintenance:enable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L96)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L102)
 
 Enable maintenance mode.
 
@@ -155,7 +168,7 @@ Enable maintenance mode.
 
 
 ### magento:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L101)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L107)
 
 Disable maintenance mode.
 
@@ -163,7 +176,7 @@ Disable maintenance mode.
 
 
 ### magento:config:import
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L106)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L112)
 
 Config Import.
 
@@ -171,7 +184,7 @@ Config Import.
 
 
 ### magento:upgrade:db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L141)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L147)
 
 Upgrade magento database.
 
@@ -179,7 +192,7 @@ Upgrade magento database.
 
 
 ### magento:cache:flush
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L168)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L174)
 
 Flush Magento Cache.
 
@@ -187,7 +200,7 @@ Flush Magento Cache.
 
 
 ### deploy:magento
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L173)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L179)
 
 Magento2 deployment operations.
 
@@ -195,14 +208,12 @@ Magento2 deployment operations.
 
 
 This task is group task which contains next tasks:
-* [magento:compile](/docs/recipe/magento2.md#magentocompile)
-* [magento:deploy:assets](/docs/recipe/magento2.md#magentodeployassets)
 * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport)
 * [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb)
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L182)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L186)
 
 Deploy your project.
 
@@ -211,7 +222,6 @@ Deploy your project.
 
 This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare)
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
 * [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
 * [deploy:magento](/docs/recipe/magento2.md#deploymagento)
 * [deploy:publish](/docs/recipe/common.md#deploypublish)

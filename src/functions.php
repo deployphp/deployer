@@ -51,14 +51,10 @@ use function Deployer\Support\str_contains;
  */
 function host(string ...$hostname)
 {
-    if (Context::has()) {
-        if (count($hostname) !== 1) {
-            throw new \InvalidArgumentException("Can return only one host.");
-        }
-        return Deployer::get()->hosts->get($hostname[0]);
-    }
-
     $deployer = Deployer::get();
+    if (count($hostname) === 1 && $deployer->hosts->has($hostname[0])) {
+        return $deployer->hosts->get($hostname[0]);
+    }
     $aliases = Range::expand($hostname);
 
     foreach ($aliases as $alias) {
@@ -83,7 +79,7 @@ function host(string ...$hostname)
 }
 
 /**
- * @return Localhost|Localhost[]|ObjectProxy
+ * @return Localhost|ObjectProxy
  */
 function localhost(string ...$hostnames)
 {

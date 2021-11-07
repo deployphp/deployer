@@ -46,16 +46,6 @@ parameters:
 			path: ../src/Importer/Importer.php
 
 		-
-			message: "#^Function Deployer\\\\host\\(\\) never returns array\\<Deployer\\\\Host\\\\Host\\> so it can be removed from the return typehint\\.$#"
-			count: 1
-			path: ../src/functions.php
-
-		-
-			message: "#^Function Deployer\\\\localhost\\(\\) never returns array\\<Deployer\\\\Host\\\\Localhost\\> so it can be removed from the return typehint\\.$#"
-			count: 1
-			path: ../src/functions.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../src/functions.php

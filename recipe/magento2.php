@@ -195,9 +195,7 @@ if (get('push_strategy') === false) {
     before('magento:config:import', 'magento:compile');
     before('magento:config:import', 'magento:deploy:assets');
 } else {
-    task('deploy:update_code', function () {
-        // Do not update code when using push strategy
-    });
+    task('deploy:update_code')->disabled();
 }
 
 after('deploy:failed', 'magento:maintenance:disable');

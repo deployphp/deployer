@@ -51,7 +51,6 @@ class FunctionsTest extends TestCase
     {
         host('domain.com');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('domain.com'));
-        self::assertInstanceOf(Host::class, getHost('domain.com'));
 
         host('a1.domain.com', 'a2.domain.com')->set('roles', 'app');
         self::assertInstanceOf(Host::class, $this->deployer->hosts->get('a1.domain.com'));

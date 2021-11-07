@@ -165,6 +165,7 @@ class Deployer extends Container
             return new Server(
                 $c['input'],
                 $c['output'],
+                $this,
             );
         };
         $this['master'] = function ($c) {

@@ -20,16 +20,6 @@ localhost(string ...$hostnames)
 
 
 
-## getHost()
-
-```php
-getHost(string $alias): Host
-```
-
-Get host by host alias.
-
-
-
 ## currentHost()
 
 ```php
@@ -291,7 +281,7 @@ on(select('stage=prod, role=db'), function ($host) {
 ```
 
 ```php
-on(getHost('prod'), function ($host) {
+on(host('example.org'), function ($host) {
     ...
 });
 ```

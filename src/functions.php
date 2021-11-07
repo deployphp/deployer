@@ -34,23 +34,24 @@ use function Deployer\Support\is_closure;
 use function Deployer\Support\str_contains;
 
 /**
- * @return Host|Host[]|ObjectProxy
+ * @return Host|ObjectProxy
  */
 function host(string ...$hostname)
 {
+    if (Context::has()) {
+        if (count($hostname) !== 1) {
+            throw new \InvalidArgumentException("Can return only one host.");
+        }
+        return Deployer::get()->hosts->get($hostname[0]);
+    }
+
     $deployer = Deployer::get();
     $aliases = Range::expand($hostname);
 
     foreach ($aliases as $alias) {
         if ($deployer->hosts->has($alias)) {
             $host = $deployer->hosts->get($alias);
-            throw new \InvalidArgumentException(
-                "Host \"$host\" already exists.\n" .
-                "If you want to override configuration options, get host with <fg=yellow>getHost</> function.\n" .
-                "\n" .
-                "    <fg=yellow>getHost</>(<fg=green>'{$alias}'</>);" .
-                "\n"
-            );
+            throw new \InvalidArgumentException("Host \"$host\" already exists.");
         }
     }
 
@@ -88,15 +89,6 @@ function localhost(string ...$hostnames)
         }, $hostnames);
         return new ObjectProxy($hosts);
     }
-}
-
-/**
- * Get host by host alias.
- *
- */
-function getHost(string $alias): Host
-{
-    return Deployer::get()->hosts->get($alias);
 }
 
 /**
@@ -484,7 +476,7 @@ function testLocally(string $command): bool
  * ```
  *
  * ```php
- * on(getHost('prod'), function ($host) {
+ * on(host('example.org'), function ($host) {
  *     ...
  * });
  * ```

@@ -4,9 +4,6 @@ namespace Deployer;
 require_once __DIR__ . '/hosts.php';
 require_once __DIR__ . '/../../../recipe/laravel.php';
 
-getHost('server.test')
-    ->set('timeout', 600);
-
 set('repository', 'https://github.com/deployphp/test-laravel.git');
 set('branch', 'main');
 

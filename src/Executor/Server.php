@@ -18,7 +18,6 @@ use React\Http\Message\Response;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
-use function Deployer\getHost;
 
 class Server
 {
@@ -32,6 +31,8 @@ class Server
      */
     private $output;
 
+    private $deployer;
+
     /**
      * @var React\EventLoop\LoopInterface
      */
@@ -44,11 +45,13 @@ class Server
 
     public function __construct(
         InputInterface $input,
-        OutputInterface $output
+        OutputInterface $output,
+        Deployer $deployer
     )
     {
         $this->input = $input;
         $this->output = $output;
+        $this->deployer = $deployer;
     }
 
     public function start()
@@ -75,7 +78,7 @@ class Server
             case '/load':
                 ['host' => $host] = json_decode($request->getBody()->getContents(), true);
 
-                $host = getHost($host);
+                $host = $this->deployer->hosts->get($host);
                 $config = json_encode($host->config()->persist());
 
                 return new Response(200, ['Content-Type' => 'application/json'], $config);
@@ -83,7 +86,7 @@ class Server
             case '/save':
                 ['host' => $host, 'config' => $config] = json_decode($request->getBody()->getContents(), true);
 
-                $host = getHost($host);
+                $host = $this->deployer->hosts->get($host);
                 $host->config()->update($config);
 
                 return new Response(200, ['Content-Type' => 'application/json'], 'true');
@@ -91,7 +94,7 @@ class Server
             case '/proxy':
                 ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($request->getBody()->getContents(), true);
 
-                Context::push(new Context(getHost($host)));
+                Context::push(new Context($this->deployer->hosts->get($host)));
                 $answer = call_user_func($func, ...$arguments);
                 Context::pop();
 

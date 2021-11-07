@@ -11,8 +11,7 @@ Each host contains own configuration key-value pairs. The [host()](api.md#host)
 call defines two important configs: **alias** and **hostname**.
 
 - **hostname** - used then connecting to remote host.
-- **alias** - used to retrieve host from host collection
-  by [getHost()](api.md#gethost) call.
+- **alias** - used as a key in `Deployer::get()->hosts` collection.
 
 ```php
 task('test', function () {

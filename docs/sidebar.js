@@ -11,6 +11,7 @@ module.exports = [
       'config',
     ],
   },
+  'ci-cd',
   'yaml',
   'cli',
   'api',

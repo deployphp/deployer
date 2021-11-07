@@ -87,3 +87,39 @@ Host *
 |`setLabels` | Key-value pairs for host selector. |
 |`setSshArguments` | For example, `['-o UserKnownHostsFile=/dev/null']` |
 
+## Multiple hosts
+
+You can pass multiple hosts to the host function:
+
+```php
+host('example.org', 'deployer.org', ...)
+    ->setRemoteUser('anton');
+```
+
+## Host ranges
+
+If you have a lot of hosts following similar patterns, you can describe them 
+like this rather than listing each hostname:
+
+```php
+host('www[01:50].example.org');
+```
+
+For numeric patterns, leading zeros can be included or removed, as desired. 
+Ranges are inclusive.
+
+You can also define alphabetic ranges:
+
+```php
+host('db[a:f].example.org');
+```
+
+## Localhost
+
+A special function [localhost()](api.md#localhost) defines a special local host.
+Deployer will not connect to this host and will execute commands locally.
+
+```php
+localhost(); // Alias and hostname will be "localhost".
+localhost('ci'); // Alias is "ci", hostname is "localhost".
+```

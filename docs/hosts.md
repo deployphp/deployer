@@ -123,3 +123,20 @@ Deployer will not connect to this host and will execute commands locally.
 localhost(); // Alias and hostname will be "localhost".
 localhost('ci'); // Alias is "ci", hostname is "localhost".
 ```
+
+## YAML Inventory
+
+You can use [import()](api.md#import) function to keep host separately in, for
+example, *inventory.yaml* file.
+
+```php title="deploy.php"
+import('inventory.yaml');
+```
+
+```yaml title="inventory.yaml"
+hosts:
+  example.org:
+    remote_user: deployer
+  deployer.org:
+    remote_user: deployer
+```

@@ -44,6 +44,6 @@ Deployer 7.0.0
 composer require deployer/deployer --dev
 ```
 
-```warning Dependency conflicts
+:::warning Dependency conflicts
 In case of dependencie conflicts install [distribution](#distribution) version.
-```
+:::

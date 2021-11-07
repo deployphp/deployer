@@ -114,7 +114,7 @@ task('rocketchat:notify', function() {
         $body['emoji'] = get('rocketchat_icon_emoji');
     }
 
-    Httpie::post(get('rocketchat_webhook'))->body($body)->send();
+    Httpie::post(get('rocketchat_webhook'))->jsonBody($body)->send();
 });
 
 desc('Notifying RocketChat about deploy finish');
@@ -144,7 +144,7 @@ task('rocketchat:notify:success', function() {
         $body['emoji'] = get('rocketchat_icon_emoji');
     }
 
-    Httpie::post(get('rocketchat_webhook'))->body($body)->send();
+    Httpie::post(get('rocketchat_webhook'))->jsonBody($body)->send();
 });
 
 desc('Notifying RocketChat about deploy failure');
@@ -174,6 +174,6 @@ task('rocketchat:notify:failure', function() {
         $body['emoji'] = get('rocketchat_icon_emoji');
     }
 
-    Httpie::post(get('rocketchat_webhook'))->body($body)->send();
+    Httpie::post(get('rocketchat_webhook'))->jsonBody($body)->send();
 });
 

@@ -113,7 +113,7 @@ task('mattermost:notify', function() {
         $body['icon_url'] = get('mattermost_icon_url');
     }
 
-    Httpie::post(get('mattermost_webhook'))->body($body)->send();
+    Httpie::post(get('mattermost_webhook'))->jsonBody($body)->send();
 });
 
 desc('Notifying mattermost about deploy finish');
@@ -134,7 +134,7 @@ task('mattermost:notify:success', function() {
         $body['icon_url'] = get('mattermost_icon_url');
     }
 
-    Httpie::post(get('mattermost_webhook'))->body($body)->send();
+    Httpie::post(get('mattermost_webhook'))->jsonBody($body)->send();
 });
 
 desc('Notifying mattermost about deploy failure');
@@ -155,5 +155,5 @@ task('mattermost:notify:failure', function() {
         $body['icon_url'] = get('mattermost_icon_url');
     }
 
-    Httpie::post(get('mattermost_webhook'))->body($body)->send();
+    Httpie::post(get('mattermost_webhook'))->jsonBody($body)->send();
 });

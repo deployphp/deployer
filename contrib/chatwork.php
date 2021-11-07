@@ -107,7 +107,7 @@ set('chatwork_failure_text', "[info]\n[title](*) Deployment Status: Failed[/titl
 task('chatwork_send_message', function() {
     Httpie::post(get('chatwork_api'))
         ->query(['body' => get('chatwork_message'),])
-        ->header("X-ChatWorkToken: ". get('chatwork_token'))
+        ->header("X-ChatWorkToken", get('chatwork_token'))
         ->send();
 });
 

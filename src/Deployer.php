@@ -356,7 +356,7 @@ class Deployer extends Container
         usleep(100000); // Sleep 100ms.
         return Httpie::get(get('master_url') . '/proxy')
             ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
-            ->body([
+            ->jsonBody([
                 'host' => $host->getAlias(),
                 'func' => $func,
                 'arguments' => $arguments,

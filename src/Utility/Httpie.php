@@ -16,6 +16,7 @@ class Httpie
     private $headers = [];
     private $body = '';
     private $curlopts = [];
+    private $nothrow = false;
 
     public function __construct()
     {
@@ -50,31 +51,42 @@ class Httpie
         return $http;
     }
 
-    public function header(string $header): Httpie
+    public function header(string $header, string $value): Httpie
     {
         $http = clone $this;
-        $http->headers[] = $header;
+        $http->headers[$header] = $value;
         return $http;
     }
 
-    public function body(array $data): Httpie
+    public function body(string $body): Httpie
     {
         $http = clone $this;
-        $http->body = json_encode($data, JSON_PRETTY_PRINT);
+        $http->body = $body;
         $http->headers = array_merge($http->headers, [
-            'Content-Type: application/json',
-            'Content-Length: ' . strlen($http->body)
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen($http->body),
         ]);
         return $http;
     }
 
-    public function form(array $data): Httpie
+    public function jsonBody(array $data): Httpie
+    {
+        $http = clone $this;
+        $http->body = json_encode($data, JSON_PRETTY_PRINT);
+        $http->headers = array_merge($http->headers, [
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen($http->body),
+        ]);
+        return $http;
+    }
+
+    public function formBody(array $data): Httpie
     {
         $http = clone $this;
         $http->body = http_build_query($data);
         $http->headers = array_merge($this->headers, [
-            'Content-type: application/x-www-form-urlencoded',
-            'Content-Length: ' . strlen($http->body)
+            'Content-type' => 'application/x-www-form-urlencoded',
+            'Content-Length' => strlen($http->body),
         ]);
         return $http;
     }
@@ -89,12 +101,23 @@ class Httpie
         return $http;
     }
 
-    public function send(): string
+    public function nothrow(bool $on = true): Httpie
+    {
+        $http = clone $this;
+        $http->nothrow = $on;
+        return $http;
+    }
+
+    public function send(?array &$info = null): string
     {
         $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
+        $headers = [];
+        foreach ($this->headers as $key => $value) {
+            $headers[] = "$key: $value";
+        }
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -105,25 +128,30 @@ class Httpie
             curl_setopt($ch, $key, $value);
         }
         $result = curl_exec($ch);
+        $info = curl_getinfo($ch);
         if ($result === false) {
-            $error = curl_error($ch);
-            $errno = curl_errno($ch);
-            curl_close($ch);
-            throw new HttpieException($error, $errno);
+            if ($this->nothrow) {
+                $result = '';
+            } else {
+                $error = curl_error($ch);
+                $errno = curl_errno($ch);
+                curl_close($ch);
+                throw new HttpieException($error, $errno);
+            }
         }
         curl_close($ch);
         return $result;
     }
 
     /**
-     * @return array|string|bool
+     * @return mixed
      */
     public function getJson()
     {
         $result = $this->send();
         $response = json_decode($result, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('JSON Error: ' . json_last_error_msg());
+            throw new HttpieException('JSON Error: ' . json_last_error_msg());
         }
         return $response;
     }

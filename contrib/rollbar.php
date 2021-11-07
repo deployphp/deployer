@@ -48,7 +48,7 @@ task('rollbar:notify', function () {
     ];
 
     Httpie::post('https://api.rollbar.com/api/1/deploy/')
-        ->form($params)
+        ->formBody($params)
         ->send();
 })
     ->once()

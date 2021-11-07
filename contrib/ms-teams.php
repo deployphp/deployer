@@ -95,7 +95,7 @@ task('teams:notify', function () {
         return;
     }
 
-    Httpie::post(get('teams_webhook'))->body([
+    Httpie::post(get('teams_webhook'))->jsonBody([
         "themeColor" => get('teams_color'),
         'text'       => get('teams_text')
     ])->send();
@@ -110,7 +110,7 @@ task('teams:notify:success', function () {
         return;
     }
 
-    Httpie::post(get('teams_webhook'))->body([
+    Httpie::post(get('teams_webhook'))->jsonBody([
         "themeColor" => get('teams_success_color'),
         'text'       => get('teams_success_text')
     ])->send();
@@ -125,7 +125,7 @@ task('teams:notify:failure', function () {
         return;
     }
 
-    Httpie::post(get('teams_webhook'))->body([
+    Httpie::post(get('teams_webhook'))->jsonBody([
         "themeColor" => get('teams_failure_color'),
         'text'       => get('teams_failure_text')
     ])->send();

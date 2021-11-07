@@ -20,6 +20,7 @@ use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
 use Deployer\Task\Task;
+use Deployer\Utility\Httpie;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -128,7 +129,8 @@ function select(string $selector): array
  *
  * @return Host[]
  */
-function selectedHosts(): array {
+function selectedHosts(): array
+{
     $hosts = [];
     foreach (get('selected_hosts', []) as $alias) {
         $hosts[] = Deployer::get()->hosts->get($alias);
@@ -902,4 +904,31 @@ function error(string $message): Exception
 function timestamp(): string
 {
     return (new \DateTime('now', new \DateTimeZone('UTC')))->format(\DateTime::ISO8601);
+}
+
+/**
+ * Example usage:
+ * ```php
+ * $result = fetch('{{domain}}', info: $info);
+ * var_dump($info['http_code'], $result);
+ * ```
+ */
+function fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
+{
+    $url = parse($url);
+    if (strtolower($method) === 'get') {
+        $http = Httpie::get($url);
+    } elseif (strtolower($method) === 'post') {
+        $http = Httpie::get($url);
+    } else {
+        throw new \InvalidArgumentException("Unknown method \"$method\".");
+    }
+    $http = $http->nothrow($nothrow);
+    foreach ($headers as $key => $value) {
+        $http = $http->header($key, $value);
+    }
+    if ($body !== null) {
+        $http = $http->body($body);
+    }
+    return $http->send($info);
 }

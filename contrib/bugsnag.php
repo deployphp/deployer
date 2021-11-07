@@ -37,6 +37,6 @@ task('bugsnag:notify', function () {
     ];
 
     Httpie::post('https://notify.bugsnag.com/deploy')
-        ->body($data)
+        ->jsonBody($data)
         ->send();
 });

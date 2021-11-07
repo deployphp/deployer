@@ -83,9 +83,9 @@ task('yammer:notify', function () {
     ];
 
     Httpie::post(get('yammer_url'))
-        ->header('Authorization: Bearer ' . get('yammer_token'))
-        ->header('Content-type: application/json')
-        ->body($params)
+        ->header('Authorization', 'Bearer ' . get('yammer_token'))
+        ->header('Content-type', 'application/json')
+        ->jsonBody($params)
         ->send();
 })
     ->once()
@@ -103,9 +103,9 @@ task('yammer:notify:success', function () {
     ];
 
     Httpie::post(get('yammer_url'))
-        ->header('Authorization: Bearer ' . get('yammer_token'))
-        ->header('Content-type: application/json')
-        ->body($params)
+        ->header('Authorization', 'Bearer ' . get('yammer_token'))
+        ->header('Content-type', 'application/json')
+        ->jsonBody($params)
         ->send();
 })
     ->once()
@@ -123,9 +123,9 @@ task('yammer:notify:failure', function () {
     ];
 
     Httpie::post(get('yammer_url'))
-        ->header('Authorization: Bearer ' . get('yammer_token'))
-        ->header('Content-type: application/json')
-        ->body($params)
+        ->header('Authorization', 'Bearer ' . get('yammer_token'))
+        ->header('Content-type', 'application/json')
+        ->jsonBody($params)
         ->send();
 })
     ->once()

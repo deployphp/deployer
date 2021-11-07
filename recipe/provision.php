@@ -6,7 +6,6 @@ require __DIR__ . '/provision/nodejs.php';
 require __DIR__ . '/provision/php.php';
 require __DIR__ . '/provision/website.php';
 
-use Deployer\Exception\GracefulShutdownException;
 use function Deployer\Support\parse_home_dir;
 
 add('recipes', ['provision']);
@@ -32,6 +31,7 @@ task('provision', [
     'provision:composer',
     'provision:npm',
     'provision:website',
+    'provision:verify',
 ]);
 
 desc('Check pre-required state');
@@ -272,3 +272,11 @@ task('provision:firewall', function () {
     run('ufw allow 443');
     run('ufw --force enable');
 })->oncePerNode();
+
+desc('Verify what provision was successful');
+task('provision:verify', function () {
+    fetch('{{domain}}', 'get', [], null, $info, true);
+    if ($info['http_code'] === 404) {
+        info("provisioned successfully!");
+    }
+});

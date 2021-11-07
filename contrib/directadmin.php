@@ -127,7 +127,7 @@ function DirectAdmin(string $action, array $data = [])
     $port = $config['port'] ?? 2222;
 
     $result = Httpie::post(sprintf('%s://%s:%s/%s', $scheme, $config['host'], $port, $action))
-        ->form($data)
+        ->formBody($data)
         ->setopt(CURLOPT_USERPWD, $config['username'] . ':' . $config['password'])
         ->send();
 

@@ -43,6 +43,6 @@ task('raygun:notify', function () {
     ];
 
     Httpie::post('https://app.raygun.io/deployments')
-        ->body($data)
+        ->jsonBody($data)
         ->send();
 });

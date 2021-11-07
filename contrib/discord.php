@@ -84,7 +84,7 @@ set('discord_message', 'discord_notify_text');
 task('discord_send_message', function(){
     $message = get(get('discord_message'));
 
-    Httpie::post(get('discord_webhook'))->body($message)->send();
+    Httpie::post(get('discord_webhook'))->jsonBody($message)->send();
 });
 
 // Tasks

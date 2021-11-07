@@ -143,8 +143,8 @@ EXAMPLE
         $response = Httpie::post(
             $releasesApiUrl
         )
-            ->header(sprintf('Authorization: Bearer %s', $config['token']))
-            ->body($releaseData)
+            ->header('Authorization', sprintf('Bearer %s', $config['token']))
+            ->jsonBody($releaseData)
             ->getJson();
 
         if (!isset($response['version'], $response['projects'])) {
@@ -173,8 +173,8 @@ EXAMPLE
         $response = Httpie::post(
             $releasesApiUrl . $response['version'] . '/deploys/'
         )
-            ->header(sprintf('Authorization: Bearer %s', $config['token']))
-            ->body($deployData)
+            ->header('Authorization', sprintf('Bearer %s', $config['token']))
+            ->jsonBody($deployData)
             ->getJson();
 
         if (!isset($response['id'], $response['environment'])) {

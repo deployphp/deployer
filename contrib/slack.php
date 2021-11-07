@@ -108,7 +108,7 @@ task('slack:notify', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->jsonBody(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
     checkSlackAnswer($result);
 })
     ->once()
@@ -128,7 +128,7 @@ task('slack:notify:success', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->jsonBody(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
     checkSlackAnswer($result);
 })
     ->once()
@@ -148,7 +148,7 @@ task('slack:notify:failure', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->jsonBody(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
     checkSlackAnswer($result);
 })
     ->once()
@@ -168,7 +168,7 @@ task('slack:notify:rollback', function () {
         'mrkdwn_in' => ['text'],
     ];
 
-    $result = Httpie::post(get('slack_webhook'))->body(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
+    $result = Httpie::post(get('slack_webhook'))->jsonBody(['channel' => get('slack_channel'), 'attachments' => [$attachment]])->send();
     checkSlackAnswer($result);
 })
     ->once()

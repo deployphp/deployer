@@ -729,7 +729,7 @@ function ispmanagerRequest ($method, $requestData) {
 
     if ($method == 'post') {
         return Httpie::post($requestUrl)
-            ->form (prepareRequest($requestData))
+            ->formBody (prepareRequest($requestData))
             ->setopt(CURLOPT_SSL_VERIFYPEER, false)
             ->setopt(CURLOPT_SSL_VERIFYHOST, false)
             ->getJson();
@@ -756,7 +756,7 @@ function ispmanagerAuthRequest ($url, $login, $pass) {
     $responseData = Httpie::post($url)
         ->setopt(CURLOPT_SSL_VERIFYPEER, false)
         ->setopt(CURLOPT_SSL_VERIFYHOST, false)
-        ->form (prepareRequest($authRequestData))
+        ->formBody (prepareRequest($authRequestData))
         ->getJson();
 
     if (isset ($responseData['doc']['auth']['$id'])) {

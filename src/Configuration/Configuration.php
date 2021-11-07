@@ -194,7 +194,7 @@ class Configuration implements \ArrayAccess
         }
 
         $values = Httpie::get($this->get('master_url') . '/load')
-            ->body([
+            ->jsonBody([
                 'host' => $this->get('alias'),
             ])
             ->getJson();
@@ -208,7 +208,7 @@ class Configuration implements \ArrayAccess
         }
 
         Httpie::get($this->get('master_url') . '/save')
-            ->body([
+            ->jsonBody([
                 'host' => $this->get('alias'),
                 'config' => $this->persist(),
             ])

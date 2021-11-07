@@ -59,7 +59,7 @@ on(select('stage=prod, role=db'), function (Host $host) {
 ## selectedHosts()
 
 ```php
-selectedHosts(): array {
+selectedHosts(): array
 ```
 
 Returns array of hosts selected by user via CLI.
@@ -530,5 +530,18 @@ timestamp(): string
 ```
 
 Returns current timestamp in UTC timezone in ISO8601 format.
+
+
+## fetch()
+
+```php
+fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
+```
+
+Example usage:
+```php
+$result = fetch('{{domain}}', info: $info);
+var_dump($info['http_code'], $result);
+```
 
 

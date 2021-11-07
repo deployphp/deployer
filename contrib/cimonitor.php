@@ -112,7 +112,7 @@ task('cimonitor:notify', function () {
         ],
     ];
 
-    Httpie::post(get('cimonitor_webhook'))->body($body)->send();
+    Httpie::post(get('cimonitor_webhook'))->jsonBody($body)->send();
 })
     ->once()
     ->shallow()
@@ -141,7 +141,7 @@ task('cimonitor:notify:success', function () {
         ],
     ];
 
-    Httpie::post(get('cimonitor_webhook'))->body($body)->send();
+    Httpie::post(get('cimonitor_webhook'))->jsonBody($body)->send();
 })
     ->once()
     ->shallow()
@@ -168,7 +168,7 @@ task('cimonitor:notify:failure', function () {
         ],
     ];
 
-    Httpie::post(get('cimonitor_webhook'))->body($body)->send();
+    Httpie::post(get('cimonitor_webhook'))->jsonBody($body)->send();
 })
     ->once()
     ->shallow()

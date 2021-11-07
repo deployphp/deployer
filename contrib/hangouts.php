@@ -97,7 +97,7 @@ task('chat:notify', function () {
         ]
     ];
 
-    Httpie::post(get('chat_webhook'))->body(['cards' => $card])->send();
+    Httpie::post(get('chat_webhook'))->jsonBody(['cards' => $card])->send();
 })
     ->once()
     ->shallow()
@@ -140,7 +140,7 @@ task('chat:notify:success', function () {
         ]
     ];
 
-    Httpie::post(get('chat_webhook'))->body(['cards' => $card])->send();
+    Httpie::post(get('chat_webhook'))->jsonBody(['cards' => $card])->send();
 })
     ->once()
     ->shallow()
@@ -184,7 +184,7 @@ task('chat:notify:failure', function () {
         ]
     ];
 
-    Httpie::post(get('chat_webhook'))->body(['cards' => $card])->send();
+    Httpie::post(get('chat_webhook'))->jsonBody(['cards' => $card])->send();
 })
     ->once()
     ->shallow()

@@ -14,7 +14,7 @@
 
 ## Configuration
 ### lsb_release
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L16)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L15)
 
 Name of lsb_release like: focal, bionic, etc.
 As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
@@ -43,7 +43,7 @@ Set to `false` to disable copy of key.
 ## Tasks
 
 ### provision
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L21)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L20)
 
 Provision the server.
 
@@ -64,6 +64,7 @@ This task is group task which contains next tasks:
 * [provision:composer](/docs/recipe/provision/php.md#provisioncomposer)
 * [provision:npm](/docs/recipe/provision/nodejs.md#provisionnpm)
 * [provision:website](/docs/recipe/provision/website.md#provisionwebsite)
+* [provision:verify](/docs/recipe/provision.md#provisionverify)
 
 
 ### provision:check
@@ -134,6 +135,14 @@ Setup deployer user.
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L269)
 
 Setup firewall.
+
+
+
+
+### provision:verify
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L277)
+
+Verify what provision was successful.
 
 
 

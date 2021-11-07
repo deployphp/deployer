@@ -1,8 +1,6 @@
 # Installation
 
-Phar is the best distribution mechanism for a tool.
-
-### Globally
+## Globally
 
 To install Deployer as phar archive globally, run the following commands:
 
@@ -12,61 +10,40 @@ mv deployer.phar /usr/local/bin/dep
 chmod +x /usr/local/bin/dep
 ```
 
-> After installing Deployer globally with will be able to initialize a 
-> recipe in new project with just `dep init` command.
+:::tip CLI Autocomplete
+Deployer comes with an autocomplete support for task names, options, and hosts.
 
-If you need another version of Deployer, you can find it on 
-the [download page](https://deployer.org/download).
-Later, to upgrade Deployer, run the command:
+Add next line to your `~/.bashrc` or `~/.zshrc`:
 
-```sh
-dep self-update
+```bash
+eval "$(dep autocomplete --shell bash)"
 ```
+:::
 
-To upgrade to the next major release, if available, use the `--upgrade (-u)` 
-option:
-
-```sh
-dep self-update --upgrade
-```
-
-### Distribution
+## Distribution
 
 ```sh
 composer require deployer/dist --dev
 ```
 
-Then to use Deployer, run the following command:
+:::tip Global and local Deployer
+If you call a globally installed Deployer via `/usr/local/bin/dep` in a project 
+directory with a locally installed Deployer at `vendor/bin/dep`, Deployer will
+redirect call to a local Deployer.
 
-```sh
-php vendor/bin/dep
+```bash
+~/project $ dep --version
+Using ~/project/vendor/bin/dep
+Deployer 7.0.0
 ```
+:::
 
-This is preferred method of installing Deployer in composer project. In 
-distribution repo only phar is committed, and its dependencies will not 
-conflict with your project dependencies.
-
-
-Download `deployer.phar` and commit it. Totally okay. Update it via 
-with `dep self-update`.
-
-### Source
-
-Use it if you really need Deployer source files.  
+## Source
 
 ```sh
 composer require deployer/deployer --dev
 ```
 
-### Autocomplete
-
-Deployer comes with an autocomplete support for bash & zsh, so you don't need to 
-remember task names and options. 
-
-Add next line to your `~/.bash_profile` or `~/.zshrc`:
-
-```shell
-eval "$(dep autocomplete)"
+```warning Dependency conflicts
+In case of dependencie conflicts install [distribution](#distribution) version.
 ```
-
-Read [getting started](getting-started.md) next.

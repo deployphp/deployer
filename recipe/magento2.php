@@ -19,6 +19,12 @@ add('recipes', ['magento2']);
 // in you deployer script.
 set('static_content_locales', 'en_US');
 
+// By default, the deployment strategy for this recipe is
+// pull instead of push, to make it backwards compatible with Deployer 6.
+// If you change this to push, you will have to push the generated & compiled
+// files yourself, for example by adding a rsync hook after deploy:release
+set('push_strategy', false);
+
 set('content_version', function () {
     return time();
 });
@@ -171,8 +177,6 @@ task('magento:cache:flush', function () {
 
 desc('Magento2 deployment operations');
 task('deploy:magento', [
-    'magento:compile',
-    'magento:deploy:assets',
     'magento:config:import',
     'magento:upgrade:db',
     'magento:cache:flush'
@@ -181,10 +185,19 @@ task('deploy:magento', [
 desc('Deploy your project');
 task('deploy', [
     'deploy:prepare',
-    'deploy:vendors',
     'deploy:clear_paths',
     'deploy:magento',
     'deploy:publish',
 ]);
+
+if (get('push_strategy') === false) {
+    after('deploy_prepare', 'deploy:vendors');
+    before('magento:config:import', 'magento:compile');
+    before('magento:config:import', 'magento:deploy:assets');
+} else {
+    task('deploy:update_code', function () {
+        // Do not update code when using push strategy
+    });
+}
 
 after('deploy:failed', 'magento:maintenance:disable');

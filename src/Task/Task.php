@@ -24,6 +24,7 @@ class Task
     private $limit = null;
     private $selector = null;
     private $verbose = false;
+    private $enabled = true;
 
     /**
      * Task constructor.
@@ -226,6 +227,23 @@ class Task
     public function verbose(bool $verbose = true): self
     {
         $this->verbose = $verbose;
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function disable(): self
+    {
+        $this->enabled = false;
+        return $this;
+    }
+
+    public function enable(): self
+    {
+        $this->enabled = true;
         return $this;
     }
 }

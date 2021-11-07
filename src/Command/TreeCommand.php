@@ -17,7 +17,6 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 class TreeCommand extends Command
 {
     protected $output;
-    private $tasks;
     private $deployer;
     private $tree;
     private $depth = 0;
@@ -53,13 +52,20 @@ class TreeCommand extends Command
 
     private function buildTree(string $taskName)
     {
-        $this->tasks = Deployer::get()->tasks;
         $this->createTreeFromTaskName($taskName, '', true);
     }
 
     private function createTreeFromTaskName(string $taskName, string $postfix = '', bool $isLast = false)
     {
-        $task = $this->tasks->get($taskName);
+        $task = $this->deployer->tasks->get($taskName);
+
+        if (!$task->isEnabled()) {
+            if (empty($postfix)) {
+                $postfix = '  // disabled';
+            } else {
+                $postfix .= '; disabled';
+            }
+        }
 
         if ($task->getBefore()) {
             $beforePostfix = sprintf("  // before %s", $task->getName());
@@ -138,7 +144,7 @@ class TreeCommand extends Command
                 }
             }
 
-            $prefix .=  $startSymbol . '──';
+            $prefix .= $startSymbol . '──';
 
             $this->output->writeln(sprintf('%s %s', $prefix, $treeItem['taskName']));
         }

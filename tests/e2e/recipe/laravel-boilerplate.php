@@ -26,7 +26,7 @@ task('laravel:setup-env', function(): void {
     }
 });
 
-task('artisan:key:generate', artisan('key:generate'));
+task('artisan:migrate')->disable();
 
 before('deploy:shared', 'laravel:setup-env');
 before('artisan:storage:link', 'artisan:key:generate');

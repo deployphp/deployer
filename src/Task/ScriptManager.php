@@ -51,7 +51,15 @@ class ScriptManager
                 throw new Exception('All tasks skipped via --start-from option. Nothing to run.');
             }
         }
-        return $tasks;
+
+        $enabledTasks = [];
+        foreach ($tasks as $task) {
+            if ($task->isEnabled()) {
+                $enabledTasks[] = $task;
+            }
+        }
+
+        return $enabledTasks;
     }
 
     /**

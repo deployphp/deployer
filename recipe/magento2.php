@@ -171,11 +171,16 @@ task('magento:cache:flush', function () {
 
 desc('Magento2 deployment operations');
 task('deploy:magento', [
-    'magento:compile',
-    'magento:deploy:assets',
+    'magento:build',
     'magento:config:import',
     'magento:upgrade:db',
-    'magento:cache:flush'
+    'magento:cache:flush',
+]);
+
+desc('Magento2 build operations');
+task('magento:build', [
+    'magento:compile',
+    'magento:deploy:assets',
 ]);
 
 desc('Deploy your project');

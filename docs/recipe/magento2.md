@@ -195,14 +195,27 @@ Magento2 deployment operations.
 
 
 This task is group task which contains next tasks:
-* [magento:compile](/docs/recipe/magento2.md#magentocompile)
-* [magento:deploy:assets](/docs/recipe/magento2.md#magentodeployassets)
+* [magento:build](/docs/recipe/magento2.md#magentobuild)
 * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport)
 * [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb)
+* [magento:cache:flush](/docs/recipe/magento2.md#magentocacheflush)
+
+
+### magento:build
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L181)
+
+Magento2 build operations.
+
+
+
+
+This task is group task which contains next tasks:
+* [magento:compile](/docs/recipe/magento2.md#magentocompile)
+* [magento:deploy:assets](/docs/recipe/magento2.md#magentodeployassets)
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L182)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L187)
 
 Deploy your project.
 

@@ -919,7 +919,7 @@ function fetch(string $url, string $method = 'get', array $headers = [], ?string
     if (strtolower($method) === 'get') {
         $http = Httpie::get($url);
     } elseif (strtolower($method) === 'post') {
-        $http = Httpie::get($url);
+        $http = Httpie::post($url);
     } else {
         throw new \InvalidArgumentException("Unknown method \"$method\".");
     }

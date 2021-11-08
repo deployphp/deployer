@@ -259,7 +259,7 @@ class Client
                     $controlPath = "$homeDir/.ssh/deployer_$connectionData";
             }
             $tryLongestPossible++;
-        } while (strlen($controlPath) + $connectionHashLength > $unixMaxPath); // Unix socket max length
+        } while (strlen($controlPath) + $connectionHashLength >= $unixMaxPath); // Unix socket max length
 
         return $controlPath;
     }

@@ -74,7 +74,7 @@ set('cachetool_options', function () {
 /**
  * Clear opcache cache
  */
-desc('Clearing OPcode cache');
+desc('Clears OPcode cache');
 task('cachetool:clear:opcache', function () {
     run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_options}}");
 });
@@ -82,7 +82,7 @@ task('cachetool:clear:opcache', function () {
 /**
  * Clear APCU cache
  */
-desc('Clearing APCu system cache');
+desc('Clears APCu system cache');
 task('cachetool:clear:apcu', function () {
     run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
 });
@@ -90,7 +90,7 @@ task('cachetool:clear:apcu', function () {
 /**
  * Clear file status cache, including the realpath cache
  */
-desc('Clearing file status and realpath caches');
+desc('Clears file status and realpath caches');
 task('cachetool:clear:stat', function () {
     run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} stat:clear {{cachetool_options}}");
 });

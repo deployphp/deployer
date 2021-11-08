@@ -15,7 +15,7 @@
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/composer.php#L9)
 
-Deploy your project.
+Deploys your project.
 
 
 

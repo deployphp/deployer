@@ -112,7 +112,7 @@ task('chatwork_send_message', function() {
 });
 
 // Tasks
-desc('Just notify chatwork with all messages, without deploying');
+desc('Tests messages');
 task('chatwork:test', function () {
     set('chatwork_message', get('chatwork_notify_text'));
     invoke('chatwork_send_message');
@@ -124,7 +124,7 @@ task('chatwork:test', function () {
     ->once()
     ->shallow();
 
-desc('Notifying Chatwork');
+desc('Notifies Chatwork');
 task('chatwork:notify', function () {
     if (!get('chatwork_token', false)) {
         return;
@@ -140,7 +140,7 @@ task('chatwork:notify', function () {
     ->shallow()
     ->hidden();
 
-desc('Notifying Chatwork about deploy finish');
+desc('Notifies Chatwork about deploy finish');
 task('chatwork:notify:success', function () {
     if (!get('chatwork_token', false)) {
         return;
@@ -157,7 +157,7 @@ task('chatwork:notify:success', function () {
     ->shallow()
     ->hidden();
 
-desc('Notifying Chatwork about deploy failure');
+desc('Notifies Chatwork about deploy failure');
 task('chatwork:notify:failure', function () {
     if (!get('chatwork_token', false)) {
         return;

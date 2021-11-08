@@ -81,7 +81,7 @@ The chmod mode.
 ### deploy:writable
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L60)
 
-Make writable dirs.
+Makes writable dirs.
 
 
 

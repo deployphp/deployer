@@ -43,7 +43,7 @@ Get path to bin
 ### crontab:load
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L31)
 
-Load crontab.
+Loads crontab.
 
 
 

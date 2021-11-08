@@ -31,7 +31,7 @@ dep rollback -o rollback_candidate=123
 ### rollback
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/rollback.php#L62)
 
-Rollback to the previous release.
+Rollbacks to the previous release.
 
 Uses [rollback_candidate](/docs/recipe/deploy/rollback.md#rollback_candidate) for symlinking. Current release will be marked as
 bad by creating file **BAD_RELEASE** with timestamp and [user](/docs/recipe/common.md#user).

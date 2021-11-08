@@ -72,7 +72,7 @@ set('yammer_body', '<em>{{user}}</em> deploying {{branch}} to <strong>{{target}}
 set('yammer_success_body', 'Deploy to <strong>{{target}}</strong> successful');
 set('yammer_failure_body', 'Deploy to <strong>{{target}}</strong> failed');
 
-desc('Notifying Yammer');
+desc('Notifies Yammer');
 task('yammer:notify', function () {
     $params = [
         'is_rich_text' => 'true',
@@ -92,7 +92,7 @@ task('yammer:notify', function () {
     ->shallow()
     ->hidden();
 
-desc('Notifying Yammer about deploy finish');
+desc('Notifies Yammer about deploy finish');
 task('yammer:notify:success', function () {
     $params = [
         'is_rich_text' => 'true',
@@ -112,7 +112,7 @@ task('yammer:notify:success', function () {
     ->shallow()
     ->hidden();
 
-desc('Notifying Yammer about deploy failure');
+desc('Notifies Yammer about deploy failure');
 task('yammer:notify:failure', function () {
     $params = [
         'is_rich_text' => 'true',

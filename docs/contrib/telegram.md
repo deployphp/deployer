@@ -132,9 +132,9 @@ Deploy message
 ## Tasks
 
 ### telegram:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L90)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L89)
 
-
+Notifies Telegram.
 
 
 

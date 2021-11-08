@@ -59,7 +59,7 @@ after('deploy:update_code', 'webpack_encore:build');
 ### webpack_encore:build
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L42)
 
-Run webpack encore build.
+Runs webpack encore build.
 
 
 

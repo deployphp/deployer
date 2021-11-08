@@ -56,7 +56,7 @@ set('writable_recursive', false);
 // The chmod mode.
 set('writable_chmod_mode', '0755');
 
-desc('Make writable dirs');
+desc('Makes writable dirs');
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
     $mode = get('writable_mode');

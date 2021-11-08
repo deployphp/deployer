@@ -40,7 +40,7 @@ CodeIgniter writable dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter.php#L18)
 
-Deploy your project.
+Deploys your project.
 
 Main task
 

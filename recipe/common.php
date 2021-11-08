@@ -158,7 +158,7 @@ set('target', function () {
     return $target;
 });
 
-desc('Prepare a new release');
+desc('Prepares a new release');
 task('deploy:prepare', [
     'deploy:info',
     'deploy:setup',
@@ -169,7 +169,7 @@ task('deploy:prepare', [
     'deploy:writable',
 ]);
 
-desc('Publish the release');
+desc('Publishes the release');
 task('deploy:publish', [
     'deploy:symlink',
     'deploy:unlock',
@@ -191,14 +191,16 @@ task('deploy:success', function () {
  * Hook on deploy failure.
  */
 task('deploy:failed', function () {
-})->hidden();
+})
+    ->shallow()
+    ->hidden();
 
 fail('deploy', 'deploy:failed');
 
 /**
- * Follow latest application logs.
+ * Follows latest application logs.
  */
-desc('Show application logs');
+desc('Shows application logs');
 task('logs:app', function () {
     if (!has('log_files')) {
         warning("Please, specify \"log_files\" option.");

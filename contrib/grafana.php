@@ -41,7 +41,7 @@ namespace Deployer;
 use Deployer\Utility\Httpie;
 
 
-desc('Create Grafana annotation of deployment');
+desc('Creates Grafana annotation of deployment');
 task('grafana:annotation', function () {
     $defaultConfig = [
         'url' => null,

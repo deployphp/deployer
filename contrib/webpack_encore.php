@@ -38,7 +38,7 @@ set('webpack_encore/package_manager', function () {
 
 set('webpack_encore/env', 'production');
 
-desc('Run webpack encore build');
+desc('Runs webpack encore build');
 task('webpack_encore:build', function () {
     $packageManager = get('webpack_encore/package_manager');
 

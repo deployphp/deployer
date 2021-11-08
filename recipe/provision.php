@@ -34,7 +34,7 @@ task('provision', [
     'provision:verify',
 ]);
 
-desc('Check pre-required state');
+desc('Checks pre-required state');
 task('provision:check', function () {
     if (get('remote_user') !== 'root') {
         warning('');
@@ -53,7 +53,7 @@ task('provision:check', function () {
     }
 })->oncePerNode();
 
-desc('Collect required params');
+desc('Collects required params');
 task('provision:configure', function () {
     $params = [
         'sudo_password',
@@ -76,7 +76,7 @@ task('provision:configure', function () {
     }
 });
 
-desc('Add repositories and update');
+desc('Adds repositories and update');
 task('provision:update', function () {
     // PHP
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
@@ -98,14 +98,14 @@ task('provision:update', function () {
     ->oncePerNode()
     ->verbose();
 
-desc('Upgrade all packages');
+desc('Upgrades all packages');
 task('provision:upgrade', function () {
     run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 })
     ->oncePerNode()
     ->verbose();
 
-desc('Install packages');
+desc('Installs packages');
 task('provision:install', function () {
     $packages = [
         'acl',
@@ -138,7 +138,7 @@ task('provision:install', function () {
     ->verbose()
     ->oncePerNode();
 
-desc('Configure server');
+desc('Configures a server');
 task('provision:server', function () {
     run('usermod -a -G www-data caddy');
     $html = <<<'HTML'
@@ -199,7 +199,7 @@ HTML;
     run("echo $'$html' > /var/dep/html/404.html");
 })->oncePerNode();
 
-desc('Configure SSH');
+desc('Configures the ssh');
 task('provision:ssh', function () {
     run("sed -i 's/PasswordAuthentication .*/PasswordAuthentication no/' /etc/ssh/sshd_config");
     run('ssh-keygen -A');
@@ -218,7 +218,7 @@ set('sudo_password', function () {
 // Set to `false` to disable copy of key.
 set('ssh_copy_id', '~/.ssh/id_rsa.pub');
 
-desc('Setup deployer user');
+desc('Setups a deployer user');
 task('provision:deployer', function () {
     if (test('id deployer >/dev/null 2>&1')) {
         // TODO: Check what created deployer user configured correctly.
@@ -265,7 +265,7 @@ task('provision:deployer', function () {
     }
 })->oncePerNode();
 
-desc('Setup firewall');
+desc('Setups a firewall');
 task('provision:firewall', function () {
     run('ufw allow 22');
     run('ufw allow 80');
@@ -273,7 +273,7 @@ task('provision:firewall', function () {
     run('ufw --force enable');
 })->oncePerNode();
 
-desc('Verify what provision was successful');
+desc('Verifies what provision was successful');
 task('provision:verify', function () {
     fetch('{{domain}}', 'get', [], null, $info, true);
     if ($info['http_code'] === 404) {

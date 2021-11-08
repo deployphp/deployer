@@ -89,7 +89,7 @@ set('teams_color', '#4d91f7');
 set('teams_success_color', '#00c100');
 set('teams_failure_color', '#ff0909');
 
-desc('Notifying Teams');
+desc('Notifies Teams');
 task('teams:notify', function () {
     if (!get('teams_webhook', false)) {
         return;
@@ -104,7 +104,7 @@ task('teams:notify', function () {
     ->shallow()
     ->hidden();
 
-desc('Notifying Teams about deploy finish');
+desc('Notifies Teams about deploy finish');
 task('teams:notify:success', function () {
     if (!get('teams_webhook', false)) {
         return;
@@ -119,7 +119,7 @@ task('teams:notify:success', function () {
     ->shallow()
     ->hidden();
 
-desc('Notifying Teams about deploy failure');
+desc('Notifies Teams about deploy failure');
 task('teams:notify:failure', function () {
     if (!get('teams_webhook', false)) {
         return;

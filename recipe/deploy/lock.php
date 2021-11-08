@@ -3,7 +3,7 @@ namespace Deployer;
 
 use Deployer\Exception\GracefulShutdownException;
 
-desc('Lock deploy');
+desc('Locks deploy');
 task('deploy:lock', function () {
     $user = escapeshellarg(get('user'));
     $locked = run("[ -f {{deploy_path}}/.dep/deploy.lock ] && echo +locked || echo $user > {{deploy_path}}/.dep/deploy.lock");
@@ -15,12 +15,12 @@ task('deploy:lock', function () {
     }
 });
 
-desc('Unlock deploy');
+desc('Unlocks deploy');
 task('deploy:unlock', function () {
     run("rm -f {{deploy_path}}/.dep/deploy.lock");//always success
 });
 
-desc('Check if deploy is locked');
+desc('Checks if deploy is locked');
 task('deploy:is_locked', function () {
     $locked = test("[ -f {{deploy_path}}/.dep/deploy.lock ]");
     if ($locked) {

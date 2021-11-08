@@ -5,7 +5,7 @@ namespace Deployer;
 // For example you can copy `node_modules` to speedup npm install.
 set('copy_dirs', []);
 
-desc('Copy directories');
+desc('Copies directories');
 task('deploy:copy_dirs', function () {
     if (has('previous_release')) {
         foreach (get('copy_dirs') as $dir) {

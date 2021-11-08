@@ -15,7 +15,7 @@
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/zend_framework.php#L12)
 
-Deploy your project.
+Deploys your project.
 
 Main task
 

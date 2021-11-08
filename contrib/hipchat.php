@@ -35,7 +35,7 @@ set('hipchat_from', '{{target}}');
 set('hipchat_message', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
 set('hipchat_url', 'https://api.hipchat.com/v1/rooms/message');
 
-desc('Notifying Hipchat channel of deployment');
+desc('Notifies Hipchat channel of deployment');
 task('hipchat:notify', function () {
     $params = [
         'room_id' => get('hipchat_room_id'),

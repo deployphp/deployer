@@ -13,7 +13,7 @@
 ### push
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/push.php#L8)
 
-Push local changes to remote host.
+Pushes local changes to remote host.
 
 Creates patch of local changes and pushes them on host.
 And applies to current_path. Push can be done many times.

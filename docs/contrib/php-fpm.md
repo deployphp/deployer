@@ -78,7 +78,7 @@ after('deploy', 'php-fpm:reload');
 ### php-fpm:reload
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L53)
 
-Reload the php-fpm service.
+Reloads the php-fpm service.
 
 
 

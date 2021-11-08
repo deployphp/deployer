@@ -21,7 +21,7 @@
 ### provision:php
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L9)
 
-Install PHP packages.
+Installs PHP packages.
 
 
 
@@ -29,7 +29,7 @@ Install PHP packages.
 ### logs:php-fpm
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L61)
 
-Show php-fpm logs.
+Shows php-fpm logs.
 
 
 
@@ -37,7 +37,7 @@ Show php-fpm logs.
 ### provision:composer
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L66)
 
-Install Composer.
+Installs Composer.
 
 
 

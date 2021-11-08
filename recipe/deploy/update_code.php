@@ -26,7 +26,7 @@ set('update_code_strategy', 'archive');
 /**
  * Update code at {{release_path}} on host.
  */
-desc('Update code');
+desc('Updates code');
 task('deploy:update_code', function () {
     $repository = get('repository');
     $branch = get('branch');

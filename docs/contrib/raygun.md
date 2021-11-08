@@ -41,7 +41,7 @@ after('deploy', 'raygun:notify');
 ### raygun:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/raygun.php#L34)
 
-Notifying Raygun of deployment.
+Notifies Raygun of deployment.
 
 
 

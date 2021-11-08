@@ -70,19 +70,19 @@ set('maintenance_mode_status_active', function () {
 });
 
 // Tasks
-desc('Compile magento di');
+desc('Compiles magento di');
 task('magento:compile', function () {
     run('cd {{release_or_current_path}} && {{bin/composer}} dump-autoload -o');
     run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:di:compile");
     run('cd {{release_or_current_path}} && {{bin/composer}} dump-autoload -o');
 });
 
-desc('Deploy assets');
+desc('Deploys assets');
 task('magento:deploy:assets', function () {
     run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}}");
 });
 
-desc('Sync content version');
+desc('Syncs content version');
 task('magento:sync:content_version', function () {
     $timestamp = time();
     on(select('all'), function (Host $host) use ($timestamp) {
@@ -92,12 +92,12 @@ task('magento:sync:content_version', function () {
 
 before('magento:deploy:assets', 'magento:sync:content_version');
 
-desc('Enable maintenance mode');
+desc('Enables maintenance mode');
 task('magento:maintenance:enable', function () {
     run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:enable; fi");
 });
 
-desc('Disable maintenance mode');
+desc('Disables maintenance mode');
 task('magento:maintenance:disable', function () {
     run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:disable; fi");
 });
@@ -137,7 +137,7 @@ task('magento:config:import', function () {
     }
 });
 
-desc('Upgrade magento database');
+desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
     $databaseUpgradeNeeded = false;
 
@@ -164,7 +164,7 @@ task('magento:upgrade:db', function () {
     }
 });
 
-desc('Flush Magento Cache');
+desc('Flushes Magento Cache');
 task('magento:cache:flush', function () {
     run("{{bin/php}} {{release_or_current_path}}/bin/magento cache:flush");
 });
@@ -183,7 +183,7 @@ task('magento:build', [
     'magento:deploy:assets',
 ]);
 
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

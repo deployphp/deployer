@@ -92,7 +92,7 @@ http://gordalina.github.io/cachetool/
 ### cachetool:clear:opcache
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L78)
 
-Clearing OPcode cache.
+Clears OPcode cache.
 
 Clear opcache cache
 
@@ -100,7 +100,7 @@ Clear opcache cache
 ### cachetool:clear:apcu
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L86)
 
-Clearing APCu system cache.
+Clears APCu system cache.
 
 Clear APCU cache
 
@@ -108,7 +108,7 @@ Clear APCU cache
 ### cachetool:clear:stat
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L94)
 
-Clearing file status and realpath caches.
+Clears file status and realpath caches.
 
 Clear file status cache, including the realpath cache
 

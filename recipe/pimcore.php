@@ -9,12 +9,12 @@ add('shared_dirs', ['public/var', 'var/email', 'var/recyclebin', 'var/versions']
 
 add('writable_dirs', ['public/var']);
 
-desc('Rebuild Pimcore Classes');
+desc('Rebuilds Pimcore Classes');
 task('pimcore:rebuild-classes', function () {
     run('{{bin/console}} pimcore:deployment:classes-rebuild --create-classes --delete-classes --no-interaction');
 });
 
-desc('Create Custom Layouts');
+desc('Creates Custom Layouts');
 task('pimcore:custom-layouts-rebuild', function () {
     run('{{bin/console}} pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction');
 });

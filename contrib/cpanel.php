@@ -199,7 +199,7 @@ function getDomainInfo()
     ];
 }
 
-desc('Creating database though CPanel API');
+desc('Creates database though CPanel API');
 task('cpanel:createdb', function () {
 
     $cpanel = getCPanel();
@@ -227,7 +227,7 @@ task('cpanel:createdb', function () {
     }
 });
 
-desc('Creating addon domain though CPanel API');
+desc('Creates addon domain though CPanel API');
 task('cpanel:createaddondomain', function () {
     $cpanel = getCPanel();
     $config = get('cpanel', []);
@@ -237,7 +237,7 @@ task('cpanel:createaddondomain', function () {
         return;
     }
 
-    writeln(sprintf('Creating addon domain %s and pointing it to %s', $domain, get('addondir')));
+    writeln(sprintf('Creates addon domain %s and pointing it to %s', $domain, get('addondir')));
 
     $addAddonDomainResult = $cpanel->cpanel('AddonDomain', 'addaddondomain', $config['user'], ['dir' => get('addondir'), 'newdomain'=> $domain, 'subdomain' => $subDomain]);
     $addAddonDomainData = json_decode($addAddonDomainResult, true);
@@ -250,7 +250,7 @@ task('cpanel:createaddondomain', function () {
     }
 });
 
-desc('Delete addon domain though CPanel API');
+desc('Deletes addon domain though CPanel API');
 task('cpanel:deleteaddondomain', function () {
     $cpanel = getCPanel();
     $config = get('cpanel', []);

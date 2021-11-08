@@ -31,7 +31,7 @@ false
 ### deploy:clear_paths
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L11)
 
-Cleaning up files and/or directories.
+Cleanups files and/or directories.
 
 
 

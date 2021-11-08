@@ -25,7 +25,7 @@ if not the, last tasks before cleanup
 */
 namespace Deployer;
 
-desc('Clearing Cloudflare Cache');
+desc('Clears Cloudflare Cache');
 task('deploy:cloudflare', function () {
 
     $config = get('cloudflare', []);

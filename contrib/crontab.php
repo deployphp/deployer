@@ -27,7 +27,7 @@ set('bin/crontab', function () {
     return which('crontab');
 });
 
-desc('Load crontab');
+desc('Loads crontab');
 task('crontab:load', function () {
     set('crontab:all', []);
 

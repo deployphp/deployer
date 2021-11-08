@@ -125,7 +125,7 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 ### magento:compile
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L74)
 
-Compile magento di.
+Compiles magento di.
 
 Tasks
 
@@ -133,7 +133,7 @@ Tasks
 ### magento:deploy:assets
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L81)
 
-Deploy assets.
+Deploys assets.
 
 
 
@@ -141,7 +141,7 @@ Deploy assets.
 ### magento:sync:content_version
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L86)
 
-Sync content version.
+Syncs content version.
 
 
 
@@ -149,7 +149,7 @@ Sync content version.
 ### magento:maintenance:enable
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L96)
 
-Enable maintenance mode.
+Enables maintenance mode.
 
 
 
@@ -157,7 +157,7 @@ Enable maintenance mode.
 ### magento:maintenance:disable
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L101)
 
-Disable maintenance mode.
+Disables maintenance mode.
 
 
 
@@ -173,7 +173,7 @@ Config Import.
 ### magento:upgrade:db
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L141)
 
-Upgrade magento database.
+Upgrades magento database.
 
 
 
@@ -181,7 +181,7 @@ Upgrade magento database.
 ### magento:cache:flush
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L168)
 
-Flush Magento Cache.
+Flushes Magento Cache.
 
 
 
@@ -217,7 +217,7 @@ This task is group task which contains next tasks:
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L187)
 
-Deploy your project.
+Deploys your project.
 
 
 

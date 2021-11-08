@@ -47,7 +47,7 @@ set('rollback_candidate', function () {
     throw new Exception("No more releases you can revert to.");
 });
 
-desc('Rollback to the previous release');
+desc('Rollbacks to the previous release');
 /*
  * Uses {{rollback_candidate}} for symlinking. Current release will be marked as
  * bad by creating file **BAD_RELEASE** with timestamp and {{user}}.

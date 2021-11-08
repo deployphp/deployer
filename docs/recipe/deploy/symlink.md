@@ -21,7 +21,7 @@ Use mv -T if available. Will check automatically.
 ### deploy:symlink
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L10)
 
-Creating symlink to release.
+Creates symlink to release.
 
 
 

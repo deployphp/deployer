@@ -49,7 +49,7 @@ set('php_fpm_version', function () {
 set('php_fpm_service', 'php{{php_fpm_version}}-fpm');
 set('php_fpm_command', 'echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload');
 
-desc('Reload the php-fpm service');
+desc('Reloads the php-fpm service');
 task('php-fpm:reload', function () {
     warning('Avoid reloading php-fpm [ï.at/avoid-php-fpm-reloading]');
     run('{{php_fpm_command}}');

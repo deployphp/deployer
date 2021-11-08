@@ -3,6 +3,7 @@
  * This recipe for work with ISPManager Lite panel by API.
  */
 namespace Deployer;
+
 use Deployer\Exception\Exception;
 use Deployer\Utility\Httpie;
 
@@ -57,30 +58,30 @@ set('ispmanager_domains', []);
 set('ispmanager_phplist', []);
 set('ispmanager_aliaslist', []);
 
-desc('Initialisation');
+desc('Installs ispmanager');
 task('ispmanager:init', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (!is_null ($config['createDatabase']) || !is_null ($config['deleteDatabase'])) {
+    if (!is_null($config['createDatabase']) || !is_null($config['deleteDatabase'])) {
         invoke('ispmanager:db-server-list');
         invoke('ispmanager:db-list');
     }
 
-    if (!is_null ($config['createDomain']) || !is_null ($config['deleteDomain'])) {
+    if (!is_null($config['createDomain']) || !is_null($config['deleteDomain'])) {
         invoke('ispmanager:domain-list');
     }
 
-    if (!is_null ($config['phpSelect'])) {
+    if (!is_null($config['phpSelect'])) {
         invoke('ispmanager:domain-list');
         invoke('ispmanager:get-php-list');
     }
 
-    if (!is_null ($config['createAlias']) || !is_null ($config['deleteAlias'])) {
+    if (!is_null($config['createAlias']) || !is_null($config['deleteAlias'])) {
         invoke('ispmanager:domain-list');
     }
 });
 
-desc('Take database servers list');
+desc('Takes database servers list');
 task('ispmanager:db-server-list', function () {
     $response = ispmanagerRequest('get', [
         'func' => 'db.server',
@@ -89,7 +90,7 @@ task('ispmanager:db-server-list', function () {
     $hostList = [];
     $serverList = [];
 
-    if (isset ($response['doc']['elem']) && count ($response['doc']['elem']) > 0) {
+    if (isset ($response['doc']['elem']) && count($response['doc']['elem']) > 0) {
         foreach ($response['doc']['elem'] as $dbServer) {
             $serverList[$dbServer['name']['$']] = [
                 'host' => $dbServer['host']['$'],
@@ -97,14 +98,13 @@ task('ispmanager:db-server-list', function () {
                 'version' => $dbServer['savedver']['$'],
             ];
 
-            if (!strpos ($dbServer['host']['$'], ':')) {
+            if (!strpos($dbServer['host']['$'], ':')) {
                 $dbHost = $dbServer['host']['$'] . ':3306';
-            }
-            else {
+            } else {
                 $dbHost = $dbServer['host']['$'];
             }
 
-            $hostList[$dbHost] =[
+            $hostList[$dbHost] = [
                 'host' => $dbHost,
                 'name' => $dbServer['name']['$'],
                 'version' => $dbServer['savedver']['$'],
@@ -118,14 +118,14 @@ task('ispmanager:db-server-list', function () {
     ]);
 });
 
-desc('Take databases list');
+desc('Takes databases list');
 task('ispmanager:db-list', function () {
     $response = ispmanagerRequest('get', [
         'func' => 'db',
     ]);
 
     $dbList = [];
-    if (isset ($response['doc']['elem']) && count ($response['doc']['elem']) > 0) {
+    if (isset ($response['doc']['elem']) && count($response['doc']['elem']) > 0) {
         foreach ($response['doc']['elem'] as $db) {
             $dbList[$db['pair']['$']] = [
                 'name' => $db['name']['$'],
@@ -140,14 +140,14 @@ task('ispmanager:db-list', function () {
     ]);
 });
 
-desc('Take domain list');
+desc('Takes domain list');
 task('ispmanager:domain-list', function () {
     $response = ispmanagerRequest('get', [
         'func' => 'webdomain',
     ]);
 
     $domainList = [];
-    if (isset ($response['doc']['elem']) && count ($response['doc']['elem']) > 0) {
+    if (isset ($response['doc']['elem']) && count($response['doc']['elem']) > 0) {
         foreach ($response['doc']['elem'] as $domain) {
             $domainList[] = $domain['name']['$'];
         }
@@ -156,18 +156,18 @@ task('ispmanager:domain-list', function () {
     add('ispmanager_domains', $domainList);
 });
 
-desc('Create new database');
+desc('Creates new database');
 task('ispmanager:db-create', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['createDatabase'])) {
-        warning ('Action for database create is not active');
+    if (is_null($config['createDatabase'])) {
+        warning('Action for database create is not active');
         return;
     }
 
     $dsnData = parse_url($config['createDatabase']['dsn']);
 
-    $dbInfo = get ('ispmanager_databases');
+    $dbInfo = get('ispmanager_databases');
 
     $hostInfo = NULL;
     foreach ($dbInfo['hosts'] as $hostData) {
@@ -177,20 +177,19 @@ task('ispmanager:db-create', function () {
         }
     }
 
-    if (is_null ($hostInfo)) {
+    if (is_null($hostInfo)) {
         throw new Exception('Incorrect DB host');
     }
 
-    $dbName = substr ($dsnData['path'], 1);
+    $dbName = substr($dsnData['path'], 1);
 
     $dbLocation = $dbName . '->' . $hostInfo['name'];
 
     if (isset ($dbInfo['dblist'][$dbLocation])) {
         if (!isset ($config['createDatabase']['skipIfExist']) || !$config['createDatabase']['skipIfExist']) {
             throw new Exception('Database already exists!');
-        }
-        else {
-            warning ('Database already exists - skipping');
+        } else {
+            warning('Database already exists - skipping');
             return true;
         }
     }
@@ -209,13 +208,11 @@ task('ispmanager:db-create', function () {
         $dbCreateRequest['username'] = $dbName;
 
         if ($dsnData['pass'] == '*') {
-            $dbCreateRequest['password'] = generatePassword (8);
-        }
-        else {
+            $dbCreateRequest['password'] = generatePassword(8);
+        } else {
             $dbCreateRequest['password'] = $dsnData['pass'];
         }
-    }
-    else {
+    } else {
         $dbCreateRequest['user'] = $dsnData['user'];
     }
 
@@ -224,22 +221,21 @@ task('ispmanager:db-create', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('Database successfully created');
+    } else {
+        info('Database successfully created');
     }
 });
 
-desc('Delete database');
+desc('Deletes database');
 task('ispmanager:db-delete', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['deleteDatabase'])) {
-        warning ('Action for database delete is not active');
+    if (is_null($config['deleteDatabase'])) {
+        warning('Action for database delete is not active');
         return;
     }
 
-    $dbInfo = get ('ispmanager_databases');
+    $dbInfo = get('ispmanager_databases');
     $dsnData = parse_url($config['deleteDatabase']['dsn']);
 
     $hostInfo = NULL;
@@ -250,20 +246,19 @@ task('ispmanager:db-delete', function () {
         }
     }
 
-    if (is_null ($hostInfo)) {
+    if (is_null($hostInfo)) {
         throw new Exception('Incorrect DB host');
     }
 
-    $dbName = substr ($dsnData['path'], 1);
+    $dbName = substr($dsnData['path'], 1);
 
     $dbLocation = $dbName . '->' . $hostInfo['name'];
 
     if (!isset ($dbInfo['dblist'][$dbLocation])) {
         if (!isset ($config['deleteDatabase']['skipIfNotExist']) || !$config['deleteDatabase']['skipIfNotExist']) {
             throw new Exception('Database not exist!');
-        }
-        else {
-            warning ('Database not exist - skipping');
+        } else {
+            warning('Database not exist - skipping');
             return true;
         }
     }
@@ -277,18 +272,17 @@ task('ispmanager:db-delete', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('Database successfully deleted');
+    } else {
+        info('Database successfully deleted');
     }
 });
 
-desc('Create new domain');
+desc('Creates new domain');
 task('ispmanager:domain-create', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['createDomain'])) {
-        warning ('Action for domain create is not active');
+    if (is_null($config['createDomain'])) {
+        warning('Action for domain create is not active');
         return;
     }
 
@@ -297,14 +291,13 @@ task('ispmanager:domain-create', function () {
     }
 
     // Check domain exists
-    $existDomains = get ('ispmanager_domains');
+    $existDomains = get('ispmanager_domains');
 
-    if (in_array ($config['createDomain']['name'], $existDomains)) {
+    if (in_array($config['createDomain']['name'], $existDomains)) {
         if (!isset ($config['createDomain']['skipIfExist']) || !$config['createDomain']['skipIfExist']) {
             throw new Exception('Domain already exists!');
-        }
-        else {
-            warning ('Domain already exists - skipping');
+        } else {
+            warning('Domain already exists - skipping');
             return true;
         }
     }
@@ -325,13 +318,12 @@ task('ispmanager:domain-create', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('Domain successfully created');
+    } else {
+        info('Domain successfully created');
     }
 });
 
-desc('Get allowed PHP modes and versions');
+desc('Gets allowed PHP modes and versions');
 task('ispmanager:get-php-list', function () {
     // Get www-root settings for fpm version
     $response = ispmanagerRequest('get', [
@@ -377,41 +369,37 @@ task('ispmanager:get-php-list', function () {
     add('ispmanager_phplist', $versions);
 });
 
-desc('Print allowed PHP modes and versions');
+desc('Prints allowed PHP modes and versions');
 task('ispmanager:print-php-list', function () {
     invoke('ispmanager:get-php-list');
 
     $versions = get('ispmanager_phplist');
-    writeln ("PHP versions: ");
+    writeln("PHP versions: ");
     writeln(str_repeat('*', 32));
     foreach ($versions as $versionKey => $versionData) {
         writeln('PHP ' . $versionData['name'] . ' (ID: ' . $versionKey . ')');
         writeln(str_repeat('*', 32));
         if (!$versionData['php_mode_mod']) {
             writeln('Apache module support (php_mode_mod) - <fg=red;options=bold>NO</>');
-        }
-        else {
+        } else {
             writeln('Apache module support (php_mode_mod) - <fg=green;options=bold>YES</>');
         }
 
         if (!$versionData['php_mode_cgi']) {
             writeln('CGI support (php_mode_cgi) - <fg=red;options=bold>NO</>');
-        }
-        else {
+        } else {
             writeln('CGI support (php_mode_cgi) - <fg=green;options=bold>YES</>');
         }
 
         if (!$versionData['php_mode_fcgi_apache']) {
             writeln('Apache fast-cgi support (php_mode_fcgi_apache) - <fg=red;options=bold>NO</>');
-        }
-        else {
+        } else {
             writeln('Apache fast-cgi support (php_mode_fcgi_apache) - <fg=green;options=bold>YES</>');
         }
 
         if (!$versionData['php_mode_fcgi_nginxfpm']) {
             writeln('nginx fast-cgi support (php_mode_fcgi_nginxfpm) - <fg=red;options=bold>NO</>');
-        }
-        else {
+        } else {
             writeln('nginx fast-cgi support (php_mode_fcgi_nginxfpm) - <fg=green;options=bold>YES</>');
         }
 
@@ -419,12 +407,12 @@ task('ispmanager:print-php-list', function () {
     }
 });
 
-desc('Switch PHP version for domain');
+desc('Switches PHP version for domain');
 task('ispmanager:domain-php-select', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['phpSelect'])) {
-        warning ('Action for domain update is not active');
+    if (is_null($config['phpSelect'])) {
+        warning('Action for domain update is not active');
         return;
     }
 
@@ -432,9 +420,9 @@ task('ispmanager:domain-php-select', function () {
         throw new Exception('Invalid domain name!');
     }
 
-    $existDomains = get ('ispmanager_domains');
+    $existDomains = get('ispmanager_domains');
 
-    if (!in_array ($config['phpSelect']['name'], $existDomains)) {
+    if (!in_array($config['phpSelect']['name'], $existDomains)) {
         throw new Exception('Domain not exist!');
     }
 
@@ -442,7 +430,7 @@ task('ispmanager:domain-php-select', function () {
         throw new Exception('Incorrect settings for select php version');
     }
 
-    $phpVersions = get ('ispmanager_phplist');
+    $phpVersions = get('ispmanager_phplist');
 
     $newVersion = $config['phpSelect']['version'];
     $newMode = $config['phpSelect']['mode'];
@@ -467,19 +455,15 @@ task('ispmanager:domain-php-select', function () {
 
     if ($newMode == 'php_mode_mod') {
         $domainUpdateRequest['php_apache_version'] = $newVersion;
-    }
-    elseif ($newMode == 'php_mode_cgi') {
+    } elseif ($newMode == 'php_mode_cgi') {
         $domainUpdateRequest['php_cgi_version'] = $newVersion;
-    }
-    elseif ($newMode == 'php_mode_fcgi_apache') {
+    } elseif ($newMode == 'php_mode_fcgi_apache') {
         $domainUpdateRequest['php_cgi_version'] = $newVersion;
         $domainUpdateRequest['php_apache_version'] = $newVersion;
-    }
-    elseif ($newMode == 'php_mode_fcgi_nginxfpm') {
+    } elseif ($newMode == 'php_mode_fcgi_nginxfpm') {
         $domainUpdateRequest['php_cgi_version'] = $newVersion;
         $domainUpdateRequest['php_fpm_version'] = $newVersion;
-    }
-    else {
+    } else {
         throw new Exception('Unknown PHP mode!');
     }
 
@@ -487,18 +471,17 @@ task('ispmanager:domain-php-select', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('PHP successfully selected');
+    } else {
+        info('PHP successfully selected');
     }
 });
 
-desc('Create new domain alias');
+desc('Creates new domain alias');
 task('ispmanager:domain-alias-create', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['createAlias'])) {
-        warning ('Action for alias create is not active');
+    if (is_null($config['createAlias'])) {
+        warning('Action for alias create is not active');
         return;
     }
 
@@ -506,9 +489,9 @@ task('ispmanager:domain-alias-create', function () {
         throw new Exception('Invalid domain name!');
     }
 
-    $existDomains = get ('ispmanager_domains');
+    $existDomains = get('ispmanager_domains');
 
-    if (!in_array ($config['createAlias']['name'], $existDomains)) {
+    if (!in_array($config['createAlias']['name'], $existDomains)) {
         throw new Exception('Domain not exist!');
     }
 
@@ -525,18 +508,17 @@ task('ispmanager:domain-alias-create', function () {
 
     $existAliases = [];
     if (isset ($response['doc']['aliases']['$'])) {
-        $existAliases = explode (' ', $response['doc']['aliases']['$']);
+        $existAliases = explode(' ', $response['doc']['aliases']['$']);
     }
 
     $newAliasList = [];
-    $createAliasList = explode (' ', $config['createAlias']['alias']);
+    $createAliasList = explode(' ', $config['createAlias']['alias']);
     foreach ($createAliasList as $createAlias) {
-        if (in_array ($createAlias, $existAliases)) {
+        if (in_array($createAlias, $existAliases)) {
             if (!isset ($config['createAlias']['skipIfExist']) || !$config['createAlias']['skipIfExist']) {
                 throw new Exception('Alias already exists!');
-            }
-            else {
-                warning ('Alias ' . $createAlias . ' already exists - skipping');
+            } else {
+                warning('Alias ' . $createAlias . ' already exists - skipping');
                 continue;
             }
         }
@@ -550,7 +532,7 @@ task('ispmanager:domain-alias-create', function () {
         'func' => 'webdomain.edit',
         'elid' => $config['createAlias']['name'],
         'name' => $config['createAlias']['name'],
-        'aliases' => implode (' ', $saveAliases),
+        'aliases' => implode(' ', $saveAliases),
         'sok' => 'ok',
     ];
 
@@ -558,18 +540,17 @@ task('ispmanager:domain-alias-create', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('Alias successfully created');
+    } else {
+        info('Alias successfully created');
     }
 });
 
-desc('Delete domain alias');
+desc('Deletes domain alias');
 task('ispmanager:domain-alias-delete', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['deleteAlias'])) {
-        warning ('Action for alias create is not active');
+    if (is_null($config['deleteAlias'])) {
+        warning('Action for alias create is not active');
         return;
     }
 
@@ -577,9 +558,9 @@ task('ispmanager:domain-alias-delete', function () {
         throw new Exception('Invalid domain name!');
     }
 
-    $existDomains = get ('ispmanager_domains');
+    $existDomains = get('ispmanager_domains');
 
-    if (!in_array ($config['deleteAlias']['name'], $existDomains)) {
+    if (!in_array($config['deleteAlias']['name'], $existDomains)) {
         throw new Exception('Domain not exist!');
     }
 
@@ -596,22 +577,21 @@ task('ispmanager:domain-alias-delete', function () {
 
     $existAliases = [];
     if (isset ($response['doc']['aliases']['$'])) {
-        $existAliases = explode (' ', $response['doc']['aliases']['$']);
+        $existAliases = explode(' ', $response['doc']['aliases']['$']);
     }
 
-    $deleteAliasList = explode (' ', $config['deleteAlias']['alias']);
+    $deleteAliasList = explode(' ', $config['deleteAlias']['alias']);
     foreach ($deleteAliasList as $deleteAlias) {
         if (!in_array($deleteAlias, $existAliases)) {
             if (!isset ($config['deleteAlias']['skipIfNotExist']) || !$config['deleteAlias']['skipIfNotExist']) {
                 throw new Exception('Alias not exist!');
-            }
-            else {
-                warning ('Alias ' . $deleteAlias . ' not exist - skipping');
+            } else {
+                warning('Alias ' . $deleteAlias . ' not exist - skipping');
                 continue;
             }
         }
 
-        if (($index = array_search ($deleteAlias, $existAliases))!== FALSE){
+        if (($index = array_search($deleteAlias, $existAliases)) !== FALSE) {
             unset ($existAliases[$index]);
         }
     }
@@ -620,7 +600,7 @@ task('ispmanager:domain-alias-delete', function () {
         'func' => 'webdomain.edit',
         'elid' => $config['deleteAlias']['name'],
         'name' => $config['deleteAlias']['name'],
-        'aliases' => implode (' ', $existAliases),
+        'aliases' => implode(' ', $existAliases),
         'sok' => 'ok',
     ];
 
@@ -628,18 +608,17 @@ task('ispmanager:domain-alias-delete', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('Alias successfully deleted');
+    } else {
+        info('Alias successfully deleted');
     }
 });
 
-desc('Delete domain');
+desc('Deletes domain');
 task('ispmanager:domain-delete', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (is_null ($config['deleteDomain'])) {
-        warning ('Action for domain delete is not active');
+    if (is_null($config['deleteDomain'])) {
+        warning('Action for domain delete is not active');
         return;
     }
 
@@ -648,14 +627,13 @@ task('ispmanager:domain-delete', function () {
     }
 
     // Check domain exists
-    $existDomains = get ('ispmanager_domains');
+    $existDomains = get('ispmanager_domains');
 
-    if (!in_array ($config['deleteDomain']['name'], $existDomains)) {
+    if (!in_array($config['deleteDomain']['name'], $existDomains)) {
         if (!isset ($config['deleteDomain']['skipIfNotExist']) || !$config['deleteDomain']['skipIfNotExist']) {
             throw new Exception('Domain not exist!');
-        }
-        else {
-            warning ('Domain not exist - skipping');
+        } else {
+            warning('Domain not exist - skipping');
             return true;
         }
     }
@@ -669,8 +647,7 @@ task('ispmanager:domain-delete', function () {
 
     if (!isset ($config['deleteDomain']['removeDir']) || !$config['deleteDomain']['removeDir']) {
         $domainDeleteRequest['remove_directory'] = 'off';
-    }
-    else {
+    } else {
         $domainDeleteRequest['remove_directory'] = 'on';
     }
 
@@ -678,75 +655,74 @@ task('ispmanager:domain-delete', function () {
 
     if (isset ($response['doc']['error']['msg']['$'])) {
         throw new Exception($response['doc']['error']['msg']['$']);
-    }
-    else {
-        info ('Domain successfully deleted');
+    } else {
+        info('Domain successfully deleted');
     }
 });
 
 desc('Auto task processing');
 task('ispmanager:process', function () {
-    $config = get ('ispmanager');
+    $config = get('ispmanager');
 
-    if (!is_null ($config['createDatabase'])) {
+    if (!is_null($config['createDatabase'])) {
         invoke('ispmanager:db-create');
     }
 
-    if (!is_null ($config['deleteDatabase'])) {
+    if (!is_null($config['deleteDatabase'])) {
         invoke('ispmanager:db-delete');
     }
 
-    if (!is_null ($config['createDomain'])) {
+    if (!is_null($config['createDomain'])) {
         invoke('ispmanager:domain-create');
     }
 
-    if (!is_null ($config['deleteDomain'])) {
+    if (!is_null($config['deleteDomain'])) {
         invoke('ispmanager:domain-delete');
     }
 
-    if (!is_null ($config['phpSelect'])) {
+    if (!is_null($config['phpSelect'])) {
         invoke('ispmanager:domain-php-select');
     }
 
-    if (!is_null ($config['createAlias'])) {
+    if (!is_null($config['createAlias'])) {
         invoke('ispmanager:domain-alias-create');
     }
 
-    if (!is_null ($config['deleteAlias'])) {
+    if (!is_null($config['deleteAlias'])) {
         invoke('ispmanager:domain-alias-delete');
     }
 });
 
-function ispmanagerRequest ($method, $requestData) {
-    $config = get ('ispmanager');
+function ispmanagerRequest($method, $requestData)
+{
+    $config = get('ispmanager');
     $dsnData = parse_url($config['api']['dsn']);
 
     $requestUrl = $dsnData['scheme'] . '://' . $dsnData['host'] . ':' . $dsnData['port'] . $dsnData['path'];
 
     if ($config['api']['secure'] && get('ispmanager_session') == '') {
-        ispmanagerAuthRequest ($requestUrl, $dsnData['user'], $dsnData['pass']);
+        ispmanagerAuthRequest($requestUrl, $dsnData['user'], $dsnData['pass']);
     }
 
     if ($method == 'post') {
         return Httpie::post($requestUrl)
-            ->formBody (prepareRequest($requestData))
+            ->formBody(prepareRequest($requestData))
             ->setopt(CURLOPT_SSL_VERIFYPEER, false)
             ->setopt(CURLOPT_SSL_VERIFYHOST, false)
             ->getJson();
-    }
-    elseif ($method == 'get') {
+    } elseif ($method == 'get') {
         return Httpie::get($requestUrl)
             ->query(prepareRequest($requestData))
             ->setopt(CURLOPT_SSL_VERIFYPEER, false)
             ->setopt(CURLOPT_SSL_VERIFYHOST, false)
             ->getJson();
-    }
-    else {
+    } else {
         throw new Exception('Unknown request method');
     }
 }
 
-function ispmanagerAuthRequest ($url, $login, $pass) {
+function ispmanagerAuthRequest($url, $login, $pass)
+{
     $authRequestData = [
         'func' => 'auth',
         'username' => $login,
@@ -756,19 +732,19 @@ function ispmanagerAuthRequest ($url, $login, $pass) {
     $responseData = Httpie::post($url)
         ->setopt(CURLOPT_SSL_VERIFYPEER, false)
         ->setopt(CURLOPT_SSL_VERIFYHOST, false)
-        ->formBody (prepareRequest($authRequestData))
+        ->formBody(prepareRequest($authRequestData))
         ->getJson();
 
     if (isset ($responseData['doc']['auth']['$id'])) {
         set('ispmanager_session', $responseData['doc']['auth']['$id']);
-    }
-    else {
+    } else {
         throw new Exception('Error while create auth session');
     }
 }
 
-function prepareRequest ($requestData) {
-    $config = get ('ispmanager');
+function prepareRequest($requestData)
+{
+    $config = get('ispmanager');
     $dsnData = parse_url($config['api']['dsn']);
 
     if (!isset ($requestData['out'])) {
@@ -777,8 +753,7 @@ function prepareRequest ($requestData) {
 
     if (!$config['api']['secure']) {
         $requestData['authinfo'] = $dsnData['user'] . ':' . $dsnData['pass'];
-    }
-    else {
+    } else {
         if (get('ispmanager_session') != '') {
             $requestData['auth'] = get('ispmanager_session');
         }
@@ -787,8 +762,9 @@ function prepareRequest ($requestData) {
     return $requestData;
 }
 
-function generatePassword ($lenght) {
-    return substr (md5(uniqid()), 0, $lenght);
+function generatePassword($lenght)
+{
+    return substr(md5(uniqid()), 0, $lenght);
 }
 
 // Callbacks before actions under domains

@@ -207,7 +207,7 @@ __DIR__
 ### rsync:warmup
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L207)
 
-Warmup remote Rsync target.
+Warmups remote Rsync target.
 
 
 

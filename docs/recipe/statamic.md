@@ -23,7 +23,7 @@
 ### statamic:addons:discover
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L26)
 
-Rebuild the cached addon package manifest.
+Rebuilds the cached addon package manifest.
 
 
 
@@ -31,7 +31,7 @@ Rebuild the cached addon package manifest.
 ### statamic:assets:generate-presets
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L33)
 
-Generate asset preset manipulations.
+Generates asset preset manipulations.
 
 
 
@@ -39,7 +39,7 @@ Generate asset preset manipulations.
 ### statamic:assets:meta
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L36)
 
-Generate asset metadata files.
+Generates asset metadata files.
 
 
 
@@ -55,7 +55,7 @@ Git add and commit tracked content.
 ### statamic:glide:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L50)
 
-Clear the Glide image cache.
+Clears the Glide image cache.
 
 
 
@@ -63,7 +63,7 @@ Clear the Glide image cache.
 ### statamic:responsive:generate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L57)
 
-Generate responsive images.
+Generates responsive images.
 
 
 
@@ -79,7 +79,7 @@ Regenerate responsive images.
 ### statamic:search:insert
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L67)
 
-Insert an item into its search indexes.
+Inserts an item into its search indexes.
 
 
 
@@ -95,7 +95,7 @@ Update a search index.
 ### statamic:stache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L77)
 
-Clear the "Stache" cache.
+Clears the "Stache" cache.
 
 
 
@@ -111,7 +111,7 @@ Diagnose any problems with the Stache.
 ### statamic:stache:refresh
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L83)
 
-Clear and rebuild the "Stache" cache.
+Clears and rebuild the "Stache" cache.
 
 
 
@@ -119,7 +119,7 @@ Clear and rebuild the "Stache" cache.
 ### statamic:stache:warm
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L86)
 
-Build the "Stache" cache.
+Builds the "Stache" cache.
 
 
 
@@ -127,7 +127,7 @@ Build the "Stache" cache.
 ### statamic:static:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L93)
 
-Clear the static page cache.
+Clears the static page cache.
 
 
 
@@ -151,7 +151,7 @@ Outputs details helpful for support requests.
 ### statamic:updates:run
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L110)
 
-Run update scripts from specific version.
+Runs update scripts from specific version.
 
 
 
@@ -159,7 +159,7 @@ Run update scripts from specific version.
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L118)
 
-Deploy your project.
+Deploys your project.
 
 
 

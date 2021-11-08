@@ -6,7 +6,7 @@ set('use_atomic_symlink', function () {
     return commandSupportsOption('mv', '--no-target-directory');
 });
 
-desc('Creating symlink to release');
+desc('Creates symlink to release');
 task('deploy:symlink', function () {
     if (get('use_atomic_symlink')) {
         run("mv -T {{deploy_path}}/release {{current_path}}");

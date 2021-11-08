@@ -206,7 +206,7 @@ null
 ### rocketchat:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L91)
 
-Notify RocketChat.
+Notifies RocketChat.
 
 
 
@@ -214,7 +214,7 @@ Notify RocketChat.
 ### rocketchat:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L121)
 
-Notifying RocketChat about deploy finish.
+Notifies RocketChat about deploy finish.
 
 
 
@@ -222,7 +222,7 @@ Notifying RocketChat about deploy finish.
 ### rocketchat:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L151)
 
-Notifying RocketChat about deploy failure.
+Notifies RocketChat about deploy failure.
 
 
 

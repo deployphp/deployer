@@ -175,7 +175,7 @@ Color of attachment
 ### slack:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L99)
 
-Notifying Slack.
+Notifies Slack.
 
 
 
@@ -183,7 +183,7 @@ Notifying Slack.
 ### slack:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L119)
 
-Notifying Slack about deploy finish.
+Notifies Slack about deploy finish.
 
 
 
@@ -191,7 +191,7 @@ Notifying Slack about deploy finish.
 ### slack:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L139)
 
-Notifying Slack about deploy failure.
+Notifies Slack about deploy failure.
 
 
 
@@ -199,7 +199,7 @@ Notifying Slack about deploy failure.
 ### slack:notify:rollback
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L159)
 
-Notifying Slack about rollback.
+Notifies Slack about rollback.
 
 
 

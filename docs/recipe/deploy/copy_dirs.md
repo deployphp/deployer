@@ -22,7 +22,7 @@ For example you can copy `node_modules` to speedup npm install.
 ### deploy:copy_dirs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/copy_dirs.php#L9)
 
-Copy directories.
+Copies directories.
 
 
 

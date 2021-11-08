@@ -24,7 +24,7 @@ Node.js version from https://github.com/nodesource/distributions.
 ### provision:npm
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L8)
 
-Install npm packages.
+Installs npm packages.
 
 
 

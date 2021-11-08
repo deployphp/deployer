@@ -52,7 +52,7 @@ Magento writable dirs
 ### deploy:cache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L25)
 
-Clear cache.
+Clears cache.
 
 Clear cache
 
@@ -68,7 +68,7 @@ Remove files that can be used to compromise Magento
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L46)
 
-Deploy your project.
+Deploys your project.
 
 Main task
 

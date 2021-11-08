@@ -6,7 +6,7 @@ use Deployer\Exception\GracefulShutdownException;
 
 // Cancel deployment if there would be no change to the codebase.
 // This avoids unnecessary releases if the latest commit has already been deployed.
-desc('Check remote head');
+desc('Checks remote head');
 task('deploy:check_remote', function () {
     $repository = get('repository');
 

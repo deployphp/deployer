@@ -24,7 +24,7 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
-desc('Notifying Bugsnag of deployment');
+desc('Notifies Bugsnag of deployment');
 task('bugsnag:notify', function () {
     $data = [
         'apiKey'       => get('bugsnag_api_key'),

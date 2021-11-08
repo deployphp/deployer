@@ -57,7 +57,7 @@ but fallback to the current path otherwise.
 ### deploy:release
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L90)
 
-Prepare release.
+Prepares release.
 
 Clean up unfinished releases and prepare next release
 
@@ -65,7 +65,7 @@ Clean up unfinished releases and prepare next release
 ### releases
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L157)
 
-Show releases list.
+Shows releases list.
 
 Example output:
 ```

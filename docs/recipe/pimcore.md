@@ -15,7 +15,7 @@
 ### pimcore:rebuild-classes
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L13)
 
-Rebuild Pimcore Classes.
+Rebuilds Pimcore Classes.
 
 
 
@@ -23,7 +23,7 @@ Rebuild Pimcore Classes.
 ### pimcore:custom-layouts-rebuild
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L18)
 
-Create Custom Layouts.
+Creates Custom Layouts.
 
 
 

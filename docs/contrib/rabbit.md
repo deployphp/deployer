@@ -62,7 +62,7 @@ before('deploy:end', 'deploy:rabbit');
 ### deploy:rabbit
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rabbit.php#L58)
 
-Notifying RabbitMQ channel about deployment.
+Notifies RabbitMQ channel about deployment.
 
 
 

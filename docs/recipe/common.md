@@ -171,7 +171,7 @@ The deploy target: a branch, a tag or a revision.
 ### deploy:prepare
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L162)
 
-Prepare a new release.
+Prepares a new release.
 
 
 
@@ -189,7 +189,7 @@ This task is group task which contains next tasks:
 ### deploy:publish
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L173)
 
-Publish the release.
+Publishes the release.
 
 
 
@@ -218,10 +218,10 @@ Hook on deploy failure.
 
 
 ### logs:app
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L202)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L204)
 
-Show application logs.
+Shows application logs.
 
-Follow latest application logs.
+Follows latest application logs.
 
 

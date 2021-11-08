@@ -136,7 +136,7 @@ task('sw:deploy', [
     'sw:cache:clear',
 ]);
 
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'sw:deploy',

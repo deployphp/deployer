@@ -13,7 +13,7 @@
 ### deploy:check_remote
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/check_remote.php#L10)
 
-Check remote head.
+Checks remote head.
 
 Cancel deployment if there would be no change to the codebase.
 This avoids unnecessary releases if the latest commit has already been deployed.

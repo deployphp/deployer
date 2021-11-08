@@ -75,12 +75,12 @@ EOF;
     info("Website $domain configured!");
 })->limit(1);
 
-desc('Show caddy logs');
+desc('Shows caddy logs');
 task('logs:caddy', function () {
     run('tail -f {{deploy_path}}/log/access.log');
 })->verbose();
 
-desc('Show caddy syslog');
+desc('Shows caddy syslog');
 task('logs:caddy:syslog', function () {
     run('sudo journalctl -u caddy -f');
 })->verbose();

@@ -70,7 +70,7 @@ This task is group task which contains next tasks:
 ### provision:check
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L38)
 
-Check pre-required state.
+Checks pre-required state.
 
 
 
@@ -78,7 +78,7 @@ Check pre-required state.
 ### provision:configure
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L57)
 
-Collect required params.
+Collects required params.
 
 
 
@@ -86,7 +86,7 @@ Collect required params.
 ### provision:update
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L80)
 
-Add repositories and update.
+Adds repositories and update.
 
 
 
@@ -94,7 +94,7 @@ Add repositories and update.
 ### provision:upgrade
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L102)
 
-Upgrade all packages.
+Upgrades all packages.
 
 
 
@@ -102,7 +102,7 @@ Upgrade all packages.
 ### provision:install
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L109)
 
-Install packages.
+Installs packages.
 
 
 
@@ -110,7 +110,7 @@ Install packages.
 ### provision:server
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L142)
 
-Configure server.
+Configures a server.
 
 
 
@@ -118,7 +118,7 @@ Configure server.
 ### provision:ssh
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L203)
 
-Configure SSH.
+Configures the ssh.
 
 
 
@@ -126,7 +126,7 @@ Configure SSH.
 ### provision:deployer
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L222)
 
-Setup deployer user.
+Setups a deployer user.
 
 
 
@@ -134,7 +134,7 @@ Setup deployer user.
 ### provision:firewall
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L269)
 
-Setup firewall.
+Setups a firewall.
 
 
 
@@ -142,7 +142,7 @@ Setup firewall.
 ### provision:verify
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L277)
 
-Verify what provision was successful.
+Verifies what provision was successful.
 
 
 

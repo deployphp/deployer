@@ -1,9 +1,7 @@
 <?php
 namespace Deployer;
 
-use Deployer\Exception\Exception;
-
-desc('Preparing host for deploy');
+desc('Prepares host for deploy');
 task('deploy:setup', function () {
     run(<<<EOF
 [ -d {{deploy_path}} ] || mkdir -p {{deploy_path}};

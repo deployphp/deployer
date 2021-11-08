@@ -13,7 +13,7 @@ set('typo3_webroot', 'Web');
 /**
  * Main TYPO3 task
  */
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

@@ -45,7 +45,7 @@ Can we one of:
 ### deploy:update_code
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L30)
 
-Update code.
+Updates code.
 
 Update code at [release_path](/docs/recipe/deploy/release.md#release_path) on host.
 

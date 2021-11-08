@@ -32,7 +32,7 @@ use Deployer\Utility\Httpie;
 
 set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
 
-desc('Notifying Rollbar of deployment');
+desc('Notifies Rollbar of deployment');
 task('rollbar:notify', function () {
     if (!get('rollbar_token', false)) {
         return;

@@ -60,7 +60,7 @@ after('deploy', 'newrelic:notify');
 ### newrelic:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L43)
 
-Notifying New Relic of deployment.
+Notifies New Relic of deployment.
 
 
 

@@ -24,70 +24,6 @@ require 'contrib/directadmin.php';
     - `domain_php` – Enable PHP, options: ON/OFF, default: ON (optional when using directadmin:createdb)
     - `domain_php_version` – Domain PHP Version, default: 1 (required when using directadmin:php-version)
 
-### Usage
-
-A complete example with configs, staging and deployment
-
-```
-<?php
-namespace Deployer;
-
-require 'recipe/directadmin.php';
-
-// Project name
-set('application', 'myproject.com');
-// Project repository
-set('repository', 'git@github.com:myorg/myproject.com');
-
-// DirectAdmin config
-set('directadmin', [
-    'host' => 'example.com',
-    'scheme' => 'https', // Optional
-    'port' => 2222, // Optional
-    'username' => 'admin',
-    'password' => 'Test1234' // It is recommended to use login keys!
-]);
-
-add('directadmin', [
-    'db_name' => 'website',
-    'db_user' => 'website',
-    'db_password' => 'Test1234',
-
-    'domain_name' => 'test.example.com'
-]);
-
-
-host('example.com')
-    ->stage('review')
-    ->user('admin')
-    ->set('deploy_path', '~/domains/test.example.com/repository')
-
-
-// Tasks
-desc('Create directadmin domain and database');
-task('directadmin:prepare', [
-    'directadmin:createdomain',
-    'directadmin:symlink-private-html',
-    'directadmin:createdb',
-])->onStage('review');
-
-task('deploy', [
-    'deploy:info',
-    'directadmin:prepare',
-    'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
-    'deploy:shared',
-    'deploy:vendors',
-    'deploy:writable',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
-    'success'
-])->desc('Deploy your project');
-```
-
  */
 namespace Deployer;
 use Deployer\Task\Context;
@@ -142,7 +78,7 @@ function DirectAdmin(string $action, array $data = [])
     }
 }
 
-desc('Create a database on DirectAdmin');
+desc('Creates a database on DirectAdmin');
 task('directadmin:createdb', function () {
     $config = getDirectAdminConfig();
 
@@ -162,7 +98,7 @@ task('directadmin:createdb', function () {
     ]);
 });
 
-desc('Delete a database on DirectAdmin');
+desc('Deletes a database on DirectAdmin');
 task('directadmin:deletedb', function () {
     $config = getDirectAdminConfig();
 
@@ -177,7 +113,7 @@ task('directadmin:deletedb', function () {
     ]);
 });
 
-desc('Create a domain on DirectAdmin');
+desc('Creates a domain on DirectAdmin');
 task('directadmin:createdomain', function () {
     $config = getDirectAdminConfig();
 
@@ -195,7 +131,7 @@ task('directadmin:createdomain', function () {
     ]);
 });
 
-desc('Delete a domain on DirectAdmin');
+desc('Deletes a domain on DirectAdmin');
 task('directadmin:deletedomain', function () {
     $config = getDirectAdminConfig();
 
@@ -227,7 +163,7 @@ task('directadmin:symlink-private-html', function () {
     ]);
 });
 
-desc('Change the PHP version from a domain');
+desc('Changes the PHP version from a domain');
 task('directadmin:php-version', function () {
     $config = getDirectAdminConfig();
 

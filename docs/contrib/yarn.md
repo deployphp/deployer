@@ -41,7 +41,7 @@ after('deploy:update_code', 'yarn:install');
 ### yarn:install
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L29)
 
-Install Yarn packages.
+Installs Yarn packages.
 
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
 

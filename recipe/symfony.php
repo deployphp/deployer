@@ -31,7 +31,7 @@ set('console_options', function () {
     return '--no-interaction';
 });
 
-desc('Migrate database');
+desc('Migrates database');
 task('database:migrate', function () {
     $options = '--allow-no-migration';
     if (get('migrations_config') !== '') {
@@ -41,7 +41,7 @@ task('database:migrate', function () {
     run("cd {{release_or_current_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
 });
 
-desc('Clear cache');
+desc('Clears cache');
 task('deploy:cache:clear', function () {
     // composer install scripts usually clear and warmup symfony cache
     // so we only need to do it if composer install was run with --no-scripts
@@ -50,7 +50,7 @@ task('deploy:cache:clear', function () {
     }
 });
 
-desc('Deploy project');
+desc('Deploys project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

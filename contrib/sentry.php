@@ -67,7 +67,7 @@ use Closure;
 use DateTime;
 use Deployer\Utility\Httpie;
 
-desc('Notifying Sentry of deployment');
+desc('Notifies Sentry of deployment');
 task(
     'deploy:sentry',
     static function () {

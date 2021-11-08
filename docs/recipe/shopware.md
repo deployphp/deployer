@@ -168,7 +168,7 @@ This task is group task which contains next tasks:
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L140)
 
-Deploy your project.
+Deploys your project.
 
 
 

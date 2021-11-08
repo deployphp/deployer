@@ -22,17 +22,17 @@ set('statamic_version', function () {
  * Addons
  */
 
-desc('Rebuild the cached addon package manifest');
+desc('Rebuilds the cached addon package manifest');
 task('statamic:addons:discover', artisan('statamic:addons:discover'));
 
 /*
  * Assets
  */
 
-desc('Generate asset preset manipulations');
+desc('Generates asset preset manipulations');
 task('statamic:assets:generate-presets', artisan('statamic:assets:generate-presets'));
 
-desc('Generate asset metadata files');
+desc('Generates asset metadata files');
 task('statamic:assets:meta', artisan('statamic:assets:meta'));
 
 /*
@@ -46,14 +46,14 @@ task('statamic:git:commit', artisan('statamic:git:commit'));
  * Glide
  */
 
-desc('Clear the Glide image cache');
+desc('Clears the Glide image cache');
 task('statamic:glide:clear', artisan('statamic:glide:clear'));
 
 /*
  * Responsive Images (not in the core)
  */
 
-desc('Generate responsive images');
+desc('Generates responsive images');
 task('statamic:responsive:generate', artisan('statamic:responsive:generate'));
 
 desc('Regenerate responsive images');
@@ -63,7 +63,7 @@ task('statamic:responsive:regenerate', artisan('statamic:responsive:regenerate')
  * Search
  */
 
-desc('Insert an item into its search indexes');
+desc('Inserts an item into its search indexes');
 task('statamic:search:insert', artisan('statamic:search:insert'));
 
 desc('Update a search index');
@@ -73,23 +73,23 @@ task('statamic:search:update', artisan('statamic:search:update'));
  * Stache
  */
 
-desc('Clear the "Stache" cache');
+desc('Clears the "Stache" cache');
 task('statamic:stache:clear', artisan('statamic:stache:clear'));
 
 desc('Diagnose any problems with the Stache');
 task('statamic:stache:doctor', artisan('statamic:stache:doctor'));
 
-desc('Clear and rebuild the "Stache" cache');
+desc('Clears and rebuild the "Stache" cache');
 task('statamic:stache:refresh', artisan('statamic:stache:refresh'));
 
-desc('Build the "Stache" cache');
+desc('Builds the "Stache" cache');
 task('statamic:stache:warm', artisan('statamic:stache:warm'));
 
 /*
  * Static
  */
 
-desc('Clear the static page cache');
+desc('Clears the static page cache');
 task('statamic:static:clear', artisan('statamic:static:clear'));
 
 desc('Warms the static cache by visiting all URLs');
@@ -106,7 +106,7 @@ task('statamic:support:details', artisan('statamic:support:details'));
  * Updated
  */
 
-desc('Run update scripts from specific version');
+desc('Runs update scripts from specific version');
 task('statamic:updates:run', artisan('statamic:updates:run'));
 
 /*
@@ -114,7 +114,7 @@ task('statamic:updates:run', artisan('statamic:updates:run'));
  * will overwrite the Laravel default.
  */
 
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

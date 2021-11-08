@@ -88,7 +88,7 @@ task('discord_send_message', function(){
 });
 
 // Tasks
-desc('Just notify your Discord channel with all messages, without deploying');
+desc('Tests messages');
 task('discord:test', function () {
     set('discord_message', 'discord_notify_text');
     invoke('discord_send_message');
@@ -100,7 +100,7 @@ task('discord:test', function () {
     ->once()
     ->shallow();
 
-desc('Notify Discord');
+desc('Notifies Discord');
 task('discord:notify', function () {
     set('discord_message', 'discord_notify_text');
     invoke('discord_send_message');
@@ -109,7 +109,7 @@ task('discord:notify', function () {
     ->shallow()
     ->isHidden();
 
-desc('Notify Discord about deploy finish');
+desc('Notifies Discord about deploy finish');
 task('discord:notify:success', function () {
     set('discord_message', 'discord_success_text');
     invoke('discord_send_message');
@@ -118,7 +118,7 @@ task('discord:notify:success', function () {
     ->shallow()
     ->isHidden();
 
-desc('Notify Discord about deploy failure');
+desc('Notifies Discord about deploy failure');
 task('discord:notify:failure', function () {
     set('discord_message', 'discord_failure_text');
     invoke('discord_send_message');

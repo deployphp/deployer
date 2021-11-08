@@ -58,7 +58,7 @@ Silverstripe cli script
 ### silverstripe:build
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L47)
 
-Run /dev/build.
+Runs /dev/build.
 
 Helper tasks
 
@@ -66,7 +66,7 @@ Helper tasks
 ### silverstripe:buildflush
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L52)
 
-Run /dev/build?flush=all.
+Runs /dev/build?flush=all.
 
 
 
@@ -74,7 +74,7 @@ Run /dev/build?flush=all.
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/silverstripe.php#L60)
 
-Deploy your project.
+Deploys your project.
 
 Main task
 

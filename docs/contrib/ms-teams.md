@@ -153,7 +153,7 @@ Color of attachment
 ### teams:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L93)
 
-Notifying Teams.
+Notifies Teams.
 
 
 
@@ -161,7 +161,7 @@ Notifying Teams.
 ### teams:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L108)
 
-Notifying Teams about deploy finish.
+Notifies Teams about deploy finish.
 
 
 
@@ -169,7 +169,7 @@ Notifying Teams about deploy finish.
 ### teams:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L123)
 
-Notifying Teams about deploy failure.
+Notifies Teams about deploy failure.
 
 
 

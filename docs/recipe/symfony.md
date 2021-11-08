@@ -89,7 +89,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ### database:migrate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
 
-Migrate database.
+Migrates database.
 
 
 
@@ -97,7 +97,7 @@ Migrate database.
 ### deploy:cache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L45)
 
-Clear cache.
+Clears cache.
 
 
 
@@ -105,7 +105,7 @@ Clear cache.
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L54)
 
-Deploy project.
+Deploys project.
 
 
 

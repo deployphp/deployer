@@ -40,7 +40,7 @@ Yii writable dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L18)
 
-Deploy your project.
+Deploys your project.
 
 Main task
 

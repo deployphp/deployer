@@ -21,7 +21,7 @@ set('writable_dirs', ['var', 'media']);
 /**
  * Clear cache
  */
-desc('Clear cache');
+desc('Clears cache');
 task('deploy:cache:clear', function () {
     run("cd {{release_or_current_path}} && php -r \"require_once 'app/Mage.php'; umask(0); Mage::app()->cleanCache();\"");
 });
@@ -42,7 +42,7 @@ after('deploy:update_code', 'deploy:clear_version');
 /**
  * Main task
  */
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:cache:clear',

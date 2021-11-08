@@ -85,8 +85,7 @@ set('telegram_success_text', 'Deploy to *{{target}}* successful');
 set('telegram_failure_text', 'Deploy to *{{target}}* failed');
 
 
-desc('Notifying Telegram');
-
+desc('Notifies Telegram');
 task('telegram:notify', function () {
     if (!get('telegram_token', false)) {
         return;
@@ -116,7 +115,7 @@ task('telegram:notify', function () {
     ->shallow()
     ->hidden();
 
-  desc('Notifying Telegram about deploy finish');
+  desc('Notifies Telegram about deploy finish');
   task('telegram:notify:success', function () {
       if (!get('telegram_token', false)) {
           return;
@@ -146,7 +145,7 @@ task('telegram:notify', function () {
     ->shallow()
     ->hidden();
 
-  desc('Notifying Telegram about deploy failure');
+  desc('Notifies Telegram about deploy failure');
   task('telegram:notify:failure', function () {
       if (!get('telegram_token', false)) {
           return;

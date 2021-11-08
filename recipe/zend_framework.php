@@ -8,7 +8,7 @@ add('recipes', ['zend_framework']);
 /**
  * Main task
  */
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

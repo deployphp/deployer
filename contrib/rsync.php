@@ -203,7 +203,7 @@ set('rsync_options', function () {
 });
 
 
-desc('Warmup remote Rsync target');
+desc('Warmups remote Rsync target');
 task('rsync:warmup', function() {
     $config = get('rsync');
 

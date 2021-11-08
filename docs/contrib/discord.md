@@ -113,7 +113,7 @@ Helpers
 ### discord:test
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L92)
 
-Just notify your Discord channel with all messages, without deploying.
+Tests messages.
 
 Tasks
 
@@ -121,7 +121,7 @@ Tasks
 ### discord:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L104)
 
-Notify Discord.
+Notifies Discord.
 
 
 
@@ -129,7 +129,7 @@ Notify Discord.
 ### discord:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L113)
 
-Notify Discord about deploy finish.
+Notifies Discord about deploy finish.
 
 
 
@@ -137,7 +137,7 @@ Notify Discord about deploy finish.
 ### discord:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L122)
 
-Notify Discord about deploy failure.
+Notifies Discord about deploy failure.
 
 
 

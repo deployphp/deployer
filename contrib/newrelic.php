@@ -39,7 +39,7 @@ set('newrelic_revision', function () {
     return runLocally('git log -n 1 --format="%h"');
 });
 
-desc('Notifying New Relic of deployment');
+desc('Notifies New Relic of deployment');
 task('newrelic:notify', function () {
     if (($appId = get('newrelic_app_id')) && ($apiKey = get('newrelic_api_key'))) {
         $data = [

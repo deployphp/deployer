@@ -52,7 +52,7 @@ after('deploy', 'rollbar:notify');
 ### rollbar:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L36)
 
-Notifying Rollbar of deployment.
+Notifies Rollbar of deployment.
 
 
 

@@ -119,7 +119,7 @@ Deploy message
 ### yammer:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L76)
 
-Notifying Yammer.
+Notifies Yammer.
 
 
 
@@ -127,7 +127,7 @@ Notifying Yammer.
 ### yammer:notify:success
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L96)
 
-Notifying Yammer about deploy finish.
+Notifies Yammer about deploy finish.
 
 
 
@@ -135,7 +135,7 @@ Notifying Yammer about deploy finish.
 ### yammer:notify:failure
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L116)
 
-Notifying Yammer about deploy failure.
+Notifies Yammer about deploy failure.
 
 
 

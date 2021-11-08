@@ -150,7 +150,7 @@ function phinx_get_allowed_config($allowedOptions) {
 }
 
 
-desc('Migrating database with phinx');
+desc('Migrats database with phinx');
 task('phinx:migrate', function () {
     $ALLOWED_OPTIONS = [
         'configuration',
@@ -172,7 +172,7 @@ task('phinx:migrate', function () {
 }
 );
 
-desc('Rollback database migrations with phinx');
+desc('Rollbacks database migrations with phinx');
 task('phinx:rollback', function () {
     $ALLOWED_OPTIONS = [
         'configuration',
@@ -194,7 +194,7 @@ task('phinx:rollback', function () {
 }
 );
 
-desc('Seed database with phinx');
+desc('Seeds database with phinx');
 task('phinx:seed', function () {
     $ALLOWED_OPTIONS = [
         'configuration',
@@ -215,7 +215,7 @@ task('phinx:seed', function () {
 }
 );
 
-desc('Set a migrations breakpoint with phinx');
+desc('Sets a migrations breakpoint with phinx');
 task('phinx:breakpoint', function () {
     $ALLOWED_OPTIONS = [
         'configuration',

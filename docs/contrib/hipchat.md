@@ -82,7 +82,7 @@ after('deploy', 'hipchat:notify');
 ### hipchat:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L39)
 
-Notifying Hipchat channel of deployment.
+Notifies Hipchat channel of deployment.
 
 
 

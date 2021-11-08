@@ -51,7 +51,7 @@ after('deploy:success', 'grafana:annotation');
 ### grafana:annotation
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/grafana.php#L45)
 
-Create Grafana annotation of deployment.
+Creates Grafana annotation of deployment.
 
 
 

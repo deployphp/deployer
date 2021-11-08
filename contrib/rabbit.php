@@ -54,7 +54,7 @@ use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 
-desc('Notifying RabbitMQ channel about deployment');
+desc('Notifies RabbitMQ channel about deployment');
 task('deploy:rabbit', function () {
 
     if (!class_exists('PhpAmqpLib\Connection\AMQPConnection')) {

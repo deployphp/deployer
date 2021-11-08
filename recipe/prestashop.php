@@ -34,7 +34,7 @@ set('writable_dirs', [
     'themes/default-bootstrap/cache',
 ]);
 
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
         'deploy:prepare',
         'deploy:vendors',

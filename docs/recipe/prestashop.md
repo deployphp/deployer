@@ -77,7 +77,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/prestashop.php#L38)
 
-Deploy your project.
+Deploys your project.
 
 
 

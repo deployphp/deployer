@@ -35,7 +35,7 @@ after('deploy', 'bugsnag:notify');
 ### bugsnag:notify
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/bugsnag.php#L28)
 
-Notifying Bugsnag of deployment.
+Notifies Bugsnag of deployment.
 
 
 

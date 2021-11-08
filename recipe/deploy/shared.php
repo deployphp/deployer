@@ -18,7 +18,7 @@ set('shared_dirs', []);
 // ```
 set('shared_files', []);
 
-desc('Creating symlinks for shared files and dirs');
+desc('Creates symlinks for shared files and dirs');
 task('deploy:shared', function () {
     $sharedPath = "{{deploy_path}}/shared";
 

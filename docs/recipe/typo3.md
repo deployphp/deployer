@@ -73,7 +73,7 @@ Writeable directories
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L17)
 
-Deploy your project.
+Deploys your project.
 
 Main TYPO3 task
 

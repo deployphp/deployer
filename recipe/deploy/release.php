@@ -86,7 +86,7 @@ set('release_or_current_path', function () {
 });
 
 // Clean up unfinished releases and prepare next release
-desc('Prepare release');
+desc('Prepares release');
 task('deploy:release', function () {
     cd('{{deploy_path}}');
 
@@ -140,7 +140,7 @@ task('deploy:release', function () {
     }
 });
 
-desc('Show releases list');
+desc('Shows releases list');
 /*
  * Example output:
  * ```

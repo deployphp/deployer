@@ -43,7 +43,7 @@ download desired phar and place it at `.dep/composer.phar`.
 ### deploy:vendors
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L27)
 
-Install vendors.
+Installs vendors.
 
 
 

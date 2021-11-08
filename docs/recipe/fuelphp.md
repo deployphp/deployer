@@ -30,7 +30,7 @@ FuelPHP 1.x shared dirs
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L17)
 
-Deploy your project.
+Deploys your project.
 
 Main task
 

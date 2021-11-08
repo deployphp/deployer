@@ -13,7 +13,7 @@
 ### deploy:info
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L5)
 
-Display info about deployment.
+Displays info about deployment.
 
 
 

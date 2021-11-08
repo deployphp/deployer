@@ -23,7 +23,7 @@
 ### phpcr:migrate
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L17)
 
-Migrate PHPCR.
+Migrates PHPCR.
 
 
 
@@ -31,7 +31,7 @@ Migrate PHPCR.
 ### deploy:website:cache:clear
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L22)
 
-Clear cache.
+Clears cache.
 
 
 
@@ -39,7 +39,7 @@ Clear cache.
 ### deploy:website:cache:warmup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L27)
 
-Warm up cache.
+Warmups cache.
 
 
 

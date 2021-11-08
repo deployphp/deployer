@@ -5,7 +5,7 @@ set('php_version', function () {
     return ask(' What PHP version to install? ', '8.0', ['5.4', '7.4', '8.0']);
 });
 
-desc('Install PHP packages');
+desc('Installs PHP packages');
 task('provision:php', function () {
     $version = get('php_version');
     info("Installing PHP $version");
@@ -57,12 +57,12 @@ task('provision:php', function () {
     ->verbose()
     ->limit(1);
 
-desc('Show php-fpm logs');
+desc('Shows php-fpm logs');
 task('logs:php-fpm', function () {
     run('tail -f /var/log/fpm-php.www.log');
 })->verbose();
 
-desc('Install Composer');
+desc('Installs Composer');
 task('provision:composer', function () {
     run('curl -sS https://getcomposer.org/installer | php');
     run('mv composer.phar /usr/local/bin/composer');

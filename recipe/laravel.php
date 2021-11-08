@@ -85,138 +85,138 @@ function laravel_version_compare($version, $comparator)
  * Maintenance mode.
  */
 
-desc('Put the application into maintenance / demo mode');
+desc('Puts the application into maintenance / demo mode');
 task('artisan:down', artisan('down', ['showOutput']));
 
-desc('Bring the application out of maintenance mode');
+desc('Brings the application out of maintenance mode');
 task('artisan:up', artisan('up', ['showOutput']));
 
 /*
  * Generate keys.
  */
 
-desc('Set the application key');
+desc('Sets the application key');
 task('artisan:key:generate', artisan('key:generate'));
 
-desc('Create the encryption keys for API authentication');
+desc('Creates the encryption keys for API authentication');
 task('artisan:passport:keys', artisan('passport:keys'));
 
 /*
  * Database and migrations.
  */
 
-desc('Seed the database with records');
+desc('Seeds the database with records');
 task('artisan:db:seed', artisan('db:seed --force', ['showOutput']));
 
-desc('Run the database migrations');
+desc('Runs the database migrations');
 task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']));
 
-desc('Drop all tables and re-run all migrations');
+desc('Drops all tables and re-run all migrations');
 task('artisan:migrate:fresh', artisan('migrate:fresh --force'));
 
-desc('Rollback the last database migration');
+desc('Rollbacks the last database migration');
 task('artisan:migrate:rollback', artisan('migrate:rollback --force', ['showOutput']));
 
-desc('Show the status of each migration');
+desc('Shows the status of each migration');
 task('artisan:migrate:status', artisan('migrate:status', ['showOutput']));
 
 /*
  * Cache and optimizations.
  */
 
-desc('Flush the application cache');
+desc('Flushes the application cache');
 task('artisan:cache:clear', artisan('cache:clear'));
 
-desc('Create a cache file for faster configuration loading');
+desc('Creates a cache file for faster configuration loading');
 task('artisan:config:cache', artisan('config:cache'));
 
-desc('Remove the configuration cache file');
+desc('Removes the configuration cache file');
 task('artisan:config:clear', artisan('config:clear'));
 
-desc('Discover and cache the application\'s events and listeners');
+desc('Discovers and cache the application\'s events and listeners');
 task('artisan:event:cache', artisan('event:cache', ['min' => '5.8.9']));
 
-desc('Clear all cached events and listeners');
+desc('Clears all cached events and listeners');
 task('artisan:event:clear', artisan('event:clear', ['min' => '5.8.9']));
 
-desc('List the application\'s events and listeners');
+desc('Lists the application\'s events and listeners');
 task('artisan:event:list', artisan('event:list', ['showOutput', 'min' => '5.8.9']));
 
 desc('Cache the framework bootstrap files');
 task('artisan:optimize', artisan('optimize'));
 
-desc('Remove the cached bootstrap files');
+desc('Removes the cached bootstrap files');
 task('artisan:optimize:clear', artisan('optimize:clear'));
 
-desc('Create a route cache file for faster route registration');
+desc('Creates a route cache file for faster route registration');
 task('artisan:route:cache', artisan('route:cache'));
 
-desc('Remove the route cache file');
+desc('Removes the route cache file');
 task('artisan:route:clear', artisan('route:clear'));
 
-desc('List all registered routes');
+desc('Lists all registered routes');
 task('artisan:route:list', artisan('route:list', ['showOutput']));
 
-desc('Create the symbolic links configured for the application');
+desc('Creates the symbolic links configured for the application');
 task('artisan:storage:link', artisan('storage:link', ['min' => 5.3]));
 
-desc('Compile all of the application\'s Blade templates');
+desc('Compiles all of the application\'s Blade templates');
 task('artisan:view:cache', artisan('view:cache', ['min' => 5.6]));
 
-desc('Clear all compiled view files');
+desc('Clears all compiled view files');
 task('artisan:view:clear', artisan('view:clear'));
 
 /**
  * Queue and Horizon.
  */
 
-desc('List all of the failed queue jobs');
+desc('Lists all of the failed queue jobs');
 task('artisan:queue:failed', artisan('queue:failed', ['showOutput']));
 
-desc('Flush all of the failed queue jobs');
+desc('Flushes all of the failed queue jobs');
 task('artisan:queue:flush', artisan('queue:flush'));
 
-desc('Restart queue worker daemons after their current job');
+desc('Restarts queue worker daemons after their current job');
 task('artisan:queue:restart', artisan('queue:restart'));
 
-desc('Start a master supervisor in the foreground');
+desc('Starts a master supervisor in the foreground');
 task('artisan:horizon', artisan('horizon'));
 
-desc('Delete all of the jobs from the specified queue');
+desc('Deletes all of the jobs from the specified queue');
 task('artisan:horizon:clear', artisan('horizon:clear --force'));
 
-desc('Instruct the master supervisor to continue processing jobs');
+desc('Instructs the master supervisor to continue processing jobs');
 task('artisan:horizon:continue', artisan('horizon:continue'));
 
-desc('List all of the deployed machines');
+desc('Lists all of the deployed machines');
 task('artisan:horizon:list', artisan('horizon:list', ['showOutput']));
 
-desc('Pause the master supervisor');
+desc('Pauses the master supervisor');
 task('artisan:horizon:pause', artisan('horizon:pause'));
 
-desc('Terminate any rogue Horizon processes');
+desc('Terminates any rogue Horizon processes');
 task('artisan:horizon:purge', artisan('horizon:purge'));
 
-desc('Get the current status of Horizon');
+desc('Gets the current status of Horizon');
 task('artisan:horizon:status', artisan('horizon:status', ['showOutput']));
 
-desc('Terminate the master supervisor so it can be restarted');
+desc('Terminates the master supervisor so it can be restarted');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
 
 /*
  * Telescope.
  */
 
-desc('Clear all entries from Telescope');
+desc('Clears all entries from Telescope');
 task('artisan:telescope:clear', artisan('telescope:clear'));
 
-desc('Prune stale entries from the Telescope database');
+desc('Prunes stale entries from the Telescope database');
 task('artisan:telescope:prune', artisan('telescope:prune'));
 
 /**
  * Main deploy task.
  */
-desc('Deploy your project');
+desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

@@ -42,7 +42,7 @@ after('deploy:update_code', 'npm:install');
 ### npm:install
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L30)
 
-Install npm packages.
+Installs npm packages.
 
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
 

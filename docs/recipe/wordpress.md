@@ -52,7 +52,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ### deploy
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/wordpress.php#L13)
 
-Deploy your project.
+Deploys your project.
 
 
 

@@ -47,6 +47,9 @@ class ApiGen
                         break;
                     }
                     if (preg_match('/^\s\*\s@param\s(?<type>.+?)\$(?<name>.+?)\s(?<comment>.+)$/', $line, $matches)) {
+                        if (empty($params)) {
+                            $params = "Arguments:\n";
+                        }
                         $type = trim($matches['type'], ' ');
                         $params .= "- **{$matches['name']}** `{$type}` — {$matches['comment']}\n";
                         break;

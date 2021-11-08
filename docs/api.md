@@ -107,6 +107,7 @@ Alternatively get a defined task.
 
 
 
+Arguments:
 - **name** `string` — Name of current task.
 - **body** `callable|array|null` — Callable task, array of other tasks names or nothing to get a defined tasks
 
@@ -121,6 +122,7 @@ Call that task before specified task runs.
 
 
 
+Arguments:
 - **task** `string` — The task before $that should be run.
 - **do** `string|callable` — The task to be run.
 
@@ -135,6 +137,7 @@ Call that task after specified task runs.
 
 
 
+Arguments:
 - **task** `string` — The task after $that should be run.
 - **do** `string|callable` — The task to be run.
 
@@ -150,6 +153,7 @@ When called multiple times for a task, previous fail() definitions will be overr
 
 
 
+Arguments:
 - **task** `string` — The task which need to fail so $that should be run.
 - **do** `string|callable` — The task to be run.
 
@@ -163,6 +167,7 @@ Add users options.
 
 
 
+Arguments:
 - **name** `string` — The option name
 - **shortcut** `string|array|null` — The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
 - **mode** `int|null` — The option mode: One of the VALUE_* constants
@@ -213,6 +218,7 @@ run("echo $path");
 
 
 
+Arguments:
 - **command** `string` — Command to run on remote host.
 - **options** `array|null` — Array of options will override passed named arguments.
 - **timeout** `int|null` — Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
@@ -240,6 +246,7 @@ runLocally("echo $user");
 
 
 
+Arguments:
 - **command** `string` — Command to run on localhost.
 - **options** `array|null` — Array of options will override passed named arguments.
 - **timeout** `int|null` — Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).

@@ -28,7 +28,7 @@ Note: E2E tests will only run in an environment where env variable `E2E_ENV` has
 
 The container can be accessed by running:
 
-```bash
+```
 docker-compose run deployer sh
 ```
 
@@ -47,7 +47,7 @@ The `deployer` container contains:
 
 It is possible to access the `server` container via ssh by running:
 
-```bash
+```
 ssh deployer@server
 ```
 

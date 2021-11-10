@@ -23,7 +23,7 @@ and executes the task on all specified hosts.
 The `dep` CLI looks for `deploy.php` or `deploy.yaml` file in current directory.
 
 Or recipe can be specified explicitly via `-f` or `--file` option.
-```bash
+```
 $ dep --file=deploy.php deploy deployer.org
 ```
 :::

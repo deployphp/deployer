@@ -5,7 +5,7 @@ After [installation](installation.md) of Deployer you will have the ability to r
 To get list of all available tasks run the `dep` command. You can run it from any subdirectories of you project;
 Deployer will automatically find project root dir.
 
-```bash
+```
 Deployer
 
 Usage:
@@ -32,7 +32,7 @@ Available commands:
 
 The best way to configure your `deploy.php` is to automatically deploy to staging on this command:
 
-```bash
+```
 dep deploy
 ```
 
@@ -40,7 +40,7 @@ This is so somebody can't accidentally deploy to production (for production depl
 
 You need info about available options and usage use the `help` command:
 
-```bash
+```
 $ dep help deploy
 Usage:
   deploy [options] [--] [<stage>]
@@ -82,13 +82,13 @@ set('ssh_multiplexing', false);
 
 And you want to enable [ssh multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) without modifying the file, you can pass the `-o` option to the `dep` command:
 
-```bash
+```
 dep deploy -o ssh_multiplexing=true
 ```
 
 To override multiple config options, you can pass multiple `-o` args:
 
-```bash
+```
 dep deploy -o ssh_multiplexing=true -o branch=master
 ```
 
@@ -96,7 +96,7 @@ dep deploy -o ssh_multiplexing=true -o branch=master
 
 Deployer comes with a command to run any valid command on you server without modifying _deploy.php_
 
-```bash
+```
 dep run 'ls -la'
 ```
 
@@ -112,7 +112,7 @@ To specify the hosts this command has the corresponding options:
 
 You can get more info about any commands by using the help command:
 
-```bash
+```
 dep help [command]
 ```
 
@@ -121,7 +121,7 @@ dep help [command]
 Deployer comes with an autocomplete script for bash/zsh/fish, so you don't need to remember all the tasks and options.
 To install it run following command:
 
-```bash
+```
 dep autocomplete
 ```
 
@@ -130,7 +130,7 @@ And follow instructions.
 ### Local root directory
 
 By default `runLocally()` commands are executed relative to the recipe file directory. This can be overridden globally by setting an environment variable:
-```bash
+```
 DEPLOYER_ROOT=. dep taskname`
 ```
 

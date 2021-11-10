@@ -19,7 +19,7 @@ task('test', function () {
 });
 ```
 
-```bash
+```
 $ dep test
 [example.org] The example.org is example.org
 ```
@@ -34,7 +34,7 @@ host('example.org')
 Now new hostname will be used for ssh connect, and host will be referred in
 Deployer via the alias.
 
-```bash
+```
 $ dep test
 [example.org] The example.org is example.cloud.google.com
 ```

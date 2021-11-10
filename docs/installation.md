@@ -15,7 +15,7 @@ Deployer comes with an autocomplete support for task names, options, and hosts.
 
 Add next line to your `~/.bashrc` or `~/.zshrc`:
 
-```bash
+```
 eval "$(dep autocomplete --shell bash)"
 ```
 :::
@@ -31,7 +31,7 @@ If you call a globally installed Deployer via `/usr/local/bin/dep` in a project
 directory with a locally installed Deployer at `vendor/bin/dep`, Deployer will
 redirect call to a local Deployer.
 
-```bash
+```
 ~/project $ dep --version
 Using ~/project/vendor/bin/dep
 Deployer 7.0.0

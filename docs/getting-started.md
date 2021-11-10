@@ -11,7 +11,7 @@ First, [install the Deployer](installation.md).
 
 Let's `cd` into our app repo and run following command:
 
-```bash
+```
 dep init
 ```
 
@@ -37,13 +37,13 @@ server using domain name instead of IP address.
 :::
 
 After VPS created, let's try to ssh as root:
-```bash
+```
 ssh root@example.com
 ```
 
 Now let's provision our server.
 
-```bash
+```
 dep provision -o remote_user=root
 ```
 
@@ -65,13 +65,13 @@ app.
 ## Configure a deployment
 
 Let's deploy our application:
-```bash
+```
 dep deploy
 ```
 
 Now we can ssh to host and edit, for example, `.env`.
 
-```bash
+```
 dep ssh
 ```
 
@@ -87,7 +87,7 @@ after('deploy:update_code', 'build');
 ```
 
 Also, Deployer has a useful task for examine what is currently deployed.
-```bash
+```
 $ dep releases
 task releases
 +---------------------+--------- deployer.org -------+--------+-----------+

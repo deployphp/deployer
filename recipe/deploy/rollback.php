@@ -11,7 +11,7 @@ use Deployer\Exception\Exception;
  *
  * :::tip
  * You can override rollback candidate via:
- * ```bash
+ * ```
  * dep rollback -o rollback_candidate=123
  * ```
  * :::
@@ -54,7 +54,7 @@ desc('Rollbacks to the previous release');
  *
  * :::warning
  * You can always manually symlink {{current_path}} to proper release.
- * ```bash
+ * ```
  * dep run '{{bin/symlink}} releases/123 {{current_path}}'
  * ```
  * :::

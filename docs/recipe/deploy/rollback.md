@@ -18,7 +18,7 @@ If rollback candidate marked as **BAD_RELEASE**, it will be skipped.
 
 :::tip
 You can override rollback candidate via:
-```bash
+```
 dep rollback -o rollback_candidate=123
 ```
 :::
@@ -38,7 +38,7 @@ bad by creating file **BAD_RELEASE** with timestamp and [user](/docs/recipe/comm
 
 :::warning
 You can always manually symlink [current_path](/docs/recipe/common.md#current_path) to proper release.
-```bash
+```
 dep run '{{bin/symlink}} releases/123 {{current_path}}'
 ```
 :::

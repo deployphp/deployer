@@ -18,7 +18,7 @@ set('branch', function () {
 set('auto_ssh_keygen', true);
 
 // Sets deploy:update_code strategy.
-// Can we one of:
+// Can be one of:
 // - archive
 // - clone (if you need `.git` dir in your {{release_path}})
 set('update_code_strategy', 'archive');
@@ -89,7 +89,7 @@ task('deploy:update_code', function () {
 
     run("$git remote update 2>&1");
 
-    // Copy to release_path.a
+    // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
         run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
     } else if (get('update_code_strategy') === 'clone') {

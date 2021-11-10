@@ -1,9 +1,9 @@
 # Upgrade from 6.x to 7.x
 
-## Step 1: Update `deploy.php`
-1. Change `hostname` to `alias`.
-2. Change `real_hostname` to `hostname`.
-3. Change `user` to `remote_user`.
+## Step 1: Update deploy.php
+1. Change config `hostname` to `alias`.
+2. Change config `real_hostname` to `hostname`.
+3. Change config `user` to `remote_user`.
 4. Update `host()` definitions:
     1. Add `set` prefix to all setters: `identityFile` -> `setIdentityFile` or `set('identify_file')`
     2. Update `host(...)->addSshOption('UserKnownHostsFile', '/dev/null')` to `host(...)->setSshArguments(['-o UserKnownHostsFile=/dev/null']);`
@@ -12,7 +12,7 @@
        host('deployer.org')
            ->set('labels', ['stage' => 'prod']); 
        ```
-       When deploying use instead of `vendor/bin/dep deploy prod` now `vendor/bin/dep deploy stage=prod`. 
+       When deploying use instead of `dep deploy prod` use `dep deploy stage=prod`. 
     4. `alias()` is deleted, `host()` itself sets alias and hostname, to override hostname use `setHostname()`.
 5. Update `task()` definitions.
     1. Replace `onRoles()` with `select()`:
@@ -53,7 +53,7 @@
      deploy:vendors:
        - run: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
    ``` 
-8. Rename success task in ~~success~~ to `deploy:success`.
+8. Rename task `success` to `deploy:success`.
 9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
 10. runLocally() commands are executed relative to the recipe file directory. This behaviour can be overridden via an environment variable:
     ```bash
@@ -71,12 +71,13 @@ Since the release history numbering is not compatible between v6 and v7, you nee
    ```
    dep deploy -o release_name=43
    ```
-   > **Note**
-   >
-   > In case a rollback is needed, manually change the `current` symlink:
-   > ```
-   > ln -nfs releases/42 current
-   > ```
+
+:::note
+In case a rollback is needed, manually change the `current` symlink:
+```
+ln -nfs releases/42 current
+```
+:::
 
 
 ## Other versions

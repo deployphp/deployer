@@ -19,20 +19,16 @@ $ dep deploy deployer.org
 Then Deployer takes the given task, performs some preparation (described later),
 and executes the task on all specified hosts.
 
-:::info
 The `dep` CLI looks for `deploy.php` or `deploy.yaml` file in current directory.
 
 Or recipe can be specified explicitly via `-f` or `--file` option.
 ```
 $ dep --file=deploy.php deploy deployer.org
 ```
-:::
 
 Let's write a recipe. 
 
 ```php
-<?php
-
 // We are going to use functions declared primarily in Deployer namespace,
 // to simplify recipe we will use Deployer namespace too. Alternativly, 
 // you can import individual functions via "use function".
@@ -53,19 +49,15 @@ task my_task
 $  
 ```
 
-:::tip
 If no host provided, Deployer will show an interactive prompt for selecting hosts.
 If your recipe contains only one host, Deployer will automatically choose it. 
 To select all hosts specify `all`.
-:::
 
 But there is our `whoami` command? By default, Deployer runs with normal verbosity 
 level and shows only names of executed tasks. Let's increase verbosity to verbose, and
 rerun our task.
 
-:::note The dep CLI options
 Add `-v` option to increase verbosity. Read more about [CLI usage](cli.md).
-:::
 
 ```
 $ dep my_task -v
@@ -82,10 +74,8 @@ host('deployer.org');
 host('medv.io');
 ```
 
-:::info Connection options
 How Deployer knows hot to connect to a host? It uses same `~/.ssh/config` file as
 the `ssh` command. Or you can specify [connection options](hosts.md) in recipe.
-:::
 
 Let's run `my_task` task on both hosts:
 
@@ -144,10 +134,8 @@ task('my_task', function () {
 Or via [parse](api.md#parse) function which replaces brackets `{{ ... }}` and value
 with of config option.
 
-:::tip
 All functions (writeln, run, runLocally, cd, upload, etc) call **parse** function 
 internally. So you don't need to call **parse** function by your self.
-:::
 
 ```diff
 task('my_task', function () {
@@ -218,8 +206,8 @@ task('my_task', function () {
 });
 ```
 
-If we run my_task we will see what `date` is called only once on `{{current_date}}` 
-access.
+If we run my_task we will see what `date` is called only once on 
+`{{current_date}}` access.
 
 ```
 $ dep my_task deployer.org -v

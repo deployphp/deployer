@@ -30,7 +30,7 @@ true
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L24)
 
 Sets deploy:update_code strategy.
-Can we one of:
+Can be one of:
 - archive
 - clone (if you need `.git` dir in your [release_path](/docs/recipe/deploy/release.md#release_path))
 

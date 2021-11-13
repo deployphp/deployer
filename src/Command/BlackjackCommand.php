@@ -12,6 +12,7 @@ use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function Deployer\Support\array_flatten;
 
 class BlackjackCommand extends Command
 {
@@ -40,13 +41,32 @@ class BlackjackCommand extends Command
         $this->telemetry();
         $io = new SymfonyStyle($input, $output);
 
-        $this->print("\x1b[38;2;255;95;109m╭\x1b[39m\x1b[38;2;255;95;107m─\x1b[39m\x1b[38;2;255;96;106m─\x1b[39m\x1b[38;2;255;96;104m─\x1b[39m\x1b[38;2;255;96;103m─\x1b[39m\x1b[38;2;255;97;101m─\x1b[39m\x1b[38;2;255;97;100m─\x1b[39m\x1b[38;2;255;97;99m─\x1b[39m\x1b[38;2;255;98;97m─\x1b[39m\x1b[38;2;255;100;98m─\x1b[39m\x1b[38;2;255;102;98m─\x1b[39m\x1b[38;2;255;104;98m─\x1b[39m\x1b[38;2;255;106;99m─\x1b[39m\x1b[38;2;255;108;99m─\x1b[39m\x1b[38;2;255;110;99m─\x1b[39m\x1b[38;2;255;112;100m─\x1b[39m\x1b[38;2;255;114;100m─\x1b[39m\x1b[38;2;255;116;100m─\x1b[39m\x1b[38;2;255;118;100m─\x1b[39m\x1b[38;2;255;120;101m─\x1b[39m\x1b[38;2;255;122;101m─\x1b[39m\x1b[38;2;255;124;101m─\x1b[39m\x1b[38;2;255;126;102m╮\x1b[39m");
-        $this->print("\x1b[38;2;255;128;102m│\x1b[39m                     \x1b[38;2;255;130;102m│\x1b[39m");
-        $this->print("\x1b[38;2;255;132;103m│\x1b[39m      \x1b[38;2;255;134;103mW\x1b[39m\x1b[38;2;255;136;103me\x1b[39m\x1b[38;2;255;138;104ml\x1b[39m\x1b[38;2;255;140;104mc\x1b[39m\x1b[38;2;255;142;104mo\x1b[39m\x1b[38;2;255;144;104mm\x1b[39m\x1b[38;2;255;146;105me\x1b[39m\x1b[38;2;255;148;105m!\x1b[39m       \x1b[38;2;255;150;105m│\x1b[39m");
-        $this->print("\x1b[38;2;255;152;106m│\x1b[39m                     \x1b[38;2;255;153;106m│\x1b[39m");
-        $this->print("\x1b[38;2;255;155;106m╰\x1b[39m\x1b[38;2;255;157;107m─\x1b[39m\x1b[38;2;255;159;107m─\x1b[39m\x1b[38;2;255;161;107m─\x1b[39m\x1b[38;2;255;163;108m─\x1b[39m\x1b[38;2;255;165;108m─\x1b[39m\x1b[38;2;255;166;108m─\x1b[39m\x1b[38;2;255;168;108m─\x1b[39m\x1b[38;2;255;170;109m─\x1b[39m\x1b[38;2;255;172;109m─\x1b[39m\x1b[38;2;255;174;109m─\x1b[39m\x1b[38;2;255;176;110m─\x1b[39m\x1b[38;2;255;177;110m─\x1b[39m\x1b[38;2;255;179;110m─\x1b[39m\x1b[38;2;255;181;111m─\x1b[39m\x1b[38;2;255;183;111m─\x1b[39m\x1b[38;2;255;185;111m─\x1b[39m\x1b[38;2;255;186;111m─\x1b[39m\x1b[38;2;255;188;112m─\x1b[39m\x1b[38;2;255;190;112m─\x1b[39m\x1b[38;2;255;192;112m─\x1b[39m\x1b[38;2;255;193;113m─\x1b[39m\x1b[38;2;255;195;113m╯\x1b[0m");
+        if (getenv('COLORTERM') === 'truecolor') {
+            $this->print("\x1b[38;2;255;95;109m╭\x1b[39m\x1b[38;2;255;95;107m─\x1b[39m\x1b[38;2;255;96;106m─\x1b[39m\x1b[38;2;255;96;104m─\x1b[39m\x1b[38;2;255;96;103m─\x1b[39m\x1b[38;2;255;97;101m─\x1b[39m\x1b[38;2;255;97;100m─\x1b[39m\x1b[38;2;255;97;99m─\x1b[39m\x1b[38;2;255;98;97m─\x1b[39m\x1b[38;2;255;100;98m─\x1b[39m\x1b[38;2;255;102;98m─\x1b[39m\x1b[38;2;255;104;98m─\x1b[39m\x1b[38;2;255;106;99m─\x1b[39m\x1b[38;2;255;108;99m─\x1b[39m\x1b[38;2;255;110;99m─\x1b[39m\x1b[38;2;255;112;100m─\x1b[39m\x1b[38;2;255;114;100m─\x1b[39m\x1b[38;2;255;116;100m─\x1b[39m\x1b[38;2;255;118;100m─\x1b[39m\x1b[38;2;255;120;101m─\x1b[39m\x1b[38;2;255;122;101m─\x1b[39m\x1b[38;2;255;124;101m─\x1b[39m\x1b[38;2;255;126;102m╮\x1b[39m");
+            $this->print("\x1b[38;2;255;128;102m│\x1b[39m                     \x1b[38;2;255;130;102m│\x1b[39m");
+            $this->print("\x1b[38;2;255;132;103m│\x1b[39m      \x1b[38;2;255;134;103mW\x1b[39m\x1b[38;2;255;136;103me\x1b[39m\x1b[38;2;255;138;104ml\x1b[39m\x1b[38;2;255;140;104mc\x1b[39m\x1b[38;2;255;142;104mo\x1b[39m\x1b[38;2;255;144;104mm\x1b[39m\x1b[38;2;255;146;105me\x1b[39m\x1b[38;2;255;148;105m!\x1b[39m       \x1b[38;2;255;150;105m│\x1b[39m");
+            $this->print("\x1b[38;2;255;152;106m│\x1b[39m                     \x1b[38;2;255;153;106m│\x1b[39m");
+            $this->print("\x1b[38;2;255;155;106m╰\x1b[39m\x1b[38;2;255;157;107m─\x1b[39m\x1b[38;2;255;159;107m─\x1b[39m\x1b[38;2;255;161;107m─\x1b[39m\x1b[38;2;255;163;108m─\x1b[39m\x1b[38;2;255;165;108m─\x1b[39m\x1b[38;2;255;166;108m─\x1b[39m\x1b[38;2;255;168;108m─\x1b[39m\x1b[38;2;255;170;109m─\x1b[39m\x1b[38;2;255;172;109m─\x1b[39m\x1b[38;2;255;174;109m─\x1b[39m\x1b[38;2;255;176;110m─\x1b[39m\x1b[38;2;255;177;110m─\x1b[39m\x1b[38;2;255;179;110m─\x1b[39m\x1b[38;2;255;181;111m─\x1b[39m\x1b[38;2;255;183;111m─\x1b[39m\x1b[38;2;255;185;111m─\x1b[39m\x1b[38;2;255;186;111m─\x1b[39m\x1b[38;2;255;188;112m─\x1b[39m\x1b[38;2;255;190;112m─\x1b[39m\x1b[38;2;255;192;112m─\x1b[39m\x1b[38;2;255;193;113m─\x1b[39m\x1b[38;2;255;195;113m╯\x1b[0m");
+        } else {
+            $this->print("╭─────────────────────╮");
+            $this->print("│                     │");
+            $this->print("│      Welcome!       │");
+            $this->print("│                     │");
+            $this->print("╰─────────────────────╯");
+        }
 
         $money = 100;
+
+        if (md5(strval(getenv('MONEY'))) === '5a7c2f336d0cc43b68951e75cdffe333') {
+            $money += 25;
+            $this->print('<fg=cyan>You got an extra $25.</>');
+        } else if (md5(strval(getenv('MONEY'))) === '530029252abcbda4a2a2069036ccc7fc') {
+            $money += 100;
+            $this->print('<fg=cyan>You got an extra $100.</>');
+        } else if (md5(strval(getenv('MONEY'))) === '1aa827a06ecbfa5d6fa7c62ad245f3a3') {
+            $money = 100000;
+        }
+
         $hasWatch = true;
         $orderWhiskey = false;
         $whiskeyLevel = 0;
@@ -111,7 +131,7 @@ class BlackjackCommand extends Command
             }
 
             $this->printHand($playersHand);
-            $handValue = $this->handValue($playersHand);
+            $handValue = self::handValue($playersHand);
 
             if ($handValue > 21) {
                 $this->print("You got <comment>$handValue</comment>.");
@@ -123,18 +143,18 @@ class BlackjackCommand extends Command
         }
 
         $this->printHand($dealersHand);
-        $this->print("Dealer: " . $this->handValue($dealersHand));
+        $this->print("Dealer: " . self::handValue($dealersHand));
         sleep(1);
 
-        while ($this->handValue($dealersHand) <= 17) {
+        while (self::handValue($dealersHand) <= 17) {
             $dealersHand[] = $deal();
             $this->printHand($dealersHand);
-            $this->print("Dealer: " . $this->handValue($dealersHand));
+            $this->print("Dealer: " . self::handValue($dealersHand));
             sleep(1);
         }
 
-        $d = $this->handValue($dealersHand);
-        $p = $this->handValue($playersHand);
+        $d = self::handValue($dealersHand);
+        $p = self::handValue($playersHand);
         $this->print("You got <comment>$p</comment> and dealer <comment>$d</comment>.");
 
         if ($d > 21 || $p > $d) {
@@ -216,7 +236,7 @@ class BlackjackCommand extends Command
         return $deck;
     }
 
-    private function handValue(array $hand): int
+    public static function handValue(array $hand): int
     {
         $aces = 0;
         $value = 0;
@@ -257,14 +277,21 @@ class BlackjackCommand extends Command
                     break;
             }
         }
+        $variants = [$value];
         while ($aces-- > 0) {
-            if ($value + 11 <= 21) {
-                $value += 11;
+            $variants = array_flatten(array_map(function ($v) {
+                return [$v + 1, $v + 11];
+            }, $variants));
+        }
+        $sum = $variants[0];
+        for ($i = 1; $i < count($variants); $i++) {
+            if ($variants[$i] <= 21) {
+                $sum = $variants[$i];
             } else {
-                $value += 1;
+                break;
             }
         }
-        return $value;
+        return $sum;
     }
 
     private function print(string $text = "")

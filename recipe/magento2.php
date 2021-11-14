@@ -65,7 +65,7 @@ set('magento_version', function () {
 
 set('maintenance_mode_status_active', function () {
     // detect maintenance mode active
-    $maintenanceModeStatusOutput = run("{{bin/php}} {{current_path}}/bin/magento maintenance:status");
+    $maintenanceModeStatusOutput = run("{{bin/php}} {{release_or_current_path}}/bin/magento maintenance:status");
     return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
 });
 

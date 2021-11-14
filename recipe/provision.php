@@ -100,7 +100,7 @@ task('provision:update', function () {
 
 desc('Upgrades all packages');
 task('provision:upgrade', function () {
-    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
 })
     ->oncePerNode()
     ->verbose();
@@ -133,7 +133,7 @@ task('provision:install', function () {
         'uuid-runtime',
         'whois',
     ];
-    run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
 })
     ->verbose()
     ->oncePerNode();

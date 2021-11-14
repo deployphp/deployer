@@ -59,8 +59,8 @@ set('clear_paths', [
 set('magento_version', function () {
     // detect version
     $versionOutput = run('{{bin/php}} {{release_or_current_path}}/bin/magento --version');
-    preg_match('/(\d+\.?)+$/', $versionOutput, $matches);
-    return $matches[0] ?? "2.0";
+    preg_match("/(?:Magento\s|Magento\sCLI\s)*((?:[0-9]+\.?)+)/i", $versionOutput, $matches);
+    return $matches[1] ?? "2.0";
 });
 
 set('maintenance_mode_status_active', function () {

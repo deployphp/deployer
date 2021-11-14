@@ -1,7 +1,7 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Comparison operation \"\\>\" between 100 and 0 is always true\\.$#"
+			message: "#^Comparison operation \"\\>\" between 100|125|200|100000 and 0 is always true\\.$#"
 			count: 1
 			path: ../src/Command/BlackjackCommand.php
 

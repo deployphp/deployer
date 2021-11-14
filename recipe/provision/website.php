@@ -30,7 +30,7 @@ $domain
 
 root * $deployPath/current/$publicPath
 file_server
-php_fastcgi * unix/run/php/php$phpVersion-fpm.sock {
+php_fastcgi * unix//run/php/php$phpVersion-fpm.sock {
 \tresolve_root_symlink
 }
 

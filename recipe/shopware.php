@@ -154,9 +154,6 @@ task('sw-build-without-db:get-remote-config', static function () {
 
         run('./bin/console theme:dump');
         download('{{deploy_path}}/current/files/theme-config', './files/');
-
-        // Temporary workaround to remove absolute file paths, which will be fixed in an upcoming version
-        runLocally('sed -i "" -E \'s/\\\\\/var\\\\\/www\\\\\/htdocs\\\\\/releases\\\\\/[0-9]+\\\\\///g\' files/theme-config/*');
     });
 });
 

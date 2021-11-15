@@ -5,7 +5,7 @@ What are we going to do in this tutorial:
 - Configure a deployment.
 - Automate deployment via GitHub Actions.
 
-Tutorial duration: **10 min**
+Tutorial duration: **7 min**
 
 First, [install the Deployer](installation.md):
 
@@ -15,16 +15,16 @@ mv deployer.phar /usr/local/bin/dep
 chmod +x /usr/local/bin/dep
 ```
 
-Now lets cd into the project repo and run following command:
+Now lets cd into the project and run following command:
 
 ```
 dep init
 ```
 
 Deployer will ask you a few question and after finishing you will have a 
-**deploy.php** or **deploy.yaml** file.
-
-All framework recipes based on [common](recipe/common.md) recipe. 
+**deploy.php** or **deploy.yaml** file. This is our deployment recipe. 
+It contains hosts, tasks and requires other recipes. All framework recipes
+what comes with Deployer based on [common](recipe/common.md) recipe. 
 
 ## Provision
 

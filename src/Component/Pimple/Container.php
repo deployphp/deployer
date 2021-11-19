@@ -58,6 +58,7 @@ class Container implements \ArrayAccess
      * @throws FrozenServiceException Prevent override of a frozen service
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[\ReturnTypeWillChange]
     public function offsetSet($id, $value)
     {
         if (isset($this->frozen[$id])) {
@@ -78,6 +79,7 @@ class Container implements \ArrayAccess
      * @throws UnknownIdentifierException If the identifier is not defined
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[\ReturnTypeWillChange]
     public function offsetGet($id)
     {
         if (!isset($this->keys[$id])) {
@@ -114,6 +116,7 @@ class Container implements \ArrayAccess
      * @return bool
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[\ReturnTypeWillChange]
     public function offsetExists($id)
     {
         return isset($this->keys[$id]);
@@ -125,6 +128,7 @@ class Container implements \ArrayAccess
      * @param string $id The unique identifier for the parameter or object
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
+    #[\ReturnTypeWillChange]
     public function offsetUnset($id)
     {
         if (isset($this->keys[$id])) {

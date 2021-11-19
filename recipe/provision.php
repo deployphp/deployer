@@ -28,6 +28,7 @@ task('provision', [
     'provision:deployer',
     'provision:server',
     'provision:php',
+    'provision:databases',
     'provision:composer',
     'provision:npm',
     'provision:website',

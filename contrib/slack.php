@@ -125,6 +125,7 @@ task('slack:notify:success', function () {
         'title' => get('slack_title'),
         'text' => get('slack_success_text'),
         'color' => get('slack_success_color'),
+        'fields' => get('slack_fields'),
         'mrkdwn_in' => ['text'],
     ];
 

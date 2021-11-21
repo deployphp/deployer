@@ -112,7 +112,6 @@ task('slack:notify', function () {
     checkSlackAnswer($result);
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Slack about deploy finish');
@@ -132,7 +131,6 @@ task('slack:notify:success', function () {
     checkSlackAnswer($result);
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Slack about deploy failure');
@@ -152,7 +150,6 @@ task('slack:notify:failure', function () {
     checkSlackAnswer($result);
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Slack about rollback');
@@ -172,5 +169,4 @@ task('slack:notify:rollback', function () {
     checkSlackAnswer($result);
 })
     ->once()
-    ->shallow()
     ->hidden();

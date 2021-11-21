@@ -101,9 +101,6 @@
                   "hidden": {
                     "type": "boolean"
                   },
-                  "shallow": {
-                    "type": "boolean"
-                  },
                   "limit": {
                     "type": "number"
                   },

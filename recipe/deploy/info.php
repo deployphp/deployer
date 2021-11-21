@@ -20,5 +20,4 @@ task('deploy:info', function () {
         $what = "<fg=magenta;options=bold>HEAD</>";
     }
     info("deploying $what");
-})
-    ->shallow();
+});

@@ -183,7 +183,6 @@ task('deploy:publish', [
 task('deploy:success', function () {
     info('successfully deployed!');
 })
-    ->shallow()
     ->hidden();
 
 
@@ -192,7 +191,6 @@ task('deploy:success', function () {
  */
 task('deploy:failed', function () {
 })
-    ->shallow()
     ->hidden();
 
 fail('deploy', 'deploy:failed');

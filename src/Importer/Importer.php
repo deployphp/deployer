@@ -198,7 +198,6 @@ class Importer
                         'desc',
                         'once',
                         'hidden',
-                        'shallow',
                         'limit',
                         'select',
                     ];

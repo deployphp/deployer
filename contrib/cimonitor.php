@@ -115,7 +115,6 @@ task('cimonitor:notify', function () {
     Httpie::post(get('cimonitor_webhook'))->jsonBody($body)->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies CIMonitor about deploy finish');
@@ -144,7 +143,6 @@ task('cimonitor:notify:success', function () {
     Httpie::post(get('cimonitor_webhook'))->jsonBody($body)->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies CIMonitor about deploy failure');
@@ -171,6 +169,5 @@ task('cimonitor:notify:failure', function () {
     Httpie::post(get('cimonitor_webhook'))->jsonBody($body)->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 

@@ -121,8 +121,7 @@ task('chatwork:test', function () {
     set('chatwork_message', get('chatwork_failure_text'));
     invoke('chatwork_send_message');
 })
-    ->once()
-    ->shallow();
+    ->once();
 
 desc('Notifies Chatwork');
 task('chatwork:notify', function () {
@@ -137,7 +136,6 @@ task('chatwork:notify', function () {
     invoke('chatwork_send_message');
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Chatwork about deploy finish');
@@ -154,7 +152,6 @@ task('chatwork:notify:success', function () {
     invoke('chatwork_send_message');
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Chatwork about deploy failure');
@@ -171,5 +168,4 @@ task('chatwork:notify:failure', function () {
     invoke('chatwork_send_message');
 })
     ->once()
-    ->shallow()
     ->hidden();

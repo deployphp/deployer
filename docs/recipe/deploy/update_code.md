@@ -11,13 +11,16 @@
 ### branch
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L10)
 
-Determines which branch to deploy. Can be overridden with cli option `--branch`.
+Determines which branch to deploy. Can be overridden with CLI option `--branch`.
 If not specified, will get current git HEAD branch as default branch to deploy.
 
+```php title="Default value"
+'HEAD'
+```
 
 
 ### auto_ssh_keygen
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L18)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L13)
 
 Automatically populate `known_hosts` file based on [repository](/docs/recipe/common.md#repository) config.
 
@@ -27,7 +30,7 @@ true
 
 
 ### update_code_strategy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L24)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L19)
 
 Sets deploy:update_code strategy.
 Can be one of:
@@ -43,7 +46,7 @@ Can be one of:
 ## Tasks
 
 ### deploy:update_code
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L25)
 
 Updates code.
 

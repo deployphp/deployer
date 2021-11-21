@@ -142,9 +142,15 @@ option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
 // The deploy target: a branch, a tag or a revision.
 set('target', function () {
     $target = '';
+
     $branch = get('branch');
     if (!empty($branch)) {
         $target = $branch;
+    }
+
+    // Override target from CLI options.
+    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
+        $target = input()->getOption('branch');
     }
     if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
         $target = input()->getOption('tag');
@@ -152,6 +158,7 @@ set('target', function () {
     if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
         $target = input()->getOption('revision');
     }
+
     if (empty($target)) {
         $target = "HEAD";
     }

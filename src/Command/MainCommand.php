@@ -127,8 +127,10 @@ class MainCommand extends SelectCommand
             $this->validateConfig();
             $this->deployer->master->connect($hosts);
             $this->deployer->server->start();
-            foreach ($skippedTasks as $taskName) {
-                $output->writeln("<fg=yellow;options=bold>skip</> $taskName");
+            if (!empty($skippedTasks)) {
+                foreach ($skippedTasks as $taskName) {
+                    $output->writeln("<fg=yellow;options=bold>skip</> $taskName");
+                }
             }
         }
         $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);

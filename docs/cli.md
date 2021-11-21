@@ -1,8 +1,8 @@
 # CLI Usage
 
-After [installation](installation.md) of Deployer you will have the ability to run the `dep` command from your terminal.
+After [installation](installation.md) of Deployer, you will have the ability to run the `dep` command from your terminal.
 
-To get list of all available tasks run the `dep` command. You can run it from any subdirectories of you project;
+To get a list of all available tasks run the `dep` command. You can run it from any subdirectory of you project;
 Deployer will automatically find project root dir.
 
 ```
@@ -30,15 +30,14 @@ Available commands:
   ssh          Connect to host through ssh
 ```
 
-The best way to configure your `deploy.php` is to automatically deploy to staging on this command:
+It is a best practice to configure your `deploy.php` to deploy to staging if no host is specified:
 
-```
+```sh
 dep deploy
 ```
+This prevents accidental deploys to production. Then to deploy to production, use the `dep deploy production` command, which explicitly lists the required production stage.
 
-This is so somebody can't accidentally deploy to production (for production deployment, the `dep deploy production` command explicitly lists the required production stage).
-
-You need info about available options and usage use the `help` command:
+If you need info about available options and usage use the `help` command:
 
 ```
 $ dep help deploy
@@ -72,7 +71,7 @@ Help:
   Deploy your project
 ```
 
-### Overriding configuration options
+## Overriding configuration options
 
 For example, if your _deploy.php_ file contains this configuration:
 
@@ -92,7 +91,7 @@ To override multiple config options, you can pass multiple `-o` args:
 dep deploy -o ssh_multiplexing=true -o branch=master
 ```
 
-### Running arbitrary commands
+## Running arbitrary commands
 
 Deployer comes with a command to run any valid command on you server without modifying _deploy.php_
 
@@ -108,7 +107,7 @@ To specify the hosts this command has the corresponding options:
   --hosts=HOSTS    Host to deploy, comma separated, supports ranges [:]
 ```
 
-### Getting help
+## Getting help
 
 You can get more info about any commands by using the help command:
 
@@ -116,7 +115,7 @@ You can get more info about any commands by using the help command:
 dep help [command]
 ```
 
-### Autocomplete
+## Autocomplete
 
 Deployer comes with an autocomplete script for bash/zsh/fish, so you don't need to remember all the tasks and options.
 To install it run following command:
@@ -127,7 +126,7 @@ dep autocomplete
 
 And follow instructions.
 
-### Local root directory
+## Local root directory
 
 By default `runLocally()` commands are executed relative to the recipe file directory. This can be overridden globally by setting an environment variable:
 ```

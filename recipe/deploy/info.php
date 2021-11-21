@@ -3,5 +3,11 @@ namespace Deployer;
 
 desc('Displays info about deployment');
 task('deploy:info', function () {
-    info("deploying <fg=magenta;options=bold>{{target}}</>");
+    $target = get('target');
+    try {
+        $target = runLocally("git rev-parse --abbrev-ref $target");
+    } catch (\Throwable $exception) {
+        // noop
+    }
+    info("deploying <fg=magenta;options=bold>$target</>");
 });

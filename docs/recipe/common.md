@@ -169,7 +169,7 @@ The deploy target: a branch, a tag or a revision.
 ## Tasks
 
 ### deploy:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L162)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L169)
 
 Prepares a new release.
 
@@ -187,7 +187,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L173)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L180)
 
 Publishes the release.
 
@@ -202,7 +202,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L183)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L190)
 
 
 
@@ -210,7 +210,7 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L192)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L199)
 
 
 
@@ -218,7 +218,7 @@ Hook on deploy failure.
 
 
 ### logs:app
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L202)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L209)
 
 Shows application logs.
 

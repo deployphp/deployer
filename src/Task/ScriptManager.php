@@ -14,7 +14,6 @@ class ScriptManager
 {
     private $tasks;
     private $hooksEnabled = true;
-    private $startFrom = null;
     private $visitedTasks = [];
 
     public function __construct(TaskCollection $tasks)
@@ -27,7 +26,7 @@ class ScriptManager
      *
      * @return Task[]
      */
-    public function getTasks(string $name, ?string $startFrom = null): array
+    public function getTasks(string $name, ?string $startFrom = null, array &$skipped = []): array
     {
         $tasks = [];
         $this->visitedTasks = [];
@@ -42,6 +41,7 @@ class ScriptManager
                     if ($task->getName() === $startFrom) {
                         $skip = false;
                     } else {
+                        $skipped[] = $task->getName();
                         continue;
                     }
                 }

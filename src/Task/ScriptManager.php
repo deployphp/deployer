@@ -86,6 +86,9 @@ class ScriptManager
                 $subTasks = $this->doGetTasks($taskName);
                 foreach ($subTasks as $subTask) {
                     $subTask->addSelector($task->getSelector());
+                    if ($task->isOnce()) {
+                        $subTask->once();
+                    }
                     $tasks[] = $subTask;
                 }
             }

@@ -19,4 +19,9 @@ class TaskCollection extends Collection
     {
         throw new \InvalidArgumentException("Task `$name` not found.");
     }
+
+    public function add(Task $task): void
+    {
+        $this->set($task->getName(), $task);
+    }
 }

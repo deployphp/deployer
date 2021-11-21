@@ -181,7 +181,7 @@ Notifies Slack.
 
 
 ### slack:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L119)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L118)
 
 Notifies Slack about deploy finish.
 
@@ -189,7 +189,7 @@ Notifies Slack about deploy finish.
 
 
 ### slack:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L139)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L137)
 
 Notifies Slack about deploy failure.
 
@@ -197,7 +197,7 @@ Notifies Slack about deploy failure.
 
 
 ### slack:notify:rollback
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L159)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L156)
 
 Notifies Slack about rollback.
 

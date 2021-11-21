@@ -165,7 +165,7 @@ Tasks
 
 
 ### chatwork:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L128)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L127)
 
 Notifies Chatwork.
 
@@ -173,7 +173,7 @@ Notifies Chatwork.
 
 
 ### chatwork:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L144)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L142)
 
 Notifies Chatwork about deploy finish.
 
@@ -181,7 +181,7 @@ Notifies Chatwork about deploy finish.
 
 
 ### chatwork:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L161)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L158)
 
 Notifies Chatwork about deploy failure.
 

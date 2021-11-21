@@ -210,7 +210,7 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L193)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L192)
 
 
 
@@ -218,7 +218,7 @@ Hook on deploy failure.
 
 
 ### logs:app
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L204)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L202)
 
 Shows application logs.
 

@@ -131,7 +131,7 @@ Notifies Workplace.
 
 
 ### workplace:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L110)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L109)
 
 Notifies Workplace about deploy finish.
 
@@ -139,7 +139,7 @@ Notifies Workplace about deploy finish.
 
 
 ### workplace:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L122)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L120)
 
 Notifies Workplace about deploy failure.
 

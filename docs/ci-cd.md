@@ -1,6 +1,6 @@
 # CI/CD
 
-### GitLab CI/CD
+## GitLab CI/CD
 
 Set the following variables in GitLab project:
 
@@ -29,6 +29,12 @@ deploy:
     - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add - > /dev/null
   script:
     - dep deploy -vvv
+  resource_group: production
   only:
     - master
 ```
+
+###Deployment concurrency
+Only one deployment job runs at a time with the [`resource_group` keyword](https://docs.gitlab.com/ee/ci/yaml/index.html#resource_group) in .gitlab-ci.yml.
+
+In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [Skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#skip-outdated-deployment-jobs) feature.

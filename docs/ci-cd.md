@@ -4,10 +4,10 @@
 
 Set the following variables in GitLab project:
 
-- `SSH_PRIVATE_KEY`: Content of `~/.ssh/known_hosts` file. 
+- `SSH_KNOW_HOSTS`: Content of `~/.ssh/known_hosts` file. 
 The public SSH keys for a host may be obtained using the utility `ssh-keyscan`. 
 For example: `ssh-keyscan deployer.org`.
-- `SSH_KNOW_HOSTS`: Private key for connecting to remote hosts. 
+- `SSH_PRIVATE_KEY`: Private key for connecting to remote hosts. 
 To generate private key: `ssh-keygen -t ed25519 -C 'gitlab@deployer.org'`.
 
 Create .gitlab-ci.yml file with following content:

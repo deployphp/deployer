@@ -39,6 +39,9 @@ Only one deployment job runs at a time with the [`resource_group` keyword](https
 
 In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [Skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#skip-outdated-deployment-jobs) feature.
 
+###Deploy code
+Since by default every GitLab CI job already clone the repo, you could use [`rsync`](contrib/rsync.md#usage) task instead of `deploy:update_code` to upload the code from the job to the host.
+
 ###Deploy secrets
 Since it is not recommended pushing secrets in the repository, you could use a GitLab variable to store them.
 

@@ -221,8 +221,9 @@ task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'artisan:storage:link',
-    'artisan:view:cache',
     'artisan:config:cache',
+    'artisan:route:cache',
+    'artisan:view:cache',
     'artisan:migrate',
     'deploy:publish',
 ]);

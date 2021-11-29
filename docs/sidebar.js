@@ -14,6 +14,13 @@ module.exports = [
   'ci-cd',
   'yaml',
   'cli',
+  {
+    type: 'category',
+    label: 'ADVANCED GUIDES',
+    items: [
+      'avoid-php-fpm-reloading',
+    ],
+  },
   'api',
   {
     type: 'category',

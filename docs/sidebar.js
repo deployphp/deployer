@@ -16,7 +16,7 @@ module.exports = [
   'cli',
   {
     type: 'category',
-    label: 'ADVANCED GUIDES',
+    label: 'Advanced Guides',
     items: [
       'avoid-php-fpm-reloading',
     ],

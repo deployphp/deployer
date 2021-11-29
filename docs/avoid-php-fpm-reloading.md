@@ -1,4 +1,4 @@
-# Avoid PHP-FPM reloading
+# Avoid PHP-FPM Reloading
 
 Deployer symlinks _current_ to latest release dir.
 
@@ -13,11 +13,8 @@ releases/
 ## The problem
 
 PHP Opcodes gets cached. And if `SCRIPT_FILENAME` contains _current_ symlink, on
-new deploy nothing updates. 
-
-Usually solution is simple to restart **php-fpm** after deploy, but such restart 
-can lead to **dropped** or **failed** requests.
-
+new deploy nothing updates.  Usually solution is simple to restart **php-fpm** 
+after deploy, but such restart can lead to **dropped** or **failed** requests.
 Correct fix, is to configure your server set `SCRIPT_FILENAME` to resolved path.
 You can check your server configuration by printing `SCRIPT_FILENAME`.
 
@@ -32,7 +29,7 @@ _current_ in path, your server configured incorrectly.
 
 Nginx has special variable `$realpath_root`, use it to set up `SCRIPT_FILENAME`:
 
-```
+```diff
 location ~ \.php$ {
   include fastcgi_params;
   fastcgi_pass unix:/var/run/php/php-fpm.sock;

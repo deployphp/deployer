@@ -13,8 +13,8 @@ releases/
 ## The problem
 
 PHP Opcodes gets cached. And if `SCRIPT_FILENAME` contains _current_ symlink, on
-new deploy nothing updates.  Usually solution is simple to restart **php-fpm** 
-after deploy, but such restart can lead to **dropped** or **failed** requests.
+new deploy nothing updates.  Usually solution is simple to reload **php-fpm** 
+after deploy, but such reload can lead to **dropped** or **failed** requests.
 Correct fix, is to configure your server set `SCRIPT_FILENAME` to resolved path.
 You can check your server configuration by printing `SCRIPT_FILENAME`.
 

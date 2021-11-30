@@ -191,7 +191,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L164)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L167)
 
 
 
@@ -199,7 +199,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L168)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L171)
 
 
 

@@ -20,7 +20,6 @@ class Task
     private $hidden = false;
     private $once = false;
     private $oncePerNode = false;
-    private $shallow = false;
     private $limit = null;
     private $selector = null;
     private $verbose = false;
@@ -167,20 +166,6 @@ class Task
     public function getAfter(): array
     {
         return $this->after;
-    }
-
-    /**
-     * Sets task as shallow. Shallow task will not print execution message/finish messages.
-     */
-    public function shallow(bool $shallow = true): self
-    {
-        $this->shallow = $shallow;
-        return $this;
-    }
-
-    public function isShallow(): bool
-    {
-        return $this->shallow;
     }
 
     public function getLimit(): ?int

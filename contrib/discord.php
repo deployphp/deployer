@@ -97,8 +97,7 @@ task('discord:test', function () {
     set('discord_message', 'discord_failure_text');
     invoke('discord_send_message');
 })
-    ->once()
-    ->shallow();
+    ->once();
 
 desc('Notifies Discord');
 task('discord:notify', function () {
@@ -106,7 +105,6 @@ task('discord:notify', function () {
     invoke('discord_send_message');
 })
     ->once()
-    ->shallow()
     ->isHidden();
 
 desc('Notifies Discord about deploy finish');
@@ -115,7 +113,6 @@ task('discord:notify:success', function () {
     invoke('discord_send_message');
 })
     ->once()
-    ->shallow()
     ->isHidden();
 
 desc('Notifies Discord about deploy failure');
@@ -124,5 +121,4 @@ task('discord:notify:failure', function () {
     invoke('discord_send_message');
 })
     ->once()
-    ->shallow()
     ->isHidden();

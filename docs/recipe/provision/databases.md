@@ -64,7 +64,7 @@ Provision MariaDB.
 
 
 ### provision:postgresql
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L53)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L59)
 
 Provision PostgreSQL.
 

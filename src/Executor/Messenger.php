@@ -37,16 +37,14 @@ class Messenger
     public function startTask(Task $task): void
     {
         $this->startTime = round(microtime(true) * 1000);
-        if (!$task->isShallow()) {
-            if (getenv('GITHUB_WORKFLOW')) {
-                $this->output->writeln("::group::task {$task->getName()}");
-            } else if (getenv('GITLAB_CI')) {
-                $this->output->writeln("\e[0Ksection_start:{$this->startTime}:{$this->startTime}[collapsed=true]\r\e[0K{$task->getName()}");
-            } else {
-                $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
-            }
-            $this->logger->log("task {$task->getName()}");
+        if (getenv('GITHUB_WORKFLOW')) {
+            $this->output->writeln("::group::task {$task->getName()}");
+        } else if (getenv('GITLAB_CI')) {
+            $this->output->writeln("\e[0Ksection_start:{$this->startTime}:{$this->startTime}[collapsed=true]\r\e[0K{$task->getName()}");
+        } else {
+            $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }
+        $this->logger->log("task {$task->getName()}");
     }
 
     /*
@@ -54,9 +52,6 @@ class Messenger
      */
     public function endTask(Task $task): void
     {
-        if ($task->isShallow()) {
-            return;
-        }
         if (empty($this->startTime)) {
             $this->startTime = round(microtime(true) * 1000);
         }
@@ -69,7 +64,7 @@ class Messenger
 
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::endgroup::");
-        } if (getenv('GITLAB_CI')) {
+        } else if (getenv('GITLAB_CI')) {
             $this->output->writeln("\e[0Ksection_end:{$taskTime}:{$this->startTime}\r\e[0K");
         } else if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");

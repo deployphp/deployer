@@ -148,6 +148,9 @@ task('deploy', [
 
 
 task('sw-build-without-db:get-remote-config', static function () {
+    if (!test('[ -d {{current_path}} ]')) {
+        return;
+    }
     within('{{deploy_path}}/current', function () {
         run('./bin/console bundle:dump');
         download('{{deploy_path}}/current/var/plugins.json', './var/');

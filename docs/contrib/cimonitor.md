@@ -198,7 +198,7 @@ Notifies CIMonitor.
 
 
 ### cimonitor:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L122)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L121)
 
 Notifies CIMonitor about deploy finish.
 
@@ -206,7 +206,7 @@ Notifies CIMonitor about deploy finish.
 
 
 ### cimonitor:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L151)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L149)
 
 Notifies CIMonitor about deploy failure.
 

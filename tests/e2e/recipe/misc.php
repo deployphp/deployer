@@ -8,5 +8,5 @@ task('test:misc:sudo-write-user', function (): void {
     $cmd = 'sudo bash -c \'echo Current user is: $USER\'';
     $output = run($cmd);
     writeln($output);
-})->shallow();
+});
 

@@ -55,7 +55,6 @@ if (!isset($localBinaryOverrideFound)) {
                 break; // Already required this binary
             }
             $localBinaryOverrideFound = true; // Only do it once.
-            echo "Using $binary\n";
             require $binary;
             exit;
         }

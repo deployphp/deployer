@@ -11,9 +11,9 @@ chmod +x /usr/local/bin/dep
 ```
 
 :::tip CLI Autocomplete
-Deployer comes with an autocomplete support for task names, options, and hosts.
+Deployer comes with autocomplete support for task names, options, and hosts.
 
-Add next line to your `~/.bashrc` or `~/.zshrc`:
+Add the following to your `~/.bashrc` or `~/.zshrc`:
 
 ```
 eval "$(dep autocomplete --shell bash)"
@@ -29,7 +29,7 @@ composer require deployer/dist --dev
 :::tip Global and local Deployer
 If you call a globally installed Deployer via `/usr/local/bin/dep` in a project 
 directory with a locally installed Deployer at `vendor/bin/dep`, Deployer will
-redirect call to a local Deployer.
+redirect the call to a local Deployer.
 
 ```
 ~/project $ dep --version
@@ -45,5 +45,5 @@ composer require deployer/deployer --dev
 ```
 
 :::warning Dependency conflicts
-In case of dependencie conflicts install [distribution](#distribution) version.
+In case of dependency conflicts, install [distribution](#distribution) version.
 :::

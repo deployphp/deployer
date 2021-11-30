@@ -4,15 +4,10 @@ namespace Deployer;
 use Deployer\Exception\ConfigurationException;
 
 /**
- * Determines which branch to deploy. Can be overridden with cli option `--branch`.
+ * Determines which branch to deploy. Can be overridden with CLI option `--branch`.
  * If not specified, will get current git HEAD branch as default branch to deploy.
  */
-set('branch', function () {
-    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
-        return input()->getOption('branch');
-    }
-    return null;
-});
+set('branch', 'HEAD');
 
 // Automatically populate `known_hosts` file based on {{repository}} config.
 set('auto_ssh_keygen', true);
@@ -28,30 +23,9 @@ set('update_code_strategy', 'archive');
  */
 desc('Updates code');
 task('deploy:update_code', function () {
-    $repository = get('repository');
-    $branch = get('branch');
     $git = get('bin/git');
-
-    $at = 'HEAD';
-    if (!empty($branch)) {
-        $at = $branch;
-    }
-
-    // If option `tag` is set.
-    if (input()->hasOption('tag')) {
-        $tag = input()->getOption('tag');
-        if (!empty($tag)) {
-            $at = $tag;
-        }
-    }
-
-    // If option `tag` is not set and option `revision` is set.
-    if (empty($tag)) {
-        $revision = input()->getOption('revision');
-        if (!empty($revision)) {
-            $at = $revision;
-        }
-    }
+    $repository = get('repository');
+    $target = get('target');
 
     if (get('auto_ssh_keygen')) {
         $url = parse_url($repository);
@@ -91,16 +65,16 @@ task('deploy:update_code', function () {
 
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
-        run("$git archive $at | tar -x -f - -C {{release_path}} 2>&1");
+        run("$git archive $target | tar -x -f - -C {{release_path}} 2>&1");
     } else if (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
-        run("$git checkout --force $at");
+        run("$git checkout --force $target");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }
 
     // Save git revision in REVISION file.
-    $rev = escapeshellarg(run("$git rev-list $at -1"));
+    $rev = escapeshellarg(run("$git rev-list $target -1"));
     run("echo $rev > {{release_path}}/REVISION");
 });

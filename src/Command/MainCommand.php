@@ -113,9 +113,10 @@ class MainCommand extends SelectCommand
         $this->deployer->scriptManager->setHooksEnabled(!$input->getOption('no-hooks'));
         $startFrom = $input->getOption('start-from');
         if ($startFrom && !$this->deployer->tasks->has($startFrom)) {
-            throw new Exception("Task ${startFrom} does not exist.");
+            throw new Exception("Task $startFrom does not exist.");
         }
-        $tasks = $this->deployer->scriptManager->getTasks($this->getName(), $startFrom);
+        $skippedTasks = [];
+        $tasks = $this->deployer->scriptManager->getTasks($this->getName(), $startFrom, $skippedTasks);
 
         if (empty($tasks)) {
             throw new Exception('No task will be executed, because the selected hosts do not meet the conditions of the tasks');
@@ -126,6 +127,11 @@ class MainCommand extends SelectCommand
             $this->validateConfig();
             $this->deployer->master->connect($hosts);
             $this->deployer->server->start();
+            if (!empty($skippedTasks)) {
+                foreach ($skippedTasks as $taskName) {
+                    $output->writeln("<fg=yellow;options=bold>skip</> $taskName");
+                }
+            }
         }
         $exitCode = $this->deployer->master->run($tasks, $hosts, $plan);
 

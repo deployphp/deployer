@@ -11,4 +11,4 @@ task('test:functions:run-with-placeholders', function (): void {
 
     $output = run($cmd, ['env' => $env]);
     output()->writeln($output); // we use this to skip \Deployer\parse() being called in normal \Deployer\writeln()
-})->shallow();
+});

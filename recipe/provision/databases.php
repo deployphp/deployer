@@ -35,7 +35,7 @@ task('provision:databases', function () {
 
 desc('Provision MySQL');
 task('provision:mysql', function () {
-    run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get install -y mysql-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
     run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'0.0.0.0' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
     run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'%' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
     run("mysql --user=\"root\" -e \"GRANT ALL PRIVILEGES ON *.* TO '{{db_user}}'@'0.0.0.0' WITH GRANT OPTION;\"");
@@ -46,7 +46,13 @@ task('provision:mysql', function () {
 
 desc('Provision MariaDB');
 task('provision:mariadb', function () {
-    warning('mariadb db provision not ready yet');
+    run('apt-get install -y mariadb-server', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
+    run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'0.0.0.0' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
+    run("mysql --user=\"root\" -e \"CREATE USER IF NOT EXISTS '{{db_user}}'@'%' IDENTIFIED BY '%secret%';\"", ['secret' => get('db_password')]);
+    run("mysql --user=\"root\" -e \"GRANT ALL PRIVILEGES ON *.* TO '{{db_user}}'@'0.0.0.0' WITH GRANT OPTION;\"");
+    run("mysql --user=\"root\" -e \"GRANT ALL PRIVILEGES ON *.* TO '{{db_user}}'@'%' WITH GRANT OPTION;\"");
+    run("mysql --user=\"root\" -e \"FLUSH PRIVILEGES;\"");
+    run("mysql --user=\"root\" -e \"CREATE DATABASE IF NOT EXISTS {{db_name}} character set UTF8mb4 collate utf8mb4_bin;\"");
 });
 
 desc('Provision PostgreSQL');

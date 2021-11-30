@@ -119,7 +119,7 @@ Tasks
 
 
 ### discord:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L104)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L103)
 
 Notifies Discord.
 
@@ -127,7 +127,7 @@ Notifies Discord.
 
 
 ### discord:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L113)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L111)
 
 Notifies Discord about deploy finish.
 
@@ -135,7 +135,7 @@ Notifies Discord about deploy finish.
 
 
 ### discord:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L122)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L119)
 
 Notifies Discord about deploy failure.
 

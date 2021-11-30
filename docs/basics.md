@@ -53,7 +53,7 @@ If no host provided, Deployer will show an interactive prompt for selecting host
 If your recipe contains only one host, Deployer will automatically choose it. 
 To select all hosts specify `all`.
 
-But there is our `whoami` command? By default, Deployer runs with normal verbosity 
+But where is our `whoami` command output? By default, Deployer runs with normal verbosity 
 level and shows only names of executed tasks. Let's increase verbosity to verbose, and
 rerun our task.
 
@@ -74,8 +74,8 @@ host('deployer.org');
 host('medv.io');
 ```
 
-How Deployer knows hot to connect to a host? It uses same `~/.ssh/config` file as
-the `ssh` command. Or you can specify [connection options](hosts.md) in recipe.
+How does Deployer know how to connect to a host? It uses same `~/.ssh/config` file as
+the `ssh` command. Alternatively, you can specify [connection options](hosts.md) in recipe.
 
 Let's run `my_task` task on both hosts:
 
@@ -88,7 +88,7 @@ task my_task
 [deployer.org] deployer
 ```
 
-Deployer runs a task in parallel on each host. This is why output mixed. We can 
+Deployer runs a task in parallel on each host. This is why the output is mixed. We can 
 limit it to run only one host.
 
 ```
@@ -188,9 +188,9 @@ task my_task
 [medv.io] Who am I? anton
 ```
 
-This was we can create dynamic configuration which uses current host information.
+We can use this to create dynamic configuration which uses current host information.
 
-Only first call triggers callback execution. All consequential use saved value.
+Only the first call will trigger the callback execution. All subsequent checks use saved value.
 
 Here is an example:
 
@@ -206,7 +206,7 @@ task('my_task', function () {
 });
 ```
 
-If we run my_task we will see what `date` is called only once on 
+If we run my_task we will see that `date` is called only once on 
 `{{current_date}}` access.
 
 ```
@@ -219,7 +219,7 @@ task my_task
 [deployer.org] What time is it? Wed 03 Nov 2021 01:16:53 PM UTC
 ```
 
-We can override config option via CLI option `-o` like this:
+We can override a config option via CLI option `-o` like this:
 
 ```
 $ dep my_task deployer.org -v -o current_date="I don't know"
@@ -229,5 +229,5 @@ task my_task
 [deployer.org] What time is it? I don't know
 ```
 
-With overridden config option `current_date` there is no need to call the callback.
+Since the `current_date` config option is overridden there is no need to call the callback.
 So there is no 'run date'.

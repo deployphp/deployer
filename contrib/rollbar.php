@@ -51,5 +51,4 @@ task('rollbar:notify', function () {
         ->formBody($params)
         ->send();
 })
-    ->once()
-    ->shallow();
+    ->once();

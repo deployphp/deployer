@@ -31,6 +31,52 @@ class ScriptManagerTest extends TestCase
         self::assertEquals([$notify, $setup, $release], $scriptManager->getTasks('deploy'));
     }
 
+    public function testOnce()
+    {
+        $a = new Task('a');
+        $b = new Task('b');
+        $b->once();
+        $group = new GroupTask('group', ['a', 'b']);
+
+        $taskCollection = new TaskCollection();
+        $taskCollection->add($a);
+        $taskCollection->add($b);
+        $taskCollection->add($group);
+
+        $scriptManager = new ScriptManager($taskCollection);
+        self::assertEquals([$a, $b], $scriptManager->getTasks('group'));
+        self::assertFalse($a->isOnce());
+        self::assertTrue($b->isOnce());
+
+        $group->once();
+        self::assertEquals([$a, $b], $scriptManager->getTasks('group'));
+        self::assertTrue($a->isOnce());
+        self::assertTrue($b->isOnce());
+    }
+
+    public function testSelectsCombine()
+    {
+        $a = new Task('a');
+        $b = new Task('b');
+        $b->select('stage=beta');
+        $group = new GroupTask('group', ['a', 'b']);
+
+        $taskCollection = new TaskCollection();
+        $taskCollection->add($a);
+        $taskCollection->add($b);
+        $taskCollection->add($group);
+
+        $scriptManager = new ScriptManager($taskCollection);
+        self::assertEquals([$a, $b], $scriptManager->getTasks('group'));
+        self::assertNull($a->getSelector());
+        self::assertEquals([[['=', 'stage', 'beta']]], $b->getSelector());
+
+        $group->select('role=prod');
+        self::assertEquals([$a, $b], $scriptManager->getTasks('group'));
+        self::assertEquals([[['=', 'role', 'prod']]], $a->getSelector());
+        self::assertEquals([[['=', 'stage', 'beta']],[['=', 'role', 'prod']]], $b->getSelector());
+    }
+
     public function testThrowsExceptionIfTaskCollectionEmpty()
     {
         self::expectException(\InvalidArgumentException::class);

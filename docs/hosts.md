@@ -1,16 +1,16 @@
 # Hosts
 
-To define a new host use [host()](api.md#host) function. Deployer keeps list of
-all defined tasks in the `Deployer::get()->hosts` collection.
+To define a new host use the [host()](api.md#host) function. Deployer keeps a list of
+all defined hosts in the `Deployer::get()->hosts` collection.
 
 ```php
 host('example.org');
 ```
 
-Each host contains own configuration key-value pairs. The [host()](api.md#host)
+Each host contains it's own configuration key-value pairs. The [host()](api.md#host)
 call defines two important configs: **alias** and **hostname**.
 
-- **hostname** - used then connecting to remote host.
+- **hostname** - used when connecting to remote host.
 - **alias** - used as a key in `Deployer::get()->hosts` collection.
 
 ```php
@@ -31,8 +31,8 @@ host('example.org')
     ->set('hostname', 'example.cloud.google.com');
 ```
 
-Now new hostname will be used for ssh connect, and host will be referred in
-Deployer via the alias.
+The hostname will be used for the ssh connection, but the host will be referred to
+by it's alias when running Deployer.
 
 ```
 $ dep test
@@ -47,9 +47,8 @@ host('example.org')
     ->set('remote_user', 'deployer');
 ```
 
-Now Deployer will be using something
-like `ssh deployer@example.cloud.google.com`
-for establishing connection.
+Now Deployer will connect using something like
+`ssh deployer@example.cloud.google.com` to establishing connection.
 
 Also, Deployer's `Host` class has special setter methods (for better IDE
 autocompletion).
@@ -62,8 +61,8 @@ host('example.org')
 
 :::info Config file
 It is a good practice to keep connection parameters out of `deploy.php` file, as
-they can change depending on where are deploy executed. Only specify `hostname`
-and `remote_user` and other keep in `~/.ssh/config`:
+they can change depending on where the deploy is executed from. Only specify
+`hostname` and `remote_user` and other keep in `~/.ssh/config`:
 
 ```
 Host *
@@ -98,14 +97,14 @@ host('example.org', 'deployer.org', ...)
 
 ## Host ranges
 
-If you have a lot of hosts following similar patterns, you can describe them 
+If you have a lot of hosts following similar patterns, you can describe them
 like this rather than listing each hostname:
 
 ```php
 host('www[01:50].example.org');
 ```
 
-For numeric patterns, leading zeros can be included or removed, as desired. 
+For numeric patterns, leading zeros can be included or removed, as desired.
 Ranges are inclusive.
 
 You can also define alphabetic ranges:
@@ -116,8 +115,8 @@ host('db[a:f].example.org');
 
 ## Localhost
 
-A special function [localhost()](api.md#localhost) defines a special local host.
-Deployer will not connect to this host and will execute commands locally.
+The [localhost()](api.md#localhost) function defines a special local host.
+Deployer will not connect to this host, but will execute commands locally instead.
 
 ```php
 localhost(); // Alias and hostname will be "localhost".
@@ -126,8 +125,8 @@ localhost('ci'); // Alias is "ci", hostname is "localhost".
 
 ## YAML Inventory
 
-You can use [import()](api.md#import) function to keep host separately in, for
-example, *inventory.yaml* file.
+You can use the [import()](api.md#import) function to keep host definitions in a
+separate file. For example, *inventory.yaml*.
 
 ```php title="deploy.php"
 import('inventory.yaml');

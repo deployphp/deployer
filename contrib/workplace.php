@@ -103,7 +103,6 @@ task('workplace:notify', function () {
     }
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Workplace about deploy finish');
@@ -115,7 +114,6 @@ task('workplace:notify:success', function () {
     return Httpie::post($url)->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Workplace about deploy failure');
@@ -127,5 +125,4 @@ task('workplace:notify:failure', function () {
     return Httpie::post($url)->send();
 })
     ->once()
-    ->shallow()
     ->hidden();

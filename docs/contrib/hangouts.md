@@ -111,7 +111,7 @@ Notifies Google Hangouts Chat.
 
 
 ### chat:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L107)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L106)
 
 Notifies Google Hangouts Chat about deploy finish.
 
@@ -119,7 +119,7 @@ Notifies Google Hangouts Chat about deploy finish.
 
 
 ### chat:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L150)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L148)
 
 Notifies Google Hangouts Chat about deploy failure.
 

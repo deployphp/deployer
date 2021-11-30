@@ -112,7 +112,6 @@ task('telegram:notify', function () {
     $httpie->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
   desc('Notifies Telegram about deploy finish');
@@ -142,7 +141,6 @@ task('telegram:notify', function () {
       $httpie->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
   desc('Notifies Telegram about deploy failure');
@@ -172,5 +170,4 @@ task('telegram:notify', function () {
       $httpie->send();
 })
     ->once()
-    ->shallow()
     ->hidden();

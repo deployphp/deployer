@@ -315,6 +315,8 @@ class Deployer extends Container
                 $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
             }
             self::printException($output, $exception);
+            
+            exit(1);
         }
     }
 

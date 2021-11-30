@@ -101,7 +101,6 @@ task('teams:notify', function () {
     ])->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Teams about deploy finish');
@@ -116,7 +115,6 @@ task('teams:notify:success', function () {
     ])->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Teams about deploy failure');
@@ -131,5 +129,4 @@ task('teams:notify:failure', function () {
     ])->send();
 })
     ->once()
-    ->shallow()
     ->hidden();

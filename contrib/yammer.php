@@ -89,7 +89,6 @@ task('yammer:notify', function () {
         ->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Yammer about deploy finish');
@@ -109,7 +108,6 @@ task('yammer:notify:success', function () {
         ->send();
 })
     ->once()
-    ->shallow()
     ->hidden();
 
 desc('Notifies Yammer about deploy failure');
@@ -129,5 +127,4 @@ task('yammer:notify:failure', function () {
         ->send();
 })
     ->once()
-    ->shallow()
     ->hidden();

@@ -44,8 +44,8 @@ class Selector
         }
 
         $labels = $host->get('labels', []);
-        $labels['__host__'] = $host->getAlias();
-        $labels['__all__'] = 'yes';
+        $labels['alias'] = $host->getAlias();
+        $labels['true'] = 'true';
         $isTrue = function ($value) {
             return $value;
         };
@@ -94,13 +94,13 @@ class Selector
             foreach (explode('&', $sub) as $part) {
                 $part = trim($part);
                 if ($part === 'all') {
-                    $conditions[] = ['=', '__all__', 'yes'];
+                    $conditions[] = ['=', 'true', 'true'];
                     continue;
                 }
                 if (preg_match('/(?<var>.+?)(?<op>!?=)(?<value>.+)/', $part, $match)) {
                     $conditions[] = [$match['op'], trim($match['var']), trim($match['value'])];
                 } else {
-                    $conditions[] = ['=', '__host__', trim($part)];
+                    $conditions[] = ['=', 'alias', trim($part)];
                 }
             }
             $all[] = $conditions;

@@ -67,7 +67,7 @@ If you want to notify about successful end of deployment add this too:
 after('deploy:success', 'slack:notify:success');
 ```
 
-If you want to notify ab<<<<<<< add-slack-fields-supportout failed deployment add this too:
+If you want to notify about failed deployment add this too:
 
 ```php
 after('deploy:failed', 'slack:notify:failure');
@@ -192,7 +192,7 @@ Notifies Slack.
 
 
 ### slack:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L124)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L123)
 
 Notifies Slack about deploy finish.
 
@@ -200,7 +200,7 @@ Notifies Slack about deploy finish.
 
 
 ### slack:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L145)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L143)
 
 Notifies Slack about deploy failure.
 
@@ -208,6 +208,10 @@ Notifies Slack about deploy failure.
 
 
 ### slack:notify:rollback
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L165)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L162)
 
 Notifies Slack about rollback.
+
+
+
+

@@ -40,6 +40,10 @@ before('deploy', 'slack:notify');
 - `slack_color` – color's attachment
 - `slack_success_color` – success color's attachment
 - `slack_failure_color` – failure color's attachment
+- `slack_fields` - set attachments fields for pretty output in Slack, default:
+  ```
+  set('slack_fields', []);
+  ```
 
 ## Usage
 
@@ -79,6 +83,7 @@ set('slack_text', '_{{user}}_ deploying `{{target}}` to *{{hostname}}*');
 set('slack_success_text', 'Deploy to *{{target}}* successful');
 set('slack_failure_text', 'Deploy to *{{target}}* failed');
 set('slack_rollback_text', '_{{user}}_ rolled back changes on *{{target}}*');
+set('slack_fields', []);
 
 // Color of attachment
 set('slack_color', '#4d91f7');
@@ -124,6 +129,7 @@ task('slack:notify:success', function () {
         'title' => get('slack_title'),
         'text' => get('slack_success_text'),
         'color' => get('slack_success_color'),
+        'fields' => get('slack_fields'),
         'mrkdwn_in' => ['text'],
     ];
 

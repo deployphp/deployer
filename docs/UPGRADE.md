@@ -79,6 +79,9 @@ ln -nfs releases/42 current
 ```
 :::
 
+:::note
+In case there are multiple hosts with different release names, you should create a `{{deploy_path}}/.dep/latest_release` file in each host with the current release number of that particular host.
+:::
 
 ## Other versions
 

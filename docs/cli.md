@@ -19,6 +19,7 @@ Options:
       --no-ansi         Disable ANSI output
   -n, --no-interaction  Do not ask any interactive question
   -f, --file[=FILE]     Specify Deployer file
+  -d, --dry-run         Display commands instead of running them
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
@@ -35,6 +36,7 @@ It is a best practice to configure your `deploy.php` to deploy to staging if no 
 ```sh
 dep deploy
 ```
+
 This prevents accidental deploys to production. Then to deploy to production, use the `dep deploy production` command, which explicitly lists the required production stage.
 
 If you need info about available options and usage use the `help` command:
@@ -129,11 +131,13 @@ And follow instructions.
 ## Local root directory
 
 By default `runLocally()` commands are executed relative to the recipe file directory. This can be overridden globally by setting an environment variable:
+
 ```
 DEPLOYER_ROOT=. dep taskname`
 ```
 
 Alternatively the root directory can be overridden per command via the cwd configuration.
+
 ```php
 runLocally('ls', ['cwd' => '/root/directory']);
 ```

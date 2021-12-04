@@ -339,6 +339,12 @@ function within(string $path, callable $callback)
  */
 function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false, ?bool $no_throw = false): string
 {
+    $dryRun = Deployer::get()->console->getDefinition()->hasOption('dry-run');
+    if ($dryRun) {
+        writeln($command);
+        return $command;
+    }
+
     $namedArguments = [];
     foreach (['timeout', 'idle_timeout', 'secret', 'env', 'real_time_output', 'no_throw'] as $arg) {
         if ($$arg !== null) {
@@ -423,6 +429,12 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  */
 function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?string $shell = null): string
 {
+    $dryRun = Deployer::get()->console->getDefinition()->hasOption('dry-run');
+    if ($dryRun) {
+        writeln($command);
+        return $command;
+    }
+
     $namedArguments = [];
     foreach (['timeout', 'idle_timeout', 'secret', 'env', 'shell'] as $arg) {
         if ($$arg !== null) {

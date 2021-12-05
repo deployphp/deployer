@@ -1,11 +1,10 @@
 # Getting Started
 
 This tutorial will cover:
-- Provisioning a new server.
-- Configuring a deployment.
-- Automateing deployment via GitHub Actions.
+- Setting up a new server with provision recipe.
+- Configure deployment and do our first deploy.
 
-Tutorial duration: **7 min**
+Tutorial duration: **5 min**
 
 First, [install the Deployer](installation.md):
 
@@ -26,7 +25,7 @@ Deployer will ask you a few question and after finishing you will have a
 It contains hosts, tasks and requires other recipes. All framework recipes
 that come with Deployer are based on the [common](recipe/common.md) recipe.
 
-## Provisioning
+## Provision
 
 :::note
 If you already have a configured webserver you may skip to 
@@ -96,43 +95,4 @@ task releases
 
 :::tip
 During development, the [dep push](recipe/deploy/push.md) task maybe useful.
-:::
-
-## Deploy on push
-
-Not let's use [GitHub Action for Deployer](https://github.com/deployphp/action).
-
-Create `.github/workflows/deploy.yml` file with following content:
-
-```yaml
-name: deploy
-
-on:
-  push:
-    branches: [ master ]
-
-concurrency: production_environment
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-  
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.0' 
-
-    - name: Deploy
-      uses: deployphp/action@v1
-      with:
-        private-key: ${{ secrets.PRIVATE_KEY }}
-        dep: deploy
-```
-
-:::warning
-The `concurrency: production_environment` is important as it prevents concurrent 
-deploys.
 :::

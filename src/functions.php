@@ -339,9 +339,9 @@ function within(string $path, callable $callback)
  */
 function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false, ?bool $no_throw = false): string
 {
-    $dryRun = Deployer::get()->console->getDefinition()->hasOption('dry-run');
+    $dryRun = get('dry-run', false) || input()->getOption('dry-run');
     if ($dryRun) {
-        writeln($command);
+        writeln('[<info>dry-run</info>] ' . $command);
         return $command;
     }
 
@@ -881,7 +881,6 @@ function which(string $name): string
 
     // Deal with issue when `type -p` outputs something like `type -ap` in some implementations
     return trim(str_replace("$name is", "", $path));
-
 }
 
 /**

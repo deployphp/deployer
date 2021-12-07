@@ -48,7 +48,7 @@ anything, as everything already configured properly.
 Use `resolve_root_symlink`:
 
 ```
-php_fastcgi * unix//run/php/php$phpVersion-fpm.sock {
+php_fastcgi * unix//run/php/php-fpm.sock {
     resolve_root_symlink
 }
 ```

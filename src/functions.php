@@ -431,9 +431,9 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  */
 function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?string $shell = null): string
 {
-    $dryRun = Deployer::get()->console->getDefinition()->hasOption('dry-run');
+    $dryRun = get('dry-run', false) || input()->getOption('dry-run');
     if ($dryRun) {
-        writeln($command);
+        writeln('[<info>dry-run</info>] ' . $command);
         return $command;
     }
 

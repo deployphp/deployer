@@ -27,8 +27,15 @@ task('deploy:update_code', function () {
     $repository = get('repository');
     $target = get('target');
 
-    if (get('auto_ssh_keygen')) {
-        $url = parse_url($repository);
+    $skipKeygen = false;
+    $url = parse_url($repository);
+
+    // Skip keygen, if URL is using http/https as scheme
+    if (isset($url['scheme']) && in_array($url['scheme'], ['http', 'https'])) {
+        $skipKeygen = true;
+    }
+
+    if (get('auto_ssh_keygen') && !$skipKeygen) {
         if (isset($url['scheme']) && $url['scheme'] === 'ssh') {
             $host = $url['host'];
             $port = $url['port'] ?? '22';

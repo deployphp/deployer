@@ -35,15 +35,18 @@ task('my_task')->disable();
 | `enable()`                       | Enables the task.                                        |
 
 ## Task grouping
+
 You can combine tasks in groups:
 
+```php
 task('deploy', [
-'deploy:prepare',
-'deploy:update_code',
-'deploy:vendors',
-'deploy:symlink',
-'cleanup'
+    'deploy:prepare',
+    'deploy:update_code',
+    'deploy:vendors',
+    'deploy:symlink',
+    'cleanup'
 ]);
+```
 
 ## Task hooks
 

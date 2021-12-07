@@ -167,7 +167,7 @@ task('sw-build-without-db:get-remote-config', static function () {
         if (substr($deployPath, -1, 1) !== '/') {
             $deployPath .= '/';
         }
-        $deployPath .= 'releases/.+?/';
+        $deployPath .= 'releases/[0-9a-zA-Z]*/';
         $escapedDeployPath = str_replace('/', '\\\\/', $deployPath);
         runLocally("sed -iE 's#${escapedDeployPath}##g' files/theme-config/* || true");
     });

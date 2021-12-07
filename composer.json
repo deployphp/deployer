@@ -26,7 +26,8 @@
         },
         "files": [
             "src/Support/helpers.php",
-            "src/functions.php"
+            "src/functions.php",
+            "src/functions_extra.php"            
         ]
     },
     "scripts": {

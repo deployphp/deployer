@@ -10,6 +10,7 @@ require 'contrib/mysql.php';
 
 ## Configuration
 - `mysql_dump_switches', mysqldump command line switches
+- `find_replace_table_exclusions', Array of tables to skip when doing a find replace
 
 ## Host Configuration
 - `mysql_domain`,
@@ -35,6 +36,7 @@ namespace Deployer;
 use Deployer\Host\Host;
 
 set('mysql_dump_switches', '--max_allowed_packet=128M --single-transaction --quick --extended-insert --allow-keywords --events --routines --compress --extended-insert --create-options --add-drop-table --add-locks --no-tablespaces');
+set('find_replace_table_exclusions', ['wp_usermeta', 'wp_usermeta_copy']);
 
 class Mysql
 {
@@ -78,11 +80,11 @@ class Mysql
             return true;
         }
 
-        if ($host->get('production') === true) {
+        if ($host->get('production', false) === true) {
             return true;
         }
 
-        if ($host->get('branch') == 'production') {
+        if ($host->get('branch', null) == 'production') {
             return true;
         }
 
@@ -114,14 +116,27 @@ class Mysql
         return $credentials;
     }
 
+    protected function hostPortUserPassword(object $creds): string
+    {
+        $connection = "--host=\"$creds->host\" --port=\"$creds->port\" --user=\"$creds->user\" --password=\"$creds->pass\"";
+        return $connection;
+    }
+
     public function findReplaceCommand(Host $source, Host $destination): string
     {
         $php = $this->whichLocally('php');
 
         $S = $this->hostCredentials($source);
         $D = $this->hostCredentials($destination);
+        $destHostPortUserPassword = "--host=\"$D->host\" --port=\"$D->port\" --user=\"$D->user\" --pass=\"$D->pass\"";
 
-        $command = "$php " . __DIR__ . "/vendor/interconnectit/search-replace-db/srdb.cli.php -w wp_usermeta,wp_usermeta_copy -h $D->host -n $D->name -u $D->user -p $D->pass -s \"$S->domain\" -r \"$D->domain\"";
+        $tableExclusions = implode(',', get('find_replace_table_exclusions', ''));
+        if (!empty($tableExclusions)) {
+            $tableExclusions = "--exclude-tables=\"$tableExclusions\"";
+        }
+
+        $script = __DIR__ . "/../../../interconnectit/search-replace-db/srdb.cli.php";
+        $command = "$php $script $tableExclusions $destHostPortUserPassword --name=\"$D->name\" --search=\"$S->domain\" --replace=\"$D->domain\"";
         return $command;
     }
 
@@ -131,10 +146,13 @@ class Mysql
         $mysql = $this->whichLocally('mysql');
 
         $S = $this->hostCredentials($source);
+        $sourceHostPortUserPassword = $this->hostPortUserPassword($S);
+
         $D = $this->hostCredentials($destination);
+        $destHostPortUserPassword = $this->hostPortUserPassword($D);
 
         $dumpSwitches = get('mysql_dump_switches');
-        $pullCommand = "$mysqldump --port=$S->port --host=$S->host --user=$S->user --password=$S->pass $dumpSwitches $S->name | $mysql --host=$D->host --port=$D->port --user=$D->user --password=$D->pass $D->name";
+        $pullCommand = "$mysqldump $dumpSwitches $sourceHostPortUserPassword $S->name | $mysql $destHostPortUserPassword $D->name";
         return $pullCommand;
     }
 
@@ -144,10 +162,11 @@ class Mysql
         $gzip = $this->whichLocally('gzip');
 
         $H = $this->hostCredentials($source);
+        $hostPortUserPassword = $this->hostPortUserPassword($H);
 
         $dumpName = sprintf('db-%s-%s-%s.sql', $source->getAlias(), $H->name, date('YmdHis'));
         $dumpSwitches = get('mysql_dump_switches');
-        $command = "$mysqldump $dumpSwitches --port=$H->port --host=$H->host --user=$H->user --password=$H->pass $H->name > \"$dumpName\" && $gzip \"$dumpName\"";
+        $command = "$mysqldump $dumpSwitches $hostPortUserPassword $H->name > \"$dumpName\" && $gzip \"$dumpName\"";
         return $command;
     }
 
@@ -178,13 +197,20 @@ class Mysql
         $mysql = $this->whichLocally('mysql');
 
         $H = $this->hostCredentials($host);
-        $command = "$mysql --host=$H->host --port=$H->port --user=$H->user --password=$H->pass $H->name";
+        $hostPortUserPassword = $this->hostPortUserPassword($H);
 
-        $tablesCommand = $command . " -e 'SHOW TABLES' ";
+        $connection = "$mysql $hostPortUserPassword $H->name";
 
-        set('dry-run', false);
+        $tablesCommand = $connection . " -e 'SHOW TABLES' ";
+
+        $dryRun = get('dry-run', false);
+        if ($dryRun) {
+            set('dry-run', false);
+        }
         $tables = runLocally($tablesCommand);
-        set('dry-run', true);
+        if ($dryRun) {
+            set('dry-run', true);
+        }
 
         $tableArray = explode(PHP_EOL, $tables);
         unset($tableArray[0]); // removes 'Tables in dbname' entry
@@ -193,7 +219,7 @@ class Mysql
         }
 
         foreach ($tableArray as $table) {
-            runLocally($command . " -e 'DROP TABLE `$table`'");
+            runLocally($connection . " -e 'DROP TABLE `$table`'");
         }
     }
 
@@ -261,5 +287,6 @@ task('db:replace', function () {
 
 task('db:pull-replace', function () {
     $mysql = new Mysql();
+    $mysql->pull(currentHost(), hostLocalhost());
     $mysql->findReplace(currentHost(), hostLocalhost());
 })->desc('Pull db from a remote host to localhost using mysqldump and replace the host domain with the localhost domain in the local database');

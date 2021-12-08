@@ -19,6 +19,18 @@ set('auto_ssh_keygen', true);
 set('update_code_strategy', 'archive');
 
 /**
+ * Specifies a sub directory within the repository to deploy.
+ * Works only when [`update_code_strategy`](#update_code_strategy) is set to `archive` (default).
+ * 
+ * Example: 
+ *  - set value to `src` if you want to deploy the folder that lives at `/src/api`.
+ *  - set value to `src/api` if you want to deploy the folder that lives at `/src/api`.
+ * 
+ * Note: do not use a leading `/`!
+ */
+set('sub_directory', null);
+
+/**
  * Update code at {{release_path}} on host.
  */
 desc('Updates code');
@@ -26,6 +38,7 @@ task('deploy:update_code', function () {
     $git = get('bin/git');
     $repository = get('repository');
     $target = get('target');
+    $subtarget = get('sub_directory') ? "$target:{{sub_directory}}" : $target;
 
     if (get('auto_ssh_keygen')) {
         $url = parse_url($repository);
@@ -65,7 +78,7 @@ task('deploy:update_code', function () {
 
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
-        run("$git archive $target | tar -x -f - -C {{release_path}} 2>&1");
+        run("$git archive $subtarget | tar -x -f - -C {{release_path}} 2>&1");
     } else if (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");

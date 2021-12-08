@@ -26,6 +26,7 @@ task('deploy:update_code', function () {
     $git = get('bin/git');
     $repository = get('repository');
     $target = get('target');
+    $subtarget = get('sub_directory') ? "$target:{{sub_directory}}" : $target;
 
     if (get('auto_ssh_keygen')) {
         $url = parse_url($repository);
@@ -65,7 +66,7 @@ task('deploy:update_code', function () {
 
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
-        run("$git archive $target | tar -x -f - -C {{release_path}} 2>&1");
+        run("$git archive $subtarget | tar -x -f - -C {{release_path}} 2>&1");
     } else if (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");

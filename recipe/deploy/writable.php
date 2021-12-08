@@ -109,7 +109,7 @@ task('deploy:writable', function () {
             $setFaclUsers = "-m u:\"$httpUser\":rwX";
             // Check if remote user exists, before adding it to setfacl
             $remoteUserId = run("id -u $remoteUser &>/dev/null 2>&1 || exit 0");
-            if (is_int($remoteUserId)) {
+            if (!empty($remoteUserId)) {
                 $setFaclUsers .= " -m u:$remoteUser:rwX";
             }
             if (empty($sudo)) {

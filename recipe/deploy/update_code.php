@@ -19,6 +19,12 @@ set('auto_ssh_keygen', true);
 set('update_code_strategy', 'archive');
 
 /**
+ * Specifies a sub directory within the repository to deploy.
+ * Works only when `update_code_strategy` is set to 'archive' (default).
+ */
+set('sub_directory', null);
+
+/**
  * Update code at {{release_path}} on host.
  */
 desc('Updates code');

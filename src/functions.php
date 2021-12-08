@@ -344,7 +344,10 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
     $dryRun = get('dry-run', false) || input()->getOption('dry-run');
     if ($dryRun) {
         writeln('[<info>dry-run</info>] ' . $command);
-        return $command;
+        $bashTest = preg_match('/[[:blank:]]*\[\[?[[:blank:]]*[^\]]*\]?\][[:blank:]]*/', $command);
+        if (!$bashTest) {
+            return $command;
+        }
     }
 
     $namedArguments = [];
@@ -434,7 +437,10 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
     $dryRun = get('dry-run', false) || input()->getOption('dry-run');
     if ($dryRun) {
         writeln('[<info>dry-run</info>] ' . $command);
-        return $command;
+        $bashTest = preg_match('/[[:blank:]]*\[\[?[[:blank:]]*[^\]]*\]?\][[:blank:]]*/', $command);
+        if (!$bashTest) {
+            return $command;
+        }
     }
 
     $namedArguments = [];
@@ -871,6 +877,11 @@ function commandSupportsOption(string $command, string $option): bool
  */
 function which(string $name): string
 {
+    $dryRun = get('dry-run', false) || input()->getOption('dry-run');
+    if ($dryRun) {
+        return $name;
+    }
+
     $nameEscaped = escapeshellarg($name);
 
     // Try `command`, should cover all Bourne-like shells

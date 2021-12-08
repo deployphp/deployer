@@ -28,6 +28,11 @@ function debugEnabled(): bool
  */
 function whichLocal(string $name): string
 {
+    $dryRun = get('dry-run', false) || input()->getOption('dry-run');
+    if ($dryRun) {
+        return $name;
+    }
+
     $nameEscaped = escapeshellarg($name);
 
     // Try `command`, should cover all Bourne-like shells
@@ -80,6 +85,24 @@ function hostHasLabel(Host $host, string $label): bool
 {
     $labels = $host->getLabels();
     return (isset($labels[$label])) ? true : false;
+}
+
+function hostsOnSameServer(Host $host1, Host $host2): bool
+{
+    $host1Uri = $host1->getRemoteUser() . '@' . $host1->getHostname();
+    $host2Uri = $host2->getRemoteUser() . '@' . $host2->getHostname();
+    if (trim(strtolower($host1Uri)) == trim(strtolower($host2Uri))) {
+        return true;
+    }
+    return false;
+}
+
+function hostsAreSame(Host $host1, Host $host2): bool
+{
+    $same = hostsOnSameServer($host1, $host1);
+    $deploy1 = $host1->getDeployPath();
+    $deploy2 = $host2->getDeployPath();
+    return ($same && $deploy1 === $deploy2) ? true : false;
 }
 
 function slack(string $template, $success = false): void

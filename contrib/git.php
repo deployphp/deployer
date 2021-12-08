@@ -51,7 +51,7 @@ task('git:log', function () {
     $cd = which('cd');
     $git = which('git');
     $head = which('head');
-    $deployPath = currentHost()->get('deploy_path');
+    $deployPath = currentHost()->getDeployPath();
     $command = "$cd \"$deployPath/current\" && $git log --pretty=oneline | $head -n 5";
     $log = run($command);
     writeln($log);

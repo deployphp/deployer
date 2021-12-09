@@ -45,10 +45,11 @@ task('deploy:clear_server_paths', function () {
     $commands = [];
     foreach ($paths as $path) {
         if (strpos('/', $path) !== 0) {
-            error(sprintf('Path %s is not absolute', $path));
+            throw error(sprintf('Path %s is not absolute', $path));
         }
-        if (!test("[ -d $path ]")) {
-            throw new \RuntimeException(parse("Path \"$path\" not found."));
+        if (test("[ -d $path ]")) {
+            warning(parse("Path \"$path\" not found."));
+            continue;
         }
         $commands[] = "$sudo rm -rf $path";
     }

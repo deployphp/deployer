@@ -65,22 +65,32 @@ http://gordalina.github.io/cachetool/
 
 
 
-### cachetool_args
+### cachetool_url
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L54)
 
 
 
+```php title="Default value"
+'https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar'
+```
 
 
-### bin/cachetool
+### cachetool_args
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L55)
 
 
 
 
 
+### bin/cachetool
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L56)
+
+
+
+
+
 ### cachetool_options
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L61)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L62)
 
 
 
@@ -90,7 +100,7 @@ http://gordalina.github.io/cachetool/
 ## Tasks
 
 ### cachetool:clear:opcache
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L79)
 
 Clears OPcode cache.
 
@@ -98,7 +108,7 @@ Clear opcache cache
 
 
 ### cachetool:clear:apcu
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L87)
 
 Clears APCu system cache.
 
@@ -106,7 +116,7 @@ Clear APCU cache
 
 
 ### cachetool:clear:stat
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L94)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L95)
 
 Clears file status and realpath caches.
 

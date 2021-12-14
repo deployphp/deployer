@@ -54,7 +54,7 @@ set('cachetool', '');
 set('cachetool_args', '');
 set('bin/cachetool', function () {
     if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
-        run("cd {{release_or_current_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar");
+        run("cd {{release_or_current_path}} && curl -sLO https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar");
     }
     return '{{release_or_current_path}}/cachetool.phar';
 });

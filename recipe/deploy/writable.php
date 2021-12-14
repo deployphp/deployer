@@ -83,7 +83,7 @@ task('deploy:writable', function () {
     } elseif ($mode === 'chgrp') {
         // Change group ownership.
         // -L    traverse every symbolic link to a directory encountered
-        run("$sudo chgrp -H $recursive {{http_group}} $dirs");
+        run("$sudo chgrp -L $recursive {{http_group}} $dirs");
         run("$sudo chmod $recursive g+rwx $dirs");
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");

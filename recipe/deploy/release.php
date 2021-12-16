@@ -18,21 +18,13 @@ set('releases_log', function () {
         return [];
     }
 
-    $keepReleases = get('keep_releases');
-    if ($keepReleases === -1) {
-        $data = run('cat .dep/releases_log');
-    } else {
-        $data = run("tail -n " . ($keepReleases + 5) . " .dep/releases_log");
-    }
+    // retrieve all lines from .dep/releases_log and json_decode them
+    $releaseLogs = array_map(function ($line) {
+        return json_decode($line, true);
+    }, explode("\n", run('cat .dep/releases_log')));
 
-    $releasesLog = [];
-    foreach (explode("\n", $data) as $line) {
-        $metainfo = json_decode($line, true);
-        if (!empty($metainfo)) {
-            $releasesLog[] = $metainfo;
-        }
-    }
-    return $releasesLog;
+    // return all non-empty lines from releases log
+    return array_filter($releaseLogs);
 });
 
 // Return list of release names on host.

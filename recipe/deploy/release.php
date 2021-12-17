@@ -44,33 +44,31 @@ set('releases_list', function () {
         return [];
     }
 
-    // Will list only dirs in releases.
-    $ll = explode("\n", run('cd releases && ls -t -1 -d */'));
-    $ll = array_map(function ($release) {
+    // retrieve all release directories
+    // trim trailing slash so names are easy to compare
+    $releaseDirectories = array_map(function ($release) {
         return basename(rtrim(trim($release), '/'));
-    }, $ll);
+    }, explode("\n", run('cd releases && ls -t -1 -d */')));
 
-    $releasesLog = get('releases_log');
+    // retrieve release names from release logs metadata
+    $releaseLogs = array_map(function ($release) {
+        return $release['release_name'];
+    }, get('releases_log'));
 
-    $releases = [];
-    for ($i = count($releasesLog) - 1; $i >= 0; --$i) {
-        $release = $releasesLog[$i]['release_name'];
-        if (in_array($release, $ll, true)) {
-            $releases[] = $release;
-        }
-    }
-    return $releases;
+    // return items that exist in both release logs and releases directory
+    // reverse array order so most recent release is at the top
+    return array_reverse(array_intersect($releaseLogs, $releaseDirectories));
 });
 
 // Return release path.
 set('release_path', function () {
     $releaseExists = test('[ -h {{deploy_path}}/release ]');
-    if ($releaseExists) {
-        $link = run("readlink {{deploy_path}}/release");
-        return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
-    } else {
+    if (! $releaseExists) {
         throw new Exception(parse('The "release_path" ({{deploy_path}}/release) does not exist.'));
     }
+
+    $link = run("readlink {{deploy_path}}/release");
+    return substr($link, 0, 1) === '/' ? $link : get('deploy_path') . '/' . $link;
 });
 
 // Current release revision. Usually a git hash.

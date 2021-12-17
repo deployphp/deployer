@@ -30,21 +30,21 @@ Return list of release names on host.
 
 
 ### release_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L64)
 
 Return release path.
 
 
 
 ### release_revision
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L77)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L75)
 
 Current release revision. Usually a git hash.
 
 
 
 ### release_or_current_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L81)
 
 Return the release path during a deployment
 but fallback to the current path otherwise.
@@ -55,7 +55,7 @@ but fallback to the current path otherwise.
 ## Tasks
 
 ### deploy:release
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L90)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L88)
 
 Prepares release.
 
@@ -63,7 +63,7 @@ Clean up unfinished releases and prepare next release
 
 
 ### releases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L157)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L155)
 
 Shows releases list.
 

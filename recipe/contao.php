@@ -54,12 +54,12 @@ task('contao:install:lock', function () {
 
 desc('Enable maintenance mode');
 task('contao:maintenance:enable', function () {
-    run('{{bin/php}} {{bin/console}} contao:maintenance-mode --enable {{console_options}}');
+    run('{{bin/php}} {{bin/console}} contao:maintenance-mode enable {{console_options}}');
 });
 
 desc('Disable maintenance mode');
 task('contao:maintenance:disable', function () {
-    run('{{bin/php}} {{bin/console}} contao:maintenance-mode --disable {{console_options}}');
+    run('{{bin/php}} {{bin/console}} contao:maintenance-mode disable {{console_options}}');
 });
 
 desc('Deploy the project');

@@ -10,8 +10,19 @@
   * [symfony](/docs/recipe/symfony.md)
 
 ## Configuration
+### public_path
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L11)
+
+Overrides [public_path](/docs/recipe/provision/website.md#public_path) from `recipe/provision/website.php`.
+
+The public path is the path to be set as DocumentRoot and is defined in the `composer.json` of the project
+but defaults to `public` from Contao 5.0 on.
+This path is relative from the [current_path](/docs/recipe/common.md#current_path), see [`recipe/provision/website.php`](/docs/recipe/provision/website.php#public_path).
+
+
+
 ### bin/console
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L20)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L29)
 
 Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfony.php`.
 
@@ -20,20 +31,9 @@ Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfon
 
 
 ### contao_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L24)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L33)
 
 
-
-
-
-### public_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L31)
-
-Overrides [public_path](/docs/recipe/provision/website.md#public_path) from `recipe/provision/website.php`.
-
-The public path is the path to be set as DocumentRoot and is defined in the `composer.json` of the project
-but defaults to `public` from Contao 5.0 on.
-This path is relative from the [current_path](/docs/recipe/common.md#current_path), see [`recipe/provision/website.php`](/docs/recipe/provision/website.php#public_path).
 
 
 

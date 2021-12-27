@@ -5,13 +5,22 @@ require_once __DIR__ . '/symfony.php';
 
 add('recipes', ['contao']);
 
+// The public path is the path to be set as DocumentRoot and is defined in the `composer.json` of the project
+// but defaults to `public` from Contao 5.0 on.
+// This path is relative from the {{current_path}}, see [`recipe/provision/website.php`](/docs/recipe/provision/website.php#public_path).
+set('public_path', function () {
+    $composerConfig = json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
+
+    return $composerConfig['extra']['public-dir'] ?? 'public';
+});
+
 add('shared_files', ['config/parameters.yml']);
 
 add('shared_dirs', [
     'assets/images',
     'contao-manager',
     'files',
-    'public/share',
+    '{{public_path}}/share',
     'system/config',
     'var/backups',
     'var/logs',
@@ -23,15 +32,6 @@ set('bin/console', function () {
 
 set('contao_version', function () {
     return run('{{bin/console}} contao:version');
-});
-
-// The public path is the path to be set as DocumentRoot and is defined in the `composer.json` of the project
-// but defaults to `public` from Contao 5.0 on.
-// This path is relative from the {{current_path}}, see [`recipe/provision/website.php`](/docs/recipe/provision/website.php#public_path).
-set('public_path', function () {
-    $composerConfig = json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
-
-    return $composerConfig['extra']['public-dir'] ?? 'public';
 });
 
 // This task updates the database. A database backup is saved automatically as a default.

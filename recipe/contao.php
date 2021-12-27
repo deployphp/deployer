@@ -54,12 +54,20 @@ task('contao:install:lock', function () {
 
 desc('Enable maintenance mode');
 task('contao:maintenance:enable', function () {
-    run('{{bin/php}} {{bin/console}} contao:maintenance-mode enable {{console_options}}');
+    // Enable maintenance mode in both the current and release build, so that the maintenance mode will be enabled
+    // for the current installation before the symlink changes and the new installation after the symlink changed.
+    foreach (array_unique([parse('{{current_path}}'), parse('{{release_or_current_path}}')]) as $path) {
+        cd($path);
+        run('{{bin/php}} {{bin/console}} contao:maintenance-mode enable {{console_options}}');
+    }
 });
 
 desc('Disable maintenance mode');
 task('contao:maintenance:disable', function () {
-    run('{{bin/php}} {{bin/console}} contao:maintenance-mode disable {{console_options}}');
+    foreach (array_unique([parse('{{current_path}}'), parse('{{release_or_current_path}}')]) as $path) {
+        cd($path);
+        run('{{bin/php}} {{bin/console}} contao:maintenance-mode disable {{console_options}}');
+    }
 });
 
 desc('Deploy the project');

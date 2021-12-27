@@ -40,16 +40,23 @@ task('contao:migrate', function () {
     run('{{bin/php}} {{bin/console}} contao:migrate {{console_options}}');
 });
 
-// Optional task to download the `contao-manager.phar.php` in the public path. Make sure to
-// set a password on first access!
+// Downloads the `contao-manager.phar.php` into the public path.
 desc('Download the Contao Manager');
 task('contao:manager:download', function () {
     run('curl -LsO https://download.contao.org/contao-manager/stable/contao-manager.phar && mv contao-manager.phar {{release_or_current_path}}/{{public_path}}/contao-manager.phar.php');
 });
 
+// Locks the Contao install tool which is useful if you don't use it.
 desc('Lock the Contao Install Tool');
 task('contao:install:lock', function () {
     run('{{bin/php}} {{bin/console}} contao:install:lock {{console_options}}');
+});
+
+// Locks the Contao Manager which is useful if you only need the API of the Manager rather than the UI.
+desc('Lock the Contao Manager');
+task('contao:manager:lock', function () {
+    cd('{{release_or_current_path}}');
+    run('echo "99" > contao-manager/login.lock');
 });
 
 desc('Enable maintenance mode');

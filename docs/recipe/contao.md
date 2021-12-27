@@ -49,12 +49,11 @@ This task updates the database. A database backup is saved automatically as a de
 
 
 ### contao:manager:download
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L46)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L45)
 
 Download the Contao Manager.
 
-Optional task to download the `contao-manager.phar.php` in the public path. Make sure to
-set a password on first access!
+Downloads the `contao-manager.phar.php` into the public path.
 
 
 ### contao:install:lock
@@ -62,11 +61,19 @@ set a password on first access!
 
 Lock the Contao Install Tool.
 
+Locks the Contao install tool which is useful if you don't use it.
 
+
+### contao:manager:lock
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L57)
+
+Lock the Contao Manager.
+
+Locks the Contao Manager which is useful if you only need the API of the Manager rather than the UI.
 
 
 ### contao:maintenance:enable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L56)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L63)
 
 Enable maintenance mode.
 
@@ -74,7 +81,7 @@ Enable maintenance mode.
 
 
 ### contao:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L61)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L73)
 
 Disable maintenance mode.
 
@@ -82,7 +89,7 @@ Disable maintenance mode.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L81)
 
 Deploy the project.
 

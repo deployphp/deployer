@@ -6,6 +6,8 @@ use Symfony\Component\Console\Helper\Table;
 
 // The name of the release.
 set('release_name', function () {
+    cd('{{deploy_path}}');
+
     $latest = run('cat .dep/latest_release || echo 0');
     return strval(intval($latest) + 1);
 });

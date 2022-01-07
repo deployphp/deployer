@@ -25,15 +25,15 @@ set('shared_files', [
  * Create plugins' symlinks
  */
 task('deploy:init', function () {
-    run('{{release_or_current_path}}/bin/cake plugin assets symlink');
+    run('{{bin/php}} {{release_or_current_path}}/bin/cake.php plugin assets symlink');
 })->desc('Initialization');
 
 /**
  * Run migrations
  */
 task('deploy:run_migrations', function () {
-    run('{{release_or_current_path}}/bin/cake migrations migrate --no-lock');
-    run('{{release_or_current_path}}/bin/cake schema_cache build');
+    run('{{bin/php}} {{release_or_current_path}}/bin/cake.php migrations migrate --no-lock');
+    run('{{bin/php}} {{release_or_current_path}}/bin/cake.php schema_cache build');
 })->desc('Run migrations');
 
 /**

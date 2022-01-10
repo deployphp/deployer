@@ -63,11 +63,6 @@ task('deploy:writable', function () {
     $recursive = get('writable_recursive') ? '-R' : '';
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
 
-    $remoteUser = get('remote_user', false);
-    if (empty($remoteUser)) {
-        $remoteUser = run('whoami');
-    }
-
     if (empty($dirs)) {
         return;
     }
@@ -87,18 +82,17 @@ task('deploy:writable', function () {
         // -L   traverse every symbolic link to a directory encountered
         run("$sudo chown -L $recursive $httpUser $dirs");
     } elseif ($mode === 'chgrp') {
-        try {
-            // Change group ownership.
-            // -L    traverse every symbolic link to a directory encountered
-            run("$sudo chgrp -H $recursive {{http_group}} $dirs");
-            run("$sudo chmod g+rwx $dirs");
-        } catch (RunException $exception) {
-            warning("Make sure `$remoteUser` is in `{{http_group}}` group: `usermod -a -G {{http_group}} $remoteUser`");
-            throw  $exception;
-        }
+        // Change group ownership.
+        // -L    traverse every symbolic link to a directory encountered
+        run("$sudo chgrp -H $recursive {{http_group}} $dirs");
+        run("$sudo chmod g+rwx $dirs");
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {
+        $remoteUser = get('remote_user', false);
+        if (empty($remoteUser)) {
+            $remoteUser = run('whoami');
+        }
         $httpUser = get('http_user');
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
             // Try OS-X specific setting of access-rights

@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         php-versions: [ '7.3', '7.4', '8.0', '8.1' ]
+        composer-prefer: ['--prefer-dist', '--prefer-lowest']
     steps:
       - uses: actions/checkout@v2
 
@@ -39,7 +40,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist --no-progress && composer update ${{ matrix.composer-prefer }}
 
       - name: Run test suite
         run: composer test

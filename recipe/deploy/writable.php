@@ -4,7 +4,6 @@ namespace Deployer;
 // Used to make a writable directory by a server.
 // Used in `chown` and `acl` modes of {{writable_mode}}.
 // Attempts automatically to detect http user in process list.
-use Deployer\Exception\RunException;
 
 set('http_user', function () {
     $candidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));

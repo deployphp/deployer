@@ -24,7 +24,7 @@ false
 ### deploy:cleanup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/cleanup.php#L8)
 
-Cleanups old releases.
+Cleanup old releases.
 
 
 

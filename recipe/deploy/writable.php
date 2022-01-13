@@ -84,7 +84,7 @@ task('deploy:writable', function () {
         // Change group ownership.
         // -L    traverse every symbolic link to a directory encountered
         run("$sudo chgrp -H $recursive {{http_group}} $dirs");
-        run("$sudo chmod g+rwx $dirs");
+        run("$sudo chmod $recursive g+rwx $dirs");
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {

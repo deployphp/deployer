@@ -37,8 +37,10 @@ Let's create a new VPS on Linode, DigitalOcean, Vultr, AWS, GCP, etc.
 Make sure the image is **Ubuntu 20.04 LTS** as this version is supported via 
 Deployer [provision](recipe/provision.md) recipe.
 
+:::tip
 Configure Reverse DNS or RDNS on your server. This will allow you to ssh into 
 server using the domain name instead of the IP address.
+:::
 
 Our **deploy.php** recipe contains host definition with few important params:
  - `remote_user` user's name for ssh connection,

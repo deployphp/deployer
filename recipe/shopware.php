@@ -46,7 +46,6 @@ set('writable_dirs', [
     'config/jwt',
     'custom/plugins',
     'files',
-    'press_files',
     'public/bundles',
     'public/css',
     'public/fonts',
@@ -158,8 +157,9 @@ task('sw-build-without-db:get-remote-config', static function () {
         run('./bin/console theme:dump');
         download('{{deploy_path}}/current/files/theme-config', './files/');
 
-        // Temporary workaround to remove absolute file paths, which will be fixed in an upcoming version
-        runLocally('sed -i "" -E \'s/\\\\\/var\\\\\/www\\\\\/htdocs\\\\\/releases\\\\\/[0-9]+\\\\\///g\' files/theme-config/*');
+        // Temporary workaround to remove absolute file paths in Shopware <6.4.6.0
+        // See https://github.com/shopware/platform/commit/01c8ff86c7d8d3bee1888a26c24c9dc9b4529cbc and https://issues.shopware.com/issues/NEXT-17720
+        runLocally('sed -i "" -E \'s/\\\\\/var\\\\\/www\\\\\/htdocs\\\\\/releases\\\\\/[0-9]+\\\\\///g\' files/theme-config/* || true');
     });
 });
 

@@ -60,7 +60,7 @@ Run migrations
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L42)
 
 
 

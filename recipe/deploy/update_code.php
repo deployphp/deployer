@@ -2,6 +2,7 @@
 namespace Deployer;
 
 use Deployer\Exception\ConfigurationException;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * Determines which branch to deploy. Can be overridden with CLI option `--branch`.
@@ -9,14 +10,47 @@ use Deployer\Exception\ConfigurationException;
  */
 set('branch', 'HEAD');
 
-// Automatically populate `known_hosts` file based on {{repository}} config.
-set('auto_ssh_keygen', true);
+option('tag', null, InputOption::VALUE_REQUIRED, 'Tag to deploy');
+option('revision', null, InputOption::VALUE_REQUIRED, 'Revision to deploy');
+option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
+
+// The deploy target: a branch, a tag or a revision.
+set('target', function () {
+    $target = '';
+
+    $branch = get('branch');
+    if (!empty($branch)) {
+        $target = $branch;
+    }
+
+    // Override target from CLI options.
+    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
+        $target = input()->getOption('branch');
+    }
+    if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
+        $target = input()->getOption('tag');
+    }
+    if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
+        $target = input()->getOption('revision');
+    }
+
+    if (empty($target)) {
+        $target = "HEAD";
+    }
+    return $target;
+});
 
 // Sets deploy:update_code strategy.
 // Can be one of:
 // - archive
 // - clone (if you need `.git` dir in your {{release_path}})
 set('update_code_strategy', 'archive');
+
+// Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
+// If `StrictHostKeyChecking` flag is set to `accept-new` then ssh will
+// automatically add new host keys to the user known hosts files, but
+// will not permit connections to hosts with changed host keys.
+set('git_ssh_command', 'ssh -o StrictHostKeyChecking=accept-new');
 
 /**
  * Update code at {{release_path}} on host.
@@ -27,30 +61,16 @@ task('deploy:update_code', function () {
     $repository = get('repository');
     $target = get('target');
 
-    if (get('auto_ssh_keygen')) {
-        $url = parse_url($repository);
-        if (isset($url['scheme']) && $url['scheme'] === 'ssh') {
-            $host = $url['host'];
-            $port = $url['port'] ?? '22';
-        } else if (preg_match('/(?:@|\/\/)([^\/:]+)(?:\:(\d{1,5}))?/', $repository, $matches)) {
-            $host = $matches[1];
-            $port = $matches[2] ?? '22';
-        } else {
-            warning("Can't parse repository url ($repository).");
-        }
-        if (isset($host) && isset($port)) {
-            run("ssh-keygen -F $host:$port || ssh-keyscan -p $port -H $host >> ~/.ssh/known_hosts");
-        } else {
-            warning("Please, make sure your server can clone the repo.");
-        }
-    }
-
     $bare = parse('{{deploy_path}}/.dep/repo');
+    $env = [
+        'GIT_TERMINAL_PROMPT' => '0',
+        'GIT_SSH_COMMAND' => get('git_ssh_command')
+    ];
 
     start:
     // Clone the repository to a bare repo.
     run("[ -d $bare ] || mkdir -p $bare");
-    run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1");
+    run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1", ['env' => $env]);
 
     cd($bare);
 
@@ -61,7 +81,7 @@ task('deploy:update_code', function () {
         goto start;
     }
 
-    run("$git remote update 2>&1");
+    run("$git remote update 2>&1", ['env' => $env]);
 
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {

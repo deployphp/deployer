@@ -28,7 +28,7 @@ require 'contrib/php-fpm.php';
 
 - `php_fpm_version` – The PHP-fpm version. For example: `8.0`.
 - `php_fpm_service` – The full name of the PHP-fpm service. Defaults to `php{{php_fpm_version}}-fpm`.
-- `php_fpm_command` – The command to run to reload PHP-fpm. Defaults to `echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload`.
+- `php_fpm_command` – The command to run to reload PHP-fpm. Defaults to `sudo systemctl reload {{php_fpm_service}}`.
 
 ## Usage
 
@@ -53,7 +53,7 @@ after('deploy', 'php-fpm:reload');
 
 
 ### php_fpm_service
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L49)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L43)
 
 
 
@@ -63,12 +63,12 @@ after('deploy', 'php-fpm:reload');
 
 
 ### php_fpm_command
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L44)
 
 
 
 ```php title="Default value"
-'echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload'
+'sudo systemctl reload {{php_fpm_service}}'
 ```
 
 
@@ -76,7 +76,7 @@ after('deploy', 'php-fpm:reload');
 ## Tasks
 
 ### php-fpm:reload
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L53)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L47)
 
 Reloads the php-fpm service.
 

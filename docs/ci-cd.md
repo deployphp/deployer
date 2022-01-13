@@ -1,5 +1,44 @@
 # CI/CD
 
+## GitHub Actions
+
+Use official [GitHub Action for Deployer](https://github.com/deployphp/action).
+
+Create `.github/workflows/deploy.yml` file with following content:
+
+```yaml
+name: deploy
+
+on:
+  push:
+    branches: [ master ]
+
+concurrency: production_environment
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+  
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0' 
+
+    - name: Deploy
+      uses: deployphp/action@v1
+      with:
+        private-key: ${{ secrets.PRIVATE_KEY }}
+        dep: deploy
+```
+
+:::warning
+The `concurrency: production_environment` is important as it prevents concurrent 
+deploys.
+:::
+
 ## GitLab CI/CD
 
 Set the following variables in GitLab project:

@@ -9,7 +9,7 @@
 
 ## Configuration
 ### branch
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L10)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L11)
 
 Determines which branch to deploy. Can be overridden with CLI option `--branch`.
 If not specified, will get current git HEAD branch as default branch to deploy.
@@ -19,18 +19,15 @@ If not specified, will get current git HEAD branch as default branch to deploy.
 ```
 
 
-### auto_ssh_keygen
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L13)
+### target
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L18)
 
-Automatically populate `known_hosts` file based on [repository](/docs/recipe/common.md#repository) config.
+The deploy target: a branch, a tag or a revision.
 
-```php title="Default value"
-true
-```
 
 
 ### update_code_strategy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L19)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L47)
 
 Sets deploy:update_code strategy.
 Can be one of:
@@ -42,11 +39,24 @@ Can be one of:
 ```
 
 
+### git_ssh_command
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L53)
+
+Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
+If `StrictHostKeyChecking` flag is set to `accept-new` then ssh will
+automatically add new host keys to the user known hosts files, but
+will not permit connections to hosts with changed host keys.
+
+```php title="Default value"
+'ssh -o StrictHostKeyChecking=accept-new'
+```
+
+
 
 ## Tasks
 
 ### deploy:update_code
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L59)
 
 Updates code.
 

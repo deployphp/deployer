@@ -6,6 +6,10 @@
  * file that was distributed with this source code.
  */
 
+if (ini_get('phar.readonly') === '1') {
+    throw new \Exception('Writing to phar files is disabled. Change your `php.ini` or append `-d phar.readonly=false` to the shebang, if supported by your `env` executable.');
+}
+
 define('__ROOT__', realpath(__DIR__ . '/..'));
 chdir(__ROOT__);
 

@@ -112,7 +112,6 @@ host('hostname')
         'rsync',
         'deploy:vendors',
         'deploy:symlink',
-        'cleanup',
     ])->desc('Deploy your project');
     ```
 

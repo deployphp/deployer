@@ -6,8 +6,10 @@ use Symfony\Component\Console\Helper\Table;
 
 // The name of the release.
 set('release_name', function () {
-    $latest = run('cat .dep/latest_release || echo 0');
-    return strval(intval($latest) + 1);
+    return within('{{deploy_path}}', function () {
+        $latest = run('cat .dep/latest_release || echo 0');
+        return strval(intval($latest) + 1);
+    });
 });
 
 // Holds releases log from `.dep/releases_log` file.

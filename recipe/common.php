@@ -20,8 +20,6 @@ require __DIR__ . '/deploy/writable.php';
 
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\RunException;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Output\Output;
 
 add('recipes', ['common']);
 
@@ -133,36 +131,6 @@ set('sudo_askpass', function () {
     } else {
         return '/tmp/dep_sudo_pass';
     }
-});
-
-option('tag', null, InputOption::VALUE_REQUIRED, 'Tag to deploy');
-option('revision', null, InputOption::VALUE_REQUIRED, 'Revision to deploy');
-option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
-
-// The deploy target: a branch, a tag or a revision.
-set('target', function () {
-    $target = '';
-
-    $branch = get('branch');
-    if (!empty($branch)) {
-        $target = $branch;
-    }
-
-    // Override target from CLI options.
-    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
-        $target = input()->getOption('branch');
-    }
-    if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
-        $target = input()->getOption('tag');
-    }
-    if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
-        $target = input()->getOption('revision');
-    }
-
-    if (empty($target)) {
-        $target = "HEAD";
-    }
-    return $target;
 });
 
 desc('Prepares a new release');

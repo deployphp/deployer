@@ -20,13 +20,11 @@ set('releases_log', function () {
         return [];
     }
 
-    // retrieve all lines from .dep/releases_log and json_decode them
     $releaseLogs = array_map(function ($line) {
         return json_decode($line, true);
     }, explode("\n", run('cat .dep/releases_log')));
 
-    // return all non-empty lines from releases log
-    return array_filter($releaseLogs);
+    return array_filter($releaseLogs); // Return all non-empty lines.
 });
 
 // Return list of release names on host.

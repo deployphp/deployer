@@ -25,6 +25,8 @@ set('writable_dirs', [
 
 set('migrations_config', '');
 
+set('doctrine_schema_validate_config', '');
+
 set('bin/console', '{{bin/php}} {{release_or_current_path}}/bin/console');
 
 set('console_options', function () {
@@ -39,6 +41,11 @@ task('database:migrate', function () {
     }
 
     run("cd {{release_or_current_path}} && {{bin/console}} doctrine:migrations:migrate $options {{console_options}}");
+});
+
+desc('Validate the Doctrine mapping files');
+task('doctrine:schema:validate', function () {
+    run("cd {{release_or_current_path}} && {{bin/console}} doctrine:schema:validate {{doctrine_schema_validate_config}} {{console_options}}");
 });
 
 desc('Clears cache');

@@ -99,6 +99,12 @@ task('deploy:writable', function () {
             run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             run("$sudo chmod +a \"$remoteUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
         } elseif (commandExist('setfacl')) {
+            $setFaclUsers = "-m u:\"$httpUser\":rwX";
+            // Check if remote user exists, before adding it to setfacl
+            $remoteUserExists = test("id -u $remoteUser &>/dev/null 2>&1 || exit 0");
+            if ($remoteUserExists === true) {
+                $setFaclUsers .= " -m u:$remoteUser:rwX";
+            }
             if (empty($sudo)) {
                 // When running without sudo, exception may be thrown
                 // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -110,13 +116,13 @@ task('deploy:writable', function () {
                     $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                     // Set ACL for directory if it has not been set before
                     if (!$hasfacl) {
-                        run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dir");
-                        run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dir");
+                        run("setfacl -L $recursive $setFaclUsers $dir");
+                        run("setfacl -dL $recursive $setFaclUsers $dir");
                     }
                 }
             } else {
-                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dirs");
-                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dirs");
+                run("$sudo setfacl -L $recursive $setFaclUsers $dirs");
+                run("$sudo setfacl -dL $recursive $setFaclUsers $dirs");
             }
         } else {
             $alias = currentHost()->getAlias();

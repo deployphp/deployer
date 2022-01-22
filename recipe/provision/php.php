@@ -15,7 +15,6 @@ task('provision:php', function () {
         "php$version-curl",
         "php$version-dev",
         "php$version-fpm",
-        "php$version-fpm",
         "php$version-gd",
         "php$version-imap",
         "php$version-intl",

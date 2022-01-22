@@ -76,7 +76,7 @@ Provision recipe going to do:
 - Install all needed packages for our website (acl, npm, git, etc),
 - Install php with all needed extensions,
 - Install and configure the database,
-- Install Caddy websertver and configure our website with SSL certificate,
+- Install Caddy webserver and configure our website with SSL certificate,
 - Configure ssh and firewall,
 - Setup **deployer** user.
 

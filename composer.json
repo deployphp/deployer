@@ -40,15 +40,15 @@
         "bin/dep"
     ],
     "require": {
-        "php": "^8.0|^7.3",
+        "php": "^8.0",
         "ext-json": "*",
         "justinrainbow/json-schema": "^5.2",
         "psr/http-message": "^1",
         "react/http": "^1.5",
-        "symfony/console": "^5|^6",
+        "symfony/console": "^6",
         "symfony/polyfill-php80": "^1.22",
-        "symfony/process": "^5|^6",
-        "symfony/yaml": "^5|^6"
+        "symfony/process": "^6",
+        "symfony/yaml": "^6"
     },
     "require-dev": {
         "pestphp/pest": "^1.0",

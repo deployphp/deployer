@@ -150,38 +150,21 @@ class Configuration implements \ArrayAccess
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
-    /**
-     * @param mixed $offset
-     * @return bool
-     */
     public function offsetExists(mixed $offset): bool
     {
         return $this->has($offset);
     }
 
-    /**
-     * @param string $offset
-     * @return mixed|null
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     */
-    public function offsetGet($offset): mixed
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->get($offset);
     }
 
-    /**
-     * @param string $offset
-     * @param mixed $value
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     */
-    public function offsetSet($offset, mixed $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->set($offset, $value);
     }
 
-    /**
-     * @param mixed $offset
-     */
     public function offsetUnset(mixed $offset): void
     {
         unset($this->values[$offset]);

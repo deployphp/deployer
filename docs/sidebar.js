@@ -26,7 +26,11 @@ module.exports = [
     type: 'category',
     label: 'Other',
     items: [
-      'UPGRADE',
+      'upgrade_7x',
+      'upgrade_6x',
+      'upgrade_5x',
+      'upgrade_4x',
+      'upgrade_3x',
     ],
   },
 ]

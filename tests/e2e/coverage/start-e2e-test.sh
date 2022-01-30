@@ -7,6 +7,6 @@ XDEBUG_MODE=coverage php "$ROOTDIR/vendor/bin/pest" --config "$ROOTDIR/tests/e2e
 E2E_EXIT_CODE=$?
 
 # Generate coverage report file
-php "$ROOTDIR/tests/e2e/coverage/coverage-report.php"
+XDEBUG_MODE=coverage php "$ROOTDIR/tests/e2e/coverage/coverage-report.php"
 
 return $E2E_EXIT_CODE

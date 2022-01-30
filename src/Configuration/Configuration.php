@@ -154,8 +154,7 @@ class Configuration implements \ArrayAccess
      * @param mixed $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         return $this->has($offset);
     }
@@ -165,8 +164,7 @@ class Configuration implements \ArrayAccess
      * @return mixed|null
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return $this->get($offset);
     }
@@ -176,8 +174,7 @@ class Configuration implements \ArrayAccess
      * @param mixed $value
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value): void
+    public function offsetSet($offset, mixed $value): void
     {
         $this->set($offset, $value);
     }
@@ -185,8 +182,7 @@ class Configuration implements \ArrayAccess
     /**
      * @param mixed $offset
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         unset($this->values[$offset]);
     }

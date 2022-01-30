@@ -5,7 +5,7 @@ require_once __DIR__ . '/hosts.php';
 require_once __DIR__ . '/../../../recipe/laravel.php';
 
 set('repository', 'https://github.com/laravel/laravel.git');
-set('branch', '8.x');
+set('branch', 'master');
 
 task('laravel:setup-env', function(): void {
     $sharedPath = "{{deploy_path}}/shared";

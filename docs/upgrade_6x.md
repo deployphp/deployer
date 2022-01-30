@@ -1,4 +1,4 @@
-## Upgrade from 5.x to 6.x
+# Upgrade from 5.x to 6.x
 
 1. Changed branch option priority
 

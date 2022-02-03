@@ -40,7 +40,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 [
     'app/etc/env.php',
     'var/.maintenance.ip',
-    'var/.maintenance.flag',
+    'var/.maintenance.flag'
 ]
 ```
 

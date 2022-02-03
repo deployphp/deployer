@@ -26,7 +26,7 @@ set('content_version', function () {
 set('shared_files', [
     'app/etc/env.php',
     'var/.maintenance.ip',
-    'var/.maintenance.flag',
+    'var/.maintenance.flag'
 ]);
 set('shared_dirs', [
     'var/composer_home',

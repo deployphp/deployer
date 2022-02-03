@@ -46,7 +46,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L31)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -71,7 +71,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L44)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L45)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -88,7 +88,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L51)
 
 Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `recipe/deploy/clear_paths.php`.
 
@@ -107,21 +107,27 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 ### magento_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L60)
+
+
+
 
 
 ### maintenance_mode_status_active
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L67)
+
+
+
 
 
 ### enable_zerodowntime
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L74)
 
-Deployer will only set maintenance mode if there is a database upgrade or a config import. This flag
-disables this ability.
+Deploy without setting maintenance mode if possible
 
-**Note: if you set this flag to false, you will need to enable and disable maintenance mode manually in your
-deployment.**
+```php title="Default value"
+true
+```
 
 
 

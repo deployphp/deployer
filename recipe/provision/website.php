@@ -49,28 +49,29 @@ handle_errors {
 }
 EOF;
 
-    if (test('[ -f Caddyfile ]')) {
-        run("echo $'$caddyfile' > Caddyfile.new");
-        $diff = run('diff -U5 --color=always Caddyfile Caddyfile.new', ['no_throw' => true]);
+    set('remote_user', 'root');
+    cd('/etc/caddy/sites-enabled');
+
+    if (test("[ -f $'$domain' ]")) {
+        run("echo $'$caddyfile' >  $'$domain'.new");
+        $diff = run("diff -U5 --color=always $'$domain' $'$domain'.new", ['no_throw' => true]);
         if (empty($diff)) {
-            run('rm Caddyfile.new');
+            run("rm  $'$domain'.new");
         } else {
             info('Found Caddyfile changes');
             writeln("\n" . $diff);
             $answer = askChoice(' Which Caddyfile to save? ', ['old', 'new'], 0);
             if ($answer === 'old') {
-                run('rm Caddyfile.new');
+                run("rm $'$domain'.new");
             } else {
-                run('mv Caddyfile.new Caddyfile');
-                run('caddy reload');
+                run("mv $'$domain'.new $'$domain'");
+                run('service caddy reload');
             }
         }
     } else {
-        run("echo $'$caddyfile' > Caddyfile");
-        run('caddy reload');
+        run("echo $'$caddyfile' > $'$domain'");
+        run('service caddy reload');
     }
-
-    set('remote_user', 'root');
 
     info("Website $domain configured!");
 })->limit(1);

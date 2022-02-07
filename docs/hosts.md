@@ -72,19 +72,50 @@ Host *
 
 ## Host config
 
-| Method               | Value                                              |
-|----------------------|----------------------------------------------------|
-| `setHostname`        | The `hostname`                                     |
-| `setRemoteUser`      | The `remote_user`                                  |
-| `setPort`            | The `port`                                         |
-| `setConfigFile`      | For example, `~/.ssh/config`.                      |
-| `setIdentityFile`    | For example, `~/.ssh/id_rsa`.                      |
-| `setForwardAgent`    | Default: `true`.                                   |
-| `setSshMultiplexing` | Default: `true`.                                   |
-| `setShell`           | Default: `bash -ls`.                               |
-| `setDeployPath`      | For example, `~/myapp`.                            |
-| `setLabels`          | Key-value pairs for host selector.                 |
-| `setSshArguments`    | For example, `['-o UserKnownHostsFile=/dev/null']` |
+### setHostname() 
+
+The `hostname`
+
+### setRemoteUser() 
+
+The `remote_user`
+
+### setPort() 
+
+The `port`
+
+### setConfigFile() 
+
+For example, `~/.ssh/config`.
+
+### setIdentityFile() 
+
+For example, `~/.ssh/id_rsa`.
+
+### setForwardAgent() 
+
+Default: `true`.
+
+### setSshMultiplexing() 
+
+Default: `true`.
+
+### setShell() 
+
+Default: `bash -ls`.
+
+### setDeployPath() 
+
+For example, `~/myapp`.
+
+### setLabels() 
+
+Key-value pairs for host selector.
+
+### setSshArguments() 
+
+For example, `['-o UserKnownHostsFile=/dev/null']`
+
 
 ## Multiple hosts
 

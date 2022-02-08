@@ -34,7 +34,7 @@ $lookUp = function (string $name): ?string {
         }
         $dir = dirname($dir);
     }
-    return null;
+    return '';
 };
 if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.php');

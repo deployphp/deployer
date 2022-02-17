@@ -14,7 +14,7 @@ set('bin/composer', function () {
     }
 
     if (commandExist('composer')) {
-        return '{bin/php}}' . which('composer');
+        return '{{bin/php}}' . which('composer');
     }
 
     warning("Composer binary wasn't found. Installing latest composer to \"{{deploy_path}}/.dep/composer.phar\".");

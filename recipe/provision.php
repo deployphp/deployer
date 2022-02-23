@@ -40,6 +40,7 @@ task('provision:check', function () {
     if (get('remote_user') !== 'root') {
         warning('');
         warning('Run provision as root: -o remote_user=root');
+        warning('or with a sudo enabled user: -o become=root');
         warning('');
     }
 

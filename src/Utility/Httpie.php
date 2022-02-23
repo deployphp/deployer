@@ -43,6 +43,14 @@ class Httpie
         $http->url = $url;
         return $http;
     }
+    
+    public static function patch(string $url): Httpie
+    {
+        $http = new self;
+        $http->method = 'PATCH';
+        $http->url = $url;
+        return $http;
+    }
 
     public function query(array $params): Httpie
     {

@@ -200,10 +200,6 @@ task('provision:server', function () {
 HTML;
     run("mkdir -p /var/dep/html");
     run("echo $'$html' > /var/dep/html/404.html");
-    
-    run("mkdir -p /etc/caddy/sites-enabled");
-    run("echo 'import sites-enabled/*' > /etc/caddy/Caddyfile");
-    run("service caddy restart");
 })->oncePerNode();
 
 desc('Configures the ssh');

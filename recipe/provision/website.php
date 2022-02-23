@@ -49,27 +49,29 @@ handle_errors {
 }
 EOF;
 
-    set('remote_user', 'root');
-    cd('/etc/caddy/sites-enabled');
-
-    if (test("[ -f $'$domain' ]")) {
-        run("echo $'$caddyfile' >  $'$domain'.new");
-        $diff = run("diff -U5 --color=always $'$domain' $'$domain'.new", ['no_throw' => true]);
+    if (test('[ -f Caddyfile ]')) {
+        run("echo $'$caddyfile' > Caddyfile.new");
+        $diff = run('diff -U5 --color=always Caddyfile Caddyfile.new', ['no_throw' => true]);
         if (empty($diff)) {
-            run("rm  $'$domain'.new");
+            run('rm Caddyfile.new');
         } else {
             info('Found Caddyfile changes');
             writeln("\n" . $diff);
             $answer = askChoice(' Which Caddyfile to save? ', ['old', 'new'], 0);
             if ($answer === 'old') {
-                run("rm $'$domain'.new");
+                run('rm Caddyfile.new');
             } else {
-                run("mv $'$domain'.new $'$domain'");
-                run('service caddy reload');
+                run('mv Caddyfile.new Caddyfile');
             }
         }
     } else {
-        run("echo $'$caddyfile' > $'$domain'");
+        info('Found Caddyfile changes');
+        run("echo $'$caddyfile' > Caddyfile");
+    }
+
+    set('remote_user', 'root');
+    if (!test("grep -q 'import $deployPath/Caddyfile' /etc/caddy/Caddyfile")) {
+        run("echo 'import $deployPath/Caddyfile' > /etc/caddy/Caddyfile");
         run('service caddy reload');
     }
 

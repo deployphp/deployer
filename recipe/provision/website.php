@@ -65,7 +65,6 @@ EOF;
             }
         }
     } else {
-        info('Found Caddyfile changes');
         run("echo $'$caddyfile' > Caddyfile");
     }
 

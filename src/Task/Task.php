@@ -27,7 +27,8 @@ class Task
 
     /**
      * Task constructor.
-     * @param mixed $name
+     * @param string $name
+     * @param callable():void $callback
      */
     public function __construct($name, callable $callback = null)
     {
@@ -35,6 +36,9 @@ class Task
         $this->callback = $callback;
     }
 
+    /**
+     * @param callable():void $callback
+     */
     public function setCallback(callable $callback): void
     {
         $this->callback = $callback;

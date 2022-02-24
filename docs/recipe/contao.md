@@ -81,7 +81,7 @@ Enable maintenance mode.
 
 
 ### contao:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L78)
 
 Disable maintenance mode.
 
@@ -89,7 +89,7 @@ Disable maintenance mode.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L90)
 
 Deploy the project.
 

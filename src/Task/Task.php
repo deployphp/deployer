@@ -26,11 +26,9 @@ class Task
     private $enabled = true;
 
     /**
-     * Task constructor.
-     * @param string $name
      * @param callable():void $callback
      */
-    public function __construct($name, callable $callback = null)
+    public function __construct(string $name, callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;
@@ -59,10 +57,7 @@ class Task
         }
     }
 
-    /**
-     * @return mixed
-     */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

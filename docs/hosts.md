@@ -43,7 +43,7 @@ Another important ssh connection parameter is `remote_user`.
 
 ```php
 host('example.org')
-    ->set('hostname', 'example.cloud.google.com');
+    ->set('hostname', 'example.cloud.google.com')
     ->set('remote_user', 'deployer');
 ```
 
@@ -55,7 +55,7 @@ autocompletion).
 
 ```php
 host('example.org')
-    ->setHostname('example.cloud.google.com');
+    ->setHostname('example.cloud.google.com')
     ->setRemoteUser('deployer');
 ```
 

@@ -190,7 +190,7 @@ task('ispmanager:db-create', function () {
             throw new Exception('Database already exists!');
         } else {
             warning('Database already exists - skipping');
-            return true;
+            return;
         }
     }
 
@@ -259,7 +259,7 @@ task('ispmanager:db-delete', function () {
             throw new Exception('Database not exist!');
         } else {
             warning('Database not exist - skipping');
-            return true;
+            return;
         }
     }
 
@@ -298,7 +298,7 @@ task('ispmanager:domain-create', function () {
             throw new Exception('Domain already exists!');
         } else {
             warning('Domain already exists - skipping');
-            return true;
+            return;
         }
     }
 
@@ -634,7 +634,7 @@ task('ispmanager:domain-delete', function () {
             throw new Exception('Domain not exist!');
         } else {
             warning('Domain not exist - skipping');
-            return true;
+            return;
         }
     }
 

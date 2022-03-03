@@ -20,7 +20,10 @@ set('shared_files', [
 ]);
 
 set('writable_dirs', [
-    'var'
+    'var',
+    'var/cache', 
+    'var/log', 
+    'var/sessions',
 ]);
 
 set('migrations_config', '');

@@ -39,22 +39,6 @@ Can be one of:
 ```
 
 
-### sub_directory
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L31)
-
-Specifies a sub directory within the repository to deploy.
-Works only when [`update_code_strategy`](#update_code_strategy) is set to `archive` (default).
-
-Example: 
- - set value to `src` if you want to deploy the folder that lives at `/src`.
- - set value to `src/api` if you want to deploy the folder that lives at `/src/api`.
-
-Note: do not use a leading `/`!
-
-```php title="Default value"
-null
-```
-  
 ### git_ssh_command
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L53)
 
@@ -65,14 +49,31 @@ will not permit connections to hosts with changed host keys.
 
 ```php title="Default value"
 'ssh -o StrictHostKeyChecking=accept-new'
+```
 
+
+### sub_directory
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L65)
+
+Specifies a sub directory within the repository to deploy.
+Works only when [`update_code_strategy`](#update_code_strategy) is set to `archive` (default).
+
+Example: 
+ - set value to `src` if you want to deploy the folder that lives at `/src/api`.
+ - set value to `src/api` if you want to deploy the folder that lives at `/src/api`.
+
+Note: do not use a leading `/`!
+
+```php title="Default value"
+null
+```
 
 
 
 ## Tasks
 
 ### deploy:update_code
-
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L71)
 
 Updates code.
 

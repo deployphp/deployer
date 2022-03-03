@@ -690,9 +690,9 @@ function add(string $name, array $array): void
 function get(string $name, $default = null)
 {
     if (!Context::has()) {
-        return Deployer::get()->config->get($name, $default);
+        return (func_num_args() >= 2) ? Deployer::get()->config->get($name, $default) : Deployer::get()->config->get($name);
     } else {
-        return Context::get()->getConfig()->get($name, $default);
+        return (func_num_args() >= 2) ? Context::get()->getConfig()->get($name, $default) : Context::get()->getConfig()->get($name);
     }
 }
 

@@ -140,6 +140,7 @@ _dep()
         hosts)
             hosts=("${(@f)$(${words[1]} autocomplete --query)}")
             _describe 'hosts' hosts
+        ;;
         *)
             # fallback to file completion
             _arguments '*:file:_files'

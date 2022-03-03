@@ -44,6 +44,15 @@ class Collection implements Countable, IteratorAggregate
         $this->values[$name] = $object;
     }
 
+    public function remove(string $name): void
+    {
+        if ($this->has($name)) {
+            unset($this->values[$name]);
+        } else {
+            $this->throwNotFound($name);
+        }
+    }
+
     public function count(): int
     {
         return count($this->values);

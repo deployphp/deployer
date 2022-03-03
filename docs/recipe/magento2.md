@@ -40,12 +40,13 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 [
     'app/etc/env.php',
     'var/.maintenance.ip',
+    'var/.maintenance.flag'
 ]
 ```
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L31)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -70,7 +71,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L44)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L45)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -87,7 +88,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L51)
 
 Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `recipe/deploy/clear_paths.php`.
 
@@ -106,24 +107,34 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 ### magento_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L60)
 
 
 
 
 
 ### maintenance_mode_status_active
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L67)
 
 
 
+
+
+### enable_zerodowntime
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L74)
+
+Deploy without setting maintenance mode if possible
+
+```php title="Default value"
+true
+```
 
 
 
 ## Tasks
 
 ### magento:compile
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L78)
 
 Compiles magento di.
 
@@ -131,7 +142,7 @@ Tasks
 
 
 ### magento:deploy:assets
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L85)
 
 Deploys assets.
 
@@ -139,7 +150,7 @@ Deploys assets.
 
 
 ### magento:sync:content_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L90)
 
 Syncs content version.
 
@@ -147,7 +158,7 @@ Syncs content version.
 
 
 ### magento:maintenance:enable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L96)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L100)
 
 Enables maintenance mode.
 
@@ -155,7 +166,7 @@ Enables maintenance mode.
 
 
 ### magento:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L101)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L105)
 
 Disables maintenance mode.
 
@@ -163,7 +174,7 @@ Disables maintenance mode.
 
 
 ### magento:config:import
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L106)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L110)
 
 Config Import.
 
@@ -171,7 +182,7 @@ Config Import.
 
 
 ### magento:upgrade:db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L141)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L145)
 
 Upgrades magento database.
 
@@ -179,7 +190,7 @@ Upgrades magento database.
 
 
 ### magento:cache:flush
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L168)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L172)
 
 Flushes Magento Cache.
 
@@ -187,7 +198,7 @@ Flushes Magento Cache.
 
 
 ### deploy:magento
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L173)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L177)
 
 Magento2 deployment operations.
 
@@ -202,7 +213,7 @@ This task is group task which contains next tasks:
 
 
 ### magento:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L181)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L185)
 
 Magento2 build operations.
 
@@ -215,7 +226,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L187)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L191)
 
 Deploys your project.
 

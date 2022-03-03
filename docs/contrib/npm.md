@@ -40,12 +40,10 @@ after('deploy:update_code', 'npm:install');
 ## Tasks
 
 ### npm:install
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L36)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L34)
 
 Installs npm packages.
 
-In there is a {{previous_release}}, node_modules will be copied
-from it before installing deps.
 Uses `npm ci` command. This command is similar to npm install,
 except it's meant to be used in automated environments such as
 test platforms, continuous integration, and deployment -- or

@@ -45,12 +45,12 @@ set('silverstripe_cli_script', function () {
  */
 desc('Runs /dev/build');
 task('silverstripe:build', function () {
-    return run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build');
+    run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build');
 });
 
 desc('Runs /dev/build?flush=all');
 task('silverstripe:buildflush', function () {
-    return run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
+    run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
 });
 
 /**

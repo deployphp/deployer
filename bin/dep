@@ -11,14 +11,19 @@ $deployFile = null;
 foreach ($argv as $i => $arg) {
     if (preg_match('/^(-f|--file)$/', $arg, $match) && $i + 1 < count($argv)) {
         $deployFile = $argv[$i + 1];
+        break;
     }
-    if (preg_match('/^(-f|--file)=(?<file>.+?)$/', $arg, $match)) {
+    if (preg_match('/^--file=(?<file>.+)$/', $arg, $match)) {
         $deployFile = $match['file'];
+        break;
     }
-
-    if (!empty($deployFile)) {
-        $deployFile = ($deployFile[0] === '/' ? '' : getcwd() . '/') . $deployFile;
+    if (preg_match('/^-f=?(?<file>.+)$/', $arg, $match)) {
+        $deployFile = $match['file'];
+        break;
     }
+}
+if (!empty($deployFile)) {
+    $deployFile = realpath($deployFile);
 }
 $lookUp = function (string $name): ?string {
     $dir = getcwd();
@@ -29,7 +34,7 @@ $lookUp = function (string $name): ?string {
         }
         $dir = dirname($dir);
     }
-    return null;
+    return '';
 };
 if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.php');
@@ -39,26 +44,6 @@ if (empty($deployFile)) {
 }
 if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.yml');
-}
-
-// Find project-local Deployer installation
-if (!isset($localBinaryOverrideFound)) {
-    $binaries = [
-        dirname($deployFile) . '/vendor/bin/dep',
-        dirname($deployFile) . '/deployer.phar',
-        getcwd() . '/vendor/bin/dep',
-        getcwd() . '/deployer.phar',
-    ];
-    foreach ($binaries as $binary) {
-        if (file_exists($binary)) {
-            if (realpath($binary) === realpath(__FILE__)) {
-                break; // Already required this binary
-            }
-            $localBinaryOverrideFound = true; // Only do it once.
-            require $binary;
-            exit;
-        }
-    }
 }
 
 // Detect autoload location
@@ -110,4 +95,4 @@ define('DEPLOYER_BIN', __FILE__);
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
 define('DEPLOYER_ROOT', getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname($deployFile));
 
-Deployer\Deployer::run('v7.0-master', $deployFile);
+Deployer\Deployer::run('7.0.0-master', $deployFile);

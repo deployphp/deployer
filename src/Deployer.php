@@ -289,6 +289,15 @@ class Deployer extends Container
             }
         }
 
+        // Version must be without "v" prefix.
+        //    Incorrect: v7.0.0
+        //    Correct: 7.0.0
+        // But deployphp/deployer uses tags with "v", and it gets passed to
+        // the composer.json file. Let's manually remove it from the version.
+        if (preg_match("/^v/", $version)) {
+            $version = substr($version, 1);
+        }
+
         if (!defined('DEPLOYER_VERSION')) {
             define('DEPLOYER_VERSION', $version);
         }

@@ -7,7 +7,7 @@ set('clear_paths', []);
 // Use sudo for deploy:clear_path task?
 set('clear_use_sudo', false);
 
-desc('Cleanups files and/or directories');
+desc('Cleanup files and/or directories');
 task('deploy:clear_paths', function () {
     $paths = get('clear_paths');
     $sudo = get('clear_use_sudo') ? 'sudo' : '';

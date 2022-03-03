@@ -16,32 +16,23 @@ Deployer comes with autocomplete support for task names, options, and hosts.
 Add the following to your `~/.bashrc` or `~/.zshrc`:
 
 ```
-eval "$(dep autocomplete --shell bash)"
+eval "$(dep autocomplete --install)
 ```
 :::
 
 ## Distribution
 
+This is the preferable installation method. The **deployer/dist** contains the 
+phar archive checked out at [deployphp/distribution](https://github.com/deployphp/distribution) repo.
+
 ```sh
-composer require deployer/dist --dev
+composer require --dev deployer/dist
 ```
-
-:::tip Global and local Deployer
-If you call a globally installed Deployer via `/usr/local/bin/dep` in a project 
-directory with a locally installed Deployer at `vendor/bin/dep`, Deployer will
-redirect the call to a local Deployer.
-
-```
-~/project $ dep --version
-Using ~/project/vendor/bin/dep
-Deployer 7.0.0
-```
-:::
 
 ## Source
 
 ```sh
-composer require deployer/deployer --dev
+composer require --dev deployer/deployer
 ```
 
 :::warning Dependency conflicts

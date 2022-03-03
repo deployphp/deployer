@@ -66,8 +66,15 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 
-### bin/console
+### doctrine_schema_validate_config
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L28)
+
+
+
+
+
+### bin/console
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L30)
 
 
 
@@ -77,7 +84,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L32)
 
 
 
@@ -87,15 +94,23 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ## Tasks
 
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L37)
 
 Migrates database.
 
 
 
 
+### doctrine:schema:validate
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L47)
+
+Validate the Doctrine mapping files.
+
+
+
+
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L52)
 
 Clears cache.
 
@@ -103,7 +118,7 @@ Clears cache.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L54)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L61)
 
 Deploys project.
 

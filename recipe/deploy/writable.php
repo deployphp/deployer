@@ -4,7 +4,6 @@ namespace Deployer;
 // Used to make a writable directory by a server.
 // Used in `chown` and `acl` modes of {{writable_mode}}.
 // Attempts automatically to detect http user in process list.
-use Deployer\Exception\RunException;
 
 set('http_user', function () {
     $candidates = explode("\n", run("ps axo comm,user | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | sort | awk '{print \$NF}' | uniq"));
@@ -63,11 +62,6 @@ task('deploy:writable', function () {
     $recursive = get('writable_recursive') ? '-R' : '';
     $sudo = get('writable_use_sudo') ? 'sudo' : '';
 
-    $remoteUser = get('remote_user', false);
-    if (empty($remoteUser)) {
-        $remoteUser = run('whoami');
-    }
-
     if (empty($dirs)) {
         return;
     }
@@ -87,18 +81,17 @@ task('deploy:writable', function () {
         // -L   traverse every symbolic link to a directory encountered
         run("$sudo chown -L $recursive $httpUser $dirs");
     } elseif ($mode === 'chgrp') {
-        try {
-            // Change group ownership.
-            // -L    traverse every symbolic link to a directory encountered
-            run("$sudo chgrp -H $recursive {{http_group}} $dirs");
-            run("$sudo chmod g+rwx $dirs");
-        } catch (RunException $exception) {
-            warning("Make sure `$remoteUser` is in `{{http_group}}` group: `usermod -a -G {{http_group}} $remoteUser`");
-            throw  $exception;
-        }
+        // Change group ownership.
+        // -L    traverse every symbolic link to a directory encountered
+        run("$sudo chgrp -L $recursive {{http_group}} $dirs");
+        run("$sudo chmod $recursive g+rwx $dirs");
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
     } elseif ($mode === 'acl') {
+        $remoteUser = get('remote_user', false);
+        if (empty($remoteUser)) {
+            $remoteUser = run('whoami');
+        }
         $httpUser = get('http_user');
         if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
             // Try OS-X specific setting of access-rights
@@ -106,6 +99,12 @@ task('deploy:writable', function () {
             run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             run("$sudo chmod +a \"$remoteUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
         } elseif (commandExist('setfacl')) {
+            $setFaclUsers = "-m u:\"$httpUser\":rwX";
+            // Check if remote user exists, before adding it to setfacl
+            $remoteUserExists = test("id -u $remoteUser &>/dev/null 2>&1 || exit 0");
+            if ($remoteUserExists === true) {
+                $setFaclUsers .= " -m u:$remoteUser:rwX";
+            }
             if (empty($sudo)) {
                 // When running without sudo, exception may be thrown
                 // if executing setfacl on files created by http user (in directory that has been setfacl before).
@@ -117,13 +116,13 @@ task('deploy:writable', function () {
                     $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                     // Set ACL for directory if it has not been set before
                     if (!$hasfacl) {
-                        run("setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dir");
-                        run("setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dir");
+                        run("setfacl -L $recursive $setFaclUsers $dir");
+                        run("setfacl -dL $recursive $setFaclUsers $dir");
                     }
                 }
             } else {
-                run("$sudo setfacl -L $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dirs");
-                run("$sudo setfacl -dL $recursive -m u:\"$httpUser\":rwX -m u:$remoteUser:rwX $dirs");
+                run("$sudo setfacl -L $recursive $setFaclUsers $dirs");
+                run("$sudo setfacl -dL $recursive $setFaclUsers $dirs");
             }
         } else {
             $alias = currentHost()->getAlias();

@@ -38,7 +38,7 @@ after('deploy', 'php-fpm:reload');
 namespace Deployer;
 
 set('php_fpm_version', function () {
-    return run('php -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSION)"');
+    return run('{{bin/php}} -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);"');
 });
 set('php_fpm_service', 'php{{php_fpm_version}}-fpm');
 set('php_fpm_command', 'sudo systemctl reload {{php_fpm_service}}');

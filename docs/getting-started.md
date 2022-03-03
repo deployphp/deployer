@@ -20,25 +20,27 @@ Now lets cd into the project and run following command:
 dep init
 ```
 
-Deployer will ask you a few question and after finishing you will have a 
-**deploy.php** or **deploy.yaml** file. This is our deployment recipe. 
+Deployer will ask you a few question and after finishing you will have a
+**deploy.php** or **deploy.yaml** file. This is our deployment recipe.
 It contains hosts, tasks and requires other recipes. All framework recipes
 that come with Deployer are based on the [common](recipe/common.md) recipe.
 
 ## Provision
 
 :::note
-If you already have a configured webserver you may skip to 
+If you already have a configured webserver you may skip to
 [deployment](#deploy).
 :::
 
 Let's create a new VPS on Linode, DigitalOcean, Vultr, AWS, GCP, etc.
 
-Make sure the image is **Ubuntu 20.04 LTS** as this version is supported via 
+Make sure the image is **Ubuntu 20.04 LTS** as this version is supported via
 Deployer [provision](recipe/provision.md) recipe.
 
-Configure Reverse DNS or RDNS on your server. This will allow you to ssh into 
+:::tip
+Configure Reverse DNS or RDNS on your server. This will allow you to ssh into
 server using the domain name instead of the IP address.
+:::
 
 Our **deploy.php** recipe contains host definition with few important params:
  - `remote_user` user's name for ssh connection,
@@ -51,7 +53,7 @@ host('example.org')
 ```
 
 To connect to remote host we need to specify identity key or private key.
-We can add our identity key directly into host definition, but better to put it 
+We can add our identity key directly into host definition, but better to put it
 in **~/.ssh/config** file:
 
 ```
@@ -65,6 +67,13 @@ only `root` user. We going to override `remote_user` for provision via `-o remot
 ```sh
 dep provision -o remote_user=root
 ```
+:::tip
+If your server doesn't have a `root` user but your remote user can use `sudo` to become root, then use:
+
+```sh
+dep provision -o become=root
+```
+:::
 
 Deployer will ask you a few questions during provisioning: php version,
 database type, etc. You can specify it also in directly in recipe.
@@ -74,12 +83,12 @@ Provision recipe going to do:
 - Install all needed packages for our website (acl, npm, git, etc),
 - Install php with all needed extensions,
 - Install and configure the database,
-- Install Caddy websertver and configure our website with SSL certificate,
+- Install Caddy webserver and configure our website with SSL certificate,
 - Configure ssh and firewall,
 - Setup **deployer** user.
 
-Provisioning will take around **5 minutes** and will install everything we need to run a 
-website. It will also setup a `deployer` user, which we will need to use to ssh to our 
+Provisioning will take around **5 minutes** and will install everything we need to run a
+website. It will also setup a `deployer` user, which we will need to use to ssh to our
 host. A new website will be configured at [deploy_path](recipe/common.md#deploy_path).
 
 After we have configured the webserver, let's deploy the project.
@@ -92,7 +101,7 @@ To deploy the project:
 dep deploy
 ```
 
-If deployment will fail, Deployer will print error message and command what was unsuccessful. 
+If deployment will fail, Deployer will print error message and command what was unsuccessful.
 Most likely we need to confiure correct database credentials in _.env_ file or similar.
 
 Ssh to the host, for example, for editing _.env_ file:

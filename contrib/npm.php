@@ -25,7 +25,13 @@ set('bin/npm', function () {
     return which('npm');
 });
 
-// In there is a {{previous_release}}, node_modules will be copied from it before installing deps.
+// In there is a {{previous_release}}, node_modules will be copied
+// from it before installing deps.
+// Uses `npm ci` command. This command is similar to npm install,
+// except it's meant to be used in automated environments such as
+// test platforms, continuous integration, and deployment -- or
+// any situation where you want to make sure you're doing a clean
+// install of your dependencies.
 desc('Installs npm packages');
 task('npm:install', function () {
     if (has('previous_release')) {
@@ -33,5 +39,5 @@ task('npm:install', function () {
             run('cp -R {{previous_release}}/node_modules {{release_path}}');
         }
     }
-    run("cd {{release_path}} && {{bin/npm}} install");
+    run("cd {{release_path}} && {{bin/npm}} ci");
 });

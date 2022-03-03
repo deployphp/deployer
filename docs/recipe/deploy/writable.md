@@ -9,14 +9,14 @@
 
 ## Configuration
 ### http_user
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L8)
 
 
 
 
 
 ### http_group
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L25)
 
 Used to make a writable directory by a server.
 Used in `chgrp` mode of [writable_mode](/docs/recipe/deploy/writable.md#writable_mode) only.
@@ -25,14 +25,14 @@ Attempts automatically to detect http user in process list.
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L40)
 
 List of writable dirs.
 
 
 
 ### writable_mode
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L48)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L47)
 
 One of:
 - chown
@@ -46,7 +46,7 @@ One of:
 
 
 ### writable_use_sudo
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L51)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L50)
 
 Using sudo in writable commands?
 
@@ -56,7 +56,7 @@ false
 
 
 ### writable_recursive
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L54)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L53)
 
 Use recursive mode (-R)?
 
@@ -66,7 +66,7 @@ false
 
 
 ### writable_chmod_mode
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L57)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L56)
 
 The chmod mode.
 
@@ -79,7 +79,7 @@ The chmod mode.
 ## Tasks
 
 ### deploy:writable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L60)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L59)
 
 Makes writable dirs.
 

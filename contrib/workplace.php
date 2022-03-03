@@ -111,7 +111,7 @@ task('workplace:notify:success', function () {
         return;
     }
     $url = get('workplace_webhook') . '&message=' . urlencode(get('workplace_success_text'));
-    return Httpie::post($url)->send();
+    Httpie::post($url)->send();
 })
     ->once()
     ->hidden();
@@ -122,7 +122,7 @@ task('workplace:notify:failure', function () {
         return;
     }
     $url = get('workplace_webhook') . '&message=' . urlencode(get('workplace_failure_text'));
-    return Httpie::post($url)->send();
+    Httpie::post($url)->send();
 })
     ->once()
     ->hidden();

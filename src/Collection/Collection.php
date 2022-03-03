@@ -71,11 +71,7 @@ class Collection implements Countable, IteratorAggregate
         return $values;
     }
 
-    /**
-     * @return \ArrayIterator|\Traversable
-     */
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->values);
     }

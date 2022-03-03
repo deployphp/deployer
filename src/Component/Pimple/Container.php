@@ -52,14 +52,9 @@ class Container implements \ArrayAccess
      * as function names (strings) are callable (creating a function with
      * the same name as an existing parameter would break your container).
      *
-     * @param string $id    The unique identifier for the parameter or object
-     * @param mixed  $value The value of the parameter or a closure to define an object
-     *
      * @throws FrozenServiceException Prevent override of a frozen service
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($id, $value)
+    public function offsetSet(mixed $id, mixed $value): void
     {
         if (isset($this->frozen[$id])) {
             throw new FrozenServiceException($id);
@@ -72,15 +67,9 @@ class Container implements \ArrayAccess
     /**
      * Gets a parameter or an object.
      *
-     * @param string $id The unique identifier for the parameter or object
-     *
-     * @return mixed The value of the parameter or an object
-     *
      * @throws UnknownIdentifierException If the identifier is not defined
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($id)
+    public function offsetGet(mixed $id): mixed
     {
         if (!isset($this->keys[$id])) {
             throw new UnknownIdentifierException($id);
@@ -108,28 +97,12 @@ class Container implements \ArrayAccess
         return $val;
     }
 
-    /**
-     * Checks if a parameter or an object is set.
-     *
-     * @param string $id The unique identifier for the parameter or object
-     *
-     * @return bool
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($id)
+    public function offsetExists(mixed $id): bool
     {
         return isset($this->keys[$id]);
     }
 
-    /**
-     * Unsets a parameter or an object.
-     *
-     * @param string $id The unique identifier for the parameter or object
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($id)
+    public function offsetUnset(mixed $id): void
     {
         if (isset($this->keys[$id])) {
             if (\is_object($this->values[$id])) {

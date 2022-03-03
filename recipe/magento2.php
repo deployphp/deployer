@@ -70,6 +70,9 @@ set('maintenance_mode_status_active', function () {
     return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
 });
 
+// Deploy without setting maintenance mode if possible
+set('enable_zerodowntime', true);
+
 // Tasks
 desc('Compiles magento di');
 task('magento:compile', function () {
@@ -126,13 +129,13 @@ task('magento:config:import', function () {
     }
 
     if ($configImportNeeded) {
-        if (!get('maintenance_mode_status_active')) {
+        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:enable');
         }
 
         run('{{bin/php}} {{release_or_current_path}}/bin/magento app:config:import --no-interaction');
 
-        if (!get('maintenance_mode_status_active')) {
+        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');
         }
     }
@@ -153,13 +156,13 @@ task('magento:upgrade:db', function () {
     }
 
     if ($databaseUpgradeNeeded) {
-        if (!get('maintenance_mode_status_active')) {
+        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:enable');
         }
 
         run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:upgrade --keep-generated --no-interaction");
 
-        if (!get('maintenance_mode_status_active')) {
+        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');
         }
     }

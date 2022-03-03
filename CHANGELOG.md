@@ -1,6 +1,13 @@
 # Changelog
 
 
+## master
+[v6.8.0...master](https://github.com/deployphp/deployer/compare/v6.8.0...master)
+
+### Fixed
+- Symfony 4 recipe log and session folders ACL check [#2932]
+
+
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)
 
@@ -565,6 +572,7 @@
 - Fixed remove of shared dir on first deploy
 
 
+[#2932]: https://github.com/deployphp/deployer/issues/2932
 [#1994]: https://github.com/deployphp/deployer/issues/1994
 [#1990]: https://github.com/deployphp/deployer/issues/1990
 [#1989]: https://github.com/deployphp/deployer/issues/1989

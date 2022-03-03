@@ -194,8 +194,27 @@ function task(string $name, $body = null): Task
         throw new \InvalidArgumentException('Task body should be a function or an array.');
     }
 
+    if ($deployer->tasks->has($name)) {
+        // If task already exists, try to replace.
+        $existingTask = $deployer->tasks->get($name);
+        if (get_class($existingTask) !== get_class($task)) {
+            // There is no "up" or "down"casting in PHP.
+            throw new \Exception('Tried to replace a Task with a GroupTask or vice-versa. This is not supported. If you are sure you want to do that, remove the old task `Deployer::get()->tasks->remove(<taskname>)` and then re-add the task.');
+        }
+        if ($existingTask instanceof Task) {
+            $existingTask->setCallback($body);
+        } elseif ($existingTask instanceof GroupTask) {
+            $existingTask->setGroup($body);
+        } else {
+            throw new \LogicException('Unexpected Task type.');
+        }
+        $task = $existingTask;
+    } else {
+        // If task does not exist, add it to the Collection.
+        $deployer->tasks->set($name, $task);
+    }
+
     $task->saveSourceLocation();
-    $deployer->tasks->set($name, $task);
 
     if (!empty(desc())) {
         $task->desc(desc());

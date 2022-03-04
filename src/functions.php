@@ -201,12 +201,10 @@ function task(string $name, $body = null): Task
             // There is no "up" or "down"casting in PHP.
             throw new \Exception('Tried to replace a Task with a GroupTask or vice-versa. This is not supported. If you are sure you want to do that, remove the old task `Deployer::get()->tasks->remove(<taskname>)` and then re-add the task.');
         }
-        if ($existingTask instanceof Task) {
-            $existingTask->setCallback($body);
-        } elseif ($existingTask instanceof GroupTask) {
+        if ($existingTask instanceof GroupTask) {
             $existingTask->setGroup($body);
-        } else {
-            throw new \LogicException('Unexpected Task type.');
+        } elseif ($existingTask instanceof Task) {
+            $existingTask->setCallback($body);
         }
         $task = $existingTask;
     } else {

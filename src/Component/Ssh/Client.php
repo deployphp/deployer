@@ -142,7 +142,7 @@ class Client
 
             try {
                 $process->mustRun();
-            } catch (ProcessTimedOutException $exception) {
+            } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line can be thrown but is absent from the phpdoc
                 // Timeout fired: maybe there is no connection,
                 // or maybe another process established master connection.
                 // Let's try proceed anyway.

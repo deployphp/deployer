@@ -22,11 +22,6 @@ use Throwable;
 class Server
 {
     /**
-     * @var InputInterface
-     */
-    private $input;
-
-    /**
      * @var OutputInterface
      */
     private $output;
@@ -44,12 +39,10 @@ class Server
     private $port;
 
     public function __construct(
-        InputInterface $input,
         OutputInterface $output,
         Deployer $deployer
     )
     {
-        $this->input = $input;
         $this->output = $output;
         $this->deployer = $deployer;
     }

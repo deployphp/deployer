@@ -13,13 +13,6 @@ use Symfony\Component\Console\Helper\Helper as Base;
 class Helper extends Base
 {
     /**
-     * The update manager.
-     *
-     * @var Manager
-     */
-    private $manager;
-
-    /**
      * Returns the update manager.
      *
      * @param string $uri The manifest file URI.

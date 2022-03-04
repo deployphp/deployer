@@ -163,7 +163,6 @@ class Deployer extends Container
         };
         $this['server'] = function ($c) {
             return new Server(
-                $c['input'],
                 $c['output'],
                 $this,
             );

@@ -63,9 +63,9 @@ class Importer
                     }
                 });
             } else if (preg_match('/\.ya?ml$/i', $path)) {
-                static::$recipeFilename = basename($path);
-                static::$recipeSource = file_get_contents($path);
-                $root = array_filter(Yaml::parse(static::$recipeSource), static function (string $key) {
+                self::$recipeFilename = basename($path);
+                self::$recipeSource = file_get_contents($path);
+                $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
                     return substr($key, 0, 1) !== '.';
                 }, ARRAY_FILTER_USE_KEY);
 
@@ -79,7 +79,7 @@ class Importer
                 $validator = new Validator(new Factory($schemaStorage));
                 $validator->validate($root, $yamlSchema, Constraint::CHECK_MODE_TYPE_CAST);
                 if (!$validator->isValid()) {
-                    $msg = "YAML " . static::$recipeFilename . " does not validate. Violations:\n";
+                    $msg = "YAML " . self::$recipeFilename . " does not validate. Violations:\n";
                     foreach ($validator->getErrors() as $error) {
                         $msg .= "[{$error['property']}] {$error['message']}\n";
                     }
@@ -145,8 +145,8 @@ class Importer
                             try {
                                 run($run);
                             } catch (Exception $e) {
-                                $e->setTaskFilename(static::$recipeFilename);
-                                $e->setTaskLineNumber(find_line_number(static::$recipeSource, $run));
+                                $e->setTaskFilename(self::$recipeFilename);
+                                $e->setTaskLineNumber(find_line_number(self::$recipeSource, $run));
                                 throw $e;
                             }
                         };
@@ -163,8 +163,8 @@ class Importer
                             try {
                                 runLocally($run_locally);
                             } catch (Exception $e) {
-                                $e->setTaskFilename(static::$recipeFilename);
-                                $e->setTaskLineNumber(find_line_number(static::$recipeSource, $run_locally));
+                                $e->setTaskFilename(self::$recipeFilename);
+                                $e->setTaskLineNumber(find_line_number(self::$recipeSource, $run_locally));
                                 throw $e;
                             }
                         };

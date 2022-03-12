@@ -70,7 +70,7 @@ EOF;
 
     set('remote_user', 'root');
     if (!test("grep -q 'import $deployPath/Caddyfile' /etc/caddy/Caddyfile")) {
-        run("echo 'import $deployPath/Caddyfile' > /etc/caddy/Caddyfile");
+        run("echo 'import $deployPath/Caddyfile' >> /etc/caddy/Caddyfile");
     }
     run('service caddy reload');
 

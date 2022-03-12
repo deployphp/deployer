@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -634,9 +637,8 @@ function warning(string $message): void
 
 /**
  * Writes a message to the output and adds a newline at the end.
- * @param string|array $message
  */
-function writeln($message, int $options = 0): void
+function writeln(string $message, int $options = 0): void
 {
     $host = currentHost();
     output()->writeln("[$host] " . parse($message), $options);
@@ -652,8 +654,8 @@ function parse(string $value): string
 
 /**
  * Setup configuration option.
- *
  * @param mixed $value
+ * @throws Exception
  */
 function set(string $name, $value): void
 {

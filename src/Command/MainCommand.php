@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -128,7 +131,7 @@ class MainCommand extends SelectCommand
             $this->deployer->master->connect($hosts);
             $this->deployer->server->start();
 
-            if (!empty($skippedTasks)) { // @phpstan-ignore-line $skippedTasks is passed by reference and not always empty
+            if (!empty($skippedTasks)) {
                 foreach ($skippedTasks as $taskName) {
                     $output->writeln("<fg=yellow;options=bold>skip</> $taskName");
                 }

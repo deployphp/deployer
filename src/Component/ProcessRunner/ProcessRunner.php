@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,7 +20,13 @@ use Symfony\Component\Process\Process;
 
 class ProcessRunner
 {
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var Logger
+     */
     private $logger;
 
     public function __construct(Printer $pop, Logger $logger)

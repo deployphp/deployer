@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,10 +19,25 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class TreeCommand extends Command
 {
+    /**
+     * @var Output
+     */
     protected $output;
+    /**
+     * @var Deployer
+     */
     private $deployer;
+    /**
+     * @var array
+     */
     private $tree;
+    /**
+     * @var int
+     */
     private $depth = 0;
+    /**
+     * @var array
+     */
     private $openGroupDepths = [];
 
     public function __construct(Deployer $deployer)

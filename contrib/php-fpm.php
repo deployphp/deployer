@@ -20,7 +20,7 @@ require 'contrib/php-fpm.php';
 
 - `php_fpm_version` – The PHP-fpm version. For example: `8.0`.
 - `php_fpm_service` – The full name of the PHP-fpm service. Defaults to `php{{php_fpm_version}}-fpm`.
-- `php_fpm_command` – The command to run to reload PHP-fpm. Defaults to `echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload`.
+- `php_fpm_command` – The command to run to reload PHP-fpm. Defaults to `sudo systemctl reload {{php_fpm_service}}`.
 
 ## Usage
 
@@ -38,16 +38,10 @@ after('deploy', 'php-fpm:reload');
 namespace Deployer;
 
 set('php_fpm_version', function () {
-    $phpFpmProcess = run("ps aux | grep php-fpm | grep 'master process'");
-
-    if (! preg_match('/^.*master process.*(\d\.\d).*$/', $phpFpmProcess, $match)) {
-        throw new \Exception('Please provide the PHP-fpm version using the `php_fpm_version` option.');
-    }
-
-    return $match[1];
+    return run('{{bin/php}} -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);"');
 });
 set('php_fpm_service', 'php{{php_fpm_version}}-fpm');
-set('php_fpm_command', 'echo "" | sudo -S /usr/sbin/service {{php_fpm_service}} reload');
+set('php_fpm_command', 'sudo systemctl reload {{php_fpm_service}}');
 
 desc('Reloads the php-fpm service');
 task('php-fpm:reload', function () {

@@ -176,7 +176,7 @@ function desc(?string $title = null): ?string
  * Alternatively get a defined task.
  *
  * @param string $name Name of current task.
- * @param callable|array|null $body Callable task, array of other tasks names or nothing to get a defined tasks
+ * @param callable():void|array|null $body Callable task, array of other tasks names or nothing to get a defined tasks
  */
 function task(string $name, $body = null): Task
 {
@@ -194,8 +194,25 @@ function task(string $name, $body = null): Task
         throw new \InvalidArgumentException('Task body should be a function or an array.');
     }
 
+    if ($deployer->tasks->has($name)) {
+        // If task already exists, try to replace.
+        $existingTask = $deployer->tasks->get($name);
+        if (get_class($existingTask) !== get_class($task)) {
+            // There is no "up" or "down"casting in PHP.
+            throw new \Exception('Tried to replace a Task with a GroupTask or vice-versa. This is not supported. If you are sure you want to do that, remove the old task `Deployer::get()->tasks->remove(<taskname>)` and then re-add the task.');
+        }
+        if ($existingTask instanceof GroupTask) {
+            $existingTask->setGroup($body);
+        } elseif ($existingTask instanceof Task) {
+            $existingTask->setCallback($body);
+        }
+        $task = $existingTask;
+    } else {
+        // If task does not exist, add it to the Collection.
+        $deployer->tasks->set($name, $task);
+    }
+
     $task->saveSourceLocation();
-    $deployer->tasks->set($name, $task);
 
     if (!empty(desc())) {
         $task->desc(desc());
@@ -209,7 +226,7 @@ function task(string $name, $body = null): Task
  * Call that task before specified task runs.
  *
  * @param string $task The task before $that should be run.
- * @param string|callable $do The task to be run.
+ * @param string|callable():void $do The task to be run.
  *
  * @return Task|null
  */
@@ -229,7 +246,7 @@ function before(string $task, $do)
  * Call that task after specified task runs.
  *
  * @param string $task The task after $that should be run.
- * @param string|callable $do The task to be run.
+ * @param string|callable():void $do The task to be run.
  *
  * @return Task|null
  */
@@ -250,7 +267,7 @@ function after(string $task, $do)
  * When called multiple times for a task, previous fail() definitions will be overridden.
  *
  * @param string $task The task which need to fail so $that should be run.
- * @param string|callable $do The task to be run.
+ * @param string|callable():void $do The task to be run.
  *
  * @return Task|null
  */

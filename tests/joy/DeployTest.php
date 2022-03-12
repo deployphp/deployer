@@ -59,6 +59,16 @@ class DeployTest extends AbstractTest
             self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
         }
 
+        for ($i = 0; $i < 6; $i++) {
+            $this->dep(self::RECIPE, 'deploy:fail');
+            self::assertEquals(1, $this->tester->getStatusCode(), $this->tester->getDisplay());
+        }
+
+        for ($i = 0; $i < 3; $i++) {
+            $this->dep(self::RECIPE, 'deploy');
+            self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
+        }
+
         foreach ($this->deployer->hosts as $host) {
             $deployPath = $host->get('deploy_path');
 

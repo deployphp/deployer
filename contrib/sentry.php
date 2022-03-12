@@ -228,6 +228,12 @@ function getReleaseGitRef(): Closure
 {
     return static function ($config = []): string {
         if (get('update_code_strategy') === 'archive') {
+            if (isset($config['git_version_command'])) {
+                cd('{{deploy_path}}/.dep/repo');
+
+                return trim(run($config['git_version_command']));
+            }
+
             return run('cat {{current_path}}/REVISION');
         }
 

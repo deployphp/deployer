@@ -22,14 +22,14 @@ As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
 
 
 ### sudo_password
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L215)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L216)
 
 
 
 
 
 ### ssh_copy_id
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L221)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L222)
 
 Specify which key to copy to server.
 Set to `false` to disable copy of key.
@@ -77,7 +77,7 @@ Checks pre-required state.
 
 
 ### provision:configure
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L58)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L59)
 
 Collects required params.
 
@@ -85,7 +85,7 @@ Collects required params.
 
 
 ### provision:update
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L82)
 
 Adds repositories and update.
 
@@ -93,7 +93,7 @@ Adds repositories and update.
 
 
 ### provision:upgrade
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L103)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L104)
 
 Upgrades all packages.
 
@@ -101,7 +101,7 @@ Upgrades all packages.
 
 
 ### provision:install
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L110)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L111)
 
 Installs packages.
 
@@ -109,7 +109,7 @@ Installs packages.
 
 
 ### provision:server
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L144)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L145)
 
 Configures a server.
 
@@ -117,7 +117,7 @@ Configures a server.
 
 
 ### provision:ssh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L205)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L206)
 
 Configures the ssh.
 
@@ -125,7 +125,7 @@ Configures the ssh.
 
 
 ### provision:deployer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L224)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L225)
 
 Setups a deployer user.
 
@@ -133,7 +133,7 @@ Setups a deployer user.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L271)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L272)
 
 Setups a firewall.
 
@@ -141,7 +141,7 @@ Setups a firewall.
 
 
 ### provision:verify
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L279)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L280)
 
 Verifies what provision was successful.
 

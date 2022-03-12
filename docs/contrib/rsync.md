@@ -120,7 +120,6 @@ host('hostname')
         'rsync',
         'deploy:vendors',
         'deploy:symlink',
-        'cleanup',
     ])->desc('Deploy your project');
     ```
 
@@ -130,7 +129,7 @@ host('hostname')
 
 ## Configuration
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L128)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L127)
 
 
 
@@ -154,7 +153,7 @@ host('hostname')
 
 
 ### rsync_src
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L144)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L143)
 
 
 
@@ -164,7 +163,7 @@ __DIR__
 
 
 ### rsync_dest
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L145)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L144)
 
 
 
@@ -174,28 +173,28 @@ __DIR__
 
 
 ### rsync_excludes
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L147)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L146)
 
 
 
 
 
 ### rsync_includes
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L162)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L161)
 
 
 
 
 
 ### rsync_filter
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L177)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L176)
 
 
 
 
 
 ### rsync_options
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L195)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L194)
 
 
 
@@ -205,7 +204,7 @@ __DIR__
 ## Tasks
 
 ### rsync:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L207)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L206)
 
 Warmups remote Rsync target.
 
@@ -213,7 +212,7 @@ Warmups remote Rsync target.
 
 
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L222)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L221)
 
 Rsync local->remote.
 

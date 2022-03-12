@@ -26,7 +26,7 @@
 
 ## Configuration
 ### user
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L31)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L29)
 
 Name of current user who is running deploy.
 If not set will try automatically get git user name,
@@ -35,7 +35,7 @@ otherwise output of `whoami` command.
 
 
 ### keep_releases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L48)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L46)
 
 Number of releases to preserve in releases folder.
 
@@ -45,14 +45,14 @@ Number of releases to preserve in releases folder.
 
 
 ### repository
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L51)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L49)
 
 Repository to deploy.
 
 
 
 ### default_timeout
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L56)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L54)
 
 Default timeout for `run()` and `runLocally()` functions.
 
@@ -64,7 +64,7 @@ Set to `null` to disable timeout.
 
 
 ### env
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L72)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L70)
 
 Remote environment variables.
 ```php
@@ -82,7 +82,7 @@ run('echo $KEY', env: ['KEY' => 'over']);
 
 
 ### dotenv
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L79)
 
 Path to `.env` file which will be used as environment variables for each command per `run()`.
 
@@ -96,7 +96,7 @@ false
 
 
 ### deploy_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L89)
 
 The deploy path.
 
@@ -108,7 +108,7 @@ set('deploy_path', '~/{{alias}}');
 
 
 ### current_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L101)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L99)
 
 Return current release path. Default to [deploy_path](/docs/recipe/common.md#deploy_path)/`current`.
 ```php
@@ -121,21 +121,21 @@ set('current_path', '/var/public_html');
 
 
 ### bin/php
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L104)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L102)
 
 Path to the `php` bin.
 
 
 
 ### bin/git
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L112)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L110)
 
 Path to the `git` bin.
 
 
 
 ### use_relative_symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L118)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L116)
 
 Should [bin/symlink](/docs/recipe/common.md#bin/symlink) use `--relative` option or not. Will detect
 automatically.
@@ -143,14 +143,14 @@ automatically.
 
 
 ### bin/symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L123)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L121)
 
 Path to the `ln` bin. With predefined options `-nfs`.
 
 
 
 ### sudo_askpass
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L130)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L128)
 
 Path to a file which will store temp script with sudo password.
 Defaults to `.dep/sudo_pass`. This script is only temporary and will be deleted after
@@ -158,18 +158,11 @@ sudo command executed.
 
 
 
-### target
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L143)
-
-The deploy target: a branch, a tag or a revision.
-
-
-
 
 ## Tasks
 
 ### deploy:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L169)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L137)
 
 Prepares a new release.
 
@@ -187,7 +180,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:publish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L180)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L148)
 
 Publishes the release.
 
@@ -202,7 +195,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:success
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L190)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L158)
 
 
 
@@ -210,7 +203,7 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L199)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L167)
 
 
 
@@ -218,7 +211,7 @@ Hook on deploy failure.
 
 
 ### logs:app
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L209)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L177)
 
 Shows application logs.
 

@@ -86,7 +86,11 @@ class SshCommand extends Command
         $options = Client::connectionOptionsString($host);
         $deployPath = $host->get('deploy_path', '~');
 
-        passthru("ssh -t $options {$host->getConnectionString()} 'cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path'");
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            passthru("ssh -t $options {$host->getConnectionString()} \"cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path\"");
+        } else {
+            passthru("ssh -t $options {$host->getConnectionString()} 'cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path'");
+        }
         return 0;
     }
 }

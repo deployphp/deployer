@@ -6,8 +6,10 @@ use Symfony\Component\Console\Helper\Table;
 
 // The name of the release.
 set('release_name', function () {
-    $latest = run('cat .dep/latest_release || echo 0');
-    return strval(intval($latest) + 1);
+    return within('{{deploy_path}}', function () {
+        $latest = run('cat .dep/latest_release || echo 0');
+        return strval(intval($latest) + 1);
+    });
 });
 
 // Holds releases log from `.dep/releases_log` file.
@@ -18,21 +20,11 @@ set('releases_log', function () {
         return [];
     }
 
-    $keepReleases = get('keep_releases');
-    if ($keepReleases === -1) {
-        $data = run('cat .dep/releases_log');
-    } else {
-        $data = run("tail -n " . ($keepReleases + 5) . " .dep/releases_log");
-    }
+    $releaseLogs = array_map(function ($line) {
+        return json_decode($line, true);
+    }, explode("\n", run('cat .dep/releases_log')));
 
-    $releasesLog = [];
-    foreach (explode("\n", $data) as $line) {
-        $metainfo = json_decode($line, true);
-        if (!empty($metainfo)) {
-            $releasesLog[] = $metainfo;
-        }
-    }
-    return $releasesLog;
+    return array_filter($releaseLogs); // Return all non-empty lines.
 });
 
 // Return list of release names on host.

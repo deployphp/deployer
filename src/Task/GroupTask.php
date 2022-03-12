@@ -43,4 +43,9 @@ class GroupTask extends Task
     {
         return $this->group;
     }
+
+    public function setGroup(array $group): void
+    {
+        $this->group = $group;
+    }
 }

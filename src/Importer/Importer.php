@@ -87,7 +87,7 @@ class Importer
                 }
 
                 foreach (array_keys($root) as $key) {
-                    self::$key($root[$key]);
+                    static::$key($root[$key]);
                 }
             } else {
                 throw new Exception("Unknown file format: $path\nOnly .php and .yaml supported.");

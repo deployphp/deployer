@@ -46,7 +46,6 @@ set('writable_dirs', [
     'config/jwt',
     'custom/plugins',
     'files',
-    'press_files',
     'public/bundles',
     'public/css',
     'public/fonts',

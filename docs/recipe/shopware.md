@@ -83,7 +83,6 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
     'config/jwt',
     'custom/plugins',
     'files',
-    'press_files',
     'public/bundles',
     'public/css',
     'public/fonts',
@@ -101,7 +100,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
 ## Tasks
 
 ### sw:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L62)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L61)
 
 
 
@@ -109,7 +108,7 @@ This task remotely executes the `cache:clear` console command on the target serv
 
 
 ### sw:cache:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L68)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L67)
 
 
 
@@ -118,7 +117,7 @@ visits the website, doesn't have to wait for the cache to be built up.
 
 
 ### sw:database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L73)
 
 
 
@@ -126,7 +125,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:plugin:refresh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L77)
 
 
 
@@ -134,7 +133,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:plugin:update:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L114)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L113)
 
 
 
@@ -142,7 +141,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:writable:jwt
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L124)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L123)
 
 
 
@@ -150,7 +149,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L131)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L130)
 
 
 
@@ -166,7 +165,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L140)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L139)
 
 Deploys your project.
 
@@ -183,23 +182,9 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:get-remote-config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L150)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L149)
 
 
-
-
-
-
-### sw-build-without-db:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L176)
-
-
-
-
-
-
-### sw-build-without-db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L180)
 
 
 

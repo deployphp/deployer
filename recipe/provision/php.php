@@ -2,7 +2,7 @@
 namespace Deployer;
 
 set('php_version', function () {
-    return ask(' What PHP version to install? ', '8.0', ['5.4', '7.4', '8.0']);
+    return ask(' What PHP version to install? ', '8.1', ['5.6', '7.4', '8.0', '8.1']);
 });
 
 desc('Installs PHP packages');
@@ -14,7 +14,6 @@ task('provision:php', function () {
         "php$version-cli",
         "php$version-curl",
         "php$version-dev",
-        "php$version-fpm",
         "php$version-fpm",
         "php$version-gd",
         "php$version-imap",

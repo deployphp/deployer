@@ -33,6 +33,7 @@
         "test": "pest",
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "phpcs": "phpcs",
+        "fix": "phpcbf",
         "phpstan": "phpstan analyse -c phpstan.neon",
         "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
     },

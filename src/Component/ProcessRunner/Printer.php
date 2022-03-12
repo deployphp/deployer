@@ -15,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Printer
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
     public function __construct(OutputInterface $output)

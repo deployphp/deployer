@@ -15,6 +15,9 @@ use IteratorAggregate;
 
 class Collection implements Countable, IteratorAggregate
 {
+    /**
+     * @var array
+     */
     protected $values = [];
 
     public function all(): array

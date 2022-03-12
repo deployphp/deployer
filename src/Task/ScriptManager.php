@@ -15,8 +15,17 @@ use function Deployer\Support\array_flatten;
 
 class ScriptManager
 {
+    /**
+     * @var TaskCollection
+     */
     private $tasks;
+    /**
+     * @var bool
+     */
     private $hooksEnabled = true;
+    /**
+     * @var array
+     */
     private $visitedTasks = [];
 
     public function __construct(TaskCollection $tasks)

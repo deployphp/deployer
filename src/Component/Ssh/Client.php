@@ -23,8 +23,17 @@ use function Deployer\Support\parse_home_dir;
 
 class Client
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var Logger
+     */
     private $logger;
 
     public function __construct(OutputInterface $output, Printer $pop, Logger $logger)

@@ -22,7 +22,13 @@ use function Deployer\writeln;
 
 class Rsync
 {
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
     public function __construct(Printer $pop, OutputInterface $output)

@@ -12,10 +12,28 @@ namespace Deployer\Documentation;
 
 class DocTask
 {
+    /**
+     * @var string
+     */
     public $name;
+    /**
+     * @var string
+     */
     public $desc;
+    /**
+     * @var string
+     */
     public $comment;
+    /**
+     * @var array
+     */
     public $group;
+    /**
+     * @var string
+     */
     public $recipePath;
+    /**
+     * @var int
+     */
     public $lineNumber;
 }

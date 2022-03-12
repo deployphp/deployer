@@ -19,10 +19,25 @@ use Symfony\Component\Console\Output\OutputInterface as Output;
 
 class TreeCommand extends Command
 {
+    /**
+     * @var Output
+     */
     protected $output;
+    /**
+     * @var Deployer
+     */
     private $deployer;
+    /**
+     * @var array
+     */
     private $tree;
+    /**
+     * @var int
+     */
     private $depth = 0;
+    /**
+     * @var array
+     */
     private $openGroupDepths = [];
 
     public function __construct(Deployer $deployer)

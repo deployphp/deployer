@@ -14,11 +14,29 @@ use Deployer\Exception\HttpieException;
 
 class Httpie
 {
+    /**
+     * @var string
+     */
     private $method = 'GET';
+    /**
+     * @var string
+     */
     private $url = '';
+    /**
+     * @var array
+     */
     private $headers = [];
+    /**
+     * @var string
+     */
     private $body = '';
+    /**
+     * @var array
+     */
     private $curlopts = [];
+    /**
+     * @var bool
+     */
     private $nothrow = false;
 
     public function __construct()

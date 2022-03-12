@@ -15,10 +15,25 @@ use Symfony\Component\Process\Process;
 
 class RunException extends Exception
 {
+    /**
+     * @var Host
+     */
     private $host;
+    /**
+     * @var string
+     */
     private $command;
+    /**
+     * @var int
+     */
     private $exitCode;
+    /**
+     * @var string
+     */
     private $output;
+    /**
+     * @var string
+     */
     private $errorOutput;
 
     public function __construct(

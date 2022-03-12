@@ -12,6 +12,9 @@ namespace Deployer\Documentation;
 
 class ApiGen
 {
+    /**
+     * @var array
+     */
     private $fns = [];
 
     public function parse(string $source): void

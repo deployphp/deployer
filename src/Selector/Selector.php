@@ -16,6 +16,9 @@ use function Deployer\Support\array_all;
 
 class Selector
 {
+    /**
+     * @var HostCollection
+     */
     private $hosts;
 
     public function __construct(HostCollection $hosts)

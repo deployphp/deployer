@@ -21,7 +21,9 @@ class Planner
      * @var Table
      */
     private $table;
-
+    /**
+     * @var array
+     */
     private $template;
 
     /**

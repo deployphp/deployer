@@ -26,6 +26,9 @@ use function Deployer\localhost;
 
 abstract class SelectCommand extends Command
 {
+    /**
+     * @var Deployer
+     */
     protected $deployer;
 
     public function __construct(string $name, Deployer $deployer)

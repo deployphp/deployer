@@ -18,7 +18,14 @@ use function Deployer\Support\normalize_line_endings;
 
 class Configuration implements \ArrayAccess
 {
+    /**
+     * @var Configuration|null
+     */
     private $parent;
+
+    /**
+     * @var array
+     */
     private $values = [];
 
     public function __construct(Configuration $parent = null)

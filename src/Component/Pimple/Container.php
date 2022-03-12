@@ -22,11 +22,29 @@ use Deployer\Component\Pimple\Exception\UnknownIdentifierException;
  */
 class Container implements \ArrayAccess
 {
+    /**
+     * @var array
+     */
     private $values = [];
+    /**
+     * @var \SplObjectStorage
+     */
     private $factories;
+    /**
+     * @var \SplObjectStorage
+     */
     private $protected;
+    /**
+     * @var array
+     */
     private $frozen = [];
+    /**
+     * @var array
+     */
     private $raw = [];
+    /**
+     * @var array
+     */
     private $keys = [];
 
     /**

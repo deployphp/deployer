@@ -17,6 +17,9 @@ use RegexIterator;
 
 class DocGen
 {
+    /**
+     * @var string
+     */
     public $root;
     /**
      * @var DocRecipe[]

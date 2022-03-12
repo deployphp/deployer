@@ -12,8 +12,17 @@ namespace Deployer\Documentation;
 
 class DocRecipe
 {
+    /**
+     * @var string
+     */
     public $recipeName;
+    /**
+     * @var string
+     */
     public $recipePath;
+    /**
+     * @var string
+     */
     public $comment;
     /**
      * @var string[]

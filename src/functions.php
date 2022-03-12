@@ -654,7 +654,8 @@ function parse(string $value): string
 
 /**
  * Setup configuration option.
- *
+ * @param mixed $value
+ * @throws Exception
  */
 function set(string $name, $value): void
 {

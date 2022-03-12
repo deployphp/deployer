@@ -37,7 +37,13 @@ use const ARRAY_FILTER_USE_KEY;
 
 class Importer
 {
+    /**
+     * @var string
+     */
     private static $recipeFilename;
+    /**
+     * @var string
+     */
     private static $recipeSource;
 
     /**

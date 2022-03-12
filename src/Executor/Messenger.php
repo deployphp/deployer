@@ -21,8 +21,19 @@ use Throwable;
 
 class Messenger
 {
+    /**
+     * @var Input
+     */
     private $input;
+
+    /**
+     * @var Output
+     */
     private $output;
+
+    /**
+     * @var Logger
+     */
     private $logger;
 
     /**

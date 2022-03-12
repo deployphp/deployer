@@ -12,6 +12,9 @@ namespace Deployer\Support;
 
 class ObjectProxy
 {
+    /**
+     * @var array
+     */
     private $objects;
 
     public function __construct(array $objects)

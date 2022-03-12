@@ -29,6 +29,9 @@ class Server
      */
     private $output;
 
+    /**
+     * @var Deployer
+     */
     private $deployer;
 
     /**

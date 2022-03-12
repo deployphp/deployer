@@ -20,7 +20,13 @@ use Symfony\Component\Process\Process;
 
 class ProcessRunner
 {
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var Logger
+     */
     private $logger;
 
     public function __construct(Printer $pop, Logger $logger)

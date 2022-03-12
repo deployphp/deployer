@@ -27,6 +27,9 @@ class SshCommand extends Command
 {
     use CommandCommon;
 
+    /**
+     * @var Deployer
+     */
     private $deployer;
 
     public function __construct(Deployer $deployer)

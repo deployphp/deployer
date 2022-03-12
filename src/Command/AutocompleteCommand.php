@@ -19,6 +19,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AutocompleteCommand extends Command
 {
+    /**
+     * @var Deployer
+     */
     private $deployer;
 
     public function __construct(Deployer $deployer)

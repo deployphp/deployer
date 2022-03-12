@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Deployer\Component\PharUpdate;
 
 use Deployer\Component\PharUpdate\Exception\InvalidArgumentException;
@@ -89,7 +92,7 @@ class Manager
      *
      * @return boolean TRUE if an update was performed, FALSE if none available.
      */
-    public function update($version, bool $major = false, bool $pre = false): bool
+    public function update(string|Version $version, bool $major = false, bool $pre = false): bool
     {
         if (false === ($version instanceof Version)) {
             $version = Parser::toVersion($version);

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -252,9 +255,8 @@ class Deployer extends Container
     }
 
     /**
-     * @param mixed $value
      */
-    public function __set(string $name, $value)
+    public function __set(string $name, mixed $value)
     {
         $this[$name] = $value;
     }
@@ -355,11 +357,10 @@ class Deployer extends Container
     }
 
     /**
-     * @param mixed ...$arguments
      * @return array|bool|string
      * @throws \Exception
      */
-    public static function proxyCallToMaster(Host $host, string $func, ...$arguments)
+    public static function proxyCallToMaster(Host $host, string $func, mixed ...$arguments)
     {
         // As request to master will stop master permanently,
         // wait a little bit in order for periodic timer of

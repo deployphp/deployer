@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Deployer\Component\PharUpdate\Version\Exception;
 
 /**
@@ -20,7 +23,7 @@ class InvalidNumberException extends VersionException
      *
      * @param mixed $number The invalid version number.
      */
-    public function __construct($number)
+    public function __construct(mixed $number)
     {
         parent::__construct(
             sprintf(

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -100,9 +103,8 @@ class Httpie
     }
 
     /**
-     * @param mixed $value
      */
-    public function setopt(int $key, $value): Httpie
+    public function setopt(int $key, mixed $value): Httpie
     {
         $http = clone $this;
         $http->curlopts[$key] = $value;

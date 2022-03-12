@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -178,7 +181,7 @@ function desc(?string $title = null): ?string
  * @param string $name Name of current task.
  * @param callable():void|array|null $body Callable task, array of other tasks names or nothing to get a defined tasks
  */
-function task(string $name, $body = null): Task
+function task(string $name, callable|array|null $body = null): Task
 {
     $deployer = Deployer::get();
 
@@ -230,7 +233,7 @@ function task(string $name, $body = null): Task
  *
  * @return Task|null
  */
-function before(string $task, $do)
+function before(string $task, string|callable $do)
 {
     if (is_closure($do)) {
         $newTask = task("before:$task", $do);
@@ -250,7 +253,7 @@ function before(string $task, $do)
  *
  * @return Task|null
  */
-function after(string $task, $do)
+function after(string $task, string|callable $do)
 {
     if (is_closure($do)) {
         $newTask = task("after:$task", $do);
@@ -271,7 +274,7 @@ function after(string $task, $do)
  *
  * @return Task|null
  */
-function fail(string $task, $do)
+function fail(string $task, string|callable $do)
 {
     if (is_callable($do)) {
         $newTask = task("fail:$task", $do);
@@ -293,7 +296,7 @@ function fail(string $task, $do)
  * @param string $description A description text
  * @param string|string[]|int|bool|null $default The default value (must be null for self::VALUE_NONE)
  */
-function option(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null): void
+function option(string $name, string|array|null $shortcut = null, ?int $mode = null, string $description = '', string|array|int|bool|null $default = null): void
 {
     Deployer::get()->inputDefinition->addOption(
         new InputOption($name, $shortcut, $mode, $description, $default)
@@ -514,7 +517,7 @@ function testLocally(string $command): bool
  *
  * @param Host|Host[] $hosts
  */
-function on($hosts, callable $callback): void
+function on(Host|array $hosts, callable $callback): void
 {
     if (!is_array($hosts) && !($hosts instanceof \Traversable)) {
         $hosts = [$hosts];
@@ -575,7 +578,7 @@ function invoke(string $taskName): void
  *
  * @throws RunException
  */
-function upload($source, string $destination, array $config = []): void
+function upload(string|array $source, string $destination, array $config = []): void
 {
     $rsync = Deployer::get()->rsync;
     $host = currentHost();
@@ -634,9 +637,8 @@ function warning(string $message): void
 
 /**
  * Writes a message to the output and adds a newline at the end.
- * @param string|array $message
  */
-function writeln($message, int $options = 0): void
+function writeln(string|array $message, int $options = 0): void
 {
     $host = currentHost();
     output()->writeln("[$host] " . parse($message), $options);
@@ -653,9 +655,8 @@ function parse(string $value): string
 /**
  * Setup configuration option.
  *
- * @param mixed $value
  */
-function set(string $name, $value): void
+function set(string $name, mixed $value): void
 {
     if (!Context::has()) {
         Deployer::get()->config->set($name, $value);
@@ -681,11 +682,10 @@ function add(string $name, array $array): void
 /**
  * Get configuration value.
  *
- * @param mixed|null $default
  *
  * @return mixed
  */
-function get(string $name, $default = null)
+function get(string $name, mixed $default = null)
 {
     if (!Context::has()) {
         return Deployer::get()->config->get($name, $default);
@@ -737,11 +737,10 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
 }
 
 /**
- * @param mixed $default
  * @return mixed
  * @throws Exception
  */
-function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
+function askChoice(string $message, array $availableChoices, mixed $default = null, bool $multiselect = false)
 {
     if (defined('DEPLOYER_NO_ASK')) {
         throw new WillAskUser($message);

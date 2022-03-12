@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -95,9 +98,8 @@ function env_stringify(array $array): string
 
 /**
  * Check if var is closure.
- * @param mixed $var
  */
-function is_closure($var): bool
+function is_closure(mixed $var): bool
 {
     return is_object($var) && ($var instanceof \Closure);
 }

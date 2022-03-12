@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Deployer\Component\PharUpdate\Exception;
 
 /**
@@ -13,7 +16,7 @@ class Exception extends \Exception implements ExceptionInterface
      *
      * @param mixed  $value,... The value(s).
      */
-    public static function create(string $format, $value = null): self
+    public static function create(string $format, mixed $value = null): self
     {
         if (0 < func_num_args()) {
             $format = vsprintf($format, array_slice(func_get_args(), 1));

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -39,9 +42,8 @@ class Item
     }
 
     /**
-     * @param int|string $reference
      */
-    public function addReference($reference)
+    public function addReference(int|string $reference)
     {
         $this->references[] = $reference;
     }

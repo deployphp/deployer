@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -42,9 +45,8 @@ class Host
     }
 
     /**
-     * @param mixed $value
      */
-    public function set(string $name, $value): self
+    public function set(string $name, mixed $value): self
     {
         if ($name === 'alias') {
             throw new ConfigurationException("Can not update alias of the host.\nThis will change only host own alias,\nbut not the key it is stored in HostCollection.");
@@ -73,10 +75,9 @@ class Host
     }
 
     /**
-     * @param mixed|null $default
      * @return mixed|null
      */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null)
     {
         return $this->config->get($name, $default);
     }

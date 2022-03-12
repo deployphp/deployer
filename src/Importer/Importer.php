@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -40,7 +43,7 @@ class Importer
     /**
      * @param string|string[] $paths
      */
-    public static function import($paths)
+    public static function import(string|array $paths)
     {
         if (!is_array($paths)) {
             $paths = [$paths];

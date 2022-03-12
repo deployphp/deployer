@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -65,7 +68,7 @@ class Selector
     /**
      * @param string|string[] $a
      */
-    private static function compare(string $op, $a, ?string $b): bool
+    private static function compare(string $op, string|array $a, ?string $b): bool
     {
         $matchFunction = function($a, ?string $b) {
             foreach ((array)$a as $item) {

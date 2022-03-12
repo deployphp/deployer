@@ -40,7 +40,7 @@ class Server
 
     public function __construct(
         OutputInterface $output,
-        Deployer $deployer
+        Deployer        $deployer
     )
     {
         $this->output = $output;
@@ -50,14 +50,19 @@ class Server
     public function start()
     {
         $this->loop = Loop::get();
-        $server = new HttpServer($this->loop, function (ServerRequestInterface $request) {
-            try {
-                return $this->router($request);
-            } catch (Throwable $exception) {
-                Deployer::printException($this->output, $exception);
-                return new React\Http\Message\Response(500, ['Content-Type' => 'text/plain'], 'Master error: ' . $exception->getMessage());
+        $server = new HttpServer(
+            $this->loop,
+            new React\Http\Middleware\StreamingRequestMiddleware(),
+            new React\Http\Middleware\RequestBodyBufferMiddleware(16 * 1024 * 1024), // 16 MiB
+            function (ServerRequestInterface $request) {
+                try {
+                    return $this->router($request);
+                } catch (Throwable $exception) {
+                    Deployer::printException($this->output, $exception);
+                    return new React\Http\Message\Response(500, ['Content-Type' => 'text/plain'], 'Master error: ' . $exception->getMessage());
+                }
             }
-        });
+        );
         $socket = new React\Socket\Server(0, $this->loop);
         $server->listen($socket);
         $address = $socket->getAddress();
@@ -69,7 +74,7 @@ class Server
         $path = $request->getUri()->getPath();
         switch ($path) {
             case '/load':
-                ['host' => $host] = json_decode($request->getBody()->getContents(), true);
+                ['host' => $host] = json_decode((string)$request->getBody(), true);
 
                 $host = $this->deployer->hosts->get($host);
                 $config = json_encode($host->config()->persist());
@@ -77,7 +82,7 @@ class Server
                 return new Response(200, ['Content-Type' => 'application/json'], $config);
 
             case '/save':
-                ['host' => $host, 'config' => $config] = json_decode($request->getBody()->getContents(), true);
+                ['host' => $host, 'config' => $config] = json_decode((string)$request->getBody(), true);
 
                 $host = $this->deployer->hosts->get($host);
                 $host->config()->update($config);
@@ -85,7 +90,7 @@ class Server
                 return new Response(200, ['Content-Type' => 'application/json'], 'true');
 
             case '/proxy':
-                ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode($request->getBody()->getContents(), true);
+                ['host' => $host, 'func' => $func, 'arguments' => $arguments] = json_decode((string)$request->getBody(), true);
 
                 Context::push(new Context($this->deployer->hosts->get($host)));
                 $answer = call_user_func($func, ...$arguments);

@@ -381,7 +381,7 @@ Writes an warning message.
 ## writeln()
 
 ```php
-writeln($message, int $options = 0): void
+writeln(string $message, int $options = 0): void
 ```
 
 Writes a message to the output and adds a newline at the end.
@@ -403,7 +403,6 @@ set(string $name, $value): void
 ```
 
 Setup configuration option.
-
 
 
 ## add()

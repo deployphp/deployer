@@ -121,8 +121,9 @@ class Httpie
     }
 
     /**
+     * @param mixed $value
      */
-    public function setopt(int $key, mixed $value): Httpie
+    public function setopt(int $key, $value): Httpie
     {
         $http = clone $this;
         $http->curlopts[$key] = $value;

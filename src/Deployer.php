@@ -255,8 +255,9 @@ class Deployer extends Container
     }
 
     /**
+     * @param mixed $value
      */
-    public function __set(string $name, mixed $value)
+    public function __set(string $name, $value)
     {
         $this[$name] = $value;
     }
@@ -357,10 +358,11 @@ class Deployer extends Container
     }
 
     /**
+     * @param mixed ...$arguments
      * @return array|bool|string
      * @throws \Exception
      */
-    public static function proxyCallToMaster(Host $host, string $func, mixed ...$arguments)
+    public static function proxyCallToMaster(Host $host, string $func, ...$arguments)
     {
         // As request to master will stop master permanently,
         // wait a little bit in order for periodic timer of

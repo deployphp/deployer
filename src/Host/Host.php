@@ -45,8 +45,9 @@ class Host
     }
 
     /**
+     * @param mixed $value
      */
-    public function set(string $name, mixed $value): self
+    public function set(string $name, $value): self
     {
         if ($name === 'alias') {
             throw new ConfigurationException("Can not update alias of the host.\nThis will change only host own alias,\nbut not the key it is stored in HostCollection.");
@@ -75,9 +76,10 @@ class Host
     }
 
     /**
+     * @param mixed|null $default
      * @return mixed|null
      */
-    public function get(string $name, mixed $default = null)
+    public function get(string $name, $default = null)
     {
         return $this->config->get($name, $default);
     }

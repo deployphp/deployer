@@ -23,7 +23,7 @@ class InvalidNumberException extends VersionException
      *
      * @param mixed $number The invalid version number.
      */
-    public function __construct(mixed $number)
+    public function __construct($number)
     {
         parent::__construct(
             sprintf(

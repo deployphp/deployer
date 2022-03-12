@@ -683,10 +683,11 @@ function add(string $name, array $array): void
 /**
  * Get configuration value.
  *
+ * @param mixed|null $default
  *
  * @return mixed
  */
-function get(string $name, mixed $default = null)
+function get(string $name, $default = null)
 {
     if (!Context::has()) {
         return Deployer::get()->config->get($name, $default);
@@ -738,10 +739,11 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
 }
 
 /**
+ * @param mixed $default
  * @return mixed
  * @throws Exception
  */
-function askChoice(string $message, array $availableChoices, mixed $default = null, bool $multiselect = false)
+function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
 {
     if (defined('DEPLOYER_NO_ASK')) {
         throw new WillAskUser($message);

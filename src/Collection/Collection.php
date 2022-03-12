@@ -43,8 +43,9 @@ class Collection implements Countable, IteratorAggregate
     }
 
     /**
+     * @param mixed $object
      */
-    public function set(string $name, mixed $object)
+    public function set(string $name, $object)
     {
         $this->values[$name] = $object;
     }

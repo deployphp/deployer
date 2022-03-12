@@ -98,8 +98,9 @@ function env_stringify(array $array): string
 
 /**
  * Check if var is closure.
+ * @param mixed $var
  */
-function is_closure(mixed $var): bool
+function is_closure($var): bool
 {
     return is_object($var) && ($var instanceof \Closure);
 }

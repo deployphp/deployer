@@ -35,9 +35,10 @@ trait CustomOption
     }
 
     /**
+     * @param mixed $value
      * @return bool|mixed
      */
-    protected function castValueToPhpType(mixed $value)
+    protected function castValueToPhpType($value)
     {
         switch ($value) {
             case 'true':

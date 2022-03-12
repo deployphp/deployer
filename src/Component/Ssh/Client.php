@@ -69,8 +69,8 @@ class Client
         $this->pop->command($host, 'run', $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
-        $command = str_replace('%secret%', $config['secret'] ?? '', $command);
-        $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
+        $command = str_replace('%secret%', strval($config['secret'] ?? ''), $command);
+        $command = str_replace('%sudo_pass%', strval($config['sudo_pass'] ?? ''), $command);
 
         $process = new Process($ssh);
         $process
@@ -80,7 +80,7 @@ class Client
 
         $callback = function ($type, $buffer) use ($config, $host) {
             $this->logger->printBuffer($host, $type, $buffer);
-            $this->pop->callback($host, $config['real_time_output'])($type, $buffer);
+            $this->pop->callback($host, boolval($config['real_time_output']))($type, $buffer);
         };
 
         try {

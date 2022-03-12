@@ -131,7 +131,7 @@ class MainCommand extends SelectCommand
             $this->deployer->master->connect($hosts);
             $this->deployer->server->start();
 
-            if (!empty($skippedTasks)) { // @phpstan-ignore-line $skippedTasks is passed by reference and not always empty
+            if (!empty($skippedTasks)) {
                 foreach ($skippedTasks as $taskName) {
                     $output->writeln("<fg=yellow;options=bold>skip</> $taskName");
                 }

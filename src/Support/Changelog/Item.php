@@ -42,8 +42,9 @@ class Item
     }
 
     /**
+     * @param int|string $reference
      */
-    public function addReference(int|string $reference)
+    public function addReference($reference)
     {
         $this->references[] = $reference;
     }

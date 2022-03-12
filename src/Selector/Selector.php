@@ -68,7 +68,7 @@ class Selector
     /**
      * @param string|string[] $a
      */
-    private static function compare(string $op, string|array $a, ?string $b): bool
+    private static function compare(string $op, $a, ?string $b): bool
     {
         $matchFunction = function($a, ?string $b) {
             foreach ((array)$a as $item) {

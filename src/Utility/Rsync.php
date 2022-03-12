@@ -38,7 +38,7 @@ class Rsync
      * @phpstan-param array{flags?: string, options?: array, timeout?: int|null, progress_bar?: bool, display_stats?: bool} $config
      * @throws RunException
      */
-    public function call(Host $host, string|array $source, string $destination, array $config = []): void
+    public function call(Host $host, $source, string $destination, array $config = []): void
     {
         $defaults = [
             'timeout' => null,

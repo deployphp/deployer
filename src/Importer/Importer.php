@@ -43,7 +43,7 @@ class Importer
     /**
      * @param string|string[] $paths
      */
-    public static function import(string|array $paths)
+    public static function import($paths)
     {
         if (!is_array($paths)) {
             $paths = [$paths];

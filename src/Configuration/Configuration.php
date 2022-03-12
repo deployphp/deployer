@@ -37,8 +37,9 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * @param mixed $value
      */
-    public function set(string $name, mixed $value): void
+    public function set(string $name, $value): void
     {
         $this->values[$name] = $value;
     }
@@ -74,9 +75,10 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * @param mixed|null $default
      * @return mixed|null
      */
-    public function get(string $name, mixed $default = null)
+    public function get(string $name, $default = null)
     {
         if (array_key_exists($name, $this->values)) {
             if (is_closure($this->values[$name])) {
@@ -119,9 +121,10 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * @param string|mixed $value
      * @return string|mixed
      */
-    public function parse(mixed $value)
+    public function parse($value)
     {
         if (is_string($value)) {
             $normalizedValue = normalize_line_endings($value);
@@ -151,10 +154,11 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * @param mixed $offset
      * @return bool
      */
     #[\ReturnTypeWillChange]
-    public function offsetExists(mixed $offset)
+    public function offsetExists($offset)
     {
         return $this->has($offset);
     }
@@ -182,9 +186,10 @@ class Configuration implements \ArrayAccess
     }
 
     /**
+     * @param mixed $offset
      */
     #[\ReturnTypeWillChange]
-    public function offsetUnset(mixed $offset): void
+    public function offsetUnset($offset): void
     {
         unset($this->values[$offset]);
     }

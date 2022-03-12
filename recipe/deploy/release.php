@@ -22,7 +22,7 @@ set('releases_log', function () {
 
     $releaseLogs = array_map(function ($line) {
         return json_decode($line, true);
-    }, explode("\n", run('cat .dep/releases_log')));
+    }, explode("\n", run('tail -n 300 .dep/releases_log')));
 
     return array_filter($releaseLogs); // Return all non-empty lines.
 });

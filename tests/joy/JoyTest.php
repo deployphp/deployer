@@ -5,11 +5,14 @@
  * file that was distributed with this source code.
  */
 
+namespace joy;
+
 use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\ApplicationTester;
+use const __TEMP_DIR__;
 
 abstract class JoyTest extends TestCase
 {

@@ -70,7 +70,7 @@ $autoload = [
 
 $includes = [
     $deployFilePath . '/vendor/deployer/deployer',
-    __DIR__ . '/../../../deployer/deployer',
+    __DIR__ . '/../../../lancasters/deployer',
     __DIR__ . '/../'
 ];
 

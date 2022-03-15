@@ -62,15 +62,17 @@ EOF;
                 run('rm Caddyfile.new');
             } else {
                 run('mv Caddyfile.new Caddyfile');
-                run('caddy reload');
             }
         }
     } else {
         run("echo $'$caddyfile' > Caddyfile");
-        run('caddy reload');
     }
 
     set('remote_user', 'root');
+    if (!test("grep -q 'import $deployPath/Caddyfile' /etc/caddy/Caddyfile")) {
+        run("echo 'import $deployPath/Caddyfile' >> /etc/caddy/Caddyfile");
+    }
+    run('service caddy reload');
 
     info("Website $domain configured!");
 })->limit(1);

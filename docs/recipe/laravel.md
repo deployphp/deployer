@@ -379,6 +379,7 @@ This task is group task which contains next tasks:
 * [artisan:config:cache](/docs/recipe/laravel.md#artisanconfigcache)
 * [artisan:route:cache](/docs/recipe/laravel.md#artisanroutecache)
 * [artisan:view:cache](/docs/recipe/laravel.md#artisanviewcache)
+* [artisan:event:cache](/docs/recipe/laravel.md#artisaneventcache)
 * [artisan:migrate](/docs/recipe/laravel.md#artisanmigrate)
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
 

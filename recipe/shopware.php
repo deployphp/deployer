@@ -158,8 +158,17 @@ task('sw-build-without-db:get-remote-config', static function () {
         download('{{deploy_path}}/current/files/theme-config', './files/');
 
         // Temporary workaround to remove absolute file paths in Shopware <6.4.6.0
-        // See https://github.com/shopware/platform/commit/01c8ff86c7d8d3bee1888a26c24c9dc9b4529cbc and https://issues.shopware.com/issues/NEXT-17720
-        runLocally('sed -i "" -E \'s/\\\\\/var\\\\\/www\\\\\/htdocs\\\\\/releases\\\\\/[0-9]+\\\\\///g\' files/theme-config/* || true');
+        // See:
+        // - https://github.com/shopware/platform/commit/01c8ff86c7d8d3bee1888a26c24c9dc9b4529cbc
+        // - https://issues.shopware.com/issues/NEXT-17720
+        // - https://github.com/deployphp/deployer/issues/2754
+        $deployPath = get('deploy_path');
+        if (substr($deployPath, -1, 1) !== '/') {
+            $deployPath .= '/';
+        }
+        $deployPath .= 'releases/[0-9a-zA-Z]*/';
+        $escapedDeployPath = str_replace('/', '\\\\/', $deployPath);
+        runLocally("sed -iE 's#${escapedDeployPath}##g' files/theme-config/* || true");
     });
 });
 

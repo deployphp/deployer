@@ -8,7 +8,6 @@ module.exports = [
     items: [
       'hosts',
       'tasks',
-      'config',
     ],
   },
   'ci-cd',

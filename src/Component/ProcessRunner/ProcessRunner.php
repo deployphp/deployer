@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -17,7 +18,13 @@ use Symfony\Component\Process\Process;
 
 class ProcessRunner
 {
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var Logger
+     */
     private $logger;
 
     public function __construct(Printer $pop, Logger $logger)
@@ -73,7 +80,7 @@ class ProcessRunner
                 $process->getOutput(),
                 $process->getErrorOutput()
             );
-        } catch (ProcessTimedOutException $exception) {
+        } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line can be thrown but is absent from the phpdoc
             throw new TimeoutException(
                 $command,
                 $exception->getExceededTimeout()

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -34,7 +35,13 @@ use const ARRAY_FILTER_USE_KEY;
 
 class Importer
 {
+    /**
+     * @var string
+     */
     private static $recipeFilename;
+    /**
+     * @var string
+     */
     private static $recipeSource;
 
     /**
@@ -87,7 +94,7 @@ class Importer
                 }
 
                 foreach (array_keys($root) as $key) {
-                    self::$key($root[$key]);
+                    static::$key($root[$key]);
                 }
             } else {
                 throw new Exception("Unknown file format: $path\nOnly .php and .yaml supported.");

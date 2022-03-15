@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -12,8 +13,17 @@ use function Deployer\Support\array_flatten;
 
 class ScriptManager
 {
+    /**
+     * @var TaskCollection
+     */
     private $tasks;
+    /**
+     * @var bool
+     */
     private $hooksEnabled = true;
+    /**
+     * @var array
+     */
     private $visitedTasks = [];
 
     public function __construct(TaskCollection $tasks)

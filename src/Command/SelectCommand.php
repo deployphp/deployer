@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -23,6 +24,9 @@ use function Deployer\localhost;
 
 abstract class SelectCommand extends Command
 {
+    /**
+     * @var Deployer
+     */
     protected $deployer;
 
     public function __construct(string $name, Deployer $deployer)

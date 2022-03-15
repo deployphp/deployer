@@ -33,6 +33,7 @@
         "test": "pest",
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "phpcs": "phpcs",
+        "fix": "phpcbf",
         "phpstan": "phpstan analyse -c phpstan.neon",
         "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
     },
@@ -51,10 +52,10 @@
     },
     "require-dev": {
         "pestphp/pest": "^1.0",
-        "phpstan/phpstan": "^0.12.53",
+        "phpstan/phpstan": "^1.4",
         "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.3",
-        "slevomat/coding-standard": "^6.4",
+        "slevomat/coding-standard": "^7.0",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {

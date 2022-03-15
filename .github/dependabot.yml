@@ -4,5 +4,5 @@ updates:
   - package-ecosystem: "composer"
     directory: /
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     versioning-strategy: increase-if-necessary

@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 namespace Deployer\Component\PharUpdate\Version;
 
 use Deployer\Component\PharUpdate\Version\Exception\InvalidStringRepresentationException;

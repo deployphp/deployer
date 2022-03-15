@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -16,6 +17,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AutocompleteCommand extends Command
 {
+    /**
+     * @var Deployer
+     */
     private $deployer;
 
     public function __construct(Deployer $deployer)

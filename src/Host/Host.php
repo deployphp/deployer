@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -83,7 +84,7 @@ class Host
 
     public function getAlias(): ?string
     {
-        return $this->config->get('alias');
+        return $this->config->get('alias', null);
     }
 
     public function setTag(string $tag): self
@@ -105,7 +106,7 @@ class Host
 
     public function getHostname(): ?string
     {
-        return $this->config->get('hostname');
+        return $this->config->get('hostname', null);
     }
 
     public function setRemoteUser(string $user): self
@@ -116,7 +117,7 @@ class Host
 
     public function getRemoteUser(): ?string
     {
-        return $this->config->get('remote_user');
+        return $this->config->get('remote_user', null);
     }
 
     public function setPort(int $port): self
@@ -127,7 +128,7 @@ class Host
 
     public function getPort(): ?int
     {
-        return $this->config->get('port');
+        return $this->config->get('port', null);
     }
 
     public function setConfigFile(string $file): self
@@ -138,7 +139,7 @@ class Host
 
     public function getConfigFile(): ?string
     {
-        return $this->config->get('config_file');
+        return $this->config->get('config_file', null);
     }
 
     public function setIdentityFile(string $file): self
@@ -149,7 +150,7 @@ class Host
 
     public function getIdentityFile(): ?string
     {
-        return $this->config->get('identity_file');
+        return $this->config->get('identity_file', null);
     }
 
     public function setForwardAgent(bool $on): self
@@ -160,7 +161,7 @@ class Host
 
     public function getForwardAgent(): ?bool
     {
-        return $this->config->get('forward_agent');
+        return $this->config->get('forward_agent', null);
     }
 
     public function setSshMultiplexing(bool $on): self
@@ -171,7 +172,7 @@ class Host
 
     public function getSshMultiplexing(): ?bool
     {
-        return $this->config->get('ssh_multiplexing');
+        return $this->config->get('ssh_multiplexing', null);
     }
 
     public function setShell(string $command): self
@@ -182,7 +183,7 @@ class Host
 
     public function getShell(): ?string
     {
-        return $this->config->get('shell');
+        return $this->config->get('shell', null);
     }
 
     public function setDeployPath(string $path): self
@@ -193,7 +194,7 @@ class Host
 
     public function getDeployPath(): ?string
     {
-        return $this->config->get('deploy_path');
+        return $this->config->get('deploy_path', null);
     }
 
     public function setLabels(array $labels): self
@@ -204,7 +205,7 @@ class Host
 
     public function getLabels(): ?array
     {
-        return $this->config->get('labels');
+        return $this->config->get('labels', null);
     }
 
     public function getConnectionString(): string
@@ -223,6 +224,6 @@ class Host
 
     public function getSshArguments(): ?array
     {
-        return $this->config->get('ssh_arguments');
+        return $this->config->get('ssh_arguments', null);
     }
 }

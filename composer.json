@@ -62,9 +62,6 @@
     "config": {
         "sort-packages": true,
         "process-timeout": 0,
-        "platform": {
-            "php": "7.3.0"
-        },
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true

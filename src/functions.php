@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -201,12 +202,10 @@ function task(string $name, $body = null): Task
             // There is no "up" or "down"casting in PHP.
             throw new \Exception('Tried to replace a Task with a GroupTask or vice-versa. This is not supported. If you are sure you want to do that, remove the old task `Deployer::get()->tasks->remove(<taskname>)` and then re-add the task.');
         }
-        if ($existingTask instanceof Task) {
-            $existingTask->setCallback($body);
-        } elseif ($existingTask instanceof GroupTask) {
+        if ($existingTask instanceof GroupTask) {
             $existingTask->setGroup($body);
-        } else {
-            throw new \LogicException('Unexpected Task type.');
+        } elseif ($existingTask instanceof Task) {
+            $existingTask->setCallback($body);
         }
         $task = $existingTask;
     } else {
@@ -636,9 +635,8 @@ function warning(string $message): void
 
 /**
  * Writes a message to the output and adds a newline at the end.
- * @param string|array $message
  */
-function writeln($message, int $options = 0): void
+function writeln(string $message, int $options = 0): void
 {
     $host = currentHost();
     output()->writeln("[$host] " . parse($message), $options);
@@ -654,8 +652,8 @@ function parse(string $value): string
 
 /**
  * Setup configuration option.
- *
  * @param mixed $value
+ * @throws Exception
  */
 function set(string $name, $value): void
 {
@@ -690,9 +688,9 @@ function add(string $name, array $array): void
 function get(string $name, $default = null)
 {
     if (!Context::has()) {
-        return (func_num_args() >= 2) ? Deployer::get()->config->get($name, $default) : Deployer::get()->config->get($name);
+        return Deployer::get()->config->get($name, $default);
     } else {
-        return (func_num_args() >= 2) ? Context::get()->getConfig()->get($name, $default) : Context::get()->getConfig()->get($name);
+        return Context::get()->getConfig()->get($name, $default);
     }
 }
 

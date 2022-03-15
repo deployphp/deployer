@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -39,7 +40,7 @@ class BlackjackCommand extends Command
         $this->input = $input;
         $this->output = $output;
         $this->telemetry();
-        $io = new SymfonyStyle($input, $output);
+        $io = new SymfonyStyle($this->input, $this->output);
 
         if (getenv('COLORTERM') === 'truecolor') {
             $this->print("\x1b[38;2;255;95;109m╭\x1b[39m\x1b[38;2;255;95;107m─\x1b[39m\x1b[38;2;255;96;106m─\x1b[39m\x1b[38;2;255;96;104m─\x1b[39m\x1b[38;2;255;96;103m─\x1b[39m\x1b[38;2;255;97;101m─\x1b[39m\x1b[38;2;255;97;100m─\x1b[39m\x1b[38;2;255;97;99m─\x1b[39m\x1b[38;2;255;98;97m─\x1b[39m\x1b[38;2;255;100;98m─\x1b[39m\x1b[38;2;255;102;98m─\x1b[39m\x1b[38;2;255;104;98m─\x1b[39m\x1b[38;2;255;106;99m─\x1b[39m\x1b[38;2;255;108;99m─\x1b[39m\x1b[38;2;255;110;99m─\x1b[39m\x1b[38;2;255;112;100m─\x1b[39m\x1b[38;2;255;114;100m─\x1b[39m\x1b[38;2;255;116;100m─\x1b[39m\x1b[38;2;255;118;100m─\x1b[39m\x1b[38;2;255;120;101m─\x1b[39m\x1b[38;2;255;122;101m─\x1b[39m\x1b[38;2;255;124;101m─\x1b[39m\x1b[38;2;255;126;102m╮\x1b[39m");

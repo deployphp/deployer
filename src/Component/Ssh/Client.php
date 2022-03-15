@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -20,8 +21,17 @@ use function Deployer\Support\parse_home_dir;
 
 class Client
 {
+    /**
+     * @var OutputInterface
+     */
     private $output;
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var Logger
+     */
     private $logger;
 
     public function __construct(OutputInterface $output, Printer $pop, Logger $logger)
@@ -69,8 +79,8 @@ class Client
         $this->pop->command($host, 'run', $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
-        $command = str_replace('%secret%', $config['secret'] ?? '', $command);
-        $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
+        $command = str_replace('%secret%', strval($config['secret'] ?? ''), $command);
+        $command = str_replace('%sudo_pass%', strval($config['sudo_pass'] ?? ''), $command);
 
         $process = new Process($ssh);
         $process
@@ -80,7 +90,7 @@ class Client
 
         $callback = function ($type, $buffer) use ($config, $host) {
             $this->logger->printBuffer($host, $type, $buffer);
-            $this->pop->callback($host, $config['real_time_output'])($type, $buffer);
+            $this->pop->callback($host, boolval($config['real_time_output']))($type, $buffer);
         };
 
         try {
@@ -142,7 +152,7 @@ class Client
 
             try {
                 $process->mustRun();
-            } catch (ProcessTimedOutException $exception) {
+            } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line can be thrown but is absent from the phpdoc
                 // Timeout fired: maybe there is no connection,
                 // or maybe another process established master connection.
                 // Let's try proceed anyway.

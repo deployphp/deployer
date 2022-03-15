@@ -1,4 +1,5 @@
 <?php declare(strict_types=1);
+
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -19,7 +20,13 @@ use function Deployer\writeln;
 
 class Rsync
 {
+    /**
+     * @var Printer
+     */
     private $pop;
+    /**
+     * @var OutputInterface
+     */
     private $output;
 
     public function __construct(Printer $pop, OutputInterface $output)

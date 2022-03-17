@@ -16,12 +16,6 @@ config:
 tasks:
   release:
     - update_manifest
-    - release_dist
-
-  release_dist:
-    - desc: Release deployer/dist
-    - cd: ~/dev/dist
-      run: php update
 
   create_banner:
     - desc: Create an update banner

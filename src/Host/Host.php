@@ -120,13 +120,20 @@ class Host
         return $this->config->get('remote_user', null);
     }
 
-    public function setPort(int $port): self
+    /**
+     * @param string|int|null $port
+     * @return $this
+     */
+    public function setPort($port): self
     {
         $this->config->set('port', $port);
         return $this;
     }
 
-    public function getPort(): ?int
+    /**
+     * @return string|int|null
+     */
+    public function getPort()
     {
         return $this->config->get('port', null);
     }

@@ -40,8 +40,9 @@ jobs:
         run: |
           set -x
           git checkout -b dist
-          chmod +x deployer.phar
-          git add -f deployer.phar
+          mv deployer.phar dep
+          chmod +x dep
+          git add -f dep
 
       - name: Remove obsolete files & dirs
         shell: bash
@@ -53,7 +54,7 @@ jobs:
         shell: bash
         run: |
           set -x
-          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
+          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "dep")' > composer-new.json
           mv composer-new.json composer.json
           git add composer.json
 

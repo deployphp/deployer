@@ -36,6 +36,7 @@ jobs:
 #          dep: -f deploy.yaml release -o sha1=${{ env.SHA1 }} -o version=${{ env.RELEASE_VERSION }}
 
       - name: Update release tag
+        shell: bash
         run: |
           set -x
           git checkout -b dist
@@ -48,7 +49,5 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions"
           git commit -m "Deployer $RELEASE_VERSION"
-          git tag "$RELEASE_VERSION" --force
-          git checkout master
-          git branch --delete --force dist
-          git push --tags
+          git tag "v$RELEASE_VERSION" --force
+          git push origin "v$RELEASE_VERSION" --force

@@ -49,4 +49,4 @@ jobs:
           git config --global user.name "github-actions"
           git commit -m "Deployer $RELEASE_VERSION"
           git tag "$RELEASE_VERSION"
-          git push --tags
+          git push -f --tags

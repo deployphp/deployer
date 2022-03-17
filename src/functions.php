@@ -458,7 +458,7 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
         $command = "export $env; $command";
     }
 
-    $output = $process->run(currentHost(), $command, $options);
+    $output = $process->run(new Localhost(), $command, $options);
 
     return rtrim($output);
 }

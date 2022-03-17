@@ -49,7 +49,7 @@ class ProcessRunner
         ];
         $config = array_merge($defaults, $config);
 
-        $this->pop->command($host, 'run locally', $command);
+        $this->pop->command($host, 'run', $command);
 
         $terminalOutput = $this->pop->callback($host, $config['real_time_output']);
         $callback = function ($type, $buffer) use ($host, $terminalOutput) {

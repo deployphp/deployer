@@ -87,7 +87,7 @@ function env_stringify(array $array): string
 {
     return implode(' ', array_map(
         function ($key, $value) {
-            return sprintf("%s=%s", $key, escapeshellarg($value));
+            return sprintf("%s=%s", $key, escapeshellarg((string)$value));
         },
         array_keys($array),
         $array

@@ -35,17 +35,32 @@ jobs:
 #          deployer-binary: bin/dep
 #          dep: -f deploy.yaml release -o sha1=${{ env.SHA1 }} -o version=${{ env.RELEASE_VERSION }}
 
-      - name: Update release tag
+      - name: Add deployer.phar
         shell: bash
         run: |
           set -x
           git checkout -b dist
           chmod +x deployer.phar
           git add -f deployer.phar
-          git rm -r .github/ bin/ contrib/ docs/ recipe/ src/ tests/ *.xml *.yaml *.neon
-          cat composer.json | jq 'del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
+
+      - name: Remove obsolete files & dirs
+        shell: bash
+        run: |
+          set -x
+          git rm -r .github/ bin/ contrib/ docs/ recipe/ src/ tests/ *.xml *.yaml *.neon *.lock .gitattributes .gitignore
+
+      - name: Update composer.json
+        shell: bash
+        run: |
+          set -x
+          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
           mv composer-new.json composer.json
           git add composer.json
+
+      - name: Push release tag
+        shell: bash
+        run: |
+          set -x
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions"
           git commit -m "Deployer $RELEASE_VERSION"

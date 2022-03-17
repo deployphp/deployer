@@ -41,7 +41,7 @@ jobs:
           chmod +x deployer.phar
           git add -f deployer.phar
           git rm -r .github/ bin/ contrib/ docs/ recipe/ src/ tests/ *.xml *.yaml *.neon
-          jq composer.json 'del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
+          cat composer.json | jq 'del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
           mv composer-new.json composer.json
           git add composer.json
           git commit -m "Deployer $RELEASE_VERSION"

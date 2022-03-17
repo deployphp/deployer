@@ -17,17 +17,25 @@ add('recipes', ['magento2']);
 // By default setup:static-content:deploy uses `en_US`.
 // To change that, simply put `set('static_content_locales', 'en_US de_DE');`
 // in you deployer script.
+set('static_content_locales', 'en_US');
+
+// Configuration
+
 // You can also set the themes to run against. By default it'll deploy
 // all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
-set('static_content_locales', 'en_US');
+set('magento_themes', [
+
+]);
+
+// Configuration
+
+// Also set the number of conccurent jobs to run. The default is 1
+// Update using: `set('static_content_jobs', '1');`
+set('static_content_jobs', '1');
 
 set('content_version', function () {
     return time();
 });
-
-set('magento_themes', [
-
-]);
 
 set('shared_files', [
     'app/etc/env.php',
@@ -97,7 +105,7 @@ task('magento:deploy:assets', function () {
         }
     }
 
-    run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile");
+    run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
 });
 
 desc('Syncs content version');

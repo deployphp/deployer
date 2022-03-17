@@ -37,14 +37,15 @@ after('deploy', 'php-fpm:reload');
  */
 namespace Deployer;
 
+// Automatically detects by using {{bin/php}}.
 set('php_fpm_version', function () {
     return run('{{bin/php}} -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);"');
 });
+
 set('php_fpm_service', 'php{{php_fpm_version}}-fpm');
-set('php_fpm_command', 'sudo systemctl reload {{php_fpm_service}}');
 
 desc('Reloads the php-fpm service');
 task('php-fpm:reload', function () {
     warning('Avoid reloading php-fpm [ï.at/avoid-php-fpm-reloading]');
-    run('{{php_fpm_command}}');
+    run('sudo systemctl reload {{php_fpm_service}}');
 });

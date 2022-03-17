@@ -46,14 +46,14 @@ after('deploy', 'php-fpm:reload');
 
 ## Configuration
 ### php_fpm_version
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L41)
 
-
+Automatically detects by using [bin/php](/docs/recipe/common.md#bin/php).
 
 
 
 ### php_fpm_service
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L45)
 
 
 
@@ -62,21 +62,11 @@ after('deploy', 'php-fpm:reload');
 ```
 
 
-### php_fpm_command
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L44)
-
-
-
-```php title="Default value"
-'sudo systemctl reload {{php_fpm_service}}'
-```
-
-
 
 ## Tasks
 
 ### php-fpm:reload
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L47)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L48)
 
 Reloads the php-fpm service.
 

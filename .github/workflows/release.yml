@@ -37,6 +37,7 @@ jobs:
 
       - name: Update release tag
         run: |
+          set -x
           git checkout -b dist
           chmod +x deployer.phar
           git add -f deployer.phar

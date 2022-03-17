@@ -94,4 +94,4 @@ define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
 
-Deployer\Deployer::run('7.0.0-master', $deployFile);
+Deployer\Deployer::run('master', $deployFile);

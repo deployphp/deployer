@@ -93,6 +93,5 @@ set_include_path($includePath . PATH_SEPARATOR . get_include_path());
 define('DEPLOYER', true);
 define('DEPLOYER_BIN', __FILE__);
 define('DEPLOYER_DEPLOY_FILE', $deployFile);
-define('DEPLOYER_ROOT', getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname($deployFile));
 
 Deployer\Deployer::run('7.0.0-master', $deployFile);

@@ -43,7 +43,7 @@ class ProcessRunner
         $defaults = [
             'timeout' => $host->get('default_timeout', 300),
             'idle_timeout' => null,
-            'cwd' => getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : dirname(DEPLOYER_DEPLOY_FILE),
+            'cwd' => getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : (defined('DEPLOYER_DEPLOY_FILE') ? dirname(DEPLOYER_DEPLOY_FILE) : null),
             'real_time_output' => false,
             'shell' => 'bash -s',
         ];

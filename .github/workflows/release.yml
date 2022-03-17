@@ -45,10 +45,9 @@ jobs:
           cat composer.json | jq 'del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
           mv composer-new.json composer.json
           git add composer.json
-          
 
       - name: Add & Commit
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v9
         with:
           message: '[automatic] Release ${{ env.RELEASE_VERSION }}'
           tag: 'v${{ env.RELEASE_VERSION }} --force'

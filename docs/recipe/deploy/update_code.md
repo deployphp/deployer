@@ -58,14 +58,14 @@ will not permit connections to hosts with changed host keys.
 Specifies a sub directory within the repository to deploy.
 Works only when [`update_code_strategy`](#update_code_strategy) is set to `archive` (default).
 
-Example: 
+Example:
  - set value to `src` if you want to deploy the folder that lives at `/src/api`.
  - set value to `src/api` if you want to deploy the folder that lives at `/src/api`.
 
 Note: do not use a leading `/`!
 
 ```php title="Default value"
-null
+false
 ```
 
 

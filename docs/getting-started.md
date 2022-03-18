@@ -8,13 +8,7 @@ Tutorial duration: **5 min**
 
 First, [install the Deployer](installation.md):
 
-```sh
-curl -LO https://deployer.org/deployer.phar
-mv deployer.phar /usr/local/bin/dep
-chmod +x /usr/local/bin/dep
-```
-
-Now lets cd into the project and run following command:
+Now lets cd into the project and run the following command:
 
 ```sh
 dep init
@@ -101,8 +95,8 @@ To deploy the project:
 dep deploy
 ```
 
-If deployment will fail, Deployer will print error message and command what was unsuccessful.
-Most likely we need to confiure correct database credentials in _.env_ file or similar.
+If deploy failed, Deployer will print error message and command what was unsuccessful.
+Most likely we need to configure correct database credentials in _.env_ file or similar.
 
 Ssh to the host, for example, for editing _.env_ file:
 

@@ -12,15 +12,15 @@ use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
-use Deployer\Host\Localhost;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use function Deployer\localhost;
 
 abstract class SelectCommand extends Command
 {
@@ -89,5 +89,32 @@ abstract class SelectCommand extends Command
         }
 
         return $hosts;
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        parent::complete($input, $suggestions);
+        if ($input->mustSuggestArgumentValuesFor('selector')) {
+            $selectors = ['all'];
+            $configs = [];
+            foreach ($this->deployer->hosts as $host) {
+                $configs[$host->getAlias()] = $host->config()->persist();
+            }
+            foreach ($configs as $alias => $c) {
+                $selectors[] = $alias;
+                foreach ($c['labels'] ?? [] as $label => $value) {
+                    $selectors[] = "$label=$value";
+                }
+            }
+            $selectors = array_unique($selectors);
+            $suggestions->suggestValues($selectors);
+        }
+        if ($input->mustSuggestOptionValuesFor('option')) {
+            $values = [];
+            foreach ($this->deployer->config->keys() as $key) {
+                $values[] = $key . '=';
+            }
+            $suggestions->suggestValues($values);
+        }
     }
 }

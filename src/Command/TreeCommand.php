@@ -11,6 +11,8 @@ namespace Deployer\Command;
 use Deployer\Deployer;
 use Deployer\Task\GroupTask;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
@@ -163,6 +165,14 @@ class TreeCommand extends Command
             $prefix .= $startSymbol . '──';
 
             $this->output->writeln(sprintf('%s %s', $prefix, $treeItem['taskName']));
+        }
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        parent::complete($input, $suggestions);
+        if ($input->mustSuggestArgumentValuesFor('task')) {
+            $suggestions->suggestValues(array_keys($this->deployer->tasks->all()));
         }
     }
 }

@@ -21,7 +21,6 @@ Options:
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  autocomplete  Add CLI autocomplete
   blackjack     Play blackjack
   config        Get all configuration options for hosts
   help          Display help for a command

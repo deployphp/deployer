@@ -10,13 +10,14 @@ mv deployer.phar /usr/local/bin/dep
 chmod +x /usr/local/bin/dep
 ```
 
-:::tip CLI Autocomplete
+`alias dep='vendor/bin/deployer.phar'`
+
+:::tip Bash completion integration
 Deployer comes with autocomplete support for task names, options, and hosts.
 
-Add the following to your `~/.bashrc` or `~/.zshrc`:
-
+Run the next command to add bash completion support:
 ```
-eval "$(dep autocomplete --install)"
+dep completion bash > /usr/local/etc/bash_completion.d/deployer
 ```
 :::
 

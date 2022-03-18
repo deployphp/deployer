@@ -20,21 +20,10 @@ eval "$(dep autocomplete --install)"
 ```
 :::
 
-## Distribution
+## Per project
 
-This is the preferable installation method. The **deployer/dist** contains the 
-phar archive checked out at [deployphp/distribution](https://github.com/deployphp/distribution) repo.
-
-```sh
-composer require --dev deployer/dist
-```
-
-## Source
+To install Deployer in your project, use Composer:
 
 ```sh
 composer require --dev deployer/deployer
 ```
-
-:::warning Dependency conflicts
-In case of dependency conflicts, install [distribution](#distribution) version.
-:::

@@ -16,7 +16,7 @@ Deployer comes with autocomplete support for task names, options, and hosts.
 Add the following to your `~/.bashrc` or `~/.zshrc`:
 
 ```
-eval "$(dep autocomplete --install)
+eval "$(dep autocomplete --install)"
 ```
 :::
 

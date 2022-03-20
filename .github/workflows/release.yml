@@ -53,8 +53,11 @@ jobs:
         shell: bash
         run: |
           set -x
-          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
+          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(."require-dev") | setpath(["bin"]; "deployer.phar")' > composer-new.json
+          COMPOSER=composer-new.json composer remove justinrainbow/* psr/* react/* symfony/* --no-update
           mv composer-new.json composer.json
+          rm composer.lock
+          composer validate
           git add composer.json
 
       - name: Push release tag

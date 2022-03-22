@@ -31,8 +31,8 @@ host('example.org')
     ->set('hostname', 'example.cloud.google.com');
 ```
 
-The hostname will be used for the ssh connection, but the host will be referred to
-by it's alias when running Deployer.
+The hostname will be used for the ssh connection, but the host will be referred
+by its alias when running Deployer.
 
 ```
 $ dep test
@@ -59,6 +59,31 @@ host('example.org')
     ->setRemoteUser('deployer');
 ```
 
+## Host config
+
+### `alias`
+
+The identifier used to identify a host. 
+You can use actual hostname or something like `prod` or `staging`.
+
+### `hostname` 
+
+Deployer uses this config for actual ssh connection.
+
+### `remote_user` 
+
+Deployer uses this config for actual ssh connection. If not specified, 
+Deployer will be using `RemoteUser` from **~/.ssh/config** file, or current
+OS username.
+
+### `port` 
+
+Port of remote ssh server to connect to. Default is `22`.
+
+### `config_file` 
+
+Default is `~/.ssh/config`.
+
 :::info Config file
 It is a good practice to keep connection parameters out of `deploy.php` file, as
 they can change depending on where the deploy is executed from. Only specify
@@ -70,52 +95,39 @@ Host *
 ```
 :::
 
-## Host config
-
-### setHostname() 
-
-The `hostname`
-
-### setRemoteUser() 
-
-The `remote_user`
-
-### setPort() 
-
-The `port`
-
-### setConfigFile() 
-
-For example, `~/.ssh/config`.
-
-### setIdentityFile() 
+### `identity_file` 
 
 For example, `~/.ssh/id_rsa`.
 
-### setForwardAgent() 
+### `forward_agent` 
 
-Default: `true`.
+Default is `true`.
 
-### setSshMultiplexing() 
+### `ssh_multiplexing` 
 
-Default: `true`.
+Default is `true`.
 
-### setShell() 
+### `shell` 
 
-Default: `bash -ls`.
+Default is `bash -ls`.
 
-### setDeployPath() 
+### `deploy_path` 
 
 For example, `~/myapp`.
 
-### setLabels() 
+### `labels` 
 
 Key-value pairs for host selector.
 
-### setSshArguments() 
+### `ssh_arguments` 
 
 For example, `['-o UserKnownHostsFile=/dev/null']`
 
+### `ssh_control_path`
+
+Default is `~/.ssh/%C`.
+
+If **CI** env is present, default value is `/dev/shm/%C`. 
 
 ## Multiple hosts
 

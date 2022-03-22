@@ -19,20 +19,85 @@ task('my_task')->disable();
 
 ## Task config
 
-| Method                           | Description                                              |
-|----------------------------------|----------------------------------------------------------|
-| `desc(string $description)`      | Sets task's description.                                 |
-| `once(bool $once = true)`        | Sets the task to run only on one of selected hosts.      |
-| `oncePerNode(bool $once = true)` | Sets the task to run only on one node of selected hosts. |
-| `hidden(bool $hidden = true)`    | Hides task from CLI usage page.                          |
-| `addBefore(string $task)`        | Adds before hook to the task.                            |
-| `addAfter(string $task)`         | Adds after hook to the task.                             |
-| `limit(int $limit)`              | Limits number of hosts the task will be ran in parallel. |
-| `select(string $selector)`       | Sets task's host selector.                               |
-| `addSelector(string $selector)`  | Adds task's selector.                                    |
-| `verbose(bool $verbose = true)`  | Makes task always verbose. As if `-v` option persists.   |
-| `disable()`                      | Disables the task.                                       |
-| `enable()`                       | Enables the task.                                        |
+### `desc()`     
+
+Sets task's description.   
+
+```php
+task('deploy', function () {
+    // ...
+})->desc('Task description');
+```
+
+Same as using [desc()](api.md#desc) func helper:
+
+```php
+desc('Task description');
+task('deploy', function () {
+    // ...
+});
+```
+
+### `once()`       
+
+Sets the task to run only on one of selected hosts.     
+
+### `oncePerNode()`
+
+Sets the task to run only on **one node** of selected hosts.
+
+Node determined by [hostname](hosts.md#hostname). For example a few different 
+hosts can be deploying to one physical machine (uniq hostname). 
+
+```php
+host('foo')->setHostname('example.com');
+host('bar')->setHostname('example.com');
+host('pro')->setHostname('another.com');
+
+task('apt:update', function () {
+    // This task will be executed twise, only on "foo" and "pro" hosts.
+    run('apt-get update');
+})->oncePerNode();
+```
+
+### `hidden()`   
+
+Hides task from CLI usage page.                         
+
+### `addBefore()`       
+
+Adds before hook to the task.                           
+
+### `addAfter()`        
+
+Adds after hook to the task.                            
+
+### `limit()`             
+
+Limits number of hosts the task will be executed in parallel.
+
+Default is unlimited (runs the task on all host in parallel). 
+
+### `select()`      
+
+Sets task's host selector.
+
+### `addSelector()` 
+
+Adds task's selector.                                   
+
+### `verbose()` 
+
+Makes task always verbose. As if `-v` option persists.  
+
+### `disable()`                     
+
+Disables the task. Task will not be executed.                                      
+
+### `enable()`                      
+
+Enables the task.                                       
+
 
 ## Task grouping
 

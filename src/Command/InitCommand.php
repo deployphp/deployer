@@ -177,12 +177,7 @@ add('writable_dirs', []);
 // Hosts
 
 {$h}
-// Tasks
-
-task('build', function () {
-    cd('{{release_path}}');
-    run('npm run build');
-});
+// Hooks
 
 after('deploy:failed', 'deploy:unlock');
 
@@ -211,8 +206,7 @@ hosts:
 $h
 tasks:
   build:
-    - cd: '{{release_path}}'
-    - run: 'npm run build'  
+    - run: uptime  
 
 after:
   deploy:failed: deploy:unlock

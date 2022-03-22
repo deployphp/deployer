@@ -128,7 +128,7 @@ class DeployTest extends AbstractTest
         $this->dep(self::RECIPE, 'deploy:is_locked');
         $display = $this->tester->getDisplay();
 
-        self::assertStringContainsString('Deploy is locked.', $display);
+        self::assertStringContainsString('Deploy is locked by ', $display);
         self::assertSame(1, $this->tester->getStatusCode());
     }
 

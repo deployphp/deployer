@@ -19,7 +19,7 @@ task('my_task')->disable();
 
 ## Task config
 
-### `desc()`     
+### desc()     
 
 Sets task's description.   
 
@@ -38,11 +38,11 @@ task('deploy', function () {
 });
 ```
 
-### `once()`       
+### once()       
 
 Sets the task to run only on one of selected hosts.     
 
-### `oncePerNode()`
+### oncePerNode()
 
 Sets the task to run only on **one node** of selected hosts.
 
@@ -60,41 +60,41 @@ task('apt:update', function () {
 })->oncePerNode();
 ```
 
-### `hidden()`   
+### hidden()   
 
 Hides task from CLI usage page.                         
 
-### `addBefore()`       
+### addBefore()       
 
 Adds before hook to the task.                           
 
-### `addAfter()`        
+### addAfter()        
 
 Adds after hook to the task.                            
 
-### `limit()`             
+### limit()             
 
 Limits number of hosts the task will be executed in parallel.
 
 Default is unlimited (runs the task on all host in parallel). 
 
-### `select()`      
+### select()      
 
 Sets task's host selector.
 
-### `addSelector()` 
+### addSelector() 
 
 Adds task's selector.                                   
 
-### `verbose()` 
+### verbose() 
 
 Makes task always verbose. As if `-v` option persists.  
 
-### `disable()`                     
+### disable()                     
 
 Disables the task. Task will not be executed.                                      
 
-### `enable()`                      
+### enable()                      
 
 Enables the task.                                       
 

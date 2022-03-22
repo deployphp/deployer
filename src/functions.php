@@ -586,7 +586,7 @@ function upload($source, string $destination, array $config = []): void
     if ($host instanceof Localhost) {
         $rsync->call($host, $source, $destination, $config);
     } else {
-        $rsync->call($host, $source, "{$host->getConnectionString()}:$destination", $config);
+        $rsync->call($host, $source, "{$host->connectionString()}:$destination", $config);
     }
 }
 
@@ -607,7 +607,7 @@ function download(string $source, string $destination, array $config = []): void
     if ($host instanceof Localhost) {
         $rsync->call($host, $source, $destination, $config);
     } else {
-        $rsync->call($host, "{$host->getConnectionString()}:$source", $destination, $config);
+        $rsync->call($host, "{$host->connectionString()}:$source", $destination, $config);
     }
 }
 

@@ -128,7 +128,6 @@ class MainCommand extends SelectCommand
         if (!$plan) {
             $this->checkUpdates();
             $this->validateConfig();
-            $this->deployer->master->connect($hosts);
             $this->deployer->server->start();
 
             if (!empty($skippedTasks)) {

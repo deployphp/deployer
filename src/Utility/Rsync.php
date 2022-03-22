@@ -61,7 +61,7 @@ class Rsync
             $options[] = '--stats';
         }
 
-        $connectionOptions = Client::connectionOptionsString($host);
+        $connectionOptions = $host->connectionOptionsString();
         if ($connectionOptions !== '') {
             $options = array_merge($options, ['-e', "ssh $connectionOptions"]);
         }

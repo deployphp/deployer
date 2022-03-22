@@ -11,8 +11,10 @@ namespace Deployer\Host;
 use Deployer\Configuration\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
+use Deployer\Exception\Exception;
 use Deployer\Task\Context;
 use function Deployer\Support\colorize_host;
+use function Deployer\Support\parse_home_dir;
 
 class Host
 {
@@ -215,14 +217,6 @@ class Host
         return $this->config->get('labels', null);
     }
 
-    public function getConnectionString(): string
-    {
-        if ($this->get('remote_user', '') !== '') {
-            return $this->get('remote_user') . '@' . $this->get('hostname');
-        }
-        return $this->get('hostname');
-    }
-
     public function setSshArguments(array $args): self
     {
         $this->config->set('ssh_arguments', $args);
@@ -232,5 +226,80 @@ class Host
     public function getSshArguments(): ?array
     {
         return $this->config->get('ssh_arguments', null);
+    }
+
+    public function setSshControlPath(string $path): self
+    {
+        $this->config->set('ssh_control_path', $path);
+        return $this;
+    }
+
+    public function getSshControlPath(): string
+    {
+        return $this->config->get('ssh_control_path', $this->generateControlPath());
+    }
+
+    private function generateControlPath(): string
+    {
+        $C = $this->getHostname();
+        if ($this->has('remote_user')) {
+            $C = $this->getRemoteUser() . '@' . $C;
+        }
+        if ($this->has('port')) {
+            $C .= ':' . $this->getPort();
+        }
+
+        // In case of CI environment, lets use shared memory.
+        if (getenv('CI') && is_writable('/dev/shm')) {
+            return "/dev/shm/$C";
+        }
+
+        return "~/.ssh/$C";
+    }
+
+    public function connectionString(): string
+    {
+        if ($this->get('remote_user', '') !== '') {
+            return $this->get('remote_user') . '@' . $this->get('hostname');
+        }
+        return $this->get('hostname');
+    }
+
+    public function connectionOptionsString(): string
+    {
+        return implode(' ', array_map('escapeshellarg', $this->connectionOptionsArray()));
+    }
+
+    /**
+     * @return string[]
+     */
+    public function connectionOptionsArray(): array
+    {
+        $options = [];
+        if ($this->has('ssh_arguments')) {
+            foreach ($this->getSshArguments() as $arg) {
+                $options = array_merge($options, explode(' ', $arg));
+            }
+        }
+        if ($this->has('port')) {
+            $options = array_merge($options, ['-p', $this->getPort()]);
+        }
+        if ($this->has('config_file')) {
+            $options = array_merge($options, ['-F', parse_home_dir($this->getConfigFile())]);
+        }
+        if ($this->has('identity_file')) {
+            $options = array_merge($options, ['-i', parse_home_dir($this->getIdentityFile())]);
+        }
+        if ($this->has('forward_agent') && $this->getForwardAgent()) {
+            $options = array_merge($options, ['-A']);
+        }
+        if ($this->has('ssh_multiplexing') && $this->getSshMultiplexing()) {
+            $options = array_merge($options, [
+                '-o', 'ControlMaster=auto',
+                '-o', 'ControlPersist=60',
+                '-o', 'ControlPath=' . $this->getSshControlPath(),
+            ]);
+        }
+        return $options;
     }
 }

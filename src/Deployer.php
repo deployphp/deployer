@@ -173,7 +173,6 @@ class Deployer extends Container
                 $c['output'],
                 $c['server'],
                 $c['messenger'],
-                $c['sshClient'],
             );
         };
         $this['importer'] = function () {

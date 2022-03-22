@@ -89,13 +89,14 @@ class SshCommand extends Command
         }
 
         Context::push(new Context($host));
-        $options = Client::connectionOptionsString($host);
+        $host->setSshMultiplexing(false);
+        $options = $host->connectionOptionsString();
         $deployPath = $host->get('deploy_path', '~');
 
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            passthru("ssh -t $options {$host->getConnectionString()} \"cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path\"");
+            passthru("ssh -t $options {$host->connectionString()} \"cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path\"");
         } else {
-            passthru("ssh -t $options {$host->getConnectionString()} 'cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path'");
+            passthru("ssh -t $options {$host->connectionString()} 'cd $deployPath/current 2>/dev/null || cd $deployPath; $shell_path'");
         }
         return 0;
     }

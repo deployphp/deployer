@@ -81,6 +81,6 @@ class HostTest extends TestCase
             ->setRemoteUser('{{deploy_user}}')
             ->setPort(22);
 
-        self::assertEquals('test_user@host', $host->getConnectionString());
+        self::assertEquals('test_user@host', $host->connectionString());
     }
 }

@@ -251,7 +251,6 @@ task('rsync', function() {
         return;
     }
 
-    $sshArguments = Client::connectionOptionsString($host);
-
-    runLocally("rsync -{$config['flags']} -e 'ssh $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '{$host->getConnectionString()}:$dst/'", $config);
+    $sshArguments = $host->connectionOptionsString();
+    runLocally("rsync -{$config['flags']} -e 'ssh $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '{$host->connectionString()}:$dst/'", $config);
 });

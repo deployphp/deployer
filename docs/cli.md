@@ -1,34 +1,22 @@
 # CLI Usage
 
-After [installation](installation.md) of Deployer globally, 
-you will have the ability to run the `dep` command from your terminal.
+We recommend adding next alias to your .bashrc file:
 
-To get a list of all available tasks run the `dep` command. 
-You can run it from any subdirectory of you project,
-Deployer will automatically find project root dir.
-
+```bash
+alias dep='vendor/bin/deployer.phar'
 ```
-Usage:
-  command [options] [arguments]
 
-Options:
-  -h, --help            Display help for the given command. When no command is given display help for the list command
-  -q, --quiet           Do not output any message
-  -V, --version         Display this application version
-      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
-  -n, --no-interaction  Do not ask any interactive question
-  -f, --file=FILE       Recipe file path
-  -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+As well as installing completion script for Deployer, completion supports:
+- tasks,
+- options,
+- host names,
+- and configs.
 
-Available commands:
-  blackjack     Play blackjack
-  config        Get all configuration options for hosts
-  help          Display help for a command
-  init          Initialize deployer in your project
-  list          List commands
-  run           Run any arbitrary command on hosts
-  ssh           Connect to host through ssh
-  tree          Display the task-tree for a given task
+For example for macOS run next commands:
+
+```bash
+brew install bash-completion
+dep completion bash > /usr/local/etc/bash_completion.d/deployer
 ```
 
 ## Overriding configuration options
@@ -147,7 +135,11 @@ runLocally('ls', ['cwd' => '/root/directory']);
 
 ## Play blackjack
 
-Deployer comes with buildin blackjack, to play it:
+> Yeah, well. I'm gonna go build my own theme park... with blackjack and hookers!
+> 
+> In fact, forget the park!
+> 
+> — Bender
 
 ```
 dep blackjack

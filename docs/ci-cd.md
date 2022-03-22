@@ -58,7 +58,7 @@ stages:
 deploy:
   stage: deploy
   image:
-    name: debreczeniandras/deployerphp:7-beta
+    name: deployphp/deployer:7
     entrypoint: [""]
   before_script:
     - mkdir -p ~/.ssh
@@ -77,15 +77,11 @@ deploy:
 
 Only one deployment job runs at a time with the [`resource_group` keyword](https://docs.gitlab.com/ee/ci/yaml/index.html#resource_group) in .gitlab-ci.yml.
 
-In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [Skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#skip-outdated-deployment-jobs) feature.
-
-### Deploy code
-
-Since by default every GitLab CI job already clone the repo, you could use [`rsync`](contrib/rsync.md#usage) task instead of `deploy:update_code` to upload the code from the job to the host.
+In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#skip-outdated-deployment-jobs) feature.
 
 ### Deploy secrets
 
-Since it is not recommended pushing secrets in the repository, you could use a GitLab variable to store them.
+Is not recommended committing secrets in the repository, you could use a GitLab variable to store them.
 
 Many frameworks use dotenv to store secrets, let's create a GitLab file variable named `DOTENV`, so it can be deployed along with the code.
 
@@ -93,7 +89,7 @@ Set up a deployer task to copy secrets to the server:
 
 ```php
 task('deploy:secrets', function () {
-    upload(getenv('DOTENV'), get('deploy_path') . '/shared/.env');
+    upload(getenv('DOTENV'), '{{deploy_path}}/shared/.env');
 });
 ```
 

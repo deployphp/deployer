@@ -91,17 +91,19 @@ task('crontab:sync', function () {
         }
     }
 
-    if (test ("[ -f '/tmp/crontab_save' ]")) {
-        run ("unlink '/tmp/crontab_save'");
+    $tmpCrontabPath = \sprintf('/tmp/%s', \uniqid('crontab_save_'));
+
+    if (test("[ -f '$tmpCrontabPath' ]")) {
+        run("unlink '$tmpCrontabPath'");
     }
 
     foreach ($cronJobs as $cronJob) {
         $jobString = $cronJob['minute'] . ' ' . $cronJob['hour'] . ' ' . $cronJob['day'] . ' ' . $cronJob['month'] . ' ' . $cronJob['weekday'] . ' ' . $cronJob['cmd'];
-        run ("echo '" . $jobString . "' >> '/tmp/crontab_save'");
+        run("echo '" . $jobString . "' >> $tmpCrontabPath");
     }
 
-    run ("{{bin/crontab}} /tmp/crontab_save");
-    run ('unlink /tmp/crontab_save');
+    run('{{bin/crontab}} ' . $tmpCrontabPath);
+    run('unlink ' . $tmpCrontabPath);
 });
 
 

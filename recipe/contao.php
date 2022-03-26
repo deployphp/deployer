@@ -37,7 +37,7 @@ set('contao_version', function () {
 // This task updates the database. A database backup is saved automatically as a default.
 desc('Run Contao migrations');
 task('contao:migrate', function () {
-    run('{{bin/php}} {{bin/console}} contao:migrate {{console_options}}');
+    run('{{bin/php}} {{bin/console}} contao:migrate --with-deletes {{console_options}}');
 });
 
 // Downloads the `contao-manager.phar.php` into the public path.

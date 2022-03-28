@@ -41,13 +41,11 @@ Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfon
 ## Tasks
 
 ### contao:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L39)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L47)
 
 Run Contao migrations.
 
 This task updates the database. A database backup is saved automatically as a default.
-
-#### --with-deletes
 
 To automatically drop the obsolete database structures, you can override the task as follows:
 
@@ -59,7 +57,7 @@ task('contao:migrate', function () {
 
 
 ### contao:manager:download
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L53)
 
 Download the Contao Manager.
 
@@ -67,7 +65,7 @@ Downloads the `contao-manager.phar.php` into the public path.
 
 
 ### contao:install:lock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L51)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L59)
 
 Lock the Contao Install Tool.
 
@@ -75,7 +73,7 @@ Locks the Contao install tool which is useful if you don't use it.
 
 
 ### contao:manager:lock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L57)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L65)
 
 Lock the Contao Manager.
 
@@ -83,7 +81,7 @@ Locks the Contao Manager which is useful if you only need the API of the Manager
 
 
 ### contao:maintenance:enable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L63)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L71)
 
 Enable maintenance mode.
 
@@ -91,7 +89,7 @@ Enable maintenance mode.
 
 
 ### contao:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L86)
 
 Disable maintenance mode.
 
@@ -99,7 +97,7 @@ Disable maintenance mode.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L90)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L98)
 
 Deploy the project.
 

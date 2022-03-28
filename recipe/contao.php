@@ -35,6 +35,14 @@ set('contao_version', function () {
 });
 
 // This task updates the database. A database backup is saved automatically as a default.
+//
+// To automatically drop the obsolete database structures, you can override the task as follows:
+//
+// ```php
+// task('contao:migrate', function () {
+//     run('{{bin/php}} {{bin/console}} contao:migrate --with-deletes {{console_options}}');
+// });
+// ```
 desc('Run Contao migrations');
 task('contao:migrate', function () {
     run('{{bin/php}} {{bin/console}} contao:migrate {{console_options}}');

@@ -47,6 +47,16 @@ Run Contao migrations.
 
 This task updates the database. A database backup is saved automatically as a default.
 
+#### --with-deletes
+
+To automatically drop the obsolete database structures, you can override the task as follows:
+
+```php
+task('contao:migrate', function () {
+    run('{{bin/php}} {{bin/console}} contao:migrate --with-deletes {{console_options}}');
+});
+```
+
 
 ### contao:manager:download
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L45)

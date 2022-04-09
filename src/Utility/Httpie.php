@@ -73,49 +73,44 @@ class Httpie
 
     public function query(array $params): Httpie
     {
-        $http = clone $this;
-        $http->url .= '?' . http_build_query($params);
-        return $http;
+        $this->url .= '?' . http_build_query($params);
+        return $this;
     }
 
     public function header(string $header, string $value): Httpie
     {
-        $http = clone $this;
-        $http->headers[$header] = $value;
-        return $http;
+        $this->headers[$header] = $value;
+        return $this;
     }
 
     public function body(string $body): Httpie
     {
-        $http = clone $this;
-        $http->body = $body;
-        $http->headers = array_merge($http->headers, [
+        $this->body = $body;
+        $this->headers = array_merge($http->headers, [
             'Content-Type' => 'application/json',
             'Content-Length' => strlen($http->body),
         ]);
-        return $http;
+        return $this;
     }
 
     public function jsonBody(array $data): Httpie
     {
-        $http = clone $this;
-        $http->body = json_encode($data, JSON_PRETTY_PRINT);
-        $http->headers = array_merge($http->headers, [
+        $this->body = json_encode($data, JSON_PRETTY_PRINT);
+        $this->headers = array_merge($http->headers, [
             'Content-Type' => 'application/json',
             'Content-Length' => strlen($http->body),
         ]);
-        return $http;
+        return $this;
     }
 
     public function formBody(array $data): Httpie
     {
-        $http = clone $this;
-        $http->body = http_build_query($data);
-        $http->headers = array_merge($this->headers, [
+        $this->body = http_build_query($data);
+        $this->headers = array_merge($this->headers, [
             'Content-type' => 'application/x-www-form-urlencoded',
             'Content-Length' => strlen($http->body),
         ]);
-        return $http;
+        return $this;
     }
 
     /**
@@ -123,16 +118,14 @@ class Httpie
      */
     public function setopt(int $key, $value): Httpie
     {
-        $http = clone $this;
-        $http->curlopts[$key] = $value;
-        return $http;
+        $this->curlopts[$key] = $value;
+        return $this;
     }
 
     public function nothrow(bool $on = true): Httpie
     {
-        $http = clone $this;
-        $http->nothrow = $on;
-        return $http;
+        $this->nothrow = $on;
+        return $this;
     }
 
     public function send(?array &$info = null): string

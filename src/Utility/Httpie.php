@@ -49,28 +49,27 @@ class Httpie
 
     public static function get(string $url): Httpie
     {
-        $http = new self;
-        $http->method = 'GET';
-        $http->url = $url;
-        return $http;
+        return self::request('GET', $url);
     }
 
     public static function post(string $url): Httpie
     {
-        $http = new self;
-        $http->method = 'POST';
-        $http->url = $url;
-        return $http;
+        return self::request('POST', $url);
     }
     
     public static function patch(string $url): Httpie
     {
+        return self::request('PATCH', $url);
+    }
+
+    public static function request(string $method, string $url): Httpie
+    {
         $http = new self;
-        $http->method = 'PATCH';
+        $http->method = $method;
         $http->url = $url;
         return $http;
     }
-
+    
     public function query(array $params): Httpie
     {
         $http = clone $this;

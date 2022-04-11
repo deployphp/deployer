@@ -98,13 +98,7 @@ class Httpie
 
     public function jsonBody(array $data): Httpie
     {
-        $http = clone $this;
-        $http->body = json_encode($data, JSON_PRETTY_PRINT);
-        $http->headers = array_merge($http->headers, [
-            'Content-Type' => 'application/json',
-            'Content-Length' => strlen($http->body),
-        ]);
-        return $http;
+        return $this->body(json_encode($data, JSON_PRETTY_PRINT));
     }
 
     public function formBody(array $data): Httpie

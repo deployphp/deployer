@@ -85,12 +85,12 @@ class Httpie
         return $http;
     }
 
-    public function body(string $body): Httpie
+    public function body(string $body, string $type = 'application/json'): Httpie
     {
         $http = clone $this;
         $http->body = $body;
         $http->headers = array_merge($http->headers, [
-            'Content-Type' => 'application/json',
+            'Content-Type' => $type,
             'Content-Length' => strlen($http->body),
         ]);
         return $http;

@@ -53,7 +53,7 @@ class Rsync
         ];
         $config = array_merge($defaults, $config);
 
-        $options = $config['options'] ?? [];
+        $options = $config['options'];
         $flags = $config['flags'];
         $displayStats = $config['display_stats'] || in_array('--stats', $options, true);
 

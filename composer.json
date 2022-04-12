@@ -44,6 +44,7 @@
         "php": "^8.0|^7.3",
         "ext-json": "*",
         "justinrainbow/json-schema": "^5.2",
+        "psr/container": "^2.0",
         "psr/http-message": "^1",
         "react/http": "^1.5",
         "symfony/console": "^5|^6",

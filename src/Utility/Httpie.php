@@ -37,7 +37,7 @@ class Httpie
      */
     private $nothrow = false;
 
-    public function __construct()
+    private function __construct()
     {
         if (!extension_loaded('curl')) {
             throw new \Exception(

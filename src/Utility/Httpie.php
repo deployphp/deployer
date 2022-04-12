@@ -175,6 +175,7 @@ class Httpie
      */
     public function getJson()
     {
+        $this->headers['Accept'] = 'application/json';
         $result = $this->send();
         $response = json_decode($result, true);
         if (json_last_error() !== JSON_ERROR_NONE) {

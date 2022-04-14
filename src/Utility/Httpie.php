@@ -101,7 +101,7 @@ class Httpie
 
     public function jsonBody(array $data): Httpie
     {
-        return $this->body(json_encode($data, JSON_PRETTY_PRINT));
+        return $this->body(json_encode($data));
     }
 
     public function formBody(array $data): Httpie

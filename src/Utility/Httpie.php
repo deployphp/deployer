@@ -135,7 +135,7 @@ class Httpie
         return $http;
     }
 
-    private function joinHeaders()
+    private function joinHeaders(): array
     {
         $headers = [];
         foreach ($this->headers as $key => $value) {

@@ -93,9 +93,7 @@ class Httpie
     {
         $http = clone $this;
         $http->body = $body;
-        $http->headers = array_merge($http->headers, [
-            'Content-Type' => 'application/json',
-        ]);
+        $http->headers['Content-Type'] = 'application/json';
         return $http;
     }
 
@@ -108,9 +106,7 @@ class Httpie
     {
         $http = clone $this;
         $http->body = http_build_query($data);
-        $http->headers = array_merge($this->headers, [
-            'Content-type' => 'application/x-www-form-urlencoded',
-        ]);
+        $http->headers['Content-Type'] = 'application/x-www-form-urlencoded';
         return $http;
     }
 

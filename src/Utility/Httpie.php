@@ -138,20 +138,26 @@ class Httpie
 
     public function send(?array &$info = null): string
     {
-        $ch = curl_init($this->url);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->joinHeaders());
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_MAXREDIRS, 10);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        foreach ($this->curlopts as $key => $value) {
-            curl_setopt($ch, $key, $value);
+        $options = [
+            CURLOPT_USERAGENT      => 'Deployer ' . DEPLOYER_VERSION,
+            CURLOPT_CUSTOMREQUEST  => $this->method,
+            CURLOPT_HTTPHEADER     => $this->joinHeaders(),
+            CURLOPT_POSTFIELDS     => $this->body,
+            CURLOPT_ENCODING       => '',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 10,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_TIMEOUT        => 5
+        ];
+
+        if ($this->curlopts) {
+            $options = $this->curlopts + $options;
         }
+
+        $ch = curl_init($this->url);
+        curl_setopt_array($ch, $options);
+
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);
         if ($result === false) {

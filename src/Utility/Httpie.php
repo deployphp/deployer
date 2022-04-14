@@ -91,7 +91,6 @@ class Httpie
         $http->body = $body;
         $http->headers = array_merge($http->headers, [
             'Content-Type' => 'application/json',
-            'Content-Length' => strlen($http->body),
         ]);
         return $http;
     }
@@ -107,7 +106,6 @@ class Httpie
         $http->body = http_build_query($data);
         $http->headers = array_merge($this->headers, [
             'Content-type' => 'application/x-www-form-urlencoded',
-            'Content-Length' => strlen($http->body),
         ]);
         return $http;
     }

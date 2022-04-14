@@ -135,16 +135,21 @@ class Httpie
         return $http;
     }
 
+    private function joinHeaders(): array
+    {
+        $headers = [];
+        foreach ($this->headers as $key => $value) {
+            $headers[] = "$key: $value";
+        }
+        return $headers;
+    }
+
     public function send(?array &$info = null): string
     {
         $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
-        $headers = [];
-        foreach ($this->headers as $key => $value) {
-            $headers[] = "$key: $value";
-        }
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->joinHeaders());
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);

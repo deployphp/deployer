@@ -145,6 +145,7 @@ class Httpie
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $this->joinHeaders());
         curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
+        curl_setopt($ch, CURLOPT_ENCODING, '');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 10);

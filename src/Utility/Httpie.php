@@ -29,9 +29,9 @@ class Httpie
      */
     private $headers = [];
     /**
-     * @var string
+     * @var string|null
      */
-    private $body = '';
+    private $body;
     /**
      * @var array
      */
@@ -146,7 +146,6 @@ class Httpie
             CURLOPT_USERAGENT      => 'Deployer ' . DEPLOYER_VERSION,
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->joinHeaders(),
-            CURLOPT_POSTFIELDS     => $this->body,
             CURLOPT_ENCODING       => '',
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_FOLLOWLOCATION => true,
@@ -154,6 +153,11 @@ class Httpie
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_TIMEOUT        => 5
         ];
+
+
+        if (isset($this->body)) {
+            $options[CURLOPT_POSTFIELDS] = $this->body;
+        }
 
         if ($this->curlopts) {
             $options = $this->curlopts + $options;

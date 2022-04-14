@@ -21,6 +21,10 @@ class Httpie
      */
     private $url = '';
     /**
+     * @var string
+     */
+    private $query = '';
+    /**
      * @var array
      */
     private $headers = [];
@@ -74,7 +78,7 @@ class Httpie
     public function query(array $params): Httpie
     {
         $http = clone $this;
-        $http->url .= '?' . http_build_query($params);
+        $http->query = '?' . http_build_query($params);
         return $http;
     }
 
@@ -155,7 +159,7 @@ class Httpie
             $options = $this->curlopts + $options;
         }
 
-        $ch = curl_init($this->url);
+        $ch = curl_init($this->url.$this->query);
         curl_setopt_array($ch, $options);
 
         $result = curl_exec($ch);

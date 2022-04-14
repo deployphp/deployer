@@ -188,11 +188,10 @@ class Httpie
     public function getJson()
     {
         $this->headers['Accept'] = 'application/json';
-        $result = $this->send();
-        $response = json_decode($result, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new HttpieException('JSON Error: ' . json_last_error_msg());
+        try {
+            return json_decode($this->send(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (\JsonException $e) {
+            throw new HttpieException('JSON Error: ' . $e->getMessage());
         }
-        return $response;
     }
 }

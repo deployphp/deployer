@@ -41,7 +41,7 @@ class Httpie
      */
     private $nothrow = false;
 
-    private function __construct()
+    private function __construct(string $method, string $url)
     {
         if (!extension_loaded('curl')) {
             throw new \Exception(
@@ -49,6 +49,9 @@ class Httpie
                 "https://goo.gl/yTAeZh"
             );
         }
+
+        $this->method = $method;
+        $this->url = $url;
     }
 
     public static function get(string $url): Httpie
@@ -68,10 +71,7 @@ class Httpie
 
     public static function request(string $method, string $url): Httpie
     {
-        $http = new self;
-        $http->method = $method;
-        $http->url = $url;
-        return $http;
+        return new self($method , $url);
     }
     
     public function query(array $params): Httpie

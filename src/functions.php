@@ -930,20 +930,12 @@ function timestamp(): string
  * var_dump($info['http_code'], $result);
  * ```
  */
-function fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
+function fetch(string $url, string $method = 'GET', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
 {
-    $url = parse($url);
-    if (strtolower($method) === 'get') {
-        $http = Httpie::get($url);
-    } elseif (strtolower($method) === 'post') {
-        $http = Httpie::post($url);
-    } else {
-        throw new \InvalidArgumentException("Unknown method \"$method\".");
-    }
+    $http = Httpie::request(\strtoupper($method), parse($url), $headers);
+
     $http = $http->nothrow($nothrow);
-    foreach ($headers as $key => $value) {
-        $http = $http->header($key, $value);
-    }
+
     if ($body !== null) {
         $http = $http->body($body);
     }

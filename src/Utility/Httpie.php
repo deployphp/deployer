@@ -98,7 +98,11 @@ class Httpie
 
     public function jsonBody(array $data): Httpie
     {
-        return $this->body(json_encode($data));
+        try {
+            return $this->body(json_encode($data, JSON_THROW_ON_ERROR));
+        } catch (\JsonException $e) {
+            throw new HttpieException('JSON Encode Error: ' . $e->getMessage());
+        }
     }
 
     public function formBody(array $data): Httpie
@@ -186,7 +190,7 @@ class Httpie
         try {
             return json_decode($this->send(), true, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
-            throw new HttpieException('JSON Error: ' . $e->getMessage());
+            throw new HttpieException('JSON Decode Error: ' . $e->getMessage());
         }
     }
 }

@@ -107,9 +107,10 @@ Alternatively get a defined task.
 
 
 
-Arguments:
-- **name** `string` — Name of current task.
-- **body** `callable():void|array|null` — Callable task, array of other tasks names or nothing to get a defined tasks
+| Argument | Type | Comment |
+|---|---|---|
+| `$name` | `string` | Name of current task. |
+| `$body` | `callable():void` or `array` or `null` | Callable task, array of other tasks names or nothing to get a defined tasks |
 
 ## before()
 
@@ -122,9 +123,10 @@ Call that task before specified task runs.
 
 
 
-Arguments:
-- **task** `string` — The task before $that should be run.
-- **do** `string|callable():void` — The task to be run.
+| Argument | Type | Comment |
+|---|---|---|
+| `$task` | `string` | The task before $that should be run. |
+| `$do` | `string` or `callable():void` | The task to be run. |
 
 ## after()
 
@@ -137,9 +139,10 @@ Call that task after specified task runs.
 
 
 
-Arguments:
-- **task** `string` — The task after $that should be run.
-- **do** `string|callable():void` — The task to be run.
+| Argument | Type | Comment |
+|---|---|---|
+| `$task` | `string` | The task after $that should be run. |
+| `$do` | `string` or `callable():void` | The task to be run. |
 
 ## fail()
 
@@ -153,9 +156,10 @@ When called multiple times for a task, previous fail() definitions will be overr
 
 
 
-Arguments:
-- **task** `string` — The task which need to fail so $that should be run.
-- **do** `string|callable():void` — The task to be run.
+| Argument | Type | Comment |
+|---|---|---|
+| `$task` | `string` | The task which need to fail so $that should be run. |
+| `$do` | `string` or `callable():void` | The task to be run. |
 
 ## option()
 
@@ -167,12 +171,13 @@ Add users options.
 
 
 
-Arguments:
-- **name** `string` — The option name
-- **shortcut** `string|array|null` — The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-- **mode** `int|null` — The option mode: One of the VALUE_* constants
-- **description** `string` — A description text
-- **default** `string|string[]|int|bool|null` — The default value (must be null for self::VALUE_NONE)
+| Argument | Type | Comment |
+|---|---|---|
+| `$name` | `string` | The option name |
+| `$shortcut` | `string` or `array` or `null` | The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts |
+| `$mode` | `int` or `null` | The option mode: One of the VALUE_* constants |
+| `$description` | `string` | A description text |
+| `$default` | `string` or `string[]` or `int` or `bool` or `null` | The default value (must be null for self::VALUE_NONE) |
 
 ## cd()
 
@@ -218,15 +223,16 @@ run("echo $path");
 
 
 
-Arguments:
-- **command** `string` — Command to run on remote host.
-- **options** `array|null` — Array of options will override passed named arguments.
-- **timeout** `int|null` — Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
-- **idle_timeout** `int|null` — Sets the process idle timeout (max. time since last output) in seconds.
-- **secret** `string|null` — Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- **env** `array|null` — Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
-- **real_time_output** `bool|null` — Print command output in real-time.
-- **no_throw** `bool|null` — Don't throw an exception of non-zero exit code.
+| Argument | Type | Comment |
+|---|---|---|
+| `$command` | `string` | Command to run on remote host. |
+| `$options` | `array` or `null` | Array of options will override passed named arguments. |
+| `$timeout` | `int` or `null` | Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable). |
+| `$idle_timeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
+| `$secret` | `string` or `null` | Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs. |
+| `$env` | `array` or `null` | Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);` |
+| `$real_time_output` | `bool` or `null` | Print command output in real-time. |
+| `$no_throw` | `bool` or `null` | Don't throw an exception of non-zero exit code. |
 
 ## runLocally()
 
@@ -246,14 +252,15 @@ runLocally("echo $user");
 
 
 
-Arguments:
-- **command** `string` — Command to run on localhost.
-- **options** `array|null` — Array of options will override passed named arguments.
-- **timeout** `int|null` — Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
-- **idle_timeout** `int|null` — Sets the process idle timeout (max. time since last output) in seconds.
-- **secret** `string|null` — Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
-- **env** `array|null` — Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
-- **shell** `string|null` — Shell to run in. Default is `bash -s`.
+| Argument | Type | Comment |
+|---|---|---|
+| `$command` | `string` | Command to run on localhost. |
+| `$options` | `array` or `null` | Array of options will override passed named arguments. |
+| `$timeout` | `int` or `null` | Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable). |
+| `$idle_timeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
+| `$secret` | `string` or `null` | Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs. |
+| `$env` | `array` or `null` | Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);` |
+| `$shell` | `string` or `null` | Shell to run in. Default is `bash -s`. |
 
 ## test()
 

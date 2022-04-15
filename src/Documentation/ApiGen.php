@@ -52,10 +52,13 @@ class ApiGen
                     }
                     if (preg_match('/^\s\*\s@param\s(?<type>.+?)\$(?<name>.+?)\s(?<comment>.+)$/', $line, $matches)) {
                         if (empty($params)) {
-                            $params = "Arguments:\n";
+                            $params = "| Argument | Type | Comment |\n|---|---|---|\n";
                         }
-                        $type = trim($matches['type'], ' ');
-                        $params .= "- **{$matches['name']}** `{$type}` — {$matches['comment']}\n";
+                        $type = implode(' or ', array_map(function ($t) {
+                            $t = trim($t, ' ');
+                            return "`$t`";
+                        }, explode('|', $matches['type'])));
+                        $params .= "| `\${$matches['name']}` | $type | {$matches['comment']} |\n";
                         break;
                     }
                     if (str_starts_with($line, ' * @')) {

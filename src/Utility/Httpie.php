@@ -15,7 +15,7 @@ class Httpie
     /**
      * @var string
      */
-    private $method = 'GET';
+    private $method = '';
     /**
      * @var string
      */
@@ -72,7 +72,7 @@ class Httpie
 
     public static function request(string $method, string $url, array $headers= []): Httpie
     {
-        return new self($method , $url, $headers);
+        return new self($method, $url, $headers);
     }
     
     public function query(array $params): Httpie
@@ -150,7 +150,6 @@ class Httpie
             CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_TIMEOUT        => 5
         ];
-
 
         if (isset($this->body)) {
             $options[CURLOPT_POSTFIELDS] = $this->body;

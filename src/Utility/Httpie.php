@@ -41,7 +41,7 @@ class Httpie
      */
     private $nothrow = false;
 
-    private function __construct(string $method, string $url)
+    private function __construct(string $method, string $url, array $headers = [])
     {
         if (!extension_loaded('curl')) {
             throw new \Exception(
@@ -52,6 +52,7 @@ class Httpie
 
         $this->method = $method;
         $this->url = $url;
+        $this->headers = $headers;
     }
 
     public static function get(string $url): Httpie
@@ -69,9 +70,9 @@ class Httpie
         return self::request('PATCH', $url);
     }
 
-    public static function request(string $method, string $url): Httpie
+    public static function request(string $method, string $url, array $headers= []): Httpie
     {
-        return new self($method , $url);
+        return new self($method , $url, $headers);
     }
     
     public function query(array $params): Httpie

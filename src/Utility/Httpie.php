@@ -107,10 +107,7 @@ class Httpie
 
     public function formBody(array $data): Httpie
     {
-        $http = clone $this;
-        $http->body = http_build_query($data);
-        $http->headers['Content-Type'] = 'application/x-www-form-urlencoded';
-        return $http;
+        return $this->body(\http_build_query($data), 'application/x-www-form-urlencoded');
     }
 
     /**

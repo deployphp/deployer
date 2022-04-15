@@ -70,7 +70,7 @@ class Httpie
         return self::request('PATCH', $url);
     }
 
-    public static function request(string $method, string $url, array $headers= []): Httpie
+    public static function request(string $method, string $url, array $headers = []): Httpie
     {
         return new self($method, $url, $headers);
     }
@@ -181,11 +181,11 @@ class Httpie
     /**
      * @return mixed
      */
-    public function getJson()
+    public function getJson(bool $associative = true)
     {
         $this->headers['Accept'] = 'application/json';
         try {
-            return json_decode($this->send(), true, 512, JSON_THROW_ON_ERROR);
+            return json_decode($this->send(), $associative, 512, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             throw new HttpieException('JSON Decode Error: ' . $e->getMessage());
         }

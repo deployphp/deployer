@@ -141,6 +141,7 @@ class Httpie
     {
         $options = [
             CURLOPT_USERAGENT      => 'Deployer ' . DEPLOYER_VERSION,
+            CURLOPT_URL            => $this->url.$this->query,
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->joinHeaders(),
             CURLOPT_ENCODING       => '',
@@ -164,7 +165,7 @@ class Httpie
 
     public function send(?array &$info = null): string
     {
-        $ch = curl_init($this->url.$this->query);
+        $ch = curl_init();
         curl_setopt_array($ch, $this->getOptions());
 
         $result = curl_exec($ch);

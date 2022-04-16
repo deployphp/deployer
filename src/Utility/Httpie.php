@@ -141,7 +141,7 @@ class Httpie
     {
         $options = [
             CURLOPT_USERAGENT      => 'Deployer ' . DEPLOYER_VERSION,
-            CURLOPT_URL            => $this->url.$this->query,
+            CURLOPT_URL            => $this->url . $this->query,
             CURLOPT_CUSTOMREQUEST  => $this->method,
             CURLOPT_HTTPHEADER     => $this->joinHeaders(),
             CURLOPT_ENCODING       => '',

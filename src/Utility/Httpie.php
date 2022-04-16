@@ -137,7 +137,7 @@ class Httpie
         return $headers;
     }
 
-    public function send(?array &$info = null): string
+    private function getOptions(): array
     {
         $options = [
             CURLOPT_USERAGENT      => 'Deployer ' . DEPLOYER_VERSION,
@@ -159,8 +159,13 @@ class Httpie
             $options = $this->curlopts + $options;
         }
 
+        return $options;
+    }
+
+    public function send(?array &$info = null): string
+    {
         $ch = curl_init($this->url.$this->query);
-        curl_setopt_array($ch, $options);
+        curl_setopt_array($ch, $this->getOptions());
 
         $result = curl_exec($ch);
         $info = curl_getinfo($ch);

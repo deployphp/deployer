@@ -63,7 +63,7 @@ Clean up unfinished releases and prepare next release
 
 
 ### releases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L149)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L148)
 
 Shows releases list.
 

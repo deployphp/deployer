@@ -84,7 +84,6 @@ task('deploy:release', function () {
 
     // Clean up if there is unfinished release.
     if (test('[ -h release ]')) {
-        run('rm -rf "$(readlink release)"'); // Delete release.
         run('rm release'); // Delete symlink.
     }
 

@@ -26,25 +26,26 @@ task('provision:website', function () {
     run("chgrp caddy log");
 
     $caddyfile = <<<EOF
-$domain
+$domain {
 
-root * $deployPath/current/$publicPath
-file_server
-php_fastcgi * unix//run/php/php$phpVersion-fpm.sock {
-\tresolve_root_symlink
-}
-
-log {
-\toutput file $deployPath/log/access.log
-}
-
-handle_errors {
-\t@404 {
-\t\texpression {http.error.status_code} == 404
+\troot * $deployPath/current/$publicPath
+\tfile_server
+\tphp_fastcgi * unix//run/php/php$phpVersion-fpm.sock {
+\t\tresolve_root_symlink
 \t}
-\trewrite @404 /404.html
-\tfile_server {
-\t\troot /var/dep/html
+
+\tlog {
+\t\toutput file $deployPath/log/access.log
+\t}
+
+\thandle_errors {
+\t\t@404 {
+\t\t\texpression {http.error.status_code} == 404
+\t\t}
+\t\trewrite @404 /404.html
+\t\tfile_server {
+\t\t\troot /var/dep/html
+\t\t}
 \t}
 }
 EOF;

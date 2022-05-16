@@ -117,7 +117,24 @@ For example, `~/myapp`.
 
 ### `labels` 
 
-Key-value pairs for host selector.
+Key-value pairs for host selector. Can be used to define a deployment stage ('acceptation', 'production', etc) or other custom attributes such as 'worker', 'application'. See also https://deployer.org/docs/7.x/UPGRADE#step-1-update-deployphp
+
+For example:
+
+```host('deployer.org')
+    ->set('labels', ['stage' => 'prod', 'role' => 'worker']); 
+```
+
+Selection from the CLI: 
+`dep deploy 'stage=prod & role=worker'`
+
+Selection from a task:
+```
+desc('Restart workers via supervisor');
+task('workers:restart', function () {
+    run("sudo -n supervisorctl restart workers:");
+})->select('roles=workers');
+```
 
 ### `ssh_arguments` 
 

@@ -110,6 +110,7 @@ task('deploy:update_code', function () {
     }
 
     // Save git revision in REVISION file.
-    $rev = escapeshellarg(run("$git rev-list $target -1"));
+    $targetRef = get('target');
+    $rev = escapeshellarg(run("$git rev-list $targetRef -1"));
     run("echo $rev > {{release_path}}/REVISION");
 });

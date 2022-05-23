@@ -72,8 +72,10 @@ task('deploy:update_code', function () {
     $git = get('bin/git');
     $repository = get('repository');
     $target = get('target');
+
+    $targetWithDir = $target;
     if (!empty(get('sub_directory'))) {
-        $target = "$target:{{sub_directory}}";
+        $targetWithDir .= ':{{sub_directory}}';
     }
 
     $bare = parse('{{deploy_path}}/.dep/repo');
@@ -100,7 +102,7 @@ task('deploy:update_code', function () {
 
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
-        run("$git archive $target | tar -x -f - -C {{release_path}} 2>&1");
+        run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
     } else if (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
@@ -110,7 +112,6 @@ task('deploy:update_code', function () {
     }
 
     // Save git revision in REVISION file.
-    $targetRef = get('target');
-    $rev = escapeshellarg(run("$git rev-list $targetRef -1"));
+    $rev = escapeshellarg(run("$git rev-list $target -1"));
     run("echo $rev > {{release_path}}/REVISION");
 });

@@ -84,8 +84,9 @@ task('provision:update', function () {
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 
     // Caddy
-    run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' > /etc/apt/trusted.gpg.d/caddy-stable.asc");
-    run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
+    run("sudo apt install -y debian-keyring debian-archive-keyring apt-transport-https");
+    run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | sudo gpg --no-tty --yes --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg");
+    run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' | sudo tee /etc/apt/sources.list.d/caddy-stable.list");
 
     // Nodejs
     $keyring = '/usr/share/keyrings/nodesource.gpg';

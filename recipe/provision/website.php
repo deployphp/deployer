@@ -67,7 +67,7 @@ EOF;
     }
 
     if (!test("grep -q 'import $deployPath/Caddyfile' /etc/caddy/Caddyfile")) {
-        run("echo 'import $deployPath/Caddyfile' | sudo tee -a /etc/caddy/Caddyfile");
+        run("echo 'import $deployPath/Caddyfile' | tee -a /etc/caddy/Caddyfile");
     }
     run('service caddy reload');
 
@@ -83,4 +83,3 @@ desc('Shows caddy syslog');
 task('logs:caddy:syslog', function () {
     run('sudo journalctl -u caddy -f');
 })->verbose();
-

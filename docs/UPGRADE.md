@@ -5,7 +5,7 @@
 2. Change config `real_hostname` to `hostname`.
 3. Change config `user` to `remote_user`.
 4. Update `host()` definitions:
-    1. Add `set` prefix to all setters: `identityFile` -> `setIdentityFile` or `set('identify_file')`
+    1. Add `set` prefix to all setters: `identityFile` -> `setIdentityFile` or `set('identity_file')`
     2. Update `host(...)->addSshOption('UserKnownHostsFile', '/dev/null')` to `host(...)->setSshArguments(['-o UserKnownHostsFile=/dev/null']);`
     3. Replace _stage_ with labels, i.e.
        ```php

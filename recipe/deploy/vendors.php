@@ -25,8 +25,11 @@ set('bin/composer', function () {
 
 desc('Installs vendors');
 task('deploy:vendors', function () {
+    $options = [
+        'tty' => get('composer_tty', get('git_tty', false)),
+    ];
     if (!commandExist('unzip')) {
         warning('To speed up composer installation setup "unzip" command with PHP zip extension.');
     }
-    run('cd {{release_or_current_path}} && {{bin/composer}} {{composer_action}} {{composer_options}} 2>&1');
+    run('cd {{release_or_current_path}} && {{bin/composer}} {{composer_action}} {{composer_options}} 2>&1', $options);
 });

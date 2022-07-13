@@ -109,7 +109,7 @@ Default is `true`.
 
 ### `shell` 
 
-Default is `bash -ls`.
+Default is `bash -s`.
 
 ### `deploy_path` 
 

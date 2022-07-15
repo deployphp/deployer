@@ -61,6 +61,7 @@
     ```
 11. Replace `local()` tasks with combination of `once()` and `runLocally()` func.
 12. Replace `locateBinaryPath()` with `which()` func.
+13. Configuration property `default_stage` is not supported.
 
 ## Step 2: Deploy
 

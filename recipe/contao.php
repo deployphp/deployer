@@ -27,7 +27,7 @@ add('shared_dirs', [
 ]);
 
 set('bin/console', function () {
-    return '{{release_or_current_path}}/vendor/bin/contao-console';
+    return '{{bin/php}} {{release_or_current_path}}/vendor/bin/contao-console';
 });
 
 set('contao_version', function () {
@@ -45,7 +45,7 @@ set('contao_version', function () {
 // ```
 desc('Run Contao migrations');
 task('contao:migrate', function () {
-    run('{{bin/php}} {{bin/console}} contao:migrate {{console_options}}');
+    run('{{bin/console}} contao:migrate {{console_options}}');
 });
 
 // Downloads the `contao-manager.phar.php` into the public path.
@@ -57,7 +57,7 @@ task('contao:manager:download', function () {
 // Locks the Contao install tool which is useful if you don't use it.
 desc('Lock the Contao Install Tool');
 task('contao:install:lock', function () {
-    run('{{bin/php}} {{bin/console}} contao:install:lock {{console_options}}');
+    run('{{bin/console}} contao:install:lock {{console_options}}');
 });
 
 // Locks the Contao Manager which is useful if you only need the API of the Manager rather than the UI.
@@ -78,7 +78,7 @@ task('contao:maintenance:enable', function () {
         }
 
         cd($path);
-        run('{{bin/php}} {{bin/console}} contao:maintenance-mode enable {{console_options}}');
+        run('{{bin/console}} contao:maintenance-mode enable {{console_options}}');
     }
 });
 
@@ -90,7 +90,7 @@ task('contao:maintenance:disable', function () {
         }
 
         cd($path);
-        run('{{bin/php}} {{bin/console}} contao:maintenance-mode disable {{console_options}}');
+        run('{{bin/console}} contao:maintenance-mode disable {{console_options}}');
     }
 });
 

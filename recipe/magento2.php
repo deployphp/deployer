@@ -59,7 +59,8 @@ set('writable_dirs', [
     'var',
     'pub/static',
     'pub/media',
-    'generated'
+    'generated',
+    'var/page_cache'
 ]);
 set('clear_paths', [
     'generated/*',

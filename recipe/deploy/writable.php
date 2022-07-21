@@ -87,6 +87,13 @@ task('deploy:writable', function () {
         run("$sudo chmod $recursive g+rwx $dirs");
     } elseif ($mode === 'chmod') {
         run("$sudo chmod $recursive {{writable_chmod_mode}} $dirs");
+    } elseif ($mode === 'sticky') {
+        run("for dir in $dirs;".
+            'do '.
+                $sudo.' chgrp -L '.$recursive.' {{http_group}} ${dir}; '.
+                $sudo.' find ${dir} -type d -exec chmod g+rwxs \{\} \;;'.
+                $sudo.' find ${dir} -type f -exec chmod g+rw \{\} \;;'.
+            'done');
     } elseif ($mode === 'acl') {
         $remoteUser = get('remote_user', false);
         if (empty($remoteUser)) {

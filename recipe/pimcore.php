@@ -7,6 +7,8 @@ add('recipes', ['pimcore']);
 
 add('shared_dirs', ['public/var', 'var/email', 'var/recyclebin', 'var/versions']);
 
+add('shared_files', ['config/local/database.yaml']);
+
 add('writable_dirs', ['public/var']);
 
 desc('Rebuilds Pimcore Classes');

@@ -8,14 +8,14 @@ composer require --dev deployer/deployer
 To initialize deployer in you project run:
 
 ```
-vendor/bin/deployer.phar init
+vendor/bin/dep init
 ```
 
 :::tip Bash integration
 Add next alias to your _.bashrc_ file:
 
 ```bash
-alias dep='vendor/bin/deployer.phar'
+alias dep='vendor/bin/dep'
 ```
 
 Deployer comes with autocomplete support for task names, options, and hosts.

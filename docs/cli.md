@@ -3,7 +3,7 @@
 We recommend adding next alias to your .bashrc file:
 
 ```bash
-alias dep='vendor/bin/deployer.phar'
+alias dep='vendor/bin/dep'
 ```
 
 As well as installing completion script for Deployer, completion supports:

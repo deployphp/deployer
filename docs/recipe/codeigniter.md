@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/codeigniter.php -->
 <!-- Then run bin/docgen -->
 
-# codeigniter
+# How to Deploy Codeigniter
 
 [Source](/recipe/codeigniter.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a Codeigniter project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/codeigniter.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Codeigniter** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Also, another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, ssl certificates, and more. 
+You will get everything you need to run your **Codeigniter** application.
+
+The codeigniter recipe is based on [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_dirs

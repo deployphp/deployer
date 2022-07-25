@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/drupal7.php -->
 <!-- Then run bin/docgen -->
 
-# drupal7
+# How to Deploy Drupal 7
 
 [Source](/recipe/drupal7.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a Drupal 7 project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/drupal7.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Drupal 7** project with a single command? Just run `dep deploy`.
+Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another cool feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, https, and more. 
+You will get everything you need to run your **Drupal 7** application.
+
+The drupal7 recipe is based on [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### drupal_site

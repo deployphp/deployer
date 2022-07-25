@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/laravel.php -->
 <!-- Then run bin/docgen -->
 
-# laravel
+# How to Deploy Laravel
 
 [Source](/recipe/laravel.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a Laravel project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/laravel.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Laravel** project with a single command? Just run `dep deploy`.
+Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another cool feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, ssl certificates, and more. 
+You will get everything you need to run your **Laravel** project.
+
+The laravel recipe is based on [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_dirs

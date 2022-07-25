@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/sulu.php -->
 <!-- Then run bin/docgen -->
 
-# sulu
+# How to Deploy Sulu
 
 [Source](/recipe/sulu.php)
 
-* Requires
-  * [symfony](/docs/recipe/symfony.md)
+## How to deploy a Sulu project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/sulu.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Sulu** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another cool feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, https, and more. 
+You will get everything you need to run your **Sulu** project.
+
+The sulu recipe is based on [symfony](/docs/recipe/symfony.md) recipe.
 
 ## Configuration
 ### bin/websiteconsole

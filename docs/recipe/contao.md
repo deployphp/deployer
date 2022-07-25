@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/contao.php -->
 <!-- Then run bin/docgen -->
 
-# contao
+# How to Deploy Contao
 
 [Source](/recipe/contao.php)
 
-* Requires
-  * [symfony](/docs/recipe/symfony.md)
+## How to deploy a Contao project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/contao.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Contao** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, ssl certificates, and more. 
+You will get everything you need to run your **Contao** application.
+
+The contao recipe is based on [symfony](/docs/recipe/symfony.md) recipe.
 
 ## Configuration
 ### public_path

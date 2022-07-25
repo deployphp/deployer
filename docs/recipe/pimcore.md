@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/pimcore.php -->
 <!-- Then run bin/docgen -->
 
-# pimcore
+# How to Deploy Pimcore
 
 [Source](/recipe/pimcore.php)
 
-* Requires
-  * [symfony](/docs/recipe/symfony.md)
+## How to deploy a Pimcore project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/pimcore.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Pimcore** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, https, and more. 
+You will get everything you need to run your **Pimcore** project.
+
+The pimcore recipe is based on [symfony](/docs/recipe/symfony.md) recipe.
 
 
 ## Tasks

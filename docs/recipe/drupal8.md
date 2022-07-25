@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/drupal8.php -->
 <!-- Then run bin/docgen -->
 
-# drupal8
+# How to Deploy Drupal 8
 
 [Source](/recipe/drupal8.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a Drupal 8 project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/drupal8.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Drupal 8** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another cool feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, ssl certificates, and more. 
+You will get everything you need to run your **Drupal 8** application.
+
+The drupal8 recipe is based on [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### drupal_site

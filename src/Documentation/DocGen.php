@@ -12,6 +12,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
+use function Deployer\Support\str_contains as str_contains;
 
 class DocGen
 {
@@ -126,18 +127,60 @@ class DocGen
                 return null;
             };
 
-
             $filePath = "$destination/" . php_to_md($recipe->recipePath);
+            $frameworkRecipe =
+                preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
+                !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
+
+            $brandName = $recipe->recipeName;
+            if ($frameworkRecipe) {
+                $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
+                $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
+                $brandName = preg_replace('/_/', ' ', $brandName);
+                $brandName = preg_replace('/framework/', 'Framework', $brandName);
+                $brandName = ucfirst($brandName);
+                $title = 'How to Deploy ' . $brandName;
+            } else {
+                $title = $recipe->recipeName;
+            }
 
             $intro = '';
             $config = '';
             $tasks = '';
+
+            if ($frameworkRecipe) {
+                srand(crc32($brandName));
+                $application = ['application', 'project'][rand(0, 1)];
+                $https = ['https', 'ssl certificates'][rand(0, 1)];
+                $justRun = ['Just run', 'Just execute'][rand(0, 1)];
+                $advantage = ['advantage', 'advantages'][rand(0, 1)];
+                $another = ['Another', 'Another cool', 'Also, another'][rand(0, 2)];
+                $intro .= <<<MD
+## How to deploy a $brandName project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `$recipe->recipePath` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **$brandName** project with a single command? $justRun `dep deploy`.
+Also, you can take an $advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+$another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, $https, and more. 
+You will get everything you need to run your **$brandName** $application.
+MD . "\n\n";
+
+            }
             if (count($recipe->require) > 0) {
-                $intro .= "* Requires\n";
-                foreach ($recipe->require as $r) {
-                    $md = php_to_md($r);
-                    $basename = basename($r, '.php');
-                    $intro .= "  * [{$basename}](/docs/{$md})\n";
+                if ($frameworkRecipe) {
+                    $link = recipe_to_md_link($recipe->require[0]);
+                    $intro .= "The $recipe->recipeName recipe is based on $link recipe.\n";
+                } else {
+                    $intro .= "* Requires\n";
+                    foreach ($recipe->require as $r) {
+                        $link = recipe_to_md_link($r);
+                        $intro .= "  * {$link}\n";
+                    }
                 }
             }
             if (!empty($recipe->comment)) {
@@ -201,7 +244,7 @@ class DocGen
 <!-- Instead edit $recipe->recipePath -->
 <!-- Then run bin/docgen -->
 
-# $recipe->recipeName
+# $title
 
 [Source](/$recipe->recipePath)
 
@@ -256,4 +299,11 @@ function add_tailing_dot(string $sentence): string
         return $sentence;
     }
     return $sentence . '.';
+}
+
+function recipe_to_md_link(string $recipe): string
+{
+    $md = php_to_md($recipe);
+    $basename = basename($recipe, '.php');
+    return "[$basename](/docs/$md)";
 }

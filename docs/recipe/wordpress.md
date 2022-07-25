@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/wordpress.php -->
 <!-- Then run bin/docgen -->
 
-# wordpress
+# How to Deploy Wordpress
 
 [Source](/recipe/wordpress.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a Wordpress project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/wordpress.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Wordpress** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another cool feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, https, and more. 
+You will get everything you need to run your **Wordpress** application.
+
+The wordpress recipe is based on [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_files

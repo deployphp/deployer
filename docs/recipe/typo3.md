@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/typo3.php -->
 <!-- Then run bin/docgen -->
 
-# typo3
+# How to Deploy TYPO3
 
 [Source](/recipe/typo3.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a TYPO3 project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/typo3.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **TYPO3** project with a single command? Just run `dep deploy`.
+Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Also, another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, https, and more. 
+You will get everything you need to run your **TYPO3** application.
+
+The typo3 recipe is based on [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### typo3_webroot

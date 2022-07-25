@@ -2,12 +2,24 @@
 <!-- Instead edit recipe/zend_framework.php -->
 <!-- Then run bin/docgen -->
 
-# zend_framework
+# How to Deploy Zend Framework
 
 [Source](/recipe/zend_framework.php)
 
-* Requires
-  * [common](/docs/recipe/common.md)
+## How to deploy a Zend Framework project with zero downtime?
+
+First, [install](/docs/installation.md) the Deployer. 
+Second, require `recipe/zend_framework.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+Third, run `dep deploy` command.
+
+Did you know that you can deploy **Zend Framework** project with a single command? Just execute `dep deploy`.
+Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+
+Another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+This command will configure webserver, databases, php, ssl certificates, and more. 
+You will get everything you need to run your **Zend Framework** project.
+
+The zend_framework recipe is based on [common](/docs/recipe/common.md) recipe.
 
 
 ## Tasks

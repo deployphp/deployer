@@ -8,18 +8,19 @@
 
 ## How to deploy a Magento 2 project with zero downtime?
 
-First, [install](/docs/installation.md) the Deployer. 
-Second, require `recipe/magento2.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
-Third, run `dep deploy` command.
+- First, [install](/docs/installation.md) the Deployer. 
+- Second, require `recipe/magento2.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+- Third, now you can have a zero downtime deployment!
 
 Did you know that you can deploy **Magento 2** project with a single command? Just execute `dep deploy`.
+Something went wrong? Just run `dep rollback` to rollback your changes.
 Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
 
-Another cool feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+Another cool feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
 This command will configure webserver, databases, php, https, and more. 
 You will get everything you need to run your **Magento 2** application.
 
-The magento2 recipe is based on [common](/docs/recipe/common.md) recipe.
+The magento2 recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### static_content_locales

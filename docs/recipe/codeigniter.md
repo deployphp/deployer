@@ -8,18 +8,19 @@
 
 ## How to deploy a Codeigniter project with zero downtime?
 
-First, [install](/docs/installation.md) the Deployer. 
-Second, require `recipe/codeigniter.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
-Third, run `dep deploy` command.
+- First, [install](/docs/installation.md) the Deployer. 
+- Second, require `recipe/codeigniter.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+- Third, and now you can have a zero downtime deployment!
 
 Did you know that you can deploy **Codeigniter** project with a single command? Just execute `dep deploy`.
+Something went wrong? Just run `dep rollback` to rollback your changes.
 Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
 
-Also, another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+Also, another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
 This command will configure webserver, databases, php, ssl certificates, and more. 
 You will get everything you need to run your **Codeigniter** application.
 
-The codeigniter recipe is based on [common](/docs/recipe/common.md) recipe.
+The codeigniter recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_dirs

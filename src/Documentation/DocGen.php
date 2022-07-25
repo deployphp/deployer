@@ -155,17 +155,19 @@ class DocGen
                 $justRun = ['Just run', 'Just execute'][rand(0, 1)];
                 $advantage = ['advantage', 'advantages'][rand(0, 1)];
                 $another = ['Another', 'Another cool', 'Also, another'][rand(0, 2)];
+                $now = ['now', 'and now'][rand(0, 1)];
                 $intro .= <<<MD
 ## How to deploy a $brandName project with zero downtime?
 
-First, [install](/docs/installation.md) the Deployer. 
-Second, require `$recipe->recipePath` recipe into your _deploy.php_ or _deploy.yaml_ file.
-Third, run `dep deploy` command.
+- First, [install](/docs/installation.md) the Deployer. 
+- Second, require `$recipe->recipePath` recipe into your _deploy.php_ or _deploy.yaml_ file.
+- Third, $now you can have a zero downtime deployment!
 
 Did you know that you can deploy **$brandName** project with a single command? $justRun `dep deploy`.
+Something went wrong? Just run `dep rollback` to rollback your changes.
 Also, you can take an $advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
 
-$another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+$another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
 This command will configure webserver, databases, php, $https, and more. 
 You will get everything you need to run your **$brandName** $application.
 MD . "\n\n";
@@ -174,7 +176,7 @@ MD . "\n\n";
             if (count($recipe->require) > 0) {
                 if ($frameworkRecipe) {
                     $link = recipe_to_md_link($recipe->require[0]);
-                    $intro .= "The $recipe->recipeName recipe is based on $link recipe.\n";
+                    $intro .= "The $recipe->recipeName recipe is based on the $link recipe.\n";
                 } else {
                     $intro .= "* Requires\n";
                     foreach ($recipe->require as $r) {

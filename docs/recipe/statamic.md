@@ -8,18 +8,19 @@
 
 ## How to deploy a Statamic project with zero downtime?
 
-First, [install](/docs/installation.md) the Deployer. 
-Second, require `recipe/statamic.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
-Third, run `dep deploy` command.
+- First, [install](/docs/installation.md) the Deployer. 
+- Second, require `recipe/statamic.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
+- Third, now you can have a zero downtime deployment!
 
 Did you know that you can deploy **Statamic** project with a single command? Just run `dep deploy`.
+Something went wrong? Just run `dep rollback` to rollback your changes.
 Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
 
-Also, another feature of the Deployer is provisioning. Take any server, and run `dep provision` command.
+Also, another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
 This command will configure webserver, databases, php, ssl certificates, and more. 
 You will get everything you need to run your **Statamic** project.
 
-The statamic recipe is based on [laravel](/docs/recipe/laravel.md) recipe.
+The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
 
 ## Configuration
 ### statamic_version

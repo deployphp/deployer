@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: |
           set -x
-          git rm -r .github/ bin/ docs/ recipe/ src/ *.lock .gitattributes .gitignore
+          git rm -r .github/ bin/ docs/ tests/ *.lock *.yaml *.xml *.neon
 
       - name: Update composer.json
         shell: bash

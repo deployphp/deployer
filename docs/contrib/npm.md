@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/npm.php -->
 <!-- Then run bin/docgen -->
 
-# npm
+# Npm Recipe
 
 [Source](/contrib/npm.php)
 

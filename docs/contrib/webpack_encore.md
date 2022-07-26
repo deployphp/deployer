@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/webpack_encore.php -->
 <!-- Then run bin/docgen -->
 
-# webpack_encore
+# Webpack Encore Recipe
 
 [Source](/contrib/webpack_encore.php)
 

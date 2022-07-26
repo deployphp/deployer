@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/rollback.php -->
 <!-- Then run bin/docgen -->
 
-# rollback
+# Rollback Recipe
 
 [Source](/recipe/deploy/rollback.php)
 

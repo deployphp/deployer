@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/crontab.php -->
 <!-- Then run bin/docgen -->
 
-# crontab
+# Crontab Recipe
 
 [Source](/contrib/crontab.php)
 

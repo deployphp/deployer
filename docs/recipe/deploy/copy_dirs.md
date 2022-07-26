@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/copy_dirs.php -->
 <!-- Then run bin/docgen -->
 
-# copy_dirs
+# Copy Dirs Recipe
 
 [Source](/recipe/deploy/copy_dirs.php)
 

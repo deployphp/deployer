@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/slack.php -->
 <!-- Then run bin/docgen -->
 
-# slack
+# Slack Recipe
 
 [Source](/contrib/slack.php)
 

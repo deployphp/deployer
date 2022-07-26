@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/ms-teams.php -->
 <!-- Then run bin/docgen -->
 
-# ms-teams
+# Ms-teams Recipe
 
 [Source](/contrib/ms-teams.php)
 

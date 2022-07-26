@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/telegram.php -->
 <!-- Then run bin/docgen -->
 
-# telegram
+# Telegram Recipe
 
 [Source](/contrib/telegram.php)
 

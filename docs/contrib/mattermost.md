@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/mattermost.php -->
 <!-- Then run bin/docgen -->
 
-# mattermost
+# Mattermost Recipe
 
 [Source](/contrib/mattermost.php)
 

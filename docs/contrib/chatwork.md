@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/chatwork.php -->
 <!-- Then run bin/docgen -->
 
-# chatwork
+# Chatwork Recipe
 
 [Source](/contrib/chatwork.php)
 

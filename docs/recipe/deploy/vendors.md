@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/vendors.php -->
 <!-- Then run bin/docgen -->
 
-# vendors
+# Vendors Recipe
 
 [Source](/recipe/deploy/vendors.php)
 

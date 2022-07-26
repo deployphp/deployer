@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/discord.php -->
 <!-- Then run bin/docgen -->
 
-# discord
+# Discord Recipe
 
 [Source](/contrib/discord.php)
 

@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/common.php -->
 <!-- Then run bin/docgen -->
 
-# common
+# Common Recipe
 
 [Source](/recipe/common.php)
 

@@ -20,6 +20,24 @@ Also, another feature of the Deployer is [provisioning](/docs/recipe/provision.m
 This command will configure webserver, databases, php, ssl certificates, and more. 
 You will get everything you need to run your **Statamic** project.
 
+Deployer does next steps to [deploy](#deploy) **Statamic**:
+* Displays info about deployment
+* Prepares host for deploy
+* Locks deploy
+* Prepares release
+* Updates code
+* Creates symlinks for shared files and dirs
+* Makes writable dirs
+* Installs vendors
+* Creates the symbolic links configured for the application
+* Flushes the application cache
+* Clears the "Stache" cache
+* Builds the "Stache" cache
+* Creates symlink to release
+* Unlocks deploy
+* Cleanup old releases
+
+
 The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
 
 ## Configuration

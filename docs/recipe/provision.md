@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/provision.php -->
 <!-- Then run bin/docgen -->
 
-# provision
+# Provision Recipe
 
 [Source](/recipe/provision.php)
 

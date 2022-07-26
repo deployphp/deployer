@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/shared.php -->
 <!-- Then run bin/docgen -->
 
-# shared
+# Shared Recipe
 
 [Source](/recipe/deploy/shared.php)
 

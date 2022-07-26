@@ -20,6 +20,26 @@ Another cool feature of the Deployer is [provisioning](/docs/recipe/provision.md
 This command will configure webserver, databases, php, https, and more. 
 You will get everything you need to run your **Magento 2** application.
 
+Deployer does next steps to [deploy](#deploy) **Magento 2**:
+* Displays info about deployment
+* Prepares host for deploy
+* Locks deploy
+* Prepares release
+* Updates code
+* Creates symlinks for shared files and dirs
+* Makes writable dirs
+* Installs vendors
+* Cleanup files and/or directories
+* Compiles magento di
+* Deploys assets
+* Config Import
+* Upgrades magento database
+* Flushes Magento Cache
+* Creates symlink to release
+* Unlocks deploy
+* Cleanup old releases
+
+
 The magento2 recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration

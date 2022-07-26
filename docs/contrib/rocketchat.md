@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/rocketchat.php -->
 <!-- Then run bin/docgen -->
 
-# rocketchat
+# Rocketchat Recipe
 
 [Source](/contrib/rocketchat.php)
 

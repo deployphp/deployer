@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/cimonitor.php -->
 <!-- Then run bin/docgen -->
 
-# cimonitor
+# Cimonitor Recipe
 
 [Source](/contrib/cimonitor.php)
 

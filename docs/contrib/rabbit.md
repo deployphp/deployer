@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/rabbit.php -->
 <!-- Then run bin/docgen -->
 
-# rabbit
+# Rabbit Recipe
 
 [Source](/contrib/rabbit.php)
 

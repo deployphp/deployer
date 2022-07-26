@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/release.php -->
 <!-- Then run bin/docgen -->
 
-# release
+# Release Recipe
 
 [Source](/recipe/deploy/release.php)
 

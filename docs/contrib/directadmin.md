@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/directadmin.php -->
 <!-- Then run bin/docgen -->
 
-# directadmin
+# Directadmin Recipe
 
 [Source](/contrib/directadmin.php)
 

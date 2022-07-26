@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/cpanel.php -->
 <!-- Then run bin/docgen -->
 
-# cpanel
+# Cpanel Recipe
 
 [Source](/contrib/cpanel.php)
 

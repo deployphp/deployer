@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/info.php -->
 <!-- Then run bin/docgen -->
 
-# info
+# Info Recipe
 
 [Source](/recipe/deploy/info.php)
 

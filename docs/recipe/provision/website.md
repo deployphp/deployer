@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/provision/website.php -->
 <!-- Then run bin/docgen -->
 
-# website
+# Website Recipe
 
 [Source](/recipe/provision/website.php)
 

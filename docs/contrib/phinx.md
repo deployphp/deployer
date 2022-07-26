@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/phinx.php -->
 <!-- Then run bin/docgen -->
 
-# phinx
+# Phinx Recipe
 
 [Source](/contrib/phinx.php)
 

@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/php-fpm.php -->
 <!-- Then run bin/docgen -->
 
-# php-fpm
+# Php-fpm Recipe
 
 [Source](/contrib/php-fpm.php)
 

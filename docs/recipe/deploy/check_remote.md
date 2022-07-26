@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/check_remote.php -->
 <!-- Then run bin/docgen -->
 
-# check_remote
+# Check Remote Recipe
 
 [Source](/recipe/deploy/check_remote.php)
 

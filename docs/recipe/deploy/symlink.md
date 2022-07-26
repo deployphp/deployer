@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/symlink.php -->
 <!-- Then run bin/docgen -->
 
-# symlink
+# Symlink Recipe
 
 [Source](/recipe/deploy/symlink.php)
 

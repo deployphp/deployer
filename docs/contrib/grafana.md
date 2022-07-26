@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/grafana.php -->
 <!-- Then run bin/docgen -->
 
-# grafana
+# Grafana Recipe
 
 [Source](/contrib/grafana.php)
 

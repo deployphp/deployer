@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/bugsnag.php -->
 <!-- Then run bin/docgen -->
 
-# bugsnag
+# Bugsnag Recipe
 
 [Source](/contrib/bugsnag.php)
 

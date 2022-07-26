@@ -141,7 +141,7 @@ class DocGen
                 $brandName = ucfirst($brandName);
                 $title = 'How to Deploy ' . $brandName;
             } else {
-                $title = $recipe->recipeName;
+                $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
             }
 
             $intro = '';
@@ -170,8 +170,29 @@ Also, you can take an $advantage of the [Deployer's CLI](/docs/cli.md) to deploy
 $another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
 This command will configure webserver, databases, php, $https, and more. 
 You will get everything you need to run your **$brandName** $application.
-MD . "\n\n";
+MD. "\n\n";
 
+                $deployTask = $findTask('deploy');
+                if ($deployTask !== null) {
+                    $intro .= "Deployer does next steps to [deploy](#deploy) **$brandName**:\n";
+                    $map = function (DocTask $task) use (&$map, $findTask, &$intro): void {
+                        foreach ($task->group as $taskName) {
+                            $t = $findTask($taskName);
+                            if ($t !== null) {
+                                if ($t->group !== null) {
+                                    $map($t);
+                                } else {
+                                    if (!empty($t->desc)) {
+                                        $intro .= "* " . $t->desc . "\n";
+                                    }
+                                }
+                            }
+                        }
+                    };
+                    $map($deployTask);
+                }
+
+                $intro .= "\n\n";
             }
             if (count($recipe->require) > 0) {
                 if ($frameworkRecipe) {

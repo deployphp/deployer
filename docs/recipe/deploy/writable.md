@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/writable.php -->
 <!-- Then run bin/docgen -->
 
-# writable
+# Writable Recipe
 
 [Source](/recipe/deploy/writable.php)
 

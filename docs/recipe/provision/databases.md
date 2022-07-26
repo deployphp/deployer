@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/provision/databases.php -->
 <!-- Then run bin/docgen -->
 
-# databases
+# Databases Recipe
 
 [Source](/recipe/provision/databases.php)
 

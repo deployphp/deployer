@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/newrelic.php -->
 <!-- Then run bin/docgen -->
 
-# newrelic
+# Newrelic Recipe
 
 [Source](/contrib/newrelic.php)
 

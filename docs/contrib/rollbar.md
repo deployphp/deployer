@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/rollbar.php -->
 <!-- Then run bin/docgen -->
 
-# rollbar
+# Rollbar Recipe
 
 [Source](/contrib/rollbar.php)
 

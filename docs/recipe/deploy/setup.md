@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/deploy/setup.php -->
 <!-- Then run bin/docgen -->
 
-# setup
+# Setup Recipe
 
 [Source](/recipe/deploy/setup.php)
 

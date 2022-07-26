@@ -20,6 +20,21 @@ Another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Ta
 This command will configure webserver, databases, php, https, and more. 
 You will get everything you need to run your **Pimcore** project.
 
+Deployer does next steps to [deploy](#deploy) **Pimcore**:
+* Displays info about deployment
+* Prepares host for deploy
+* Locks deploy
+* Prepares release
+* Updates code
+* Creates symlinks for shared files and dirs
+* Makes writable dirs
+* Installs vendors
+* Clears cache
+* Creates symlink to release
+* Unlocks deploy
+* Cleanup old releases
+
+
 The pimcore recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 
 

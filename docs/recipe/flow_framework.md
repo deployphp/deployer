@@ -20,6 +20,22 @@ Another cool feature of the Deployer is [provisioning](/docs/recipe/provision.md
 This command will configure webserver, databases, php, ssl certificates, and more. 
 You will get everything you need to run your **Flow Framework** application.
 
+Deployer does next steps to [deploy](#deploy) **Flow Framework**:
+* Displays info about deployment
+* Prepares host for deploy
+* Locks deploy
+* Prepares release
+* Updates code
+* Creates symlinks for shared files and dirs
+* Makes writable dirs
+* Installs vendors
+* Applies database migrations
+* Publishes resources
+* Creates symlink to release
+* Unlocks deploy
+* Cleanup old releases
+
+
 The flow_framework recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration

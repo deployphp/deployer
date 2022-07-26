@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/composer.php -->
 <!-- Then run bin/docgen -->
 
-# composer
+# Composer Recipe
 
 [Source](/recipe/composer.php)
 

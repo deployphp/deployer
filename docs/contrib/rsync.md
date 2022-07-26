@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/rsync.php -->
 <!-- Then run bin/docgen -->
 
-# rsync
+# Rsync Recipe
 
 [Source](/contrib/rsync.php)
 

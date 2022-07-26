@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/ispmanager.php -->
 <!-- Then run bin/docgen -->
 
-# ispmanager
+# Ispmanager Recipe
 
 [Source](/contrib/ispmanager.php)
 

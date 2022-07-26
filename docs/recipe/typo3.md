@@ -20,6 +20,20 @@ Also, another feature of the Deployer is [provisioning](/docs/recipe/provision.m
 This command will configure webserver, databases, php, https, and more. 
 You will get everything you need to run your **TYPO3** application.
 
+Deployer does next steps to [deploy](#deploy) **TYPO3**:
+* Displays info about deployment
+* Prepares host for deploy
+* Locks deploy
+* Prepares release
+* Updates code
+* Creates symlinks for shared files and dirs
+* Makes writable dirs
+* Installs vendors
+* Creates symlink to release
+* Unlocks deploy
+* Cleanup old releases
+
+
 The typo3 recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration

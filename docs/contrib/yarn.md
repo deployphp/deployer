@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/yarn.php -->
 <!-- Then run bin/docgen -->
 
-# yarn
+# Yarn Recipe
 
 [Source](/contrib/yarn.php)
 

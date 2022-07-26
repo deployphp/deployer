@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/sentry.php -->
 <!-- Then run bin/docgen -->
 
-# sentry
+# Sentry Recipe
 
 [Source](/contrib/sentry.php)
 

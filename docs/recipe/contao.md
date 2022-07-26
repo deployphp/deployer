@@ -20,6 +20,23 @@ Another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Ta
 This command will configure webserver, databases, php, ssl certificates, and more. 
 You will get everything you need to run your **Contao** application.
 
+Deployer does next steps to [deploy](#deploy) **Contao**:
+* Displays info about deployment
+* Prepares host for deploy
+* Locks deploy
+* Prepares release
+* Updates code
+* Creates symlinks for shared files and dirs
+* Makes writable dirs
+* Installs vendors
+* Enable maintenance mode
+* Run Contao migrations
+* Disable maintenance mode
+* Creates symlink to release
+* Unlocks deploy
+* Cleanup old releases
+
+
 The contao recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 
 ## Configuration

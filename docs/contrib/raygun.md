@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/raygun.php -->
 <!-- Then run bin/docgen -->
 
-# raygun
+# Raygun Recipe
 
 [Source](/contrib/raygun.php)
 

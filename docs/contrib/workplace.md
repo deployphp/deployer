@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/workplace.php -->
 <!-- Then run bin/docgen -->
 
-# workplace
+# Workplace Recipe
 
 [Source](/contrib/workplace.php)
 

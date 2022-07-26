@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/cloudflare.php -->
 <!-- Then run bin/docgen -->
 
-# cloudflare
+# Cloudflare Recipe
 
 [Source](/contrib/cloudflare.php)
 

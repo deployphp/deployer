@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/hangouts.php -->
 <!-- Then run bin/docgen -->
 
-# hangouts
+# Hangouts Recipe
 
 [Source](/contrib/hangouts.php)
 

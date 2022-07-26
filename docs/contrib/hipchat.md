@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/hipchat.php -->
 <!-- Then run bin/docgen -->
 
-# hipchat
+# Hipchat Recipe
 
 [Source](/contrib/hipchat.php)
 

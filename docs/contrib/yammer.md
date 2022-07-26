@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/yammer.php -->
 <!-- Then run bin/docgen -->
 
-# yammer
+# Yammer Recipe
 
 [Source](/contrib/yammer.php)
 

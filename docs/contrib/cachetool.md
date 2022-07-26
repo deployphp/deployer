@@ -2,7 +2,7 @@
 <!-- Instead edit contrib/cachetool.php -->
 <!-- Then run bin/docgen -->
 
-# cachetool
+# Cachetool Recipe
 
 [Source](/contrib/cachetool.php)
 

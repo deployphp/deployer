@@ -127,7 +127,7 @@ task('provision:install', function () {
         'ncdu',
         'nodejs',
         'pkg-config',
-        'python',
+        'python-is-python3',
         'redis',
         'sendmail',
         'sqlite3',

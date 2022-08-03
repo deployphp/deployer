@@ -7,6 +7,8 @@ A **recipe** is a file containing definitions for **hosts** and **tasks**.
 Deployer CLI requires two arguments to run: a **task** to run and a **host**
 or group of **hosts**.
 
+Hosts can also be [selected via labels](hosts.md#labels), also a default host selection can be configured.
+
 ```
 $ dep deploy deployer.org
   --- ------ ------------
@@ -49,7 +51,7 @@ task my_task
 $  
 ```
 
-If no host provided, Deployer will show an interactive prompt for selecting hosts.
+If no host is provided and no default_selector is set, Deployer will show an interactive prompt for selecting hosts.
 If your recipe contains only one host, Deployer will automatically choose it. 
 To select all hosts specify `all`.
 

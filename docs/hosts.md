@@ -116,12 +116,6 @@ set('default_selector', "stage=prod&role=web,role=special");
 ```
 
 
-When `default_selector` configuration is set, you can preselect hosts that you want to deploy when you type `dep deploy`. 
-This is not needed when you 
-```php
-set('default_selector', "stage=prod");
-```
-
 ## Host config
 
 ### `alias`

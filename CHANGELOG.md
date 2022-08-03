@@ -7,6 +7,8 @@
 ### Fixed
 - Symfony 4 recipe log and session folders ACL check [#2932]
 
+### Added
+- Ability to install the module's 6.8  under PHP 8 [#3159]
 
 ## v6.8.0
 [v6.7.3...v6.8.0](https://github.com/deployphp/deployer/compare/v6.7.3...v6.8.0)

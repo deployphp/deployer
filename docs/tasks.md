@@ -55,7 +55,7 @@ host('bar')->setHostname('example.com');
 host('pro')->setHostname('another.com');
 
 task('apt:update', function () {
-    // This task will be executed twise, only on "foo" and "pro" hosts.
+    // This task will be executed twice, only on "foo" and "pro" hosts.
     run('apt-get update');
 })->oncePerNode();
 ```

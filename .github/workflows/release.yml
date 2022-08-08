@@ -54,7 +54,7 @@ jobs:
         shell: bash
         run: |
           set -x
-          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "dep")' > composer-new.json
+          cat composer.json | jq 'del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "dep")' > composer-new.json
           mv composer-new.json composer.json
           git add composer.json
 

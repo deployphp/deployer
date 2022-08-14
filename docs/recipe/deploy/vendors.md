@@ -28,12 +28,25 @@
 ```
 
 
-### bin/composer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L11)
+### composer_env_vars
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L8)
+```php title="Default value"
+''
+```
+Allows composer to run different composer.json and composer.lock based on different environments.
+```shell
+COMPOSER=composer-dev.json
+```
 
-Returns Composer binary path in found. Otherwise try to install latest
-composer version to `.dep/composer.phar`. To use specific composer version
-download desired phar and place it at `.dep/composer.phar`.
+
+
+
+### bin/composer
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L13)
+
+Returns Composer binary path if found. Otherwise try to install latest
+composer version to `.dep/composer.phar`. To use a specific composer version
+download the desired phar and place it in `.dep/composer.phar`.
 
 
 
@@ -41,7 +54,7 @@ download desired phar and place it at `.dep/composer.phar`.
 ## Tasks
 
 ### deploy:vendors
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L29)
 
 Installs vendors.
 

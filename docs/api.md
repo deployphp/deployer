@@ -351,7 +351,7 @@ Upload file or directory to host.
 - `options` with additional flags passed directly to the `rsync` command
 - `timeout` for `Process::fromShellCommandline()` (`null` by default)
 - `progress_bar` to display upload/download progress
-- `display_stats' to display rsync set of statistics
+- `display_stats` to display rsync set of statistics
 
 
 

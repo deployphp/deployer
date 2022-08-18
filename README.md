@@ -2,7 +2,7 @@
 <h1><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/logo.png" alt="Deployer Logo" height="30"></a> Deployer</h1>
 <p>A deployment tool written in PHP with support for popular frameworks out of the box.</p>
 
-<p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" style="max-width:530px"></a><br><br><br></p>
+<p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>
 
 <a href="https://github.com/deployphp/deployer/actions?query=workflow%3Atest"><img src="https://github.com/deployphp/deployer/workflows/test/badge.svg" alt="Build Status"></a>
 <a href="https://packagist.org/packages/deployer/deployer"><img src="https://img.shields.io/packagist/v/deployer/deployer.svg?style=flat" alt="Latest Stable Version"></a>

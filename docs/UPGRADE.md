@@ -53,7 +53,7 @@
      deploy:vendors:
        - run: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
    ``` 
-8. Rename task `success` to `deploy:success` and `cleanup` to deploy:cleanup`.
+8. Rename task `success` to `deploy:success` and `cleanup` to `deploy:cleanup`.
 9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
 10. runLocally() commands are executed relative to the recipe file directory. This behaviour can be overridden via an environment variable:
     ```

@@ -5,7 +5,7 @@ To install Deployer, run next command in your project dir:
 composer require --dev deployer/deployer
 ```
 
-To initialize deployer in you project run:
+To initialize deployer in your project run:
 
 ```
 vendor/bin/dep init

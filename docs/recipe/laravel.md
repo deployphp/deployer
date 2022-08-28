@@ -397,8 +397,40 @@ Prunes stale entries from the Telescope database.
 
 
 
+### artisan:octane
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L221)
+
+Starts the octane server.
+
+
+
+
+### artisan:octane:reload
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L224)
+
+Reloads the octane server.
+
+
+
+
+### artisan:octane:stop
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L227)
+
+Stops the octane server.
+
+
+
+
+### artisan:octane:status
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L230)
+
+Check the status of the octane server.
+
+
+
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L220)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L236)
 
 Deploys your project.
 

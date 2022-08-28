@@ -1,6 +1,8 @@
-# Upgrade from 6.x to 7.x
+# Upgrade a major version
 
-## Step 1: Update deploy.php
+## Upgrade from 6.x to 7.x
+
+### Step 1: Update deploy.php
 1. Change config `hostname` to `alias`.
 2. Change config `real_hostname` to `hostname`.
 3. Change config `user` to `remote_user`.
@@ -63,7 +65,7 @@
 12. Replace `locateBinaryPath()` with `which()` func.
 13. Configuration property `default_stage` is not supported.
 
-## Step 2: Deploy
+### Step 2: Deploy
 
 Since the release history numbering is not compatible between v6 and v7, you need to specify the `release_name` manually for the first time. Otherwise you start with release 1.
 
@@ -84,9 +86,7 @@ ln -nfs releases/42 current
 In case there are multiple hosts with different release names, you should create a `{{deploy_path}}/.dep/latest_release` file in each host with the current release number of that particular host.
 :::
 
-## Other versions
-
-### Upgrade from 5.x to 6.x
+## Upgrade from 5.x to 6.x
 
 1. Changed branch option priority
 
@@ -125,7 +125,7 @@ In case there are multiple hosts with different release names, you should create
     
     * `set('env', 'prod');` → `set('symfony_env', 'prod');`
 
-### Upgrade from 4.x to 5.x
+## Upgrade from 4.x to 5.x
 
 1. Servers to Hosts
    
@@ -199,7 +199,7 @@ In case there are multiple hosts with different release names, you should create
    * `onlyOnStage` to `onStage`
    
 
-### Upgrade from 3.x to 4.x
+## Upgrade from 3.x to 4.x
 
 1. Namespace for functions
 
@@ -231,7 +231,7 @@ In case there are multiple hosts with different release names, you should create
 
    Due to changes in release management, the new cleanup task will ignore any prior releases deployed with 3.x.  These will need to be manually removed after migrating to and successfully releasing via 4.x.
 
-### Upgrade from 2.x to 3.x
+## Upgrade from 2.x to 3.x
 
 1. ### `->path('...')`
 

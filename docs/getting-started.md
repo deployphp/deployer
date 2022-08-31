@@ -1,6 +1,12 @@
 # Getting Started
 
-First, let's [install Deployer](installation.md). Run the following commands in the terminal:
+In this tutorial we will cover:
+- Setting up a new host with provision recipe.
+- Configuring a deployment and perfoming our first deploy.
+
+Tutorial duration: **5 min**
+
+First, [install the Deployer](installation.md):
 
 ```sh
 curl -LO https://deployer.org/deployer.phar
@@ -8,142 +14,122 @@ mv deployer.phar /usr/local/bin/dep
 chmod +x /usr/local/bin/dep
 ```
 
-Now you can use Deployer via the `dep` command. 
-Open up a terminal in your project directory and run:
+Now lets cd into the project and run following command:
 
 ```sh
 dep init
 ```
 
-This command will create the `deploy.php` file in the current directory. It is called a *recipe* and contains configuration and tasks for deployment.
-By default all recipes extend the [common](https://github.com/deployphp/deployer/blob/master/recipe/common.php) recipe. Place your _deploy.php_ file in root of your project and type `dep` or `dep list` command. You will see a list of all available tasks.
+Deployer will ask you a few question and after finishing you will have a 
+**deploy.php** or **deploy.yaml** file. This is our deployment recipe. 
+It contains hosts, tasks and requires other recipes. All framework recipes
+that come with Deployer are based on the [common](recipe/common.md) recipe.
 
-> You can call `dep` command in any subdirectory of your project.
+## Provision
 
-Defining your task is really simple:
- 
+:::note
+If you already have a configured webserver you may skip to 
+[deployment](#deploy).
+:::
+
+Let's create a new VPS on Linode, DigitalOcean, Vultr, AWS, GCP, etc.
+
+Make sure the image is **Ubuntu 20.04 LTS** as this version is supported via 
+Deployer [provision](recipe/provision.md) recipe.
+
+Configure Reverse DNS or RDNS on your server. This will allow you to ssh into 
+server using the domain name instead of the IP address.
+
+Our **deploy.php** recipe contains host definition with few important params:
+ - `remote_user` user's name for ssh connection,
+ - `deploy_path` host's path where we are going to deploy.
+
 ```php
-task('test', function () {
-    writeln('Hello world');
-});
+host('example.org')
+    ->set('remote_user', 'deployer')
+    ->set('deploy_path', '~/example');
 ```
 
-To run that task, run:
+To connect to remote host we need to specify identity key or private key.
+We can add our identity key directly into host definition, but better to put it 
+in **~/.ssh/config** file:
+
+```
+Host *
+  IdentityFile ~/.ssh/id_rsa
+```
+
+Now let's provision our server. As our host doesn't have user name `deployer`, but
+only `root` user. We going to override `remote_user` for provision via `-o remote_user=root`.
 
 ```sh
-dep test
+dep provision -o remote_user=root
 ```
 
-The output will be:
+Deployer will ask you a few questions during provisioning: php version,
+database type, etc. You can specify it also in directly in recipe.
 
-```text
-➤ Executing task test
-Hello world
-✔ Ok
-```
+Provision recipe going to do:
+- Update and upgrade all Ubuntu packages to latest versions,
+- Install all needed packages for our website (acl, npm, git, etc),
+- Install php with all needed extensions,
+- Install and configure the database,
+- Install Caddy websertver and configure our website with SSL certificate,
+- Configure ssh and firewall,
+- Setup **deployer** user.
 
-Now let's create a task which will run commands on a remote host. For that we must configure deployer. 
-Your newly created `deploy.php` file should contain a `host` declaration like this:
- 
-```php
-host('domain.com')
-    ->stage('production')    
-    ->set('deploy_path', '/var/www/domain.com');
-```
+Provisioning will take around **5 minutes** and will install everything we need to run a 
+website. It will also setup a `deployer` user, which we will need to use to ssh to our 
+host. A new website will be configured at [deploy_path](recipe/common.md#deploy_path).
 
-> Also it's possible to declare hosts in a separate yaml file. Find out more about the [inventory](hosts.md#inventory-file).
+After we have configured the webserver, let's deploy the project.
 
-You can find out more about host configurations [here](hosts.md). Now let's define a task which will output a 
-`pwd` command from the remote host:
- 
-```php
-task('pwd', function () {
-    $result = run('pwd');
-    writeln("Current dir: $result");
-});
-```
+## Deploy
 
-Run `dep pwd`, and you will get this:
+To deploy the project:
 
-```text
-➤ Executing task pwd
-Current dir: /var/www/domain.com
-✔ Ok
-```
-
-Now let's prepare for our first deploy. You need to configure parameters such as `repository`, `shared_files,` and others:
-   
-```php
-set('repository', 'git@domain.com:username/repository.git');
-set('shared_files', [...]);
-```
-
-You can return the parameter values in each task using the `get` function. 
-Also you can override each configuration for each host:
-
-```php
-host('domain.com')
-    ...
-    ->set('shared_files', [...]);
-```
-
-Read more about [configuring](configuration.md) deploy.
-
-
-Now let's deploy our application:
- 
 ```sh
 dep deploy
 ```
 
-To include extra details in the output, you can increase verbosity with the `--verbose` option: 
+If deployment will fail, Deployer will print error message and command what was unsuccessful. 
+Most likely we need to confiure correct database credentials in _.env_ file or similar.
 
-* `-v`  for normal output,
-* `-vv`  for more verbose output,
-* `-vvv`  for debug.
- 
-Deployer will create the following directories on the host:
-
-* `releases`  contains releases dirs,
-* `shared` contains shared files and dirs,
-* `current` symlink to current release.
-
-Configure your hosts to serve your public directory from `current`.
-
-> Note that deployer uses [ACL](https://en.wikipedia.org/wiki/Access_control_list) by default for setting up permissions.
-> You can change this behavior with `writable_mode` config.    
-
-By default deployer keeps the last 5 releases, but you can increase this number by modifying the associated parameter:
- 
-```php
-set('keep_releases', 10);
-```
-
-If there is an error in the deployment process, or something is wrong with your new release, 
-simply run the following command to rollback to the previous working release:
+Ssh to the host, for example, for editing _.env_ file:
 
 ```sh
-dep rollback
+dep ssh
 ```
 
-You may want to run some task before/after other tasks. Configuring that is really simple!
+After everything is configured properly we can resume our deployment from the place it stopped (But this is not required, we can just start a new deploy):
 
-Let's reload php-fpm after `deploy` finishes:
+```
+dep deploy --start-from deploy:migrate
+```
 
+Now let's add a build step on our host:
 ```php
-task('reload:php-fpm', function () {
-    run('sudo /usr/sbin/service php7-fpm reload');
+task('build', function () {
+    cd('{{release_path}}');
+    run('npm install');
+    run('npm run prod');
 });
 
-after('deploy', 'reload:php-fpm');
+after('deploy:update_code', 'build');
 ```
 
-If you need to connect to the host, Deployer has a shortcut for faster access:
+Deployer has a useful task for examining what is currently deployed.
 
-~~~sh
-dep ssh
-~~~
+```
+$ dep releases
+task releases
++---------------------+--------- deployer.org -------+--------+-----------+
+| Date (UTC)          | Release     | Author         | Target | Commit    |
++---------------------+-------------+----------------+--------+-----------+
+| 2021-11-05 14:00:22 | 1 (current) | Anton Medvedev | HEAD   | 943ded2be |
++---------------------+-------------+----------------+--------+-----------+
+```
 
-This command will connect to selected hosts and cd to `current_path`.
-
-Read more about [configuring](configuration.md) deploy. 
+:::tip
+During development, the [dep push](recipe/deploy/push.md) task maybe useful.
+:::

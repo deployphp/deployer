@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -7,86 +7,27 @@
 
 namespace Deployer\Task;
 
-use Deployer\Host\Host;
-use function Deployer\Support\array_flatten;
+use Deployer\Selector\Selector;
 
 class Task
 {
-    /**
-     * @var string
-     */
     private $name;
-
-    /**
-     * @var callable
-     */
     private $callback;
-
-    /**
-     * @var string
-     */
     private $description;
-
-    /**
-     * Should we run this task locally?
-     *
-     * @var bool
-     */
-    private $local = false;
-
-    /**
-     * Lists of hosts, roles, stages there task should be executed.
-     *
-     * @var array
-     */
-    private $on = ['hosts' => [], 'roles' => [], 'stages' => []];
-
-    /**
-     * List of task names to run before.
-     *
-     * @var array
-     */
+    private $sourceLocation = '';
     private $before = [];
-
-    /**
-     * List of task names to run after.
-     *
-     * @var array
-     */
     private $after = [];
-
-    /**
-     * Make task internal and not visible in CLI.
-     *
-     * @var bool
-     */
-    private $private = false;
-
-    /**
-     * Mark task to run only once, of the first node from the pool
-     *
-     * @var bool
-     */
+    private $hidden = false;
     private $once = false;
+    private $oncePerNode = false;
+    private $limit = null;
+    private $selector = null;
+    private $verbose = false;
+    private $enabled = true;
 
     /**
-     * Mark if the task has run at least once
-     *
-     * @var bool
-     */
-    private $hasRun = false;
-
-    /**
-     * Shallow task will not print execution message/finish messages.
-     * Useful for success messages and info printing.
-     *
-     * @var bool
-     */
-    private $shallow = false;
-
-    /**
-     * @param string $name Tasks name
-     * @param callable $callback Task code
+     * Task constructor.
+     * @param mixed $name
      */
     public function __construct($name, callable $callback = null)
     {
@@ -94,239 +35,200 @@ class Task
         $this->callback = $callback;
     }
 
-    /**
-     * @param Context $context
-     */
-    public function run(Context $context)
+    public function setCallback(callable $callback): void
+    {
+        $this->callback = $callback;
+    }
+
+    public function run(Context $context): void
     {
         Context::push($context);
 
-        // Call task
-        call_user_func($this->callback);
+        try {
+            call_user_func($this->callback); // call task
+        } finally {
+            if ($context->getConfig() !== null) {
+                $context->getConfig()->set('working_path', null);
+            }
 
-        if ($this->once) {
-            $this->hasRun = true;
+            Context::pop();
         }
-
-        // Clear working_path
-        if ($context->getConfig() !== null) {
-            $context->getConfig()->set('working_path', false);
-        }
-
-        Context::pop();
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getName()
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
-    public function getDescription()
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
+
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return $this
-     */
-    public function desc($description)
+    public function desc(string $description): self
     {
         $this->description = $description;
         return $this;
     }
 
-    /**
-     * Mark this task local
-     *
-     * @return $this
-     */
-    public function local()
+    public function getSourceLocation(): string
     {
-        $this->local = true;
-        return $this;
+        return $this->sourceLocation;
+    }
+
+    public function setSourceLocation(string $path): void
+    {
+        $this->sourceLocation = $path;
+    }
+
+    public function saveSourceLocation(): void
+    {
+        if (function_exists('debug_backtrace')) {
+            $trace = debug_backtrace();
+            $this->sourceLocation = $trace[1]['file'];
+        }
     }
 
     /**
-     * @return bool
+     * Mark this task to run only once on one of hosts.
      */
-    public function isLocal()
+    public function once(bool $once = true): self
     {
-        return $this->local;
-    }
-
-    public function once()
-    {
-        $this->once = true;
+        $this->once = $once;
         return $this;
     }
 
-    public function isOnce()
+    public function isOnce(): bool
     {
         return $this->once;
     }
 
     /**
-     * @param array $hosts
-     * @return $this
+     * Mark task to only run once per node.
+     * Node is a group of hosts with same hostname or with same node label.
      */
-    public function onHosts(...$hosts)
+    public function oncePerNode(bool $once = true): self
     {
-        $this->on['hosts'] = array_flatten($hosts);
+        $this->oncePerNode = $once;
         return $this;
     }
 
-    /**
-     * @param array $roles
-     * @return $this
-     */
-    public function onRoles(...$roles)
+    public function isOncePerNode(): bool
     {
-        $this->on['roles'] = array_flatten($roles);
+        return $this->oncePerNode;
+    }
+
+    /**
+     * Mark task as hidden and not accessible from CLI.
+     */
+    public function hidden(bool $hidden = true): self
+    {
+        $this->hidden = $hidden;
         return $this;
     }
 
-    /**
-     * @param array $stages
-     * @return $this
-     */
-    public function onStage(...$stages)
+    public function isHidden(): bool
     {
-        $this->on['stages'] = array_flatten($stages);
-        return $this;
+        return $this->hidden;
     }
 
     /**
-     * Checks what task should be performed on one of hosts.
-     *
-     * @param Host[] $hosts
-     * @return bool
+     * Make $task being run before this task.
      */
-    public function shouldBePerformed(...$hosts)
-    {
-        // don't allow to run again it the task has been marked to run only once
-        if ($this->once && $this->hasRun) {
-            return false;
-        }
-
-        foreach ($hosts as $host) {
-            $onHost = empty($this->on['hosts']) || in_array($host->getHostname(), $this->on['hosts'], true);
-
-            $onRole = empty($this->on['roles']);
-            foreach ((array) $host->get('roles', []) as $role) {
-                if (in_array($role, $this->on['roles'], true)) {
-                    $onRole = true;
-                }
-            }
-
-            $onStage = empty($this->on['stages']);
-            if ($host->has('stage')) {
-                if (in_array($host->get('stage'), $this->on['stages'], true)) {
-                    $onStage = true;
-                }
-            }
-
-            if ($onHost && $onRole && $onStage) {
-                return true;
-            }
-        }
-
-        return empty($hosts);
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isPrivate()
-    {
-        return $this->private;
-    }
-
-    /**
-     * Mark task as private
-     *
-     * @return $this
-     */
-    public function setPrivate()
-    {
-        $this->private = true;
-        return $this;
-    }
-
-    /**
-     * @param string $task
-     *
-     * @return $this
-     */
-    public function addBefore(string $task)
+    public function addBefore(string $task): self
     {
         array_unshift($this->before, $task);
         return $this;
     }
 
     /**
-     * @param string $task
-     *
-     * @return $this
+     * Make $task being run after this task
      */
-    public function addAfter(string $task)
+    public function addAfter(string $task): self
     {
         array_push($this->after, $task);
         return $this;
     }
 
-    /**
-     * Get before tasks names.
-     * @return string[]
-     */
-    public function getBefore()
+    public function getBefore(): array
     {
         return $this->before;
     }
 
-    /**
-     * Get after tasks names.
-     * @return string[]
-     */
-    public function getAfter()
+    public function getAfter(): array
     {
         return $this->after;
     }
 
-    /**
-     * Sets task shallow.
-     *
-     * Shallow task will not print execution message/finish messages.
-     *
-     * @return $this
-     */
-    public function shallow()
+    public function getLimit(): ?int
     {
-        $this->shallow = true;
+        return $this->limit;
+    }
+
+    public function limit(?int $limit): self
+    {
+        $this->limit = $limit;
+        return $this;
+    }
+
+    public function select(string $selector): self
+    {
+        $this->selector = Selector::parse($selector);
         return $this;
     }
 
     /**
-     * @return bool
+     * @return array
      */
-    public function isShallow()
+    public function getSelector(): ?array
     {
-        return $this->shallow;
+        return $this->selector;
     }
 
-    /**
-     * @internal this is used by ParallelExecutor and prevent multiple run
-     */
-    public function setHasRun()
+    public function addSelector(?array $newSelector): void
     {
-        if ($this->isOnce()) {
-            $this->hasRun = true;
+        if ($newSelector !== null) {
+            if ($this->selector === null) {
+                $this->selector = $newSelector;
+            } else {
+                $this->selector = array_merge($this->selector, $newSelector);
+            }
         }
+    }
+
+    public function isVerbose(): bool
+    {
+        return $this->verbose;
+    }
+
+    public function verbose(bool $verbose = true): self
+    {
+        $this->verbose = $verbose;
+        return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function disable(): self
+    {
+        $this->enabled = false;
+        return $this;
+    }
+
+    public function enable(): self
+    {
+        $this->enabled = true;
+        return $this;
     }
 }

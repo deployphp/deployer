@@ -1,102 +1,100 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
-/**
- * Get current git HEAD branch as default branch to deploy.
- */
-set('branch', function () {
-    try {
-        $branch = runLocally('git rev-parse --abbrev-ref HEAD');
-    } catch (\Throwable $exception) {
-        $branch = null;
-    }
-
-    if ($branch === 'HEAD') {
-        $branch = null; // Travis-CI fix
-    }
-
-    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
-        $branch = input()->getOption('branch');
-    }
-
-    return $branch;
-});
+use Deployer\Exception\ConfigurationException;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
- * Whether to use git cache.
- *
- * Faster cloning by borrowing objects from existing clones.
+ * Determines which branch to deploy. Can be overridden with CLI option `--branch`.
+ * If not specified, will get current git HEAD branch as default branch to deploy.
  */
-set('git_cache', function () {
-    $gitVersion = run('{{bin/git}} version');
-    $regs = [];
-    if (preg_match('/((\d+\.?)+)/', $gitVersion, $regs)) {
-        $version = $regs[1];
-    } else {
-        $version = "1.0.0";
-    }
-    return version_compare($version, '2.3', '>=');
-});
+set('branch', 'HEAD');
 
-desc('Update code');
-task('deploy:update_code', function () {
-    $repository = get('repository');
+option('tag', null, InputOption::VALUE_REQUIRED, 'Tag to deploy');
+option('revision', null, InputOption::VALUE_REQUIRED, 'Revision to deploy');
+option('branch', null, InputOption::VALUE_REQUIRED, 'Branch to deploy');
+
+// The deploy target: a branch, a tag or a revision.
+set('target', function () {
+    $target = '';
+
     $branch = get('branch');
+    if (!empty($branch)) {
+        $target = $branch;
+    }
+
+    // Override target from CLI options.
+    if (input()->hasOption('branch') && !empty(input()->getOption('branch'))) {
+        $target = input()->getOption('branch');
+    }
+    if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
+        $target = input()->getOption('tag');
+    }
+    if (input()->hasOption('revision') && !empty(input()->getOption('revision'))) {
+        $target = input()->getOption('revision');
+    }
+
+    if (empty($target)) {
+        $target = "HEAD";
+    }
+    return $target;
+});
+
+// Sets deploy:update_code strategy.
+// Can be one of:
+// - archive
+// - clone (if you need `.git` dir in your {{release_path}})
+set('update_code_strategy', 'archive');
+
+// Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
+// If `StrictHostKeyChecking` flag is set to `accept-new` then ssh will
+// automatically add new host keys to the user known hosts files, but
+// will not permit connections to hosts with changed host keys.
+set('git_ssh_command', 'ssh -o StrictHostKeyChecking=accept-new');
+
+/**
+ * Update code at {{release_path}} on host.
+ */
+desc('Updates code');
+task('deploy:update_code', function () {
     $git = get('bin/git');
-    $gitCache = get('git_cache');
-    $recursive = get('git_recursive', true) ? '--recursive' : '';
-    $dissociate = get('git_clone_dissociate', true) ? '--dissociate' : '';
-    $quiet = isQuiet() ? '-q' : '';
-    $depth = $gitCache ? '' : '--depth 1';
-    $options = [
-        'tty' => get('git_tty', false),
+    $repository = get('repository');
+    $target = get('target');
+
+    $bare = parse('{{deploy_path}}/.dep/repo');
+    $env = [
+        'GIT_TERMINAL_PROMPT' => '0',
+        'GIT_SSH_COMMAND' => get('git_ssh_command')
     ];
 
-    $at = '';
-    if (!empty($branch)) {
-        $at = "-b \"$branch\"";
-    }
+    start:
+    // Clone the repository to a bare repo.
+    run("[ -d $bare ] || mkdir -p $bare");
+    run("[ -f $bare/HEAD ] || $git clone --mirror $repository $bare 2>&1", ['env' => $env]);
 
-    // If option `tag` is set
-    if (input()->hasOption('tag')) {
-        $tag = input()->getOption('tag');
-        if (!empty($tag)) {
-            $at = "-b \"$tag\"";
-        }
-    }
+    cd($bare);
 
-    // If option `tag` is not set and option `revision` is set
-    if (empty($tag) && input()->hasOption('revision')) {
-        $revision = input()->getOption('revision');
-        if (!empty($revision)) {
-            $depth = '';
-        }
-    }
-
-    // Enter deploy_path if present
-    if (has('deploy_path')) {
+    // If remote url changed, drop `.dep/repo` and reinstall.
+    if (run("$git config --get remote.origin.url") !== $repository) {
         cd('{{deploy_path}}');
+        run("rm -rf $bare");
+        goto start;
     }
 
-    if ($gitCache && has('previous_release')) {
-        try {
-            run("$git clone $at $recursive $quiet --reference {{previous_release}} $dissociate $repository  {{release_path}} 2>&1", $options);
-        } catch (\Throwable $exception) {
-            // If {{deploy_path}}/releases/{$releases[1]} has a failed git clone, is empty, shallow etc, git would throw error and give up. So we're forcing it to act without reference in this situation
-            run("$git clone $at $recursive $quiet $repository {{release_path}} 2>&1", $options);
-        }
+    run("$git remote update 2>&1", ['env' => $env]);
+
+    // Copy to release_path.
+    if (get('update_code_strategy') === 'archive') {
+        run("$git archive $target | tar -x -f - -C {{release_path}} 2>&1");
+    } else if (get('update_code_strategy') === 'clone') {
+        cd('{{release_path}}');
+        run("$git clone -l $bare .");
+        run("$git checkout --force $target");
     } else {
-        // if we're using git cache this would be identical to above code in catch - full clone. If not, it would create shallow clone.
-        run("$git clone $at $depth $recursive $quiet $repository {{release_path}} 2>&1", $options);
+        throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }
 
-    if (!empty($revision)) {
-        run("cd {{release_path}} && $git checkout $revision");
-    }
+    // Save git revision in REVISION file.
+    $rev = escapeshellarg(run("$git rev-list $target -1"));
+    run("echo $rev > {{release_path}}/REVISION");
 });

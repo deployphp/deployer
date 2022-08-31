@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -8,52 +8,70 @@
 namespace Deployer;
 
 use Deployer\Collection\Collection;
-use Deployer\Console\Application;
-use Deployer\Console\AutocompleteCommand;
-use Deployer\Console\CommandEvent;
-use Deployer\Console\DebugCommand;
-use Deployer\Console\InitCommand;
-use Deployer\Console\Output\Informer;
-use Deployer\Console\Output\OutputWatcher;
-use Deployer\Console\RunCommand;
-use Deployer\Console\SshCommand;
-use Deployer\Console\TaskCommand;
-use Deployer\Console\WorkerCommand;
-use Deployer\Executor\ParallelExecutor;
-use Deployer\Executor\SeriesExecutor;
+use Deployer\Command\AutocompleteCommand;
+use Deployer\Command\BlackjackCommand;
+use Deployer\Command\ConfigCommand;
+use Deployer\Command\InitCommand;
+use Deployer\Command\MainCommand;
+use Deployer\Command\RunCommand;
+use Deployer\Command\SshCommand;
+use Deployer\Command\TreeCommand;
+use Deployer\Command\WorkerCommand;
+use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
+use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
+use Deployer\Component\Pimple\Container;
+use Deployer\Component\ProcessRunner\Printer;
+use Deployer\Component\ProcessRunner\ProcessRunner;
+use Deployer\Component\Ssh\Client;
+use Deployer\Configuration\Configuration;
+use Deployer\Executor\Master;
+use Deployer\Executor\Messenger;
+use Deployer\Executor\Server;
+use Deployer\Host\Host;
+use Deployer\Host\HostCollection;
+use Deployer\Host\Localhost;
+use Deployer\Importer\Importer;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
-use function Deployer\Support\array_merge_alternate;
+use Deployer\Selector\Selector;
 use Deployer\Task;
-use Deployer\Utility\ProcessOutputPrinter;
-use Deployer\Utility\ProcessRunner;
-use Deployer\Utility\Reporter;
+use Deployer\Task\ScriptManager;
+use Deployer\Task\TaskCollection;
+use Deployer\Utility\Httpie;
 use Deployer\Utility\Rsync;
-use Pimple\Container;
 use Symfony\Component\Console;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Input\InputDefinition;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 
 /**
  * Deployer class represents DI container for configuring
  *
  * @property Application $console
+ * @property InputInterface $input
+ * @property OutputInterface $output
  * @property Task\TaskCollection|Task\Task[] $tasks
- * @property Host\HostCollection|Collection|Host\Host[] $hosts
- * @property Collection $config
+ * @property HostCollection|Host[] $hosts
+ * @property Configuration $config
  * @property Rsync $rsync
- * @property Ssh\Client $sshClient
+ * @property Client $sshClient
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
- * @property Host\HostSelector $hostSelector
- * @property SeriesExecutor $seriesExecutor
- * @property ParallelExecutor $parallelExecutor
- * @property Informer $informer
- * @property Logger $logger
- * @property ProcessOutputPrinter $pop
+ * @property Selector $selector
+ * @property Server $server
+ * @property Master $master
+ * @property Messenger $messenger
+ * @property Messenger $logger
+ * @property Printer $pop
  * @property Collection $fail
+ * @property InputDefinition $inputDefinition
+ * @property Importer $importer
  */
 class Deployer extends Container
 {
@@ -63,9 +81,6 @@ class Deployer extends Container
      */
     private static $instance;
 
-    /**
-     * @param Application $console
-     */
     public function __construct(Application $console)
     {
         parent::__construct();
@@ -74,13 +89,24 @@ class Deployer extends Container
          *           Console          *
          ******************************/
 
+        $console->getDefinition()->addOption(
+            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'Recipe file path')
+        );
+
         $this['console'] = function () use ($console) {
-            $console->catchIO(function ($input, $output) {
-                $this['input'] = $input;
-                $this['output'] =  new OutputWatcher($output);
-                return [$this['input'], $this['output']];
-            });
             return $console;
+        };
+        $this['input'] = function () {
+            throw new \RuntimeException('Uninitialized "input" in Deployer container.');
+        };
+        $this['output'] = function () {
+            throw new \RuntimeException('Uninitialized "output" in Deployer container.');
+        };
+        $this['inputDefinition'] = function () {
+            return new InputDefinition();
+        };
+        $this['questionHelper'] = function () {
+            return $this->getHelper('question');
         };
 
         /******************************
@@ -88,54 +114,71 @@ class Deployer extends Container
          ******************************/
 
         $this['config'] = function () {
-            return new Collection();
+            return new Configuration();
         };
+        // -l  act as if it had been invoked as a login shell (i.e. source ~/.profile file)
+        // -s  commands are read from the standard input (no arguments should remain after this option)
+        $this->config['shell'] = function () {
+            if (currentHost() instanceof Localhost) {
+                return 'bash -s'; // Non-login shell for localhost.
+            }
+            return 'bash -ls';
+        };
+        $this->config['forward_agent'] = true;
         $this->config['ssh_multiplexing'] = true;
-        $this->config['default_stage'] = null;
 
         /******************************
          *            Core            *
          ******************************/
 
         $this['pop'] = function ($c) {
-            return new ProcessOutputPrinter($c['output'], $c['logger']);
+            return new Printer($c['output']);
         };
         $this['sshClient'] = function ($c) {
-            return new Ssh\Client($c['output'], $c['pop'], $c['config']['ssh_multiplexing']);
+            return new Client($c['output'], $c['pop'], $c['logger']);
         };
         $this['rsync'] = function ($c) {
-            return new Rsync($c['pop']);
+            return new Rsync($c['pop'], $c['output']);
         };
         $this['processRunner'] = function ($c) {
-            return new ProcessRunner($c['pop']);
+            return new ProcessRunner($c['pop'], $c['logger']);
         };
         $this['tasks'] = function () {
-            return new Task\TaskCollection();
+            return new TaskCollection();
         };
         $this['hosts'] = function () {
-            return new Host\HostCollection();
+            return new HostCollection();
         };
         $this['scriptManager'] = function ($c) {
-            return new Task\ScriptManager($c['tasks']);
+            return new ScriptManager($c['tasks']);
         };
-        $this['hostSelector'] = function ($c) {
-            $defaultStage = $c['config']['default_stage'];
-            if (is_object($defaultStage) && ($defaultStage instanceof \Closure)) {
-                $defaultStage = call_user_func($defaultStage);
-            }
-            return new Host\HostSelector($c['hosts'], $defaultStage);
+        $this['selector'] = function ($c) {
+            return new Selector($c['hosts']);
         };
         $this['fail'] = function () {
             return new Collection();
         };
-        $this['informer'] = function ($c) {
-            return new Informer($c['output']);
+        $this['messenger'] = function ($c) {
+            return new Messenger($c['input'], $c['output'], $c['logger']);
         };
-        $this['seriesExecutor'] = function ($c) {
-            return new SeriesExecutor($c['input'], $c['output'], $c['informer']);
+        $this['server'] = function ($c) {
+            return new Server(
+                $c['input'],
+                $c['output'],
+                $this,
+            );
         };
-        $this['parallelExecutor'] = function ($c) {
-            return new ParallelExecutor($c['input'], $c['output'], $c['informer'], $c['console']);
+        $this['master'] = function ($c) {
+            return new Master(
+                $c['input'],
+                $c['output'],
+                $c['server'],
+                $c['messenger'],
+                $c['sshClient'],
+            );
+        };
+        $this['importer'] = function () {
+            return new Importer();
         };
 
         /******************************
@@ -143,76 +186,20 @@ class Deployer extends Container
          ******************************/
 
         $this['log_handler'] = function () {
-            return !empty($this->config['log_file'])
-                ? new FileHandler($this->config['log_file'])
+            return !empty($this['log'])
+                ? new FileHandler($this['log'])
                 : new NullHandler();
         };
         $this['logger'] = function () {
             return new Logger($this['log_handler']);
         };
 
-        /******************************
-         *        Init command        *
-         ******************************/
-
-        $this['init_command'] = function () {
-            return new InitCommand();
-        };
-
         self::$instance = $this;
     }
 
-    /**
-     * @return Deployer
-     */
-    public static function get()
+    public static function get(): self
     {
         return self::$instance;
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public static function setDefault($name, $value)
-    {
-        Deployer::get()->config[$name] = $value;
-    }
-
-    /**
-     * @param string $name
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function getDefault($name, $default = null)
-    {
-        return self::hasDefault($name) ? Deployer::get()->config[$name] : $default;
-    }
-
-    /**
-     * @param string $name
-     * @return boolean
-     */
-    public static function hasDefault($name)
-    {
-        return isset(Deployer::get()->config[$name]);
-    }
-
-    /**
-     * @param string $name
-     * @param array $array
-     */
-    public static function addDefault($name, $array)
-    {
-        if (self::hasDefault($name)) {
-            $config = self::getDefault($name);
-            if (!is_array($config)) {
-                throw new \RuntimeException("Configuration parameter `$name` isn't array.");
-            }
-            self::setDefault($name, array_merge_alternate($config, $array));
-        } else {
-            self::setDefault($name, $array);
-        }
     }
 
     /**
@@ -220,38 +207,43 @@ class Deployer extends Container
      */
     public function init()
     {
-        $this->addConsoleCommands();
+        $this->addTaskCommands();
+        $this->getConsole()->add(new AutocompleteCommand($this));
+        $this->getConsole()->add(new BlackjackCommand());
+        $this->getConsole()->add(new ConfigCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
-        $this->getConsole()->add($this['init_command']);
+        $this->getConsole()->add(new InitCommand());
+        $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
-        $this->getConsole()->add(new DebugCommand($this));
-        $this->getConsole()->add(new AutocompleteCommand());
-        $this->getConsole()->afterRun([$this, 'collectAnonymousStats']);
+        if (self::isPharArchive()) {
+            $selfUpdate = new PharUpdateCommand('self-update');
+            $selfUpdate->setDescription('Updates deployer.phar to the latest version');
+            $selfUpdate->setManifestUri('https://deployer.org/manifest.json');
+            $selfUpdate->setRunningFile(DEPLOYER_BIN);
+            $this->getConsole()->add($selfUpdate);
+            $this->getConsole()->getHelperSet()->set(new PharUpdateHelper());
+        }
     }
 
     /**
      * Transform tasks to console commands.
      */
-    public function addConsoleCommands()
+    public function addTaskCommands()
     {
-        $this->getConsole()->addUserArgumentsAndOptions();
-
         foreach ($this->tasks as $name => $task) {
-            if ($task->isPrivate()) {
-                continue;
-            }
+            $command = new MainCommand($name, $task->getDescription(), $this);
+            $command->setHidden($task->isHidden());
 
-            $this->getConsole()->add(new TaskCommand($name, $task->getDescription(), $this));
+            $this->getConsole()->add($command);
         }
     }
 
     /**
-     * @param string $name
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         if (isset($this[$name])) {
             return $this[$name];
@@ -261,155 +253,131 @@ class Deployer extends Container
     }
 
     /**
-     * @return Application
+     * @param mixed $value
      */
-    public function getConsole()
+    public function __set(string $name, $value)
+    {
+        $this[$name] = $value;
+    }
+
+    public function getConsole(): Application
     {
         return $this['console'];
     }
 
-    /**
-     * @return Console\Input\InputInterface
-     */
-    public function getInput()
-    {
-        return $this['input'];
-    }
-
-    /**
-     * @return Console\Output\OutputInterface
-     */
-    public function getOutput()
-    {
-        return $this['output'];
-    }
-
-    /**
-     * @param string $name
-     * @return Console\Helper\HelperInterface
-     */
-    public function getHelper($name)
+    public function getHelper(string $name): Console\Helper\HelperInterface
     {
         return $this->getConsole()->getHelperSet()->get($name);
     }
 
     /**
      * Run Deployer
-     *
-     * @param string $version
-     * @param string $deployFile
      */
-    public static function run($version, $deployFile)
+    public static function run(string $version, ?string $deployFile)
     {
-        // Init Deployer
-        $console = new Application('Deployer', $version);
-        $input = new ArgvInput();
-        $output = new ConsoleOutput();
-        $deployer = new self($console);
-
-        // Pretty-print uncaught exceptions in symfony-console
-        set_exception_handler(function ($e) use ($input, $output, $deployer) {
-            $io = new SymfonyStyle($input, $output);
-            $io->block($e->getMessage(), get_class($e), 'fg=white;bg=red', ' ', true);
-            $io->block($e->getTraceAsString());
-
-            $deployer->logger->log('['. get_class($e) .'] '. $e->getMessage());
-            $deployer->logger->log($e->getTraceAsString());
-            exit(1);
-        });
-
-        // Require deploy.php file
-        self::loadRecipe($deployFile);
-
-        // Run Deployer
-        $deployer->init();
-        $console->run($input, $output);
-    }
-
-    /**
-     * Collect anonymous stats about Deployer usage for improving developer experience.
-     * If you are not comfortable with this, you will always be able to disable this
-     * by setting `allow_anonymous_stats` to false in your deploy.php file.
-     *
-     * @param CommandEvent $commandEvent
-     * @codeCoverageIgnore
-     */
-    public function collectAnonymousStats(CommandEvent $commandEvent)
-    {
-        if ($this->config->has('allow_anonymous_stats') && $this->config['allow_anonymous_stats'] === false) {
-            return;
-        }
-
-        $stats = [
-            'status' => 'success',
-            'command_name' => $commandEvent->getCommand()->getName(),
-            'project_hash' => empty($this->config['repository']) ? null : sha1($this->config['repository']),
-            'hosts_count' => $this->hosts->count(),
-            'deployer_version' => $this->getConsole()->getVersion(),
-            'deployer_phar' => $this->getConsole()->isPharArchive(),
-            'php_version' => phpversion(),
-            'extension_pcntl' => extension_loaded('pcntl'),
-            'extension_curl' => extension_loaded('curl'),
-            'os' => defined('PHP_OS_FAMILY') ? PHP_OS_FAMILY : (stristr(PHP_OS, 'DAR') ? 'OSX' : (stristr(PHP_OS, 'WIN') ? 'WIN' : (stristr(PHP_OS, 'LINUX') ? 'LINUX' : PHP_OS))),
-            'exception' => null,
-        ];
-
-        if ($commandEvent->getException() !== null) {
-            $stats['status'] = 'error';
-            $stats['exception'] = get_class($commandEvent->getException());
-        }
-
-        if ($stats['command_name'] === 'init') {
-            $stats['allow_anonymous_stats'] = $GLOBALS['allow_anonymous_stats'] ?? false;
-        }
-
-        if (in_array($stats['command_name'], ['worker', 'list', 'help'], true)) {
-            return;
-        }
-
-        Reporter::report($stats);
-    }
-
-    /**
-     * Load recipe file
-     *
-     * @param string $deployFile
-     *
-     * @return void
-     * @codeCoverageIgnore
-     */
-    public static function loadRecipe($deployFile)
-    {
-        if (is_readable($deployFile)) {
-            // Prevent variable leak into deploy.php file
-            call_user_func(function () use ($deployFile) {
-                // reorder autoload stack.
-                $originStack = spl_autoload_functions();
-                require $deployFile;
-                $newStack = spl_autoload_functions();
-                if ($originStack[0] !== $newStack[0]) {
-                    foreach (array_reverse($originStack) as $loader) {
-                        spl_autoload_unregister($loader);
-                        spl_autoload_register($loader, true, true);
+        if (str_contains($version, 'master')) {
+            // Get version from composer.lock
+            $lockFile = __DIR__ . '/../../../../composer.lock';
+            if (file_exists($lockFile)) {
+                $content = file_get_contents($lockFile);
+                $json = json_decode($content);
+                foreach ($json->packages as $package) {
+                    if ($package->name === 'deployer/deployer') {
+                        $version = $package->version;
                     }
                 }
-            });
+            }
+        }
+
+        // Version must be without "v" prefix.
+        //    Incorrect: v7.0.0
+        //    Correct: 7.0.0
+        // But deployphp/deployer uses tags with "v", and it gets passed to
+        // the composer.json file. Let's manually remove it from the version.
+        if (preg_match("/^v/", $version)) {
+            $version = substr($version, 1);
+        }
+
+        if (!defined('DEPLOYER_VERSION')) {
+            define('DEPLOYER_VERSION', $version);
+        }
+
+        $input = new ArgvInput();
+        $output = new ConsoleOutput();
+
+        try {
+            // Init Deployer
+            $console = new Application('Deployer', $version);
+            $deployer = new self($console);
+
+            // Import recipe file
+            if (is_readable($deployFile ?? '')) {
+                $deployer->importer->import($deployFile);
+            }
+
+            // Run Deployer
+            $deployer->init();
+            $console->run($input, $output);
+
+        } catch (Throwable $exception) {
+            if (str_contains("$input", "-vvv")) {
+                $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
+            }
+            self::printException($output, $exception);
+            
+            exit(1);
         }
     }
 
-    /**
-     * @return string
-     * @codeCoverageIgnore
-     */
-    public static function getCalledScript(): string
+    public static function printException(OutputInterface $output, Throwable $exception)
     {
-        $executable = !empty($_SERVER['_']) ? $_SERVER['_'] : $_SERVER['PHP_SELF'];
-        $shortcut = false !== strpos(getenv('PATH'), dirname($executable)) ? basename($executable) : $executable;
-
-        if ($executable !== $_SERVER['PHP_SELF']) {
-            return sprintf('%s %s', $shortcut, $_SERVER['PHP_SELF']);
+        $class = get_class($exception);
+        $file = basename($exception->getFile());
+        $output->writeln([
+            "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
+            "",
+            implode("\n", array_map(function ($line) {
+                return "  " . $line;
+            }, explode("\n", $exception->getMessage()))),
+            "",
+        ]);
+        if ($output->isDebug()) {
+            $output->writeln($exception->getTraceAsString());
         }
 
-        return $shortcut;
+        if ($exception->getPrevious()) {
+            self::printException($output, $exception->getPrevious());
+        }
+    }
+
+    public static function isWorker(): bool
+    {
+        return Deployer::get()->config->has('master_url');
+    }
+
+    /**
+     * @param mixed ...$arguments
+     * @return array|bool|string
+     * @throws \Exception
+     */
+    public static function proxyCallToMaster(Host $host, string $func, ...$arguments)
+    {
+        // As request to master will stop master permanently,
+        // wait a little bit in order for periodic timer of
+        // master gather worker outputs and print it to user.
+        usleep(100000); // Sleep 100ms.
+        return Httpie::get(get('master_url') . '/proxy')
+            ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
+            ->jsonBody([
+                'host' => $host->getAlias(),
+                'func' => $func,
+                'arguments' => $arguments,
+            ])
+            ->getJson();
+    }
+
+    public static function isPharArchive(): bool
+    {
+        return 'phar:' === substr(__FILE__, 0, 5);
     }
 }

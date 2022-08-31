@@ -1,128 +1,155 @@
 # CLI Usage
 
-After [installation](installation.md) of Deployer you will have the ability to run the `dep` command from your terminal.
+After [installation](installation.md) of Deployer globally, 
+you will have the ability to run the `dep` command from your terminal.
 
-To get list of all available tasks run the `dep` command. You can run it from any subdirectories of you project; 
-Deployer will automatically find project root dir. 
- 
-~~~bash
-Deployer
+To get a list of all available tasks run the `dep` command. 
+You can run it from any subdirectory of you project,
+Deployer will automatically find project root dir.
 
+```
 Usage:
   command [options] [arguments]
 
 Options:
-  -h, --help            Display this help message
+  -h, --help            Display help for the given command. When no command is given display help for the list command
   -q, --quiet           Do not output any message
   -V, --version         Display this application version
-      --ansi            Force ANSI output
-      --no-ansi         Disable ANSI output
+      --ansi|--no-ansi  Force (or disable --no-ansi) ANSI output
   -n, --no-interaction  Do not ask any interactive question
-  -f, --file[=FILE]     Specify Deployer file
+  -f, --file=FILE       Recipe file path
   -v|vv|vvv, --verbose  Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
 
 Available commands:
-  help         Displays help for a command
-  init         Initialize deployer system in your project
-  list         Lists commands
-  run          Run any arbitrary command on hosts
-  self-update  Updates deployer.phar to the latest version
-  ssh          Connect to host through ssh
-~~~
+  autocomplete  Add CLI autocomplete
+  blackjack     Play blackjack
+  config        Get all configuration options for hosts
+  help          Display help for a command
+  init          Initialize deployer in your project
+  list          List commands
+  run           Run any arbitrary command on hosts
+  ssh           Connect to host through ssh
+  tree          Display the task-tree for a given task
+```
 
-The best way to configure your `deploy.php` is to automatically deploy to staging on this command:
- 
-~~~bash
-dep deploy
-~~~
-
-This is so somebody can't accidentally deploy to production (for production deployment, the `dep deploy production` command explicitly lists the required production stage).
-
-You need info about available options and usage use the `help` command:
- 
-~~~bash
-$ dep help deploy
-Usage:
-  deploy [options] [--] [<stage>]
-
-Arguments:
-  stage                      Stage or hostname
-
-Options:
-  -p, --parallel             Run tasks in parallel
-  -l, --limit=LIMIT          How many host to run in parallel?
-      --no-hooks             Run task without after/before hooks
-      --log=LOG              Log to file
-      --roles=ROLES          Roles to deploy
-      --hosts=HOSTS          Host to deploy, comma separated, supports ranges [:]
-  -o, --option=OPTION        Sets configuration option (multiple values allowed)
-  -h, --help                 Display this help message
-  -q, --quiet                Do not output any message
-  -V, --version              Display this application version
-      --ansi                 Force ANSI output
-      --no-ansi              Disable ANSI output
-  -n, --no-interaction       Do not ask any interactive question
-  -f, --file[=FILE]          Specify Deployer file
-      --tag[=TAG]            Tag to deploy
-      --revision[=REVISION]  Revision to deploy
-      --branch[=BRANCH]      Branch to deploy
-  -v|vv|vvv, --verbose       Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
- 
-Help:
-  Deploy your project
-~~~
-
-### Overriding configuration options
+## Overriding configuration options
 
 For example, if your _deploy.php_ file contains this configuration:
 
-~~~php
+```php
 set('ssh_multiplexing', false);
-~~~
+```
 
-And you want to enable [ssh multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) without modifying the file, you can pass the `-o` option to the `dep` command:
+And you want to enable [ssh multiplexing](https://en.wikibooks.org/wiki/OpenSSH/Cookbook/Multiplexing) without modifying the recipe, you can pass the `-o` option to the `dep` command:
 
-~~~bash
+```
 dep deploy -o ssh_multiplexing=true
-~~~
+```
 
 To override multiple config options, you can pass multiple `-o` args:
 
-~~~bash
+```
 dep deploy -o ssh_multiplexing=true -o branch=master
-~~~
+```
 
-### Running arbitrary commands
- 
-Deployer comes with a command to run any valid command on you server without modifying _deploy.php_
- 
-~~~bash
-dep run 'ls -la'
-~~~
+## Running arbitrary commands
 
-To specify the hosts this command has the corresponding options:
+Run any command on one or more hosts:
 
-~~~
-  --stage=STAGE    Stage to deploy
-  --roles=ROLES    Roles to deploy
-  --hosts=HOSTS    Host to deploy, comma separated, supports ranges [:]
-~~~
+```
+dep run 'uptime -p'
+```
 
-### Getting help
+## Tree command
 
-You can get more info about any commands by using the help command:
+Deployer has group tasks and before/after hooks, so see task tree use **dep tree** command:
 
-~~~
-dep help [command]
-~~~
+```
+$ dep tree deploy
+The task-tree for deploy:
+└── deploy
+    ├── deploy:prepare
+    │   ├── deploy:info
+    │   ├── deploy:setup
+    │   ├── deploy:lock
+    │   ├── deploy:release
+    │   ├── deploy:update_code
+    │   ├── build  // after deploy:update_code
+    │   ├── deploy:shared
+    │   └── deploy:writable
+    ├── deploy:vendors
+    ├── artisan:storage:link
+    ├── artisan:config:cache
+    ├── artisan:route:cache
+    ├── artisan:view:cache
+    ├── artisan:migrate
+    └── deploy:publish
+        ├── deploy:symlink
+        ├── deploy:unlock
+        ├── deploy:cleanup
+        └── deploy:success
+```
 
-### Autocomplete
+## Execution plan
 
-Deployer comes with an autocomplete script for bash/zsh/fish, so you don't need to remember all the tasks and options.
-To install it run following command:
+Before executing tasks, Deployer needs to flatten task tree and to decide in which order it will be executing tasks
+on which hosts. Use `--plan` option to output table with tasks/hosts:
 
-~~~bash
-dep autocomplete
-~~~
+```
+$ dep deploy --plan all
+┌──────────────────────┬──────────────────────┬──────────────────────┬──────────────────────┐
+│ prod01               │ prod02               │ prod03               │ prod04               │
+├──────────────────────┼──────────────────────┼──────────────────────┼──────────────────────┤
+│ deploy:info          │ deploy:info          │ deploy:info          │ deploy:info          │
+│ deploy:setup         │ deploy:setup         │ deploy:setup         │ deploy:setup         │
+│ deploy:lock          │ deploy:lock          │ deploy:lock          │ deploy:lock          │
+│ deploy:release       │ deploy:release       │ deploy:release       │ deploy:release       │
+│ deploy:update_code   │ deploy:update_code   │ deploy:update_code   │ deploy:update_code   │
+│ build                │ build                │ build                │ build                │
+│ deploy:shared        │ deploy:shared        │ deploy:shared        │ deploy:shared        │
+│ deploy:writable      │ deploy:writable      │ deploy:writable      │ deploy:writable      │
+│ deploy:vendors       │ deploy:vendors       │ deploy:vendors       │ deploy:vendors       │
+│ artisan:storage:link │ artisan:storage:link │ artisan:storage:link │ artisan:storage:link │
+│ artisan:config:cache │ artisan:config:cache │ artisan:config:cache │ artisan:config:cache │
+│ artisan:route:cache  │ artisan:route:cache  │ artisan:route:cache  │ artisan:route:cache  │
+│ artisan:view:cache   │ artisan:view:cache   │ artisan:view:cache   │ artisan:view:cache   │
+│ artisan:migrate      │ artisan:migrate      │ artisan:migrate      │ artisan:migrate      │
+│ deploy:symlink       │ -                    │ -                    │ -                    │
+│ -                    │ deploy:symlink       │ -                    │ -                    │
+│ -                    │ -                    │ deploy:symlink       │ -                    │
+│ -                    │ -                    │ -                    │ deploy:symlink       │
+│ deploy:unlock        │ deploy:unlock        │ deploy:unlock        │ deploy:unlock        │
+│ deploy:cleanup       │ deploy:cleanup       │ deploy:cleanup       │ deploy:cleanup       │
+│ deploy:success       │ deploy:success       │ deploy:success       │ deploy:success       │
+└──────────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
+```
 
-And follow instructions.
+The **deploy.php*:
+
+```php
+host('prod[01:04]');
+task('deploy:symlink')->limit(1);
+```
+
+## The `runLocally` working dir
+
+By default `runLocally()` commands are executed relative to the recipe file directory. 
+This can be overridden globally by setting an environment variable:
+
+```
+DEPLOYER_ROOT=. dep taskname`
+```
+
+Alternatively the root directory can be overridden per command via the cwd configuration.
+
+```php
+runLocally('ls', ['cwd' => '/root/directory']);
+```
+
+## Play blackjack
+
+Deployer comes with buildin blackjack, to play it:
+
+```
+dep blackjack
+```

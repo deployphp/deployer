@@ -1,0 +1,28 @@
+import:
+  - src/Support/update_manifest.php
+
+hosts:
+  deployer.org:
+    remote_user: anton
+
+config:
+  banner: |
+    ╭──────────────────────────────────────────────────────╮
+    │                                                      │
+    │       Update available! Mode info ï.at/update        │
+    │                                                      │
+    ╰──────────────────────────────────────────────────────╯
+
+tasks:
+  release:
+    - update_manifest
+    - release_dist
+
+  release_dist:
+    - desc: Release deployer/dist
+    - cd: ~/dev/dist
+      run: php update
+
+  create_banner:
+    - desc: Create an update banner
+    - run: echo $'{{banner}}' > {{site}}/check-updates/{{old_version}}

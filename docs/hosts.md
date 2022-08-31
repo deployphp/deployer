@@ -1,242 +1,141 @@
 # Hosts
 
-Defining a host in Deployer is necessary to deploy your application. It can be a remote machine, a local machine or Amazon EC2 instances.
-Each host contains a hostname, a stage, one or more roles and configuration parameters. 
+To define a new host use the [host()](api.md#host) function. Deployer keeps a list of
+all defined hosts in the `Deployer::get()->hosts` collection.
 
-You can define hosts with the `host` function in `deploy.php` file. Here is an example of a host definition:
+```php
+host('example.org');
+```
 
-~~~php
-host('domain.com')
-    ->stage('production')
-    ->roles('app')
-    ->set('deploy_path', '~/app');
-~~~
+Each host contains it's own configuration key-value pairs. The [host()](api.md#host)
+call defines two important configs: **alias** and **hostname**.
 
-Host *domain.com* has stage `production`, one role `app` and a configuration parameter `deploy_path` = `~/app`.
+- **hostname** - used when connecting to remote host.
+- **alias** - used as a key in `Deployer::get()->hosts` collection.
 
-Hosts can also be described by using yaml syntax. Write this in a `hosts.yml` file:
-
-~~~yaml
-domain.com:
-  stage: production
-  roles: app
-  deploy_path: ~/app
-~~~
-
-Then to `deploy.php`:
-
-~~~php
-inventory('hosts.yml');
-~~~
-
-Make sure that your `~/.ssh/config` file contains information about your domains and how to connect.
-Or you can specify that information in the `deploy.php` file itself.
-
-~~~php
-host('domain.com')
-    ->user('name')
-    ->port(22)
-    ->configFile('~/.ssh/config')
-    ->identityFile('~/.ssh/id_rsa')
-    ->forwardAgent(true)
-    ->multiplexing(true)
-    ->addSshOption('UserKnownHostsFile', '/dev/null')
-    ->addSshOption('StrictHostKeyChecking', 'no');
-~~~
-
-> **Best practice** is to leave connecting information for hosts in the `~/.ssh/config` file.
-> That way you allow different users to connect in different ways.
-
-### Overriding config per host
-
-For example, if you have some global configuration you can override it per host:
-
-~~~php
-set('branch', 'master');
-
-host('prod')
-    ...
-    ->set('branch', 'production');
-~~~
-
-Now onthe  _prod_ host the branch is set to `production`, on others to `master`.
-
-### Gathering host info
-
-Inside any task, you can get host config with the `get` function, and the host object with the `host` function.
-
-~~~php
-task('...', function () {
-    $deployPath = get('deploy_path');
-    
-    $host = host('domain.com');
-    $port = $host->getPort();
+```php
+task('test', function () {
+    writeln('The {{alias}} is {{hostname}}');
 });
-~~~
+```
 
-### Multiple hosts
+```
+$ dep test
+[example.org] The example.org is example.org
+```
 
-You can pass multiple hosts to the `host` function:
+We can override hostname via `set()` method:
 
-~~~php
-host('110.164.16.59', '110.164.16.34', '110.164.16.50', ...)
-    ->stage('production')
-    ...
-~~~
+```php
+host('example.org')
+    ->set('hostname', 'example.cloud.google.com');
+```
 
-If your inventory `hosts.yml` file contains multiple, you can change the config for all of them in the same way.
+The hostname will be used for the ssh connection, but the host will be referred to
+by it's alias when running Deployer.
 
-~~~php
-inventory('hosts.yml')
-    ->roles('app')
-    ...
-~~~
+```
+$ dep test
+[example.org] The example.org is example.cloud.google.com
+```
 
-### Host ranges
+Another important ssh connection parameter is `remote_user`.
 
-If you have a lot of hosts following similar patterns, you can describe them like this rather than listing each hostname:
+```php
+host('example.org')
+    ->set('hostname', 'example.cloud.google.com');
+    ->set('remote_user', 'deployer');
+```
 
-~~~php
-host('www[01:50].domain.com');
-~~~
+Now Deployer will connect using something like
+`ssh deployer@example.cloud.google.com` to establishing connection.
 
-For numeric patterns, leading zeros can be included or removed, as desired. Ranges are inclusive. 
+Also, Deployer's `Host` class has special setter methods (for better IDE
+autocompletion).
+
+```php
+host('example.org')
+    ->setHostname('example.cloud.google.com');
+    ->setRemoteUser('deployer');
+```
+
+:::info Config file
+It is a good practice to keep connection parameters out of `deploy.php` file, as
+they can change depending on where the deploy is executed from. Only specify
+`hostname` and `remote_user` and other keep in `~/.ssh/config`:
+
+```
+Host *
+  IdentityFile ~/.ssh/id_rsa
+```
+:::
+
+## Host config
+
+| Method               | Value                                              |
+|----------------------|----------------------------------------------------|
+| `setHostname`        | The `hostname`                                     |
+| `setRemoteUser`      | The `remote_user`                                  |
+| `setPort`            | The `port`                                         |
+| `setConfigFile`      | For example, `~/.ssh/config`.                      |
+| `setIdentityFile`    | For example, `~/.ssh/id_rsa`.                      |
+| `setForwardAgent`    | Default: `true`.                                   |
+| `setSshMultiplexing` | Default: `true`.                                   |
+| `setShell`           | Default: `bash -ls`.                               |
+| `setDeployPath`      | For example, `~/myapp`.                            |
+| `setLabels`          | Key-value pairs for host selector.                 |
+| `setSshArguments`    | For example, `['-o UserKnownHostsFile=/dev/null']` |
+
+## Multiple hosts
+
+You can pass multiple hosts to the host function:
+
+```php
+host('example.org', 'deployer.org', ...)
+    ->setRemoteUser('anton');
+```
+
+## Host ranges
+
+If you have a lot of hosts following similar patterns, you can describe them
+like this rather than listing each hostname:
+
+```php
+host('www[01:50].example.org');
+```
+
+For numeric patterns, leading zeros can be included or removed, as desired.
+Ranges are inclusive.
 
 You can also define alphabetic ranges:
 
-~~~php
-host('db[a:f].domain.com');
-~~~
+```php
+host('db[a:f].example.org');
+```
 
-### Localhost
+## Localhost
 
-If you need to build your release before deploying on a remote machine, or deploy to localhost instead of remote,
-you need to define localhost:
+The [localhost()](api.md#localhost) function defines a special local host.
+Deployer will not connect to this host, but will execute commands locally instead.
 
-~~~php
-localhost()
-    ->stage('production')
-    ->roles('test', 'build')
-    ...
-~~~
+```php
+localhost(); // Alias and hostname will be "localhost".
+localhost('ci'); // Alias is "ci", hostname is "localhost".
+```
 
-### Host aliases
+## YAML Inventory
 
-If you want to deploy an app to one host, but for example in different directories, you can describe two host aliases:
+You can use the [import()](api.md#import) function to keep host definitions in a
+separate file. For example, *inventory.yaml*.
 
-~~~php
-host('domain.com/green', 'domain.com/blue')
-    ->set('deploy_path', '~/{{hostname}}')
-    ...
-~~~
+```php title="deploy.php"
+import('inventory.yaml');
+```
 
-For Deployer, those hosts are different ones, and after deploying to both hosts you will see this directory structure:
-
-~~~
-~
-└── domain.com
-    ├── green
-    │   └── ...
-    └── blue
-        └── ...
-~~~
-
-### One host for a few stages
-
-Often you have only one server for prod and beta stages. You can easily configure them:
-
-~~~php
-host('production')
-    ->hostname('domain.com')
-    ->set('deploy_path', '~/domain.com');
-    
-host('beta')
-    ->hostname('domain.com')
-    ->set('deploy_path', '~/beta.domain.com');    
-~~~
-
-Now you can deploy with these commands:
-
-~~~sh
-dep deploy production
-dep deploy beta
-~~~
-
-### Inventory file
-
-Include hosts defined in inventory files `hosts.yml` by `inventory` function:
-
-~~~php
-inventory('hosts.yml');
-~~~
-
-Here an example of an inventory file `hosts.yml` with the full set of configuration settings
-
-~~~yaml
-domain.com:
-  hostname: domain.com
-  user: name
-  port: 22
-  configFile: ~/.ssh/config
-  identityFile: ~/.ssh/id_rsa
-  forwardAgent: true
-  multiplexing: true
-  sshOptions:
-    UserKnownHostsFile: /dev/null
-    StrictHostKeyChecking: no
-  stage: production
-  roles:
-    - app
-    - db
-  deploy_path: ~/app
-  extra_param: "foo {{hostname}}"
-~~~
-
-> **Note** that, as with the `host` function in the *deploy.php* file, it's better to omit information such as 
-> *user*, *port*, *identityFile*, *forwardAgent* and use it from the `~/.ssh/config` file instead.
-
-If your inventory file contains many similar host definitions, you can use YAML extend syntax:
-
-~~~yaml
-.base: &base
-  roles: app
-  deploy_path: ~/app
-  ...
-
-www1.domain.com:
-  <<: *base
-  stage: production
-  
-beta1.domain.com:
-  <<: *base
-  stage: beta
-    
-...
-~~~
-
-Hosts that start with `.` (*dot*) are called hidden and are not visible outside that file.
- 
-To define localhost in inventory files add a `local` key:
-
-~~~yaml
-localhost:
-  local: true
-  roles: build
-  ...
-~~~
-
-### Become
-
-Deployer allows you to ‘become’ another user, different from the user that logged into the machine (remote user).
-
-~~~php
-host('domain.com')
-    ->become('deployer')
-    ...
-~~~
-
-Deployer uses `sudo` privilege escalation method by default.
-
-> **Note** that become doesn't work with `tty` run option.
-
-Next: [deployment flow](flow.md).
+```yaml title="inventory.yaml"
+hosts:
+  example.org:
+    remote_user: deployer
+  deployer.org:
+    remote_user: deployer
+```

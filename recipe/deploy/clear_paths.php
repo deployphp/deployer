@@ -1,13 +1,13 @@
 <?php
-/* (c) Anton Medvedev <anton@medv.io>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace Deployer;
 
-desc('Cleaning up files and/or directories');
+// List of paths to remove from {{release_path}}.
+set('clear_paths', []);
+
+// Use sudo for deploy:clear_path task?
+set('clear_use_sudo', false);
+
+desc('Cleanups files and/or directories');
 task('deploy:clear_paths', function () {
     $paths = get('clear_paths');
     $sudo = get('clear_use_sudo') ? 'sudo' : '';

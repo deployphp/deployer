@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -8,241 +8,221 @@
 namespace Deployer\Host;
 
 use Deployer\Configuration\Configuration;
-use Deployer\Configuration\ConfigurationAccessor;
-use Deployer\Ssh\Arguments;
-use function Deployer\Support\array_flatten;
+use Deployer\Deployer;
+use Deployer\Exception\ConfigurationException;
+use Deployer\Task\Context;
+use function Deployer\Support\colorize_host;
 
 class Host
 {
-    use ConfigurationAccessor;
-
-    private $hostname;
-    private $realHostname;
-    private $user;
-    private $port;
-    private $configFile;
-    private $identityFile;
-    private $forwardAgent = true;
-    private $multiplexing = null;
-    private $sshArguments;
-    private $shellCommand = 'bash -s';
-
     /**
-     * @param string $hostname
+     * @var Configuration $config
      */
+    private $config;
+
     public function __construct(string $hostname)
     {
-        $this->hostname = $hostname;
-        $this->setRealHostname($hostname);
-        $this->config = new Configuration();
-        $this->sshArguments = new Arguments();
-    }
-
-    private function initOptions()
-    {
-        if ($this->port) {
-            $this->sshArguments = $this->sshArguments->withFlag('-p', $this->port);
+        $parent = null;
+        if (Deployer::get()) {
+            $parent = Deployer::get()->config;
         }
+        $this->config = new Configuration($parent);
+        $this->set('#alias', $hostname);
+        $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));
+    }
 
-        if ($this->configFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-F', $this->configFile);
+    public function __toString(): string
+    {
+        return $this->getTag();
+    }
+
+    public function config(): Configuration
+    {
+        return $this->config;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function set(string $name, $value): self
+    {
+        if ($name === 'alias') {
+            throw new ConfigurationException("Can not update alias of the host.\nThis will change only host own alias,\nbut not the key it is stored in HostCollection.");
         }
-
-        if ($this->identityFile) {
-            $this->sshArguments = $this->sshArguments->withFlag('-i', $this->getIdentityFile());
+        if ($name === '#alias') {
+            $name = 'alias';
         }
+        $this->config->set($name, $value);
+        return $this;
+    }
 
-        if ($this->forwardAgent) {
-            $this->sshArguments = $this->sshArguments->withFlag('-A');
+    public function add(string $name, array $value): self
+    {
+        $this->config->add($name, $value);
+        return $this;
+    }
+
+    public function has(string $name): bool
+    {
+        return $this->config->has($name);
+    }
+
+    public function hasOwn(string $name): bool
+    {
+        return $this->config->hasOwn($name);
+    }
+
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
+    public function get(string $name, $default = null)
+    {
+        return $this->config->get($name, $default);
+    }
+
+    public function getAlias(): ?string
+    {
+        return $this->config->get('alias');
+    }
+
+    public function setTag(string $tag): self
+    {
+        $this->config->set('tag', $tag);
+        return $this;
+    }
+
+    public function getTag(): ?string
+    {
+        return $this->config->get('tag', colorize_host($this->getAlias()));
+    }
+
+    public function setHostname(string $hostname): self
+    {
+        $this->config->set('hostname', $hostname);
+        return $this;
+    }
+
+    public function getHostname(): ?string
+    {
+        return $this->config->get('hostname');
+    }
+
+    public function setRemoteUser(string $user): self
+    {
+        $this->config->set('remote_user', $user);
+        return $this;
+    }
+
+    public function getRemoteUser(): ?string
+    {
+        return $this->config->get('remote_user');
+    }
+
+    public function setPort(int $port): self
+    {
+        $this->config->set('port', $port);
+        return $this;
+    }
+
+    public function getPort(): ?int
+    {
+        return $this->config->get('port');
+    }
+
+    public function setConfigFile(string $file): self
+    {
+        $this->config->set('config_file', $file);
+        return $this;
+    }
+
+    public function getConfigFile(): ?string
+    {
+        return $this->config->get('config_file');
+    }
+
+    public function setIdentityFile(string $file): self
+    {
+        $this->config->set('identity_file', $file);
+        return $this;
+    }
+
+    public function getIdentityFile(): ?string
+    {
+        return $this->config->get('identity_file');
+    }
+
+    public function setForwardAgent(bool $on): self
+    {
+        $this->config->set('forward_agent', $on);
+        return $this;
+    }
+
+    public function getForwardAgent(): ?bool
+    {
+        return $this->config->get('forward_agent');
+    }
+
+    public function setSshMultiplexing(bool $on): self
+    {
+        $this->config->set('ssh_multiplexing', $on);
+        return $this;
+    }
+
+    public function getSshMultiplexing(): ?bool
+    {
+        return $this->config->get('ssh_multiplexing');
+    }
+
+    public function setShell(string $command): self
+    {
+        $this->config->set('shell', $command);
+        return $this;
+    }
+
+    public function getShell(): ?string
+    {
+        return $this->config->get('shell');
+    }
+
+    public function setDeployPath(string $path): self
+    {
+        $this->config->set('deploy_path', $path);
+        return $this;
+    }
+
+    public function getDeployPath(): ?string
+    {
+        return $this->config->get('deploy_path');
+    }
+
+    public function setLabels(array $labels): self
+    {
+        $this->config->set('labels', $labels);
+        return $this;
+    }
+
+    public function getLabels(): ?array
+    {
+        return $this->config->get('labels');
+    }
+
+    public function getConnectionString(): string
+    {
+        if ($this->get('remote_user', '') !== '') {
+            return $this->get('remote_user') . '@' . $this->get('hostname');
         }
+        return $this->get('hostname');
     }
 
-    /**
-     * Returns pair user/hostname
-     *
-     * @return string
-     */
-    public function __toString()
+    public function setSshArguments(array $args): self
     {
-        $user = empty($this->user) ? '' : "{$this->user}@";
-        return "$user{$this->realHostname}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getHostname()
-    {
-        return $this->config->parse($this->hostname);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getRealHostname()
-    {
-        return $this->config->parse($this->realHostname);
-    }
-
-    public function hostname(string $hostname): self
-    {
-        $this->setRealHostname($hostname);
+        $this->config->set('ssh_arguments', $args);
         return $this;
     }
 
-    /**
-     * @param mixed $hostname
-     */
-    private function setRealHostname(string $hostname)
+    public function getSshArguments(): ?array
     {
-        $this->realHostname = preg_replace('/\/.+$/', '', $hostname);
-    }
-
-    /**
-     * @return string
-     */
-    public function getUser()
-    {
-        return $this->config->parse($this->user);
-    }
-
-    public function user(string $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPort()
-    {
-        return $this->port;
-    }
-
-    public function port(int $port): self
-    {
-        $this->port = $port;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfigFile()
-    {
-        return $this->configFile;
-    }
-
-    public function configFile(string $configFile): self
-    {
-        $this->configFile = $configFile;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getIdentityFile()
-    {
-        return $this->config->parse($this->identityFile);
-    }
-
-    public function identityFile(string $identityFile): self
-    {
-        $this->identityFile = $identityFile;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isForwardAgent()
-    {
-        return $this->forwardAgent;
-    }
-
-    public function forwardAgent(bool $forwardAgent = true): self
-    {
-        $this->forwardAgent = $forwardAgent;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isMultiplexing()
-    {
-        return $this->multiplexing;
-    }
-
-    public function multiplexing(bool $multiplexing = true): self
-    {
-        $this->multiplexing = $multiplexing;
-        return $this;
-    }
-
-    public function getSshArguments()
-    {
-        $this->initOptions();
-        return $this->sshArguments;
-    }
-
-    public function sshOptions(array $options): self
-    {
-        $this->sshArguments = $this->sshArguments->withOptions($options);
-        return $this;
-    }
-
-    public function sshFlags(array $flags): self
-    {
-        $this->sshArguments = $this->sshArguments->withFlags($flags);
-        return $this;
-    }
-
-    public function addSshOption(string $option, $value): self
-    {
-        $this->sshArguments = $this->sshArguments->withOption($option, $value);
-        return $this;
-    }
-
-    public function addSshFlag(string $flag, string $value = null): self
-    {
-        $this->sshArguments = $this->sshArguments->withFlag($flag, $value);
-        return $this;
-    }
-
-    public function getShellCommand() : string
-    {
-        return $this->shellCommand;
-    }
-
-    public function shellCommand(string $shellCommand): self
-    {
-        $this->shellCommand = $shellCommand;
-        return $this;
-    }
-
-    public function stage(string $stage): self
-    {
-        $this->config->set('stage', $stage);
-        return $this;
-    }
-
-    public function roles(...$roles): self
-    {
-        $this->config->set('roles', []);
-
-        foreach (array_flatten($roles) as $role) {
-            $this->config->add('roles', [$role]);
-        }
-
-        return $this;
-    }
-
-    public function become(string $user): self
-    {
-        $this->config->set('become', $user);
-        return $this;
+        return $this->config->get('ssh_arguments');
     }
 }

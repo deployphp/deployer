@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -7,47 +7,40 @@
 
 namespace Deployer\Task;
 
-use Deployer\Exception\Exception;
+use function Deployer\invoke;
 
 class GroupTask extends Task
 {
     /**
-     * List of tasks
+     * List of tasks.
      *
-     * @var array
+     * @var string[]
      */
     private $group;
 
     /**
-     * @param string $name
-     * @param array $group
+     * @param string[] $group
      */
-    public function __construct($name, $group)
+    public function __construct(string $name, array $group)
     {
         parent::__construct($name);
         $this->group = $group;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run(Context $context)
+    public function run(Context $context): void
     {
-        throw new \RuntimeException("Can't run group task.");
+        foreach ($this->group as $item) {
+            invoke($item);
+        }
     }
 
     /**
      * List of dependent tasks names
      *
-     * @return array
+     * @return string[]
      */
-    public function getGroup()
+    public function getGroup(): array
     {
         return $this->group;
-    }
-
-    public function local()
-    {
-        throw new Exception('Group tasks can\'t be local.');
     }
 }

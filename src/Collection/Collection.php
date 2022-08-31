@@ -7,107 +7,53 @@
 
 namespace Deployer\Collection;
 
-class Collection implements CollectionInterface, \Countable
+use Countable;
+use IteratorAggregate;
+
+class Collection implements Countable, IteratorAggregate
 {
-    /**
-     * @var mixed[]
-     */
     protected $values = [];
 
-    /**
-     * @param mixed[] $collection
-     */
-    public function __construct(array $collection = [])
+    public function all(): array
     {
-        $this->values = $collection;
+        return $this->values;
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @throws \InvalidArgumentException
+     * @return mixed
      */
     public function get(string $name)
     {
         if ($this->has($name)) {
             return $this->values[$name];
         } else {
-            return $this->throwNotFound($name);
+            $this->throwNotFound($name);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(string $name): bool
     {
         return array_key_exists($name, $this->values);
     }
 
     /**
-     * {@inheritdoc}
+     * @param mixed $object
      */
     public function set(string $name, $object)
     {
         $this->values[$name] = $object;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator()
-    {
-        return new \ArrayIterator($this->values);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetExists($offset): bool
-    {
-        return $this->has($offset);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetGet($offset)
-    {
-        return $this->get($offset);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->set($offset, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->values[$offset]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function count(): int
     {
         return count($this->values);
     }
 
-    /**
-     * @return mixed[]
-     */
     public function select(callable $callback): array
     {
         $values = [];
 
-        foreach ($this as $key => $value) {
+        foreach ($this->values as $key => $value) {
             if ($callback($value, $key)) {
                 $values[$key] = $value;
             }
@@ -117,28 +63,16 @@ class Collection implements CollectionInterface, \Countable
     }
 
     /**
-     * @return mixed
-     * @throws \InvalidArgumentException
+     * @return \ArrayIterator|\Traversable
      */
-    public function first()
+    #[\ReturnTypeWillChange]
+    public function getIterator()
     {
-        if ($this->count() === 0) {
-            throw new \InvalidArgumentException("no elements found in collection.");
-        }
-
-        return array_values($this->values)[0];
+        return new \ArrayIterator($this->values);
     }
 
-    /**
-     * @return mixed[]
-     */
-    public function toArray(): array
+    protected function throwNotFound(string $name): void
     {
-        return iterator_to_array($this);
-    }
-
-    protected function throwNotFound(string $name)
-    {
-        throw new \InvalidArgumentException("`$name` not found in collection.");
+        throw new \InvalidArgumentException("Element \"$name\" not found in collection.");
     }
 }

@@ -1,0 +1,56 @@
+#!/usr/bin/env php
+<?php
+/* (c) Anton Medvedev <anton@medv.io>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Deployer;
+
+use Deployer\Documentation\ApiGen;
+use Deployer\Documentation\DocGen;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+chdir(realpath(__DIR__ . '/..'));
+
+$input = new ArgvInput();
+$output = new ConsoleOutput();
+$app = new Application('DocGen', '1.0.0');
+$app->setDefaultCommand('all');
+
+$api = function () use ($output) {
+    $parser = new ApiGen();
+    $parser->parse(file_get_contents(__DIR__ . '/../src/functions.php'));
+    $md = $parser->markdown();
+    file_put_contents(__DIR__ . '/../docs/api.md', $md);
+    $output->writeln('API Reference documentation updated.');
+};
+
+$recipes = function () use ($input, $output) {
+    $docgen = new DocGen(__DIR__ . '/..');
+    $docgen->parse(__DIR__ . '/../recipe');
+    $docgen->parse(__DIR__ . '/../contrib');
+
+    if ($input->getOption('json')) {
+        echo json_encode($docgen->recipes, JSON_PRETTY_PRINT);
+        return;
+    }
+
+    $docgen->gen(__DIR__ . '/../docs');
+    $output->writeln('Recipes documentation updated.');
+};
+
+$app->register('api')->setCode($api);
+$app->register('recipes')->setCode($recipes)->addOption('json');
+$app->register('all')->setCode(function () use ($recipes, $api) {
+    $api();
+    $recipes();
+    echo `git status`;
+})->addOption('json');
+
+$app->run($input, $output);

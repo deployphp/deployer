@@ -7,44 +7,63 @@
 
 namespace Deployer\Configuration;
 
-use Deployer\Collection\Collection;
-use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
+use Deployer\Utility\Httpie;
 use function Deployer\Support\array_merge_alternate;
+use function Deployer\Support\is_closure;
+use function Deployer\Support\normalize_line_endings;
 
-class Configuration
+class Configuration implements \ArrayAccess
 {
+    private $parent;
+    private $values = [];
+
+    public function __construct(Configuration $parent = null)
+    {
+        $this->parent = $parent;
+    }
+
+    public function update(array $values): void
+    {
+        $this->values = array_merge($this->values, $values);
+    }
+
+    public function bind(Configuration $parent): void
+    {
+        $this->parent = $parent;
+    }
+
     /**
-     * @var Collection
+     * @param mixed $value
      */
-    private $collection;
-
-    public function __construct()
+    public function set(string $name, $value): void
     {
-        $this->collection = new Collection();
+        $this->values[$name] = $value;
     }
 
-    public function getCollection(): Collection
+    public function has(string $name): bool
     {
-        return $this->collection;
+        $ok = array_key_exists($name, $this->values);
+        if ($ok) {
+            return true;
+        }
+        if ($this->parent) {
+            return $this->parent->has($name);
+        }
+        return false;
     }
 
-    public function setCollection(Collection $collection)
+    public function hasOwn(string $name): bool
     {
-        $this->collection = $collection;
+        return array_key_exists($name, $this->values);
     }
 
-    public function set(string $name, $value)
-    {
-        $this->collection[$name] = $value;
-    }
-
-    public function add(string $name, array $array)
+    public function add(string $name, array $array): void
     {
         if ($this->has($name)) {
             $config = $this->get($name);
             if (!is_array($config)) {
-                throw new ConfigurationException("Configuration parameter `$name` isn't array.");
+                throw new ConfigurationException("Config option \"$name\" isn't array.");
             }
             $this->set($name, array_merge_alternate($config, $array));
         } else {
@@ -52,68 +71,163 @@ class Configuration
         }
     }
 
+    /**
+     * @param mixed|null $default
+     * @return mixed|null
+     */
     public function get(string $name, $default = null)
     {
-        if ($this->collection->has($name)) {
-            if ($this->isClosure($this->collection[$name])) {
-                $value = $this->collection[$name] = call_user_func($this->collection[$name]);
+        if (array_key_exists($name, $this->values)) {
+            if (is_closure($this->values[$name])) {
+                return $this->values[$name] = $this->parse(call_user_func($this->values[$name]));
             } else {
-                $value = $this->collection[$name];
+                return $this->parse($this->values[$name]);
             }
-        } else {
-            $config = Deployer::get()->config;
+        }
 
-            if (isset($config[$name])) {
-                if ($this->isClosure($config[$name])) {
-                    $value = $this->collection[$name] = call_user_func($config[$name]);
+        if ($this->parent) {
+            $rawValue = $this->parent->fetch($name);
+            if ($rawValue !== null) {
+                if (is_closure($rawValue)) {
+                    return $this->values[$name] = $this->parse(call_user_func($rawValue));
                 } else {
-                    $value = $this->collection[$name] = $config[$name];
-                }
-            } else {
-                if (null === $default) {
-                    throw new ConfigurationException("Configuration parameter `$name` does not exist.");
-                } else {
-                    $value = $default;
+                    return $this->values[$name]= $this->parse($rawValue);
                 }
             }
         }
 
-        return $this->parse($value);
-    }
+        if (func_num_args() >= 2) {
+            return $this->parse($default);
+        }
 
-    public function has(string $name): bool
-    {
-        return $this->collection->has($name);
+        throw new ConfigurationException("Config option \"$name\" does not exist.");
     }
 
     /**
-     * Parse set values
-     *
-     * @param mixed $value
-     * @return mixed
+     * @return mixed|null
+     */
+    public function fetch(string $name)
+    {
+        if (array_key_exists($name, $this->values)) {
+            return $this->values[$name];
+        }
+        if ($this->parent) {
+            return $this->parent->fetch($name);
+        }
+        return null;
+    }
+
+    /**
+     * @param string|mixed $value
+     * @return string|mixed
      */
     public function parse($value)
     {
         if (is_string($value)) {
-            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $value);
+            $normalizedValue = normalize_line_endings($value);
+            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
         }
 
         return $value;
     }
 
+    public function ownValues(): array
+    {
+        return $this->values;
+    }
+
+    public function keys(): array
+    {
+        return array_keys($this->values);
+    }
+
     /**
-     * Replace set values callback for parse
-     *
-     * @param string[] $matches
-     * @return mixed
+     * @param array $matches
+     * @return mixed|null
      */
     private function parseCallback(array $matches)
     {
         return isset($matches[1]) ? $this->get($matches[1]) : null;
     }
 
-    private function isClosure($var): bool
+    /**
+     * @param mixed $offset
+     * @return bool
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetExists($offset)
     {
-        return is_object($var) && ($var instanceof \Closure);
+        return $this->has($offset);
+    }
+
+    /**
+     * @param string $offset
+     * @return mixed|null
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetGet($offset)
+    {
+        return $this->get($offset);
+    }
+
+    /**
+     * @param string $offset
+     * @param mixed $value
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetSet($offset, $value): void
+    {
+        $this->set($offset, $value);
+    }
+
+    /**
+     * @param mixed $offset
+     */
+    #[\ReturnTypeWillChange]
+    public function offsetUnset($offset): void
+    {
+        unset($this->values[$offset]);
+    }
+
+    public function load(): void
+    {
+        if (!$this->has('master_url')) {
+            return;
+        }
+
+        $values = Httpie::get($this->get('master_url') . '/load')
+            ->jsonBody([
+                'host' => $this->get('alias'),
+            ])
+            ->getJson();
+        $this->update($values);
+    }
+
+    public function save(): void
+    {
+        if (!$this->has('master_url')) {
+            return;
+        }
+
+        Httpie::get($this->get('master_url') . '/save')
+            ->jsonBody([
+                'host' => $this->get('alias'),
+                'config' => $this->persist(),
+            ])
+            ->getJson();
+    }
+
+    public function persist(): array
+    {
+        $values = [];
+        foreach ($this->values as $key => $value) {
+            if (is_closure($value)) {
+                continue;
+            }
+            $values[$key] = $value;
+        }
+        return $values;
     }
 }

@@ -1,33 +1,31 @@
 <?php
-
 namespace Deployer;
 
-require_once __DIR__ . '/symfony3.php';
+require_once __DIR__ . '/symfony.php';
 
-add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'web/uploads']);
+add('recipes', ['sulu']);
 
-add('writable_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'web/uploads']);
+add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/uploads']);
+
+add('writable_dirs', ['public/uploads']);
 
 set('bin/websiteconsole', function () {
-    return parse('{{bin/php}} {{release_path}}/bin/websiteconsole --no-interaction');
+    return parse('{{bin/php}} {{release_or_current_path}}/bin/websiteconsole --no-interaction');
 });
 
-desc('Migrate PHPCR');
-task(
-    'phpcr:migrate',
-    function () {
-        run('{{bin/php}} {{bin/console}} phpcr:migrations:migrate {{console_options}}');
-    }
-);
+desc('Migrates PHPCR');
+task('phpcr:migrate', function () {
+    run('{{bin/console}} phpcr:migrations:migrate');
+});
 
-desc('Clear cache');
+desc('Clears cache');
 task('deploy:website:cache:clear', function () {
-    run('{{bin/websiteconsole}} cache:clear {{console_options}} --no-warmup');
+    run('{{bin/websiteconsole}} cache:clear --no-warmup');
 });
 
-desc('Warm up cache');
+desc('Warmups cache');
 task('deploy:website:cache:warmup', function () {
-    run('{{bin/websiteconsole}} cache:warmup {{console_options}}');
+    run('{{bin/websiteconsole}} cache:warmup');
 });
 
 after('deploy:cache:clear', 'deploy:website:cache:clear');

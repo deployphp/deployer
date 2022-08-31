@@ -1,15 +1,16 @@
 <?php
-
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
+
+add('recipes', ['silverstripe']);
 
 /**
  * Silverstripe configuration
  */
 
 set('shared_assets', function () {
-    if (test('[ -d {{release_path}}/public ]') || test('[ -d {{deploy_path}}/shared/public ]')) {
+    if (test('[ -d {{release_or_current_path}}/public ]') || test('[ -d {{deploy_path}}/shared/public ]')) {
         return 'public/assets';
     }
     return 'assets';
@@ -33,7 +34,7 @@ set('silverstripe_cli_script', function () {
         'vendor/silverstripe/framework/cli-script.php'
     ];
     foreach ($paths as $path) {
-        if (test('[ -f {{release_path}}/'.$path.' ]')) {
+        if (test('[ -f {{release_or_current_path}}/'.$path.' ]')) {
             return $path;
         }
     }
@@ -42,30 +43,23 @@ set('silverstripe_cli_script', function () {
 /**
  * Helper tasks
  */
+desc('Runs /dev/build');
 task('silverstripe:build', function () {
-    return run('{{bin/php}} {{release_path}}/{{silverstripe_cli_script}} /dev/build');
-})->desc('Run /dev/build');
+    return run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build');
+});
 
+desc('Runs /dev/build?flush=all');
 task('silverstripe:buildflush', function () {
-    return run('{{bin/php}} {{release_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
-})->desc('Run /dev/build?flush=all');
+    return run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
+});
 
 /**
  * Main task
  */
+desc('Deploys your project');
 task('deploy', [
-    'deploy:info',
     'deploy:prepare',
-    'deploy:lock',
-    'deploy:release',
-    'deploy:update_code',
     'deploy:vendors',
-    'deploy:shared',
-    'deploy:writable',
     'silverstripe:buildflush',
-    'deploy:symlink',
-    'deploy:unlock',
-    'cleanup',
-])->desc('Deploy your project');
-
-after('deploy', 'success');
+    'deploy:publish',
+]);

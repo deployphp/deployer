@@ -1,17 +1,23 @@
 {
-    "name": "deployer/deployer",
+    "name": "lancasters/deployer",
     "description": "Deployment Tool",
     "license": "MIT",
     "homepage": "https://deployer.org",
     "support": {
-        "issues": "https://github.com/deployphp/deployer/issues",
+        "docs": "https://deployer.org/docs",
         "source": "https://github.com/deployphp/deployer",
-        "docs": "https://deployer.org/docs"
+        "issues": "https://github.com/deployphp/deployer/issues"
     },
     "authors": [
         {
             "name": "Anton Medvedev",
             "email": "anton@medv.io"
+        }
+    ],
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/antonmedv"
         }
     ],
     "autoload": {
@@ -23,23 +29,44 @@
             "src/functions.php"
         ]
     },
+    "scripts": {
+        "test": "pest",
+        "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
+        "phpcs": "phpcs",
+        "phpstan": "phpstan analyse -c phpstan.neon",
+        "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
+    },
     "bin": [
         "bin/dep"
     ],
     "require": {
-        "deployer/phar-update": "~2.2",
-        "pimple/pimple": "~3.0",
-        "symfony/console": "~2.7|~3.0|~4.0|~5.0",
-        "symfony/process": "~2.7|~3.0|~4.0|~5.0",
-        "symfony/yaml": "~2.7|~3.0|~4.0|~5.0"
+        "php": "^8.0|^7.3",
+        "ext-json": "*",
+        "justinrainbow/json-schema": "^5.2",
+        "psr/http-message": "^1",
+        "react/http": "^1.5",
+        "symfony/console": "^5",
+        "symfony/polyfill-php80": "^1.22",
+        "symfony/process": "^5",
+        "symfony/yaml": "^5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8"
+        "pestphp/pest": "^1.0",
+        "phpstan/phpstan": "^0.12.53",
+        "phpunit/php-code-coverage": "^9.2",
+        "phpunit/phpunit": "^9.3",
+        "slevomat/coding-standard": "^6.4",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
         "sort-packages": true,
+        "process-timeout": 0,
         "platform": {
-            "php": "7.2.25"
+            "php": "7.3.0"
+        },
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }

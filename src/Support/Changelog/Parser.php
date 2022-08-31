@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -82,12 +82,15 @@ class Parser
         }
     }
 
-    private function matchVersion($line, &$m = null)
+    /**
+     * @return false|int
+     */
+    private function matchVersion(string $line, array &$m = null)
     {
         return preg_match('/^\#\# \s ( v\d+\.\d+\.\d+(-[\w\.]+)? | master )$/x', $line, $m);
     }
 
-    private function error($message): ParseException
+    private function error(string $message): ParseException
     {
         $c = count($this->span) - 1;
         $this->span[$c] = preg_replace('/^\s{4}/', ' -> ', $this->span[$c]);

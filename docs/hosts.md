@@ -59,6 +59,63 @@ host('example.org')
     ->setRemoteUser('deployer');
 ```
 
+## Host labels
+
+Hosts can receive labels to identify a subselection of all available hosts. This is a flexible approach to manage and deploy multiple hosts.
+The label names and values can be chosen freely. For example, a stage name can be applied: 
+
+```php
+host('example.org')
+    ->setLabels(['stage' => 'prod'])
+;
+
+host('staging.example.org')
+    ->setLabels(['stage' => 'staging'])
+;
+
+```
+The example above can be simplified without labels, by giving the host prod and staging as name, and using setHostname(...). 
+
+But for for multi server setups, labels become much more powerful:
+
+```php
+host('admin.example.org')
+    ->setLabels(['stage' => 'prod', 'role' => 'web'])
+;
+
+host('web[1:5].example.org')
+    ->setLabels(['stage' => 'prod', 'role' => 'web'])
+;
+
+host('db[1:2].example.org')
+    ->setLabels(['stage' => 'prod', 'role' => 'db'])
+;
+
+host('test.example.org')
+    ->setLabels(['stage' => 'test', 'role' => 'web'])
+;
+
+host('special.example.org')
+    ->setLabels(['role' => 'special'])
+;
+```
+
+When calling `dep deploy`, you can filter the hosts to deploy by passing a select string:
+
+```
+$ dep deploy stage=prod&role=web,role=special
+```
+
+To check for multiple labels that have to be set on the same host, you can use the `&` operator.
+To add another selection, you can use `,` as a separator.
+
+Also you can configure a default selection string, that is used when running 'dep deploy' without arguments.
+
+```php
+set('default_selector', "stage=prod&role=web,role=special");
+```
+
+
 ## Host config
 
 ### `alias`

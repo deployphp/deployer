@@ -14,7 +14,7 @@
        host('deployer.org')
            ->set('labels', ['stage' => 'prod']); 
        ```
-       When deploying use instead of `dep deploy prod` use `dep deploy stage=prod`. 
+       When deploying instead of `dep deploy prod` use `dep deploy stage=prod`. 
     4. `alias()` is deleted, `host()` itself sets alias and hostname, to override hostname use `setHostname()`.
 5. Update `task()` definitions.
     1. Replace `onRoles()` with `select()`:
@@ -56,8 +56,8 @@
        - run: 'cd {{release_path}} && echo {{bin/composer}} {{composer_options}} 2>&1'
    ``` 
 8. Rename task `success` to `deploy:success` and `cleanup` to `deploy:cleanup`.
-9. Verbosity function (`isDebug()`, etc) deleted. Use `output()->isDebug()` instead.
-10. runLocally() commands are executed relative to the recipe file directory. This behaviour can be overridden via an environment variable:
+9. Verbosity functions (`isDebug()`, etc) got deleted. Use `output()->isDebug()` instead.
+10. `runLocally()` commands are executed relative to the recipe file directory. This behaviour can be overridden via an environment variable:
     ```
     DEPLOYER_ROOT=. vendor/bin/dep taskname`
     ```

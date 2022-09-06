@@ -1,6 +1,7 @@
 # Installation
 
 To install Deployer, run next command in your project dir:
+
 ```
 composer require --dev deployer/deployer
 ```
@@ -21,6 +22,7 @@ alias dep='vendor/bin/dep'
 Deployer comes with autocomplete support for task names, options, and hosts.
 
 Run the next command to add bash completion support:
+
 ```
 dep completion bash > /etc/bash_completion.d/deployer
 ```

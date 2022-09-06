@@ -120,12 +120,12 @@ After our first successful deployment, we can find next structure on our server:
 
 Configure you webserver to serve the `current` directory. For example, for nginx:
 
-```nginx
-    root /home/deployer/example/current/public;
-    index index.php;
-    location / {
-        try_files $uri $uri/ /index.php?$query_string;
-    }
+```
+root /home/deployer/example/current/public;
+index index.php;
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
 ```
 
 If you're using provision recipe, Deployer will automatically configure Caddy 

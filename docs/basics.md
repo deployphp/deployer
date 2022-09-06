@@ -4,20 +4,24 @@ Deployer has two main concepts: [**hosts**](hosts.md) and [**tasks**](tasks.md).
 
 A **recipe** is a file containing definitions for **hosts** and **tasks**.
 
-Deployer CLI requires two arguments to run: a **task** to run and a **host**
-or group of **hosts**.
+Deployer CLI requires two arguments to run: a **task** to run and a **selector**.
 
 ```
 $ dep deploy deployer.org
   --- ------ ------------
    |    |         |
-   |    |         `--- The host
-   |    `------------- The task
-   `------------------ The CLI
+   |    |         `--- Selector
+   |    `------------- Task
+   `------------------ CLI
 ```
 
-Then Deployer takes the given task, performs some preparation (described later),
-and executes the task on all specified hosts.
+Deployer uses the [selector](selector.md) to choose hosts. Next takes the given 
+task, performs some preparation (described later), and executes the task on all 
+selected hosts.
+
+If selector not specified Deployer will ask you to choose host from list.
+If your recipe contains only one host, Deployer will automatically choose it.
+To select all hosts specify a special selector: `all`.
 
 The `dep` CLI looks for `deploy.php` or `deploy.yaml` file in current directory.
 
@@ -48,10 +52,6 @@ $ dep my_task
 task my_task
 $  
 ```
-
-If no host provided, Deployer will show an interactive prompt for selecting hosts.
-If your recipe contains only one host, Deployer will automatically choose it. 
-To select all hosts specify `all`.
 
 But where is our `whoami` command output? By default, Deployer runs with normal verbosity 
 level and shows only names of executed tasks. Let's increase verbosity to verbose, and
@@ -88,8 +88,8 @@ task my_task
 [deployer.org] deployer
 ```
 
-Deployer runs a task in parallel on each host. This is why the output is mixed. We can 
-limit it to run only one host.
+Deployer runs a task in parallel on each host. This is why the output is mixed. 
+We can limit it to run only on one host at a time.
 
 ```
 $ dep my_task -v all --limit 1
@@ -100,7 +100,7 @@ task my_task
 [medv.io] deployer
 ```
 
-Limit level also possible to [specified per task](tasks.md).
+Limit level also possible to [specified per task](tasks.md#limit).
 
 Each host has a configuration: a list of key-value pairs. Let's define our first 
 configuration option for both our hosts:

@@ -5,7 +5,7 @@ module.exports = [
   {
     type: "category",
     label: "Main Concepts",
-    items: ["hosts", "tasks"],
+    items: ["hosts", "tasks", "selector"],
   },
   "ci-cd",
   "yaml",

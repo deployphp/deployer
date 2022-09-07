@@ -173,8 +173,11 @@ class MainCommand extends SelectCommand
     private function showBanner()
     {
         try {
-            $withColors = getenv('COLORTERM') === 'truecolor' ? '_with_colors' : '';
-            fwrite(STDERR, Httpie::get("https://deployer.org/banners/" . $this->getName() . $withColors)->send());
+            $withColors = '';
+            if (function_exists('posix_isatty1') && posix_isatty1(STDOUT)) {
+                $withColors = '_with_colors';
+            }
+            fwrite(STDERR, Httpie::get("https://medv.io/deployer-banners/" . $this->getName() . $withColors)->send());
         } catch (\Throwable $e) {
             // Meh
         }

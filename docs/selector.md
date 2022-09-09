@@ -1,11 +1,14 @@
 # Selector
 
 Deployer uses the selector to choose hosts. Each host can have a set of labels. 
-Labels are key-value pairs. For example, `stage: production` or `role: web`. 
+Labels are key-value pairs. 
+
+For example, `stage: production` or `role: web`. 
+
 You can use labels to select hosts. For example, `dep deploy stage=production` 
 will deploy to all hosts with `stage: production` label.
 
-For example, lets define two labels **type** and **env** of our hosts:
+Let's define two labels **type** and **env** of our hosts:
 
 ```php
 host('web.example.com')
@@ -50,9 +53,9 @@ task info
 ## Selector syntax
 
 Label syntax is represented by [disjunctive normal form](https://en.wikipedia.org/wiki/Disjunctive_normal_form) 
-(**OR of ANDs).
+(**OR of ANDs**).
 
-For example, `type=web,env=prod` is a selector of: `type=web` **or** `env=prod`.
+For example, `type=web,env=prod` is a selector of: `type=web` **OR** `env=prod`.
 
 ```bash
 $ dep info 'type=web,env=prod'
@@ -64,7 +67,7 @@ task info
 As you can see both hosts are selected (as both of them has `env: prod` label).
 
 We can use `&` to define **AND**. For example, `type=web & env=prod` is a selector
-for hosts with `type: web` **and** `env: prod` labels.
+for hosts with `type: web` **AND** `env: prod` labels.
 
 ```bash
 $ dep info 'type=web & env=prod'
@@ -104,40 +107,13 @@ task info
 [web.example.com] type:web env:prod
 ```
 
-And a few hosts `dep info web.example.com db.example.com` is a same as 
-`dep info alias=web.example.com,alias=db.example.com`.
-
-# Labels in YAML
-
-You can also define labels in YAML recipe. For example:
-
-```yaml
-hosts:
-  web.example.com:
-    remote_user: deployer
-    env: production
-    labels:
-      env: prod
-```
-
-But make sure to distinguish between `env` and `labels.env` keys. 
-`env` is a configuration key, and `labels.env` is a label.
-
-```php
-task('info', function () {
-    writeln('env:' . get('env') . ' labels.env:' . get('labels')['env']);
-});
-```
-
-Will print:
-
 ```bash
-$ dep info env=prod
-task info
-[web.example.com] env:production labels.env:prod
-```
+$ dep info 'web.example.com' 'db.example.com'
+$ # Same as: 
+$ dep info 'alias=web.example.com,alias=db.example.com'
+````
 
-## Using selectors in PHP
+## Using select() function
 
 You can use [select()](api.md#select) function to select hosts by selector from PHP code.
 
@@ -158,4 +134,44 @@ task('info', function () {
         writeln('type:' . get('labels')['type'] . ' env:' . get('labels')['env']);
     });
 });
+```
+
+## Task selectors
+
+To restrict a task to run only on selected hosts, you can use [select()](tasks.md#select) method.
+
+```php
+task('info', function () {
+    // ...
+})->select('type=web,env=prod');
+```
+
+## Labels in YAML
+
+You can also define labels in YAML recipe. For example:
+
+```yaml
+hosts:
+  web.example.com:
+    remote_user: deployer
+    env: production
+    labels:
+      env: prod
+```
+
+But make sure to distinguish between `env` and `labels.env` keys.
+`env` is a configuration key, and `labels.env` is a label.
+
+```php
+task('info', function () {
+    writeln('env:' . get('env') . ' labels.env:' . get('labels')['env']);
+});
+```
+
+Will print:
+
+```bash
+$ dep info env=prod
+task info
+[web.example.com] env:production labels.env:prod
 ```

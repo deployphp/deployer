@@ -174,10 +174,10 @@ class MainCommand extends SelectCommand
     {
         try {
             $withColors = '';
-            if (function_exists('posix_isatty1') && posix_isatty1(STDOUT)) {
+            if (function_exists('posix_isatty') && posix_isatty(STDOUT)) {
                 $withColors = '_with_colors';
             }
-            fwrite(STDERR, Httpie::get("https://medv.io/deployer-banners/" . $this->getName() . $withColors)->send());
+            fwrite(STDERR, Httpie::get("https://deployer.medv.io/banners/" . $this->getName() . $withColors)->send());
         } catch (\Throwable $e) {
             // Meh
         }

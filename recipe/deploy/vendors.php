@@ -5,6 +5,8 @@ set('composer_action', 'install');
 
 set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction --no-dev --optimize-autoloader');
 
+set('composer_env_vars', '');
+
 // Returns Composer binary path in found. Otherwise try to install latest
 // composer version to `.dep/composer.phar`. To use specific composer version
 // download desired phar and place it at `.dep/composer.phar`.
@@ -28,5 +30,5 @@ task('deploy:vendors', function () {
     if (!commandExist('unzip')) {
         warning('To speed up composer installation setup "unzip" command with PHP zip extension.');
     }
-    run('cd {{release_or_current_path}} && {{bin/composer}} {{composer_action}} {{composer_options}} 2>&1');
+    run('cd {{release_or_current_path}} && {{composer_env_vars}} {{bin/composer}} {{composer_action}} {{composer_options}} 2>&1');
 });

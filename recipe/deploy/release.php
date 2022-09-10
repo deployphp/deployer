@@ -104,7 +104,16 @@ task('deploy:release', function () {
 
     // Check what there is no such release path.
     if (test("[ -d $releasePath ]")) {
-        throw new Exception("Release name \"$releaseName\" already exists.\nRelease name can be overridden via:\n dep deploy -o release_name=$releaseName");
+        $freeReleaseName = '...';
+        // Check what $releaseName is integer.
+        if (ctype_digit($releaseName)) {
+            $freeReleaseName = intval($releaseName);
+            // Find free release name.
+            while (test("[ -d releases/$freeReleaseName ]")) {
+                $freeReleaseName++;
+            }
+        }
+        throw new Exception("Release name \"$releaseName\" already exists.\nRelease name can be overridden via:\n dep deploy -o release_name=$freeReleaseName");
     }
 
     // Save release_name.

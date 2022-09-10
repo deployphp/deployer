@@ -77,6 +77,13 @@ set('release_or_current_path', function () {
     return $releaseExists ? get('release_path') : get('current_path');
 });
 
+// Return the previous release path during a release.
+// If there is no release, will return false. Make sure to call deploy:release
+// task before accessing this config.
+set('previous_release', function () {
+    throw new Exception(parse('The "previous_release" available only after deploy:release task.'));
+});
+
 // Clean up unfinished releases and prepare next release
 desc('Prepares release');
 task('deploy:release', function () {

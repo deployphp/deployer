@@ -51,11 +51,20 @@ but fallback to the current path otherwise.
 
 
 
+### previous_release
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L83)
+
+Return the previous release path during a release.
+If there is no release, will return false. Make sure to call deploy:release
+task before accessing this config.
+
+
+
 
 ## Tasks
 
 ### deploy:release
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L89)
 
 Prepares release.
 
@@ -63,7 +72,7 @@ Clean up unfinished releases and prepare next release
 
 
 ### releases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L149)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L156)
 
 Shows releases list.
 

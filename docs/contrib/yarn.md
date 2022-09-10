@@ -43,6 +43,6 @@ after('deploy:update_code', 'yarn:install');
 
 Installs Yarn packages.
 
-In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
+In there is a [previous_release](/docs/recipe/deploy/release.md#previous_release), node_modules will be copied from it before installing deps with yarn.
 
 

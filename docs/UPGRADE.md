@@ -68,6 +68,7 @@
 12. Replace `locateBinaryPath()` with `which()` func.
 13. Configuration property `default_stage` is not supported.
 14. Replace `onHosts()` and `onStage()` with [labels & selectors](selector.md).
+15. Replace `setPrivate()` with [`hidden()`](tasks.md#hidden).
 
 ### Step 2: Deploy
 

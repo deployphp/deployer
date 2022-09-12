@@ -2,42 +2,48 @@
 <!-- Instead edit recipe/laravel.php -->
 <!-- Then run bin/docgen -->
 
-# How to Deploy Laravel
+# How to Deploy a Laravel Project
 
 [Source](/recipe/laravel.php)
 
-## How to deploy a Laravel project with zero downtime?
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your Laravel application to a server. 
+It is very easy to use and has a lot of features. 
 
-- First, [install](/docs/installation.md) the Deployer. 
-- Second, require `recipe/laravel.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
-- Third, now you can have a zero downtime deployment!
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
 
-Did you know that you can deploy **Laravel** project with a single command? Just run `dep deploy`.
-Something went wrong? Just run `dep rollback` to rollback your changes.
-Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
 
-Another cool feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
-This command will configure webserver, databases, php, ssl certificates, and more. 
-You will get everything you need to run your **Laravel** project.
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
-Deployer does next steps to [deploy](#deploy) **Laravel**:
-* Displays info about deployment
-* Prepares host for deploy
-* Locks deploy
-* Prepares release
-* Updates code
-* Creates symlinks for shared files and dirs
-* Makes writable dirs
-* Installs vendors
-* Creates the symbolic links configured for the application
-* Creates a cache file for faster configuration loading
-* Creates a route cache file for faster route registration
-* Compiles all of the application\'s Blade templates
-* Discovers and cache the application\'s events and listeners
-* Runs the database migrations
-* Creates symlink to release
-* Unlocks deploy
-* Cleanup old releases
+The [deploy](#deploy) task of **Laravel** consists of:
+* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
+* [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink) – Creates the symbolic links configured for the application
+* [artisan:config:cache](/docs/recipe/laravel.md#artisanconfigcache) – Creates a cache file for faster configuration loading
+* [artisan:route:cache](/docs/recipe/laravel.md#artisanroutecache) – Creates a route cache file for faster route registration
+* [artisan:view:cache](/docs/recipe/laravel.md#artisanviewcache) – Compiles all of the application\'s Blade templates
+* [artisan:event:cache](/docs/recipe/laravel.md#artisaneventcache) – Discovers and cache the application\'s events and listeners
+* [artisan:migrate](/docs/recipe/laravel.md#artisanmigrate) – Runs the database migrations
+* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
 
 
 The laravel recipe is based on the [common](/docs/recipe/common.md) recipe.

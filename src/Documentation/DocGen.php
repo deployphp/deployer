@@ -136,10 +136,12 @@ class DocGen
             if ($frameworkRecipe) {
                 $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
                 $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
+                $brandName = preg_replace('/yii/', 'Yii2', $brandName);
                 $brandName = preg_replace('/_/', ' ', $brandName);
                 $brandName = preg_replace('/framework/', 'Framework', $brandName);
                 $brandName = ucfirst($brandName);
-                $title = 'How to Deploy ' . $brandName;
+                $typeOfProject = preg_match('/^symfony/i', $recipe->recipeName) ? 'Application' : 'Project';
+                $title = "How to Deploy a $brandName $typeOfProject";
             } else {
                 $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
             }
@@ -149,42 +151,37 @@ class DocGen
             $tasks = '';
 
             if ($frameworkRecipe) {
-                srand(crc32($brandName));
-                $application = ['application', 'project'][rand(0, 1)];
-                $https = ['https', 'ssl certificates'][rand(0, 1)];
-                $justRun = ['Just run', 'Just execute'][rand(0, 1)];
-                $advantage = ['advantage', 'advantages'][rand(0, 1)];
-                $another = ['Another', 'Another cool', 'Also, another'][rand(0, 2)];
-                $now = ['now', 'and now'][rand(0, 1)];
-                $intro .= <<<MD
-## How to deploy a $brandName project with zero downtime?
+                $intro .= <<<MARKDOWN
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your $brandName application to a server. 
+It is very easy to use and has a lot of features. 
 
-- First, [install](/docs/installation.md) the Deployer. 
-- Second, require `$recipe->recipePath` recipe into your _deploy.php_ or _deploy.yaml_ file.
-- Third, $now you can have a zero downtime deployment!
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
 
-Did you know that you can deploy **$brandName** project with a single command? $justRun `dep deploy`.
-Something went wrong? Just run `dep rollback` to rollback your changes.
-Also, you can take an $advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
 
-$another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
-This command will configure webserver, databases, php, $https, and more. 
-You will get everything you need to run your **$brandName** $application.
-MD. "\n\n";
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
+
+
+MARKDOWN;
 
                 $deployTask = $findTask('deploy');
                 if ($deployTask !== null) {
-                    $intro .= "Deployer does next steps to [deploy](#deploy) **$brandName**:\n";
-                    $map = function (DocTask $task) use (&$map, $findTask, &$intro): void {
+                    $intro .= "The [deploy](#deploy) task of **$brandName** consists of:\n";
+                    $map = function (DocTask $task, $ident = '') use (&$map, $findTask, &$intro): void {
                         foreach ($task->group as $taskName) {
                             $t = $findTask($taskName);
                             if ($t !== null) {
+                                $intro .= "$ident* {$t->mdLink()} – $t->desc\n";
                                 if ($t->group !== null) {
-                                    $map($t);
-                                } else {
-                                    if (!empty($t->desc)) {
-                                        $intro .= "* " . $t->desc . "\n";
-                                    }
+                                    $map($t, $ident . '  ');
                                 }
                             }
                         }
@@ -239,7 +236,6 @@ MD. "\n\n";
             if (count($recipe->tasks) > 0) {
                 $tasks .= "## Tasks\n\n";
                 foreach ($recipe->tasks as $t) {
-                    $anchor = anchor($t->name);
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](https://github.com/deployphp/deployer/blob/master/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= add_tailing_dot($t->desc) . "\n\n";
@@ -250,9 +246,7 @@ MD. "\n\n";
                         foreach ($t->group as $taskName) {
                             $t = $findTask($taskName);
                             if ($t !== null) {
-                                $md = php_to_md($t->recipePath);
-                                $anchor = anchor($t->name);
-                                $tasks .= "* [$taskName](/docs/$md#$anchor)\n";
+                                $tasks .= "* {$t->mdLink()}\n";
                             } else {
                                 $tasks .= "* `$taskName`\n";
                             }

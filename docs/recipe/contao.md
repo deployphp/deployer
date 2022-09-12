@@ -2,39 +2,45 @@
 <!-- Instead edit recipe/contao.php -->
 <!-- Then run bin/docgen -->
 
-# How to Deploy Contao
+# How to Deploy a Contao Project
 
 [Source](/recipe/contao.php)
 
-## How to deploy a Contao project with zero downtime?
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your Contao application to a server. 
+It is very easy to use and has a lot of features. 
 
-- First, [install](/docs/installation.md) the Deployer. 
-- Second, require `recipe/contao.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
-- Third, now you can have a zero downtime deployment!
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
 
-Did you know that you can deploy **Contao** project with a single command? Just execute `dep deploy`.
-Something went wrong? Just run `dep rollback` to rollback your changes.
-Also, you can take an advantages of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
 
-Another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
-This command will configure webserver, databases, php, ssl certificates, and more. 
-You will get everything you need to run your **Contao** application.
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
-Deployer does next steps to [deploy](#deploy) **Contao**:
-* Displays info about deployment
-* Prepares host for deploy
-* Locks deploy
-* Prepares release
-* Updates code
-* Creates symlinks for shared files and dirs
-* Makes writable dirs
-* Installs vendors
-* Enable maintenance mode
-* Run Contao migrations
-* Disable maintenance mode
-* Creates symlink to release
-* Unlocks deploy
-* Cleanup old releases
+The [deploy](#deploy) task of **Contao** consists of:
+* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
+* [contao:maintenance:enable](/docs/recipe/contao.md#contaomaintenanceenable) – Enable maintenance mode
+* [contao:migrate](/docs/recipe/contao.md#contaomigrate) – Run Contao migrations
+* [contao:maintenance:disable](/docs/recipe/contao.md#contaomaintenancedisable) – Disable maintenance mode
+* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
 
 
 The contao recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.

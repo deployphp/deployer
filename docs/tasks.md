@@ -117,7 +117,7 @@ You can define tasks to be run before or after specific tasks.
 
 ```php
 task('deploy:done', function () {
-    write('Deploy done!');
+    writeln('Deploy done!');
 });
 
 after('deploy', 'deploy:done');

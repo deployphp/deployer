@@ -74,6 +74,11 @@ after('deploy:failed', 'cimonitor:notify:failure');
 
 Title of project based on git repo
 
+```php title="Default value"
+$repo = get('repository');
+$pattern = '/\w+\/\w+/';
+return preg_match($pattern, $repo, $titles) ? $titles[0] : $repo;
+```
 
 
 ### cimonitor_user
@@ -81,6 +86,12 @@ Title of project based on git repo
 
 
 
+```php title="Default value"
+return [
+'name' => runLocally('git config --get user.name'),
+'email' => runLocally('git config --get user.email'),
+];
+```
 
 
 ### cimonitor_status_info

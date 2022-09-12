@@ -90,6 +90,9 @@ false
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### slack_text

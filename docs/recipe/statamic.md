@@ -56,6 +56,11 @@ The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
 
 
 
+```php title="Default value"
+$result = run('{{bin/php}} {{release_or_current_path}}/please --version');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 'unknown';
+```
 
 
 

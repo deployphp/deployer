@@ -114,6 +114,11 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 
+```php title="Default value"
+$result = run('{{bin/php}} {{release_or_current_path}}/artisan --version');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 5.5;
+```
 
 
 

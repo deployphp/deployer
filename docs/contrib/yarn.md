@@ -29,6 +29,9 @@ after('deploy:update_code', 'yarn:install');
 
 
 
+```php title="Default value"
+return which('yarn');
+```
 
 
 

@@ -64,6 +64,9 @@ after('deploy:failed', 'discord:notify:failure');
 
 
 
+```php title="Default value"
+return 'https://discordapp.com/api/webhooks/{{discord_channel}}/{{discord_token}}/slack';
+```
 
 
 ### discord_notify_text
@@ -71,6 +74,11 @@ after('deploy:failed', 'discord:notify:failure');
 
 Deploy messages
 
+```php title="Default value"
+return [
+'text' => parse(':&#8203;information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_'),
+];
+```
 
 
 ### discord_success_text
@@ -78,6 +86,11 @@ Deploy messages
 
 
 
+```php title="Default value"
+return [
+'text' => parse(':&#8203;white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully'),
+];
+```
 
 
 ### discord_failure_text
@@ -85,6 +98,11 @@ Deploy messages
 
 
 
+```php title="Default value"
+return [
+'text' => parse(':&#8203;no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_'),
+];
+```
 
 
 ### discord_message

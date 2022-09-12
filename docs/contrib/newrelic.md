@@ -33,6 +33,10 @@ after('deploy', 'newrelic:notify');
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L22)
 
 
+:::info Required
+Throws exception if not set.
+:::
+
 
 
 
@@ -41,6 +45,9 @@ after('deploy', 'newrelic:notify');
 
 
 
+```php title="Default value"
+return runLocally('git log -n 1 --format="%an: %s" | tr \'"\' "\'"');
+```
 
 
 ### newrelic_revision
@@ -48,6 +55,9 @@ after('deploy', 'newrelic:notify');
 
 
 
+```php title="Default value"
+return runLocally('git log -n 1 --format="%h"');
+```
 
 
 

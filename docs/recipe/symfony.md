@@ -53,6 +53,11 @@ The symfony recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 
 
+```php title="Default value"
+$result = run('{{bin/console}} --version');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 5.0;
+```
 
 
 ### shared_dirs
@@ -129,6 +134,9 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 
+```php title="Default value"
+return '--no-interaction';
+```
 
 
 

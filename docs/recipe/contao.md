@@ -59,6 +59,11 @@ The public path is the path to be set as DocumentRoot and is defined in the `com
 but defaults to `public` from Contao 5.0 on.
 This path is relative from the [current_path](/docs/recipe/common.md#current_path), see [`recipe/provision/website.php`](/docs/recipe/provision/website.php#public_path).
 
+```php title="Default value"
+$composerConfig = json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
+
+return $composerConfig['extra']['public-dir'] ?? 'public';
+```
 
 
 ### bin/console
@@ -68,6 +73,9 @@ Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfon
 
 
 
+```php title="Default value"
+return '{{bin/php}} {{release_or_current_path}}/vendor/bin/contao-console';
+```
 
 
 ### contao_version
@@ -75,6 +83,9 @@ Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfon
 
 
 
+```php title="Default value"
+return run('{{bin/console}} contao:version');
+```
 
 
 

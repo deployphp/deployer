@@ -17,6 +17,9 @@ require 'recipe/deploy/symlink.php';
 
 Use mv -T if available. Will check automatically.
 
+```php title="Default value"
+return commandSupportsOption('mv', '--no-target-directory');
+```
 
 
 

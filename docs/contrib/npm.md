@@ -30,6 +30,9 @@ after('deploy:update_code', 'npm:install');
 
 
 
+```php title="Default value"
+return which('npm');
+```
 
 
 

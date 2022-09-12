@@ -76,6 +76,9 @@ after('deploy:failed', 'yammer:notify:failure');
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### yammer_body

@@ -96,6 +96,9 @@ Update using: `set('static_content_jobs', '1');`
 
 
 
+```php title="Default value"
+return time();
+```
 
 
 ### shared_files
@@ -180,6 +183,12 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 
+```php title="Default value"
+// detect version
+$versionOutput = run('{{bin/php}} {{release_or_current_path}}/bin/magento --version');
+preg_match('/(\d+\.?)+(-p\d+)?$/', $versionOutput, $matches);
+return $matches[0] ?? '2.0';
+```
 
 
 ### maintenance_mode_status_active
@@ -187,6 +196,11 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 
+```php title="Default value"
+// detect maintenance mode active
+$maintenanceModeStatusOutput = run("{{bin/php}} {{release_or_current_path}}/bin/magento maintenance:status");
+return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
+```
 
 
 ### enable_zerodowntime

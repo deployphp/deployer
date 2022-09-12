@@ -23,6 +23,9 @@ require 'recipe/provision.php';
 Name of lsb_release like: focal, bionic, etc.
 As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
 
+```php title="Default value"
+return run("lsb_release -s -c");
+```
 
 
 ### sudo_password
@@ -30,6 +33,9 @@ As only Ubuntu 20.04 LTS is supported for provision should be the `focal`.
 
 
 
+```php title="Default value"
+return askHiddenResponse(' Password for sudo: ');
+```
 
 
 ### ssh_copy_id

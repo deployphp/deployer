@@ -102,12 +102,20 @@ after('deploy:failed', 'chatwork:notify:failure');
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L91)
 
 Chatwork settings
+:::info Required
+Throws exception if not set.
+:::
+
 
 
 
 ### chatwork_room_id
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L94)
 
+
+:::info Required
+Throws exception if not set.
+:::
 
 
 
@@ -117,6 +125,9 @@ Chatwork settings
 
 
 
+```php title="Default value"
+return 'https://api.chatwork.com/v2/rooms/' . get('chatwork_room_id') . '/messages';
+```
 
 
 ### chatwork_notify_text

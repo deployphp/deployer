@@ -17,6 +17,9 @@ require 'recipe/provision/website.php';
 
 
 
+```php title="Default value"
+return ask(' Domain: ');
+```
 
 
 ### public_path
@@ -24,6 +27,9 @@ require 'recipe/provision/website.php';
 
 
 
+```php title="Default value"
+return ask(' Public path: ', 'public');
+```
 
 
 

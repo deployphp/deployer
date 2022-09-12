@@ -76,6 +76,9 @@ after('deploy:failed', 'rocketchat:notify:failure');
 
 
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### rocketchat_icon_emoji

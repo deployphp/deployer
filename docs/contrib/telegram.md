@@ -75,18 +75,29 @@ after('deploy:failed', 'telegram:notify:failure');
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### telegram_token
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L68)
 
 Telegram settings
+:::info Required
+Throws exception if not set.
+:::
+
 
 
 
 ### telegram_chat_id
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L71)
 
+
+:::info Required
+Throws exception if not set.
+:::
 
 
 
@@ -96,6 +107,9 @@ Telegram settings
 
 
 
+```php title="Default value"
+return 'https://api.telegram.org/bot' . get('telegram_token') . '/sendmessage';
+```
 
 
 ### telegram_text

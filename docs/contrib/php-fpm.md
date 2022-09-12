@@ -47,6 +47,9 @@ after('deploy', 'php-fpm:reload');
 
 Automatically detects by using [bin/php](/docs/recipe/common.md#bin/php).
 
+```php title="Default value"
+return run('{{bin/php}} -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);"');
+```
 
 
 ### php_fpm_service

@@ -39,6 +39,9 @@ add('crontab:jobs', [
 
 Get path to bin
 
+```php title="Default value"
+return which('crontab');
+```
 
 
 

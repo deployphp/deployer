@@ -56,6 +56,9 @@ after('deploy:failed', 'chat:notify:failure');
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### chat_subtitle

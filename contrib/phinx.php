@@ -93,8 +93,7 @@ set('bin/phinx', function () {
     } else {
         throw new \RuntimeException('Cannot find phinx. Please specify path to phinx manually');
     }
-}
-);
+});
 
 /**
  * Make Phinx command
@@ -104,7 +103,8 @@ set('bin/phinx', function () {
  *
  * @return string Phinx command to execute
  */
-function phinx_get_cmd($cmdName, $conf) {
+function phinx_get_cmd($cmdName, $conf)
+{
     $phinx = get('phinx_path') ?: get('bin/phinx');
 
     $phinxCmd = "$phinx $cmdName";
@@ -127,7 +127,8 @@ function phinx_get_cmd($cmdName, $conf) {
  *
  * @return array Array of options
  */
-function phinx_get_allowed_config($allowedOptions) {
+function phinx_get_allowed_config($allowedOptions)
+{
     $opts = [];
 
     try {
@@ -162,8 +163,7 @@ task('phinx:migrate', function () {
     run($phinxCmd);
 
     cd('{{deploy_path}}');
-}
-);
+});
 
 desc('Rollbacks database migrations with phinx');
 task('phinx:rollback', function () {
@@ -184,8 +184,7 @@ task('phinx:rollback', function () {
     run($phinxCmd);
 
     cd('{{deploy_path}}');
-}
-);
+});
 
 desc('Seeds database with phinx');
 task('phinx:seed', function () {
@@ -205,8 +204,7 @@ task('phinx:seed', function () {
     run($phinxCmd);
 
     cd('{{deploy_path}}');
-}
-);
+});
 
 desc('Sets a migrations breakpoint with phinx');
 task('phinx:breakpoint', function () {
@@ -226,5 +224,4 @@ task('phinx:breakpoint', function () {
     run($phinxCmd);
 
     cd('{{deploy_path}}');
-}
-);
+});

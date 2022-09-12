@@ -53,6 +53,9 @@ The sulu recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 
 
 
+```php title="Default value"
+return parse('{{bin/php}} {{release_or_current_path}}/bin/websiteconsole --no-interaction');
+```
 
 
 

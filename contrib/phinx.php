@@ -1,12 +1,5 @@
 <?php
 /*
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/phinx.php';
-```
 
 ## Configuration options
 

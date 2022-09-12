@@ -4,6 +4,10 @@
 
 # How to Deploy a Joomla Project
 
+```php
+require 'recipe/joomla.php';
+```
+
 [Source](/recipe/joomla.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

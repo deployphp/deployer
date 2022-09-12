@@ -4,6 +4,10 @@
 
 # Rollback Recipe
 
+```php
+require 'recipe/deploy/rollback.php';
+```
+
 [Source](/recipe/deploy/rollback.php)
 
 

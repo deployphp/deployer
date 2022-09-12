@@ -4,6 +4,10 @@
 
 # Chatwork Recipe
 
+```php
+require 'contrib/chatwork.php';
+```
+
 [Source](/contrib/chatwork.php)
 
 

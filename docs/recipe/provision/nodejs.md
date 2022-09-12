@@ -4,6 +4,10 @@
 
 # Nodejs Recipe
 
+```php
+require 'recipe/provision/nodejs.php';
+```
+
 [Source](/recipe/provision/nodejs.php)
 
 

@@ -4,6 +4,10 @@
 
 # Crontab Recipe
 
+```php
+require 'contrib/crontab.php';
+```
+
 [Source](/contrib/crontab.php)
 
 

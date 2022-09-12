@@ -4,6 +4,10 @@
 
 # How to Deploy a Flow Framework Project
 
+```php
+require 'recipe/flow_framework.php';
+```
+
 [Source](/recipe/flow_framework.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

@@ -4,6 +4,10 @@
 
 # How to Deploy a Laravel Project
 
+```php
+require 'recipe/laravel.php';
+```
+
 [Source](/recipe/laravel.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

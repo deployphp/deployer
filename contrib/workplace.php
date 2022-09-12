@@ -1,14 +1,7 @@
 <?php
 /*
-## Installing
-
 This recipes works with Custom Integrations and Publishing Bots.
 
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/workplace.php';
-```
 
 Add hook on deploy:
 

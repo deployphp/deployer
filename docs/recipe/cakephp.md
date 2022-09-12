@@ -4,6 +4,10 @@
 
 # How to Deploy a Cakephp Project
 
+```php
+require 'recipe/cakephp.php';
+```
+
 [Source](/recipe/cakephp.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

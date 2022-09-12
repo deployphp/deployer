@@ -4,6 +4,10 @@
 
 # How to Deploy a Drupal 7 Project
 
+```php
+require 'recipe/drupal7.php';
+```
+
 [Source](/recipe/drupal7.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

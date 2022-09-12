@@ -1,13 +1,5 @@
 <?php
 /*
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/npm.php';
-```
-
 ## Configuration
 
 - `bin/npm` *(optional)*: set npm binary, automatically detected otherwise.

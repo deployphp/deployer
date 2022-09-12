@@ -4,6 +4,10 @@
 
 # How to Deploy a Pimcore Project
 
+```php
+require 'recipe/pimcore.php';
+```
+
 [Source](/recipe/pimcore.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

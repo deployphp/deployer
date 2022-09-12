@@ -4,17 +4,13 @@
 
 # Newrelic Recipe
 
-[Source](/contrib/newrelic.php)
-
-
-
-## Installing
-
-Add to your _deploy.php_
-
 ```php
 require 'contrib/newrelic.php';
 ```
+
+[Source](/contrib/newrelic.php)
+
+
 
 ## Configuration
 
@@ -34,21 +30,21 @@ after('deploy', 'newrelic:notify');
 
 ## Configuration
 ### newrelic_app_id
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L22)
 
 
 
 
 
 ### newrelic_description
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L34)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L26)
 
 
 
 
 
 ### newrelic_revision
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L38)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L30)
 
 
 
@@ -58,7 +54,7 @@ after('deploy', 'newrelic:notify');
 ## Tasks
 
 ### newrelic:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L35)
 
 Notifies New Relic of deployment.
 

@@ -4,17 +4,14 @@
 
 # Phinx Recipe
 
+```php
+require 'contrib/phinx.php';
+```
+
 [Source](/contrib/phinx.php)
 
 
 
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/phinx.php';
-```
 
 ## Configuration options
 
@@ -74,7 +71,7 @@ For further reading see [phinx.org](https://phinx.org). Complete descriptions of
 
 ## Configuration
 ### bin/phinx
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L80)
 
 Path to Phinx
 
@@ -84,7 +81,7 @@ Path to Phinx
 ## Tasks
 
 ### phinx:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L154)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L147)
 
 Migrats database with phinx.
 
@@ -92,7 +89,7 @@ Migrats database with phinx.
 
 
 ### phinx:rollback
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L176)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L169)
 
 Rollbacks database migrations with phinx.
 
@@ -100,7 +97,7 @@ Rollbacks database migrations with phinx.
 
 
 ### phinx:seed
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L198)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L191)
 
 Seeds database with phinx.
 
@@ -108,7 +105,7 @@ Seeds database with phinx.
 
 
 ### phinx:breakpoint
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L219)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/phinx.php#L212)
 
 Sets a migrations breakpoint with phinx.
 

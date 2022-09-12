@@ -4,17 +4,15 @@
 
 # Discord Recipe
 
+```php
+require 'contrib/discord.php';
+```
+
 [Source](/contrib/discord.php)
 
 
 
 ## Installing
-
-Require discord recipe in your `deploy.php` file:
-
-```php
-require 'contrib/discord.php';
-```
 
 Add hook on deploy:
 
@@ -62,35 +60,35 @@ after('deploy:failed', 'discord:notify:failure');
 
 ## Configuration
 ### discord_webhook
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L53)
 
 
 
 
 
 ### discord_notify_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L58)
 
 Deploy messages
 
 
 
 ### discord_success_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L69)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L63)
 
 
 
 
 
 ### discord_failure_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L68)
 
 
 
 
 
 ### discord_message
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L81)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L75)
 
 The message
 
@@ -103,7 +101,7 @@ The message
 ## Tasks
 
 ### discord_send_message
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L84)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L78)
 
 
 
@@ -111,7 +109,7 @@ Helpers
 
 
 ### discord:test
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L92)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L86)
 
 Tests messages.
 
@@ -119,7 +117,7 @@ Tasks
 
 
 ### discord:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L103)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L97)
 
 Notifies Discord.
 
@@ -127,7 +125,7 @@ Notifies Discord.
 
 
 ### discord:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L111)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L105)
 
 Notifies Discord about deploy finish.
 
@@ -135,7 +133,7 @@ Notifies Discord about deploy finish.
 
 
 ### discord:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L119)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L113)
 
 Notifies Discord about deploy failure.
 

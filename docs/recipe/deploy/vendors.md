@@ -4,6 +4,10 @@
 
 # Vendors Recipe
 
+```php
+require 'recipe/deploy/vendors.php';
+```
+
 [Source](/recipe/deploy/vendors.php)
 
 

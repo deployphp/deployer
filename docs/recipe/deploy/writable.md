@@ -4,6 +4,10 @@
 
 # Writable Recipe
 
+```php
+require 'recipe/deploy/writable.php';
+```
+
 [Source](/recipe/deploy/writable.php)
 
 

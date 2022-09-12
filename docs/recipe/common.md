@@ -4,6 +4,10 @@
 
 # Common Recipe
 
+```php
+require 'recipe/common.php';
+```
+
 [Source](/recipe/common.php)
 
 * Requires

@@ -4,6 +4,10 @@
 
 # How to Deploy a Magento 2 Project
 
+```php
+require 'recipe/magento2.php';
+```
+
 [Source](/recipe/magento2.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

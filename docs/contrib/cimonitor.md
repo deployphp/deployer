@@ -4,21 +4,18 @@
 
 # Cimonitor Recipe
 
+```php
+require 'contrib/cimonitor.php';
+```
+
 [Source](/contrib/cimonitor.php)
 
 
-
-# CIMonitor recipe
 
 Monitor your deployments on [CIMonitor](https://github.com/CIMonitor/CIMonitor).
 
 ![CIMonitorGif](https://www.steefmin.xyz/deployer-example.gif)
 
-Require cimonitor recipe in your `deploy.php` file:
-
-```php
-require 'contrib/cimonitor.php';
-```
 
 Add tasks on deploy:
 
@@ -73,21 +70,21 @@ after('deploy:failed', 'cimonitor:notify:failure');
 
 ## Configuration
 ### cimonitor_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L70)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L63)
 
 Title of project based on git repo
 
 
 
 ### cimonitor_user
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L75)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L68)
 
 
 
 
 
 ### cimonitor_status_info
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L76)
 
 CI monitor status states and job states
 
@@ -97,7 +94,7 @@ CI monitor status states and job states
 
 
 ### cimonitor_status_warning
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L84)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L77)
 
 
 
@@ -107,7 +104,7 @@ CI monitor status states and job states
 
 
 ### cimonitor_status_error
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L85)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L78)
 
 
 
@@ -117,7 +114,7 @@ CI monitor status states and job states
 
 
 ### cimonitor_status_success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L79)
 
 
 
@@ -127,7 +124,7 @@ CI monitor status states and job states
 
 
 ### cimonitor_job_state_info
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L80)
 
 
 
@@ -137,7 +134,7 @@ get('cimonitor_status_info')
 
 
 ### cimonitor_job_state_pending
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L88)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L81)
 
 
 
@@ -147,7 +144,7 @@ get('cimonitor_status_info')
 
 
 ### cimonitor_job_state_running
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L89)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L82)
 
 
 
@@ -157,7 +154,7 @@ get('cimonitor_status_info')
 
 
 ### cimonitor_job_state_warning
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L90)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L83)
 
 
 
@@ -167,7 +164,7 @@ get('cimonitor_status_warning')
 
 
 ### cimonitor_job_state_error
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L84)
 
 
 
@@ -177,7 +174,7 @@ get('cimonitor_status_error')
 
 
 ### cimonitor_job_state_success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L92)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L85)
 
 
 
@@ -190,7 +187,7 @@ get('cimonitor_status_success')
 ## Tasks
 
 ### cimonitor:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L95)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L88)
 
 Notifies CIMonitor.
 
@@ -198,7 +195,7 @@ Notifies CIMonitor.
 
 
 ### cimonitor:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L121)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L114)
 
 Notifies CIMonitor about deploy finish.
 
@@ -206,7 +203,7 @@ Notifies CIMonitor about deploy finish.
 
 
 ### cimonitor:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L149)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L142)
 
 Notifies CIMonitor about deploy failure.
 

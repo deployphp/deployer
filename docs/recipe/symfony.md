@@ -4,6 +4,10 @@
 
 # How to Deploy a Symfony Application
 
+```php
+require 'recipe/symfony.php';
+```
+
 [Source](/recipe/symfony.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

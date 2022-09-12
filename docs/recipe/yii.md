@@ -4,6 +4,10 @@
 
 # How to Deploy a Yii2 Project
 
+```php
+require 'recipe/yii.php';
+```
+
 [Source](/recipe/yii.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

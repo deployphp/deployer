@@ -4,21 +4,17 @@
 
 # Rsync Recipe
 
+```php
+require 'contrib/rsync.php';
+```
+
 [Source](/contrib/rsync.php)
 
 
 
-## IMPORTANT
-
+:::warning
 This must not be confused with `/src/Utility/Rsync.php`, deployer's built-in rsync. Their configuration options are also very different, read carefully below.
-
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/rsync.php';
-```
+:::
 
 ## Configuration options
 
@@ -129,7 +125,7 @@ host('hostname')
 
 ## Configuration
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L127)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L119)
 
 
 
@@ -153,7 +149,7 @@ host('hostname')
 
 
 ### rsync_src
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L143)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L135)
 
 
 
@@ -163,7 +159,7 @@ __DIR__
 
 
 ### rsync_dest
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L144)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L136)
 
 
 
@@ -173,28 +169,28 @@ __DIR__
 
 
 ### rsync_excludes
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L146)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L138)
 
 
 
 
 
 ### rsync_includes
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L161)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L153)
 
 
 
 
 
 ### rsync_filter
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L176)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L168)
 
 
 
 
 
 ### rsync_options
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L194)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L186)
 
 
 
@@ -204,7 +200,7 @@ __DIR__
 ## Tasks
 
 ### rsync:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L206)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L198)
 
 Warmups remote Rsync target.
 
@@ -212,7 +208,7 @@ Warmups remote Rsync target.
 
 
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L221)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L213)
 
 Rsync local->remote.
 

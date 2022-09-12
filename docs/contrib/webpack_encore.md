@@ -4,6 +4,10 @@
 
 # Webpack Encore Recipe
 
+```php
+require 'contrib/webpack_encore.php';
+```
+
 [Source](/contrib/webpack_encore.php)
 
 * Requires
@@ -11,13 +15,6 @@
   * [yarn](/docs/contrib/yarn.md)
 
 
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/webpack_encore.php';
-```
 
 ## Configuration
 
@@ -37,14 +34,14 @@ after('deploy:update_code', 'webpack_encore:build');
 
 ## Configuration
 ### webpack_encore/package_manager
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L31)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L24)
 
 
 
 
 
 ### webpack_encore/env
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L39)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L32)
 
 
 
@@ -57,7 +54,7 @@ after('deploy:update_code', 'webpack_encore:build');
 ## Tasks
 
 ### webpack_encore:build
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L42)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/webpack_encore.php#L35)
 
 Runs webpack encore build.
 

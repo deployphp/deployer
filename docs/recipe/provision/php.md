@@ -4,6 +4,10 @@
 
 # Php Recipe
 
+```php
+require 'recipe/provision/php.php';
+```
+
 [Source](/recipe/provision/php.php)
 
 

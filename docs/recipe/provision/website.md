@@ -4,6 +4,10 @@
 
 # Website Recipe
 
+```php
+require 'recipe/provision/website.php';
+```
+
 [Source](/recipe/provision/website.php)
 
 

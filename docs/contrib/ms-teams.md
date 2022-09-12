@@ -4,6 +4,10 @@
 
 # Ms-teams Recipe
 
+```php
+require 'contrib/ms-teams.php';
+```
+
 [Source](/contrib/ms-teams.php)
 
 

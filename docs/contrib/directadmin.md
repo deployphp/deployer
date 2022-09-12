@@ -4,17 +4,13 @@
 
 # Directadmin Recipe
 
-[Source](/contrib/directadmin.php)
-
-
-
-### Installing
-
-Add to your _deploy.php_
-
 ```php
 require 'contrib/directadmin.php';
 ```
+
+[Source](/contrib/directadmin.php)
+
+
 
 ### Configuration
 - `directadmin` – array with configuration for DirectAdmin
@@ -38,7 +34,7 @@ require 'contrib/directadmin.php';
 ## Tasks
 
 ### directadmin:createdb
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L74)
 
 Creates a database on DirectAdmin.
 
@@ -46,7 +42,7 @@ Creates a database on DirectAdmin.
 
 
 ### directadmin:deletedb
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L102)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L94)
 
 Deletes a database on DirectAdmin.
 
@@ -54,7 +50,7 @@ Deletes a database on DirectAdmin.
 
 
 ### directadmin:createdomain
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L117)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L109)
 
 Creates a domain on DirectAdmin.
 
@@ -62,7 +58,7 @@ Creates a domain on DirectAdmin.
 
 
 ### directadmin:deletedomain
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L135)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L127)
 
 Deletes a domain on DirectAdmin.
 
@@ -70,7 +66,7 @@ Deletes a domain on DirectAdmin.
 
 
 ### directadmin:symlink-private-html
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L151)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L143)
 
 Symlink your private_html to public_html.
 
@@ -78,7 +74,7 @@ Symlink your private_html to public_html.
 
 
 ### directadmin:php-version
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L167)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L159)
 
 Changes the PHP version from a domain.
 

@@ -127,30 +127,23 @@ class DocGen
                 return null;
             };
 
-            $filePath = "$destination/" . php_to_md($recipe->recipePath);
-            $frameworkRecipe =
-                preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
-                !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
-
-            $brandName = $recipe->recipeName;
-            if ($frameworkRecipe) {
-                $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
-                $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
-                $brandName = preg_replace('/yii/', 'Yii2', $brandName);
-                $brandName = preg_replace('/_/', ' ', $brandName);
-                $brandName = preg_replace('/framework/', 'Framework', $brandName);
-                $brandName = ucfirst($brandName);
-                $typeOfProject = preg_match('/^symfony/i', $recipe->recipeName) ? 'Application' : 'Project';
-                $title = "How to Deploy a $brandName $typeOfProject";
-            } else {
-                $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
-            }
-
-            $intro = '';
+            $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
             $config = '';
             $tasks = '';
+            $intro = <<<MD
+```php
+require '$recipe->recipePath';
+```
 
-            if ($frameworkRecipe) {
+[Source](/$recipe->recipePath)
+
+
+MD;
+            if (is_framework_recipe($recipe)) {
+                $brandName = framework_brand_name($recipe->recipeName);
+                $typeOfProject = preg_match('/^symfony/i', $recipe->recipeName) ? 'Application' : 'Project';
+                $title = "How to Deploy a $brandName $typeOfProject";
+
                 $intro .= <<<MARKDOWN
 Deployer is a free and open source deployment tool written in PHP. 
 It helps you to deploy your $brandName application to a server. 
@@ -192,7 +185,7 @@ MARKDOWN;
                 $intro .= "\n\n";
             }
             if (count($recipe->require) > 0) {
-                if ($frameworkRecipe) {
+                if (is_framework_recipe($recipe)) {
                     $link = recipe_to_md_link($recipe->require[0]);
                     $intro .= "The $recipe->recipeName recipe is based on the $link recipe.\n";
                 } else {
@@ -209,7 +202,6 @@ MARKDOWN;
             if (count($recipe->config) > 0) {
                 $config .= "## Configuration\n";
                 foreach ($recipe->config as $c) {
-                    $anchor = anchor($c->name);
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](https://github.com/deployphp/deployer/blob/master/{$c->recipePath}#L{$c->lineNumber})\n\n";
                     $o = $findConfigOverride($recipe, $c->name);
@@ -263,20 +255,49 @@ MARKDOWN;
 
 # $title
 
-[Source](/$recipe->recipePath)
-
 $intro
 $config
 $tasks
 MD;
 
+            $filePath = "$destination/" . php_to_md($recipe->recipePath);
             if (!file_exists(dirname($filePath))) {
                 mkdir(dirname($filePath), 0755, true);
             }
             $output = remove_text_emoji($output);
             file_put_contents($filePath, $output);
         }
+        $this->generateRecipesIndex($destination);
+        $this->generateContribIndex($destination);
         return null;
+    }
+
+    public function generateRecipesIndex(string $destination) {
+        $index = "# All Recipes\n\n";
+        $list = [];
+        foreach ($this->recipes as $recipe) {
+            if (preg_match('/^recipe\/[^\/]+\.php$/', $recipe->recipePath)) {
+                $name = framework_brand_name($recipe->recipeName);
+                $list[] = "* [$name Recipe](/docs/recipe/{$recipe->recipeName}.md)";
+            }
+        }
+        sort($list);
+        $index .= implode("\n", $list);
+        file_put_contents("$destination/recipe/README.md", $index);
+    }
+
+    public function generateContribIndex(string $destination) {
+        $index = "# All Contrib Recipes\n\n";
+        $list = [];
+        foreach ($this->recipes as $recipe) {
+            if (preg_match('/^contrib\/[^\/]+\.php$/', $recipe->recipePath)) {
+                $name = ucfirst($recipe->recipeName);
+                $list[] = "* [$name Recipe](/docs/contrib/$recipe->recipeName.md)";
+            }
+        }
+        sort($list);
+        $index .= implode("\n", $list);
+        file_put_contents("$destination/contrib/README.md", $index);
     }
 }
 
@@ -323,4 +344,21 @@ function recipe_to_md_link(string $recipe): string
     $md = php_to_md($recipe);
     $basename = basename($recipe, '.php');
     return "[$basename](/docs/$md)";
+}
+
+function is_framework_recipe(DocRecipe $recipe): bool
+{
+    return preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
+    !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
+}
+
+function framework_brand_name(string $brandName): string
+{
+    $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
+    $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
+    $brandName = preg_replace('/yii/', 'Yii2', $brandName);
+    $brandName = preg_replace('/wordpress/', 'WordPress', $brandName);
+    $brandName = preg_replace('/_/', ' ', $brandName);
+    $brandName = preg_replace('/framework/', 'Framework', $brandName);
+    return ucfirst($brandName);
 }

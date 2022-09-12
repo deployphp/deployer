@@ -4,6 +4,10 @@
 
 # How to Deploy a Shopware Project
 
+```php
+require 'recipe/shopware.php';
+```
+
 [Source](/recipe/shopware.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

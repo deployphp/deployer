@@ -4,6 +4,10 @@
 
 # How to Deploy a TYPO3 Project
 
+```php
+require 'recipe/typo3.php';
+```
+
 [Source](/recipe/typo3.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

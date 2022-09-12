@@ -4,6 +4,10 @@
 
 # How to Deploy a Silverstripe Project
 
+```php
+require 'recipe/silverstripe.php';
+```
+
 [Source](/recipe/silverstripe.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

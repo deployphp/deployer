@@ -4,15 +4,14 @@
 
 # Cachetool Recipe
 
+```php
+require 'contrib/cachetool.php';
+```
+
 [Source](/contrib/cachetool.php)
 
 
 
-Add to your _deploy.php_
-
-```php
-require 'contrib/cachetool.php';
-```
 
 ## Configuration
 
@@ -59,14 +58,14 @@ http://gordalina.github.io/cachetool/
 
 ## Configuration
 ### cachetool
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L53)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L48)
 
 
 
 
 
 ### cachetool_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L54)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L49)
 
 
 
@@ -76,21 +75,21 @@ http://gordalina.github.io/cachetool/
 
 
 ### cachetool_args
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L50)
 
 
 
 
 
 ### bin/cachetool
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L56)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L51)
 
 
 
 
 
 ### cachetool_options
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L62)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L57)
 
 
 
@@ -100,7 +99,7 @@ http://gordalina.github.io/cachetool/
 ## Tasks
 
 ### cachetool:clear:opcache
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L79)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L74)
 
 Clears OPcode cache.
 
@@ -108,7 +107,7 @@ Clear opcache cache
 
 
 ### cachetool:clear:apcu
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L82)
 
 Clears APCu system cache.
 
@@ -116,7 +115,7 @@ Clear APCU cache
 
 
 ### cachetool:clear:stat
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L95)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L90)
 
 Clears file status and realpath caches.
 

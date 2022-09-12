@@ -4,6 +4,10 @@
 
 # How to Deploy a Fuelphp Project
 
+```php
+require 'recipe/fuelphp.php';
+```
+
 [Source](/recipe/fuelphp.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

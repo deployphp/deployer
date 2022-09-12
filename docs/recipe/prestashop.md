@@ -4,6 +4,10 @@
 
 # How to Deploy a Prestashop Project
 
+```php
+require 'recipe/prestashop.php';
+```
+
 [Source](/recipe/prestashop.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

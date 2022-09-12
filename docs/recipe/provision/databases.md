@@ -4,6 +4,10 @@
 
 # Databases Recipe
 
+```php
+require 'recipe/provision/databases.php';
+```
+
 [Source](/recipe/provision/databases.php)
 
 

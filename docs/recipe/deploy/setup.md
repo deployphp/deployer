@@ -4,6 +4,10 @@
 
 # Setup Recipe
 
+```php
+require 'recipe/deploy/setup.php';
+```
+
 [Source](/recipe/deploy/setup.php)
 
 

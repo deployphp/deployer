@@ -4,6 +4,10 @@
 
 # How to Deploy a Contao Project
 
+```php
+require 'recipe/contao.php';
+```
+
 [Source](/recipe/contao.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

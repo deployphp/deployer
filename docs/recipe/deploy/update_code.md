@@ -4,6 +4,10 @@
 
 # Update Code Recipe
 
+```php
+require 'recipe/deploy/update_code.php';
+```
+
 [Source](/recipe/deploy/update_code.php)
 
 

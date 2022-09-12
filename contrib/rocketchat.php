@@ -4,12 +4,6 @@
 
 Create a RocketChat incoming webhook, through the administration panel.
 
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/rocketchat.php';
-```
-
 Add hook on deploy:
 
 ```

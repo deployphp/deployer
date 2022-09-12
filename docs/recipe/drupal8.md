@@ -4,6 +4,10 @@
 
 # How to Deploy a Drupal 8 Project
 
+```php
+require 'recipe/drupal8.php';
+```
+
 [Source](/recipe/drupal8.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

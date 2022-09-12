@@ -4,6 +4,10 @@
 
 # Release Recipe
 
+```php
+require 'recipe/deploy/release.php';
+```
+
 [Source](/recipe/deploy/release.php)
 
 

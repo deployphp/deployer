@@ -4,6 +4,10 @@
 
 # How to Deploy a Sulu Project
 
+```php
+require 'recipe/sulu.php';
+```
+
 [Source](/recipe/sulu.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

@@ -4,17 +4,14 @@
 
 # Cloudflare Recipe
 
+```php
+require 'contrib/cloudflare.php';
+```
+
 [Source](/contrib/cloudflare.php)
 
 
 
-### Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/cloudflare.php';
-```
 
 ### Configuration
 
@@ -36,7 +33,7 @@ if not the, last tasks before cleanup
 ## Tasks
 
 ### deploy:cloudflare
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cloudflare.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cloudflare.php#L22)
 
 Clears Cloudflare Cache.
 

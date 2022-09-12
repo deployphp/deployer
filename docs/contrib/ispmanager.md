@@ -4,6 +4,10 @@
 
 # Ispmanager Recipe
 
+```php
+require 'contrib/ispmanager.php';
+```
+
 [Source](/contrib/ispmanager.php)
 
 

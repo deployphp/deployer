@@ -4,6 +4,10 @@
 
 # Info Recipe
 
+```php
+require 'recipe/deploy/info.php';
+```
+
 [Source](/recipe/deploy/info.php)
 
 

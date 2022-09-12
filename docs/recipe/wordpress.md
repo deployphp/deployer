@@ -2,12 +2,16 @@
 <!-- Instead edit recipe/wordpress.php -->
 <!-- Then run bin/docgen -->
 
-# How to Deploy a Wordpress Project
+# How to Deploy a WordPress Project
+
+```php
+require 'recipe/wordpress.php';
+```
 
 [Source](/recipe/wordpress.php)
 
 Deployer is a free and open source deployment tool written in PHP. 
-It helps you to deploy your Wordpress application to a server. 
+It helps you to deploy your WordPress application to a server. 
 It is very easy to use and has a lot of features. 
 
 Three main features of Deployer are:
@@ -23,7 +27,7 @@ Additionally, Deployer has a lot of other features, like:
 
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
-The [deploy](#deploy) task of **Wordpress** consists of:
+The [deploy](#deploy) task of **WordPress** consists of:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
   * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy

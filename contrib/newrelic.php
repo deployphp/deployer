@@ -1,13 +1,5 @@
 <?php
 /*
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/newrelic.php';
-```
-
 ## Configuration
 
 - `newrelic_app_id` – newrelic's app id

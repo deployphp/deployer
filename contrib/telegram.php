@@ -4,11 +4,7 @@
   1. Create telegram bot with [BotFather](https://t.me/BotFather) and grab the token provided
   2. Send `/start` to your bot and open https://api.telegram.org/bot{$TELEGRAM_TOKEN_HERE}/getUpdates
   3. Take chat_id from response
-Require telegram recipe in your `deploy.php` file:
 
-```php
-require 'contrib/telegram.php';
-```
 
 Add hook on deploy:
 

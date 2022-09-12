@@ -4,6 +4,10 @@
 
 # Symlink Recipe
 
+```php
+require 'recipe/deploy/symlink.php';
+```
+
 [Source](/recipe/deploy/symlink.php)
 
 

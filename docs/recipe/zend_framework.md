@@ -4,6 +4,10 @@
 
 # How to Deploy a Zend Framework Project
 
+```php
+require 'recipe/zend_framework.php';
+```
+
 [Source](/recipe/zend_framework.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

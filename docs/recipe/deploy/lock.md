@@ -4,6 +4,10 @@
 
 # Lock Recipe
 
+```php
+require 'recipe/deploy/lock.php';
+```
+
 [Source](/recipe/deploy/lock.php)
 
 

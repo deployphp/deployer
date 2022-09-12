@@ -1,16 +1,9 @@
 <?php
 /*
-# CIMonitor recipe
-
 Monitor your deployments on [CIMonitor](https://github.com/CIMonitor/CIMonitor).
 
 ![CIMonitorGif](https://www.steefmin.xyz/deployer-example.gif)
 
-Require cimonitor recipe in your `deploy.php` file:
-
-```php
-require 'contrib/cimonitor.php';
-```
 
 Add tasks on deploy:
 

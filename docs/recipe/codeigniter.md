@@ -4,6 +4,10 @@
 
 # How to Deploy a Codeigniter Project
 
+```php
+require 'recipe/codeigniter.php';
+```
+
 [Source](/recipe/codeigniter.php)
 
 Deployer is a free and open source deployment tool written in PHP. 

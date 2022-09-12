@@ -1,13 +1,5 @@
 <?php
 /*
-### Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/directadmin.php';
-```
-
 ### Configuration
 - `directadmin` – array with configuration for DirectAdmin
     - `host` – DirectAdmin host

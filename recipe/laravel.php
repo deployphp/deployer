@@ -14,6 +14,7 @@ set('writable_dirs', [
     'storage/app/public',
     'storage/framework',
     'storage/framework/cache',
+    'storage/framework/cache/data',
     'storage/framework/sessions',
     'storage/framework/views',
     'storage/logs',

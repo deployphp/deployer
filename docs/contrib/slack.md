@@ -2,7 +2,11 @@
 <!-- Instead edit contrib/slack.php -->
 <!-- Then run bin/docgen -->
 
-# slack
+# Slack Recipe
+
+```php
+require 'contrib/slack.php';
+```
 
 [Source](/contrib/slack.php)
 
@@ -12,11 +16,6 @@
 
 <a href="https://slack.com/oauth/authorize?&client_id=113734341365.225973502034&scope=incoming-webhook"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
-Require slack recipe in your `deploy.php` file:
-
-```php
-require 'contrib/slack.php';
-```
 
 Add hook on deploy:
 
@@ -77,7 +76,7 @@ after('deploy:failed', 'slack:notify:failure');
 
 ## Configuration
 ### slack_channel
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L69)
 
 Channel to publish to, when false the default channel the webhook will be used
 
@@ -87,14 +86,17 @@ false
 
 
 ### slack_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L77)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L72)
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### slack_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L77)
 
 Deploy message
 
@@ -104,7 +106,7 @@ Deploy message
 
 
 ### slack_success_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L78)
 
 
 
@@ -114,7 +116,7 @@ Deploy message
 
 
 ### slack_failure_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L84)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L79)
 
 
 
@@ -124,7 +126,7 @@ Deploy message
 
 
 ### slack_rollback_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L85)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L80)
 
 
 
@@ -134,14 +136,14 @@ Deploy message
 
 
 ### slack_fields
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L81)
 
 
 
 
 
 ### slack_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L89)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L84)
 
 Color of attachment
 
@@ -151,7 +153,7 @@ Color of attachment
 
 
 ### slack_success_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L90)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L85)
 
 
 
@@ -161,7 +163,7 @@ Color of attachment
 
 
 ### slack_failure_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L86)
 
 
 
@@ -171,7 +173,7 @@ Color of attachment
 
 
 ### slack_rollback_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L92)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L87)
 
 
 
@@ -184,7 +186,7 @@ Color of attachment
 ## Tasks
 
 ### slack:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L104)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L99)
 
 Notifies Slack.
 
@@ -192,7 +194,7 @@ Notifies Slack.
 
 
 ### slack:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L123)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L118)
 
 Notifies Slack about deploy finish.
 
@@ -200,7 +202,7 @@ Notifies Slack about deploy finish.
 
 
 ### slack:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L143)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L138)
 
 Notifies Slack about deploy failure.
 
@@ -208,7 +210,7 @@ Notifies Slack about deploy failure.
 
 
 ### slack:notify:rollback
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L162)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/slack.php#L157)
 
 Notifies Slack about rollback.
 

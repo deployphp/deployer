@@ -2,7 +2,11 @@
 <!-- Instead edit contrib/mattermost.php -->
 <!-- Then run bin/docgen -->
 
-# mattermost
+# Mattermost Recipe
+
+```php
+require 'contrib/mattermost.php';
+```
 
 [Source](/contrib/mattermost.php)
 
@@ -11,12 +15,6 @@
 ## Installing
 
 Create a Mattermost incoming webhook, through the administration panel.
-
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/mattermost.php';
-```
 
 Add hook on deploy:
 
@@ -90,7 +88,7 @@ after('deploy:failed', 'mattermost:notify:failure');
 
 ## Configuration
 ### mattermost_webhook
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L80)
 
 
 
@@ -100,7 +98,7 @@ null
 
 
 ### mattermost_channel
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L81)
 
 
 
@@ -110,7 +108,7 @@ null
 
 
 ### mattermost_username
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L88)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L82)
 
 
 
@@ -120,7 +118,7 @@ null
 
 
 ### mattermost_icon_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L89)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L83)
 
 
 
@@ -130,7 +128,7 @@ null
 
 
 ### mattermost_success_emoji
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L85)
 
 
 
@@ -140,7 +138,7 @@ null
 
 
 ### mattermost_failure_emoji
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L92)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L86)
 
 
 
@@ -150,7 +148,7 @@ null
 
 
 ### mattermost_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L94)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L88)
 
 
 
@@ -160,7 +158,7 @@ null
 
 
 ### mattermost_success_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L95)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L89)
 
 
 
@@ -170,7 +168,7 @@ null
 
 
 ### mattermost_failure_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L96)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L90)
 
 
 
@@ -183,7 +181,7 @@ null
 ## Tasks
 
 ### mattermost:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L99)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L93)
 
 Notifies mattermost.
 
@@ -191,7 +189,7 @@ Notifies mattermost.
 
 
 ### mattermost:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L114)
 
 Notifies mattermost about deploy finish.
 
@@ -199,7 +197,7 @@ Notifies mattermost about deploy finish.
 
 
 ### mattermost:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L141)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L135)
 
 Notifies mattermost about deploy failure.
 

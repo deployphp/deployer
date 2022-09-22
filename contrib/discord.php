@@ -2,12 +2,6 @@
 /*
 ## Installing
 
-Require discord recipe in your `deploy.php` file:
-
-```php
-require 'contrib/discord.php';
-```
-
 Add hook on deploy:
 
 ```php

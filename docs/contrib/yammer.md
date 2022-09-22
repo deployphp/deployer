@@ -2,21 +2,16 @@
 <!-- Instead edit contrib/yammer.php -->
 <!-- Then run bin/docgen -->
 
-# yammer
+# Yammer Recipe
+
+```php
+require 'contrib/yammer.php';
+```
 
 [Source](/contrib/yammer.php)
 
 
 
-# Yammer recipe
-
-## Installing
-
-Require yammer recipe in your `deploy.php` file:
-
-```php
-require 'contrib/yammer.php';
-```
 
 Add hook on deploy:
 
@@ -67,7 +62,7 @@ after('deploy:failed', 'yammer:notify:failure');
 
 ## Configuration
 ### yammer_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L63)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L54)
 
 
 
@@ -77,14 +72,17 @@ after('deploy:failed', 'yammer:notify:failure');
 
 
 ### yammer_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L57)
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### yammer_body
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L62)
 
 Deploy message
 
@@ -94,7 +92,7 @@ Deploy message
 
 
 ### yammer_success_body
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L72)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L63)
 
 
 
@@ -104,7 +102,7 @@ Deploy message
 
 
 ### yammer_failure_body
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L64)
 
 
 
@@ -117,7 +115,7 @@ Deploy message
 ## Tasks
 
 ### yammer:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L76)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L67)
 
 Notifies Yammer.
 
@@ -125,7 +123,7 @@ Notifies Yammer.
 
 
 ### yammer:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L95)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L86)
 
 Notifies Yammer about deploy finish.
 
@@ -133,7 +131,7 @@ Notifies Yammer about deploy finish.
 
 
 ### yammer:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L114)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L105)
 
 Notifies Yammer about deploy failure.
 

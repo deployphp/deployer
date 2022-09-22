@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/symlink.php -->
 <!-- Then run bin/docgen -->
 
-# symlink
+# Symlink Recipe
+
+```php
+require 'recipe/deploy/symlink.php';
+```
 
 [Source](/recipe/deploy/symlink.php)
 
@@ -13,6 +17,9 @@
 
 Use mv -T if available. Will check automatically.
 
+```php title="Default value"
+return commandSupportsOption('mv', '--no-target-directory');
+```
 
 
 

@@ -2,19 +2,16 @@
 <!-- Instead edit contrib/grafana.php -->
 <!-- Then run bin/docgen -->
 
-# grafana
+# Grafana Recipe
+
+```php
+require 'contrib/grafana.php';
+```
 
 [Source](/contrib/grafana.php)
 
 
 
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/grafana.php';
-```
 
 ## Configuration options
 
@@ -49,7 +46,7 @@ after('deploy:success', 'grafana:annotation');
 ## Tasks
 
 ### grafana:annotation
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/grafana.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/grafana.php#L38)
 
 Creates Grafana annotation of deployment.
 

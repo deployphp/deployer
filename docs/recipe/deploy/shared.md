@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/shared.php -->
 <!-- Then run bin/docgen -->
 
-# shared
+# Shared Recipe
+
+```php
+require 'recipe/deploy/shared.php';
+```
 
 [Source](/recipe/deploy/shared.php)
 

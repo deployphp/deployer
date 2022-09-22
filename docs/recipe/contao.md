@@ -2,12 +2,52 @@
 <!-- Instead edit recipe/contao.php -->
 <!-- Then run bin/docgen -->
 
-# contao
+# How to Deploy a Contao Project
+
+```php
+require 'recipe/contao.php';
+```
 
 [Source](/recipe/contao.php)
 
-* Requires
-  * [symfony](/docs/recipe/symfony.md)
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your Contao application to a server. 
+It is very easy to use and has a lot of features. 
+
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
+
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
+
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
+
+The [deploy](#deploy) task of **Contao** consists of:
+* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
+* [contao:maintenance:enable](/docs/recipe/contao.md#contaomaintenanceenable) – Enable maintenance mode
+* [contao:migrate](/docs/recipe/contao.md#contaomigrate) – Run Contao migrations
+* [contao:maintenance:disable](/docs/recipe/contao.md#contaomaintenancedisable) – Disable maintenance mode
+* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+
+
+The contao recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 
 ## Configuration
 ### public_path
@@ -19,6 +59,11 @@ The public path is the path to be set as DocumentRoot and is defined in the `com
 but defaults to `public` from Contao 5.0 on.
 This path is relative from the [current_path](/docs/recipe/common.md#current_path), see [`recipe/provision/website.php`](/docs/recipe/provision/website.php#public_path).
 
+```php title="Default value"
+$composerConfig = json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
+
+return $composerConfig['extra']['public-dir'] ?? 'public';
+```
 
 
 ### bin/console
@@ -28,6 +73,9 @@ Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfon
 
 
 
+```php title="Default value"
+return '{{bin/php}} {{release_or_current_path}}/vendor/bin/contao-console';
+```
 
 
 ### contao_version
@@ -35,6 +83,9 @@ Overrides [bin/console](/docs/recipe/symfony.md#bin/console) from `recipe/symfon
 
 
 
+```php title="Default value"
+return run('{{bin/console}} contao:version');
+```
 
 
 

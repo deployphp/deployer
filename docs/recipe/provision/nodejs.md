@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/provision/nodejs.php -->
 <!-- Then run bin/docgen -->
 
-# nodejs
+# Nodejs Recipe
+
+```php
+require 'recipe/provision/nodejs.php';
+```
 
 [Source](/recipe/provision/nodejs.php)
 

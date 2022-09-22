@@ -2,21 +2,18 @@
 <!-- Instead edit contrib/workplace.php -->
 <!-- Then run bin/docgen -->
 
-# workplace
+# Workplace Recipe
+
+```php
+require 'contrib/workplace.php';
+```
 
 [Source](/contrib/workplace.php)
 
 
 
-## Installing
-
 This recipes works with Custom Integrations and Publishing Bots.
 
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/workplace.php';
-```
 
 Add hook on deploy:
 
@@ -80,7 +77,7 @@ after('deploy:failed', 'workplace:notify:failure');
 
 ## Configuration
 ### workplace_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L77)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L70)
 
 Deploy message
 
@@ -90,7 +87,7 @@ Deploy message
 
 
 ### workplace_success_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L71)
 
 
 
@@ -100,7 +97,7 @@ Deploy message
 
 
 ### workplace_failure_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L79)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L72)
 
 
 
@@ -110,7 +107,7 @@ Deploy message
 
 
 ### workplace_edit_post
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L75)
 
 By default, create a new post for every message
 
@@ -123,7 +120,7 @@ false
 ## Tasks
 
 ### workplace:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L85)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L78)
 
 Notifies Workplace.
 
@@ -131,7 +128,7 @@ Notifies Workplace.
 
 
 ### workplace:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L109)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L102)
 
 Notifies Workplace about deploy finish.
 
@@ -139,7 +136,7 @@ Notifies Workplace about deploy finish.
 
 
 ### workplace:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L113)
 
 Notifies Workplace about deploy failure.
 

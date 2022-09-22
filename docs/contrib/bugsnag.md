@@ -2,17 +2,16 @@
 <!-- Instead edit contrib/bugsnag.php -->
 <!-- Then run bin/docgen -->
 
-# bugsnag
+# Bugsnag Recipe
+
+```php
+require 'contrib/bugsnag.php';
+```
 
 [Source](/contrib/bugsnag.php)
 
 
 
-Add to your _deploy.php_
-
-```php
-require 'contrib/bugsnag.php';
-```
 
 ## Configuration
 
@@ -33,7 +32,7 @@ after('deploy', 'bugsnag:notify');
 ## Tasks
 
 ### bugsnag:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/bugsnag.php#L28)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/bugsnag.php#L23)
 
 Notifies Bugsnag of deployment.
 

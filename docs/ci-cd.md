@@ -11,31 +11,31 @@ name: deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 concurrency: production_environment
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
-    steps:
-    - uses: actions/checkout@v2
-  
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '8.0' 
 
-    - name: Deploy
-      uses: deployphp/action@v1
-      with:
-        private-key: ${{ secrets.PRIVATE_KEY }}
-        dep: deploy
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.0"
+
+      - name: Deploy
+        uses: deployphp/action@v1
+        with:
+          private-key: ${{ secrets.PRIVATE_KEY }}
+          dep: deploy
 ```
 
 :::warning
-The `concurrency: production_environment` is important as it prevents concurrent 
+The `concurrency: production_environment` is important as it prevents concurrent
 deploys.
 :::
 
@@ -43,11 +43,11 @@ deploys.
 
 Set the following variables in GitLab project:
 
-- `SSH_KNOW_HOSTS`: Content of `~/.ssh/known_hosts` file. 
-The public SSH keys for a host may be obtained using the utility `ssh-keyscan`. 
-For example: `ssh-keyscan deployer.org`.
-- `SSH_PRIVATE_KEY`: Private key for connecting to remote hosts. 
-To generate private key: `ssh-keygen -t ed25519 -C 'gitlab@deployer.org'`.
+- `SSH_KNOWN_HOSTS`: Content of `~/.ssh/known_hosts` file.
+  The public SSH keys for a host may be obtained using the utility `ssh-keyscan`.
+  For example: `ssh-keyscan deployer.org`.
+- `SSH_PRIVATE_KEY`: Private key for connecting to remote hosts.
+  To generate private key: `ssh-keygen -t ed25519 -C 'gitlab@deployer.org'`.
 
 Create .gitlab-ci.yml file with following content:
 

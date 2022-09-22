@@ -84,7 +84,7 @@ task('provision:update', function () {
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 
     // Caddy
-    run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' > /etc/apt/trusted.gpg.d/caddy-stable.asc");
+    run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg");
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
 
     // Nodejs
@@ -127,7 +127,7 @@ task('provision:install', function () {
         'ncdu',
         'nodejs',
         'pkg-config',
-        'python',
+        'python-is-python3',
         'redis',
         'sendmail',
         'sqlite3',

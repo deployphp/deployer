@@ -1,10 +1,9 @@
 # Getting Started
 
 In this tutorial we will cover:
+
 - Setting up a new host with provision recipe.
 - Configuring a deployment and perfoming our first deploy.
-
-Tutorial duration: **5 min**
 
 First, [install the Deployer](installation.md):
 
@@ -37,8 +36,13 @@ server using the domain name instead of the IP address.
 :::
 
 Our **deploy.php** recipe contains host definition with few important params:
- - `remote_user` user's name for ssh connection,
- - `deploy_path` host's path where we are going to deploy.
+
+- `remote_user` user's name for ssh connection,
+- `deploy_path` host's path where we are going to deploy.
+
+Let's set `remote_user` to be `deployer`. Right now our new server probably has
+only `root` user. The provision recipe will create and configure `deployer` user
+for us.
 
 ```php
 host('example.org')
@@ -55,35 +59,28 @@ Host *
   IdentityFile ~/.ssh/id_rsa
 ```
 
-Now let's provision our server. As our host doesn't have user name `deployer`, but
-only `root` user. We going to override `remote_user` for provision via `-o remote_user=root`.
+Now let's provision our server. As our host doesn't have user `deployer`.
+We are going to override `remote_user` for provision via `-o remote_user=root`.
 
 ```sh
 dep provision -o remote_user=root
 ```
+
 :::tip
-If your server doesn't have a `root` user but your remote user can use `sudo` to become root, then use:
+If your server doesn't have a `root` user but your remote user can use `sudo` to
+become root, then use:
 
 ```sh
 dep provision -o become=root
 ```
+
 :::
 
 Deployer will ask you a few questions during provisioning: php version,
-database type, etc. You can specify it also in directly in recipe.
-
-Provision recipe going to do:
-- Update and upgrade all Ubuntu packages to latest versions,
-- Install all needed packages for our website (acl, npm, git, etc),
-- Install php with all needed extensions,
-- Install and configure the database,
-- Install Caddy webserver and configure our website with SSL certificate,
-- Configure ssh and firewall,
-- Setup **deployer** user.
-
-Provisioning will take around **5 minutes** and will install everything we need to run a
-website. It will also setup a `deployer` user, which we will need to use to ssh to our
-host. A new website will be configured at [deploy_path](recipe/common.md#deploy_path).
+database type, etc. Next Deployer will configure our server and create
+the `deployer` user. Provision takes around **5 minutes** and will install
+everything we need to run a website. A new website will be configured
+at [deploy_path](recipe/common.md#deploy_path).
 
 After we have configured the webserver, let's deploy the project.
 
@@ -104,13 +101,43 @@ Ssh to the host, for example, for editing _.env_ file:
 dep ssh
 ```
 
-After everything is configured properly we can resume our deployment from the place it stopped (But this is not required, we can just start a new deploy):
+After everything is configured properly we can resume our deployment from the
+place it stopped (But this is not required, we can just start a new deploy):
 
 ```
 dep deploy --start-from deploy:migrate
 ```
 
+After our first successful deployment, we can find next structure on our server:
+
+```
+~/example                      // The deploy_path.
+ |- current -> releases/1      // Symlink to the current release.
+ |- releases                   // Dir for all releases.
+    |- 1                       // Actual files location.
+       |- ...
+       |- .env -> shared/.env  // Symlink to shared .env file.
+ |- shared                     // Dirs for shared files between releases.
+    |- ...
+    |- .env                    // Example: shared .env file.
+ |- .dep                       // Deployer configuration files.
+```
+
+Configure you webserver to serve the `current` directory. For example, for nginx:
+
+```
+root /home/deployer/example/current/public;
+index index.php;
+location / {
+    try_files $uri $uri/ /index.php?$query_string;
+}
+```
+
+If you're using provision recipe, Deployer will automatically configure Caddy
+webserver to serve from the [public_path](/docs/recipe/provision/website.md#public_path).
+
 Now let's add a build step on our host:
+
 ```php
 task('build', function () {
     cd('{{release_path}}');

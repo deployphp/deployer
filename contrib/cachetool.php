@@ -1,10 +1,5 @@
 <?php
 /*
-Add to your _deploy.php_
-
-```php
-require 'contrib/cachetool.php';
-```
 
 ## Configuration
 

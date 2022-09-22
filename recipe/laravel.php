@@ -213,6 +213,22 @@ task('artisan:telescope:clear', artisan('telescope:clear'));
 desc('Prunes stale entries from the Telescope database');
 task('artisan:telescope:prune', artisan('telescope:prune'));
 
+/*
+ * Octane.
+ */
+
+desc('Starts the octane server');
+task('artisan:octane', artisan('octane:start'));
+
+desc('Reloads the octane server');
+task('artisan:octane:reload', artisan('octane:reload'));
+
+desc('Stops the octane server');
+task('artisan:octane:stop', artisan('octane:stop'));
+
+desc('Check the status of the octane server');
+task('artisan:octane:status', artisan('octane:status'));
+
 /**
  * Main deploy task.
  */

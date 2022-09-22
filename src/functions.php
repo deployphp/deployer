@@ -568,7 +568,7 @@ function invoke(string $taskName): void
  * - `options` with additional flags passed directly to the `rsync` command
  * - `timeout` for `Process::fromShellCommandline()` (`null` by default)
  * - `progress_bar` to display upload/download progress
- * - `display_stats' to display rsync set of statistics
+ * - `display_stats` to display rsync set of statistics
  *
  * @param string|string[] $source
  * @param array $config

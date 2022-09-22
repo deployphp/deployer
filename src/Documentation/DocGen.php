@@ -12,6 +12,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
+use function Deployer\Support\str_contains as str_contains;
 
 class DocGen
 {
@@ -126,18 +127,73 @@ class DocGen
                 return null;
             };
 
-
-            $filePath = "$destination/" . php_to_md($recipe->recipePath);
-
-            $intro = '';
+            $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
             $config = '';
             $tasks = '';
+            $intro = <<<MD
+```php
+require '$recipe->recipePath';
+```
+
+[Source](/$recipe->recipePath)
+
+
+MD;
+            if (is_framework_recipe($recipe)) {
+                $brandName = framework_brand_name($recipe->recipeName);
+                $typeOfProject = preg_match('/^symfony/i', $recipe->recipeName) ? 'Application' : 'Project';
+                $title = "How to Deploy a $brandName $typeOfProject";
+
+                $intro .= <<<MARKDOWN
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your $brandName application to a server. 
+It is very easy to use and has a lot of features. 
+
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
+
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
+
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
+
+
+MARKDOWN;
+
+                $deployTask = $findTask('deploy');
+                if ($deployTask !== null) {
+                    $intro .= "The [deploy](#deploy) task of **$brandName** consists of:\n";
+                    $map = function (DocTask $task, $ident = '') use (&$map, $findTask, &$intro): void {
+                        foreach ($task->group as $taskName) {
+                            $t = $findTask($taskName);
+                            if ($t !== null) {
+                                $intro .= "$ident* {$t->mdLink()} – $t->desc\n";
+                                if ($t->group !== null) {
+                                    $map($t, $ident . '  ');
+                                }
+                            }
+                        }
+                    };
+                    $map($deployTask);
+                }
+
+                $intro .= "\n\n";
+            }
             if (count($recipe->require) > 0) {
-                $intro .= "* Requires\n";
-                foreach ($recipe->require as $r) {
-                    $md = php_to_md($r);
-                    $basename = basename($r, '.php');
-                    $intro .= "  * [{$basename}](/docs/{$md})\n";
+                if (is_framework_recipe($recipe)) {
+                    $link = recipe_to_md_link($recipe->require[0]);
+                    $intro .= "The $recipe->recipeName recipe is based on the $link recipe.\n";
+                } else {
+                    $intro .= "* Requires\n";
+                    foreach ($recipe->require as $r) {
+                        $link = recipe_to_md_link($r);
+                        $intro .= "  * {$link}\n";
+                    }
                 }
             }
             if (!empty($recipe->comment)) {
@@ -146,7 +202,6 @@ class DocGen
             if (count($recipe->config) > 0) {
                 $config .= "## Configuration\n";
                 foreach ($recipe->config as $c) {
-                    $anchor = anchor($c->name);
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](https://github.com/deployphp/deployer/blob/master/{$c->recipePath}#L{$c->lineNumber})\n\n";
                     $o = $findConfigOverride($recipe, $c->name);
@@ -173,7 +228,6 @@ class DocGen
             if (count($recipe->tasks) > 0) {
                 $tasks .= "## Tasks\n\n";
                 foreach ($recipe->tasks as $t) {
-                    $anchor = anchor($t->name);
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](https://github.com/deployphp/deployer/blob/master/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= add_tailing_dot($t->desc) . "\n\n";
@@ -184,9 +238,7 @@ class DocGen
                         foreach ($t->group as $taskName) {
                             $t = $findTask($taskName);
                             if ($t !== null) {
-                                $md = php_to_md($t->recipePath);
-                                $anchor = anchor($t->name);
-                                $tasks .= "* [$taskName](/docs/$md#$anchor)\n";
+                                $tasks .= "* {$t->mdLink()}\n";
                             } else {
                                 $tasks .= "* `$taskName`\n";
                             }
@@ -201,22 +253,51 @@ class DocGen
 <!-- Instead edit $recipe->recipePath -->
 <!-- Then run bin/docgen -->
 
-# $recipe->recipeName
-
-[Source](/$recipe->recipePath)
+# $title
 
 $intro
 $config
 $tasks
 MD;
 
+            $filePath = "$destination/" . php_to_md($recipe->recipePath);
             if (!file_exists(dirname($filePath))) {
                 mkdir(dirname($filePath), 0755, true);
             }
             $output = remove_text_emoji($output);
             file_put_contents($filePath, $output);
         }
+        $this->generateRecipesIndex($destination);
+        $this->generateContribIndex($destination);
         return null;
+    }
+
+    public function generateRecipesIndex(string $destination) {
+        $index = "# All Recipes\n\n";
+        $list = [];
+        foreach ($this->recipes as $recipe) {
+            if (preg_match('/^recipe\/[^\/]+\.php$/', $recipe->recipePath)) {
+                $name = framework_brand_name($recipe->recipeName);
+                $list[] = "* [$name Recipe](/docs/recipe/{$recipe->recipeName}.md)";
+            }
+        }
+        sort($list);
+        $index .= implode("\n", $list);
+        file_put_contents("$destination/recipe/README.md", $index);
+    }
+
+    public function generateContribIndex(string $destination) {
+        $index = "# All Contrib Recipes\n\n";
+        $list = [];
+        foreach ($this->recipes as $recipe) {
+            if (preg_match('/^contrib\/[^\/]+\.php$/', $recipe->recipePath)) {
+                $name = ucfirst($recipe->recipeName);
+                $list[] = "* [$name Recipe](/docs/contrib/$recipe->recipeName.md)";
+            }
+        }
+        sort($list);
+        $index .= implode("\n", $list);
+        file_put_contents("$destination/contrib/README.md", $index);
     }
 }
 
@@ -256,4 +337,28 @@ function add_tailing_dot(string $sentence): string
         return $sentence;
     }
     return $sentence . '.';
+}
+
+function recipe_to_md_link(string $recipe): string
+{
+    $md = php_to_md($recipe);
+    $basename = basename($recipe, '.php');
+    return "[$basename](/docs/$md)";
+}
+
+function is_framework_recipe(DocRecipe $recipe): bool
+{
+    return preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
+    !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
+}
+
+function framework_brand_name(string $brandName): string
+{
+    $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
+    $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
+    $brandName = preg_replace('/yii/', 'Yii2', $brandName);
+    $brandName = preg_replace('/wordpress/', 'WordPress', $brandName);
+    $brandName = preg_replace('/_/', ' ', $brandName);
+    $brandName = preg_replace('/framework/', 'Framework', $brandName);
+    return ucfirst($brandName);
 }

@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/composer.php -->
 <!-- Then run bin/docgen -->
 
-# composer
+# Composer Recipe
+
+```php
+require 'recipe/composer.php';
+```
 
 [Source](/recipe/composer.php)
 

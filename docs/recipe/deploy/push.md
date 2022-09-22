@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/push.php -->
 <!-- Then run bin/docgen -->
 
-# push
+# Push Recipe
+
+```php
+require 'recipe/deploy/push.php';
+```
 
 [Source](/recipe/deploy/push.php)
 

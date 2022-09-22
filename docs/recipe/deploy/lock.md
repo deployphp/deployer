@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/lock.php -->
 <!-- Then run bin/docgen -->
 
-# lock
+# Lock Recipe
+
+```php
+require 'recipe/deploy/lock.php';
+```
 
 [Source](/recipe/deploy/lock.php)
 

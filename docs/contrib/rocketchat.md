@@ -2,7 +2,11 @@
 <!-- Instead edit contrib/rocketchat.php -->
 <!-- Then run bin/docgen -->
 
-# rocketchat
+# Rocketchat Recipe
+
+```php
+require 'contrib/rocketchat.php';
+```
 
 [Source](/contrib/rocketchat.php)
 
@@ -11,12 +15,6 @@
 ## Installing
 
 Create a RocketChat incoming webhook, through the administration panel.
-
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/rocketchat.php';
-```
 
 Add hook on deploy:
 
@@ -28,7 +26,7 @@ before('deploy', 'rocketchat:notify');
 
  - `rocketchat_webhook` - incoming rocketchat webook **required**
    ```
-   set('rocketchat_webook', 'https://rocketchat.yourcompany.com/hooks/XXXXX');
+   set('rocketchat_webhook', 'https://rocketchat.yourcompany.com/hooks/XXXXX');
    ```
 
  - `rocketchat_title` - the title of the application, defaults to `{{application}}`
@@ -74,14 +72,17 @@ after('deploy:failed', 'rocketchat:notify:failure');
 
 ## Configuration
 ### rockchat_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L70)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L64)
 
 
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### rocketchat_icon_emoji
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L74)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L68)
 
 
 
@@ -91,7 +92,7 @@ after('deploy:failed', 'rocketchat:notify:failure');
 
 
 ### rocketchat_icon_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L75)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L69)
 
 
 
@@ -101,7 +102,7 @@ null
 
 
 ### rocketchat_channel
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L77)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L71)
 
 
 
@@ -111,7 +112,7 @@ null
 
 
 ### rocketchat_room_id
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L72)
 
 
 
@@ -121,7 +122,7 @@ null
 
 
 ### rocketchat_username
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L79)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L73)
 
 
 
@@ -131,7 +132,7 @@ null
 
 
 ### rocketchat_webhook
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L80)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L74)
 
 
 
@@ -141,7 +142,7 @@ null
 
 
 ### rocketchat_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L76)
 
 
 
@@ -151,7 +152,7 @@ null
 
 
 ### rocketchat_success_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L77)
 
 
 
@@ -161,7 +162,7 @@ null
 
 
 ### rocketchat_failure_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L84)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L78)
 
 
 
@@ -171,7 +172,7 @@ null
 
 
 ### rocketchat_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L80)
 
 
 
@@ -181,7 +182,7 @@ null
 
 
 ### rocketchat_success_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L81)
 
 
 
@@ -191,7 +192,7 @@ null
 
 
 ### rocketchat_failure_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L88)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L82)
 
 
 
@@ -204,7 +205,7 @@ null
 ## Tasks
 
 ### rocketchat:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L85)
 
 Notifies RocketChat.
 
@@ -212,7 +213,7 @@ Notifies RocketChat.
 
 
 ### rocketchat:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L121)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L115)
 
 Notifies RocketChat about deploy finish.
 
@@ -220,7 +221,7 @@ Notifies RocketChat about deploy finish.
 
 
 ### rocketchat:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L151)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L145)
 
 Notifies RocketChat about deploy failure.
 

@@ -1,10 +1,5 @@
 <?php
 /*
-Require the Google Hangouts Chat recipe in your `deploy.php` file:
-
-```php
-require 'contrib/chat.php';
-```
 
 Add hook on deploy:
 

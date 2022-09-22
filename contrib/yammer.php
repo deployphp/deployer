@@ -1,14 +1,5 @@
 <?php
 /*
-# Yammer recipe
-
-## Installing
-
-Require yammer recipe in your `deploy.php` file:
-
-```php
-require 'contrib/yammer.php';
-```
 
 Add hook on deploy:
 

@@ -2,17 +2,16 @@
 <!-- Instead edit contrib/hangouts.php -->
 <!-- Then run bin/docgen -->
 
-# hangouts
+# Hangouts Recipe
+
+```php
+require 'contrib/hangouts.php';
+```
 
 [Source](/contrib/hangouts.php)
 
 
 
-Require the Google Hangouts Chat recipe in your `deploy.php` file:
-
-```php
-require 'contrib/chat.php';
-```
 
 Add hook on deploy:
 
@@ -53,14 +52,17 @@ after('deploy:failed', 'chat:notify:failure');
 
 ## Configuration
 ### chat_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L45)
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### chat_subtitle
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L54)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L49)
 
 
 
@@ -70,7 +72,7 @@ get('hostname')
 
 
 ### favicon
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L57)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L52)
 
 If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
@@ -80,7 +82,7 @@ If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
 
 ### chat_line1
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L60)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L55)
 
 Deploy messages
 
@@ -90,7 +92,7 @@ Deploy messages
 
 
 ### chat_line2
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L61)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L56)
 
 
 
@@ -103,7 +105,7 @@ Deploy messages
 ## Tasks
 
 ### chat:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L59)
 
 Notifies Google Hangouts Chat.
 
@@ -111,7 +113,7 @@ Notifies Google Hangouts Chat.
 
 
 ### chat:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L106)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L101)
 
 Notifies Google Hangouts Chat about deploy finish.
 
@@ -119,7 +121,7 @@ Notifies Google Hangouts Chat about deploy finish.
 
 
 ### chat:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L148)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L143)
 
 Notifies Google Hangouts Chat about deploy failure.
 

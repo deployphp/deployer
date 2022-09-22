@@ -3,10 +3,11 @@
 We recommend adding next alias to your .bashrc file:
 
 ```bash
-alias dep='vendor/bin/deployer.phar'
+alias dep='vendor/bin/dep'
 ```
 
 As well as installing completion script for Deployer, completion supports:
+
 - tasks,
 - options,
 - host names,
@@ -111,7 +112,7 @@ $ dep deploy --plan all
 └──────────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
 ```
 
-The **deploy.php*:
+The **deploy.php**:
 
 ```php
 host('prod[01:04]');
@@ -120,7 +121,7 @@ task('deploy:symlink')->limit(1);
 
 ## The `runLocally` working dir
 
-By default `runLocally()` commands are executed relative to the recipe file directory. 
+By default `runLocally()` commands are executed relative to the recipe file directory.
 This can be overridden globally by setting an environment variable:
 
 ```
@@ -136,9 +137,9 @@ runLocally('ls', ['cwd' => '/root/directory']);
 ## Play blackjack
 
 > Yeah, well. I'm gonna go build my own theme park... with blackjack and hookers!
-> 
+>
 > In fact, forget the park!
-> 
+>
 > — Bender
 
 ```

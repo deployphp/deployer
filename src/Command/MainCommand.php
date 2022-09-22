@@ -127,7 +127,6 @@ class MainCommand extends SelectCommand
 
         if (!$plan) {
             $this->checkUpdates();
-            $this->validateConfig();
             $this->deployer->server->start();
 
             if (!empty($skippedTasks)) {
@@ -173,50 +172,13 @@ class MainCommand extends SelectCommand
     private function showBanner()
     {
         try {
-            $withColors = getenv('COLORTERM') === 'truecolor' ? '_with_colors' : '';
-            fwrite(STDERR, Httpie::get("https://deployer.org/banners/" . $this->getName() . $withColors)->send());
+            $withColors = '';
+            if (function_exists('posix_isatty') && posix_isatty(STDOUT)) {
+                $withColors = '_with_colors';
+            }
+            fwrite(STDERR, Httpie::get("https://deployer.medv.io/banners/" . $this->getName() . $withColors)->send());
         } catch (\Throwable $e) {
             // Meh
-        }
-    }
-
-    private function validateConfig(): void
-    {
-        if (!defined('DEPLOYER_DEPLOY_FILE')) {
-            return;
-        }
-        $validate = function (Configuration $configA, Configuration $configB): void {
-            $keysA = array_keys($configA->ownValues());
-            $keysB = array_keys($configB->ownValues());
-            for ($i = 0; $i < count($keysA); $i++) {
-                for ($j = $i + 1; $j < count($keysB); $j++) {
-                    $a = $keysA[$i];
-                    $b = $keysB[$j];
-                    if (levenshtein($a, $b) == 1) {
-                        $source = file_get_contents(DEPLOYER_DEPLOY_FILE);
-                        $code = '';
-                        foreach (find_config_line($source, $a) as list($n, $line)) {
-                            $code .= "    $n: " . str_replace($a, "<fg=red>$a</fg=red>", $line) . "\n";
-                        }
-                        foreach (find_config_line($source, $b) as list($n, $line)) {
-                            $code .= "    $n: " . str_replace($b, "<fg=red>$b</fg=red>", $line) . "\n";
-                        }
-                        if (!empty($code)) {
-                            warning(<<<AAA
-                                Did you mean "<fg=green>$a</fg=green>" or "<fg=green>$b</fg=green>"?</>
-                                
-                                $code
-                                AAA
-                            );
-                        }
-                    }
-                }
-            }
-        };
-
-        $validate($this->deployer->config, $this->deployer->config);
-        foreach ($this->deployer->hosts as $host) {
-            $validate($host->config(), $this->deployer->config);
         }
     }
 

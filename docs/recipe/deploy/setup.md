@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/setup.php -->
 <!-- Then run bin/docgen -->
 
-# setup
+# Setup Recipe
+
+```php
+require 'recipe/deploy/setup.php';
+```
 
 [Source](/recipe/deploy/setup.php)
 

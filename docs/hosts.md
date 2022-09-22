@@ -63,24 +63,24 @@ host('example.org')
 
 ### `alias`
 
-The identifier used to identify a host. 
+The identifier used to identify a host.
 You can use actual hostname or something like `prod` or `staging`.
 
-### `hostname` 
+### `hostname`
 
 Deployer uses this config for actual ssh connection.
 
-### `remote_user` 
+### `remote_user`
 
-Deployer uses this config for actual ssh connection. If not specified, 
+Deployer uses this config for actual ssh connection. If not specified,
 Deployer will be using `RemoteUser` from **~/.ssh/config** file, or current
 OS username.
 
-### `port` 
+### `port`
 
 Port of remote ssh server to connect to. Default is `22`.
 
-### `config_file` 
+### `config_file`
 
 Default is `~/.ssh/config`.
 
@@ -93,33 +93,34 @@ they can change depending on where the deploy is executed from. Only specify
 Host *
   IdentityFile ~/.ssh/id_rsa
 ```
+
 :::
 
-### `identity_file` 
+### `identity_file`
 
 For example, `~/.ssh/id_rsa`.
 
-### `forward_agent` 
+### `forward_agent`
 
 Default is `true`.
 
-### `ssh_multiplexing` 
+### `ssh_multiplexing`
 
 Default is `true`.
 
-### `shell` 
+### `shell`
 
 Default is `bash -ls`.
 
-### `deploy_path` 
+### `deploy_path`
 
 For example, `~/myapp`.
 
-### `labels` 
+### `labels`
 
 Key-value pairs for host selector.
 
-### `ssh_arguments` 
+### `ssh_arguments`
 
 For example, `['-o UserKnownHostsFile=/dev/null']`
 
@@ -127,7 +128,7 @@ For example, `['-o UserKnownHostsFile=/dev/null']`
 
 Default is `~/.ssh/%C`.
 
-If **CI** env is present, default value is `/dev/shm/%C`. 
+If **CI** env is present, default value is `/dev/shm/%C`.
 
 ## Multiple hosts
 
@@ -169,7 +170,7 @@ localhost('ci'); // Alias is "ci", hostname is "localhost".
 ## YAML Inventory
 
 You can use the [import()](api.md#import) function to keep host definitions in a
-separate file. For example, *inventory.yaml*.
+separate file. For example, _inventory.yaml_.
 
 ```php title="deploy.php"
 import('inventory.yaml');

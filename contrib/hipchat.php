@@ -1,13 +1,5 @@
 <?php
 /*
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/hipchat.php';
-```
-
 ## Configuration
 
 - `hipchat_token` – Hipchat V1 auth token

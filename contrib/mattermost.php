@@ -4,12 +4,6 @@
 
 Create a Mattermost incoming webhook, through the administration panel.
 
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/mattermost.php';
-```
-
 Add hook on deploy:
 
 ```

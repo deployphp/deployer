@@ -34,4 +34,10 @@ class DocTask
      * @var int
      */
     public $lineNumber;
+
+    public function mdLink(): string {
+        $md = php_to_md($this->recipePath);
+        $anchor = anchor($this->name);
+        return "[$this->name](/docs/$md#$anchor)";
+    }
 }

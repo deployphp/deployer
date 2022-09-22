@@ -4,12 +4,6 @@
 
 Create a RocketChat incoming webhook, through the administration panel.
 
-Require the new recipe into your `deploy.php`
-
-```php
-require 'contrib/rocketchat.php';
-```
-
 Add hook on deploy:
 
 ```
@@ -20,7 +14,7 @@ before('deploy', 'rocketchat:notify');
 
  - `rocketchat_webhook` - incoming rocketchat webook **required**
    ```
-   set('rocketchat_webook', 'https://rocketchat.yourcompany.com/hooks/XXXXX');
+   set('rocketchat_webhook', 'https://rocketchat.yourcompany.com/hooks/XXXXX');
    ```
 
  - `rocketchat_title` - the title of the application, defaults to `{{application}}`

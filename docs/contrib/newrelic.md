@@ -2,19 +2,15 @@
 <!-- Instead edit contrib/newrelic.php -->
 <!-- Then run bin/docgen -->
 
-# newrelic
-
-[Source](/contrib/newrelic.php)
-
-
-
-## Installing
-
-Add to your _deploy.php_
+# Newrelic Recipe
 
 ```php
 require 'contrib/newrelic.php';
 ```
+
+[Source](/contrib/newrelic.php)
+
+
 
 ## Configuration
 
@@ -34,31 +30,41 @@ after('deploy', 'newrelic:notify');
 
 ## Configuration
 ### newrelic_app_id
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L22)
 
+
+:::info Required
+Throws exception if not set.
+:::
 
 
 
 
 ### newrelic_description
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L34)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L26)
 
 
 
+```php title="Default value"
+return runLocally('git log -n 1 --format="%an: %s" | tr \'"\' "\'"');
+```
 
 
 ### newrelic_revision
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L38)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L30)
 
 
 
+```php title="Default value"
+return runLocally('git log -n 1 --format="%h"');
+```
 
 
 
 ## Tasks
 
 ### newrelic:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L35)
 
 Notifies New Relic of deployment.
 

@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/clear_paths.php -->
 <!-- Then run bin/docgen -->
 
-# clear_paths
+# Clear Paths Recipe
+
+```php
+require 'recipe/deploy/clear_paths.php';
+```
 
 [Source](/recipe/deploy/clear_paths.php)
 

@@ -2,7 +2,11 @@
 <!-- Instead edit recipe/deploy/cleanup.php -->
 <!-- Then run bin/docgen -->
 
-# cleanup
+# Cleanup Recipe
+
+```php
+require 'recipe/deploy/cleanup.php';
+```
 
 [Source](/recipe/deploy/cleanup.php)
 

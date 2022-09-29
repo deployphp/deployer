@@ -27,6 +27,15 @@ set('magento_themes', [
 
 ]);
 
+// Static content deployment options, e.g. '--no-parent'
+set('static_deploy_options', '');
+
+// Deploy frontend and adminhtml together as default
+set('split_static_deployment', false);
+
+// backend themes to deploy. Only used if split_static_deployment=true
+set('magento_themes_backend', ['Magento/backend']);
+
 // Configuration
 
 // Also set the number of conccurent jobs to run. The default is 1
@@ -97,16 +106,72 @@ task('magento:compile', function () {
 
 desc('Deploys assets');
 task('magento:deploy:assets', function () {
-
     $themesToCompile = '';
-    if (count(get('magento_themes')) > 0) {
+    if (get('split_static_deployment')) {
+        invoke('magento:deploy:assets:adminhtml');
+        invoke('magento:deploy:assets:frontend');
+    } elseif (count(get('magento_themes')) > 0 ) {
         foreach (get('magento_themes') as $theme) {
             $themesToCompile .= ' -t ' . $theme;
         }
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+    }
+});
+
+desc('Deploys assets for backend only');
+task('magento:deploy:assets:adminhtml', function () {
+    magentoDeployAssetsSplit('backend');
+});
+
+desc('Deploys assets for frontend only');
+task('magento:deploy:assets:frontend', function () {
+    magentoDeployAssetsSplit('frontend');
+});
+
+/**
+ * @param string $area
+ *
+ * @phpstan-param 'frontend'|'backend' $area
+ *
+ * @throws \Deployer\Exception\RuntimeException
+ */
+function magentoDeployAssetsSplit(string $area)
+{
+    if (!in_array($area, ['frontend', 'backend'], true)) {
+        throw new \Deployer\Exception\RuntimeException("\$area must be either 'frontend' or 'backend', '$area' given");
     }
 
-    run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
-});
+    $isFrontend = $area === 'frontend';
+    $suffix = $isFrontend
+        ? ''
+        : '_backend';
+
+    $themesConfig = get("magento_themes$suffix");
+    $defaultLanguages = get("static_content_locales$suffix");
+    $useDefaultLanguages = array_is_list($themesConfig);
+
+    /** @var list<string> $themes */
+    $themes = $useDefaultLanguages
+        ? array_values($themesConfig)
+        : array_keys($themesConfig);
+
+    $staticContentArea = $isFrontend
+        ? 'frontend'
+        : 'adminhtml';
+
+    if ($useDefaultLanguages) {
+        $themes = implode('-t ', $themes);
+
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $defaultLanguages $themes -j {{static_content_jobs}}");
+        return;
+    }
+
+    foreach ($themes as $theme) {
+        $languages = parse($themesConfig[$theme] ?? $defaultLanguages);
+
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $languages -t $theme -j {{static_content_jobs}}");
+    }
+}
 
 desc('Syncs content version');
 task('magento:sync:content_version', function () {

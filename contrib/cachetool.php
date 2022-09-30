@@ -64,14 +64,11 @@ namespace Deployer;
 
 set('cachetool:socket:tcp', '');
 set('cachetool:socket:glob', '');
-set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar');
-set('cachetool_args', '');
-set('bin/cachetool', function () {
-    if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
-        run("cd {{release_or_current_path}} && curl -sLO {{cachetool_url}}");
-    }
-    return '{{release_or_current_path}}/cachetool.phar';
-});
+/**
+ * Array of sockets (TCP or Unix socket)
+ *
+ * If not set explicitly, they are determined by `cachetool:socket:tcp` or `cachetool:socket:glob`.
+ */
 set('cachetool:sockets', function() {
     // Old single socket option for backwards compatibility
     if (has('cachetool')) {
@@ -88,6 +85,33 @@ set('cachetool:sockets', function() {
     }
     return [];
 });
+/**
+ * URL to download cachetool from if it is not available
+ *
+ * CacheTool 8.x works with PHP >=8.0
+ * CacheTool 7.x works with PHP >=7.3
+ */
+set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar');
+set('cachetool_args', '');
+/**
+ * Path to the executable cachetool binary (cachetool.phar)
+ *
+ * If not set explicitly, it will look in the current/release path and if not present, download it from `cachetool_url` to .dep/cachetool.phar.
+ */
+set('bin/cachetool', function () {
+    // if cachetool is in the current/release path, use it (backwards compatibility)
+    if (test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
+        return '{{bin/php}} {{release_or_current_path}}/cachetool.phar'
+    }
+    // if cachetool is already downloaded, use it
+    if (test('[ -f {{deploy_path}}/.dep/cachetool.phar ]')) {
+        return '{{bin/php}} {{deploy_path}}/.dep/cachetool.phar';
+    }
+    warning("Cachetool binary wasn't found. Installing latest cachetool to \"{{deploy_path}}/.dep/cachetool.phar\".");
+    run("cd {{deploy_path}} && curl -sLO {{cachetool_url}}");
+    run('mv {{deploy_path}}/cachetool.phar {{deploy_path}}/.dep/cachetool.phar');
+    return '{{bin/php}} {{deploy_path}}/.dep/cachetool.phar';
+});
 
 /**
  * Clear opcache cache
@@ -96,7 +120,7 @@ desc('Clears OPcode cache');
 task('cachetool:clear:opcache', function () {
     if (count(get('cachetool:sockets')) === 0) {
         // if no socket is configured, use cachetool_args (if empty, cachetool looks for cachetool.yml configuration)
-        run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_args}}");
+        run("cd {{release_or_current_path}} && {{bin/cachetool}} opcache:reset {{cachetool_args}}");
         return;
     }
     foreach (get('cachetool:sockets') as $socket) {
@@ -108,7 +132,7 @@ task('cachetool:clear:opcache', function () {
         $success = false;
         do {
             try {
-                run("{{bin/cachetool}} opcache:reset --fcgi=$socket");
+                run("{{release_or_current_path}} && {{bin/cachetool}} opcache:reset --fcgi=$socket");
                 writeln("<info>Trying to reset PHP OpCache from socket $socket</info>");
                 $success = true;
             } catch (\Exception $e) {
@@ -132,7 +156,7 @@ task('cachetool:clear:opcache', function () {
  */
 desc('Clears APCu system cache');
 task('cachetool:clear:apcu', function () {
-    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
+    run("cd {{release_or_current_path}} && {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
 });
 
 /**
@@ -140,5 +164,5 @@ task('cachetool:clear:apcu', function () {
  */
 desc('Clears file status and realpath caches');
 task('cachetool:clear:stat', function () {
-    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} stat:clear {{cachetool_options}}");
+    run("cd {{release_or_current_path}} && {{bin/cachetool}} stat:clear {{cachetool_options}}");
 });

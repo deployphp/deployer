@@ -33,6 +33,9 @@ set('static_deploy_options', '');
 // Deploy frontend and adminhtml together as default
 set('split_static_deployment', false);
 
+// Use the defualt languages for the backend as default
+set('static_content_locales_backend', '{{static_content_locales}}');
+
 // backend themes to deploy. Only used if split_static_deployment=true
 set('magento_themes_backend', ['Magento/backend']);
 

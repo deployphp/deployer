@@ -19,8 +19,9 @@ require_once __DIR__ . '/common.php';
 
 add('recipes', ['shopware']);
 
-
 set('default_timeout', 3600); // Increase when tasks take longer than that.
+set('use_sudo_for_shopware_commands', false);
+set('use_sudo_user_for_shopware_commands', 'root');
 
 // These files are shared among all releases.
 set('shared_files', [
@@ -59,28 +60,28 @@ set('writable_dirs', [
 
 // This task remotely executes the `cache:clear` console command on the target server.
 task('sw:cache:clear', static function () {
-    run('cd {{release_path}} && bin/console cache:clear');
+    run('cd {{release_path}} && ' . getShopwareSudoPrefix() . 'bin/console cache:clear');
 });
 
 // This task remotely executes the cache warmup console commands on the target server, so that the first user, who
 // visits the website, doesn't have to wait for the cache to be built up.
 task('sw:cache:warmup', static function () {
-    run('cd {{release_path}} && bin/console cache:warmup');
-    run('cd {{release_path}} && bin/console http:cache:warm:up');
+    run('cd {{release_path}} && ' . getShopwareSudoPrefix() . 'bin/console cache:warmup');
+    run('cd {{release_path}} && ' . getShopwareSudoPrefix() . 'bin/console http:cache:warm:up');
 });
 
 // This task remotely executes the `database:migrate` console command on the target server.
 task('sw:database:migrate', static function () {
-    run('cd {{release_path}} && bin/console database:migrate --all');
+    run('cd {{release_path}} && ' . getShopwareSudoPrefix() . 'bin/console database:migrate --all');
 });
 
 task('sw:plugin:refresh', function () {
-    run('cd {{release_path}} && bin/console plugin:refresh');
+    run('cd {{release_path}} && ' . getShopwareSudoPrefix() . 'bin/console plugin:refresh');
 });
 
 function getPlugins(): array
 {
-    $output = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
+    $output = explode("\n", run('cd {{release_path}} && ' . getShopwareSudoPrefix() . 'bin/console plugin:list'));
 
     // Take line over headlines and count "-" to get the size of the cells.
     $lengths = array_filter(array_map('strlen', explode(' ', $output[4])));
@@ -110,12 +111,22 @@ function getPlugins(): array
     return $plugins;
 }
 
+function getShopwareSudoPrefix(): string
+{
+    $return = get('use_sudo_for_shopware_commands') ? 'sudo' : '';
+    if (strlen(get('use_sudo_user_for_shopware_commands')) > 0) {
+        $return .= ' -u ' . get('use_sudo_user_for_shopware_commands');
+    }
+    $return .= ' ';
+    return $return;
+}
+
 task('sw:plugin:update:all', static function () {
     $plugins = getPlugins();
     foreach ($plugins as $plugin) {
         if ($plugin['Installed'] === 'Yes') {
             writeln("<info>Running plugin update for " . $plugin['Plugin'] . "</info>\n");
-            run("cd {{release_path}} && bin/console plugin:update " . $plugin['Plugin']);
+            run("cd {{release_path}} && " . getShopwareSudoPrefix() . "bin/console plugin:update " . $plugin['Plugin']);
         }
     }
 });
@@ -151,10 +162,10 @@ task('sw-build-without-db:get-remote-config', static function () {
         return;
     }
     within('{{deploy_path}}/current', function () {
-        run('./bin/console bundle:dump');
+        run(getShopwareSudoPrefix() . './bin/console bundle:dump');
         download('{{deploy_path}}/current/var/plugins.json', './var/');
 
-        run('./bin/console theme:dump');
+        run(getShopwareSudoPrefix() . './bin/console theme:dump');
         download('{{deploy_path}}/current/files/theme-config', './files/');
 
         // Temporary workaround to remove absolute file paths in Shopware <6.4.6.0

@@ -23,6 +23,17 @@ set('static_content_locales', 'en_US');
 
 // You can also set the themes to run against. By default it'll deploy
 // all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
+// If the themes are set as a simple list of strings, then all languages defined in {{static_content_locales}} are
+// compiled for the given themes.
+// Alternatively The themes cna be defined as an associative array, where the key represents the theme name and
+// the key contains the languages for the compilation (for this specific theme)
+// Example:
+// set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from {{static_content_locales}}
+// set('magento_themes', [
+//     'Magento/luma'   => null,                              - Will compile all languages from {{static_content_locales}} for Magento/luma
+//     'Custom/theme'   => 'en_US fr_FR'                      - Will compile only en_US and fr_FR for Custom/theme
+//     'Custom/another' => '{{static_content_locales}} it_IT' - Will compile all languages from {{static_content_locales}} + it_IT for Custom/another
+// ]); - Will compile this theme with every language
 set('magento_themes', [
 
 ]);
@@ -37,6 +48,7 @@ set('split_static_deployment', false);
 set('static_content_locales_backend', '{{static_content_locales}}');
 
 // backend themes to deploy. Only used if split_static_deployment=true
+// This setting supports the same options/structure as {{magento_themes}}
 set('magento_themes_backend', ['Magento/backend']);
 
 // Configuration

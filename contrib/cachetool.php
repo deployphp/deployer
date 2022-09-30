@@ -3,21 +3,27 @@
 
 ## Configuration
 
-- **cachetool** *(optional)*: accepts a *string* with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
+- **cachetool:socket:tcp** *(optional)*: accepts a *string* with IP address and port to the php-fpm TCP socket
 
     ```php
-    set('cachetool', '/var/run/php-fpm.sock');
-    // or
-    set('cachetool', '127.0.0.1:9000');
+    set('cachetool:socket:tcp', '127.0.0.1:9000')
     ```
+
+- **cachetool:socket:glob** *(optional)*: accepts a path or glob pattern to the php-fpm unix socket(s)
+
+    ```php
+    set('cachetool:socket:glob', '/var/run/php-*.sock')
+    ```
+
+If neither `cachetool:socket:tcp` nor `cachetool:socket:glob` is given, then the tool will look for a `cachetool.yml` file in the current or any parent directory and read the configuration from there. See [cachetool documentation](https://github.com/gordalina/cachetool#configuration-file)
 
 You can also specify different cachetool settings for each host:
 ```php
 host('staging')
-    ->set('cachetool', '127.0.0.1:9000');
+    ->set('cachetool:socket:tcp', '127.0.0.1:9000');
 
 host('production')
-    ->set('cachetool', '/var/run/php-fpm.sock');
+    ->set('cachetool:socket:glob', '/var/run/php-fpm.sock');
 ```
 
 By default, if no `cachetool` parameter is provided, this recipe will fallback to the global setting.

@@ -34,6 +34,8 @@ the web adapter that creates a temporary php file and makes a web request to it 
 set('cachetool_args', '--web --web-path=./public --web-url=https://{{hostname}}');
 ```
 
+In this case, do not set `cachetool:socket:tcp` or `cachetool:socket:glob`.
+
 ## Usage
 
 Since APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
@@ -51,7 +53,8 @@ http://gordalina.github.io/cachetool/
  */
 namespace Deployer;
 
-set('cachetool', '');
+set('cachetool:socket:tcp', '');
+set('cachetool:socket:glob', '');
 set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar');
 set('cachetool_args', '');
 set('bin/cachetool', function () {
@@ -60,17 +63,21 @@ set('bin/cachetool', function () {
     }
     return '{{release_or_current_path}}/cachetool.phar';
 });
-set('cachetool_options', function () {
-    $options = get('cachetool');
-    $fullOptions = get('cachetool_args');
-
-    if (strlen($fullOptions) > 0) {
-        $options = "{$fullOptions}";
-    } elseif (strlen($options) > 0) {
-        $options = "--fcgi={$options}";
+set('cachetool:sockets', function() {
+    // Old single socket option for backwards compatibility
+    if (has('cachetool')) {
+        return [get('cachetool')];
     }
-
-    return $options;
+    // Socket via TCP
+    if (has('cachetool:socket:tcp')) {
+        return [get('cachetool:socket:tcp')];
+    }
+    // Socket via path
+    if (has('cachetool:socket:glob')) {
+        $socketPathGlob = get('cachetool:socket:glob');
+        return explode(PHP_EOL, run("ls {$socketPathGlob}"));
+    }
+    return [];
 });
 
 /**
@@ -78,7 +85,37 @@ set('cachetool_options', function () {
  */
 desc('Clears OPcode cache');
 task('cachetool:clear:opcache', function () {
-    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_options}}");
+    if (count(get('cachetool:sockets')) === 0) {
+        // if no socket is configured, use cachetool_args (if empty, cachetool looks for cachetool.yml configuration)
+        run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_args}}");
+        return;
+    }
+    foreach (get('cachetool:sockets') as $socket) {
+        // executing opcache_reset too fast repeatedly fails. We try with increasing wait times
+        $waitSeconds = 0;
+        $waitSecondIncrement = 1;
+        $attempts = 0;
+        $maxAttempts = 5;
+        $success = false;
+        do {
+            try {
+                run("{{bin/cachetool}} opcache:reset --fcgi=$socket");
+                writeln("<info>Trying to reset PHP OpCache from socket $socket</info>");
+                $success = true;
+            } catch (\Exception $e) {
+                writeln("<comment>Warning: PHP OpCache from socket $socket is not reset!</comment>");
+                $waitSeconds += $waitSecondIncrement;
+                $attempts++;
+                if ($attempts < $maxAttempts) {
+                    writeln("<comment>Retry in {$waitSeconds} seconds...</comment>");
+                    sleep($waitSeconds);
+                } else {
+                    writeln("<error>Error: PHP OpCache from {$socket} could not be reset after {$maxAttempts} attempts</error>");
+                }
+            }
+        } while (!$success && ($attempts < $maxAttempts));
+    }
+
 });
 
 /**

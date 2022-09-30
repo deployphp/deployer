@@ -6,16 +6,27 @@
 - **cachetool:socket:tcp** *(optional)*: accepts a *string* with IP address and port to the php-fpm TCP socket
 
     ```php
-    set('cachetool:socket:tcp', '127.0.0.1:9000')
+    set('cachetool:socket:tcp', '127.0.0.1:9000');
     ```
 
 - **cachetool:socket:glob** *(optional)*: accepts a path or glob pattern to the php-fpm unix socket(s)
 
     ```php
-    set('cachetool:socket:glob', '/var/run/php-*.sock')
+    set('cachetool:socket:glob', '/var/run/php-*.sock');
     ```
+    
+Another alternative for multiple sockets is to specify them directly as array:
 
-If neither `cachetool:socket:tcp` nor `cachetool:socket:glob` is given, then the tool will look for a `cachetool.yml` file in the current or any parent directory and read the configuration from there. See [cachetool documentation](https://github.com/gordalina/cachetool#configuration-file)
+```php
+set('cachetool:sockets', [
+    '/var/run/php-domain-a.sock',
+    '/var/run/php-domain-b.sock',
+]);
+```
+
+This will override any `cachetool:socket:tcp` or `cachetool:socket:glob` configuration.
+
+If neither of the above configuration values is given, then the tool will look for a `cachetool.yml` file in the current or any parent directory and read the configuration from there. See [cachetool documentation](https://github.com/gordalina/cachetool#configuration-file)
 
 You can also specify different cachetool settings for each host:
 ```php
@@ -26,9 +37,7 @@ host('production')
     ->set('cachetool:socket:glob', '/var/run/php-fpm.sock');
 ```
 
-By default, if no `cachetool` parameter is provided, this recipe will fallback to the global setting.
-
-If your deployment user does not have permission to access the php-fpm.sock, you can alternatively use
+If your deployment user does not have permission to access the socket, you can alternatively use
 the web adapter that creates a temporary php file and makes a web request to it with a configuration like
 ```php
 set('cachetool_args', '--web --web-path=./public --web-url=https://{{hostname}}');

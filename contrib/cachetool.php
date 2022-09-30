@@ -156,7 +156,14 @@ task('cachetool:clear:opcache', function () {
  */
 desc('Clears APCu system cache');
 task('cachetool:clear:apcu', function () {
-    run("cd {{release_or_current_path}} && {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
+    if (count(get('cachetool:sockets')) === 0) {
+        // if no socket is configured, use cachetool_args (if empty, cachetool looks for cachetool.yml configuration)
+        run("cd {{release_or_current_path}} && {{bin/cachetool}} apcu:cache:clear {{cachetool_args}}");
+        return;
+    }
+    foreach (get('cachetool:sockets') as $socket) {
+        run("cd {{release_or_current_path}} && {{bin/cachetool}} apcu:cache:clear --fcgi=$socket");
+    }
 });
 
 /**
@@ -165,4 +172,12 @@ task('cachetool:clear:apcu', function () {
 desc('Clears file status and realpath caches');
 task('cachetool:clear:stat', function () {
     run("cd {{release_or_current_path}} && {{bin/cachetool}} stat:clear {{cachetool_options}}");
+    if (count(get('cachetool:sockets')) === 0) {
+        // if no socket is configured, use cachetool_args (if empty, cachetool looks for cachetool.yml configuration)
+        run("cd {{release_or_current_path}} && {{bin/cachetool}} stat:clear {{cachetool_args}}");
+        return;
+    }
+    foreach (get('cachetool:sockets') as $socket) {
+        run("cd {{release_or_current_path}} && {{bin/cachetool}} stat:clear --fcgi=$socket");
+    }
 });

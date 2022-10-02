@@ -130,8 +130,8 @@ task('deploy:release', function () {
     ];
 
     // Save metainfo about release.
-    $json = json_encode($metainfo);
-    run("echo '$json' >> .dep/releases_log");
+    $json = escapeshellarg(json_encode($metainfo));
+    run("echo $json >> .dep/releases_log");
 
     // Make new release.
     run("mkdir -p $releasePath");

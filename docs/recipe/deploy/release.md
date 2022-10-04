@@ -80,24 +80,11 @@ return $releaseExists ? get('release_path') : get('current_path');
 ```
 
 
-### previous_release
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L83)
-
-Return the previous release path during a release.
-If there is no release, will return false. Make sure to call deploy:release
-task before accessing this config.
-:::info Required
-Throws exception if not set.
-:::
-
-
-
-
 
 ## Tasks
 
 ### deploy:release
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L89)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L82)
 
 Prepares release.
 
@@ -105,7 +92,7 @@ Clean up unfinished releases and prepare next release
 
 
 ### releases
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L164)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L157)
 
 Shows releases list.
 

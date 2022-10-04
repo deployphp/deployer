@@ -25,7 +25,7 @@ set('static_content_locales', 'en_US');
 // all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
 // If the themes are set as a simple list of strings, then all languages defined in {{static_content_locales}} are
 // compiled for the given themes.
-// Alternatively The themes cna be defined as an associative array, where the key represents the theme name and
+// Alternatively The themes can be defined as an associative array, where the key represents the theme name and
 // the key contains the languages for the compilation (for this specific theme)
 // Example:
 // set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from {{static_content_locales}}

@@ -930,15 +930,7 @@ function timestamp(): string
  * var_dump($info['http_code'], $result);
  * ```
  */
-function fetch(
-    string $url,
-    string $method = 'get',
-    array $headers = [],
-    ?string $body = null,
-    ?array &$info = null,
-    ?array $options = null,
-    bool $nothrow = false
-): string
+function fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, ?array $options = null, bool $nothrow = false): string
 {
     $url = parse($url);
     if (strtolower($method) === 'get') {

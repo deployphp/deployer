@@ -3,6 +3,7 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 
@@ -144,16 +145,14 @@ task('magento:deploy:assets:frontend', function () {
 });
 
 /**
- * @param string $area
- *
  * @phpstan-param 'frontend'|'backend' $area
  *
- * @throws \Deployer\Exception\RuntimeException
+ * @throws ConfigurationException
  */
 function magentoDeployAssetsSplit(string $area)
 {
     if (!in_array($area, ['frontend', 'backend'], true)) {
-        throw new \Deployer\Exception\RuntimeException("\$area must be either 'frontend' or 'backend', '$area' given");
+        throw new ConfigurationException("\$area must be either 'frontend' or 'backend', '$area' given");
     }
 
     $isFrontend = $area === 'frontend';

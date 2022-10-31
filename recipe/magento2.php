@@ -231,8 +231,8 @@ set('artifact_dir', 'artifacts');
 set('artifact_excludes_file', 'artifacts/excludes');
 
 set('artifact_path', function () {
-    if (!test('[ -d {{artifact_dir}} ]')) {
-        run('mkdir {{artifact_dir}}');
+    if (!testLocally('[ -d {{artifact_dir}} ]')) {
+        runLocally('mkdir -p {{artifact_dir}}');
     }
     return get('artifact_dir') . '/' . get('artifact_file');
 });

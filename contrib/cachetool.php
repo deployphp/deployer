@@ -81,7 +81,7 @@ set('cachetool:sockets', function() {
     // Socket via path
     if (has('cachetool:socket:glob') && get('cachetool:socket:glob') !== '') {
         $socketPathGlob = get('cachetool:socket:glob');
-        return explode(PHP_EOL, run("ls {$socketPathGlob}"));
+        return array_filter(explode(PHP_EOL, run("ls {$socketPathGlob}")));
     }
     return [];
 });

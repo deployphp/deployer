@@ -218,4 +218,3 @@ task('deploy', [
     'deploy:publish',
 ]);
 
-after('deploy:failed', 'magento:maintenance:disable');

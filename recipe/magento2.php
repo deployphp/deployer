@@ -79,7 +79,7 @@ set('bin/magento', '{{release_or_current_path}}/bin/magento');
 
 set('magento_version', function () {
     // detect version
-    $versionOutput = run('{{bin/php}} {{bin/magento}} --version');
+    $versionOutput = run('{{bin/php}} {{release_or_current_path}}/{{bin/magento}} --version');
     preg_match('/(\d+\.?)+(-p\d+)?$/', $versionOutput, $matches);
     return $matches[0] ?? '2.0';
 });

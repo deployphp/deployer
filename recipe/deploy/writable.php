@@ -44,6 +44,8 @@ set('writable_dirs', []);
 // - chgrp
 // - chmod
 // - acl
+// - sticky
+// - skip
 set('writable_mode', 'acl');
 
 // Using sudo in writable commands?
@@ -128,6 +130,18 @@ task('deploy:writable', function () {
             $alias = currentHost()->getAlias();
             throw new \RuntimeException("Can't set writable dirs with ACL.\nInstall ACL with next command:\ndep run 'sudo apt-get install acl' -- $alias");
         }
+    } elseif ($mode === 'sticky') {
+        // Changes the group of the files, sets sticky bit to the directories
+        // and add the writable bit for all files
+        run("for dir in $dirs;".
+            'do '.
+            'chgrp -L -R {{http_group}} ${dir}; '.
+            'find ${dir} -type d -exec chmod g+rwxs \{\} \;;'.
+            'find ${dir} -type f -exec chmod g+rw \{\} \;;'.
+            'done');
+    } elseif ($mode === 'skip') {
+        // Does nothing, saves time if no changes are required for some environments
+        return;
     } else {
         throw new \RuntimeException("Unknown writable_mode `$mode`.");
     }

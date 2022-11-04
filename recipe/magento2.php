@@ -302,8 +302,12 @@ set('additional_shared_files', []);
 set('additional_shared_dirs', []);
 
 
-add('shared_files', get('additional_shared_files'));
-add('shared_dirs', get('additional_shared_dirs'));
+desc('Adds additional files and dirs to the list of shared files and dirs');
+task('deploy:additional-shared', function () {
+    add('shared_files', get('additional_shared_files'));
+    add('shared_dirs', get('additional_shared_dirs'));
+});
+
 
 desc('Prepares an artifact on the target server');
 task(
@@ -315,6 +319,7 @@ task(
         'deploy:release',
         'artifact:upload',
         'artifact:extract',
+        'deploy:additional-shared',
         'deploy:shared',
         'deploy:writable',
     ]

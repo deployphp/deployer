@@ -433,3 +433,11 @@ Prepare local artifact build.
 
 
 
+### deploy:additional-shared
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L306)
+
+Adds additional files and dirs to the list of shared files and dirs.
+
+
+
+

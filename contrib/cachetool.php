@@ -51,7 +51,13 @@ http://gordalina.github.io/cachetool/
 namespace Deployer;
 
 set('cachetool', '');
-set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/7.0.0/cachetool.phar');
+set('cachetool_url', function () {
+    if (PHP_VERSION_ID < 81000) {
+        return 'https://github.com/gordalina/cachetool/releases/download/8.0.0/cachetool.phar';
+    }
+
+    return 'https://github.com/gordalina/cachetool/releases/download/9.0.0/cachetool.phar';
+});
 set('cachetool_args', '');
 set('bin/cachetool', function () {
     if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {

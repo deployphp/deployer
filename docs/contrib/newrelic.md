@@ -17,6 +17,7 @@ require 'contrib/newrelic.php';
 - `newrelic_app_id` – newrelic's app id
 - `newrelic_api_key` – newrelic's api key
 - `newrelic_description` – message to send
+- `newrelic_endpoint` – newrelic's REST API endpoint
 
 ## Usage
 
@@ -60,11 +61,21 @@ return runLocally('git log -n 1 --format="%h"');
 ```
 
 
+### newrelic_endpoint
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L34)
+
+
+
+```php title="Default value"
+api.newrelic.com
+```
+
+
 
 ## Tasks
 
 ### newrelic:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L37)
 
 Notifies New Relic of deployment.
 

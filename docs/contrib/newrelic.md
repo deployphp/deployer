@@ -17,7 +17,6 @@ require 'contrib/newrelic.php';
 - `newrelic_app_id` – newrelic's app id
 - `newrelic_api_key` – newrelic's api key
 - `newrelic_description` – message to send
-- `newrelic_endpoint` – newrelic's REST API endpoint
 
 ## Usage
 
@@ -67,7 +66,7 @@ return runLocally('git log -n 1 --format="%h"');
 
 
 ```php title="Default value"
-api.newrelic.com
+'api.newrelic.com'
 ```
 
 

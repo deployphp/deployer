@@ -35,7 +35,6 @@ The [deploy](#deploy) task of **Magento 2** consists of:
   * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
   * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
-    * [magento:set_cache_prefix](/docs/recipe/magento2.md#magentoset_cache_prefix)
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
 * [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths) – Cleanup files and/or directories
@@ -217,12 +216,6 @@ true
 
 ## Tasks
 
-### magento:set_cache_prefix
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L194)
-
-Copy env.php and update the cache id_prefix so that your deployment runs on a fresh cache.
-Developed from this issue surfaced in capistrano: [capistrano issue](https://github.com/davidalger/capistrano-magento2/issues/151)
-
 ### magento:compile
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L92)
 
@@ -279,8 +272,17 @@ Upgrades magento database.
 
 
 
+### magento:set_cache_prefix
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L198)
+
+Update cache id_prefix.
+
+Update cache ip_prefix on deploy so that your are compiling against a fresh cache
+Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
+
+
 ### magento:cache:flush
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L194)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L225)
 
 Flushes Magento Cache.
 
@@ -288,7 +290,7 @@ Flushes Magento Cache.
 
 
 ### deploy:magento
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L199)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L230)
 
 Magento2 deployment operations.
 
@@ -303,7 +305,7 @@ This task is group task which contains next tasks:
 
 
 ### magento:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L207)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L238)
 
 Magento2 build operations.
 
@@ -316,7 +318,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L213)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L244)
 
 Deploys your project.
 

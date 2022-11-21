@@ -190,7 +190,10 @@ task('magento:upgrade:db', function () {
     }
 });
 
-// Deploy without setting maintenance mode if possible
+/**
+ * Update cache ip_prefix on deploy so that your are compiling against a fresh cache
+ * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
+**/
 desc('Update cache id_prefix');
 task('magento:set_cache_prefix', function () {
     //check and only run if env.php is a symlink

@@ -7,7 +7,7 @@ add('recipes', ['sulu']);
 
 add('shared_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/uploads']);
 
-add('writable_dirs', ['public/uploads']);
+add('writable_dirs', ['var/indexes', 'var/sitemaps', 'var/uploads', 'public/uploads']);
 
 set('bin/websiteconsole', function () {
     return parse('{{bin/php}} {{release_or_current_path}}/bin/websiteconsole --no-interaction');

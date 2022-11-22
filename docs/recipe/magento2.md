@@ -273,16 +273,24 @@ Upgrades magento database.
 
 
 ### magento:set_cache_prefix
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L198)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L199)
 
 Update cache id_prefix.
 
-Update cache ip_prefix on deploy so that your are compiling against a fresh cache
+Update cache ip_prefix on deploy so that you are compiling against a fresh cache
 Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
 
 
+### magento:cleanup_cache_prefix
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L241)
+
+Cleanup cache id_prefix env files.
+
+After successful deployment, move the tmp_env.php file to env.php ready for next deployment
+
+
 ### magento:cache:flush
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L225)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L255)
 
 Flushes Magento Cache.
 
@@ -290,7 +298,7 @@ Flushes Magento Cache.
 
 
 ### deploy:magento
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L230)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L260)
 
 Magento2 deployment operations.
 
@@ -305,7 +313,7 @@ This task is group task which contains next tasks:
 
 
 ### magento:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L238)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L268)
 
 Magento2 build operations.
 
@@ -318,7 +326,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L244)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L274)
 
 Deploys your project.
 

@@ -190,36 +190,66 @@ task('magento:upgrade:db', function () {
     }
 });
 
+
 /**
- * Update cache ip_prefix on deploy so that your are compiling against a fresh cache
+ * Update cache ip_prefix on deploy so that you are compiling against a fresh cache
  * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
-**/
+ **/
 desc('Update cache id_prefix');
 task('magento:set_cache_prefix', function () {
-    //check and only run if env.php is a symlink
-    if (test('[ -L {{release_or_current_path}}/app/etc/env.php ]')) {
-        //get local temp file name
-        $tmpFilename = tempnam(sys_get_temp_dir(), 'tmp_settings_');
-        //download env.php to local temp file
-        download("{{deploy_path}}/shared/app/etc/env.php", $tmpFilename, ['progress_bar' => false]);
-        $envConfig = include($tmpFilename);
-        $prefixUpdate = get('release_name') . '_';
-        //update id_prefix to include release name
-        $envConfig["cache"]["frontend"]["default"]["id_prefix"] = $envConfig["cache"]["frontend"]["default"]["id_prefix"] . $prefixUpdate;
-        $envConfig["cache"]["frontend"]["page_cache"]["id_prefix"] = $envConfig["cache"]["frontend"]["page_cache"]["id_prefix"] . $prefixUpdate;
+    $actualConfigFilePath = 'app/etc/env.php';
+    $tmpConfigFilePath = 'app/etc/env_tmp.php';
+    //get local temp file name
+    $tmpFilename = tempnam(sys_get_temp_dir(), 'tmp_settings_');
+    //download env.php to local temp file
+    download("{{deploy_path}}/shared/$actualConfigFilePath", $tmpFilename, ['progress_bar' => false]);
+    $envConfig = include($tmpFilename);
+    $prefixUpdate = get('release_name') . '_';
 
-        //create temporary config file locally
-        $envConfigStr = "<?php return " . var_export($envConfig, true) . ";";
-        file_put_contents($tmpFilename, $envConfigStr);
-        //delete the remote symlink for env.php
-        run("rm {{release_or_current_path}}/app/etc/env.php");
-        //upload to server
-        upload($tmpFilename, '{{release_or_current_path}}/app/etc/env.php', ['progress_bar' => false]);
-        //delete local temp file
-        unlink($tmpFilename);
+    //create original id_prefix so that we're not continually adding to the same string
+    if (!isset($envConfig["cache"]["frontend"]["default"]["orig_id_prefix"])) {
+        $envConfig["cache"]["frontend"]["default"]["orig_id_prefix"] = $envConfig["cache"]["frontend"]["default"]["id_prefix"];
     }
+    if (!isset($envConfig["cache"]["frontend"]["page_cache"]["orig_id_prefix"])) {
+        $envConfig["cache"]["frontend"]["page_cache"]["orig_id_prefix"] = $envConfig["cache"]["frontend"]["page_cache"]["id_prefix"];
+    }
+    //update id_prefix to include release name
+    $envConfig["cache"]["frontend"]["default"]["id_prefix"] = $envConfig["cache"]["frontend"]["default"]["orig_id_prefix"] . $prefixUpdate;
+    $envConfig["cache"]["frontend"]["page_cache"]["id_prefix"] = $envConfig["cache"]["frontend"]["page_cache"]["orig_id_prefix"] . $prefixUpdate;
+
+    //create temporary config file locally
+    $envConfigStr = "<?php return " . var_export($envConfig, true) . ";";
+    file_put_contents($tmpFilename, $envConfigStr);
+    //upload to server
+    upload($tmpFilename, "{{deploy_path}}/shared/$tmpConfigFilePath", ['progress_bar' => false]);
+    //delete local temp file
+    unlink($tmpFilename);
+    //delete the remote symlink for env.php
+    run("rm {{release_or_current_path}}/$actualConfigFilePath");
+    //link the env to the tmp version
+    // Touch shared
+    run("[ -f {{deploy_path}}/shared/$tmpConfigFilePath ] || touch {{deploy_path}}/shared/$tmpConfigFilePath");
+    // Symlink shared dir to release dir
+    run("{{bin/symlink}} {{deploy_path}}/shared/$tmpConfigFilePath {{release_path}}/$actualConfigFilePath");
 });
 after('deploy:shared', 'magento:set_cache_prefix');
+
+/**
+ * After successful deployment, move the tmp_env.php file to env.php ready for next deployment
+ */
+desc('Cleanup cache id_prefix env files');
+task('magento:cleanup_cache_prefix', function () {
+    $actualConfigFilePath = 'app/etc/env.php';
+    $tmpConfigFilePath = 'app/etc/env_tmp.php';
+    run("rm {{deploy_path}}/shared/$actualConfigFilePath");
+    run("rm {{release_or_current_path}}/$actualConfigFilePath");
+    run("mv {{deploy_path}}/shared/$tmpConfigFilePath {{deploy_path}}/shared/$actualConfigFilePath");
+    // Touch shared
+    run("[ -f {{deploy_path}}/shared/$actualConfigFilePath ] || touch {{deploy_path}}/shared/$actualConfigFilePath");
+    // Symlink shared dir to release dir
+    run("{{bin/symlink}} {{deploy_path}}/shared/$actualConfigFilePath {{release_path}}/$actualConfigFilePath");
+});
+after('deploy:magento', 'magento:cleanup_cache_prefix');
 
 desc('Flushes Magento Cache');
 task('magento:cache:flush', function () {

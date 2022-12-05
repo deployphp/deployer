@@ -102,9 +102,13 @@ For example, `~/.ssh/id_rsa`.
 
 ### `forward_agent`
 
+SSH forwarding is a way to securely tunnel network connections from your local computer to a remote server, and from the remote server to another destination. There are several types of SSH forwarding, including local, remote, and dynamic forwarding. SSH agent forwarding is a specific type of local forwarding that allows you to use your local SSH keys to authenticate on remote servers. This can be useful if you want to use your local SSH keys to connect to a remote server, but don't want to copy your keys to the remote server.
+
 Default is `true`.
 
 ### `ssh_multiplexing`
+
+SSH multiplexing is a technique that allows a single Secure Shell (SSH) connection to be used for multiple interactive sessions or for multiple tunneled connections. This can be useful in a number of situations, such as when you want to open multiple terminal sessions to a remote server over a single SSH connection, or when you want to establish multiple secure connections to a remote server but don't want to open multiple SSH connections.
 
 Default is `true`.
 

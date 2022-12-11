@@ -240,7 +240,7 @@ class Importer
     {
         foreach ($after as $key => $value) {
             if (is_array($value)) {
-                foreach (array_reverse($value) as $v) {
+                foreach ($value as $v) {
                     after($key, $v);
                 }
             } else {
@@ -253,7 +253,7 @@ class Importer
     {
         foreach ($before as $key => $value) {
             if (is_array($value)) {
-                foreach (array_reverse($value) as $v) {
+                foreach ($value as $v) {
                     before($key, $v);
                 }
             } else {

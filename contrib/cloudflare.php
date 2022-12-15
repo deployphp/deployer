@@ -7,7 +7,8 @@
     - `service_key` – Cloudflare Service Key. If this is not provided, use api_key and email.
     - `api_key` – Cloudflare API key generated on the "My Account" page.
     - `email` – Cloudflare Email address associated with your account.
-    - `domain` – The domain you want to clear
+    - `api_token` – Cloudflare API Token generated on the "My Account" page.
+    - `domain` – The domain you want to clear (optional if zone_id is provided).
     - `zone_id` – Cloudflare Zone ID (optional).
 
 ### Usage
@@ -33,15 +34,15 @@ task('deploy:cloudflare', function () {
             'X-Auth-Key'   => $config['api_key'],
             'X-Auth-Email' => $config['email']
         ];
+    } else if (!empty($config['api_token'])) {
+        $headers = [
+            'Authorization' => 'Bearer '.$config['api_token']
+        ];
     } else {
         throw new \RuntimeException("Set a service key or email / api key");
     }
 
     $headers['Content-Type'] = 'application/json';
-
-    if (empty($config['domain'])) {
-        throw new \RuntimeException("Set a domain");
-    }
 
     $makeRequest = function ($url, $opts = []) use ($headers) {
         $ch = curl_init("https://api.cloudflare.com/client/v4/$url");
@@ -71,6 +72,10 @@ task('deploy:cloudflare', function () {
 
     $zoneId = $config['zone_id'];
     if (empty($zoneId)) {
+        if (empty($config['domain'])) {
+            throw new \RuntimeException("Set a domain");
+        }
+
         // get the mysterious zone id from Cloud Flare
         $zones = json_decode($makeRequest(
             "zones?name={$config['domain']}"

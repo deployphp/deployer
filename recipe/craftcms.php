@@ -52,16 +52,16 @@ function craft($command, $options = [])
     };
 }
 
-desc('Execute craft migrate');
+desc('Execute craft migrate/all');
 task('craft:migrate/all', craft('migrate/all --interactive=0'))->once();
 
-desc('Execute craft migrate');
+desc('Execute craft project-config/apply');
 task('craft:project-config/apply', craft('project-config/apply --interactive=0'))->once();
 
-desc('Execute craft migrate');
+desc('Execute craft clear-caches/all');
 task('craft:clear-caches/all', craft('clear-caches/all --interactive=0'))->once();
 
-desc('Upload Strategy');
+desc('deploy');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',

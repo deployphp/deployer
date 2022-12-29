@@ -91,8 +91,8 @@ To deploy the project:
 dep deploy
 ```
 
-If deploy failed, Deployer will print error message and command what was unsuccessful.
-Most likely we need to configure correct database credentials in _.env_ file or similar.
+If deploy failed, Deployer will print an error message and which command was unsuccessful.
+Most likely we need to configure the correct database credentials in _.env_ file or similar.
 
 Ssh to the host, for example, for editing _.env_ file:
 

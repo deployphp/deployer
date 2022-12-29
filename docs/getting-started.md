@@ -35,7 +35,7 @@ Configure Reverse DNS or RDNS on your server. This will allow you to ssh into
 server using the domain name instead of the IP address.
 :::
 
-Our **deploy.php** recipe contains host definition with few important params:
+Our **deploy.php** recipe contains a host definition with few important params:
 
 - `remote_user` user's name for ssh connection,
 - `deploy_path` host's path where we are going to deploy.

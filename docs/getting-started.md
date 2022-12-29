@@ -49,9 +49,9 @@ host('example.org')
     ->set('deploy_path', '~/example');
 ```
 
-To connect to remote host we need to specify identity key or private key.
-We can add our identity key directly into host definition, but better to put it
-in **~/.ssh/config** file:
+To connect to the remote host we need to specify an identity key or private key.
+We can add our identity key directly into the host definition, but it's better to put it
+in the **~/.ssh/config** file:
 
 ```
 Host *

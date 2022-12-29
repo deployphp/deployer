@@ -107,7 +107,7 @@ place it stopped. However, this is not required; we can just start a new deploy:
 dep deploy --start-from deploy:migrate
 ```
 
-After our first successful deployment, we can find next structure on our server:
+After our first successful deployment, we can find the following directory structure on our server:
 
 ```
 ~/example                      // The deploy_path.

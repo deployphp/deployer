@@ -40,9 +40,8 @@ Our **deploy.php** recipe contains a host definition with few important params:
 - `remote_user` user's name for ssh connection,
 - `deploy_path` host's path where we are going to deploy.
 
-Let's set `remote_user` to be `deployer`. Right now our new server probably has
-only `root` user. The provision recipe will create and configure `deployer` user
-for us.
+Let's set `remote_user` to be `deployer`. Right now our new server probably only has the `root` user. The provision recipe will 
+create and configure a `deployer` user for us.
 
 ```php
 host('example.org')

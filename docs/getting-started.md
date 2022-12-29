@@ -101,7 +101,7 @@ dep ssh
 ```
 
 After everything is configured properly we can resume our deployment from the
-place it stopped (But this is not required, we can just start a new deploy):
+place it stopped. However, this is not required; we can just start a new deploy:
 
 ```
 dep deploy --start-from deploy:migrate

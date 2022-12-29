@@ -132,7 +132,7 @@ location / {
 }
 ```
 
-If you're using provision recipe, Deployer will automatically configure Caddy
+If you're using provision recipe, Deployer will automatically configure the Caddy
 webserver to serve from the [public_path](/docs/recipe/provision/website.md#public_path).
 
 Now let's add a build step on our host:

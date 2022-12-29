@@ -58,8 +58,8 @@ Host *
   IdentityFile ~/.ssh/id_rsa
 ```
 
-Now let's provision our server. As our host doesn't have user `deployer`.
-We are going to override `remote_user` for provision via `-o remote_user=root`.
+Now let's provision our server. As our host doesn't have user `deployer`,
+we are going to override `remote_user` for provision via `-o remote_user=root`.
 
 ```sh
 dep provision -o remote_user=root

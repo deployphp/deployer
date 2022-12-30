@@ -51,13 +51,18 @@ class Configuration implements \ArrayAccess
 
     public function has(string $name): bool
     {
-        $ok = array_key_exists($name, $this->values);
-        if ($ok) {
+        // Check from less populated array to the more one
+        if (array_key_exists($name, $this->values)
+            || array_key_exists($name, $_ENV)
+            || array_key_exists($name, $_SERVER)
+        ) {
             return true;
         }
+
         if ($this->parent) {
             return $this->parent->has($name);
         }
+
         return false;
     }
 
@@ -91,6 +96,12 @@ class Configuration implements \ArrayAccess
             } else {
                 return $this->parse($this->values[$name]);
             }
+        }
+
+        // $_SERVER has priority over $_ENV, like in Symfony
+        if (null !== $fromEnvVar = $_SERVER[$name] ?? $_ENV[$name] ?? null) {
+            // Some trailing \n can come from .env files
+            return \trim($fromEnvVar);
         }
 
         if ($this->parent) {

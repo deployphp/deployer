@@ -3,17 +3,47 @@
 namespace Deployer\Configuration;
 
 use Deployer\Exception\ConfigurationException;
+use Generator;
 use PHPUnit\Framework\TestCase;
 
 class ConfigurationTest extends TestCase
 {
-    public function testParse()
+    /**
+     * @dataProvider parseProvider
+     */
+    public function testParse(Configuration $config, string $stringToParse, string $expectedResult): void
+    {
+        self::assertEquals($expectedResult, $config->parse($stringToParse));
+    }
+
+    public function parseProvider(): Generator
     {
         $config = new Configuration();
         $config->set('foo', 'a');
         $config['bar'] = 'b';
+        yield 'Assert parsing can be donne using Configuration setting' => [$config, '{{foo}} {{bar}}', 'a b'];
 
-        self::assertEquals('a b', $config->parse('{{foo}} {{bar}}'));
+        $config = new Configuration();
+        $_SERVER['foo'] = 'a';
+        $_ENV['bar'] = 'b';
+        yield 'Assert parsing can be donne using env vars' => [$config, '{{foo}} {{bar}}', 'a b'];
+
+        $config = new Configuration();
+        $config->set('foo', 'c');
+        $config['bar'] = 'd';
+        $_SERVER['foo'] = 'a';
+        $_ENV['bar'] = 'b';
+        yield 'Assert env vars reading is a fallback, not the first choice' => [$config, '{{foo}} {{bar}}', 'c d'];
+
+        $config = new Configuration();
+        $_SERVER['foo'] = 'a';
+        $_ENV['foo'] = 'b';
+        yield 'Assert $_SERVER env vars have priority over $_ENV ones' => [$config, '{{foo}}', 'a'];
+
+        $config = new Configuration();
+        $_SERVER['foo'] = "a\n";
+        $_ENV['bar'] = ' b ';
+        yield 'Assert trim is done' => [$config, '{{foo}}{{bar}}', 'ab'];
     }
 
     public function testUnset()

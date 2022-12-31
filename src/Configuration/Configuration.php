@@ -51,13 +51,16 @@ class Configuration implements \ArrayAccess
 
     public function has(string $name): bool
     {
-        // Check from less populated array to the more one
-        if (array_key_exists($name, $this->values) || array_key_exists($name, \getenv())) {
+        if (array_key_exists($name, $this->values)) {
             return true;
         }
 
         if ($this->parent) {
             return $this->parent->has($name);
+        }
+
+        if (array_key_exists($name, \getenv())) {
+            return true;
         }
 
         return false;
@@ -95,11 +98,6 @@ class Configuration implements \ArrayAccess
             }
         }
 
-        if (array_key_exists($name, \getenv())) {
-            // Some trailing \n can come from .env files
-            return \trim(\getenv($name));
-        }
-
         if ($this->parent) {
             $rawValue = $this->parent->fetch($name);
             if ($rawValue !== null) {
@@ -113,6 +111,11 @@ class Configuration implements \ArrayAccess
 
         if (func_num_args() >= 2) {
             return $this->parse($default);
+        }
+
+        if (array_key_exists($name, \getenv())) {
+            // Some trailing \n can come from .env files
+            return \trim(\getenv($name));
         }
 
         throw new ConfigurationException("Config option \"$name\" does not exist.");

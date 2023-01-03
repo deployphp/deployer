@@ -933,7 +933,7 @@ function timestamp(): string
  * var_dump($info['http_code'], $result);
  * ```
  */
-function fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
+function fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, ?array $options = null, bool $nothrow = false): string
 {
     $url = parse($url);
     if (strtolower($method) === 'get') {
@@ -949,6 +949,11 @@ function fetch(string $url, string $method = 'get', array $headers = [], ?string
     }
     if ($body !== null) {
         $http = $http->body($body);
+    }
+    if ($options !== null) {
+        foreach ($options as $key => $value) {
+            $http = $http->setopt($key, $value);
+        }
     }
     return $http->send($info);
 }

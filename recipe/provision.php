@@ -278,7 +278,7 @@ task('provision:firewall', function () {
 
 desc('Verifies what provision was successful');
 task('provision:verify', function () {
-    fetch('{{domain}}', 'get', [], null, $info, true);
+    fetch('{{domain}}', 'get', [], null, $info, null, true);
     if ($info['http_code'] === 404) {
         info("provisioned successfully!");
     }

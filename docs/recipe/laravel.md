@@ -397,8 +397,16 @@ Terminates the master supervisor so it can be restarted.
 
 
 
+### artisan:horizon:publish
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L208)
+
+Publish all of the Horizon resources.
+
+
+
+
 ### artisan:&#8203;telescope:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L212)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L215)
 
 Clears all entries from Telescope.
 
@@ -406,7 +414,7 @@ Clears all entries from Telescope.
 
 
 ### artisan:&#8203;telescope:prune
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L215)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L218)
 
 Prunes stale entries from the Telescope database.
 
@@ -414,7 +422,7 @@ Prunes stale entries from the Telescope database.
 
 
 ### artisan:octane
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L222)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L225)
 
 Starts the octane server.
 
@@ -422,7 +430,7 @@ Starts the octane server.
 
 
 ### artisan:octane:reload
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L225)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L228)
 
 Reloads the octane server.
 
@@ -430,7 +438,7 @@ Reloads the octane server.
 
 
 ### artisan:octane:stop
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L228)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L231)
 
 Stops the octane server.
 
@@ -438,7 +446,7 @@ Stops the octane server.
 
 
 ### artisan:octane:status
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L231)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L234)
 
 Check the status of the octane server.
 
@@ -446,7 +454,7 @@ Check the status of the octane server.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L237)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L240)
 
 Deploys your project.
 

@@ -204,6 +204,9 @@ task('artisan:horizon:status', artisan('horizon:status', ['showOutput']));
 desc('Terminates the master supervisor so it can be restarted');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
 
+desc('Publish all of the Horizon resources');
+task('artisan:horizon:publish', artisan('horizon:publish'));
+
 /*
  * Telescope.
  */

@@ -53,7 +53,8 @@ set('shared_dirs', [
     'var/backups',
     'var/tmp',
     'pub/sitemap',
-    'pub/media'
+    'pub/media',
+    'pub/static/_cache'
 ]);
 set('writable_dirs', [
     'var',

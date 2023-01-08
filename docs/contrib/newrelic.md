@@ -17,6 +17,7 @@ require 'contrib/newrelic.php';
 - `newrelic_app_id` – newrelic's app id
 - `newrelic_api_key` – newrelic's api key
 - `newrelic_description` – message to send
+- `newrelic_endpoint` – newrelic's REST API endpoint
 
 ## Usage
 
@@ -30,7 +31,7 @@ after('deploy', 'newrelic:notify');
 
 ## Configuration
 ### newrelic_app_id
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L22)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L23)
 
 
 :::info Required
@@ -41,7 +42,7 @@ Throws exception if not set.
 
 
 ### newrelic_description
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L27)
 
 
 
@@ -51,7 +52,7 @@ return runLocally('git log -n 1 --format="%an: %s" | tr \'"\' "\'"');
 
 
 ### newrelic_revision
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L31)
 
 
 
@@ -60,11 +61,21 @@ return runLocally('git log -n 1 --format="%h"');
 ```
 
 
+### newrelic_endpoint
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L35)
+
+
+
+```php title="Default value"
+'api.newrelic.com'
+```
+
+
 
 ## Tasks
 
 ### newrelic:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L38)
 
 Notifies New Relic of deployment.
 

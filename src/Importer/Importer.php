@@ -71,7 +71,7 @@ class Importer
                 });
             } else if (preg_match('/\.ya?ml$/i', $path)) {
                 self::$recipeFilename = basename($path);
-                self::$recipeSource = file_get_contents($path);
+                self::$recipeSource = file_get_contents($path, true);
                 $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
                     return substr($key, 0, 1) !== '.';
                 }, ARRAY_FILTER_USE_KEY);
@@ -240,7 +240,7 @@ class Importer
     {
         foreach ($after as $key => $value) {
             if (is_array($value)) {
-                foreach (array_reverse($value) as $v) {
+                foreach ($value as $v) {
                     after($key, $v);
                 }
             } else {
@@ -253,7 +253,7 @@ class Importer
     {
         foreach ($before as $key => $value) {
             if (is_array($value)) {
-                foreach (array_reverse($value) as $v) {
+                foreach ($value as $v) {
                     before($key, $v);
                 }
             } else {

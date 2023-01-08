@@ -71,7 +71,7 @@ class Importer
                 });
             } else if (preg_match('/\.ya?ml$/i', $path)) {
                 self::$recipeFilename = basename($path);
-                self::$recipeSource = file_get_contents($path);
+                self::$recipeSource = file_get_contents($path, true);
                 $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
                     return substr($key, 0, 1) !== '.';
                 }, ARRAY_FILTER_USE_KEY);

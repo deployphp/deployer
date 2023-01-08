@@ -2,7 +2,10 @@
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
+require_once __DIR__ . '/../contrib/cachetool.php';
 
+
+use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 
@@ -220,3 +223,130 @@ task('deploy', [
 ]);
 
 after('deploy:failed', 'magento:maintenance:disable');
+
+// artifact deployment section
+// settings section
+set('artifact_file', 'artifact.tar.gz');
+set('artifact_dir', 'artifacts');
+set('artifact_excludes_file', 'artifacts/excludes');
+
+set('artifact_path', function () {
+    if (!test('[ -d {{artifact_dir}} ]')) {
+        run('mkdir {{artifact_dir}}');
+    }
+    return get('artifact_dir') . '/' . get('artifact_file');
+});
+
+set('bin/tar', function () {
+    if (commandExist('gtar')) {
+        return which('gtar');
+    } else {
+        return which('tar');
+    }
+});
+
+// tasks section
+desc('Packages all relevant files in an artifact.');
+task('artifact:package', function() {
+    if (!test('[ -f {{artifact_excludes_file}} ]')) {
+        throw new GracefulShutdownException(
+            "No artifact excludes file provided, provide one at artivacts/excludes or change location"
+        );
+    }
+    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} .');
+});
+
+desc('Uploads artifact in release folder for extraction.');
+task('artifact:upload', function () {
+    upload(get('artifact_path'), '{{release_path}}');
+});
+
+desc('Extracts artifact in release path.');
+task('artifact:extract', function () {
+    run('{{bin/tar}} -xzpf {{release_path}}/{{artifact_file}} -C {{release_path}}');
+    run('rm -rf {{release_path}}/{{artifact_file}}');
+});
+
+desc('Clears generated files prior to building.');
+task('build:remove-generated', function() {
+    run('rm -rf generated/*');
+});
+
+desc('Prepare local artifact build');
+task('build:prepare', function() {
+    if(! currentHost()->get('local')) {
+        {
+            throw new GracefulShutdownException("Artifact can only be built locally, you provided a non local host");
+        }
+    }
+    set('deploy_path', '.');
+    set('release_path', '.');
+    set('current_path', '.');
+});
+
+desc('Builds an artifact.');
+task(
+    'artifact:build',
+    [
+        'build:prepare',
+        'build:remove-generated',
+        'deploy:vendors',
+        'magento:compile',
+        'magento:deploy:assets',
+        'artifact:package',
+    ]
+);
+
+// Array of shared files that will be added to the default shared_files without overriding
+set('additional_shared_files', []);
+// Array of shared directories that will be added to the default shared_dirs without overriding
+set('additional_shared_dirs', []);
+
+
+desc('Adds additional files and dirs to the list of shared files and dirs');
+task('deploy:additional-shared', function () {
+    add('shared_files', get('additional_shared_files'));
+    add('shared_dirs', get('additional_shared_dirs'));
+});
+
+
+desc('Prepares an artifact on the target server');
+task(
+    'artifact:prepare',
+    [
+        'deploy:info',
+        'deploy:setup',
+        'deploy:lock',
+        'deploy:release',
+        'artifact:upload',
+        'artifact:extract',
+        'deploy:additional-shared',
+        'deploy:shared',
+        'deploy:writable',
+    ]
+);
+
+desc('Executes the tasks after artifact is released');
+task(
+    'artifact:finish',
+    [
+        'magento:cache:flush',
+        'cachetool:clear:opcache',
+        'deploy:cleanup',
+        'deploy:unlock',
+    ]
+);
+
+desc('Actually releases the artifact deployment');
+task(
+    'artifact:deploy',
+    [
+        'artifact:prepare',
+        'magento:upgrade:db',
+        'magento:config:import',
+        'deploy:symlink',
+        'artifact:finish'
+    ]
+);
+
+fail('artifact:deploy', 'deploy:failed');

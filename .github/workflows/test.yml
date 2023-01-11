@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: satackey/action-docker-layer-caching@v0.0.8
+      - uses: jpribyl/action-docker-layer-caching@v0.1.1
         continue-on-error: true
 
       - name: Build the docker-compose stack

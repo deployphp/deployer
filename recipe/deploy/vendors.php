@@ -10,6 +10,9 @@ set('composer_options', '--verbose --prefer-dist --no-progress --no-interaction 
 // download desired phar and place it at `.dep/composer.phar`.
 set('bin/composer', function () {
     if (test('[ -f {{deploy_path}}/.dep/composer.phar ]')) {
+        // Update to the latest version
+        run('{{bin/php}} {{deploy_path}}/.dep/composer.phar self-update');
+        
         return '{{bin/php}} {{deploy_path}}/.dep/composer.phar';
     }
 

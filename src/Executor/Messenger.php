@@ -62,7 +62,7 @@ class Messenger
     /*
      * Print task was ok.
      */
-    public function endTask(Task $task): void
+    public function endTask(Task $task, bool $error = false): void
     {
         if (empty($this->startTime)) {
             $this->startTime = round(microtime(true) * 1000);
@@ -80,6 +80,10 @@ class Messenger
             $this->output->writeln("\e[0Ksection_end:{$taskTime}:{$this->startTime}\r\e[0K");
         } else if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
+        }
+        if ($error) {
+            $this->output->writeln("\e[0K\e[31;1mERROR: Task {$task->getName()} failed!\e[0;m");
+            return;
         }
         $this->logger->log("done {$task->getName()} $taskTime");
 

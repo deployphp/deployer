@@ -396,6 +396,11 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
         return rtrim($output);
     };
 
+    // Fail at any multiline command
+    if(strstr($command, PHP_EOL) && strpos($command, 'set -') !== 0) {
+        $command = "set -e -o pipefail\n$command";
+    }
+
     if (preg_match('/^sudo\b/', $command)) {
         try {
             return $run($command, $options);

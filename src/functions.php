@@ -457,6 +457,11 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
     $process = Deployer::get()->processRunner;
     $command = parse($command);
 
+    // Fail at any multiline command
+    if(strstr($command, PHP_EOL) && strpos($command, 'set -') !== 0) {
+        $command = "set -e -o pipefail\n$command";
+    }
+
     $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
     if (!empty($env)) {
         $env = env_stringify($env);

@@ -59,5 +59,5 @@ desc('Provision PostgreSQL');
 task('provision:postgresql', function () {
     run('apt-get install -y postgresql postgresql-contrib', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
     run('sudo -u postgres createuser {{db_user}}');
-    run('sudo -u postgres createdb {{db_name}');
+    run('sudo -u postgres createdb {{db_name}}');
 });

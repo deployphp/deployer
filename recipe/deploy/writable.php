@@ -72,7 +72,7 @@ task('deploy:writable', function () {
         throw new \RuntimeException('Absolute path not allowed in config parameter `writable_dirs`.');
     }
 
-    cd('{{release_path}}');
+    cd('{{release_or_current_path}}');
 
     // Create directories if they don't exist
     run("mkdir -p $dirs");

@@ -88,39 +88,46 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 ```
 
 
-### writable_dirs
+### writable_recursive
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L22)
+
+Overrides [writable_recursive](/docs/recipe/deploy/writable.md#writable_recursive) from `recipe/deploy/writable.php`.
+
+
+
+```php title="Default value"
+true
+```
+
+
+### writable_dirs
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L23)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
 
 
 ```php title="Default value"
-[
-    'var',
-    'var/cache', 
-    'var/log', 
-    'var/sessions',
-]
+['var']
 ```
 
 
 ### migrations_config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L25)
 
 
 
 
 
 ### doctrine_schema_validate_config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L31)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L27)
 
 
 
 
 
 ### bin/console
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
 
 
 
@@ -130,7 +137,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L31)
 
 
 
@@ -143,7 +150,7 @@ return '--no-interaction';
 ## Tasks
 
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L36)
 
 Migrates database.
 
@@ -151,7 +158,7 @@ Migrates database.
 
 
 ### doctrine:schema:validate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L46)
 
 Validate the Doctrine mapping files.
 
@@ -159,7 +166,7 @@ Validate the Doctrine mapping files.
 
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L51)
 
 Clears cache.
 
@@ -167,7 +174,7 @@ Clears cache.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L60)
 
 Deploys project.
 

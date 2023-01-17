@@ -19,12 +19,8 @@ set('shared_files', [
     '.env.local'
 ]);
 
-set('writable_dirs', [
-    'var',
-    'var/cache', 
-    'var/log', 
-    'var/sessions',
-]);
+set('writable_recursive', true);
+set('writable_dirs', ['var']);
 
 set('migrations_config', '');
 

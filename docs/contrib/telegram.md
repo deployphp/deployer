@@ -65,7 +65,7 @@ If you want to notify about failed deployment add this too:
 
 ```php
 after('deploy:failed', 'telegram:notify:failure');
-
+```
 
 
 

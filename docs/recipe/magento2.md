@@ -196,7 +196,7 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 ```php title="Default value"
 // detect version
-$versionOutput = run('{{bin/php}} {{bin/magento}} --version');
+$versionOutput = run('{{bin/php}} {{release_or_current_path}}/{{bin/magento}} --version');
 preg_match('/(\d+\.?)+(-p\d+)?$/', $versionOutput, $matches);
 return $matches[0] ?? '2.0';
 ```

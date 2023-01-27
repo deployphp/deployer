@@ -113,10 +113,7 @@ task('deploy:update_code', function () {
         run("$git clone -l $bare .");
         run("$git remote set-url origin $repository", ['env' => $env]);
 
-        $branch = get('branch');
-        if (empty($branch)) {
-            $branch = 'HEAD';
-        }
+        $branch = get('branch', 'HEAD');
 
         run("$git checkout --force $branch");
     } else {

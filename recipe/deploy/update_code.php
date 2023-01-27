@@ -109,8 +109,16 @@ task('deploy:update_code', function () {
         run("$git clone -l $bare .");
         run("$git checkout --force $target");
     } else if (get('update_code_strategy') === 'remote') {
-        run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
-        run("$git remote add origin $repository", ['env' => $env]);
+        cd('{{release_path}}');
+        run("$git clone -l $bare .");
+        run("$git remote set-url origin $repository", ['env' => $env]);
+
+        $branch = get('branch');
+        if (empty($branch)) {
+            $branch = 'HEAD';
+        }
+
+        run("$git checkout --force $branch");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }

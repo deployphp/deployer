@@ -41,6 +41,7 @@ Sets deploy:update_code strategy.
 Can be one of:
 - archive
 - clone (if you need `.git` dir in your [release_path](/docs/recipe/deploy/release.md#release_path))
+- remote (if you need `.git` dir with the remote repository in your [release_path](/docs/recipe/deploy/release.md#release_path))
 
 ```php title="Default value"
 'archive'

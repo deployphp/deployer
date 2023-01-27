@@ -101,21 +101,21 @@ task('deploy:update_code', function () {
 
     run("$git remote update 2>&1", ['env' => $env]);
 
+
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
         run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
-    } else if (get('update_code_strategy') === 'clone') {
+    } else if (get('update_code_strategy') === 'clone' || get('update_code_strategy') === 'remote') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
+
+        if (get('update_code_strategy') === 'remote') {
+            run("$git remote set-url origin $repository", ['env' => $env]);
+
+            $target = get('branch', 'HEAD');
+        }
+
         run("$git checkout --force $target");
-    } else if (get('update_code_strategy') === 'remote') {
-        cd('{{release_path}}');
-        run("$git clone -l $bare .");
-        run("$git remote set-url origin $repository", ['env' => $env]);
-
-        $branch = get('branch', 'HEAD');
-
-        run("$git checkout --force $branch");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }

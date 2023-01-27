@@ -109,7 +109,8 @@ task('deploy:update_code', function () {
         run("$git clone -l $bare .");
         run("$git checkout --force $target");
     } else if (get('update_code_strategy') === 'remote') {
-        run("$git clone $repository $release_path 2>&1", ['env' => $env]);
+        run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
+        run("$git remote add origin $repository", ['env' => $env]);
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }

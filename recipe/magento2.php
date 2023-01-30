@@ -229,6 +229,10 @@ after('deploy:failed', 'magento:maintenance:disable');
 set('artifact_file', 'artifact.tar.gz');
 set('artifact_dir', 'artifacts');
 set('artifact_excludes_file', 'artifacts/excludes');
+// If set to true, the artifact is built from a clean copy of the project repository instead of the current working directory
+set('build_from_repo', false);
+// Set this value if "build_from_repo" is set to true. The target to deploy must also be set with "--branch", "--tag" or "--revision"
+set('repository', null);
 
 set('artifact_path', function () {
     if (!test('[ -d {{artifact_dir}} ]')) {
@@ -253,7 +257,7 @@ task('artifact:package', function() {
             "No artifact excludes file provided, provide one at artivacts/excludes or change location"
         );
     }
-    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} .');
+    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} {{release_or_current_path}}');
 });
 
 desc('Uploads artifact in release folder for extraction.');
@@ -274,14 +278,27 @@ task('build:remove-generated', function() {
 
 desc('Prepare local artifact build');
 task('build:prepare', function() {
-    if(! currentHost()->get('local')) {
-        {
-            throw new GracefulShutdownException("Artifact can only be built locally, you provided a non local host");
-        }
+    if (!currentHost()->get('local')) {
+        throw new GracefulShutdownException('Artifact can only be built locally, you provided a non local host');
     }
-    set('deploy_path', '.');
-    set('release_path', '.');
-    set('current_path', '.');
+
+    $buildDir = get('build_from_repo') ? get('artifact_dir') . '/repo' : '.';
+    set('deploy_path', $buildDir);
+    set('release_path', $buildDir);
+    set('current_path', $buildDir);
+
+    if (!get('build_from_repo')) {
+        return;
+    }
+
+    $repository = (string) get('repository');
+    if ($repository === '') {
+        throw new GracefulShutdownException('You must specify the "repository" option.');
+    }
+
+    run('rm -rf {{release_or_current_path}}');
+    run('git clone {{repository}} {{release_or_current_path}}');
+    run('git -C {{release_or_current_path}} checkout --force {{target}}');
 });
 
 desc('Builds an artifact.');

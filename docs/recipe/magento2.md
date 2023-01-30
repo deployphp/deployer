@@ -273,8 +273,8 @@ null
 
 
 ```php title="Default value"
-if (!test('[ -d {{artifact_dir}} ]')) {
-run('mkdir {{artifact_dir}}');
+if (!testLocally('[ -d {{artifact_dir}} ]')) {
+runLocally('mkdir -p {{artifact_dir}}');
 }
 return get('artifact_dir') . '/' . get('artifact_file');
 ```

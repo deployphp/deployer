@@ -71,6 +71,14 @@ class Httpie
         return $http;
     }
 
+    public function delete(string $url): Httpie
+    {
+        $http = new self;
+        $http->method = 'DELETE';
+        $http->url = $url;
+        return $http;
+    }
+    
     public function query(array $params): Httpie
     {
         $http = clone $this;
@@ -137,6 +145,9 @@ class Httpie
 
     public function send(?array &$info = null): string
     {
+        if($this->url === '') {
+            throw new \RuntimeException('URL must not be empty to Httpie::send()');
+        }
         $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);

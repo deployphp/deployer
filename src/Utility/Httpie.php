@@ -71,6 +71,14 @@ class Httpie
         return $http;
     }
 
+    public function delete(string $url): Httpie
+    {
+        $http = new self;
+        $http->method = 'DELETE';
+        $http->url = $url;
+        return $http;
+    }
+    
     public function query(array $params): Httpie
     {
         $http = clone $this;

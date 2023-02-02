@@ -19,7 +19,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Process\Exception\RuntimeException;
-use Symfony\Component\Process\PhpProcess;
 use Symfony\Component\Process\Process;
 
 class ImportCommand extends Command
@@ -28,8 +27,9 @@ class ImportCommand extends Command
 
     private InputInterface $input;
     private OutputInterface $output;
+    private string $cwd;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('import')
@@ -46,10 +46,17 @@ class ImportCommand extends Command
         $this->input = $input;
         $this->output = $output;
 
-        $io = new SymfonyStyle($input, $output);
-        $path = $input->getArgument('path');
-        $package = $input->getArgument('package');
-        $repository = $input->getArgument('repository');
+        if(!defined('DEPLOYER_DEPLOY_FILE')) {
+            throw new \Exception("No deployfile present.");
+        }
+
+        $this->cwd = dirname(DEPLOYER_DEPLOY_FILE);
+
+
+        $io = new SymfonyStyle($this->input, $output);
+        $path = $this->input->getArgument('path');
+        $package = $this->input->getArgument('package');
+        $repository = $this->input->getArgument('repository');
 
         if(!Deployer::isWorker()) { // is worker is not returning the correct value, as this command is runnning before the symfony console is initialized and running
             // maybe the question should be asked only once (save the result), or not even be asked at all?
@@ -72,7 +79,7 @@ class ImportCommand extends Command
         return 0;
     }
 
-    protected function importUrl(string $path)
+    protected function importUrl(string $path): void
     {
         if ($data = Httpie::get($path)->send()) {
             $tmpfname = tempnam("/tmp", "deployer_remote_recipe").".php";
@@ -85,12 +92,12 @@ class ImportCommand extends Command
         }
     }
 
-    protected function importComposer(string $path, string $package, string $repository = null)
+    protected function importComposer(string $path, string $package, string $repository = null): void
     {
 
         if(!$this->composerJsonExists()) {
             try {
-                $process = Process::fromShellCommandline("composer init --no-interaction --name deployer/project", dirname(DEPLOYER_DEPLOY_FILE));
+                $process = Process::fromShellCommandline("composer init --no-interaction --name deployer/project", $this->cwd);
                 $output = trim($process->mustRun()->getOutput());
             } catch (RuntimeException $e) {
                 throw new \Exception($e->getMessage());
@@ -102,7 +109,7 @@ class ImportCommand extends Command
             $repoName = "deployer/".parse_url($repository, PHP_URL_HOST);
 
             try {
-                $process = Process::fromShellCommandline("composer config repositories.$repoName composer $repository", dirname(DEPLOYER_DEPLOY_FILE));
+                $process = Process::fromShellCommandline("composer config repositories.$repoName composer $repository", $this->cwd);
                 $output = trim($process->mustRun()->getOutput());
             } catch (RuntimeException $e) {
                 throw new \Exception($e->getMessage());
@@ -113,7 +120,7 @@ class ImportCommand extends Command
         }
 
         try {
-            $process = Process::fromShellCommandline("composer require --dev --no-plugins \"$package\"", dirname(DEPLOYER_DEPLOY_FILE));
+            $process = Process::fromShellCommandline("composer require --dev --no-plugins \"$package\"", $this->cwd);
             $output = trim($process->mustRun()->getOutput());
         } catch (RuntimeException $e) {
             throw new \Exception($e->getMessage());
@@ -123,7 +130,7 @@ class ImportCommand extends Command
         }
 
         list($packageWithoutVersion, $version) = explode(":", $package);
-        $target = dirname(DEPLOYER_DEPLOY_FILE) . "/vendor/".$packageWithoutVersion."/".$path;
+        $target = $this->cwd . "/vendor/".$packageWithoutVersion."/".$path;
         if(file_exists($target)) {
             Importer::import($target);
         } else {
@@ -131,12 +138,12 @@ class ImportCommand extends Command
         }
     }
 
-    protected function getComposerJsonFile()
+    protected function getComposerJsonFile(): string
     {
-        return dirname(DEPLOYER_DEPLOY_FILE) . "/composer.json";
+        return $this->cwd . "/composer.json";
     }
 
-    private function composerJsonExists()
+    private function composerJsonExists(): bool
     {
         return file_exists($this->getComposerJsonFile());
     }

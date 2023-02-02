@@ -152,9 +152,16 @@ function selectedHosts(): array
  *
  * @throws Exception
  */
-function import(string $file): void
+function import(string $file, string $package = null, string $repo = null): void
 {
-    Importer::import($file);
+    if($file && $package) {
+        Importer::importComposer($file, $package, $repo);
+    }
+    elseif(Importer::isUrl($file)) {
+        Importer::importUrl($file);
+    } else {
+        Importer::import($file);
+    }
 }
 
 /**

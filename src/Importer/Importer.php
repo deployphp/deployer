@@ -8,6 +8,7 @@
 
 namespace Deployer\Importer;
 
+use Deployer\Command\ImportCommand;
 use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
@@ -15,6 +16,8 @@ use JsonSchema\Constraints\Constraint;
 use JsonSchema\Constraints\Factory;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Yaml\Yaml;
 use function array_filter;
 use function array_keys;
@@ -100,6 +103,26 @@ class Importer
                 throw new Exception("Unknown file format: $path\nOnly .php and .yaml supported.");
             }
         }
+    }
+
+    public static function isUrl(string $path): bool {
+        return (bool) preg_match('/^https:\/\//i', $path);
+    }
+
+    public static function isRepo(string $path): bool {
+        list($repo, $version) = explode(":", $path);
+        return (bool) preg_match('@^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9](([_.]?|-{0,2})[a-z0-9]+)*$@', $repo);
+    }
+
+    public static function importUrl(string $url)
+    {
+
+        (new ImportCommand())->run(new ArrayInput(['--mode'=> 'url', 'path' => $url]), new ConsoleOutput());
+    }
+
+    public static function importComposer(string $file, string $package, string $repo = null)
+    {
+        (new ImportCommand())->run(new ArrayInput(['--mode'=> 'composer', 'path' => $file, 'package' => $package, 'repository' => $repo]), new ConsoleOutput());
     }
 
     protected static function hosts(array $hosts)

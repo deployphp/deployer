@@ -110,7 +110,7 @@ class Importer
     }
 
     public static function isRepo(string $path): bool {
-        list($repo, $version) = explode(":", $path);
+        list($repo, $version) = explode(":", $path.":");
         return (bool) preg_match('@^[a-z0-9]([_.-]?[a-z0-9]+)*/[a-z0-9](([_.]?|-{0,2})[a-z0-9]+)*$@', $repo);
     }
 

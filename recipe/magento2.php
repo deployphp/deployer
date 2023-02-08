@@ -79,11 +79,11 @@ set('clear_paths', [
     '{{magento_dir}}/var/view_preprocessed/*'
 ]);
 
-set('bin/magento', '{{release_or_current_path}}/bin/magento');
+set('bin/magento', '{{release_or_current_path}}/{{magento_dir}}/bin/magento');
 
 set('magento_version', function () {
     // detect version
-    $versionOutput = run('{{bin/php}} {{release_or_current_path}}/{{bin/magento}} --version');
+    $versionOutput = run('{{bin/php}} {{bin/magento}} --version');
     preg_match('/(\d+\.?)+(-p\d+)?$/', $versionOutput, $matches);
     return $matches[0] ?? '2.0';
 });
@@ -129,12 +129,14 @@ before('magento:deploy:assets', 'magento:sync:content_version');
 
 desc('Enables maintenance mode');
 task('magento:maintenance:enable', function () {
-    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{bin/magento}} maintenance:enable; fi");
+    // do not use {{bin/magento}} because it would be in "release" but the maintenance mode must be set in "current"
+    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento maintenance:enable; fi");
 });
 
 desc('Disables maintenance mode');
 task('magento:maintenance:disable', function () {
-    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{bin/magento}} maintenance:disable; fi");
+    // do not use {{bin/magento}} because it would be in "release" but the maintenance mode must be set in "current"
+    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento maintenance:disable; fi");
 });
 
 desc('Config Import');

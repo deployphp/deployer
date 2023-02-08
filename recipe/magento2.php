@@ -40,39 +40,43 @@ set('content_version', function () {
     return time();
 });
 
+// Magento directory relative to repository root. Use "." (default) if it is not located in a subdirectory
+set('magento_dir', '.');
+
+
 set('shared_files', [
-    'app/etc/env.php',
-    'var/.maintenance.ip',
+    '{{magento_dir}}/app/etc/env.php',
+    '{{magento_dir}}/var/.maintenance.ip',
 ]);
 set('shared_dirs', [
-    'var/composer_home',
-    'var/log',
-    'var/export',
-    'var/report',
-    'var/import',
-    'var/import_history',
-    'var/session',
-    'var/importexport',
-    'var/backups',
-    'var/tmp',
-    'pub/sitemap',
-    'pub/media',
-    'pub/static/_cache'
+    '{{magento_dir}}/var/composer_home',
+    '{{magento_dir}}/var/log',
+    '{{magento_dir}}/var/export',
+    '{{magento_dir}}/var/report',
+    '{{magento_dir}}/var/import',
+    '{{magento_dir}}/var/import_history',
+    '{{magento_dir}}/var/session',
+    '{{magento_dir}}/var/importexport',
+    '{{magento_dir}}/var/backups',
+    '{{magento_dir}}/var/tmp',
+    '{{magento_dir}}/pub/sitemap',
+    '{{magento_dir}}/pub/media',
+    '{{magento_dir}}/pub/static/_cache'
 ]);
 set('writable_dirs', [
-    'var',
-    'pub/static',
-    'pub/media',
-    'generated',
-    'var/page_cache'
+    '{{magento_dir}}/var',
+    '{{magento_dir}}/pub/static',
+    '{{magento_dir}}/pub/media',
+    '{{magento_dir}}/generated',
+    '{{magento_dir}}/var/page_cache'
 ]);
 set('clear_paths', [
-    'generated/*',
-    'pub/static/_cache/*',
-    'var/generation/*',
-    'var/cache/*',
-    'var/page_cache/*',
-    'var/view_preprocessed/*'
+    '{{magento_dir}}/generated/*',
+    '{{magento_dir}}/pub/static/_cache/*',
+    '{{magento_dir}}/var/generation/*',
+    '{{magento_dir}}/var/cache/*',
+    '{{magento_dir}}/var/page_cache/*',
+    '{{magento_dir}}/var/view_preprocessed/*'
 ]);
 
 set('bin/magento', '{{release_or_current_path}}/bin/magento');
@@ -97,7 +101,7 @@ set('enable_zerodowntime', true);
 desc('Compiles magento di');
 task('magento:compile', function () {
     run("{{bin/php}} {{bin/magento}} setup:di:compile");
-    run('cd {{release_or_current_path}} && {{bin/composer}} dump-autoload -o');
+    run('cd {{release_or_current_path}}/{{magento_dir}} && {{bin/composer}} dump-autoload -o');
 });
 
 desc('Deploys assets');
@@ -125,12 +129,12 @@ before('magento:deploy:assets', 'magento:sync:content_version');
 
 desc('Enables maintenance mode');
 task('magento:maintenance:enable', function () {
-    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:enable; fi");
+    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{bin/magento}} maintenance:enable; fi");
 });
 
 desc('Disables maintenance mode');
 task('magento:maintenance:disable', function () {
-    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:disable; fi");
+    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{bin/magento}} maintenance:disable; fi");
 });
 
 desc('Config Import');

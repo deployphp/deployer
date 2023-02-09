@@ -40,51 +40,57 @@ set('content_version', function () {
     return time();
 });
 
+// Magento directory relative to repository root. Use "." (default) if it is not located in a subdirectory
+set('magento_dir', '.');
+
+
 set('shared_files', [
-    'app/etc/env.php',
-    'var/.maintenance.ip',
+    '{{magento_dir}}/app/etc/env.php',
+    '{{magento_dir}}/var/.maintenance.ip',
 ]);
 set('shared_dirs', [
-    'var/composer_home',
-    'var/log',
-    'var/export',
-    'var/report',
-    'var/import',
-    'var/import_history',
-    'var/session',
-    'var/importexport',
-    'var/backups',
-    'var/tmp',
-    'pub/sitemap',
-    'pub/media',
-    'pub/static/_cache'
+    '{{magento_dir}}/var/composer_home',
+    '{{magento_dir}}/var/log',
+    '{{magento_dir}}/var/export',
+    '{{magento_dir}}/var/report',
+    '{{magento_dir}}/var/import',
+    '{{magento_dir}}/var/import_history',
+    '{{magento_dir}}/var/session',
+    '{{magento_dir}}/var/importexport',
+    '{{magento_dir}}/var/backups',
+    '{{magento_dir}}/var/tmp',
+    '{{magento_dir}}/pub/sitemap',
+    '{{magento_dir}}/pub/media',
+    '{{magento_dir}}/pub/static/_cache'
 ]);
 set('writable_dirs', [
-    'var',
-    'pub/static',
-    'pub/media',
-    'generated',
-    'var/page_cache'
+    '{{magento_dir}}/var',
+    '{{magento_dir}}/pub/static',
+    '{{magento_dir}}/pub/media',
+    '{{magento_dir}}/generated',
+    '{{magento_dir}}/var/page_cache'
 ]);
 set('clear_paths', [
-    'generated/*',
-    'pub/static/_cache/*',
-    'var/generation/*',
-    'var/cache/*',
-    'var/page_cache/*',
-    'var/view_preprocessed/*'
+    '{{magento_dir}}/generated/*',
+    '{{magento_dir}}/pub/static/_cache/*',
+    '{{magento_dir}}/var/generation/*',
+    '{{magento_dir}}/var/cache/*',
+    '{{magento_dir}}/var/page_cache/*',
+    '{{magento_dir}}/var/view_preprocessed/*'
 ]);
+
+set('bin/magento', '{{release_or_current_path}}/{{magento_dir}}/bin/magento');
 
 set('magento_version', function () {
     // detect version
-    $versionOutput = run('{{bin/php}} {{release_or_current_path}}/bin/magento --version');
+    $versionOutput = run('{{bin/php}} {{bin/magento}} --version');
     preg_match('/(\d+\.?)+(-p\d+)?$/', $versionOutput, $matches);
     return $matches[0] ?? '2.0';
 });
 
 set('maintenance_mode_status_active', function () {
     // detect maintenance mode active
-    $maintenanceModeStatusOutput = run("{{bin/php}} {{release_or_current_path}}/bin/magento maintenance:status");
+    $maintenanceModeStatusOutput = run("{{bin/php}} {{bin/magento}} maintenance:status");
     return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
 });
 
@@ -94,9 +100,8 @@ set('enable_zerodowntime', true);
 // Tasks
 desc('Compiles magento di');
 task('magento:compile', function () {
-    run('cd {{release_or_current_path}} && {{bin/composer}} dump-autoload -o');
-    run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:di:compile");
-    run('cd {{release_or_current_path}} && {{bin/composer}} dump-autoload -o');
+    run("{{bin/php}} {{bin/magento}} setup:di:compile");
+    run('cd {{release_or_current_path}}/{{magento_dir}} && {{bin/composer}} dump-autoload -o');
 });
 
 desc('Deploys assets');
@@ -109,7 +114,7 @@ task('magento:deploy:assets', function () {
         }
     }
 
-    run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+    run("{{bin/php}} {{bin/magento}} setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
 });
 
 desc('Syncs content version');
@@ -124,12 +129,14 @@ before('magento:deploy:assets', 'magento:sync:content_version');
 
 desc('Enables maintenance mode');
 task('magento:maintenance:enable', function () {
-    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:enable; fi");
+    // do not use {{bin/magento}} because it would be in "release" but the maintenance mode must be set in "current"
+    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento maintenance:enable; fi");
 });
 
 desc('Disables maintenance mode');
 task('magento:maintenance:disable', function () {
-    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/bin/magento maintenance:disable; fi");
+    // do not use {{bin/magento}} because it would be in "release" but the maintenance mode must be set in "current"
+    run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento maintenance:disable; fi");
 });
 
 desc('Config Import');
@@ -144,7 +151,7 @@ task('magento:config:import', function () {
         $configImportNeeded = true;
     } else {
         try {
-            run('{{bin/php}} {{release_or_current_path}}/bin/magento app:config:status');
+            run('{{bin/php}} {{bin/magento}} app:config:status');
         } catch (RunException $e) {
             if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
                 $configImportNeeded = true;
@@ -159,7 +166,7 @@ task('magento:config:import', function () {
             invoke('magento:maintenance:enable');
         }
 
-        run('{{bin/php}} {{release_or_current_path}}/bin/magento app:config:import --no-interaction');
+        run('{{bin/php}} {{bin/magento}} app:config:import --no-interaction');
 
         if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');
@@ -172,7 +179,7 @@ task('magento:upgrade:db', function () {
     $databaseUpgradeNeeded = false;
 
     try {
-        run('{{bin/php}} {{release_or_current_path}}/bin/magento setup:db:status');
+        run('{{bin/php}} {{bin/magento}} setup:db:status');
     } catch (RunException $e) {
         if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
             $databaseUpgradeNeeded = true;
@@ -186,7 +193,7 @@ task('magento:upgrade:db', function () {
             invoke('magento:maintenance:enable');
         }
 
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:upgrade --keep-generated --no-interaction");
+        run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");
 
         if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
             invoke('magento:maintenance:disable');
@@ -196,7 +203,7 @@ task('magento:upgrade:db', function () {
 
 desc('Flushes Magento Cache');
 task('magento:cache:flush', function () {
-    run("{{bin/php}} {{release_or_current_path}}/bin/magento cache:flush");
+    run("{{bin/php}} {{bin/magento}} cache:flush");
 });
 
 desc('Magento2 deployment operations');

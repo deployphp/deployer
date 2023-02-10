@@ -42,13 +42,13 @@ set('releases_list', function () {
         return basename(rtrim(trim($release), '/'));
     }, $ll);
 
-    $releasesLog = get('releases_log');
+    // Return releases from newest to oldest.
+    $releasesLog = array_reverse(get('releases_log'));
 
     $releases = [];
-    for ($i = count($releasesLog) - 1; $i >= 0; --$i) {
-        $release = $releasesLog[$i]['release_name'];
-        if (in_array($release, $ll, true)) {
-            $releases[] = $release;
+    foreach ($releasesLog as $release) {
+        if (in_array($release['release_name'], $ll, true)) {
+            $releases[] = $release['release_name'];
         }
     }
     return $releases;

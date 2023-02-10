@@ -154,7 +154,8 @@ You can also define labels in YAML recipe. For example:
 hosts:
   web.example.com:
     remote_user: deployer
-    env: production
+    env:
+      environment: production
     labels:
       env: prod
 ```
@@ -164,7 +165,7 @@ But make sure to distinguish between `env` and `labels.env` keys.
 
 ```php
 task('info', function () {
-    writeln('env:' . get('env') . ' labels.env:' . get('labels')['env']);
+    writeln('env:' . get('env')['environment'] . ' labels.env:' . get('labels')['env']);
 });
 ```
 

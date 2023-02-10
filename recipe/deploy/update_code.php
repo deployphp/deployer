@@ -105,15 +105,12 @@ task('deploy:update_code', function () {
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
         run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
-    } else if (get('update_code_strategy') === 'clone' || get('update_code_strategy') === 'remote') {
+    } else if (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
+        run("$git remote set-url origin $repository", ['env' => $env]);
 
-        if (get('update_code_strategy') === 'remote') {
-            run("$git remote set-url origin $repository", ['env' => $env]);
-
-            $target = get('branch', 'HEAD');
-        }
+        $target = get('branch', 'HEAD');
 
         run("$git checkout --force $target");
     } else {

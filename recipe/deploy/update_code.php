@@ -43,8 +43,7 @@ set('target', function () {
 // Sets deploy:update_code strategy.
 // Can be one of:
 // - archive
-// - clone (if you need `.git` dir in your {{release_path}})
-// - remote (if you need the origin repository `.git` dir in your {{release_path}})
+// - clone (if you need the origin repository `.git` dir in your {{release_path}})
 set('update_code_strategy', 'archive');
 
 // Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.

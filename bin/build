@@ -15,7 +15,7 @@ $version = 'dev-master';
 if (array_key_exists('v', $opt)) {
     $version = $opt['v'];
     if (!preg_match('/^\d+\.\d+\.\d+(-[\d\w\.]+)?$/i', $version)) {
-        die("Version number must follow semantic versioning.\n");
+        die("Version number must follow semantic versioning, '$version' given.\n");
     }
 }
 

@@ -48,9 +48,9 @@ if (empty($deployFile)) {
 
 // Detect autoload location
 $autoload = [
-    __DIR__ . '/../vendor/autoload.php', // The dep located at "deployer.phar/bin" or in development.
     __DIR__ . '/../../../autoload.php', // The dep located at "vendor/deployer/deployer/bin".
     __DIR__ . '/../autoload.php', // The dep located at "vendor/bin".
+    __DIR__ . '/../vendor/autoload.php', // The dep located at "deployer.phar/bin" or in development.
 ];
 $includes = [
     __DIR__ . '/..',

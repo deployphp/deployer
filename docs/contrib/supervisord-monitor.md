@@ -12,10 +12,96 @@ require 'contrib/supervisord-monitor.php';
 
 
 
+### Description
+This is a recipe that uses the [Supervisord server monitoring project](https://github.com/mlazarov/supervisord-monitor).
+
+With this recipe the possibility is created to restart a supervisord process through the Supervisor Monitor webtool, by using cURL. This workaround is particular usefull when the deployment user has unsuficient rights to restart a daemon process from the cli.
+
+### Configuration
+
+```
+set('supervisord', [
+    'uri' => 'https://youruri.xyz/supervisor',
+    'basic_auth_user' => 'username',
+    'basic_auth_password' => 'password',
+    'process_name' => 'process01',
+]);
+```
+
+or
+
+```
+set('supervisord_uri', 'https://youruri.xyz/supervisor');
+set('supervisord_basic_auth_user', 'username');
+set('supervisord_basic_auth_password', 'password');
+set('supervisord_process_name', 'process01');
+```
+
+- `supervisord` – array with configuration for Supervisord
+    - `uri` – URI to the Supervisord monitor page
+    - `basic_auth_user` – Basic auth username to access the URI
+    - `basic_auth_password` – Basic auth password to access the URI
+    - `process_name` – the process name, as visible in the Supervisord monitor page. Multiple processes can be listed here, comma separated
+
+### Task
+
+- `supervisord-monitor:restart` Restarts given processes
+
+### Usage
+
+A complete example with configs, staging and deployment
+
+```
+<?php
+
+namespace Deployer;
+use Dotenv\Dotenv;
+
+require 'vendor/autoload.php';
+
+require 'supervisord_monitor.php';
+
+Project name
+set('application', 'myproject.com');
+
+Project repository
+set('repository', 'git@github.com:myorg/myproject.com');
+
+set('supervisord', [
+    'uri' => 'https://youruri.xyz/supervisor',
+    'basic_auth_user' => 'username',
+    'basic_auth_password' => 'password',
+    'process_name' => 'process01',
+]);
+
+host('staging.myproject.com')
+    ->set('branch', 'develop')
+    ->set('labels' => ['stage' => 'staging']);
+
+host('myproject.com')
+    ->set('branch', 'main')
+    ->set('labels' => ['stage' => 'production']);
+
+Tasks
+task('build', function () {
+    run('cd {{release_path}} && build');
+});
+
+task('deploy', [
+    'build',
+    'supervisord',
+])
+
+task('supervisord', ['supervisord-monitor:restart'])
+    ->select('stage=production');
+```
+
+
+
 ## Tasks
 
 ### supervisord-monitor:restart
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L75)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L139)
 
 
 

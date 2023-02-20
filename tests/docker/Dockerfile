@@ -22,7 +22,7 @@ RUN ssh-keygen \
 RUN git config --global user.email "e2e@deployer.test" \
     && git config --global user.name "E2E Deployer"
 
-ARG XDEBUG_VERSION=2.9.8
+ARG XDEBUG_VERSION=3.2
 RUN set -eux; \
 	apk add --no-cache --virtual .build-deps $PHPIZE_DEPS; \
 	pecl install xdebug-$XDEBUG_VERSION; \

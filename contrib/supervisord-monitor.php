@@ -84,6 +84,7 @@ task('supervisord', ['supervisord-monitor:restart'])
     ->select('stage=production');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -121,7 +122,7 @@ function isAuthenticated()
 function action($name, $action = 'stop')
 {
     $stopResponseInfo = [];
-    Httpie::post(get('supervisord')['uri'] . '/control/'.$action.'/localhost/'.$name)->header('Authorization', getBasicAuthToken())->send($stopResponseInfo);
+    Httpie::post(get('supervisord_uri') . '/control/'.$action.'/localhost/'.$name)->header('Authorization', getBasicAuthToken())->send($stopResponseInfo);
 
     return $stopResponseInfo['http_code'] === 200;
 }
@@ -138,7 +139,7 @@ function start($name)
 
 task('supervisord-monitor:restart', function () {
     if (isAuthenticated()) {
-        $names = explode(',', get('supervisord')['process_name']);
+        $names = explode(',', get('supervisord_process_name'));
         foreach ($names as $name) {
             $name = trim($name);
             if (stop($name)) {

@@ -16,6 +16,13 @@ set('supervisord', [
 ]);
 
 ```
+or
+```
+set('supervisord_uri', 'https://youruri.xyz/supervisor');
+set('supervisord_basic_auth_user', 'username');
+set('supervisord_basic_auth_password', 'password');
+set('supervisord_process_name', 'process01');
+```
 
 - `supervisord` – array with configuration for Supervisord
     - `uri` – URI to the Supervisord monitor page
@@ -54,6 +61,12 @@ set('supervisord', [
     'basic_auth_password' => 'password',
     'process_name' => 'process01',
 ]);
+
+// or by using individual setters:
+set('supervisord_uri', 'https://youruri.xyz/supervisor');
+set('supervisord_basic_auth_user', 'username');
+set('supervisord_basic_auth_password', 'password');
+set('supervisord_process_name', 'process01');
 
 host('staging.myproject.com')
     ->set('branch', 'develop')

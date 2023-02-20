@@ -14,7 +14,6 @@ set('supervisord', [
     'basic_auth_password' => 'password',
     'process_name' => 'process01',
 ]);
-
 ```
 or
 ```
@@ -38,58 +37,7 @@ set('supervisord_process_name', 'process01');
 
 A complete example with configs, staging and deployment
 
-```
-<?php
 
-namespace Deployer;
-use Dotenv\Dotenv;
-
-require 'vendor/autoload.php';
-
-require 'supervisord_monitor.php';
-
-
-// Project name
-set('application', 'myproject.com');
-// Project repository
-set('repository', 'git@github.com:myorg/myproject.com');
-
-
-set('supervisord', [
-    'uri' => 'https://youruri.xyz/supervisor',
-    'basic_auth_user' => 'username',
-    'basic_auth_password' => 'password',
-    'process_name' => 'process01',
-]);
-
-// or by using individual setters:
-set('supervisord_uri', 'https://youruri.xyz/supervisor');
-set('supervisord_basic_auth_user', 'username');
-set('supervisord_basic_auth_password', 'password');
-set('supervisord_process_name', 'process01');
-
-host('staging.myproject.com')
-    ->set('branch', 'develop')
-    ->set('labels' => ['stage' => 'staging']);
-
-host('myproject.com')
-    ->set('branch', 'main')
-    ->set('labels' => ['stage' => 'production']);
-
-// Tasks
-task('build', function () {
-    run('cd {{release_path}} && build');
-});
-
-task('deploy', [
-    'build',
-    'supervisord',
-])
-
-task('supervisord', ['supervisord-monitor:restart'])
-    ->select('stage=production');
-
-```
 
  */
 

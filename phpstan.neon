@@ -13,3 +13,5 @@ parameters:
         - "#^Constant DEPLOYER_BIN not found\\.$#"
         - "#CpanelPhp#"
         - "#AMQPMessage#"
+
+    treatPhpDocTypesAsCertain: false

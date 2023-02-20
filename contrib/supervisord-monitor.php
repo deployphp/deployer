@@ -22,7 +22,7 @@ set('supervisord', [
     - `basic_auth_user` – Basic auth username to access the URI
     - `basic_auth_password` – Basic auth password to access the URI
     - `process_name` – the process name, as visible in the Supervisord monitor page. Multiple processes can be listed here, comma separated
-   
+
 ### Task
 
 - `supervisord-monitor:restart` Restarts given processes
@@ -79,64 +79,70 @@ task('supervisord', ['supervisord-monitor:restart'])
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
-function getConfig() {
+function checkConfig()
+{
     $config = get('supervisord', []);
+    foreach ($config as $key => $value) {
+        set('supervisord_' . $key, $value);
+    }
 
-    if (!is_array($config) ||
-    !isset($config['uri']) ||
-    !isset($config['basic_auth_user']) ||
-    !isset($config['basic_auth_password']) ||
-    !isset($config['process_name'])) {
-    throw new \RuntimeException("<comment>Please configure Supervisord config:</comment> <info>set('supervisord', array('uri' => 'yourdomain.xyz/supervisor', 'basic_auth_user' => 'abc' , 'basic_auth_password' => 'xyz', 'process_name' => 'process01,process02'));</info>");
-}
-}
-
-function getBasicAuthToken() {
-    return 'Basic ' . base64_encode(get('supervisord')['basic_auth_user']. ':'. get('supervisord')['basic_auth_password']);
+    if (!get('supervisord_uri') ||
+        !get('supervisord_basic_auth_user') ||
+        !get('supervisord_basic_auth_password') ||
+        !get('supervisord_process_name')) {
+        throw new \RuntimeException("<comment>Please configure Supervisord config:</comment> <info>set('supervisord', array('uri' => 'yourdomain.xyz/supervisor', 'basic_auth_user' => 'abc' , 'basic_auth_password' => 'xyz', 'process_name' => 'process01,process02'));</info> or <info>set('supervisord_uri', 'yourdomain.xyz/supervisor'); set('supervisord_basic_auth_user', 'abc'); etc</info>");
+    }
 }
 
-function isAuthenticated() {
-    getConfig();
+function getBasicAuthToken()
+{
+    return 'Basic ' . base64_encode(get('supervisord_basic_auth_user'). ':'. get('supervisord_basic_auth_password'));
+}
+
+function isAuthenticated()
+{
+    checkConfig();
 
     $authResponseInfo = [];
-    Httpie::post(get('supervisord')['uri'])->header('Authorization',  getBasicAuthToken())->send($authResponseInfo);
+    Httpie::post(get('supervisord_uri'))->header('Authorization', getBasicAuthToken())->send($authResponseInfo);
 
     return $authResponseInfo['http_code'] === 200;
 }
 
-function action($name, $action = 'stop') {
+function action($name, $action = 'stop')
+{
     $stopResponseInfo = [];
-    Httpie::post(get('supervisord')['uri'] . '/control/'.$action.'/localhost/'.$name)->header('Authorization',  getBasicAuthToken())->send($stopResponseInfo);
+    Httpie::post(get('supervisord')['uri'] . '/control/'.$action.'/localhost/'.$name)->header('Authorization', getBasicAuthToken())->send($stopResponseInfo);
 
     return $stopResponseInfo['http_code'] === 200;
 }
 
-function stop($name) {
+function stop($name)
+{
     return action($name, 'stop');
 }
 
-function start($name) {
+function start($name)
+{
     return action($name, 'start');
 }
 
-task('supervisord-monitor:restart', function() {
-    if(isAuthenticated()) {
+task('supervisord-monitor:restart', function () {
+    if (isAuthenticated()) {
         $names = explode(',', get('supervisord')['process_name']);
-        foreach($names as $name) {
+        foreach ($names as $name) {
             $name = trim($name);
-            if(stop($name)) {
+            if (stop($name)) {
                 writeln('Daemon ['.$name.'] stopped');
-                if(start($name)) {
+                if (start($name)) {
                     writeln('Daemon ['.$name.'] started');
                 }
             }
         }
     }
 });
-
-
-

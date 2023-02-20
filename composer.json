@@ -41,7 +41,7 @@
         "bin/dep"
     ],
     "require": {
-        "php": "^8.0|^7.3",
+        "php": "^8.0",
         "ext-json": "*",
         "justinrainbow/json-schema": "^5.2",
         "psr/http-message": "^1",

@@ -18,7 +18,7 @@ class LaravelBoilerplateE2ETest extends AbstractE2ETest
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
 
         $siteContent = file_get_contents('http://server.test');
-        $expectedSiteContent = "Build v9.";
+        $expectedSiteContent = "Laravel v9";
         self::assertStringContainsString($expectedSiteContent, $siteContent);
     }
 

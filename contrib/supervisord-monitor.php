@@ -1,81 +1,21 @@
 <?php
 /*
-### Description
-This is a recipe that uses the [Supervisord server monitoring project](https://github.com/mlazarov/supervisord-monitor).
 
-With this recipe the possibility is created to restart a supervisord process through the Supervisor Monitor webtool, by using cURL. This workaround is particular usefull when the deployment user has unsuficient rights to restart a daemon process from the cli.
+## Configuration
 
-### Configuration
+- `rollbar_token` – access token to rollbar api
+- `rollbar_comment` – comment about deploy, default to
+  ```php
+  set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  ```
+- `rollbar_username` – rollbar user name
 
-```
-set('supervisord', [
-    'uri' => 'https://youruri.xyz/supervisor',
-    'basic_auth_user' => 'username',
-    'basic_auth_password' => 'password',
-    'process_name' => 'process01',
-]);
+## Usage
 
-```
+Since you should only notify Rollbar channel of a successful deployment, the `rollbar:notify` task should be executed right at the end.
 
-- `supervisord` – array with configuration for Supervisord
-    - `uri` – URI to the Supervisord monitor page
-    - `basic_auth_user` – Basic auth username to access the URI
-    - `basic_auth_password` – Basic auth password to access the URI
-    - `process_name` – the process name, as visible in the Supervisord monitor page. Multiple processes can be listed here, comma separated
-
-### Task
-
-- `supervisord-monitor:restart` Restarts given processes
-
-### Usage
-
-A complete example with configs, staging and deployment
-
-```
-<?php
-
-namespace Deployer;
-use Dotenv\Dotenv;
-
-require 'vendor/autoload.php';
-
-require 'supervisord_monitor.php';
-
-
-// Project name
-set('application', 'myproject.com');
-// Project repository
-set('repository', 'git@github.com:myorg/myproject.com');
-
-
-set('supervisord', [
-    'uri' => 'https://youruri.xyz/supervisor',
-    'basic_auth_user' => 'username',
-    'basic_auth_password' => 'password',
-    'process_name' => 'process01',
-]);
-
-host('staging.myproject.com')
-    ->set('branch', 'develop')
-    ->set('labels' => ['stage' => 'staging']);
-
-host('myproject.com')
-    ->set('branch', 'main')
-    ->set('labels' => ['stage' => 'production']);
-
-// Tasks
-task('build', function () {
-    run('cd {{release_path}} && build');
-});
-
-task('deploy', [
-    'build',
-    'supervisord',
-])
-
-task('supervisord', ['supervisord-monitor:restart'])
-    ->select('stage=production');
-
+```php
+after('deploy', 'rollbar:notify');
 ```
 
  */

@@ -46,10 +46,10 @@
         "justinrainbow/json-schema": "^5.2",
         "psr/http-message": "^1",
         "react/http": "^1.5",
-        "symfony/console": "^5.4.9",
+        "symfony/console": "^5.0|^6.0",
         "symfony/polyfill-php80": "^1.22",
-        "symfony/process": "^5",
-        "symfony/yaml": "^5"
+        "symfony/process": "^5.0|^6.0",
+        "symfony/yaml": "^5.0|^6.0"
     },
     "require-dev": {
         "pestphp/pest": "^1.0",

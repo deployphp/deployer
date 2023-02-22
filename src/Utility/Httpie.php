@@ -71,7 +71,16 @@ class Httpie
         return $http;
     }
 
-    public function delete(string $url): Httpie
+    
+    public static function put(string $url): Httpie
+    {
+        $http = new self;
+        $http->method = 'PUT';
+        $http->url = $url;
+        return $http;
+    }
+
+    public static function delete(string $url): Httpie
     {
         $http = new self;
         $http->method = 'DELETE';

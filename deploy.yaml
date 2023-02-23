@@ -1,4 +1,5 @@
 import:
+  - src/Support/update_banner.php
   - src/Support/update_manifest.php
 
 hosts:
@@ -7,16 +8,14 @@ hosts:
 
 config:
   banner: |
-    ╭──────────────────────────────────────────────────────╮
-    │                                                      │
-    │       Update available! Mode info ï.at/update        │
-    │                                                      │
-    ╰──────────────────────────────────────────────────────╯
+    ╭────────────────────────────────────────────╮
+    │                                            │
+    │       Update available! More info at       │
+    │       https://ï.at/deployer-releases       │
+    │                                            │
+    ╰────────────────────────────────────────────╯
 
 tasks:
   release:
+    - update_banner
     - update_manifest
-
-  create_banner:
-    - desc: Create an update banner
-    - run: echo $'{{banner}}' > {{site}}/check-updates/{{old_version}}

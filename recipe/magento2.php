@@ -98,12 +98,38 @@ set('maintenance_mode_status_active', function () {
 set('enable_zerodowntime', true);
 
 // Tasks
+
+// To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
+// e.g.
+// ```php
+// 'MAGE_MODE' => 'production'
+// ```
 desc('Compiles magento di');
 task('magento:compile', function () {
     run("{{bin/php}} {{bin/magento}} setup:di:compile");
     run('cd {{release_or_current_path}}/{{magento_dir}} && {{bin/composer}} dump-autoload -o');
 });
 
+// To work correctly with artifact deployment it is necessary to set `system/dev/js` , `system/dev/css` and `system/dev/template`
+// in `app/etc/config.php`, e.g.:
+// ```php
+// 'system' => [
+//     'default' => [
+//         'dev' => [
+//             'js' => [
+//                 'merge_files' => '1',
+//                 'minify_files' => '1'
+//             ],
+//             'css' => [
+//                 'merge_files' => '1',
+//                 'minify_files' => '1'
+//             ],
+//             'template' => [
+//                 'minify_html' => '1'
+//             ]
+//         ]
+//     ]
+// ```
 desc('Deploys assets');
 task('magento:deploy:assets', function () {
 
@@ -231,16 +257,25 @@ task('deploy', [
 
 after('deploy:failed', 'magento:maintenance:disable');
 
-// artifact deployment section
-// settings section
+// artifact deployemnt section
+
+// The file the artifact is saved to
 set('artifact_file', 'artifact.tar.gz');
+
+// The directory the artifact is saved in
 set('artifact_dir', 'artifacts');
+
+// Points to a file with a list of files to exclude from packaging.
+// The format is as with the `tar --exclude-from=[file]` option
 set('artifact_excludes_file', 'artifacts/excludes');
+
 // If set to true, the artifact is built from a clean copy of the project repository instead of the current working directory
 set('build_from_repo', false);
+
 // Set this value if "build_from_repo" is set to true. The target to deploy must also be set with "--branch", "--tag" or "--revision"
 set('repository', null);
 
+// The relative path to the artifact file. If the directory does not exist, it will be created
 set('artifact_path', function () {
     if (!testLocally('[ -d {{artifact_dir}} ]')) {
         runLocally('mkdir -p {{artifact_dir}}');
@@ -248,6 +283,7 @@ set('artifact_path', function () {
     return get('artifact_dir') . '/' . get('artifact_file');
 });
 
+// The location of the tar command. On MacOS you should have installed gtar, as it supports the required settings
 set('bin/tar', function () {
     if (commandExist('gtar')) {
         return which('gtar');
@@ -257,6 +293,7 @@ set('bin/tar', function () {
 });
 
 // tasks section
+
 desc('Packages all relevant files in an artifact.');
 task('artifact:package', function() {
     if (!test('[ -f {{artifact_excludes_file}} ]')) {
@@ -309,17 +346,14 @@ task('build:prepare', function() {
 });
 
 desc('Builds an artifact.');
-task(
-    'artifact:build',
-    [
+task('artifact:build', [
         'build:prepare',
         'build:remove-generated',
         'deploy:vendors',
         'magento:compile',
         'magento:deploy:assets',
         'artifact:package',
-    ]
-);
+]);
 
 // Array of shared files that will be added to the default shared_files without overriding
 set('additional_shared_files', []);
@@ -335,9 +369,7 @@ task('deploy:additional-shared', function () {
 
 
 desc('Prepares an artifact on the target server');
-task(
-    'artifact:prepare',
-    [
+task('artifact:prepare', [
         'deploy:info',
         'deploy:setup',
         'deploy:lock',
@@ -347,30 +379,23 @@ task(
         'deploy:additional-shared',
         'deploy:shared',
         'deploy:writable',
-    ]
-);
+]);
 
 desc('Executes the tasks after artifact is released');
-task(
-    'artifact:finish',
-    [
+task('artifact:finish', [
         'magento:cache:flush',
         'cachetool:clear:opcache',
         'deploy:cleanup',
         'deploy:unlock',
-    ]
-);
+]);
 
 desc('Actually releases the artifact deployment');
-task(
-    'artifact:deploy',
-    [
+task('artifact:deploy', [
         'artifact:prepare',
         'magento:upgrade:db',
         'magento:config:import',
         'deploy:symlink',
-        'artifact:finish'
-    ]
-);
+        'artifact:finish',
+]);
 
 fail('artifact:deploy', 'deploy:failed');

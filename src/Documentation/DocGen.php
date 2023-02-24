@@ -108,7 +108,7 @@ class DocGen
                 }
                 return $output;
             };
-            $findTask = function (string $name) use ($recipe): ?DocTask {
+            $findTask = function (string $name, bool $searchOtherRecipes = true) use ($recipe): ?DocTask {
                 if (array_key_exists($name, $recipe->tasks)) {
                     return $recipe->tasks[$name];
                 }
@@ -119,9 +119,11 @@ class DocGen
                         }
                     }
                 }
-                foreach ($this->recipes as $r) {
-                    if (array_key_exists($name, $r->tasks)) {
-                        return $r->tasks[$name];
+                if ($searchOtherRecipes) {
+                    foreach ($this->recipes as $r) {
+                        if (array_key_exists($name, $r->tasks)) {
+                            return $r->tasks[$name];
+                        }
                     }
                 }
                 return null;
@@ -165,24 +167,65 @@ You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 MARKDOWN;
 
+                $map = function (DocTask $task, $ident = '') use (&$map, $findTask, &$intro): void {
+                    foreach ($task->group as $taskName) {
+                        $t = $findTask($taskName);
+                        if ($t !== null) {
+                            $intro .= "$ident* {$t->mdLink()} – $t->desc\n";
+                            if ($t->group !== null) {
+                                $map($t, $ident . '  ');
+                            }
+                        }
+                    }
+                };
                 $deployTask = $findTask('deploy');
                 if ($deployTask !== null) {
                     $intro .= "The [deploy](#deploy) task of **$brandName** consists of:\n";
-                    $map = function (DocTask $task, $ident = '') use (&$map, $findTask, &$intro): void {
-                        foreach ($task->group as $taskName) {
-                            $t = $findTask($taskName);
-                            if ($t !== null) {
-                                $intro .= "$ident* {$t->mdLink()} – $t->desc\n";
-                                if ($t->group !== null) {
-                                    $map($t, $ident . '  ');
-                                }
-                            }
-                        }
-                    };
                     $map($deployTask);
                 }
 
                 $intro .= "\n\n";
+
+                $artifactBuildTask = $findTask('artifact:build', false);
+                $artifactDeployTask = $findTask('artifact:deploy', false);
+                if ($artifactDeployTask !== null && $artifactBuildTask !== null) {
+                    $intro .= "In addition the **$brandName** recipe contains an artifact deployment.\n";
+                    $intro .= <<<MD
+This is a two step process where you first execute
+
+```php
+bin/dep artifact:build [options] [localhost]
+```
+
+to build an artifact, which then is deployed on a server with
+
+```php
+bin/dep artifact:deploy [host]
+```
+
+The `localhost` to build the artifact on has to be declared local, so either add
+```php
+localhost()
+    ->set('local', true);
+```
+to your deploy.php or
+```yaml
+hosts:
+    localhost:
+        local: true
+```
+to your deploy yaml.
+
+The [artifact:build](#artifact:build) command of **$brandName** consists of: 
+MD;
+                    $map($artifactBuildTask);
+
+                    $intro .= "\n\n The [artifact:deploy](#artifact:deploy) command of **$brandName** consists of:\n";
+
+                    $map($artifactDeployTask);
+
+                    $intro .= "\n\n";
+                }
             }
             if (count($recipe->require) > 0) {
                 if (is_framework_recipe($recipe)) {

@@ -161,7 +161,7 @@ task('sw-build-without-db:get-remote-config', static function () {
 });
 
 task('sw-build-without-db:build', static function () {
-    runLocally('CI=1 SHOPWARE_SKIP_BUNDLE_DUMP=1 ./bin/build.sh');
+    runLocally('CI=1 SHOPWARE_SKIP_BUNDLE_DUMP=1 ./bin/build-js.sh');
 });
 
 task('sw-build-without-db', [

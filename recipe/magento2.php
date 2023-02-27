@@ -257,7 +257,7 @@ task('deploy', [
 
 after('deploy:failed', 'magento:maintenance:disable');
 
-// artifact deployemnt section
+// Artifact deployment section
 
 // The file the artifact is saved to
 set('artifact_file', 'artifact.tar.gz');

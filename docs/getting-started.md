@@ -101,7 +101,7 @@ dep ssh
 ```
 
 :::tip
-If your webserver is using OpenSSH lower than v7.6, updating the code may fail with the error
+If your webserver is using OpenSSH version older than v7.6, updating the code may fail with the error
 message `unsupported option "accept-new".` In this case, override the Git SSH command with:
 ```php
 set('git_ssh_command', 'ssh');

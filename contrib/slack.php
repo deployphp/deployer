@@ -98,6 +98,7 @@ function checkSlackAnswer($result)
 desc('Notifies Slack');
 task('slack:notify', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 
@@ -117,6 +118,7 @@ task('slack:notify', function () {
 desc('Notifies Slack about deploy finish');
 task('slack:notify:success', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 
@@ -137,6 +139,7 @@ task('slack:notify:success', function () {
 desc('Notifies Slack about deploy failure');
 task('slack:notify:failure', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 
@@ -156,6 +159,7 @@ task('slack:notify:failure', function () {
 desc('Notifies Slack about rollback');
 task('slack:notify:rollback', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 

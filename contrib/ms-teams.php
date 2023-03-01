@@ -9,7 +9,7 @@ Setup:
 2. Navigate to Teams section
 3. Select existing or create new team
 4. Select existing or create new channel
-5. Hover over channel to get tree dots, click, in menu select "Connectors"
+5. Hover over channel to get three dots, click, in menu select "Connectors"
 6. Search for and configure "Incoming Webhook"
 7. Confirm/create and copy your Webhook URL
 8. Setup deploy.php

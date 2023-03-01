@@ -89,7 +89,7 @@ task('telegram:notify', function () {
     }
 
     if (!get('telegram_chat_id', false)) {
-        warning('No Slack chat id configured');
+        warning('No Telegram chat id configured');
         return;
     }
 
@@ -120,7 +120,7 @@ task('telegram:notify', function () {
       }
 
       if (!get('telegram_chat_id', false)) {
-          warning('No Slack chat id configured');
+          warning('No Telegram chat id configured');
           return;
       }
 
@@ -151,7 +151,7 @@ task('telegram:notify', function () {
     }
 
     if (!get('telegram_chat_id', false)) {
-        warning('No Slack chat id configured');
+        warning('No Telegram chat id configured');
         return;
     }
 

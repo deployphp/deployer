@@ -84,10 +84,12 @@ set('telegram_failure_text', 'Deploy to *{{target}}* failed');
 desc('Notifies Telegram');
 task('telegram:notify', function () {
     if (!get('telegram_token', false)) {
+        warning('No Telegram token configured');
         return;
     }
 
     if (!get('telegram_chat_id', false)) {
+        warning('No Slack chat id configured');
         return;
     }
 
@@ -113,10 +115,12 @@ task('telegram:notify', function () {
   desc('Notifies Telegram about deploy finish');
   task('telegram:notify:success', function () {
       if (!get('telegram_token', false)) {
+          warning('No Telegram token configured');
           return;
       }
 
       if (!get('telegram_chat_id', false)) {
+          warning('No Slack chat id configured');
           return;
       }
 
@@ -141,13 +145,15 @@ task('telegram:notify', function () {
 
   desc('Notifies Telegram about deploy failure');
   task('telegram:notify:failure', function () {
-      if (!get('telegram_token', false)) {
-          return;
-      }
+    if (!get('telegram_token', false)) {
+        warning('No Telegram token configured');
+        return;
+    }
 
-      if (!get('telegram_chat_id', false)) {
-          return;
-      }
+    if (!get('telegram_chat_id', false)) {
+        warning('No Slack chat id configured');
+        return;
+    }
 
       $telegramUrl = get('telegram_url') . '?' . http_build_query (
           Array (

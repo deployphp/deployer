@@ -100,6 +100,14 @@ Ssh to the host, for example, for editing _.env_ file:
 dep ssh
 ```
 
+:::tip
+If your webserver is using OpenSSH version older than v7.6, updating the code may fail with the error
+message `unsupported option "accept-new".` In this case, override the Git SSH command with:
+```php
+set('git_ssh_command', 'ssh');
+```
+:::
+
 After everything is configured properly we can resume our deployment from the
 place it stopped. However, this is not required; we can just start a new deploy:
 

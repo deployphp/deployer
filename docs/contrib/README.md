@@ -26,6 +26,7 @@
 * [Rsync Recipe](/docs/contrib/rsync.md)
 * [Sentry Recipe](/docs/contrib/sentry.md)
 * [Slack Recipe](/docs/contrib/slack.md)
+* [Supervisord-monitor Recipe](/docs/contrib/supervisord-monitor.md)
 * [Telegram Recipe](/docs/contrib/telegram.md)
 * [Webpack_encore Recipe](/docs/contrib/webpack_encore.md)
 * [Workplace Recipe](/docs/contrib/workplace.md)

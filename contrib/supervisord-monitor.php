@@ -34,6 +34,8 @@ set('supervisord_process_name', 'process01');
 ### Task
 
 - `supervisord-monitor:restart` Restarts given processes
+- `supervisord-monitor:stop` Stops given processes
+- `supervisord-monitor:start` Starts given processes
 
 ### Usage
 
@@ -83,8 +85,7 @@ task('deploy', [
 task('supervisord', ['supervisord-monitor:restart'])
     ->select('stage=production');
 ```
- */
-
+*/
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -127,27 +128,47 @@ function supervisordControlAction($name, $action = 'stop')
     return $stopResponseInfo['http_code'] === 200;
 }
 
-function stop($name)
-{
-    return supervisordControlAction($name, 'stop');
-}
-
-function start($name)
-{
-    return supervisordControlAction($name, 'start');
-}
-
 task('supervisord-monitor:restart', function () {
     if (supervisordIsAuthenticated()) {
         $names = explode(',', get('supervisord_process_name'));
         foreach ($names as $name) {
             $name = trim($name);
-            if (stop($name)) {
+            if (supervisordControlAction($name, 'stop')) {
                 writeln('Daemon ['.$name.'] stopped');
-                if (start($name)) {
+                if (supervisordControlAction($name, 'start')) {
                     writeln('Daemon ['.$name.'] started');
                 }
             }
         }
+    } else {
+        writeln('Authentication failed');
+    }
+});
+
+task('supervisord-monitor:stop', function () {
+    if (supervisordIsAuthenticated()) {
+        $names = explode(',', get('supervisord_process_name'));
+        foreach ($names as $name) {
+            $name = trim($name);
+            if (supervisordControlAction($name, 'stop')) {
+                writeln('Daemon ['.$name.'] stopped');
+            }
+        }
+    } else {
+        writeln('Authentication failed');
+    }
+});
+
+task('supervisord-monitor:start', function () {
+    if (supervisordIsAuthenticated()) {
+        $names = explode(',', get('supervisord_process_name'));
+        foreach ($names as $name) {
+            $name = trim($name);
+            if (supervisordControlAction($name, 'start')) {
+                writeln('Daemon ['.$name.'] started');
+            }
+        }
+    } else {
+        writeln('Authentication failed');
     }
 });

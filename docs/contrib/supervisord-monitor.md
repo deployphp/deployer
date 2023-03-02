@@ -46,6 +46,8 @@ set('supervisord_process_name', 'process01');
 ### Task
 
 - `supervisord-monitor:restart` Restarts given processes
+- `supervisord-monitor:stop` Stops given processes
+- `supervisord-monitor:start` Starts given processes
 
 ### Usage
 
@@ -101,7 +103,23 @@ task('supervisord', ['supervisord-monitor:restart'])
 ## Tasks
 
 ### supervisord-monitor:restart
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L139)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L131)
+
+
+
+
+
+
+### supervisord-monitor:stop
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L148)
+
+
+
+
+
+
+### supervisord-monitor:start
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L162)
 
 
 

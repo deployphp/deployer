@@ -166,7 +166,7 @@ Notifies Teams.
 
 
 ### teams:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L107)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L108)
 
 Notifies Teams about deploy finish.
 
@@ -174,7 +174,7 @@ Notifies Teams about deploy finish.
 
 
 ### teams:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L121)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L123)
 
 Notifies Teams about deploy failure.
 

@@ -56,7 +56,7 @@ class Messenger
         } else if ($this->output->isVeryVerbose()) {
             // option `-vv` displays task start time with milliseconds accuracy
             $timestamp = (int) floor($this->startTime / 1000);
-            $millis = $this->startTime % 1000;
+            $millis = sprintf("%03d", $this->startTime % 1000);
 
             $taskStartTime = date("Y-d-m H:i:s", $timestamp);
             $this->output->writeln("[{$taskStartTime}.{$millis}] <fg=cyan;options=bold>task</> {$task->getName()}");

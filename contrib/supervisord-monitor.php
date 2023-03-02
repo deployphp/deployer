@@ -94,7 +94,9 @@ function supervisordCheckConfig()
 {
     $config = get('supervisord', []);
     foreach ($config as $key => $value) {
-        set('supervisord_' . $key, $value);
+        if ($value) {
+            set('supervisord_' . $key, $value);
+        }
     }
 
     if (!get('supervisord_uri') ||

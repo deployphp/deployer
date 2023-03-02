@@ -53,6 +53,19 @@ class Messenger
             $this->output->writeln("::group::task {$task->getName()}");
         } else if (getenv('GITLAB_CI')) {
             $this->output->writeln("\e[0Ksection_start:{$this->startTime}:{$this->startTime}[collapsed=true]\r\e[0K{$task->getName()}");
+        } else if ($this->output->isVeryVerbose()) {
+            // option `-vv` displays task start time with milliseconds accuracy
+            $timestamp = (int) floor($this->startTime / 1000);
+            $millis = $this->startTime % 1000;
+
+            $taskStartTime = date("Y-d-m H:i:s", $timestamp);
+            $this->output->writeln("[{$taskStartTime}.{$millis}] <fg=cyan;options=bold>task</> {$task->getName()}");
+        } else if ($this->output->isVerbose()) {
+            // option `-v` displays task start time
+            $timestamp = (int) floor($this->startTime / 1000);
+
+            $taskStartTime = date("Y-d-m H:i:s", $timestamp);
+            $this->output->writeln("[{$taskStartTime}] <fg=cyan;options=bold>task</> {$task->getName()}");
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }

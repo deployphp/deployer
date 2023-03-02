@@ -17,6 +17,7 @@
 * [Ms-teams Recipe](/docs/contrib/ms-teams.md)
 * [Newrelic Recipe](/docs/contrib/newrelic.md)
 * [Npm Recipe](/docs/contrib/npm.md)
+* [Ntfy Recipe](/docs/contrib/ntfy.md)
 * [Phinx Recipe](/docs/contrib/phinx.md)
 * [Php-fpm Recipe](/docs/contrib/php-fpm.md)
 * [Rabbit Recipe](/docs/contrib/rabbit.md)

@@ -103,7 +103,7 @@ task('supervisord', ['supervisord-monitor:restart'])
 ## Tasks
 
 ### supervisord-monitor:restart
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L131)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L133)
 
 
 
@@ -111,7 +111,7 @@ task('supervisord', ['supervisord-monitor:restart'])
 
 
 ### supervisord-monitor:stop
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L148)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L150)
 
 
 
@@ -119,7 +119,7 @@ task('supervisord', ['supervisord-monitor:restart'])
 
 
 ### supervisord-monitor:start
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L162)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L164)
 
 
 

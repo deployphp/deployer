@@ -82,8 +82,8 @@ class Client
         $process = new Process($ssh);
         $process
             ->setInput("( $command ); printf '[exit_code:%s]' $?;")
-            ->setTimeout($config['timeout'])
-            ->setIdleTimeout($config['idle_timeout']);
+            ->setTimeout((null === $config['timeout']) ? null : (float) $config['timeout'])
+            ->setIdleTimeout((null === $config['idle_timeout']) ? null : (float) $config['idle_timeout']);
 
         $callback = function ($type, $buffer) use ($config, $host) {
             $this->logger->printBuffer($host, $type, $buffer);

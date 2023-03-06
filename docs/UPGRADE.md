@@ -66,9 +66,13 @@
     ```
 11. Replace `local()` tasks with combination of `once()` and `runLocally()` func.
 12. Replace `locateBinaryPath()` with `which()` func.
-13. Configuration property `default_stage` is not supported.
+13. Configuration property `default_stage` is not supported anymore and has been dropped.
 14. Replace `onHosts()` and `onStage()` with [labels & selectors](selector.md).
 15. Replace `setPrivate()` with [`hidden()`](tasks.md#hidden).
+16. Configuration property `writable_recursive` defaults to `false`. This behaviour can be overridden with:
+   ```php
+   set('writable_recursive', true);
+   ```
 
 ### Step 2: Deploy
 

@@ -14,6 +14,7 @@ set('writable_dirs', [
     'storage/app/public',
     'storage/framework',
     'storage/framework/cache',
+    'storage/framework/cache/data',
     'storage/framework/sessions',
     'storage/framework/views',
     'storage/logs',
@@ -106,19 +107,19 @@ task('artisan:passport:keys', artisan('passport:keys'));
  */
 
 desc('Seeds the database with records');
-task('artisan:db:seed', artisan('db:seed --force', ['showOutput']));
+task('artisan:db:seed', artisan('db:seed --force', ['skipIfNoEnv', 'showOutput']));
 
 desc('Runs the database migrations');
 task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']));
 
 desc('Drops all tables and re-run all migrations');
-task('artisan:migrate:fresh', artisan('migrate:fresh --force'));
+task('artisan:migrate:fresh', artisan('migrate:fresh --force', ['skipIfNoEnv']));
 
 desc('Rollbacks the last database migration');
-task('artisan:migrate:rollback', artisan('migrate:rollback --force', ['showOutput']));
+task('artisan:migrate:rollback', artisan('migrate:rollback --force', ['skipIfNoEnv', 'showOutput']));
 
 desc('Shows the status of each migration');
-task('artisan:migrate:status', artisan('migrate:status', ['showOutput']));
+task('artisan:migrate:status', artisan('migrate:status', ['skipIfNoEnv', 'showOutput']));
 
 /*
  * Cache and optimizations.
@@ -202,6 +203,9 @@ task('artisan:horizon:status', artisan('horizon:status', ['showOutput']));
 
 desc('Terminates the master supervisor so it can be restarted');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
+
+desc('Publish all of the Horizon resources');
+task('artisan:horizon:publish', artisan('horizon:publish'));
 
 /*
  * Telescope.

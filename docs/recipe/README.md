@@ -5,6 +5,7 @@
 * [Common Recipe](/docs/recipe/common.md)
 * [Composer Recipe](/docs/recipe/composer.md)
 * [Contao Recipe](/docs/recipe/contao.md)
+* [Craftcms Recipe](/docs/recipe/craftcms.md)
 * [Drupal 7 Recipe](/docs/recipe/drupal7.md)
 * [Drupal 8 Recipe](/docs/recipe/drupal8.md)
 * [Flow Framework Recipe](/docs/recipe/flow_framework.md)

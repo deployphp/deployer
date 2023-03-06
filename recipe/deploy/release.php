@@ -42,13 +42,13 @@ set('releases_list', function () {
         return basename(rtrim(trim($release), '/'));
     }, $ll);
 
-    $releasesLog = get('releases_log');
+    // Return releases from newest to oldest.
+    $releasesLog = array_reverse(get('releases_log'));
 
     $releases = [];
-    for ($i = count($releasesLog) - 1; $i >= 0; --$i) {
-        $release = $releasesLog[$i]['release_name'];
-        if (in_array($release, $ll, true)) {
-            $releases[] = $release;
+    foreach ($releasesLog as $release) {
+        if (in_array($release['release_name'], $ll, true)) {
+            $releases[] = $release['release_name'];
         }
     }
     return $releases;
@@ -75,13 +75,6 @@ set('release_revision', function () {
 set('release_or_current_path', function () {
     $releaseExists = test('[ -h {{deploy_path}}/release ]');
     return $releaseExists ? get('release_path') : get('current_path');
-});
-
-// Return the previous release path during a release.
-// If there is no release, will return false. Make sure to call deploy:release
-// task before accessing this config.
-set('previous_release', function () {
-    throw new Exception(parse('The "previous_release" available only after deploy:release task.'));
 });
 
 // Clean up unfinished releases and prepare next release
@@ -130,8 +123,8 @@ task('deploy:release', function () {
     ];
 
     // Save metainfo about release.
-    $json = json_encode($metainfo);
-    run("echo '$json' >> .dep/releases_log");
+    $json = escapeshellarg(json_encode($metainfo));
+    run("echo $json >> .dep/releases_log");
 
     // Make new release.
     run("mkdir -p $releasePath");

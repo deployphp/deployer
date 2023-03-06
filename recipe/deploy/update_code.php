@@ -43,7 +43,7 @@ set('target', function () {
 // Sets deploy:update_code strategy.
 // Can be one of:
 // - archive
-// - clone (if you need `.git` dir in your {{release_path}})
+// - clone (if you need the origin repository `.git` dir in your {{release_path}})
 set('update_code_strategy', 'archive');
 
 // Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
@@ -100,12 +100,14 @@ task('deploy:update_code', function () {
 
     run("$git remote update 2>&1", ['env' => $env]);
 
+
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
         run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
     } else if (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
+        run("$git remote set-url origin $repository", ['env' => $env]);
         run("$git checkout --force $target");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));

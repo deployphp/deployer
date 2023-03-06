@@ -46,7 +46,7 @@
         "justinrainbow/json-schema": "^5.2",
         "psr/http-message": "^1",
         "react/http": "^1.5",
-        "symfony/console": "^5",
+        "symfony/console": "^5.4.9",
         "symfony/polyfill-php80": "^1.22",
         "symfony/polyfill-php81": "^1.26",
         "symfony/process": "^5",

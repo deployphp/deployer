@@ -174,6 +174,7 @@ class Master
                 $worker = new Worker(Deployer::get());
                 $exitCode = $worker->execute($task, $host);
                 if ($exitCode !== 0) {
+                    $this->messenger->endTask($task, true);
                     return $exitCode;
                 }
             }
@@ -217,6 +218,10 @@ class Master
             $this->output->write("    \r"); // clear spinner
         }
         $this->gatherOutput($processes, $callback);
+
+        if ($this->cumulativeExitCode($processes) !== 0) {
+            $this->messenger->endTask($task, true);
+        }
 
         return $this->cumulativeExitCode($processes);
     }

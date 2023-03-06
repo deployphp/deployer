@@ -35,14 +35,13 @@ Configure Reverse DNS or RDNS on your server. This will allow you to ssh into
 server using the domain name instead of the IP address.
 :::
 
-Our **deploy.php** recipe contains host definition with few important params:
+Our **deploy.php** recipe contains a host definition with few important params:
 
 - `remote_user` user's name for ssh connection,
 - `deploy_path` host's path where we are going to deploy.
 
-Let's set `remote_user` to be `deployer`. Right now our new server probably has
-only `root` user. The provision recipe will create and configure `deployer` user
-for us.
+Let's set `remote_user` to be `deployer`. Right now our new server probably only has the `root` user. The provision recipe will 
+create and configure a `deployer` user for us.
 
 ```php
 host('example.org')
@@ -50,17 +49,17 @@ host('example.org')
     ->set('deploy_path', '~/example');
 ```
 
-To connect to remote host we need to specify identity key or private key.
-We can add our identity key directly into host definition, but better to put it
-in **~/.ssh/config** file:
+To connect to the remote host we need to specify an identity key or private key.
+We can add our identity key directly into the host definition, but it's better to put it
+in the **~/.ssh/config** file:
 
 ```
 Host *
   IdentityFile ~/.ssh/id_rsa
 ```
 
-Now let's provision our server. As our host doesn't have user `deployer`.
-We are going to override `remote_user` for provision via `-o remote_user=root`.
+Now let's provision our server. As our host doesn't have user `deployer`,
+we are going to override `remote_user` for provision via `-o remote_user=root`.
 
 ```sh
 dep provision -o remote_user=root
@@ -92,8 +91,8 @@ To deploy the project:
 dep deploy
 ```
 
-If deploy failed, Deployer will print error message and command what was unsuccessful.
-Most likely we need to configure correct database credentials in _.env_ file or similar.
+If deploy failed, Deployer will print an error message and which command was unsuccessful.
+Most likely we need to configure the correct database credentials in _.env_ file or similar.
 
 Ssh to the host, for example, for editing _.env_ file:
 
@@ -101,14 +100,22 @@ Ssh to the host, for example, for editing _.env_ file:
 dep ssh
 ```
 
+:::tip
+If your webserver is using OpenSSH version older than v7.6, updating the code may fail with the error
+message `unsupported option "accept-new".` In this case, override the Git SSH command with:
+```php
+set('git_ssh_command', 'ssh');
+```
+:::
+
 After everything is configured properly we can resume our deployment from the
-place it stopped (But this is not required, we can just start a new deploy):
+place it stopped. However, this is not required; we can just start a new deploy:
 
 ```
 dep deploy --start-from deploy:migrate
 ```
 
-After our first successful deployment, we can find next structure on our server:
+After our first successful deployment, we can find the following directory structure on our server:
 
 ```
 ~/example                      // The deploy_path.
@@ -133,7 +140,7 @@ location / {
 }
 ```
 
-If you're using provision recipe, Deployer will automatically configure Caddy
+If you're using provision recipe, Deployer will automatically configure the Caddy
 webserver to serve from the [public_path](/docs/recipe/provision/website.md#public_path).
 
 Now let's add a build step on our host:

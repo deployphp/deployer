@@ -50,7 +50,7 @@ set('static_content_locales_backend', '{{static_content_locales}}');
 
 // backend themes to deploy. Only used if split_static_deployment=true
 // This setting supports the same options/structure as {{magento_themes}}
-set('magento_themes_backend', ['Magento/backend']);
+set('magento_themes_backend', ['Magento/backend' => null]);
 
 // Configuration
 

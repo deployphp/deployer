@@ -225,8 +225,21 @@ This task is group task which contains next tasks:
 * [deploy:success](/docs/recipe/common.md#deploysuccess)
 
 
+### deploy
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L156)
+
+Deploys your project.
+
+
+
+
+This task is group task which contains next tasks:
+* [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [deploy:publish](/docs/recipe/common.md#deploypublish)
+
+
 ### deploy:success
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L158)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L165)
 
 
 
@@ -234,7 +247,7 @@ Prints success message
 
 
 ### deploy:failed
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L167)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L174)
 
 
 
@@ -242,7 +255,7 @@ Hook on deploy failure.
 
 
 ### logs:app
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L177)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L184)
 
 Shows application logs.
 

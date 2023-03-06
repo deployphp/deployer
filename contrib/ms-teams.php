@@ -9,7 +9,7 @@ Setup:
 2. Navigate to Teams section
 3. Select existing or create new team
 4. Select existing or create new channel
-5. Hover over channel to get tree dots, click, in menu select "Connectors"
+5. Hover over channel to get three dots, click, in menu select "Connectors"
 6. Search for and configure "Incoming Webhook"
 7. Confirm/create and copy your Webhook URL
 8. Setup deploy.php
@@ -92,6 +92,7 @@ set('teams_failure_color', '#ff0909');
 desc('Notifies Teams');
 task('teams:notify', function () {
     if (!get('teams_webhook', false)) {
+        warning('No MS Teams webhook configured');
         return;
     }
 
@@ -106,6 +107,7 @@ task('teams:notify', function () {
 desc('Notifies Teams about deploy finish');
 task('teams:notify:success', function () {
     if (!get('teams_webhook', false)) {
+        warning('No MS Teams webhook configured');
         return;
     }
 
@@ -120,6 +122,7 @@ task('teams:notify:success', function () {
 desc('Notifies Teams about deploy failure');
 task('teams:notify:failure', function () {
     if (!get('teams_webhook', false)) {
+        warning('No MS Teams webhook configured');
         return;
     }
 

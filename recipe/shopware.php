@@ -79,6 +79,10 @@ task('sw:plugin:refresh', function () {
     run('cd {{release_path}} && {{bin/console}} plugin:refresh');
 });
 
+task('sw:theme:refresh', function () {
+    run('cd {{release_path}} && {{bin/console}} theme:refresh');
+});
+
 function getPlugins(): array
 {
     $output = explode("\n", run('cd {{release_path}} && {{bin/console}} plugin:list'));
@@ -131,6 +135,7 @@ task('sw:writable:jwt', static function () {
 task('sw:deploy', [
     'sw:database:migrate',
     'sw:plugin:refresh',
+    'sw:theme:refresh',
     'sw:cache:clear',
     'sw:plugin:update:all',
     'sw:cache:clear',

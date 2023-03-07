@@ -60,7 +60,7 @@ set('writable_dirs', [
 
 // This task remotely executes the `cache:clear` console command on the target server.
 task('sw:cache:clear', static function () {
-    run('cd {{release_path}} && {{bin/console}} cache:clear');
+    run('cd {{release_path}} && {{bin/console}} cache:clear --no-warmup');
 });
 
 // This task remotely executes the cache warmup console commands on the target server, so that the first user, who

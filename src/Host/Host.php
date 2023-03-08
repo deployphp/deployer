@@ -277,9 +277,7 @@ class Host
     {
         $options = [];
         if ($this->has('ssh_arguments')) {
-            foreach ($this->getSshArguments() as $arg) {
-                $options = array_merge($options, explode(' ', $arg));
-            }
+            $options = array_merge($options, $this->getSshArguments());
         }
         if ($this->has('port')) {
             $options = array_merge($options, ['-p', $this->getPort()]);

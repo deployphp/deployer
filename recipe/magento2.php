@@ -88,22 +88,70 @@ set('magento_version', function () {
     return $matches[0] ?? '2.0';
 });
 
-set('maintenance_mode_status_active', function () {
-    // detect maintenance mode active
-    $maintenanceModeStatusOutput = run("{{bin/php}} {{bin/magento}} maintenance:status");
-    return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
+set('config_import_needed', function () {
+    // detect if app:config:import is needed
+    try {
+        run('{{bin/php}} {{bin/magento}} app:config:status');
+    } catch (RunException $e) {
+        if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
+            return true;
+        }
+
+        throw $e;
+    }
+    return false;
+});
+
+set('database_upgrade_needed', function () {
+    // detect if setup:upgrade is needed
+    try {
+        run('{{bin/php}} {{bin/magento}} setup:db:status');
+    } catch (RunException $e) {
+        if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
+            return true;
+        }
+
+        throw $e;
+    }
+    return false;
 });
 
 // Deploy without setting maintenance mode if possible
 set('enable_zerodowntime', true);
 
 // Tasks
+
+// To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
+// e.g.
+// ```php
+// 'MAGE_MODE' => 'production'
+// ```
 desc('Compiles magento di');
 task('magento:compile', function () {
     run("{{bin/php}} {{bin/magento}} setup:di:compile");
     run('cd {{release_or_current_path}}/{{magento_dir}} && {{bin/composer}} dump-autoload -o');
 });
 
+// To work correctly with artifact deployment it is necessary to set `system/dev/js` , `system/dev/css` and `system/dev/template`
+// in `app/etc/config.php`, e.g.:
+// ```php
+// 'system' => [
+//     'default' => [
+//         'dev' => [
+//             'js' => [
+//                 'merge_files' => '1',
+//                 'minify_files' => '1'
+//             ],
+//             'css' => [
+//                 'merge_files' => '1',
+//                 'minify_files' => '1'
+//             ],
+//             'template' => [
+//                 'minify_html' => '1'
+//             ]
+//         ]
+//     ]
+// ```
 desc('Deploys assets');
 task('magento:deploy:assets', function () {
 
@@ -139,65 +187,28 @@ task('magento:maintenance:disable', function () {
     run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento maintenance:disable; fi");
 });
 
+desc('Set maintenance mode if needed');
+task('magento:maintenance:enable-if-needed', function () {
+    ! get('enable_zerodowntime') || get('database_upgrade_needed') || get('config_import_needed') ?
+        invoke('magento:maintenance:enable') :
+        writeln('Config and database up to date => no maintenance mode');
+});
+
 desc('Config Import');
 task('magento:config:import', function () {
-    $configImportNeeded = false;
-
-    if(version_compare(get('magento_version'), '2.2.0', '<')) {
-        //app:config:import command does not exist in 2.0.x and 2.1.x branches
-        $configImportNeeded = false;
-    } elseif(version_compare(get('magento_version'), '2.2.4', '<')) {
-        //app:config:status command does not exist until 2.2.4, so proceed with config:import in every deploy
-        $configImportNeeded = true;
-    } else {
-        try {
-            run('{{bin/php}} {{bin/magento}} app:config:status');
-        } catch (RunException $e) {
-            if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
-                $configImportNeeded = true;
-            } else {
-                throw $e;
-            }
-        }
-    }
-
-    if ($configImportNeeded) {
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:enable');
-        }
-
+    if (get('config_import_needed')) {
         run('{{bin/php}} {{bin/magento}} app:config:import --no-interaction');
-
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:disable');
-        }
+    } else {
+        writeln('App config is up to date => import skipped');
     }
 });
 
 desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
-    $databaseUpgradeNeeded = false;
-
-    try {
-        run('{{bin/php}} {{bin/magento}} setup:db:status');
-    } catch (RunException $e) {
-        if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
-            $databaseUpgradeNeeded = true;
-        } else {
-            throw $e;
-        }
-    }
-
-    if ($databaseUpgradeNeeded) {
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:enable');
-        }
-
+    if (get('database_upgrade_needed')) {
         run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");
-
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:disable');
-        }
+    } else {
+        writeln('Database schema is up to date => upgrade skipped');
     }
 });
 
@@ -209,8 +220,10 @@ task('magento:cache:flush', function () {
 desc('Magento2 deployment operations');
 task('deploy:magento', [
     'magento:build',
+    'magento:maintenance:enable-if-needed',
     'magento:config:import',
     'magento:upgrade:db',
+    'magento:maintenance:disable',
     'magento:cache:flush',
 ]);
 
@@ -231,16 +244,25 @@ task('deploy', [
 
 after('deploy:failed', 'magento:maintenance:disable');
 
-// artifact deployment section
-// settings section
+// Artifact deployment section
+
+// The file the artifact is saved to
 set('artifact_file', 'artifact.tar.gz');
+
+// The directory the artifact is saved in
 set('artifact_dir', 'artifacts');
+
+// Points to a file with a list of files to exclude from packaging.
+// The format is as with the `tar --exclude-from=[file]` option
 set('artifact_excludes_file', 'artifacts/excludes');
+
 // If set to true, the artifact is built from a clean copy of the project repository instead of the current working directory
 set('build_from_repo', false);
+
 // Set this value if "build_from_repo" is set to true. The target to deploy must also be set with "--branch", "--tag" or "--revision"
 set('repository', null);
 
+// The relative path to the artifact file. If the directory does not exist, it will be created
 set('artifact_path', function () {
     if (!testLocally('[ -d {{artifact_dir}} ]')) {
         runLocally('mkdir -p {{artifact_dir}}');
@@ -248,6 +270,7 @@ set('artifact_path', function () {
     return get('artifact_dir') . '/' . get('artifact_file');
 });
 
+// The location of the tar command. On MacOS you should have installed gtar, as it supports the required settings
 set('bin/tar', function () {
     if (commandExist('gtar')) {
         return which('gtar');
@@ -257,6 +280,7 @@ set('bin/tar', function () {
 });
 
 // tasks section
+
 desc('Packages all relevant files in an artifact.');
 task('artifact:package', function() {
     if (!test('[ -f {{artifact_excludes_file}} ]')) {
@@ -309,17 +333,14 @@ task('build:prepare', function() {
 });
 
 desc('Builds an artifact.');
-task(
-    'artifact:build',
-    [
+task('artifact:build', [
         'build:prepare',
         'build:remove-generated',
         'deploy:vendors',
         'magento:compile',
         'magento:deploy:assets',
         'artifact:package',
-    ]
-);
+]);
 
 // Array of shared files that will be added to the default shared_files without overriding
 set('additional_shared_files', []);
@@ -335,9 +356,7 @@ task('deploy:additional-shared', function () {
 
 
 desc('Prepares an artifact on the target server');
-task(
-    'artifact:prepare',
-    [
+task('artifact:prepare', [
         'deploy:info',
         'deploy:setup',
         'deploy:lock',
@@ -347,30 +366,25 @@ task(
         'deploy:additional-shared',
         'deploy:shared',
         'deploy:writable',
-    ]
-);
+]);
 
 desc('Executes the tasks after artifact is released');
-task(
-    'artifact:finish',
-    [
+task('artifact:finish', [
         'magento:cache:flush',
         'cachetool:clear:opcache',
         'deploy:cleanup',
         'deploy:unlock',
-    ]
-);
+]);
 
 desc('Actually releases the artifact deployment');
-task(
-    'artifact:deploy',
-    [
+task('artifact:deploy', [
         'artifact:prepare',
-        'magento:upgrade:db',
+        'magento:maintenance:enable-if-needed',
         'magento:config:import',
+        'magento:upgrade:db',
+        'magento:maintenance:disable',
         'deploy:symlink',
-        'artifact:finish'
-    ]
-);
+        'artifact:finish',
+]);
 
 fail('artifact:deploy', 'deploy:failed');

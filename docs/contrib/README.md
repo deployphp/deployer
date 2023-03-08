@@ -31,5 +31,6 @@
 * [Telegram Recipe](/docs/contrib/telegram.md)
 * [Webpack_encore Recipe](/docs/contrib/webpack_encore.md)
 * [Workplace Recipe](/docs/contrib/workplace.md)
+* [Wp-cli Recipe](/docs/contrib/wp-cli.md)
 * [Yammer Recipe](/docs/contrib/yammer.md)
 * [Yarn Recipe](/docs/contrib/yarn.md)

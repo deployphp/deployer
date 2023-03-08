@@ -112,10 +112,32 @@ set('magento_version', function () {
     return $matches[0] ?? '2.0';
 });
 
-set('maintenance_mode_status_active', function () {
-    // detect maintenance mode active
-    $maintenanceModeStatusOutput = run("{{bin/php}} {{bin/magento}} maintenance:status");
-    return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
+set('config_import_needed', function () {
+    // detect if app:config:import is needed
+    try {
+        run('{{bin/php}} {{bin/magento}} app:config:status');
+    } catch (RunException $e) {
+        if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
+            return true;
+        }
+
+        throw $e;
+    }
+    return false;
+});
+
+set('database_upgrade_needed', function () {
+    // detect if setup:upgrade is needed
+    try {
+        run('{{bin/php}} {{bin/magento}} setup:db:status');
+    } catch (RunException $e) {
+        if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
+            return true;
+        }
+
+        throw $e;
+    }
+    return false;
 });
 
 // Deploy without setting maintenance mode if possible
@@ -243,65 +265,28 @@ task('magento:maintenance:disable', function () {
     run("if [ -d $(echo {{current_path}}) ]; then {{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento maintenance:disable; fi");
 });
 
+desc('Set maintenance mode if needed');
+task('magento:maintenance:enable-if-needed', function () {
+    ! get('enable_zerodowntime') || get('database_upgrade_needed') || get('config_import_needed') ?
+        invoke('magento:maintenance:enable') :
+        writeln('Config and database up to date => no maintenance mode');
+});
+
 desc('Config Import');
 task('magento:config:import', function () {
-    $configImportNeeded = false;
-
-    if(version_compare(get('magento_version'), '2.2.0', '<')) {
-        //app:config:import command does not exist in 2.0.x and 2.1.x branches
-        $configImportNeeded = false;
-    } elseif(version_compare(get('magento_version'), '2.2.4', '<')) {
-        //app:config:status command does not exist until 2.2.4, so proceed with config:import in every deploy
-        $configImportNeeded = true;
-    } else {
-        try {
-            run('{{bin/php}} {{bin/magento}} app:config:status');
-        } catch (RunException $e) {
-            if ($e->getExitCode() == CONFIG_IMPORT_NEEDED_EXIT_CODE) {
-                $configImportNeeded = true;
-            } else {
-                throw $e;
-            }
-        }
-    }
-
-    if ($configImportNeeded) {
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:enable');
-        }
-
+    if (get('config_import_needed')) {
         run('{{bin/php}} {{bin/magento}} app:config:import --no-interaction');
-
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:disable');
-        }
+    } else {
+        writeln('App config is up to date => import skipped');
     }
 });
 
 desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
-    $databaseUpgradeNeeded = false;
-
-    try {
-        run('{{bin/php}} {{bin/magento}} setup:db:status');
-    } catch (RunException $e) {
-        if ($e->getExitCode() == DB_UPDATE_NEEDED_EXIT_CODE) {
-            $databaseUpgradeNeeded = true;
-        } else {
-            throw $e;
-        }
-    }
-
-    if ($databaseUpgradeNeeded) {
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:enable');
-        }
-
+    if (get('database_upgrade_needed')) {
         run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");
-
-        if (get('enable_zerodowntime') && !get('maintenance_mode_status_active')) {
-            invoke('magento:maintenance:disable');
-        }
+    } else {
+        writeln('Database schema is up to date => upgrade skipped');
     }
 });
 
@@ -313,8 +298,10 @@ task('magento:cache:flush', function () {
 desc('Magento2 deployment operations');
 task('deploy:magento', [
     'magento:build',
+    'magento:maintenance:enable-if-needed',
     'magento:config:import',
     'magento:upgrade:db',
+    'magento:maintenance:disable',
     'magento:cache:flush',
 ]);
 
@@ -470,8 +457,10 @@ task('artifact:finish', [
 desc('Actually releases the artifact deployment');
 task('artifact:deploy', [
         'artifact:prepare',
-        'magento:upgrade:db',
+        'magento:maintenance:enable-if-needed',
         'magento:config:import',
+        'magento:upgrade:db',
+        'magento:maintenance:disable',
         'deploy:symlink',
         'artifact:finish',
 ]);

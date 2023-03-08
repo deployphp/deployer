@@ -60,7 +60,7 @@ set('writable_dirs', [
 
 // This task remotely executes the `cache:clear` console command on the target server.
 task('sw:cache:clear', static function () {
-    run('cd {{release_path}} && {{bin/console}} cache:clear');
+    run('cd {{release_path}} && {{bin/console}} cache:clear --no-warmup');
 });
 
 // This task remotely executes the cache warmup console commands on the target server, so that the first user, who
@@ -77,6 +77,10 @@ task('sw:database:migrate', static function () {
 
 task('sw:plugin:refresh', function () {
     run('cd {{release_path}} && {{bin/console}} plugin:refresh');
+});
+
+task('sw:theme:refresh', function () {
+    run('cd {{release_path}} && {{bin/console}} theme:refresh');
 });
 
 function getPlugins(): array
@@ -131,6 +135,7 @@ task('sw:writable:jwt', static function () {
 task('sw:deploy', [
     'sw:database:migrate',
     'sw:plugin:refresh',
+    'sw:theme:refresh',
     'sw:cache:clear',
     'sw:plugin:update:all',
     'sw:cache:clear',

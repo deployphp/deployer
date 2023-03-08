@@ -42,8 +42,10 @@ The [deploy](#deploy) task of **Magento 2** consists of:
   * [magento:build](/docs/recipe/magento2.md#magentobuild) – Magento2 build operations
     * [magento:compile](/docs/recipe/magento2.md#magentocompile) – Compiles magento di
     * [magento:deploy:assets](/docs/recipe/magento2.md#magentodeployassets) – Deploys assets
+  * [magento:maintenance:enable-if-needed](/docs/recipe/magento2.md#magentomaintenanceenable-if-needed) – Set maintenance mode if needed
   * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport) – Config Import
   * [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades magento database
+  * [magento:maintenance:disable](/docs/recipe/magento2.md#magentomaintenancedisable) – Disables maintenance mode
   * [magento:cache:flush](/docs/recipe/magento2.md#magentocacheflush) – Flushes Magento Cache
 * [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
@@ -97,8 +99,10 @@ The [artifact:build](#artifact:build) command of **Magento 2** consists of: * [b
   * [deploy:additional-shared](/docs/recipe/magento2.md#deployadditional-shared) – Adds additional files and dirs to the list of shared files and dirs
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
-* [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades magento database
+* [magento:maintenance:enable-if-needed](/docs/recipe/magento2.md#magentomaintenanceenable-if-needed) – Set maintenance mode if needed
 * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport) – Config Import
+* [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades magento database
+* [magento:maintenance:disable](/docs/recipe/magento2.md#magentomaintenancedisable) – Disables maintenance mode
 * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
 * [artifact:finish](/docs/recipe/magento2.md#artifactfinish) – Executes the tasks after artifact is released
   * [magento:cache:flush](/docs/recipe/magento2.md#magentocacheflush) – Flushes Magento Cache
@@ -123,21 +127,10 @@ in you deployer script.
 
 
 ### magento_themes
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L29)
 
 You can also set the themes to run against. By default it'll deploy
 all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
-If the themes are set as a simple list of strings, then all languages defined in [static_content_locales](/docs/recipe/magento2.md#static_content_locales) are
-compiled for the given themes.
-Alternatively The themes can be defined as an associative array, where the key represents the theme name and
-the key contains the languages for the compilation (for this specific theme)
-Example:
-set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from [static_content_locales](/docs/recipe/magento2.md#static_content_locales)
-set('magento_themes', [
-    'Magento/luma'   => null,                              - Will compile all languages from [static_content_locales](/docs/recipe/magento2.md#static_content_locales) for Magento/luma
-    'Custom/theme'   => 'en_US fr_FR'                      - Will compile only en_US and fr_FR for Custom/theme
-    'Custom/another' => '[static_content_locales](/docs/recipe/magento2.md#static_content_locales) it_IT' - Will compile all languages from [static_content_locales](/docs/recipe/magento2.md#static_content_locales) + it_IT for Custom/another
-]); - Will compile this theme with every language
 
 ```php title="Default value"
 [
@@ -146,46 +139,8 @@ set('magento_themes', [
 ```
 
 
-### static_deploy_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L45)
-
-Static content deployment options, e.g. '--no-parent'
-
-
-
-### split_static_deployment
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L48)
-
-Deploy frontend and adminhtml together as default
-
-```php title="Default value"
-false
-```
-
-
-### static_content_locales_backend
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L51)
-
-Use the default languages for the backend as default
-
-```php title="Default value"
-'{{static_content_locales}}'
-```
-
-
-### magento_themes_backend
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L55)
-
-backend themes to deploy. Only used if split_static_deployment=true
-This setting supports the same options/structure as [magento_themes](/docs/recipe/magento2.md#magento_themes)
-
-```php title="Default value"
-['Magento/backend' => null]
-```
-
-
 ### static_content_jobs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L61)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L37)
 
 Also set the number of conccurent jobs to run. The default is 1
 Update using: `set('static_content_jobs', '1');`
@@ -196,7 +151,7 @@ Update using: `set('static_content_jobs', '1');`
 
 
 ### content_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L63)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L39)
 
 
 
@@ -206,7 +161,7 @@ return time();
 
 
 ### magento_dir
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L68)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L44)
 
 Magento directory relative to repository root. Use "." (default) if it is not located in a subdirectory
 
@@ -216,7 +171,7 @@ Magento directory relative to repository root. Use "." (default) if it is not lo
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L47)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -231,7 +186,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L75)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L51)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -257,7 +212,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L90)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L66)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -275,7 +230,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L97)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L73)
 
 Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `recipe/deploy/clear_paths.php`.
 
@@ -294,7 +249,7 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 ### bin/magento
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L106)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L82)
 
 
 
@@ -304,7 +259,7 @@ Overrides [clear_paths](/docs/recipe/deploy/clear_paths.md#clear_paths) from `re
 
 
 ### magento_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L108)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L84)
 
 
 
@@ -316,20 +271,30 @@ return $matches[0] ?? '2.0';
 ```
 
 
-### maintenance_mode_status_active
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L115)
+### config_import_needed
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L91)
+
+
+:::info Autogenerated
+The value of this configuration is autogenerated on access.
+:::
 
 
 
-```php title="Default value"
-// detect maintenance mode active
-$maintenanceModeStatusOutput = run("{{bin/php}} {{bin/magento}} maintenance:status");
-return strpos($maintenanceModeStatusOutput, MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG) !== false;
-```
+
+### database_upgrade_needed
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L105)
+
+
+:::info Autogenerated
+The value of this configuration is autogenerated on access.
+:::
+
+
 
 
 ### enable_zerodowntime
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L122)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L120)
 
 Deploy without setting maintenance mode if possible
 
@@ -339,7 +304,7 @@ true
 
 
 ### artifact_file
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L341)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L250)
 
 The file the artifact is saved to
 
@@ -349,7 +314,7 @@ The file the artifact is saved to
 
 
 ### artifact_dir
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L344)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L253)
 
 The directory the artifact is saved in
 
@@ -359,7 +324,7 @@ The directory the artifact is saved in
 
 
 ### artifact_excludes_file
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L348)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L257)
 
 Points to a file with a list of files to exclude from packaging.
 The format is as with the `tar --exclude-from=[file]` option
@@ -370,7 +335,7 @@ The format is as with the `tar --exclude-from=[file]` option
 
 
 ### build_from_repo
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L351)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L260)
 
 If set to true, the artifact is built from a clean copy of the project repository instead of the current working directory
 
@@ -380,7 +345,7 @@ false
 
 
 ### repository
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L354)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L263)
 
 Overrides [repository](/docs/recipe/common.md#repository) from `recipe/common.php`.
 
@@ -392,7 +357,7 @@ null
 
 
 ### artifact_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L357)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L266)
 
 The relative path to the artifact file. If the directory does not exist, it will be created
 
@@ -405,7 +370,7 @@ return get('artifact_dir') . '/' . get('artifact_file');
 
 
 ### bin/tar
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L365)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L274)
 
 The location of the tar command. On MacOS you should have installed gtar, as it supports the required settings
 :::info Autogenerated
@@ -416,14 +381,14 @@ The value of this configuration is autogenerated on access.
 
 
 ### additional_shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L437)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L346)
 
 Array of shared files that will be added to the default shared_files without overriding
 
 
 
 ### additional_shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L439)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L348)
 
 Array of shared directories that will be added to the default shared_dirs without overriding
 
@@ -433,7 +398,7 @@ Array of shared directories that will be added to the default shared_dirs withou
 ## Tasks
 
 ### magento:compile
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L132)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L130)
 
 Compiles magento di.
 
@@ -445,7 +410,7 @@ e.g.
 
 
 ### magento:deploy:assets
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L158)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L156)
 
 Deploys assets.
 
@@ -471,24 +436,8 @@ in `app/etc/config.php`, e.g.:
 ```
 
 
-### magento:deploy:assets:adminhtml
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L172)
-
-Deploys assets for backend only.
-
-
-
-
-### magento:deploy:assets:frontend
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L177)
-
-Deploys assets for frontend only.
-
-
-
-
 ### magento:sync:content_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L225)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L169)
 
 Syncs content version.
 
@@ -496,7 +445,7 @@ Syncs content version.
 
 
 ### magento:maintenance:enable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L235)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L179)
 
 Enables maintenance mode.
 
@@ -504,15 +453,23 @@ Enables maintenance mode.
 
 
 ### magento:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L241)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L185)
 
 Disables maintenance mode.
 
 
 
 
+### magento:maintenance:enable-if-needed
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L191)
+
+Set maintenance mode if needed.
+
+
+
+
 ### magento:config:import
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L247)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L198)
 
 Config Import.
 
@@ -520,7 +477,7 @@ Config Import.
 
 
 ### magento:upgrade:db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L282)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L207)
 
 Upgrades magento database.
 
@@ -528,7 +485,7 @@ Upgrades magento database.
 
 
 ### magento:cache:flush
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L309)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L216)
 
 Flushes Magento Cache.
 
@@ -536,7 +493,7 @@ Flushes Magento Cache.
 
 
 ### deploy:magento
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L314)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L221)
 
 Magento2 deployment operations.
 
@@ -545,13 +502,15 @@ Magento2 deployment operations.
 
 This task is group task which contains next tasks:
 * [magento:build](/docs/recipe/magento2.md#magentobuild)
+* [magento:maintenance:enable-if-needed](/docs/recipe/magento2.md#magentomaintenanceenable-if-needed)
 * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport)
 * [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb)
+* [magento:maintenance:disable](/docs/recipe/magento2.md#magentomaintenancedisable)
 * [magento:cache:flush](/docs/recipe/magento2.md#magentocacheflush)
 
 
 ### magento:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L322)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L231)
 
 Magento2 build operations.
 
@@ -564,7 +523,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L328)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L237)
 
 Deploys your project.
 
@@ -580,7 +539,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:package
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L376)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L285)
 
 Packages all relevant files in an artifact.
 
@@ -588,7 +547,7 @@ Packages all relevant files in an artifact.
 
 
 ### artifact:upload
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L386)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L295)
 
 Uploads artifact in release folder for extraction.
 
@@ -596,7 +555,7 @@ Uploads artifact in release folder for extraction.
 
 
 ### artifact:extract
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L391)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L300)
 
 Extracts artifact in release path.
 
@@ -604,7 +563,7 @@ Extracts artifact in release path.
 
 
 ### build:remove-generated
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L397)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L306)
 
 Clears generated files prior to building.
 
@@ -612,7 +571,7 @@ Clears generated files prior to building.
 
 
 ### build:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L402)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L311)
 
 Prepare local artifact build.
 
@@ -620,7 +579,7 @@ Prepare local artifact build.
 
 
 ### artifact:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L427)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L336)
 
 Builds an artifact.
 
@@ -637,7 +596,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy:additional-shared
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L443)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L352)
 
 Adds additional files and dirs to the list of shared files and dirs.
 
@@ -645,7 +604,7 @@ Adds additional files and dirs to the list of shared files and dirs.
 
 
 ### artifact:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L450)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L359)
 
 Prepares an artifact on the target server.
 
@@ -665,7 +624,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:finish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L463)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L372)
 
 Executes the tasks after artifact is released.
 
@@ -680,7 +639,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L471)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L380)
 
 Actually releases the artifact deployment.
 
@@ -689,8 +648,10 @@ Actually releases the artifact deployment.
 
 This task is group task which contains next tasks:
 * [artifact:prepare](/docs/recipe/magento2.md#artifactprepare)
-* [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb)
+* [magento:maintenance:enable-if-needed](/docs/recipe/magento2.md#magentomaintenanceenable-if-needed)
 * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport)
+* [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb)
+* [magento:maintenance:disable](/docs/recipe/magento2.md#magentomaintenancedisable)
 * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink)
 * [artifact:finish](/docs/recipe/magento2.md#artifactfinish)
 

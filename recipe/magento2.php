@@ -145,6 +145,9 @@ set('database_upgrade_needed', function () {
 // Deploy without setting maintenance mode if possible
 set('enable_zerodowntime', true);
 
+//deploy with auto updating cache index_prefix
+set('use_redis_cache_id', false);
+
 // Tasks
 
 // To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
@@ -439,27 +442,30 @@ task('deploy:additional-shared', function () {
 /**
  * Update cache id_prefix on deploy so that you are compiling against a fresh cache
  * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
+ * use set('use_redis_cache_id') in your deployer script to enable
  **/
 desc('Update cache id_prefix');
 task('magento:set_cache_prefix', function () {
     //get current env config
-    $envConfigString = run('cat {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
-    $envConfig = eval('?>'.$envConfigString);
-    //set prefix to `alias_releasename_`
-    $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
+    if (get('use_redis_cache_id')) {
+        $envConfigString = run('cat {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+        $envConfig = eval('?>' . $envConfigString);
+        //set prefix to `alias_releasename_`
+        $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
 
-    //update id_prefix to include release name
-    $envConfig['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
-    $envConfig['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
-    //Generate configuration array as string
-    $envConfigStr = '<?php return ' . var_export($envConfig, true) . ';';
-    // Touch tmp config
-    run('[ -f {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH. ' ] || touch {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
-    run('echo $"' . $envConfigStr . '" > {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
-    //delete the symlink for env.php
-    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
-    //link the env to the tmp version
-    run('{{bin/symlink}} {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+        //update id_prefix to include release name
+        $envConfig['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
+        $envConfig['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
+        //Generate configuration array as string
+        $envConfigStr = '<?php return ' . var_export($envConfig, true) . ';';
+        // Touch tmp config
+        run('[ -f {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' ] || touch {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
+        run('echo $"' . $envConfigStr . '" > {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
+        //delete the symlink for env.php
+        run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
+        //link the env to the tmp version
+        run('{{bin/symlink}} {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+    }
 });
 after('deploy:shared', 'magento:set_cache_prefix');
 
@@ -468,11 +474,13 @@ after('deploy:shared', 'magento:set_cache_prefix');
  */
 desc('Cleanup cache id_prefix env files');
 task('magento:cleanup_cache_prefix', function () {
-    run('rm {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
-    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
-    run('mv {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
-    // Symlink shared dir to release dir
-    run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+    if (get('use_redis_cache_id')) {
+        run('rm {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+        run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
+        run('mv {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+        // Symlink shared dir to release dir
+        run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+    }
 });
 after('deploy:magento', 'magento:cleanup_cache_prefix');
 

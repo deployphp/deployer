@@ -108,6 +108,7 @@ task('deploy:update_code', function () {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
         run("$git remote set-url origin $repository", ['env' => $env]);
+        $target = get('branch', 'HEAD');
         run("$git checkout --force $target");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));

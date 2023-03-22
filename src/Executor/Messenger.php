@@ -77,7 +77,7 @@ class Messenger
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::endgroup::");
         } else if (getenv('GITLAB_CI')) {
-            $this->output->writeln("\e[0Ksection_end:{$taskTime}:{$this->startTime}\r\e[0K");
+            $this->output->writeln("\e[0Ksection_end:{$endTime}:{$this->startTime}\r\e[0K");
         } else if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
         }

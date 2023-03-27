@@ -4,7 +4,7 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 require_once __DIR__ . '/../contrib/cachetool.php';
 
-
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
@@ -26,9 +26,33 @@ set('static_content_locales', 'en_US');
 
 // You can also set the themes to run against. By default it'll deploy
 // all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
+// If the themes are set as a simple list of strings, then all languages defined in {{static_content_locales}} are
+// compiled for the given themes.
+// Alternatively The themes can be defined as an associative array, where the key represents the theme name and
+// the key contains the languages for the compilation (for this specific theme)
+// Example:
+// set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from {{static_content_locales}}
+// set('magento_themes', [
+//     'Magento/luma'   => null,                              - Will compile all languages from {{static_content_locales}} for Magento/luma
+//     'Custom/theme'   => 'en_US fr_FR'                      - Will compile only en_US and fr_FR for Custom/theme
+//     'Custom/another' => '{{static_content_locales}} it_IT' - Will compile all languages from {{static_content_locales}} + it_IT for Custom/another
+// ]); - Will compile this theme with every language
 set('magento_themes', [
 
 ]);
+
+// Static content deployment options, e.g. '--no-parent'
+set('static_deploy_options', '');
+
+// Deploy frontend and adminhtml together as default
+set('split_static_deployment', false);
+
+// Use the default languages for the backend as default
+set('static_content_locales_backend', '{{static_content_locales}}');
+
+// backend themes to deploy. Only used if split_static_deployment=true
+// This setting supports the same options/structure as {{magento_themes}}
+set('magento_themes_backend', ['Magento/backend' => null]);
 
 // Configuration
 
@@ -154,16 +178,70 @@ task('magento:compile', function () {
 // ```
 desc('Deploys assets');
 task('magento:deploy:assets', function () {
-
     $themesToCompile = '';
-    if (count(get('magento_themes')) > 0) {
+    if (get('split_static_deployment')) {
+        invoke('magento:deploy:assets:adminhtml');
+        invoke('magento:deploy:assets:frontend');
+    } elseif (count(get('magento_themes')) > 0 ) {
         foreach (get('magento_themes') as $theme) {
             $themesToCompile .= ' -t ' . $theme;
         }
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+    }
+});
+
+desc('Deploys assets for backend only');
+task('magento:deploy:assets:adminhtml', function () {
+    magentoDeployAssetsSplit('backend');
+});
+
+desc('Deploys assets for frontend only');
+task('magento:deploy:assets:frontend', function () {
+    magentoDeployAssetsSplit('frontend');
+});
+
+/**
+ * @phpstan-param 'frontend'|'backend' $area
+ *
+ * @throws ConfigurationException
+ */
+function magentoDeployAssetsSplit(string $area)
+{
+    if (!in_array($area, ['frontend', 'backend'], true)) {
+        throw new ConfigurationException("\$area must be either 'frontend' or 'backend', '$area' given");
     }
 
-    run("{{bin/php}} {{bin/magento}} setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
-});
+    $isFrontend = $area === 'frontend';
+    $suffix = $isFrontend
+        ? ''
+        : '_backend';
+
+    $themesConfig = get("magento_themes$suffix");
+    $defaultLanguages = get("static_content_locales$suffix");
+    $useDefaultLanguages = array_is_list($themesConfig);
+
+    /** @var list<string> $themes */
+    $themes = $useDefaultLanguages
+        ? array_values($themesConfig)
+        : array_keys($themesConfig);
+
+    $staticContentArea = $isFrontend
+        ? 'frontend'
+        : 'adminhtml';
+
+    if ($useDefaultLanguages) {
+        $themes = '-t '.implode(' -t ', $themes);
+
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $defaultLanguages $themes -j {{static_content_jobs}}");
+        return;
+    }
+
+    foreach ($themes as $theme) {
+        $languages = parse($themesConfig[$theme] ?? $defaultLanguages);
+
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $languages -t $theme -j {{static_content_jobs}}");
+    }
+}
 
 desc('Syncs content version');
 task('magento:sync:content_version', function () {

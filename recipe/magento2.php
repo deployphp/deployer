@@ -182,7 +182,7 @@ task('magento:deploy:assets', function () {
     if (get('split_static_deployment')) {
         invoke('magento:deploy:assets:adminhtml');
         invoke('magento:deploy:assets:frontend');
-    } else{
+    } else {
         if (count(get('magento_themes')) > 0 ) {
             foreach (get('magento_themes') as $theme) {
                 $themesToCompile .= ' -t ' . $theme;

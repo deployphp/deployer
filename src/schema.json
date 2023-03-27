@@ -70,7 +70,17 @@
                     ],
                     "properties": {
                       "src": {
-                        "type": "string"
+                        "oneOf": [
+                          {
+                          "type": "string"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        ]
                       },
                       "dest": {
                         "type": "string"

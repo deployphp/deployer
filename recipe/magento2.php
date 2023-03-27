@@ -182,9 +182,11 @@ task('magento:deploy:assets', function () {
     if (get('split_static_deployment')) {
         invoke('magento:deploy:assets:adminhtml');
         invoke('magento:deploy:assets:frontend');
-    } elseif (count(get('magento_themes')) > 0 ) {
-        foreach (get('magento_themes') as $theme) {
-            $themesToCompile .= ' -t ' . $theme;
+    } else {
+        if (count(get('magento_themes')) > 0 ) {
+            foreach (get('magento_themes') as $theme) {
+                $themesToCompile .= ' -t ' . $theme;
+            }
         }
         run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
     }

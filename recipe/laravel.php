@@ -233,6 +233,13 @@ task('artisan:octane:stop', artisan('octane:stop'));
 desc('Check the status of the octane server');
 task('artisan:octane:status', artisan('octane:status'));
 
+/*
+ * Nova.
+ */
+
+desc('Publish all of the Laravel Nova resources');
+task('artisan:nova:publish', artisan('nova:publish'));
+
 /**
  * Main deploy task.
  */

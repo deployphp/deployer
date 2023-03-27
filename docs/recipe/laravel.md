@@ -453,8 +453,16 @@ Check the status of the octane server.
 
 
 
+### artisan:nova:publish
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L241)
+
+Publish all of the Laravel Nova resources.
+
+
+
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L240)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L247)
 
 Deploys your project.
 

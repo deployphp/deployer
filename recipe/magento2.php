@@ -8,6 +8,7 @@ use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
+use Symfony\Component\VarExporter\VarExporter;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
@@ -448,19 +449,24 @@ desc('Update cache id_prefix');
 task('magento:set_cache_prefix', function () {
     //get current env config
     if (get('use_redis_cache_id')) {
-        $envConfigString = run('cat {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
-        $envConfig = eval('?>' . $envConfigString);
+        //download current env config
+        $tmpConfigFile = tempnam(sys_get_temp_dir(), 'deployer_config');
+        download('{{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH, $tmpConfigFile);
+        $envConfigArray = include($tmpConfigFile);
         //set prefix to `alias_releasename_`
         $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
 
         //update id_prefix to include release name
-        $envConfig['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
-        $envConfig['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
+        $envConfigArray['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
+        $envConfigArray['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
+
         //Generate configuration array as string
-        $envConfigStr = '<?php return ' . var_export($envConfig, true) . ';';
-        // Touch tmp config
-        run('[ -f {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' ] || touch {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
-        run('echo $"' . $envConfigStr . '" > {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
+        $envConfigStr = '<?php return ' . VarExporter::export($envConfigArray) . ';';
+        file_put_contents($tmpConfigFile, $envConfigStr);
+        //upload updated config to server
+        upload($tmpConfigFile, '{{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
+        //cleanup tmp file
+        unlink($tmpConfigFile);
         //delete the symlink for env.php
         run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
         //link the env to the tmp version

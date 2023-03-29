@@ -58,7 +58,8 @@
         "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^7.0",
-        "squizlabs/php_codesniffer": "^3.5"
+        "squizlabs/php_codesniffer": "^3.5",
+        "symfony/var-exporter": "^5.4"
     },
     "config": {
         "sort-packages": true,

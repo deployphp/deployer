@@ -697,7 +697,7 @@ After successful deployment, move the tmp_env.php file to env.php ready for next
 
 
 ### artifact:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L495)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L496)
 
 Prepares an artifact on the target server.
 
@@ -717,7 +717,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:finish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L508)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L509)
 
 Executes the tasks after artifact is released.
 
@@ -732,7 +732,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L516)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L517)
 
 Actually releases the artifact deployment.
 

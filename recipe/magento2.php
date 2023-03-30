@@ -8,10 +8,13 @@ use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
+use Symfony\Component\VarExporter\VarExporter;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 const MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG = 'maintenance mode is active';
+const ENV_CONFIG_FILE_PATH = 'app/etc/env.php';
+const TMP_ENV_CONFIG_FILE_PATH = 'app/etc/env_tmp.php';
 
 add('recipes', ['magento2']);
 
@@ -142,6 +145,9 @@ set('database_upgrade_needed', function () {
 
 // Deploy without setting maintenance mode if possible
 set('enable_zerodowntime', true);
+
+//deploy with auto updating cache index_prefix
+set('use_redis_cache_id', false);
 
 // Tasks
 
@@ -433,6 +439,57 @@ task('deploy:additional-shared', function () {
     add('shared_files', get('additional_shared_files'));
     add('shared_dirs', get('additional_shared_dirs'));
 });
+
+/**
+ * Update cache id_prefix on deploy so that you are compiling against a fresh cache
+ * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
+ * use set('use_redis_cache_id') in your deployer script to enable
+ **/
+desc('Update cache id_prefix');
+task('magento:set_cache_prefix', function () {
+    //download current env config
+    $tmpConfigFile = tempnam(sys_get_temp_dir(), 'deployer_config');
+    download('{{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH, $tmpConfigFile);
+    $envConfigArray = include($tmpConfigFile);
+    //set prefix to `alias_releasename_`
+    $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
+
+    //update id_prefix to include release name
+    $envConfigArray['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
+    $envConfigArray['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
+
+    //Generate configuration array as string
+    $envConfigStr = '<?php return ' . VarExporter::export($envConfigArray) . ';';
+    file_put_contents($tmpConfigFile, $envConfigStr);
+    //upload updated config to server
+    upload($tmpConfigFile, '{{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
+    //cleanup tmp file
+    unlink($tmpConfigFile);
+    //delete the symlink for env.php
+    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
+    //link the env to the tmp version
+    run('{{bin/symlink}} {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+});
+//get current env config
+if (get('use_redis_cache_id')) {
+    after('deploy:shared', 'magento:set_cache_prefix');
+}
+
+/**
+ * After successful deployment, move the tmp_env.php file to env.php ready for next deployment
+ */
+desc('Cleanup cache id_prefix env files');
+task('magento:cleanup_cache_prefix', function () {
+    run('rm {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
+    run('mv {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+    // Symlink shared dir to release dir
+    run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+});
+//get current env config
+if (get('use_redis_cache_id')) {
+    after('deploy:magento', 'magento:cleanup_cache_prefix');
+}
 
 
 desc('Prepares an artifact on the target server');

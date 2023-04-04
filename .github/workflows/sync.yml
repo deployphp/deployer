@@ -39,6 +39,13 @@ jobs:
           message: '[automatic] Update docs with bin/docgen'
 
       - name: Deploy docs
-        run: gh --repo antonmedv/deployer.org workflow run deploy-docs
+        run: |
+          curl --location --request POST 'https://api.github.com/repos/antonmedv/deployer.org/actions/workflows/deploy-docs/dispatches' \
+          --header "Authorization: Bearer ${MY_GITHUB_TOKEN}" \
+          --header 'Accept: application/vnd.github.v3+json' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "ref": "main"
+          }'
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}

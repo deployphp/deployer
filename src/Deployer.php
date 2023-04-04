@@ -213,14 +213,14 @@ class Deployer extends Container
         $this->getConsole()->add(new TreeCommand($this));
         $this->getConsole()->add(new SshCommand($this));
         $this->getConsole()->add(new RunCommand($this));
-        if (self::isPharArchive()) {
+//        if (self::isPharArchive()) {
             $selfUpdate = new PharUpdateCommand('self-update');
             $selfUpdate->setDescription('Updates deployer.phar to the latest version');
             $selfUpdate->setManifestUri('https://deployer.org/manifest.json');
             $selfUpdate->setRunningFile(DEPLOYER_BIN);
             $this->getConsole()->add($selfUpdate);
             $this->getConsole()->getHelperSet()->set(new PharUpdateHelper());
-        }
+//        }
     }
 
     /**

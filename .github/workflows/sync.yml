@@ -45,7 +45,7 @@ jobs:
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Content-Type: application/json' \
           --data-raw '{
-              "ref": "main"
+              "ref": "master"
           }'
         env:
           MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}

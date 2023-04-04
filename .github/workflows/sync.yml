@@ -37,10 +37,3 @@ jobs:
         with:
           add: 'docs'
           message: '[automatic] Update docs with bin/docgen'
-
-      - name: Deploy docs
-        run: gh --repo "$REPO" workflow run deploy-docs
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
-          REPO: ${{ secrets.DOCS_REPO }}
-

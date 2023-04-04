@@ -40,7 +40,7 @@ jobs:
 
       - name: Deploy docs
         run: |
-          curl --location --request POST 'https://api.github.com/repos/antonmedv/deployer.org/actions/workflows/deploy-docs/dispatches' \
+          curl --location --request POST 'https://api.github.com/repos/antonmedv/deployer.org/actions/workflows/deploy-docs.yml/dispatches' \
           --header "Authorization: Bearer ${MY_GITHUB_TOKEN}" \
           --header 'Accept: application/vnd.github.v3+json' \
           --header 'Content-Type: application/json' \

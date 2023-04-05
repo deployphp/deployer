@@ -22,6 +22,7 @@ jobs:
 
       - name: Upload phar
         run: |
+          export PATH=${PATH}:`go env GOPATH`/bin
           export RELEASE_ID=$(curl --fail-with-body -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \

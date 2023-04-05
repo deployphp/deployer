@@ -12,7 +12,7 @@ set('shared_dirs', ['runtime']);
 set('writable_dirs', ['runtime']);
 
 task('deploy:migrate', function () {
-    run('cd {{release_path}} && php yii migrate');
+    run('cd {{release_or_current_path}} && {{bin/php}} yii migrate');
 });
 
 /**

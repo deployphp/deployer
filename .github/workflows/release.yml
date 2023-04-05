@@ -17,23 +17,10 @@ jobs:
       - name: Build phar
         run: php -d phar.readonly=0 bin/build -v"$RELEASE_VERSION"
 
-      - name: Verify version
-        run: php deployer.phar -V
-
       - name: Upload phar
         run: gh release upload v"$RELEASE_VERSION" deployer.phar
         env:
           GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
-
-      - name: Calculate sha1
-        run: echo "SHA1=$(sha1sum deployer.phar | awk '{print $1;}')" >> $GITHUB_ENV
-
-      - name: Update manifest
-        uses: deployphp/action@v1
-        with:
-          private-key: ${{ secrets.PRIVATE_KEY }}
-          deployer-binary: bin/dep
-          dep: -f deploy.yaml release -o sha1=${{ env.SHA1 }} -o version=${{ env.RELEASE_VERSION }}
 
       - name: Add deployer.phar
         shell: bash

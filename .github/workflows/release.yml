@@ -22,7 +22,7 @@ jobs:
 
       - name: Upload phar
         run: |
-          local RELEASE_ID=$(curl --fail-with-body -L \
+          export RELEASE_ID=$(curl --fail-with-body -L \
             -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \

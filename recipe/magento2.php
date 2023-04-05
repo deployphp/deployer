@@ -374,7 +374,7 @@ task('artifact:package', function() {
             "No artifact excludes file provided, provide one at artifacts/excludes or change location"
         );
     }
-    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} {{release_or_current_path}}');
+    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} -C {{release_or_current_path}} .');
 });
 
 desc('Uploads artifact in release folder for extraction.');

@@ -20,7 +20,7 @@ jobs:
       - name: Upload phar
         run: gh release upload v"$RELEASE_VERSION" deployer.phar
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN_FOR_UPLOADING_RELEASES }}
 
       - name: Add deployer.phar
         shell: bash

@@ -124,7 +124,7 @@ task('deploy:release', function () {
 
     // Save metainfo about release.
     if (PHP_OS_FAMILY === "Windows") {
-        $json = addcslashes(json_encode($metainfo), '\\"');
+        $json = "'" . str_replace("'", '`', json_encode($metainfo)) . "'";
     } else {
         $json = escapeshellarg(json_encode($metainfo));
     }

@@ -123,7 +123,11 @@ task('deploy:release', function () {
     ];
 
     // Save metainfo about release.
-    $json = escapeshellarg(json_encode($metainfo));
+    if (PHP_OS_FAMILY === "Windows") {
+        $json = addcslashes(json_encode($metainfo), '\\"');
+    } else {
+        $json = escapeshellarg(json_encode($metainfo));
+    }
     run("echo $json >> .dep/releases_log");
 
     // Make new release.

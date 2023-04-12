@@ -11,9 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install fx
-        run: go install github.com/antonmedv/fx@latest
-
       - name: Get version
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
 
@@ -26,7 +23,7 @@ jobs:
           export RELEASE_ID=$(curl --fail-with-body -L \
             -H "Authorization: Bearer ${GITHUB_TOKEN}" \
             https://api.github.com/repos/deployphp/deployer/releases \
-            | fx ".find(x=> x.tag_name == 'v${RELEASE_VERSION}').id")
+            | npx fx ".find(x=> x.tag_name == 'v${RELEASE_VERSION}').id")
           curl --fail-with-body -L \
           -X POST \
           -H "Authorization: Bearer ${GITHUB_TOKEN}" \

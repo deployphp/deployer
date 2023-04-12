@@ -33,7 +33,7 @@ require 'recipe/deploy/vendors.php';
 
 
 ### bin/composer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L11)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/vendors.php#L9)
 
 Returns Composer binary path in found. Otherwise try to install latest
 composer version to `.dep/composer.phar`. To use specific composer version

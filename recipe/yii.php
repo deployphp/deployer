@@ -13,7 +13,7 @@ set('writable_dirs', ['runtime']);
 
 desc('Runs Yii2 migrations for your project');
 task('deploy:migrate', function () {
-    run('cd {{release_or_current_path}} && {{bin/php}} yii migrate');
+    run('cd {{release_or_current_path}} && {{bin/php}} yii migrate --interactive=0');
 });
 
 /**

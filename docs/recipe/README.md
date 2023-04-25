@@ -19,6 +19,7 @@
 * [Provision Recipe](/docs/recipe/provision.md)
 * [Shopware Recipe](/docs/recipe/shopware.md)
 * [Silverstripe Recipe](/docs/recipe/silverstripe.md)
+* [Spiral Recipe](/docs/recipe/spiral.md)
 * [Statamic Recipe](/docs/recipe/statamic.md)
 * [Sulu Recipe](/docs/recipe/sulu.md)
 * [Symfony Recipe](/docs/recipe/symfony.md)

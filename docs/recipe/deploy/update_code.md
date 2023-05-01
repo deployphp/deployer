@@ -47,8 +47,19 @@ Can be one of:
 ```
 
 
+### force_head
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L54)
+
+Forcing checkout to branch/head.
+Works only when [`update_code_strategy`](#update_code_strategy) is set to `clone`.
+
+```php title="Default value"
+false
+```
+
+
 ### git_ssh_command
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L53)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L60)
 
 Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
 If `StrictHostKeyChecking` flag is set to `accept-new` then ssh will
@@ -61,7 +72,7 @@ will not permit connections to hosts with changed host keys.
 
 
 ### sub_directory
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L72)
 
 Specifies a sub directory within the repository to deploy.
 Works only when [`update_code_strategy`](#update_code_strategy) is set to `archive` (default).
@@ -81,7 +92,7 @@ false
 ## Tasks
 
 ### deploy:update_code
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L78)
 
 Updates code.
 

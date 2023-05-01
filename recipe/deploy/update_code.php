@@ -46,6 +46,13 @@ set('target', function () {
 // - clone (if you need the origin repository `.git` dir in your {{release_path}})
 set('update_code_strategy', 'archive');
 
+/**
+ * Forcing checkout to branch/head.
+ * Works only when [`update_code_strategy`](#update_code_strategy) is set to `clone`.
+ *
+ */
+set('force_head', false);
+
 // Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
 // If `StrictHostKeyChecking` flag is set to `accept-new` then ssh will
 // automatically add new host keys to the user known hosts files, but
@@ -108,7 +115,11 @@ task('deploy:update_code', function () {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
         run("$git remote set-url origin $repository", ['env' => $env]);
-        $target = get('branch', 'HEAD');
+
+        if (get('force_head', false)) {
+            $target = get('branch', 'HEAD');
+        }
+
         run("$git checkout --force $target");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));

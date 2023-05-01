@@ -171,6 +171,10 @@ class MainCommand extends SelectCommand
 
     private function showBanner()
     {
+        if (getenv('DO_NOT_SHOW_BANNER') === 'true') {
+            return;
+        }
+
         try {
             $withColors = '';
             if (function_exists('posix_isatty') && posix_isatty(STDOUT)) {

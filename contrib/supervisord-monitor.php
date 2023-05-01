@@ -66,11 +66,11 @@ set('supervisord', [
 
 host('staging.myproject.com')
     ->set('branch', 'develop')
-    ->set('labels' => ['stage' => 'staging']);
+    ->set('labels', ['stage' => 'staging']);
 
 host('myproject.com')
     ->set('branch', 'main')
-    ->set('labels' => ['stage' => 'production']);
+    ->set('labels', ['stage' => 'production']);
 
 // Tasks
 task('build', function () {
@@ -80,7 +80,7 @@ task('build', function () {
 task('deploy', [
     'build',
     'supervisord',
-])
+]);
 
 task('supervisord', ['supervisord-monitor:restart'])
     ->select('stage=production');

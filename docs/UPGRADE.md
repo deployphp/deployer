@@ -23,6 +23,17 @@
       task(...)
           ->select('stage=prod');
       ```
+   2. Don't use string-based task definition, it's not available anymore. Don't forget to set correct working directory.
+      ```php
+      # from
+      task('deploy:npm-install', 'npm clean-install');
+      
+      # to
+      task('deploy:npm-install', function() {
+          cd('{{release_path}}');
+          run('npm clean-install');
+      });
+      ```
 6. Third party recipes now live inside main Deployer repo in _contrib_:
    ```php
    require 'contrib/rsync.php';
@@ -72,6 +83,10 @@
 16. Configuration property `writable_recursive` defaults to `false`. This behaviour can be overridden with:
    ```php
    set('writable_recursive', true);
+   ```
+17. `.git` directory is not present in release directory anymore. The previous behavior can be restored with:
+   ```php
+   set('update_code_strategy', 'clone');
    ```
 
 ### Step 2: Deploy

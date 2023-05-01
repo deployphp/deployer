@@ -105,22 +105,32 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ```
 
 
-### migrations_config
+### log_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
 
 
 
+```php title="Default value"
+'var/log/*.log'
+```
 
 
-### doctrine_schema_validate_config
+### migrations_config
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L31)
 
 
 
 
 
-### bin/console
+### doctrine_schema_validate_config
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L33)
+
+
+
+
+
+### bin/console
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
 
 
 
@@ -130,7 +140,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L37)
 
 
 
@@ -143,7 +153,7 @@ return '--no-interaction';
 ## Tasks
 
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L42)
 
 Migrates database.
 
@@ -151,7 +161,7 @@ Migrates database.
 
 
 ### doctrine:schema:validate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L52)
 
 Validate the Doctrine mapping files.
 
@@ -159,7 +169,7 @@ Validate the Doctrine mapping files.
 
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L57)
 
 Clears cache.
 
@@ -167,7 +177,7 @@ Clears cache.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L66)
 
 Deploys project.
 

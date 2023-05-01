@@ -37,6 +37,7 @@ The [deploy](#deploy) task of **Yii2** consists of:
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
+* [deploy:migrate](/docs/recipe/yii.md#deploymigrate) – Runs Yii2 migrations for your project
 * [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
@@ -74,8 +75,16 @@ Yii writable dirs
 
 ## Tasks
 
+### deploy:migrate
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L15)
+
+Runs Yii2 migrations for your project.
+
+
+
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L18)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L23)
 
 Deploys your project.
 
@@ -85,6 +94,7 @@ Main task
 This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare)
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
+* [deploy:migrate](/docs/recipe/yii.md#deploymigrate)
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

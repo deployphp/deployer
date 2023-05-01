@@ -4,14 +4,17 @@ namespace Deployer;
 require_once __DIR__ . '/common.php';
 require_once __DIR__ . '/../contrib/cachetool.php';
 
-
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
+use Symfony\Component\VarExporter\VarExporter;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 const MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG = 'maintenance mode is active';
+const ENV_CONFIG_FILE_PATH = 'app/etc/env.php';
+const TMP_ENV_CONFIG_FILE_PATH = 'app/etc/env_tmp.php';
 
 add('recipes', ['magento2']);
 
@@ -26,9 +29,33 @@ set('static_content_locales', 'en_US');
 
 // You can also set the themes to run against. By default it'll deploy
 // all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
+// If the themes are set as a simple list of strings, then all languages defined in {{static_content_locales}} are
+// compiled for the given themes.
+// Alternatively The themes can be defined as an associative array, where the key represents the theme name and
+// the key contains the languages for the compilation (for this specific theme)
+// Example:
+// set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from {{static_content_locales}}
+// set('magento_themes', [
+//     'Magento/luma'   => null,                              - Will compile all languages from {{static_content_locales}} for Magento/luma
+//     'Custom/theme'   => 'en_US fr_FR'                      - Will compile only en_US and fr_FR for Custom/theme
+//     'Custom/another' => '{{static_content_locales}} it_IT' - Will compile all languages from {{static_content_locales}} + it_IT for Custom/another
+// ]); - Will compile this theme with every language
 set('magento_themes', [
 
 ]);
+
+// Static content deployment options, e.g. '--no-parent'
+set('static_deploy_options', '');
+
+// Deploy frontend and adminhtml together as default
+set('split_static_deployment', false);
+
+// Use the default languages for the backend as default
+set('static_content_locales_backend', '{{static_content_locales}}');
+
+// backend themes to deploy. Only used if split_static_deployment=true
+// This setting supports the same options/structure as {{magento_themes}}
+set('magento_themes_backend', ['Magento/backend' => null]);
 
 // Configuration
 
@@ -119,6 +146,9 @@ set('database_upgrade_needed', function () {
 // Deploy without setting maintenance mode if possible
 set('enable_zerodowntime', true);
 
+//deploy with auto updating cache index_prefix
+set('use_redis_cache_id', false);
+
 // Tasks
 
 // To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
@@ -154,16 +184,72 @@ task('magento:compile', function () {
 // ```
 desc('Deploys assets');
 task('magento:deploy:assets', function () {
-
     $themesToCompile = '';
-    if (count(get('magento_themes')) > 0) {
-        foreach (get('magento_themes') as $theme) {
-            $themesToCompile .= ' -t ' . $theme;
+    if (get('split_static_deployment')) {
+        invoke('magento:deploy:assets:adminhtml');
+        invoke('magento:deploy:assets:frontend');
+    } else {
+        if (count(get('magento_themes')) > 0 ) {
+            foreach (get('magento_themes') as $theme) {
+                $themesToCompile .= ' -t ' . $theme;
+            }
         }
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+    }
+});
+
+desc('Deploys assets for backend only');
+task('magento:deploy:assets:adminhtml', function () {
+    magentoDeployAssetsSplit('backend');
+});
+
+desc('Deploys assets for frontend only');
+task('magento:deploy:assets:frontend', function () {
+    magentoDeployAssetsSplit('frontend');
+});
+
+/**
+ * @phpstan-param 'frontend'|'backend' $area
+ *
+ * @throws ConfigurationException
+ */
+function magentoDeployAssetsSplit(string $area)
+{
+    if (!in_array($area, ['frontend', 'backend'], true)) {
+        throw new ConfigurationException("\$area must be either 'frontend' or 'backend', '$area' given");
     }
 
-    run("{{bin/php}} {{bin/magento}} setup:static-content:deploy --content-version={{content_version}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
-});
+    $isFrontend = $area === 'frontend';
+    $suffix = $isFrontend
+        ? ''
+        : '_backend';
+
+    $themesConfig = get("magento_themes$suffix");
+    $defaultLanguages = get("static_content_locales$suffix");
+    $useDefaultLanguages = array_is_list($themesConfig);
+
+    /** @var list<string> $themes */
+    $themes = $useDefaultLanguages
+        ? array_values($themesConfig)
+        : array_keys($themesConfig);
+
+    $staticContentArea = $isFrontend
+        ? 'frontend'
+        : 'adminhtml';
+
+    if ($useDefaultLanguages) {
+        $themes = '-t '.implode(' -t ', $themes);
+
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $defaultLanguages $themes -j {{static_content_jobs}}");
+        return;
+    }
+
+    foreach ($themes as $theme) {
+        $languages = parse($themesConfig[$theme] ?? $defaultLanguages);
+
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $languages -t $theme -j {{static_content_jobs}}");
+    }
+}
 
 desc('Syncs content version');
 task('magento:sync:content_version', function () {
@@ -288,7 +374,7 @@ task('artifact:package', function() {
             "No artifact excludes file provided, provide one at artifacts/excludes or change location"
         );
     }
-    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} {{release_or_current_path}}');
+    run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} -C {{release_or_current_path}} .');
 });
 
 desc('Uploads artifact in release folder for extraction.');
@@ -353,6 +439,57 @@ task('deploy:additional-shared', function () {
     add('shared_files', get('additional_shared_files'));
     add('shared_dirs', get('additional_shared_dirs'));
 });
+
+/**
+ * Update cache id_prefix on deploy so that you are compiling against a fresh cache
+ * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
+ * use set('use_redis_cache_id') in your deployer script to enable
+ **/
+desc('Update cache id_prefix');
+task('magento:set_cache_prefix', function () {
+    //download current env config
+    $tmpConfigFile = tempnam(sys_get_temp_dir(), 'deployer_config');
+    download('{{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH, $tmpConfigFile);
+    $envConfigArray = include($tmpConfigFile);
+    //set prefix to `alias_releasename_`
+    $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
+
+    //update id_prefix to include release name
+    $envConfigArray['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
+    $envConfigArray['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
+
+    //Generate configuration array as string
+    $envConfigStr = '<?php return ' . VarExporter::export($envConfigArray) . ';';
+    file_put_contents($tmpConfigFile, $envConfigStr);
+    //upload updated config to server
+    upload($tmpConfigFile, '{{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
+    //cleanup tmp file
+    unlink($tmpConfigFile);
+    //delete the symlink for env.php
+    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
+    //link the env to the tmp version
+    run('{{bin/symlink}} {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+});
+//get current env config
+if (get('use_redis_cache_id')) {
+    after('deploy:shared', 'magento:set_cache_prefix');
+}
+
+/**
+ * After successful deployment, move the tmp_env.php file to env.php ready for next deployment
+ */
+desc('Cleanup cache id_prefix env files');
+task('magento:cleanup_cache_prefix', function () {
+    run('rm {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
+    run('mv {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+    // Symlink shared dir to release dir
+    run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+});
+//get current env config
+if (get('use_redis_cache_id')) {
+    after('deploy:magento', 'magento:cleanup_cache_prefix');
+}
 
 
 desc('Prepares an artifact on the target server');

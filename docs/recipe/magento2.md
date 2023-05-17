@@ -732,7 +732,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L517)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L518)
 
 Actually releases the artifact deployment.
 

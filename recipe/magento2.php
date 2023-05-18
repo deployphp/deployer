@@ -511,6 +511,7 @@ task('artifact:finish', [
         'cachetool:clear:opcache',
         'deploy:cleanup',
         'deploy:unlock',
+        'deploy:success'
 ]);
 
 desc('Actually releases the artifact deployment');

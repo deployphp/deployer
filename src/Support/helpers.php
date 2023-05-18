@@ -252,3 +252,26 @@ function colorize_host(string $alias): string
     $tag = $colors[abs(crc32($alias)) % count($colors)];
     return "<$tag>$alias</>";
 }
+
+/**
+ * This is a copy of Symfony\Component\Process\Process::escapeArgument,
+ * except you can override the directory separator.
+ */
+function escape_shell_argument(?string $argument, string $ds = \DIRECTORY_SEPARATOR): string
+{
+    if ('' === $argument || null === $argument) {
+        return '""';
+    }
+    if ('\\' !== $ds) {
+        return "'".str_replace("'", "'\\''", $argument)."'";
+    }
+    if (str_contains($argument, "\0")) {
+        $argument = str_replace("\0", '?', $argument);
+    }
+    if (!preg_match('/[\/()%!^"<>&|\s]/', $argument)) {
+        return $argument;
+    }
+    $argument = preg_replace('/(\\\\+)$/', '$1$1', $argument);
+
+    return '"'.str_replace(['"', '^', '%', '!', "\n"], ['""', '"^^"', '"^%"', '"^!"', '!LF!'], $argument).'"';
+}

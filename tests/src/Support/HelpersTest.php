@@ -59,4 +59,10 @@ class HelpersTest extends TestCase
         $this->assertStringStartsWith('~', parse_home_dir('~path'));
         $this->assertStringEndsWith('~', parse_home_dir('path~'));
     }
+
+    public function testEscapeShellArgument()
+    {
+        $this->assertEquals('foobar', escape_shell_argument('foobar'));
+        $this->assertEquals('\'{"foobar": "Lorem ipsum\\\'s dolor"}\'', escape_shell_argument('{"foobar": "Lorem ipsum\'s dolor"}'));
+    }
 }

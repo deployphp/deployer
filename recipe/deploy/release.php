@@ -124,7 +124,7 @@ task('deploy:release', function () {
     ];
 
     // Save metainfo about release.
-    $json = escape_shell_argument(json_encode($metainfo), run('{{bin/php}} -r "echo \DIRECTORY_SEPARATOR;"'));
+    $json = escape_shell_argument(json_encode($metainfo));
     run("echo $json >> .dep/releases_log");
 
     // Make new release.

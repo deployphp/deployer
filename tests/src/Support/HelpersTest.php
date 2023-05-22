@@ -63,6 +63,6 @@ class HelpersTest extends TestCase
     public function testEscapeShellArgument()
     {
         $this->assertEquals('foobar', escape_shell_argument('foobar'));
-        $this->assertEquals('\'{"foobar": "Lorem ipsum\\\'s dolor"}\'', escape_shell_argument('{"foobar": "Lorem ipsum\'s dolor"}'));
+        $this->assertEquals('\'{"foobar":"Lorem ipsum\\\'s dolor"}\'', escape_shell_argument(json_encode(['foobar' => 'Lorem ipsum\'s dolor'])));
     }
 }

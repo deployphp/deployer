@@ -255,13 +255,5 @@ function colorize_host(string $alias): string
 
 function escape_shell_argument(string $argument): string
 {
-    if ('' === $argument || preg_match('~^[a-z0-9/_.\-@:=]+$~i', $argument)) {
-        return $argument;
-    }
-
-    return "'".str_replace(
-        ['\\', "'", "\f", "\n", "\r", "\t", "\v", "\0"],
-        ['\\\\', "\\'", '\\f', '\\n', '\\r', '\\t', '\\v', '\\0'],
-        $argument,
-    )."'";
+    return "'".str_replace("'", "'\\''", $argument)."'";
 }

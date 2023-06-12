@@ -4,8 +4,8 @@ namespace Deployer;
 use Deployer\Exception\Exception;
 
 /*
- * Rollback candidate automatically will be automatically chosen by
- * looking at output of `ls` command and content of `.dep/releases_log`.
+ * Rollback candidate will be automatically chosen by looking
+ * at output of `ls` command and content of `.dep/releases_log`.
  *
  * If rollback candidate marked as **BAD_RELEASE**, it will be skipped.
  *

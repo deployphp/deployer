@@ -2,7 +2,7 @@
 namespace Deployer;
 
 set('php_version', function () {
-    return ask(' What PHP version to install? ', '8.1', ['5.6', '7.4', '8.0', '8.1']);
+    return ask(' What PHP version to install? ', '8.2', ['5.6', '7.4', '8.0', '8.1', '8.2']);
 });
 
 desc('Installs PHP packages');

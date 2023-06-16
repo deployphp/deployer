@@ -67,8 +67,20 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 ```
 
 
-### writable_dirs
+### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L16)
+
+Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
+
+
+
+```php title="Default value"
+['.env']
+```
+
+
+### writable_dirs
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L18)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -84,35 +96,11 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ```
 
 
-### writable_mode
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L23)
-
-Overrides [writable_mode](/docs/recipe/deploy/writable.md#writable_mode) from `recipe/deploy/writable.php`.
-
-
-
-```php title="Default value"
-'chmod'
-```
-
-
-### writable_recursive
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L24)
-
-Overrides [writable_recursive](/docs/recipe/deploy/writable.md#writable_recursive) from `recipe/deploy/writable.php`.
-
-
-
-```php title="Default value"
-true
-```
-
-
 
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L64)
 
 deploy.
 

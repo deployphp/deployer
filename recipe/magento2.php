@@ -440,7 +440,7 @@ task('deploy:additional-shared', function () {
 /**
  * Update cache id_prefix on deploy so that you are compiling against a fresh cache
  * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
- * use add the following to your deployer scripts:
+ * To use this feature, add the following to your deployer scripts:
  * ```php
  * after('deploy:shared', 'magento:set_cache_prefix');
  * after('deploy:magento', 'magento:cleanup_cache_prefix');
@@ -461,7 +461,7 @@ task('magento:set_cache_prefix', function () {
         $preloadKeys = $envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'];
         $newPreloadKeys = [];
         foreach ($preloadKeys as $preloadKey) {
-            $newPreloadKeys[] = str_replace($oldPrefix, $prefixUpdate, $preloadKey);
+            $newPreloadKeys[] = preg_replace('/^' . $oldPrefix . '/', $prefixUpdate, $preloadKey);
         }
         $envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'] = $newPreloadKeys;
     }

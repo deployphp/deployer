@@ -146,9 +146,6 @@ set('database_upgrade_needed', function () {
 // Deploy without setting maintenance mode if possible
 set('enable_zerodowntime', true);
 
-//deploy with auto updating cache index_prefix
-set('use_redis_cache_id', false);
-
 // Tasks
 
 // To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
@@ -443,7 +440,11 @@ task('deploy:additional-shared', function () {
 /**
  * Update cache id_prefix on deploy so that you are compiling against a fresh cache
  * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
- * use set('use_redis_cache_id') in your deployer script to enable
+ * To use this feature, add the following to your deployer scripts:
+ * ```php
+ * after('deploy:shared', 'magento:set_cache_prefix');
+ * after('deploy:magento', 'magento:cleanup_cache_prefix');
+ * ```
  **/
 desc('Update cache id_prefix');
 task('magento:set_cache_prefix', function () {
@@ -453,6 +454,17 @@ task('magento:set_cache_prefix', function () {
     $envConfigArray = include($tmpConfigFile);
     //set prefix to `alias_releasename_`
     $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
+
+    //check for preload keys and update
+    if (isset($envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'])) {
+        $oldPrefix = $envConfigArray['cache']['frontend']['default']['id_prefix'];
+        $preloadKeys = $envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'];
+        $newPreloadKeys = [];
+        foreach ($preloadKeys as $preloadKey) {
+            $newPreloadKeys[] = preg_replace('/^' . $oldPrefix . '/', $prefixUpdate, $preloadKey);
+        }
+        $envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'] = $newPreloadKeys;
+    }
 
     //update id_prefix to include release name
     $envConfigArray['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
@@ -470,10 +482,6 @@ task('magento:set_cache_prefix', function () {
     //link the env to the tmp version
     run('{{bin/symlink}} {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
 });
-//get current env config
-if (get('use_redis_cache_id')) {
-    after('deploy:shared', 'magento:set_cache_prefix');
-}
 
 /**
  * After successful deployment, move the tmp_env.php file to env.php ready for next deployment
@@ -486,10 +494,6 @@ task('magento:cleanup_cache_prefix', function () {
     // Symlink shared dir to release dir
     run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
 });
-//get current env config
-if (get('use_redis_cache_id')) {
-    after('deploy:magento', 'magento:cleanup_cache_prefix');
-}
 
 
 desc('Prepares an artifact on the target server');

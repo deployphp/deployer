@@ -3,12 +3,12 @@ namespace Deployer;
 
 require_once __DIR__ . '/common.php';
 
-add('recipes', ['typo3']);
+add('recipes', ['typo3-12']);
 
 /**
  * DocumentRoot / WebRoot for the TYPO3 installation
  */
-set('typo3_webroot', 'Web');
+set('typo3_webroot', 'public');
 
 /**
  * Main TYPO3 task
@@ -25,8 +25,7 @@ task('deploy', [
  */
 set('shared_dirs', [
     '{{typo3_webroot}}/fileadmin',
-    '{{typo3_webroot}}/typo3temp',
-    '{{typo3_webroot}}/uploads'
+    '{{typo3_webroot}}/typo3temp'
 ]);
 
 /**
@@ -40,8 +39,7 @@ set('shared_files', [
  * Writeable directories
  */
 set('writable_dirs', [
+    '{{typo3_webroot}}/_assets',
     '{{typo3_webroot}}/fileadmin',
-    '{{typo3_webroot}}/typo3temp',
-    '{{typo3_webroot}}/typo3conf',
-    '{{typo3_webroot}}/uploads'
+    '{{typo3_webroot}}/typo3temp'
 ]);

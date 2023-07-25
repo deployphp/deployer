@@ -237,14 +237,14 @@ function magentoDeployAssetsSplit(string $area)
     if ($useDefaultLanguages) {
         $themes = '-t '.implode(' -t ', $themes);
 
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $defaultLanguages $themes -j {{static_content_jobs}}");
+        run("{{bin/php}} {{bin/magento}} setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $defaultLanguages $themes -j {{static_content_jobs}}");
         return;
     }
 
     foreach ($themes as $theme) {
         $languages = parse($themesConfig[$theme] ?? $defaultLanguages);
 
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $languages -t $theme -j {{static_content_jobs}}");
+        run("{{bin/php}} {{bin/magento}} setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $languages -t $theme -j {{static_content_jobs}}");
     }
 }
 

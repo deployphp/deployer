@@ -8,7 +8,7 @@ For example, `stage: production` or `role: web`.
 You can use labels to select hosts. For example, `dep deploy stage=production` 
 will deploy to all hosts with `stage: production` label.
 
-Let's define two labels **type** and **env** of our hosts:
+Let's define two labels, **type** and **env**, to our hosts:
 
 ```php
 host('web.example.com')
@@ -32,7 +32,7 @@ task('info', function () {
 });
 ```
 
-Now we can run this task on with a selector:
+Now we can run this task with a selector:
 
 ```bash
 $ dep info env=prod
@@ -41,8 +41,8 @@ task info
 [db.example.com] type:db env:prod
 ```
 
-As you can see, Deployer will run this task on all hosts with `env: prod` label.
-And if we define only `type` label, Deployer will run this task on specified host.
+As you can see, Deployer will run this task on all hosts with the `env: prod` label.
+And if we define only the `type` label, Deployer will run this task on the specified host.
 
 ```bash
 dep info type=web
@@ -64,7 +64,7 @@ task info
 [db.example.com] type:db env:prod
 ```
 
-As you can see both hosts are selected (as both of them has `env: prod` label).
+As you can see, both hosts are selected (as both of them have the `env: prod` label).
 
 We can use `&` to define **AND**. For example, `type=web & env=prod` is a selector
 for hosts with `type: web` **AND** `env: prod` labels.
@@ -76,7 +76,7 @@ task info
 ```
 
 We can also use `!=` to negate a label. For example, `type!=web` is a selector for
-all hosts what has not `type: web` label.
+all hosts which do not have a `type: web` label.
 
 ```bash
 $ dep info 'type!=web'
@@ -86,7 +86,7 @@ task info
 
 :::note 
 Deployer CLI can take a few selectors as arguments. For example, 
-`dep info type=web env=prod` is a same as `dep info 'type=web,env=prod'`.
+`dep info type=web env=prod` is the same as `dep info 'type=web,env=prod'`.
 
 You can install bash autocompletion for Deployer CLI, which will help you to
 write selectors. See [installation](installation.md) for more.
@@ -97,9 +97,9 @@ Deployer also has a few special selectors:
 - `all` - select all hosts
 - `alias=...` - select host by alias
 
-If a selector does not contain `=` sign, Deployer will assume that it is an alias.
+If a selector does not contain an `=` sign, Deployer will assume that it is an alias.
 
-For example `dep info web.example.com` is a same as `dep info alias=web.example.com`.
+For example `dep info web.example.com` is the same as `dep info alias=web.example.com`.
 
 ```bash
 $ dep info web.example.com
@@ -113,9 +113,9 @@ $ # Same as:
 $ dep info 'alias=web.example.com,alias=db.example.com'
 ````
 
-## Using select() function
+## Using the select() function
 
-You can use [select()](api.md#select) function to select hosts by selector from PHP code.
+You can use the [select()](api.md#select) function to select hosts by selector in your PHP code.
 
 ```php
 task('info', function () {
@@ -126,7 +126,7 @@ task('info', function () {
 });
 ```
 
-Or you can use [on()](api.md#on) function to run a task on selected hosts.
+Or you can use the [on()](api.md#on) function to run a task on selected hosts.
 
 ```php
 task('info', function () {
@@ -138,7 +138,7 @@ task('info', function () {
 
 ## Task selectors
 
-To restrict a task to run only on selected hosts, you can use [select()](tasks.md#select) method.
+To restrict a task to run only on selected hosts, you can use the [select()](tasks.md#select) method.
 
 ```php
 task('info', function () {
@@ -148,7 +148,7 @@ task('info', function () {
 
 ## Labels in YAML
 
-You can also define labels in YAML recipe. For example:
+You can also define labels in a YAML recipe. For example:
 
 ```yaml
 hosts:
@@ -160,7 +160,7 @@ hosts:
       env: prod
 ```
 
-But make sure to distinguish between `env` and `labels.env` keys.
+But make sure to distinguish between the `env` and `labels.env` keys.
 `env` is a configuration key, and `labels.env` is a label.
 
 ```php

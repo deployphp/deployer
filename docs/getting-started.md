@@ -2,10 +2,10 @@
 
 In this tutorial we will cover:
 
-- Setting up a new host with provision recipe.
+- Setting up a new host with the [provision](recipe/provision.md) recipe.
 - Configuring a deployment and perfoming our first deploy.
 
-First, [install the Deployer](installation.md):
+First, [install Deployer](installation.md):
 
 Now lets cd into the project and run the following command:
 
@@ -13,7 +13,7 @@ Now lets cd into the project and run the following command:
 dep init
 ```
 
-Deployer will ask you a few question and after finishing you will have a
+Deployer will ask you a few questions, and after finishing you will have a
 **deploy.php** or **deploy.yaml** file. This is our deployment recipe.
 It contains hosts, tasks and requires other recipes. All framework recipes
 that come with Deployer are based on the [common](recipe/common.md) recipe.
@@ -27,18 +27,18 @@ If you already have a configured webserver you may skip to
 
 Let's create a new VPS on Linode, DigitalOcean, Vultr, AWS, GCP, etc.
 
-Make sure the image is **Ubuntu 20.04 LTS** as this version is supported via
-Deployer [provision](recipe/provision.md) recipe.
+Make sure the image is **Ubuntu 20.04 LTS** as this version is supported by
+Deployer's [provision](recipe/provision.md) recipe.
 
 :::tip
 Configure Reverse DNS or RDNS on your server. This will allow you to ssh into
-server using the domain name instead of the IP address.
+the server using the domain name instead of the IP address.
 :::
 
-Our **deploy.php** recipe contains a host definition with few important params:
+Our **deploy.php** recipe contains a host definition with a few important params:
 
-- `remote_user` user's name for ssh connection,
-- `deploy_path` host's path where we are going to deploy.
+- `remote_user` the user name for the ssh connection,
+- `deploy_path` the file path on the host where we are going to deploy.
 
 Let's set `remote_user` to be `deployer`. Right now our new server probably only has the `root` user. The provision recipe will 
 create and configure a `deployer` user for us.
@@ -58,8 +58,8 @@ Host *
   IdentityFile ~/.ssh/id_rsa
 ```
 
-Now let's provision our server. As our host doesn't have user `deployer`,
-we are going to override `remote_user` for provision via `-o remote_user=root`.
+Now let's provision our server. As our host doesn't have a user `deployer`,
+we are going to override `remote_user` for provisioning via `-o remote_user=root`.
 
 ```sh
 dep provision -o remote_user=root
@@ -76,8 +76,8 @@ dep provision -o become=root
 :::
 
 Deployer will ask you a few questions during provisioning: php version,
-database type, etc. Next Deployer will configure our server and create
-the `deployer` user. Provision takes around **5 minutes** and will install
+database type, etc. Next, Deployer will configure our server and create
+the `deployer` user. Provisioning takes around **5 minutes** and will install
 everything we need to run a website. A new website will be configured
 at [deploy_path](recipe/common.md#deploy_path).
 
@@ -92,16 +92,16 @@ dep deploy
 ```
 
 If deploy failed, Deployer will print an error message and which command was unsuccessful.
-Most likely we need to configure the correct database credentials in _.env_ file or similar.
+Most likely we need to configure the correct database credentials in the _.env_ file or similar.
 
-Ssh to the host, for example, for editing _.env_ file:
+Ssh to the host, for example, for editing the _.env_ file:
 
 ```sh
 dep ssh
 ```
 
 :::tip
-If your webserver is using OpenSSH version older than v7.6, updating the code may fail with the error
+If your webserver is using an OpenSSH version older than v7.6, updating the code may fail with the error
 message `unsupported option "accept-new".` In this case, override the Git SSH command with:
 ```php
 set('git_ssh_command', 'ssh');
@@ -140,7 +140,7 @@ location / {
 }
 ```
 
-If you're using provision recipe, Deployer will automatically configure the Caddy
+If you're using the [provision recipe](recipe/provision.md), Deployer will automatically configure the Caddy
 webserver to serve from the [public_path](/docs/recipe/provision/website.md#public_path).
 
 Now let's add a build step on our host:
@@ -168,5 +168,6 @@ task releases
 ```
 
 :::tip
-During development, the [dep push](recipe/deploy/push.md) task maybe useful.
+During development, the [dep push](recipe/deploy/push.md) task maybe useful
+to create a patch of local changes and push them to the host.
 :::

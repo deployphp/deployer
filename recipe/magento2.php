@@ -11,6 +11,7 @@ use Deployer\Host\Host;
 use Symfony\Component\VarExporter\VarExporter;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
+const CONFIG_PHP_UPDATE_NEEDED_EXIT_CODE = 1;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 const MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG = 'maintenance mode is active';
 const ENV_CONFIG_FILE_PATH = 'app/etc/env.php';
@@ -140,6 +141,16 @@ set('database_upgrade_needed', function () {
 
         throw $e;
     }
+    try {
+        run('{{bin/php}} {{bin/magento}} module:config:status');
+    } catch (RunException $e) {
+        if ($e->getExitCode() == CONFIG_PHP_UPDATE_NEEDED_EXIT_CODE) {
+            return true;
+        }
+
+        throw $e;
+    }
+
     return false;
 });
 

@@ -50,6 +50,7 @@
         "symfony/polyfill-php80": "^1.22",
         "symfony/polyfill-php81": "^1.26",
         "symfony/process": "^5",
+        "symfony/var-exporter": "^6.3",
         "symfony/yaml": "^5"
     },
     "require-dev": {
@@ -58,8 +59,7 @@
         "phpunit/php-code-coverage": "^9.2",
         "phpunit/phpunit": "^9.3",
         "slevomat/coding-standard": "^7.0",
-        "squizlabs/php_codesniffer": "^3.5",
-        "symfony/var-exporter": "^5.4"
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {
         "sort-packages": true,

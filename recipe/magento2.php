@@ -8,7 +8,6 @@ use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
-use Symfony\Component\VarExporter\VarExporter;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
@@ -471,7 +470,7 @@ task('magento:set_cache_prefix', function () {
     $envConfigArray['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
 
     //Generate configuration array as string
-    $envConfigStr = '<?php return ' . VarExporter::export($envConfigArray) . ';';
+    $envConfigStr = '<?php return ' . var_export($envConfigArray, true) . ';';
     file_put_contents($tmpConfigFile, $envConfigStr);
     //upload updated config to server
     upload($tmpConfigFile, '{{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);

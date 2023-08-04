@@ -50,7 +50,6 @@
         "symfony/polyfill-php80": "^1.22",
         "symfony/polyfill-php81": "^1.26",
         "symfony/process": "^5",
-        "symfony/var-exporter": "^6.3",
         "symfony/yaml": "^5"
     },
     "require-dev": {

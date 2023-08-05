@@ -48,11 +48,15 @@ class Messenger
 
     public function startTask(Task $task): void
     {
-        $this->startTime = round(microtime(true) * 1000);
+        $this->startTime = time();
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::group::task {$task->getName()}");
         } else if (getenv('GITLAB_CI')) {
             $this->output->writeln("\e[0Ksection_start:{$this->startTime}:{$this->startTime}[collapsed=true]\r\e[0K{$task->getName()}");
+        } else if ($this->output->isVerbose()) {
+            // option `-v` displays task start time
+            $taskStartTime = date("Y-d-m H:i:s", $this->startTime);
+            $this->output->writeln("[{$taskStartTime}] <fg=cyan;options=bold>task</> {$task->getName()}");
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }
@@ -65,14 +69,12 @@ class Messenger
     public function endTask(Task $task, bool $error = false): void
     {
         if (empty($this->startTime)) {
-            $this->startTime = round(microtime(true) * 1000);
+            $this->startTime = time();
         }
 
-        $endTime = round(microtime(true) * 1000);
-        $millis = $endTime - $this->startTime;
-        $seconds = floor($millis / 1000);
-        $millis = $millis - $seconds * 1000;
-        $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
+        $endTime = time();
+        $seconds = $endTime - $this->startTime;
+        $taskTime = "{$seconds}s ";
 
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::endgroup::");

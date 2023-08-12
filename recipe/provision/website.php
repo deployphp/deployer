@@ -2,7 +2,7 @@
 namespace Deployer;
 
 set('domain', function () {
-    return ask(' Domain: ');
+    return str_ireplace('www.', '', ask(' Domain: '));
 });
 
 set('public_path', function () {
@@ -26,9 +26,14 @@ task('provision:website', function () {
     run("chgrp caddy log");
 
     $caddyfile = <<<EOF
+www.$domain {
+
+\tredir / https://$domain 301
+}
 $domain {
 
 \troot * $deployPath/current/$publicPath
+\tencode zstd gzip
 \tfile_server
 \tphp_fastcgi * unix//run/php/php$phpVersion-fpm.sock {
 \t\tresolve_root_symlink
@@ -46,6 +51,21 @@ $domain {
 \t\tfile_server {
 \t\t\troot /var/dep/html
 \t\t}
+\t}
+
+\trewrite {
+\t\t# This regex catches everything that contains "/." in the URL
+\t\tr \/\.
+\t\tif {path} not_starts_with .well-known
+\t\tto /index.php{uri}
+\t}
+
+\theader / {
+\t\tStrict-Transport-Security\t"max-age=30758400"
+\t\tX-Content-Type-Options\t\t"nosniff"
+\t\tX-Frame-Options\t\t"deny"
+\t\tX-XSS-Protection\t\t"1; mode=block"
+\t\tReferrer-Policy\t\t"same-origin"
 \t}
 }
 EOF;

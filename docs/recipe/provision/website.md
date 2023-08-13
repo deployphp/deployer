@@ -18,7 +18,7 @@ require 'recipe/provision/website.php';
 
 
 ```php title="Default value"
-return ask(' Domain: ');
+return str_ireplace('www.', '', ask(' Domain: '));
 ```
 
 
@@ -44,7 +44,7 @@ Provision website.
 
 
 ### logs:caddy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L102)
 
 Shows caddy logs.
 
@@ -52,7 +52,7 @@ Shows caddy logs.
 
 
 ### logs:caddy:syslog
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L107)
 
 Shows caddy syslog.
 

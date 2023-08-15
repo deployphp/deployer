@@ -2,7 +2,7 @@
 <!-- Instead edit recipe/cakephp.php -->
 <!-- Then run bin/docgen -->
 
-# How to Deploy a Cakephp Project
+# How to Deploy a CakePHP Project
 
 ```php
 require 'recipe/cakephp.php';
@@ -11,7 +11,7 @@ require 'recipe/cakephp.php';
 [Source](/recipe/cakephp.php)
 
 Deployer is a free and open source deployment tool written in PHP. 
-It helps you to deploy your Cakephp application to a server. 
+It helps you to deploy your CakePHP application to a server. 
 It is very easy to use and has a lot of features. 
 
 Three main features of Deployer are:
@@ -27,7 +27,7 @@ Additionally, Deployer has a lot of other features, like:
 
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
-The [deploy](#deploy) task of **Cakephp** consists of:
+The [deploy](#deploy) task of **CakePHP** consists of:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
   * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy

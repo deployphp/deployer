@@ -63,6 +63,10 @@ class Task
     /**
      * @var bool
      */
+    private $spinner = true;
+    /**
+     * @var bool
+     */
     private $enabled = true;
 
     /**
@@ -251,6 +255,17 @@ class Task
     public function verbose(bool $verbose = true): self
     {
         $this->verbose = $verbose;
+        return $this;
+    }
+
+    public function hasSpinner(): bool
+    {
+        return $this->spinner;
+    }
+
+    public function spinner(bool $enabled = true): self
+    {
+        $this->spinner = $enabled;
         return $this;
     }
 

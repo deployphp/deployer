@@ -65,7 +65,7 @@ $exclude = [
 set('rsync', [
     'exclude' => array_merge(get('shared_dirs'), get('shared_files'), $exclude),
     'exclude-file' => false,
-    'include' => [],
+    'include' => ['vendor'],
     'include-file' => false,
     'filter' => ['dir-merge,-n /.gitignore'],
     'filter-file' => false,
@@ -111,7 +111,6 @@ task('deploy', [
     'deploy:lock',
     'deploy:release',
     'rsync',
-    'deploy:vendors',
     'deploy:shared',
     'deploy:writable',
     'deploy:symlink',

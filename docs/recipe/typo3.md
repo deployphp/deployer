@@ -32,7 +32,6 @@ The [deploy](#deploy) task of **TYPO3** consists of:
 * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
 * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
 * [rsync](/docs/contrib/rsync.md#rsync) – Rsync local->remote
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
 * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
@@ -121,7 +120,7 @@ Writeable directories
 [
     'exclude' => array_merge(get('shared_dirs'), get('shared_files'), $exclude),
     'exclude-file' => false,
-    'include' => [],
+    'include' => ['vendor'],
     'include-file' => false,
     'filter' => ['dir-merge,-n /.gitignore'],
     'filter-file' => false,
@@ -197,7 +196,6 @@ This task is group task which contains next tasks:
 * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock)
 * [deploy:release](/docs/recipe/deploy/release.md#deployrelease)
 * [rsync](/docs/contrib/rsync.md#rsync)
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
 * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared)
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable)
 * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink)

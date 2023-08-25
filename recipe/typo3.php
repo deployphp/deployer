@@ -100,7 +100,7 @@ task('typo3:extension:setup', function () {
 });
 
 /**
- * Main TYPO3 task
+ * Configure "deploy" task group.
  */
 task('deploy:update_code')->hidden()->disable();
 task('deploy:info')->hidden()->disable();

@@ -172,7 +172,7 @@ TYPO3 - Set up extensions.
 
 
 
-Main TYPO3 task
+Configure "deploy" task group.
 
 
 ### deploy:info

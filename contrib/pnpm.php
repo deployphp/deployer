@@ -27,3 +27,8 @@ task('pnpm:install', function () {
     }
     run("cd {{release_path}} && {{bin/pnpm}} i --frozen-lockfile");
 });
+
+desc('Runs pnpm build');
+task('pnpm:build', function () {
+    run("cd {{release_path}} && {{bin/pnpm}} run build");
+});

@@ -25,5 +25,5 @@ task('pnpm:install', function () {
             run('cp -R {{previous_release}}/node_modules {{release_path}}');
         }
     }
-    run("cd {{release_path}} && {{bin/pnpm}}");
+    run("cd {{release_path}} && {{bin/pnpm}} i --frozen-lockfile");
 });

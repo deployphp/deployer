@@ -33,3 +33,11 @@ Installs pnpm packages.
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps with pnpm.
 
 
+### pnpm:build
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/pnpm.php#L32)
+
+Runs pnpm build.
+
+
+
+

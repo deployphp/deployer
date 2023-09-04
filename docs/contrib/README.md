@@ -20,6 +20,7 @@
 * [Ntfy Recipe](/docs/contrib/ntfy.md)
 * [Phinx Recipe](/docs/contrib/phinx.md)
 * [Php-fpm Recipe](/docs/contrib/php-fpm.md)
+* [Pnpm Recipe](/docs/contrib/pnpm.md)
 * [Rabbit Recipe](/docs/contrib/rabbit.md)
 * [Raygun Recipe](/docs/contrib/raygun.md)
 * [Rocketchat Recipe](/docs/contrib/rocketchat.md)

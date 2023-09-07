@@ -89,6 +89,10 @@ task('sw:plugin:refresh', function () {
     run('cd {{release_path}} && {{bin/console}} plugin:refresh');
 });
 
+task('sw:scheduled-task:register', function () {
+    run('cd {{release_path}} && {{bin/console}} scheduled-task:register');
+});
+
 task('sw:theme:refresh', function () {
     run('cd {{release_path}} && {{bin/console}} theme:refresh');
 });
@@ -150,6 +154,8 @@ task('sw:writable:jwt', static function () {
 task('sw:deploy', [
     'sw:database:migrate',
     'sw:plugin:refresh',
+    'sw:theme:refresh',
+    'sw:scheduled-task:register',
     'sw:theme:compile',
     'sw:cache:clear',
     'sw:plugin:update:all',

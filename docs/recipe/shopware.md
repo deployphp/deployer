@@ -39,6 +39,8 @@ The [deploy](#deploy) task of **Shopware** consists of:
 * [sw:deploy](/docs/recipe/shopware.md#swdeploy) – 
   * [sw:database:migrate](/docs/recipe/shopware.md#swdatabasemigrate) – 
   * [sw:plugin:refresh](/docs/recipe/shopware.md#swpluginrefresh) – 
+  * [sw:theme:refresh](/docs/recipe/shopware.md#swthemerefresh) – 
+  * [sw:scheduled-task:register](/docs/recipe/shopware.md#swscheduled-taskregister) – 
   * [sw:theme:compile](/docs/recipe/shopware.md#swthemecompile) – 
   * [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear) – 
   * [sw:plugin:update:all](/docs/recipe/shopware.md#swpluginupdateall) – 
@@ -195,7 +197,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:theme:refresh
+### sw:scheduled-task:register
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L92)
 
 
@@ -203,7 +205,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:theme:compile
+### sw:theme:refresh
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L96)
 
 
@@ -211,8 +213,16 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
+### sw:theme:compile
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L100)
+
+
+
+
+
+
 ### sw:plugin:update:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L132)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L136)
 
 
 
@@ -220,7 +230,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:writable:jwt
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L142)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L146)
 
 
 
@@ -228,7 +238,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L150)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L154)
 
 
 
@@ -238,6 +248,8 @@ This task remotely executes the `database:migrate` console command on the target
 This task is group task which contains next tasks:
 * [sw:database:migrate](/docs/recipe/shopware.md#swdatabasemigrate)
 * [sw:plugin:refresh](/docs/recipe/shopware.md#swpluginrefresh)
+* [sw:theme:refresh](/docs/recipe/shopware.md#swthemerefresh)
+* [sw:scheduled-task:register](/docs/recipe/shopware.md#swscheduled-taskregister)
 * [sw:theme:compile](/docs/recipe/shopware.md#swthemecompile)
 * [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear)
 * [sw:plugin:update:all](/docs/recipe/shopware.md#swpluginupdateall)
@@ -245,7 +257,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L160)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L166)
 
 Deploys your project.
 
@@ -262,7 +274,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:get-remote-config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L169)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L175)
 
 
 
@@ -270,7 +282,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L182)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L188)
 
 
 
@@ -278,7 +290,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L187)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L193)
 
 
 

@@ -1,6 +1,7 @@
 # All Contrib Recipes
 
 * [Bugsnag Recipe](/docs/contrib/bugsnag.md)
+* [Bun Recipe](/docs/contrib/bun.md)
 * [Cachetool Recipe](/docs/contrib/cachetool.md)
 * [Chatwork Recipe](/docs/contrib/chatwork.md)
 * [Cimonitor Recipe](/docs/contrib/cimonitor.md)

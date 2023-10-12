@@ -29,13 +29,17 @@ set('bin/crontab', function () {
     return which('crontab');
 });
 
+// Set the identifier used in the crontab, application name by default
 set('crontab:identifier', function () {
     return get('application', 'application');
 });
 
 desc('Sync crontab jobs');
 task('crontab:sync', function () {
-    $cronJobsLocal = get('crontab:jobs', []);
+    $cronJobsLocal = array_map(
+        fn($job) => parse($job),
+        get('crontab:jobs', [])
+    );
 
     if (count($cronJobsLocal) == 0) {
         writeln("Nothing to sync - configure crontab:jobs");
@@ -52,11 +56,17 @@ task('crontab:sync', function () {
     $end = array_search($sectionEnd, $cronJobs);
 
     if ($start === false || $end === false) {
-        // Section is not found, create the section
-        $cronJobs[] = $sectionStart;
-        foreach ($cronJobsLocal as $cronJobLocal) {
-            $cronJobs[] = parse($cronJobLocal);
+        // Move the duplicates over when first generating the section
+        foreach ($cronJobs as $index => $cronJob) {
+            if (in_array($cronJob, $cronJobsLocal)) {
+                unset($cronJobs[$index]);
+                writeln("Crontab: Found existing job in crontab, moving it to the section");
+            }
         }
+
+        // Create the section
+        $cronJobs[] = $sectionStart;
+        $cronJobs += $cronJobsLocal;
         $cronJobs[] = $sectionEnd;
         writeln("Crontab: Found no section, created the section with configured jobs");
     } else {

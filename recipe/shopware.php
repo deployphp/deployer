@@ -10,10 +10,13 @@
  *
  * configure host:
  * host('SSH-HOSTNAME')
- *     ->setRemoteUser('SSH-USER')
+ *     ->set('remote_user', 'SSH-USER')
  *     ->set('deploy_path', '/var/www/shopware') // This is the path, where deployer will create its directory structure
- *     ->set('http_user', 'www-data') // Not needed, if the `user` is the same user, the webserver is running with 
- *     ->set('writable_mode', 'chmod');
+ *     ->set('http_user', 'www-data') // Not needed, if the `user` is the same user, the webserver is running with
+ *     ->set('http_group', 'www-data')
+ *     ->set('writable_mode', 'chmod')
+ *     ->set('writable_recursive', true)
+ *     ->set('become', 'www-data'); // You might want to change user to execute remote tasks because of access rights of created cache files
  * 
  * :::note
  * Please remember that the installation must be modified so that it can be
@@ -22,7 +25,6 @@
  */
 namespace Deployer;
 
-
 require_once __DIR__ . '/common.php';
 
 add('recipes', ['shopware']);
@@ -30,8 +32,6 @@ add('recipes', ['shopware']);
 set('bin/console', '{{bin/php}} {{release_or_current_path}}/bin/console');
 
 set('default_timeout', 3600); // Increase when tasks take longer than that.
-
-//set host configuration and repository here
 
 // These files are shared among all releases.
 set('shared_files', [
@@ -97,6 +97,8 @@ task('sw:theme:refresh', function () {
     run('cd {{release_path}} && {{bin/console}} theme:refresh');
 });
 
+// This task is not used per default, but can be used, e.g. in combination with `SHOPWARE_SKIP_THEME_COMPILE=1`,
+// to build the theme remotely instead of locally.
 task('sw:theme:compile', function () {
     run('cd {{release_path}} && {{bin/console}} theme:compile');
 });
@@ -150,13 +152,11 @@ task('sw:writable:jwt', static function () {
 /**
  * Grouped SW deploy tasks.
  */
-
 task('sw:deploy', [
     'sw:database:migrate',
     'sw:plugin:refresh',
     'sw:theme:refresh',
     'sw:scheduled-task:register',
-    'sw:theme:compile',
     'sw:cache:clear',
     'sw:plugin:update:all',
     'sw:cache:clear',
@@ -186,9 +186,8 @@ task('sw-build-without-db:get-remote-config', static function () {
 });
 
 task('sw-build-without-db:build', static function () {
-    runLocally('CI=1 SHOPWARE_SKIP_BUNDLE_DUMP=1 SHOPWARE_SKIP_THEME_COMPILE=1 bin/build-js.sh');
+    runLocally('CI=1 SHOPWARE_SKIP_BUNDLE_DUMP=1 ./bin/build-js.sh');
 });
-
 
 task('sw-build-without-db', [
     'sw-build-without-db:get-remote-config',

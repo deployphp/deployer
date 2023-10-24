@@ -1,5 +1,5 @@
 {
-    "name": "deployer/deployer",
+    "name": "deployer/wsdeployer",
     "description": "Deployment Tool",
     "license": "MIT",
     "homepage": "https://deployer.org",

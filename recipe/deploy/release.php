@@ -93,6 +93,9 @@ task('deploy:release', function () {
     $releasesList = get('releases_list');
     $releaseName = get('release_name');
     $releasePath = "releases/$releaseName";
+    if(get('use_relative_symlink') === false) {
+        $releasePath = '{{deploy_path}}/' . $releasePath;
+    }
 
     // Check what there is no such release path.
     if (test("[ -d $releasePath ]")) {

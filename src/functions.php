@@ -477,7 +477,7 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
 function test(string $command): bool
 {
     $true = '+' . array_rand(array_flip(['accurate', 'appropriate', 'correct', 'legitimate', 'precise', 'right', 'true', 'yes', 'indeed']));
-    return run("if $command; then echo $true; fi") === $true;
+    return trim(run("if $command; then echo $true; fi")) === $true;
 }
 
 /**
@@ -558,8 +558,8 @@ function invoke(string $taskName): void
 /**
  * Upload files or directories to host.
  *
- * > To upload the _contents_ of a directory, include a trailing slash (eg `upload('build/', '{{release_path}}/public');`).  
- * > Without the trailing slash, the build directory itself will be uploaded (resulting in `{{release_path}}/public/build`).  
+ * > To upload the _contents_ of a directory, include a trailing slash (eg `upload('build/', '{{release_path}}/public');`).
+ * > Without the trailing slash, the build directory itself will be uploaded (resulting in `{{release_path}}/public/build`).
  *
  *  The `$config` array supports the following keys:
  *
@@ -569,7 +569,7 @@ function invoke(string $taskName): void
  * - `progress_bar` to display upload/download progress
  * - `display_stats` to display rsync set of statistics
  *
- * Note: due to the way php escapes command line arguments, list-notation for the rsync `--exclude={'file','anotherfile'}` option will not work.  
+ * Note: due to the way php escapes command line arguments, list-notation for the rsync `--exclude={'file','anotherfile'}` option will not work.
  * A workaround is to add a separate `--exclude=file` argument for each exclude to `options` (also, _do not_ wrap the filename/filter in quotes).
  * An alternative might be to write the excludes to a temporary file (one per line) and use `--exclude-from=temporary_file` argument instead.
  *

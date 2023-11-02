@@ -553,7 +553,7 @@ Returns current timestamp in UTC timezone in ISO8601 format.
 ## fetch()
 
 ```php
-fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
+fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false, array $options = []): string
 ```
 
 Example usage:

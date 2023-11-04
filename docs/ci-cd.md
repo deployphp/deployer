@@ -80,7 +80,7 @@ deploy:
 
 Only one deployment job runs at a time with the [`resource_group` keyword](https://docs.gitlab.com/ee/ci/yaml/index.html#resource_group) in .gitlab-ci.yml.
 
-In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#skip-outdated-deployment-jobs) feature.
+In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#prevent-outdated-deployment-jobs) feature (enabled by default).
 
 ### Deploy secrets
 

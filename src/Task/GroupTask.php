@@ -49,31 +49,4 @@ class GroupTask extends Task
     {
         $this->group = $group;
     }
-
-    public function addTaskBefore(string $task, string $addTask): void
-    {
-        $this->addTask($task, $addTask);
-    }
-
-    public function addTaskAfter(string $task, string $addTask): void
-    {
-        $this->addTask($task, $addTask, 'after');
-    }
-
-    public function addTask(string $task, string $addTask, string $position = 'before'): void
-    {
-        $taskPosition = array_search($task, $this->group);
-        if(!$taskPosition) {
-            throw new \InvalidArgumentException("Task `$task` not found.");
-        }
-
-        switch ($position) {
-            case 'before':
-                array_splice($this->group, $taskPosition, 0, [$addTask]);
-                break;
-            case 'after':
-                array_splice($this->group, $taskPosition + 1, 0, [$addTask]);
-                break;
-        }
-    }
 }

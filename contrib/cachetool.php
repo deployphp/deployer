@@ -72,7 +72,9 @@ set('cachetool_options', function () {
         $return = [$fullOptions];
     } elseif (count($options) > 0) {
         foreach ($options as $option) {
-            $return[] = "--fcgi={$option}";
+            if ($option !== '') {
+                $return[] = "--fcgi={$option}";
+            }
         }
     }
 

@@ -66,7 +66,7 @@ task('crontab:sync', function () {
 
         // Create the section
         $cronJobs[] = $sectionStart;
-        $cronJobs += $cronJobsLocal;
+        $cronJobs = [...$cronJobs, ...$cronJobsLocal];
         $cronJobs[] = $sectionEnd;
         writeln("Crontab: Found no section, created the section with configured jobs");
     } else {

@@ -84,7 +84,9 @@ return '{{bin/php}} {{release_or_current_path}}/vendor/bin/contao-console';
 
 
 ```php title="Default value"
-return run('{{bin/console}} contao:version');
+$result = run('{{bin/console}} --version');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 'n/a';
 ```
 
 

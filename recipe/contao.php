@@ -31,7 +31,15 @@ set('bin/console', function () {
 });
 
 set('contao_version', function () {
-    return run('{{bin/console}} contao:version');
+    $result = run('{{bin/console}} --version');
+    preg_match_all('/(\d+\.?)+/', $result, $matches);
+    return $matches[0][0] ?? 'n/a';
+});
+
+set('symfony_version', function () {
+    $result = run('{{bin/console}} about');
+    preg_match_all('/(\d+\.?)+/', $result, $matches);
+    return $matches[0][0] ?? 5.0;
 });
 
 // This task updates the database. A database backup is saved automatically as a default.

@@ -19,7 +19,7 @@ Add next alias to your _.bashrc_ file:
 alias dep='vendor/bin/dep'
 ```
 
-Deployer comes with autocomplete support for task names, options, and hosts.
+Deployer comes with autocomplete- support for task names, options, and hosts.
 
 Run the next command to add bash completion support:
 

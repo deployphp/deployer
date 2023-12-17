@@ -132,7 +132,7 @@ TYPO3 - Update the language files of all activated extensions.
 ### typo3:extension:setup
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3-rsync.php#L97)
 
-TYPO3 - Set up extensions.
+TYPO3 - Set up all extensions.
 
 
 

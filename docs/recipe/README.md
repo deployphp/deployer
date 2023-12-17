@@ -23,7 +23,7 @@
 * [Sulu Recipe](/docs/recipe/sulu.md)
 * [Symfony Recipe](/docs/recipe/symfony.md)
 * [TYPO3 Recipe](/docs/recipe/typo3.md)
-* [TYPO3-rsync Recipe](/docs/recipe/typo3-rsync.md)
+* [TYPO3 rsync Recipe](/docs/recipe/typo3_rsync.md)
 * [WordPress Recipe](/docs/recipe/wordpress.md)
 * [Yii2 Recipe](/docs/recipe/yii.md)
 * [Zend Framework Recipe](/docs/recipe/zend_framework.md)

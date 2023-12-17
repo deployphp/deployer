@@ -93,7 +93,7 @@ task('typo3:language:update', function () {
     run('{{bin/php}} {{bin/typo3}} language:update');
 });
 
-desc('TYPO3 - Set up extensions');
+desc('TYPO3 - Set up all extensions');
 task('typo3:extension:setup', function () {
     cd('{{release_path}}');
     run('{{bin/php}} {{bin/typo3}} extension:setup');

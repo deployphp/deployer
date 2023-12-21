@@ -34,7 +34,7 @@ set('crontab:identifier', function () {
     return get('application', 'application');
 });
 
-// Use sudo to run crontab
+// Use sudo to run crontab. When running crontab with sudo, you can use the `-u` parameter to change a crontab for a different user.
 set('crontab:use_sudo', false);
 
 desc('Sync crontab jobs');

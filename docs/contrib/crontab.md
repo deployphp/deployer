@@ -21,22 +21,6 @@ Get path to bin
 return which('crontab');
 ```
 
-### crontab:use_sudo
-
-Runs crontab as sudo.
-
-```php title="Default value"
-false
-```
-
-When running crontab with sudo, you can use the `-u` parameter to change a crontab for a different user.
-
-```php title="Example usage"
-set('crontab:use_sudo', true);
-set('bin/crontab', function () {
-    return which('crontab') . ' -u www-data';
-});
-```
 
 ### crontab:identifier
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L33)
@@ -48,11 +32,21 @@ return get('application', 'application');
 ```
 
 
+### crontab:use_sudo
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L38)
+
+Use sudo to run crontab. When running crontab with sudo, you can use the `-u` parameter to change a crontab for a different user.
+
+```php title="Default value"
+false
+```
+
+
 
 ## Tasks
 
 ### crontab:sync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L38)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L41)
 
 Sync crontab jobs.
 

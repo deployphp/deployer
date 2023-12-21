@@ -34,6 +34,9 @@ set('crontab:identifier', function () {
     return get('application', 'application');
 });
 
+// Use sudo to run crontab
+set('crontab:use_sudo', false);
+
 desc('Sync crontab jobs');
 task('crontab:sync', function () {
     $cronJobsLocal = array_map(
@@ -80,6 +83,8 @@ task('crontab:sync', function () {
 
 function setRemoteCrontab(array $lines): void
 {
+    $sudo = get('crontab:use_sudo') ? 'sudo' : '';
+
     $tmpCrontabPath = sprintf('/tmp/%s', uniqid('crontab_save_'));
 
     if (test("[ -f '$tmpCrontabPath' ]")) {
@@ -90,16 +95,18 @@ function setRemoteCrontab(array $lines): void
         run("echo '" . $line . "' >> $tmpCrontabPath");
     }
 
-    run('{{bin/crontab}} ' . $tmpCrontabPath);
+    run("$sudo {{bin/crontab}} " . $tmpCrontabPath);
     run('unlink ' . $tmpCrontabPath);
 }
 
 function getRemoteCrontab(): array
 {
-    if (!test("{{bin/crontab}} -l >> /dev/null 2>&1")) {
+    $sudo = get('crontab:use_sudo') ? 'sudo' : '';
+
+    if (!test("$sudo {{bin/crontab}} -l >> /dev/null 2>&1")) {
         return [];
     }
 
-    return explode(PHP_EOL, run("{{bin/crontab}} -l"));
+    return explode(PHP_EOL, run("$sudo {{bin/crontab}} -l"));
 }
 

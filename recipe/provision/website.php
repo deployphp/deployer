@@ -11,7 +11,7 @@ set('public_path', function () {
 
 desc('Provision website');
 task('provision:website', function () {
-    run("[ -d {{deploy_path}} ] || mkdir {{deploy_path}}");
+    run("[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}}");
     run("chown -R deployer:deployer {{deploy_path}}");
 
     $domain = get('domain');

@@ -11,9 +11,8 @@ set('public_path', function () {
 
 desc('Provision website');
 task('provision:website', function () {
-    set('remote_user', 'deployer');
-
     run("[ -d {{deploy_path}} ] || mkdir {{deploy_path}}");
+    run("chown -R deployer:deployer {{deploy_path}}");
 
     $domain = get('domain');
     $phpVersion = get('php_version');
@@ -69,7 +68,6 @@ EOF;
         run("echo $'$caddyfile' > Caddyfile");
     }
 
-    set('remote_user', 'root');
     if (!test("grep -q 'import $deployPath/Caddyfile' /etc/caddy/Caddyfile")) {
         run("echo 'import $deployPath/Caddyfile' >> /etc/caddy/Caddyfile");
     }

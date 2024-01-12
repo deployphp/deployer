@@ -11,43 +11,17 @@ set('public_path', function () {
 
 desc('Provision website');
 task('provision:website', function () {
+    set('deploy_path', run("realpath {{deploy_path}}"));
+
     run("[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}}");
     run("chown -R deployer:deployer {{deploy_path}}");
 
-    $domain = get('domain');
-    $phpVersion = get('php_version');
-    $deployPath = run("realpath {{deploy_path}}");
-    $publicPath = get('public_path');
-
-    cd($deployPath);
+    cd('{{deploy_path}}');
 
     run("[ -d log ] || mkdir log");
     run("chgrp caddy log");
 
-    $caddyfile = <<<EOF
-$domain {
-
-\troot * $deployPath/current/$publicPath
-\tfile_server
-\tphp_fastcgi * unix//run/php/php$phpVersion-fpm.sock {
-\t\tresolve_root_symlink
-\t}
-
-\tlog {
-\t\toutput file $deployPath/log/access.log
-\t}
-
-\thandle_errors {
-\t\t@404 {
-\t\t\texpression {http.error.status_code} == 404
-\t\t}
-\t\trewrite @404 /404.html
-\t\tfile_server {
-\t\t\troot /var/dep/html
-\t\t}
-\t}
-}
-EOF;
+    $caddyfile = parse(file_get_contents('./Caddyfile'));
 
     if (test('[ -f Caddyfile ]')) {
         run("echo $'$caddyfile' > Caddyfile.new");
@@ -68,12 +42,12 @@ EOF;
         run("echo $'$caddyfile' > Caddyfile");
     }
 
-    if (!test("grep -q 'import $deployPath/Caddyfile' /etc/caddy/Caddyfile")) {
-        run("echo 'import $deployPath/Caddyfile' >> /etc/caddy/Caddyfile");
+    if (!test("grep -q 'import {{deploy_path}}/Caddyfile' /etc/caddy/Caddyfile")) {
+        run("echo 'import {{deploy_path}}/Caddyfile' >> /etc/caddy/Caddyfile");
     }
     run('service caddy reload');
 
-    info("Website $domain configured!");
+    info("Website {{domain}} configured!");
 })->limit(1);
 
 desc('Shows caddy logs');

@@ -35,6 +35,7 @@ set('laravel_version', function () {
  * - 'skipIfNoEnv': Skip and warn the user if `.env` file is inexistant or empty.
  * - 'failIfNoEnv': Fail the command if `.env` file is inexistant or empty.
  * - 'showOutput': Show the output of the command if given.
+ * - 'current': Call artisan on the current (active) release instead of the deploying release.
  *
  * @param string $command The artisan command (with cli options if any).
  * @param array $options The options that define the behaviour of the command.
@@ -65,7 +66,7 @@ function artisan($command, $options = [])
             return;
         }
 
-        $artisan = '{{release_or_current_path}}/artisan';
+        $artisan = (in_array('current', $options) ? '{{current_path}}' : '{{release_or_current_path}}').'/artisan';
 
         // Run the artisan command.
         $output = run("{{bin/php}} $artisan $command");

@@ -201,9 +201,9 @@ class Master
             }
         });
 
-        $this->server->loop->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback) {
+        $this->server->loop->addPeriodicTimer(0.03, function ($timer) use (&$processes, $callback, $task) {
             $this->gatherOutput($processes, $callback);
-            if ($this->output->isDecorated() && !getenv('CI')) {
+            if ($this->output->isDecorated() && !getenv('CI') && $task->hasSpinner()) {
                 $this->output->write(spinner());
             }
             if ($this->allFinished($processes)) {

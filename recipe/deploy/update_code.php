@@ -57,7 +57,7 @@ set('git_ssh_command', 'ssh -o StrictHostKeyChecking=accept-new');
  * Works only when [`update_code_strategy`](#update_code_strategy) is set to `archive` (default).
  *
  * Example:
- *  - set value to `src` if you want to deploy the folder that lives at `/src/api`.
+ *  - set value to `src` if you want to deploy the folder that lives at `/src`.
  *  - set value to `src/api` if you want to deploy the folder that lives at `/src/api`.
  *
  * Note: do not use a leading `/`!

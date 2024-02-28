@@ -65,10 +65,11 @@ function artisan($command, $options = [])
             return;
         }
 
-        $artisan = '{{release_or_current_path}}/artisan';
-
         // Run the artisan command.
-        $output = run("{{bin/php}} $artisan $command");
+        $output = within('{{release_or_current_path}}', function () use ($command) {
+            $artisan = '{{release_or_current_path}}/artisan';
+            return run("{{bin/php}} $artisan $command");
+        });
 
         // Output the results when appropriate.
         if (in_array('showOutput', $options)) {

@@ -60,7 +60,15 @@ class Selector
         foreach ($conditions as $hmm) {
             $ok = [];
             foreach ($hmm as [$op, $var, $value]) {
-                $ok[] = self::compare($op, $labels[$var] ?? null, $value);
+                if (is_array($value)) {
+                    $orOk = [];
+                    foreach ($value as $val) {
+                        $orOk[] = self::compare($op, $labels[$var] ?? null, $val);
+                    }
+                    $ok[] = count(array_filter($orOk, $isTrue)) > 0;
+                } else {
+                    $ok[] = self::compare($op, $labels[$var] ?? null, $value);
+                }
             }
             if (count($ok) > 0 && array_all($ok, $isTrue)) {
                 return true;
@@ -105,7 +113,8 @@ class Selector
                     continue;
                 }
                 if (preg_match('/(?<var>.+?)(?<op>!?=)(?<value>.+)/', $part, $match)) {
-                    $conditions[] = [$match['op'], trim($match['var']), trim($match['value'])];
+                    $values = array_map('trim', explode('|', trim($match['value'])));
+                    $conditions[] = [$match['op'], trim($match['var']), $values];
                 } else {
                     $conditions[] = ['=', 'alias', trim($part)];
                 }

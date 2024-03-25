@@ -77,7 +77,6 @@ task('sw:cache:clear', static function () {
 // visits the website, doesn't have to wait for the cache to be built up.
 task('sw:cache:warmup', static function () {
     run('cd {{release_path}} && {{bin/console}} cache:warmup');
-    run('cd {{release_path}} && {{bin/console}} http:cache:warm:up');
 });
 
 // This task remotely executes the `database:migrate` console command on the target server.

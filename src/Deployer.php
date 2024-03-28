@@ -205,6 +205,7 @@ class Deployer extends Container
      */
     public function init()
     {
+        $this->addTaskCommands();
         $this->getConsole()->add(new BlackjackCommand());
         $this->getConsole()->add(new ConfigCommand($this));
         $this->getConsole()->add(new WorkerCommand($this));
@@ -220,7 +221,7 @@ class Deployer extends Container
             $this->getConsole()->add($selfUpdate);
             $this->getConsole()->getHelperSet()->set(new PharUpdateHelper());
         }
-        $this->addTaskCommands();
+        $this->maybeAddCustomCommands();
     }
 
     /**

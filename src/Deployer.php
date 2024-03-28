@@ -48,6 +48,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use Throwable;
 
 /**
@@ -377,5 +379,35 @@ class Deployer extends Container
     public static function isPharArchive(): bool
     {
         return 'phar:' === substr(__FILE__, 0, 5);
+    }
+
+    private function maybeAddCustomCommands(): void
+    {
+        try {
+            $checkCommand = Process::fromShellCommandline('cd DeployerCommands');
+            $checkCommand->mustRun()->getOutput();
+        } catch (ProcessFailedException $e) {
+            // If the directory does not exist, then we don't need to add custom commands.
+            return;
+        }
+
+        $deployerCommandsDir = Process::fromShellCommandline('cd DeployerCommands && pwd')->mustRun()->getOutput();
+
+        // Remove . and .. from the list of files.
+        $customCommands = array_diff(scandir(trim($deployerCommandsDir)), array('..', '.'));
+
+        foreach ($customCommands as $command) {
+            $commandPath = trim($deployerCommandsDir) . '/' . $command;
+            $commandClass = '\\DeployerCommands\\' . rtrim($command, '.php');
+
+            try {
+                Importer::import($commandPath);
+                $this->getConsole()->add(new $commandClass());
+            } catch (Throwable $e) {
+                $output = new ConsoleOutput();
+                self::printException($output, $e);
+                exit(1);
+            }
+        }
     }
 }

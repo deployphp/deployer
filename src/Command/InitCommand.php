@@ -21,7 +21,13 @@ class InitCommand extends Command
 {
     use CommandCommon;
 
-    protected function configure()
+    protected $recipePath;
+    protected $template;
+    protected $repository;
+    protected $project;
+    protected $hosts;
+
+    protected function configure(): void
     {
         $this
             ->setName('init')

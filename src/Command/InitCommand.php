@@ -41,14 +41,7 @@ class InitCommand extends Command
     {
         $this->printHeader($output);
 
-        $io = new SymfonyStyle($input, $output);
-
-        $this->setRecipePath($input, $io);
-        $this->setTemplate($io);
-        $this->setRepository($io);
-        $this->guessHost();
-        $this->setProject($io);
-        $this->setHosts($io);
+        $this->setTemplateVars($input, $output);
 
         $language = $this->language;
         file_put_contents(
@@ -167,6 +160,18 @@ YAML;
 
         sort($recipes);
         return $recipes;
+    }
+
+    protected function setTemplateVars(InputInterface $input, OutputInterface $output): void
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $this->setRecipePath($input, $io);
+        $this->setTemplate($io);
+        $this->setRepository($io);
+        $this->setProject($io);
+        $this->guessHost();
+        $this->setHosts($io);
     }
 
     protected function printHeader(OutputInterface $output): void

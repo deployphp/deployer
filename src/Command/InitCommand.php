@@ -22,6 +22,7 @@ class InitCommand extends Command
     use CommandCommon;
 
     protected $recipePath;
+    protected $language;
     protected $template;
     protected $repository;
     protected $project;
@@ -48,9 +49,10 @@ class InitCommand extends Command
         $this->setProject($io);
         $this->setHosts($io);
 
+        $language = $this->language;
         file_put_contents(
             $this->recipePath,
-            $this->language(
+            $this->$language(
                 $this->template,
                 $this->project,
                 $this->repository,
@@ -211,7 +213,8 @@ EOF
     protected function setRecipePath(InputInterface $input, SymfonyStyle $io): void
     {
         $this->language = $io->choice('Select recipe language', ['php', 'yaml'], 'php');
-        if (empty($this->recipePath)) {
+
+        if (!$this->recipePath) {
             $this->recipePath = "deploy.$this->language";
         }
 
@@ -223,8 +226,6 @@ EOF
                 exit(1);
             }
         }
-
-        $this->recipePath = $input->getOption('path');
     }
 
     protected function setTemplate(SymfonyStyle $io): void

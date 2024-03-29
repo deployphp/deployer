@@ -690,8 +690,32 @@ Cleanup cache id_prefix env files.
 After successful deployment, move the tmp_env.php file to env.php ready for next deployment
 
 
+### magento:cron:stop
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L505)
+
+Remove cron from crontab and kill running cron jobs.
+
+Remove cron from crontab and kill running cron jobs
+To use this feature, add the following to your deployer scripts:
+ ```php
+ after('magento:maintenance:enable-if-needed', 'magento:cron:stop');
+ ```
+
+
+### magento:cron:install
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L521)
+
+Install cron in crontab.
+
+Install cron in crontab
+To use this feature, add the following to your deployer scripts:
+  ```php
+  after('magento:upgrade:db', 'magento:cron:install');
+  ```
+
+
 ### artifact:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L499)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L527)
 
 Prepares an artifact on the target server.
 
@@ -711,7 +735,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:finish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L512)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L540)
 
 Executes the tasks after artifact is released.
 
@@ -726,7 +750,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L521)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L549)
 
 Actually releases the artifact deployment.
 

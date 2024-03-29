@@ -123,7 +123,7 @@ Clear opcache cache
 
 
 ### cachetool:clear:apcu
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L99)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L100)
 
 Clears APCu system cache.
 
@@ -131,7 +131,7 @@ Clear APCu cache
 
 
 ### cachetool:clear:stat
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L110)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L111)
 
 Clears file status and realpath caches.
 

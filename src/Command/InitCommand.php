@@ -53,12 +53,7 @@ class InitCommand extends Command
         $language = $this->language;
         file_put_contents(
             $this->recipePath,
-            $this->$language(
-                $this->template,
-                $this->project,
-                $this->repository,
-                $this->hosts
-            )
+            $this->$language()
         );
 
         $this->telemetry();
@@ -69,24 +64,24 @@ class InitCommand extends Command
         return 0;
     }
 
-    private function php(string $template, string $project, string $repository, array $hosts): string
+    private function php(): string
     {
         $h = "";
-        foreach ($hosts as $host) {
+        foreach ($this->hosts as $host) {
             $h .= "host('{$host}')\n" .
                 "    ->set('remote_user', 'deployer')\n" .
-                "    ->set('deploy_path', '~/{$project}');\n";
+                "    ->set('deploy_path', '~/{$this->project}');\n";
         }
 
         return <<<PHP
 <?php
 namespace Deployer;
 
-require 'recipe/$template.php';
+require 'recipe/$this->template.php';
 
 // Config
 
-set('repository', '{$repository}');
+set('repository', '{$this->repository}');
 
 add('shared_files', []);
 add('shared_dirs', []);
@@ -102,23 +97,23 @@ after('deploy:failed', 'deploy:unlock');
 PHP;
     }
 
-    private function yaml(string $template, string $project, string $repository, array $hosts): string
+    private function yaml(): string
     {
         $h = "";
-        foreach ($hosts as $host) {
+        foreach ($this->hosts as $host) {
             $h .= "  $host:\n".
                 "    remote_user: deployer\n" .
-                "    deploy_path: '~/{$project}'\n";
+                "    deploy_path: '~/{$this->project}'\n";
         }
 
-        $additionalConfigs = $this->getAdditionalConfigs($template);
+        $additionalConfigs = $this->getAdditionalConfigs($this->template);
 
         return <<<YAML
 import: 
-  - recipe/$template.php
+  - recipe/$this->template.php
 
 config:
-  repository: '$repository'
+  repository: '$this->repository'
 $additionalConfigs
 hosts:
 $h

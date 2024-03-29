@@ -494,6 +494,34 @@ task('magento:cleanup_cache_prefix', function () {
     run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
 });
 
+/**
+ * Remove cron from crontab and kill running cron jobs
+ * To use this feature, add the following to your deployer scripts:
+ *  ```php
+ *  after('magento:maintenance:enable-if-needed', 'magento:cron:stop');
+ *  ```
+ */
+desc('Remove cron from crontab and kill running cron jobs');
+task('magento:cron:stop', function () {
+    if (has('previous_release')) {
+        run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+    }
+
+    run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');
+});
+
+/**
+ * Install cron in crontab
+ * To use this feature, add the following to your deployer scripts:
+ *   ```php
+ *   after('magento:upgrade:db', 'magento:cron:install');
+ *   ```
+ */
+desc('Install cron in crontab');
+task('magento:cron:install', function () {
+    run('cd {{release_or_current_path}}');
+    run('{{bin/php}} {{bin/magento}} cron:install');
+});
 
 desc('Prepares an artifact on the target server');
 task('artifact:prepare', [

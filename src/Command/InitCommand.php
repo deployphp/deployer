@@ -27,6 +27,7 @@ class InitCommand extends Command
     protected $repository;
     protected $project;
     protected $hosts;
+    protected $tempHostFile;
 
     protected function configure(): void
     {
@@ -251,7 +252,7 @@ EOF
     {
         if (preg_match('/github.com:(?<org>[A-Za-z0-9_.\-]+)\//', $this->repository, $m)) {
             $org = $m['org'];
-            $tempHostFile = tempnam(sys_get_temp_dir(), 'temp-host-file');
+            $this->tempHostFile = tempnam(sys_get_temp_dir(), 'temp-host-file');
             $php = new PhpProcess(<<<EOF
 <?php
 \$ch = curl_init('https://api.github.com/orgs/$org');
@@ -266,7 +267,7 @@ curl_setopt(\$ch, CURLOPT_TIMEOUT, 5);
 curl_close(\$ch);
 \$json = json_decode(\$result);
 \$host = parse_url(\$json->blog, PHP_URL_HOST);
-file_put_contents('$tempHostFile', \$host);
+file_put_contents('$this->tempHostFile', \$host);
 EOF
             );
             $php->start();
@@ -289,8 +290,8 @@ EOF
     protected function setHosts(SymfonyStyle $io): void
     {
         $host = null;
-        if (isset($tempHostFile)) {
-            $host = file_get_contents($tempHostFile);
+        if (isset($this->tempHostFile)) {
+            $host = file_get_contents($this->tempHostFile);
         }
         $hostsString = $io->ask('Hosts (comma separated)', $host);
         if ($hostsString !== null) {

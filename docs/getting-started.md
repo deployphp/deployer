@@ -31,8 +31,8 @@ Make sure the image is **Ubuntu 20.04 LTS** as this version is supported by
 Deployer's [provision](recipe/provision.md) recipe.
 
 :::tip
-Configure Reverse DNS or RDNS on your server. This will allow you to ssh into
-the server using the domain name instead of the IP address.
+Configure a DNS record for your domain that points to the IP address of your server. 
+This will allow you to ssh into the server using your domain name instead of the IP address.
 :::
 
 Our **deploy.php** recipe contains a host definition with a few important params:

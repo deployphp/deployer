@@ -8,7 +8,6 @@ use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
-use Symfony\Component\VarExporter\VarExporter;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const CONFIG_PHP_UPDATE_NEEDED_EXIT_CODE = 1;
@@ -482,7 +481,7 @@ task('magento:set_cache_prefix', function () {
     $envConfigArray['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
 
     //Generate configuration array as string
-    $envConfigStr = '<?php return ' . VarExporter::export($envConfigArray) . ';';
+    $envConfigStr = '<?php return ' . var_export($envConfigArray, true) . ';';
     file_put_contents($tmpConfigFile, $envConfigStr);
     //upload updated config to server
     upload($tmpConfigFile, '{{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
@@ -506,6 +505,34 @@ task('magento:cleanup_cache_prefix', function () {
     run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
 });
 
+/**
+ * Remove cron from crontab and kill running cron jobs
+ * To use this feature, add the following to your deployer scripts:
+ *  ```php
+ *  after('magento:maintenance:enable-if-needed', 'magento:cron:stop');
+ *  ```
+ */
+desc('Remove cron from crontab and kill running cron jobs');
+task('magento:cron:stop', function () {
+    if (has('previous_release')) {
+        run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+    }
+
+    run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');
+});
+
+/**
+ * Install cron in crontab
+ * To use this feature, add the following to your deployer scripts:
+ *   ```php
+ *   after('magento:upgrade:db', 'magento:cron:install');
+ *   ```
+ */
+desc('Install cron in crontab');
+task('magento:cron:install', function () {
+    run('cd {{release_or_current_path}}');
+    run('{{bin/php}} {{bin/magento}} cron:install');
+});
 
 desc('Prepares an artifact on the target server');
 task('artifact:prepare', [

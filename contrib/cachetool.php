@@ -3,12 +3,14 @@
 
 ## Configuration
 
-- **cachetool** *(optional)*: accepts a *string* with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
+- **cachetool** *(optional)*: accepts a *string* or an *array* of strings with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a configuration file. The file must be named .cachetool.yml or .cachetool.yaml. CacheTool will look for this file on the current directory and in any parent directory until it finds one. If the paths above fail it will try to load /etc/cachetool.yml or /etc/cachetool.yaml configuration file.
 
     ```php
     set('cachetool', '/var/run/php-fpm.sock');
     // or
     set('cachetool', '127.0.0.1:9000');
+    // or
+    set('cachetool', ['/var/run/php-fpm.sock', '/var/run/php-fpm-other.sock']);
     ```
 
 You can also specify different cachetool settings for each host:
@@ -62,16 +64,21 @@ set('bin/cachetool', function () {
     return '{{release_or_current_path}}/cachetool.phar';
 });
 set('cachetool_options', function () {
-    $options = get('cachetool');
-    $fullOptions = get('cachetool_args');
+    $options = (array)get('cachetool');
+    $fullOptions = (string)get('cachetool_args');
+    $return = [];
 
-    if (strlen($fullOptions) > 0) {
-        $options = "{$fullOptions}";
-    } elseif (strlen($options) > 0) {
-        $options = "--fcgi={$options}";
+    if ($fullOptions !== '') {
+        $return = [$fullOptions];
+    } elseif (count($options) > 0) {
+        foreach ($options as $option) {
+            if (is_string($option) && $option !== '') {
+                $return[] = "--fcgi={$option}";
+            }
+        }
     }
 
-    return $options;
+    return $return ?: [''];
 });
 
 /**
@@ -79,15 +86,21 @@ set('cachetool_options', function () {
  */
 desc('Clears OPcode cache');
 task('cachetool:clear:opcache', function () {
-    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset {{cachetool_options}}");
+    $options = get('cachetool_options');
+    foreach ($options as $option) {
+        run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} opcache:reset $option");
+    }
 });
 
 /**
- * Clear APCU cache
+ * Clear APCu cache
  */
 desc('Clears APCu system cache');
 task('cachetool:clear:apcu', function () {
-    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear {{cachetool_options}}");
+    $options = get('cachetool_options');
+    foreach ($options as $option) {
+        run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} apcu:cache:clear $option");
+    }
 });
 
 /**
@@ -95,5 +108,8 @@ task('cachetool:clear:apcu', function () {
  */
 desc('Clears file status and realpath caches');
 task('cachetool:clear:stat', function () {
-    run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} stat:clear {{cachetool_options}}");
+    $options = get('cachetool_options');
+    foreach ($options as $option) {
+        run("cd {{release_or_current_path}} && {{bin/php}} {{bin/cachetool}} stat:clear $option");
+    }
 });

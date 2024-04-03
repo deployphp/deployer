@@ -252,3 +252,8 @@ function colorize_host(string $alias): string
     $tag = $colors[abs(crc32($alias)) % count($colors)];
     return "<$tag>$alias</>";
 }
+
+function escape_shell_argument(string $argument): string
+{
+    return "'".str_replace("'", "'\\''", $argument)."'";
+}

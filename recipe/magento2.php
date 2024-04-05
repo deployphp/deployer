@@ -10,6 +10,7 @@ use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
+const CONFIG_PHP_UPDATE_NEEDED_EXIT_CODE = 1;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 const MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG = 'maintenance mode is active';
 const ENV_CONFIG_FILE_PATH = 'app/etc/env.php';
@@ -139,6 +140,16 @@ set('database_upgrade_needed', function () {
 
         throw $e;
     }
+    try {
+        run('{{bin/php}} {{bin/magento}} module:config:status');
+    } catch (RunException $e) {
+        if ($e->getExitCode() == CONFIG_PHP_UPDATE_NEEDED_EXIT_CODE) {
+            return true;
+        }
+
+        throw $e;
+    }
+
     return false;
 });
 
@@ -494,6 +505,34 @@ task('magento:cleanup_cache_prefix', function () {
     run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
 });
 
+/**
+ * Remove cron from crontab and kill running cron jobs
+ * To use this feature, add the following to your deployer scripts:
+ *  ```php
+ *  after('magento:maintenance:enable-if-needed', 'magento:cron:stop');
+ *  ```
+ */
+desc('Remove cron from crontab and kill running cron jobs');
+task('magento:cron:stop', function () {
+    if (has('previous_release')) {
+        run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+    }
+
+    run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');
+});
+
+/**
+ * Install cron in crontab
+ * To use this feature, add the following to your deployer scripts:
+ *   ```php
+ *   after('magento:upgrade:db', 'magento:cron:install');
+ *   ```
+ */
+desc('Install cron in crontab');
+task('magento:cron:install', function () {
+    run('cd {{release_or_current_path}}');
+    run('{{bin/php}} {{bin/magento}} cron:install');
+});
 
 desc('Prepares an artifact on the target server');
 task('artifact:prepare', [

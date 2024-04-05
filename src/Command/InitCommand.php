@@ -57,7 +57,7 @@ class InitCommand extends Command
         return 0;
     }
 
-    private function php(): string
+    protected function php(): string
     {
         $h = "";
         foreach ($this->hosts as $host) {
@@ -90,7 +90,7 @@ after('deploy:failed', 'deploy:unlock');
 PHP;
     }
 
-    private function yaml(): string
+    protected function yaml(): string
     {
         $h = "";
         foreach ($this->hosts as $host) {
@@ -120,7 +120,7 @@ after:
 YAML;
     }
 
-    private function getAdditionalConfigs(string $template): string
+    protected function getAdditionalConfigs(string $template): string
     {
         if ($template !== 'common') {
             return '';
@@ -137,7 +137,7 @@ YAML;
 YAML;
     }
 
-    private function recipes(): array
+    protected function recipes(): array
     {
         $recipes = [];
         $dir = new \DirectoryIterator(__DIR__ . '/../../recipe');

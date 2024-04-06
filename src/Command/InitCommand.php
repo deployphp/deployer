@@ -21,12 +21,39 @@ class InitCommand extends Command
 {
     use CommandCommon;
 
+    /**
+     * @var string $recipePath
+     */
     protected $recipePath;
+
+    /**
+     * @var string $language
+     */
     protected $language;
+
+    /**
+     * @var string $template
+     */
     protected $template;
+
+    /**
+     * @var string $repository
+     */
     protected $repository;
+
+    /**
+     * @var string $project
+     */
     protected $project;
+
+    /**
+     * @var array $hosts
+     */
     protected $hosts;
+
+    /**
+     * @var string $tempHostFile
+     */
     protected $tempHostFile;
 
     protected function configure(): void

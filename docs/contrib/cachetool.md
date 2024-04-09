@@ -15,14 +15,14 @@ require 'contrib/cachetool.php';
 
 ## Configuration
 
-- **cachetool** *(optional)*: accepts a *string* or an *array* of strings with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a `cachetool.yml` file and read the configuration from there.
+- **cachetool** *(optional)*: accepts a *string* or an *array* of strings with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a configuration file. The file must be named .cachetool.yml or .cachetool.yaml. CacheTool will look for this file on the current directory and in any parent directory until it finds one. If the paths above fail it will try to load /etc/cachetool.yml or /etc/cachetool.yaml configuration file.
 
     ```php
     set('cachetool', '/var/run/php-fpm.sock');
     // or
     set('cachetool', '127.0.0.1:9000');
     // or
-    set('cachetool', ['/var/run/php-fpm.sock', '/var/run/php-fpm-other.sock]);
+    set('cachetool', ['/var/run/php-fpm.sock', '/var/run/php-fpm-other.sock']);
     ```
 
 You can also specify different cachetool settings for each host:
@@ -127,7 +127,7 @@ Clear opcache cache
 
 Clears APCu system cache.
 
-Clear APCU cache
+Clear APCu cache
 
 
 ### cachetool:clear:stat

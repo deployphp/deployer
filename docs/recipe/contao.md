@@ -84,7 +84,23 @@ return '{{bin/php}} {{release_or_current_path}}/vendor/bin/contao-console';
 
 
 ```php title="Default value"
-return run('{{bin/console}} contao:version');
+$result = run('{{bin/console}} --version');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 'n/a';
+```
+
+
+### symfony_version
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L39)
+
+Overrides [symfony_version](/docs/recipe/symfony.md#symfony_version) from `recipe/symfony.php`.
+
+
+
+```php title="Default value"
+$result = run('{{bin/console}} about');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 5.0;
 ```
 
 
@@ -92,7 +108,7 @@ return run('{{bin/console}} contao:version');
 ## Tasks
 
 ### contao:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L47)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L55)
 
 Run Contao migrations.
 
@@ -108,7 +124,7 @@ task('contao:migrate', function () {
 
 
 ### contao:manager:download
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L53)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L61)
 
 Download the Contao Manager.
 
@@ -116,7 +132,7 @@ Downloads the `contao-manager.phar.php` into the public path.
 
 
 ### contao:install:lock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L67)
 
 Lock the Contao Install Tool.
 
@@ -124,7 +140,7 @@ Locks the Contao install tool which is useful if you don't use it.
 
 
 ### contao:manager:lock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L73)
 
 Lock the Contao Manager.
 
@@ -132,7 +148,7 @@ Locks the Contao Manager which is useful if you only need the API of the Manager
 
 
 ### contao:maintenance:enable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L79)
 
 Enable maintenance mode.
 
@@ -140,7 +156,7 @@ Enable maintenance mode.
 
 
 ### contao:maintenance:disable
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L86)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L94)
 
 Disable maintenance mode.
 
@@ -148,7 +164,7 @@ Disable maintenance mode.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L98)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L106)
 
 Deploy the project.
 

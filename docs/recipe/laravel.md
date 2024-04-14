@@ -461,8 +461,40 @@ Publish all of the Laravel Nova resources.
 
 
 
+### artisan:pulse:check
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L248)
+
+Starts the Pulse server.
+
+
+
+
+### artisan:pulse:restart
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L251)
+
+Restarts the Pulse server.
+
+
+
+
+### artisan:pulse:purge
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L254)
+
+Purges all Pulse data from storage.
+
+
+
+
+### artisan:pulse:work
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L257)
+
+Process incoming Pulse data from the ingest stream.
+
+
+
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L247)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L263)
 
 Deploys your project.
 

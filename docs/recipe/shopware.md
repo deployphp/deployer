@@ -110,7 +110,7 @@ These files are shared among all releases.
 
 ```php title="Default value"
 [
-    '.env',
+    '.env.local',
     'install.lock',
     'public/.htaccess',
     'public/.user.ini',

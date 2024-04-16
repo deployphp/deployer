@@ -35,7 +35,7 @@ set('default_timeout', 3600); // Increase when tasks take longer than that.
 
 // These files are shared among all releases.
 set('shared_files', [
-    '.env',
+    '.env.local',
     'install.lock',
     'public/.htaccess',
     'public/.user.ini',

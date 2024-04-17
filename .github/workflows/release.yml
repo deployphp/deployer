@@ -5,6 +5,9 @@ on:
     types:
       - created
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -18,23 +21,11 @@ jobs:
         run: php -d phar.readonly=0 bin/build -v"$RELEASE_VERSION"
 
       - name: Upload phar
-        run: |
-          export PATH=${PATH}:`go env GOPATH`/bin
-          export RELEASE_ID=$(curl --fail-with-body -L \
-            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-            https://api.github.com/repos/deployphp/deployer/releases \
-            | npx fx ".find(x=> x.tag_name == 'v${RELEASE_VERSION}').id")
-          curl --fail-with-body -L \
-          -X POST \
-          -H "Authorization: Bearer ${GITHUB_TOKEN}" \
-          -H "Content-Type: application/octet-stream" \
-          "https://uploads.github.com/repos/deployphp/deployer/releases/${RELEASE_ID}/assets?name=deployer.phar" \
-          --data-binary "@deployer.phar"
+        run: gh release upload ${{ github.event.release.tag_name }} deployer.phar
         env:
-          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN_FOR_UPLOADING_RELEASES }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add deployer.phar
-        shell: bash
         run: |
           set -x
           git checkout -b dist
@@ -43,13 +34,11 @@ jobs:
           git add -f dep
 
       - name: Remove obsolete files & dirs
-        shell: bash
         run: |
           set -x
           git rm -r .github/ bin/ docs/ tests/ *.lock *.yaml *.xml *.neon
 
       - name: Update composer.json
-        shell: bash
         run: |
           set -x
           cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "dep")' > composer-new.json
@@ -57,7 +46,6 @@ jobs:
           git add composer.json
 
       - name: Push release tag
-        shell: bash
         run: |
           set -x
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -65,3 +53,5 @@ jobs:
           git commit -m "Deployer $RELEASE_VERSION"
           git tag "v$RELEASE_VERSION" --force
           git push origin "v$RELEASE_VERSION" --force
+                env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

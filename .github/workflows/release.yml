@@ -22,8 +22,6 @@ jobs:
 
       - name: Upload phar
         run: gh release upload ${{ github.event.release.tag_name }} deployer.phar
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add deployer.phar
         run: |
@@ -53,5 +51,3 @@ jobs:
           git commit -m "Deployer $RELEASE_VERSION"
           git tag "v$RELEASE_VERSION" --force
           git push origin "v$RELEASE_VERSION" --force
-                env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

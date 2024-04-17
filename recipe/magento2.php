@@ -299,7 +299,8 @@ task('magento:config:import', function () {
 desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
     if (get('database_upgrade_needed')) {
-        run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");
+        run("{{bin/php}} {{bin/magento}} setup:db-schema:upgrade --no-interaction")->once();
+        run("{{bin/php}} {{bin/magento}} setup:db-data:upgrade --no-interaction")->once();        
     } else {
         writeln('Database schema is up to date => upgrade skipped');
     }

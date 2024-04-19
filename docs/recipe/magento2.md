@@ -544,7 +544,7 @@ Config Import.
 ### magento:upgrade:db
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L300)
 
-Upgrades magento database. This task is only excuted once when multiple hosts have been selected for deployment.
+Upgrades magento database.
 
 
 

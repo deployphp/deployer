@@ -85,9 +85,10 @@ Port of remote ssh server to connect to. Default is `22`.
 Default is `~/.ssh/config`.
 
 :::info Config file
-It is a good practice to keep connection parameters out of `deploy.php` file, as
-they can change depending on where the deploy is executed from. Only specify
-`hostname` and `remote_user` and other keep in `~/.ssh/config`:
+For best practices, avoid storing connection parameters in the `deploy.php` file, as 
+these can vary based on the deployment execution location. Instead, only include the 
+hostname and remote_user in `deploy.php`, while maintaining other parameters in the
+`~/.ssh/config` file.
 
 ```
 Host *

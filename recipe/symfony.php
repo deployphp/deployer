@@ -26,6 +26,8 @@ set('writable_dirs', [
     'var/sessions',
 ]);
 
+set('log_files', 'var/log/*.log');
+
 set('migrations_config', '');
 
 set('doctrine_schema_validate_config', '');

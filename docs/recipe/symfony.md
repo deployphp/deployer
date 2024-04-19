@@ -33,7 +33,7 @@ The [deploy](#deploy) task of **Symfony** consists of:
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:update_code](/docs/recipe/shopware.md#deployupdate_code) – 
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
@@ -105,22 +105,32 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ```
 
 
-### migrations_config
+### log_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
 
 
 
+```php title="Default value"
+'var/log/*.log'
+```
 
 
-### doctrine_schema_validate_config
+### migrations_config
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L31)
 
 
 
 
 
-### bin/console
+### doctrine_schema_validate_config
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L33)
+
+
+
+
+
+### bin/console
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
 
 
 
@@ -130,7 +140,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L37)
 
 
 
@@ -143,7 +153,7 @@ return '--no-interaction';
 ## Tasks
 
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L42)
 
 Migrates database.
 
@@ -151,7 +161,7 @@ Migrates database.
 
 
 ### doctrine:schema:validate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L50)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L52)
 
 Validate the Doctrine mapping files.
 
@@ -159,7 +169,7 @@ Validate the Doctrine mapping files.
 
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L57)
 
 Clears cache.
 
@@ -167,7 +177,7 @@ Clears cache.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L66)
 
 Deploys project.
 

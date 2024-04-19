@@ -233,6 +233,29 @@ task('artisan:octane:stop', artisan('octane:stop'));
 desc('Check the status of the octane server');
 task('artisan:octane:status', artisan('octane:status'));
 
+/*
+ * Nova.
+ */
+
+desc('Publish all of the Laravel Nova resources');
+task('artisan:nova:publish', artisan('nova:publish'));
+
+/*
+ * Pulse.
+ */
+
+desc('Starts the Pulse server');
+task('artisan:pulse:check', artisan('pulse:check'));
+
+desc('Restarts the Pulse server');
+task('artisan:pulse:restart', artisan('pulse:restart'));
+
+desc('Purges all Pulse data from storage');
+task('artisan:pulse:purge', artisan('pulse:purge'));
+
+desc('Process incoming Pulse data from the ingest stream');
+task('artisan:pulse:work', artisan('pulse:work'));
+
 /**
  * Main deploy task.
  */

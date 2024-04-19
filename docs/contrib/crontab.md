@@ -11,31 +11,9 @@ require 'contrib/crontab.php';
 [Source](/contrib/crontab.php)
 
 
-
-Recipe for adding crontab jobs.
-
-It checks for duplicates by the command part of the job. Changing the schedule will update the crontab. So when you change the command part you have to manually remove the old one. Use `crontab -e` on the server to remove it.
-
-## Configuration
-
-- *crontab:jobs* - An array of strings with crontab lines.
-
-## Usage
-
-```php
-require 'contrib/crontab.php';
-
-after('deploy:success', 'crontab:sync');
-
-add('crontab:jobs', [
-    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
-]);
-```
-
-
 ## Configuration
 ### bin/crontab
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L28)
 
 Get path to bin
 
@@ -44,19 +22,31 @@ return which('crontab');
 ```
 
 
+### crontab:identifier
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L33)
+
+Set the identifier used in the crontab, application name by default
+
+```php title="Default value"
+return get('application', 'application');
+```
+
+
+### crontab:use_sudo
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L38)
+
+Use sudo to run crontab. When running crontab with sudo, you can use the `-u` parameter to change a crontab for a different user.
+
+```php title="Default value"
+false
+```
+
+
 
 ## Tasks
 
-### crontab:load
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L31)
-
-Loads crontab.
-
-
-
-
 ### crontab:sync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L56)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L41)
 
 Sync crontab jobs.
 

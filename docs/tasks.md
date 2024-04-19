@@ -1,6 +1,6 @@
 # Tasks
 
-Define a tasks by using the [task](api.md#task) function. Also, you can give a description
+Define a task by using the [task](api.md#task) function. Also, you can give a description
 for a task with the [desc](api.md#desc) function called before _task_:
 
 ```php
@@ -10,7 +10,7 @@ task('my_task', function () {
 });
 ```
 
-To get the task or override task config call the _task_ function without second argument:
+To get the task or override task config, call the _task_ function without the second argument:
 
 ```php
 task('my_task')->disable();
@@ -28,7 +28,7 @@ task('deploy', function () {
 })->desc('Task description');
 ```
 
-Same as using [desc()](api.md#desc) func helper:
+Same as using [desc()](api.md#desc) function helper:
 
 ```php
 desc('Task description');
@@ -39,14 +39,15 @@ task('deploy', function () {
 
 ### once()
 
-Sets the task to run only on one of selected hosts.
+Sets the task to run only on one of the selected hosts.
 
 ### oncePerNode()
 
-Sets the task to run only on **one node** of selected hosts.
+Sets the task to run only on **one node** of the selected hosts.
 
-Node determined by [hostname](hosts.md#hostname). For example a few different
-hosts can be deploying to one physical machine (uniq hostname).
+The node is identified by its [hostname](hosts.md#hostname). For instance,
+multiple hosts might deploy to a single physical machine (with a unique hostname).
+
 
 ```php
 host('foo')->setHostname('example.com');
@@ -61,37 +62,37 @@ task('apt:update', function () {
 
 ### hidden()
 
-Hides task from CLI usage page.
+Hides the task from CLI usage page.
 
 ### addBefore()
 
-Adds before hook to the task.
+Adds a before hook to the task.
 
 ### addAfter()
 
-Adds after hook to the task.
+Adds an after hook to the task.
 
 ### limit()
 
-Limits number of hosts the task will be executed in parallel.
+Limits the number of hosts the task will be executed on in parallel.
 
-Default is unlimited (runs the task on all host in parallel).
+Default is unlimited (runs the task on all hosts in parallel).
 
 ### select()
 
-Sets task's host selector.
+Sets the task's host selector.
 
 ### addSelector()
 
-Adds task's selector.
+Adds the task's selector.
 
 ### verbose()
 
-Makes task always verbose. As if `-v` option persists.
+Makes the task always verbose, as if the `-v` option is persistently enabled.
 
 ### disable()
 
-Disables the task. Task will not be executed.
+Disables the task. the task will not be executed.
 
 ### enable()
 
@@ -126,7 +127,7 @@ after('deploy', 'deploy:done');
 After the `deploy` task executed, `deploy:done` will be triggered.
 
 :::note
-You can see which hooks is enabled via **dep tree** command.
+You can see which hooks are enabled via the **dep tree** command.
 
 ```
 dep tree deploy

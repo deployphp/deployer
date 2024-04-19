@@ -33,7 +33,7 @@ The [deploy](#deploy) task of **Craftcms** consists of:
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:update_code](/docs/recipe/shopware.md#deployupdate_code) – 
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
@@ -67,8 +67,20 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 ```
 
 
-### writable_dirs
+### shared_files
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L16)
+
+Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
+
+
+
+```php title="Default value"
+['.env']
+```
+
+
+### writable_dirs
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L18)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -84,35 +96,11 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ```
 
 
-### writable_mode
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L23)
-
-Overrides [writable_mode](/docs/recipe/deploy/writable.md#writable_mode) from `recipe/deploy/writable.php`.
-
-
-
-```php title="Default value"
-'chmod'
-```
-
-
-### writable_recursive
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L24)
-
-Overrides [writable_recursive](/docs/recipe/deploy/writable.md#writable_recursive) from `recipe/deploy/writable.php`.
-
-
-
-```php title="Default value"
-true
-```
-
-
 
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L64)
 
 deploy.
 

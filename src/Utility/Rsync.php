@@ -71,7 +71,12 @@ class Rsync
         if (!is_array($source)) {
             $source = [$source];
         }
-        $command = array_merge(['rsync', $flags], $options, $source, [$destination]);
+        $command = array_values(array_filter(
+            array_merge(['rsync', $flags], $options, $source, [$destination]),
+            function (string $value) {
+                return $value !== '';
+            },
+        ));
 
         $commandString = $command[0];
         for ($i = 1; $i < count($command); $i++) {

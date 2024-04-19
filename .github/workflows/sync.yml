@@ -4,29 +4,16 @@ on:
   push:
     branches: [ master ]
 
+permissions:
+  contents: write
+
 jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
       - name: Run docgen
@@ -37,10 +24,4 @@ jobs:
         with:
           add: 'docs'
           message: '[automatic] Update docs with bin/docgen'
-
-      - name: Deploy docs
-        run: gh --repo "$REPO" workflow run deploy-docs
-        env:
-          GITHUB_TOKEN: ${{ secrets.MY_TOKEN }}
-          REPO: ${{ secrets.DOCS_REPO }}
 

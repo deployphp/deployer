@@ -44,15 +44,15 @@ deploys.
 
 ## GitLab CI/CD
 
-Set the following variables in GitLab project:
+Set the following variables in your GitLab project:
 
 - `SSH_KNOWN_HOSTS`: Content of `~/.ssh/known_hosts` file.
   The public SSH keys for a host may be obtained using the utility `ssh-keyscan`.
   For example: `ssh-keyscan deployer.org`.
 - `SSH_PRIVATE_KEY`: Private key for connecting to remote hosts.
-  To generate private key: `ssh-keygen -t ed25519 -C 'gitlab@deployer.org'`.
+  To generate a private key: `ssh-keygen -t ed25519 -C 'gitlab@deployer.org'`.
 
-Create .gitlab-ci.yml file with following content:
+Create a .gitlab-ci.yml file with the following content:
 
 ```yml
 stages:
@@ -80,11 +80,11 @@ deploy:
 
 Only one deployment job runs at a time with the [`resource_group` keyword](https://docs.gitlab.com/ee/ci/yaml/index.html#resource_group) in .gitlab-ci.yml.
 
-In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#skip-outdated-deployment-jobs) feature.
+In addition, you can ensure that older deployment jobs are cancelled automatically when a newer deployment runs by enabling the [skip outdated deployment jobs](https://docs.gitlab.com/ee/ci/pipelines/settings.html#prevent-outdated-deployment-jobs) feature (enabled by default).
 
 ### Deploy secrets
 
-Is not recommended committing secrets in the repository, you could use a GitLab variable to store them.
+It is not recommended to commit secrets to the repository, you could use a GitLab variable to store them instead.
 
 Many frameworks use dotenv to store secrets, let's create a GitLab file variable named `DOTENV`, so it can be deployed along with the code.
 

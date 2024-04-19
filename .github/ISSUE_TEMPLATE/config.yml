@@ -3,6 +3,3 @@ contact_links:
   - name: Ask question
     url: https://github.com/deployphp/deployer/discussions/category_choices
     about: Please ask questions in discussions.
-  - name: 💰 Paid Support
-    url: https://github.com/deployphp/deployer/discussions/3031
-    about: We can offer a paid support for Deployer.

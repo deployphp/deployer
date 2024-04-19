@@ -33,7 +33,7 @@ The [deploy](#deploy) task of **Laravel** consists of:
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:update_code](/docs/recipe/shopware.md#deployupdate_code) – 
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
@@ -453,8 +453,48 @@ Check the status of the octane server.
 
 
 
+### artisan:nova:publish
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L241)
+
+Publish all of the Laravel Nova resources.
+
+
+
+
+### artisan:pulse:check
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L248)
+
+Starts the Pulse server.
+
+
+
+
+### artisan:pulse:restart
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L251)
+
+Restarts the Pulse server.
+
+
+
+
+### artisan:pulse:purge
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L254)
+
+Purges all Pulse data from storage.
+
+
+
+
+### artisan:pulse:work
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L257)
+
+Process incoming Pulse data from the ingest stream.
+
+
+
+
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L240)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L263)
 
 Deploys your project.
 

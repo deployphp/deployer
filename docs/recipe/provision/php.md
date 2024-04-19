@@ -18,7 +18,7 @@ require 'recipe/provision/php.php';
 
 
 ```php title="Default value"
-return ask(' What PHP version to install? ', '8.1', ['5.6', '7.4', '8.0', '8.1']);
+return ask(' What PHP version to install? ', '8.2', ['5.6', '7.4', '8.0', '8.1', '8.2']);
 ```
 
 
@@ -34,7 +34,7 @@ Installs PHP packages.
 
 
 ### logs:php-fpm
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L60)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L62)
 
 Shows php-fpm logs.
 
@@ -42,7 +42,7 @@ Shows php-fpm logs.
 
 
 ### provision:composer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L67)
 
 Installs Composer.
 

@@ -13,15 +13,14 @@ set('shared_dirs', [
     'web/assets',
 ]);
 
+set('shared_files', ['.env']);
+
 set('writable_dirs', [
     'config/project',
     'storage',
     'web/assets',
     'web/cpresources',
 ]);
-
-set('writable_mode', 'chmod');
-set('writable_recursive', true);
 
 
 /**

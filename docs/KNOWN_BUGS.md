@@ -2,9 +2,9 @@
 
 ## Ubuntu 14.04, Coreutils 8.21
 
-There are known bug with relative symlinks `ln --relative`, which may fail rollback command.
+There are known bugs with relative symlinks `ln --relative`, which may cause the rollback command to fail.
 
-Add next line to _deploy.php_ file:
+Add the following line to your _deploy.php_ file:
 
 ```php
 set('use_relative_symlink', false);

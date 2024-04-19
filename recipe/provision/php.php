@@ -2,7 +2,7 @@
 namespace Deployer;
 
 set('php_version', function () {
-    return ask(' What PHP version to install? ', '8.1', ['5.6', '7.4', '8.0', '8.1']);
+    return ask(' What PHP version to install? ', '8.2', ['5.6', '7.4', '8.0', '8.1', '8.2']);
 });
 
 desc('Installs PHP packages');
@@ -33,12 +33,14 @@ task('provision:php', function () {
     run("sudo sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/$version/cli/php.ini");
     run("sudo sed -i 's/display_errors = .*/display_errors = On/' /etc/php/$version/cli/php.ini");
     run("sudo sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/$version/cli/php.ini");
+    run("sudo sed -i 's/upload_max_filesize = .*/upload_max_filesize = 128M/' /etc/php/$version/cli/php.ini");
     run("sudo sed -i 's/;date.timezone.*/date.timezone = UTC/' /etc/php/$version/cli/php.ini");
 
     // Configure PHP-FPM
     run("sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/$version/fpm/php.ini");
     run("sed -i 's/display_errors = .*/display_errors = On/' /etc/php/$version/fpm/php.ini");
     run("sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/$version/fpm/php.ini");
+    run("sed -i 's/upload_max_filesize = .*/upload_max_filesize = 128M/' /etc/php/$version/fpm/php.ini");
     run("sed -i 's/;date.timezone.*/date.timezone = UTC/' /etc/php/$version/fpm/php.ini");
     run("sed -i 's/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/' /etc/php/$version/fpm/php.ini");
 

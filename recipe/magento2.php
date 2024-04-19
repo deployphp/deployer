@@ -299,11 +299,12 @@ task('magento:config:import', function () {
 desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
     if (get('database_upgrade_needed')) {
-        run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");
+        run("{{bin/php}} {{bin/magento}} setup:db-schema:upgrade --no-interaction");
+        run("{{bin/php}} {{bin/magento}} setup:db-data:upgrade --no-interaction");
     } else {
         writeln('Database schema is up to date => upgrade skipped');
     }
-});
+})->once();
 
 desc('Flushes Magento Cache');
 task('magento:cache:flush', function () {

@@ -504,7 +504,11 @@ task('magento:cleanup_cache_prefix', function () {
 desc('Remove cron from crontab and kill running cron jobs');
 task('magento:cron:stop', function () {
     if (has('previous_release')) {
-        run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+        try {
+            run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+        } catch (RunException $e) {
+            // do nothing
+        }
     }
 
     run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');

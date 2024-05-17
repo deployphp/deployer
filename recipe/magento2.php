@@ -20,7 +20,7 @@ add('recipes', ['magento2']);
 
 // Configuration
 
-// By default setup:static-content:deploy uses `en_US`.
+// By default `setup:static-content:deploy` uses `en_US`.
 // To change that, simply put `set('static_content_locales', 'en_US de_DE');`
 // in you deployer script.
 set('static_content_locales', 'en_US');
@@ -35,12 +35,14 @@ set('static_content_locales', 'en_US');
 // Alternatively The themes can be defined as an associative array, where the key represents the theme name and
 // the key contains the languages for the compilation (for this specific theme).  
 // Examples:  
-// set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from {{static_content_locales}}
+// `set('magento_themes', ['Magento/luma']);` - Will compile this theme with every language from {{static_content_locales}}
+// ```
 // set('magento_themes', [
 //     'Magento/luma'   => null,                              - Will compile all languages from {{static_content_locales}} for Magento/luma
 //     'Custom/theme'   => 'en_US fr_FR'                      - Will compile only en_US and fr_FR for Custom/theme
 //     'Custom/another' => '{{static_content_locales}} it_IT' - Will compile all languages from {{static_content_locales}} + it_IT for Custom/another
 // ]); - Will compile this theme with every language
+// ```
 set('magento_themes', [
 
 ]);
@@ -54,7 +56,7 @@ set('split_static_deployment', false);
 // Use the default languages for the backend as default
 set('static_content_locales_backend', '{{static_content_locales}}');
 
-// backend themes to deploy. Only used if split_static_deployment=true
+// backend themes to deploy. Only used if `split_static_deployment=true`
 // This setting supports the same options/structure as {{magento_themes}}
 set('magento_themes_backend', ['Magento/backend' => null]);
 
@@ -68,7 +70,7 @@ set('content_version', function () {
     return time();
 });
 
-// Magento directory relative to repository root. Use '.' (default) if it is not located in a subdirectory
+// Magento directory relative to repository root. Use `'.'` (default) if it is not located in a subdirectory
 set('magento_dir', '.');
 
 
@@ -159,7 +161,7 @@ set('enable_zerodowntime', true);
 
 // Tasks
 
-// To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
+// To work correctly with artifact deployment, it is necessary to set the `MAGE_MODE` correctly in `app/etc/config.php`
 // e.g.
 // ```php
 // 'MAGE_MODE' => 'production'
@@ -353,7 +355,7 @@ set('artifact_excludes_file', 'artifacts/excludes');
 // If set to true, the artifact is built from a clean copy of the project repository instead of the current working directory
 set('build_from_repo', false);
 
-// Set this value if `build_from_repo` is set to true. The target to deploy must also be set with `--branch`, `--tag` or `--revision`
+// Set this value if `build_from_repo` is set to `true`. The target to deploy must also be set with `--branch`, `--tag` or `--revision`
 set('repository', null);
 
 // The relative path to the artifact file. If the directory does not exist, it will be created

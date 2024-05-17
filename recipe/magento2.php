@@ -523,7 +523,6 @@ task('magento:cron:stop', function () {
 });
 
 /**
- * Install cron in crontab
  * To use this feature, add the following to your deployer scripts:
  *   ```php
  *   after('magento:upgrade:db', 'magento:cron:install');

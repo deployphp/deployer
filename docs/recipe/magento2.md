@@ -154,7 +154,7 @@ set('magento_themes', [
 ### static_deploy_options
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L49)
 
-Static content deployment options, e.g. '--no-parent'
+Static content deployment options, e.g. `--no-parent`
 
 
 
@@ -213,7 +213,7 @@ return time();
 ### magento_dir
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L72)
 
-Magento directory relative to repository root. Use "." (default) if it is not located in a subdirectory
+Magento directory relative to repository root. Use '.' (default) if it is not located in a subdirectory
 
 ```php title="Default value"
 '.'
@@ -399,7 +399,7 @@ false
 
 Overrides [repository](/docs/recipe/common.md#repository) from `recipe/common.php`.
 
-Set this value if "build_from_repo" is set to true. The target to deploy must also be set with "--branch", "--tag" or "--revision"
+Set this value if `build_from_repo` is set to true. The target to deploy must also be set with `--branch`, `--tag` or `--revision`
 
 ```php title="Default value"
 null

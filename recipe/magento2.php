@@ -45,7 +45,7 @@ set('magento_themes', [
 
 ]);
 
-// Static content deployment options, e.g. '--no-parent'
+// Static content deployment options, e.g. `--no-parent`
 set('static_deploy_options', '');
 
 // Deploy frontend and adminhtml together as default
@@ -68,7 +68,7 @@ set('content_version', function () {
     return time();
 });
 
-// Magento directory relative to repository root. Use "." (default) if it is not located in a subdirectory
+// Magento directory relative to repository root. Use '.' (default) if it is not located in a subdirectory
 set('magento_dir', '.');
 
 
@@ -353,7 +353,7 @@ set('artifact_excludes_file', 'artifacts/excludes');
 // If set to true, the artifact is built from a clean copy of the project repository instead of the current working directory
 set('build_from_repo', false);
 
-// Set this value if "build_from_repo" is set to true. The target to deploy must also be set with "--branch", "--tag" or "--revision"
+// Set this value if `build_from_repo` is set to true. The target to deploy must also be set with `--branch`, `--tag` or `--revision`
 set('repository', null);
 
 // The relative path to the artifact file. If the directory does not exist, it will be created

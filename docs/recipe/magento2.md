@@ -688,7 +688,7 @@ after('deploy:magento', 'magento:cleanup_cache_prefix');
 
 Cleanup cache id_prefix env files.
 
-After successful deployment, move the tmp_env.php file to env.php ready for next deployment
+After successful deployment, move the _tmp_env.php_ file to _env.php_ ready for next deployment
 
 
 ### magento:cron:stop

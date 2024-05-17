@@ -150,6 +150,16 @@ task('deploy', [
     'deploy:publish',
 ]);
 
+task('deploy:update_code')->setCallback(static function () {
+    upload('.', '{{release_path}}', [
+        'options' => [
+            '--exclude=.git',
+            '--exclude=deploy.php',
+            '--exclude=node_modules',
+        ],
+    ]);
+});
+
 task('sw-build-without-db:get-remote-config', static function () {
     if (!test('[ -d {{current_path}} ]')) {
         return;

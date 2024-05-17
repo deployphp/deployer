@@ -59,7 +59,7 @@ set('magento_themes_backend', ['Magento/backend' => null]);
 
 // Configuration
 
-// Also set the number of conccurent jobs to run. The default is 1
+// Also set the number of concurrent jobs to run. The default is 1
 // Update using: `set('static_content_jobs', '1');`
 set('static_content_jobs', '1');
 
@@ -197,11 +197,12 @@ task('magento:deploy:assets', function () {
         invoke('magento:deploy:assets:frontend');
     } else {
         if (count(get('magento_themes')) > 0 ) {
-            foreach (get('magento_themes') as $theme) {
+            $themes = array_is_list(get('magento_themes')) ? get('magento_themes') : array_keys(get('magento_themes'));
+            foreach ($themes as $theme) {
                 $themesToCompile .= ' -t ' . $theme;
             }
         }
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
     }
 });
 
@@ -299,11 +300,12 @@ task('magento:config:import', function () {
 desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
     if (get('database_upgrade_needed')) {
-        run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");
+        run("{{bin/php}} {{bin/magento}} setup:db-schema:upgrade --no-interaction");
+        run("{{bin/php}} {{bin/magento}} setup:db-data:upgrade --no-interaction");
     } else {
         writeln('Database schema is up to date => upgrade skipped');
     }
-});
+})->once();
 
 desc('Flushes Magento Cache');
 task('magento:cache:flush', function () {

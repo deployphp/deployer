@@ -29,11 +29,12 @@ set('static_content_locales', 'en_US');
 
 // You can also set the themes to run against. By default it'll deploy
 // all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
+//
 // If the themes are set as a simple list of strings, then all languages defined in {{static_content_locales}} are
 // compiled for the given themes.
 // Alternatively The themes can be defined as an associative array, where the key represents the theme name and
-// the key contains the languages for the compilation (for this specific theme)
-// Example:
+// the key contains the languages for the compilation (for this specific theme).  
+// Examples:  
 // set('magento_themes', ['Magento/luma']); - Will compile this theme with every language from {{static_content_locales}}
 // set('magento_themes', [
 //     'Magento/luma'   => null,                              - Will compile all languages from {{static_content_locales}} for Magento/luma
@@ -448,8 +449,8 @@ task('deploy:additional-shared', function () {
 });
 
 /**
- * Update cache id_prefix on deploy so that you are compiling against a fresh cache
- * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
+ * Update cache id_prefix on deploy so that you are compiling against a fresh cache  
+ * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151  
  * To use this feature, add the following to your deployer scripts:
  * ```php
  * after('deploy:shared', 'magento:set_cache_prefix');

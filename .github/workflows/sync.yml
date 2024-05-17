@@ -4,29 +4,16 @@ on:
   push:
     branches: [ master ]
 
+permissions:
+  contents: write
+
 jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Validate composer.json and composer.lock
-        run: composer validate
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
       - name: Run docgen
@@ -38,14 +25,3 @@ jobs:
           add: 'docs'
           message: '[automatic] Update docs with bin/docgen'
 
-      - name: Deploy docs
-        run: |
-          curl --fail-with-body --location --request POST 'https://api.github.com/repos/antonmedv/deployer.org/actions/workflows/deploy-docs.yml/dispatches' \
-          --header "Authorization: Bearer ${MY_GITHUB_TOKEN}" \
-          --header 'Accept: application/vnd.github.v3+json' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{
-              "ref": "master"
-          }'
-        env:
-          MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}

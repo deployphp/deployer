@@ -35,7 +35,7 @@ set('default_timeout', 3600); // Increase when tasks take longer than that.
 
 // These files are shared among all releases.
 set('shared_files', [
-    '.env',
+    '.env.local',
     'install.lock',
     'public/.htaccess',
     'public/.user.ini',
@@ -105,32 +105,8 @@ task('sw:theme:compile', function () {
 
 function getPlugins(): array
 {
-    $output = explode("\n", run('cd {{release_path}} && {{bin/console}} plugin:list'));
-
-    // Take line over headlines and count "-" to get the size of the cells.
-    $lengths = array_filter(array_map('strlen', explode(' ', $output[4])));
-    $splitRow = function ($row) use ($lengths) {
-        $columns = [];
-        foreach ($lengths as $length) {
-            $columns[] = trim(substr($row, 0, $length));
-            $row = substr($row, $length + 1);
-        }
-        return $columns;
-    };
-    $headers = $splitRow($output[5]);
-    $splitRowIntoStructure = function ($row) use ($splitRow, $headers) {
-        $columns = $splitRow($row);
-        return array_combine($headers, $columns);
-    };
-
-    // Ignore first seven lines (headline, title, table, ...).
-    $rows = array_slice($output, 7, -3);
-
-    $plugins = [];
-    foreach ($rows as $row) {
-        $pluginInformation = $splitRowIntoStructure($row);
-        $plugins[] = $pluginInformation;
-    }
+    $output = run('cd {{release_path}} && {{bin/console}} plugin:list --json');
+    $plugins = json_decode($output);
 
     return $plugins;
 }
@@ -138,9 +114,9 @@ function getPlugins(): array
 task('sw:plugin:update:all', static function () {
     $plugins = getPlugins();
     foreach ($plugins as $plugin) {
-        if ($plugin['Installed'] === 'Yes') {
-            writeln("<info>Running plugin update for " . $plugin['Plugin'] . "</info>\n");
-            run("cd {{release_path}} && {{bin/console}} plugin:update " . $plugin['Plugin']);
+        if ($plugin->installedAt && $plugin->upgradeVersion) {
+            writeln("<info>Running plugin update for " . $plugin->name . "</info>\n");
+            run("cd {{release_path}} && {{bin/console}} plugin:update " . $plugin->name);
         }
     }
 });
@@ -171,6 +147,16 @@ task('deploy', [
     'sw:writable:jwt',
     'deploy:publish',
 ]);
+
+task('deploy:update_code')->setCallback(static function () {
+    upload('.', '{{release_path}}', [
+        'options' => [
+            '--exclude=.git',
+            '--exclude=deploy.php',
+            '--exclude=node_modules',
+        ],
+    ]);
+});
 
 task('sw-build-without-db:get-remote-config', static function () {
     if (!test('[ -d {{current_path}} ]')) {

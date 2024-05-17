@@ -18,7 +18,7 @@ require 'recipe/provision/nodejs.php';
 Node.js version from https://github.com/nodesource/distributions.
 
 ```php title="Default value"
-'node_16.x'
+'node_20.x'
 ```
 
 

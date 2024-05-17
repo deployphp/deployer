@@ -1,5 +1,3 @@
-<a href="https://webpod.dev/?from=deployer"><img src="https://webpod.dev/img/banner.png" alt="Webpod - deploy JavaScript apps" width="190" align="right"></a>
-
 <h1><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/logo.png" alt="Deployer Logo" height="30"></a> Deployer</h1>
 <p>The PHP deployment tool with support for popular frameworks out of the box.</p>
 

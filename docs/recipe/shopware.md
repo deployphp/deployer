@@ -33,7 +33,7 @@ The [deploy](#deploy) task of **Shopware** consists of:
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:update_code](/docs/recipe/shopware.md#deployupdate_code) – 
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [sw:deploy](/docs/recipe/shopware.md#swdeploy) – 
@@ -110,7 +110,7 @@ These files are shared among all releases.
 
 ```php title="Default value"
 [
-    '.env',
+    '.env.local',
     'install.lock',
     'public/.htaccess',
     'public/.user.ini',
@@ -225,7 +225,7 @@ to build the theme remotely instead of locally.
 
 
 ### sw:plugin:update:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L138)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L114)
 
 
 
@@ -233,7 +233,7 @@ to build the theme remotely instead of locally.
 
 
 ### sw:writable:jwt
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L148)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L124)
 
 
 
@@ -241,7 +241,7 @@ to build the theme remotely instead of locally.
 
 
 ### sw:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L155)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L131)
 
 
 
@@ -259,7 +259,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L166)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L142)
 
 Deploys your project.
 
@@ -275,8 +275,16 @@ This task is group task which contains next tasks:
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 
+### deploy:update_code
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L151)
+
+
+
+
+
+
 ### sw-build-without-db:get-remote-config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L175)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L161)
 
 
 
@@ -284,7 +292,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L188)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L174)
 
 
 
@@ -292,7 +300,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L192)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L178)
 
 
 

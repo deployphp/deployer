@@ -164,7 +164,7 @@ set('enable_zerodowntime', true);
 // ```php
 // 'MAGE_MODE' => 'production'
 // ```
-desc('Compiles magento di');
+desc('Compiles Magento di');
 task('magento:compile', function () {
     run("{{bin/php}} {{bin/magento}} setup:di:compile");
     run('cd {{release_or_current_path}}/{{magento_dir}} && {{bin/composer}} dump-autoload -o');
@@ -297,7 +297,7 @@ task('magento:config:import', function () {
     }
 });
 
-desc('Upgrades magento database');
+desc('Upgrades Magento database');
 task('magento:upgrade:db', function () {
     if (get('database_upgrade_needed')) {
         run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated --no-interaction");

@@ -40,11 +40,11 @@ The [deploy](#deploy) task of **Magento 2** consists of:
 * [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths) – Cleanup files and/or directories
 * [deploy:magento](/docs/recipe/magento2.md#deploymagento) – Magento2 deployment operations
   * [magento:build](/docs/recipe/magento2.md#magentobuild) – Magento2 build operations
-    * [magento:compile](/docs/recipe/magento2.md#magentocompile) – Compiles magento di
+    * [magento:compile](/docs/recipe/magento2.md#magentocompile) – Compiles Magento di
     * [magento:deploy:assets](/docs/recipe/magento2.md#magentodeployassets) – Deploys assets
   * [magento:maintenance:enable-if-needed](/docs/recipe/magento2.md#magentomaintenanceenable-if-needed) – Set maintenance mode if needed
   * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport) – Config Import
-  * [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades magento database
+  * [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades Magento database
   * [magento:maintenance:disable](/docs/recipe/magento2.md#magentomaintenancedisable) – Disables maintenance mode
   * [magento:cache:flush](/docs/recipe/magento2.md#magentocacheflush) – Flushes Magento Cache
 * [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
@@ -83,7 +83,7 @@ to your deploy yaml.
 The [artifact:build](#artifact:build) command of **Magento 2** consists of: * [build:prepare](/docs/recipe/magento2.md#buildprepare) – Prepare local artifact build
 * [build:remove-generated](/docs/recipe/magento2.md#buildremove-generated) – Clears generated files prior to building.
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
-* [magento:compile](/docs/recipe/magento2.md#magentocompile) – Compiles magento di
+* [magento:compile](/docs/recipe/magento2.md#magentocompile) – Compiles Magento di
 * [magento:deploy:assets](/docs/recipe/magento2.md#magentodeployassets) – Deploys assets
 * [artifact:package](/docs/recipe/magento2.md#artifactpackage) – Packages all relevant files in an artifact.
 
@@ -101,7 +101,7 @@ The [artifact:build](#artifact:build) command of **Magento 2** consists of: * [b
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [magento:maintenance:enable-if-needed](/docs/recipe/magento2.md#magentomaintenanceenable-if-needed) – Set maintenance mode if needed
 * [magento:config:import](/docs/recipe/magento2.md#magentoconfigimport) – Config Import
-* [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades magento database
+* [magento:upgrade:db](/docs/recipe/magento2.md#magentoupgradedb) – Upgrades Magento database
 * [magento:maintenance:disable](/docs/recipe/magento2.md#magentomaintenancedisable) – Disables maintenance mode
 * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
 * [artifact:finish](/docs/recipe/magento2.md#artifactfinish) – Executes the tasks after artifact is released
@@ -450,7 +450,7 @@ Array of shared directories that will be added to the default shared_dirs withou
 ### magento:compile
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L168)
 
-Compiles magento di.
+Compiles Magento di.
 
 To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
 e.g.
@@ -545,7 +545,7 @@ Config Import.
 ### magento:upgrade:db
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L301)
 
-Upgrades magento database.
+Upgrades Magento database.
 
 
 

@@ -59,7 +59,7 @@ set('magento_themes_backend', ['Magento/backend' => null]);
 
 // Configuration
 
-// Also set the number of conccurent jobs to run. The default is 1
+// Also set the number of concurrent jobs to run. The default is 1
 // Update using: `set('static_content_jobs', '1');`
 set('static_content_jobs', '1');
 

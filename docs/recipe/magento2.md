@@ -191,7 +191,7 @@ This setting supports the same options/structure as [magento_themes](/docs/recip
 ### static_content_jobs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L64)
 
-Also set the number of conccurent jobs to run. The default is 1
+Also set the number of concurrent jobs to run. The default is 1
 Update using: `set('static_content_jobs', '1');`
 
 ```php title="Default value"

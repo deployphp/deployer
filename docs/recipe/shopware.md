@@ -59,13 +59,14 @@ The shopware recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Usage
 
-Add {{repository}} to your _deploy.php_ file:
+Add `repository` to your _deploy.php_ file:
 
 ```php
 set('repository', 'git@github.com:shopware/production.git');
 ```
 
 configure host:
+```php
 host('SSH-HOSTNAME')
     ->set('remote_user', 'SSH-USER')
     ->set('deploy_path', '/var/www/shopware') // This is the path, where deployer will create its directory structure
@@ -74,6 +75,7 @@ host('SSH-HOSTNAME')
     ->set('writable_mode', 'chmod')
     ->set('writable_recursive', true)
     ->set('become', 'www-data'); // You might want to change user to execute remote tasks because of access rights of created cache files
+```
 
 :::note
 Please remember that the installation must be modified so that it can be
@@ -83,7 +85,7 @@ Please remember that the installation must be modified so that it can be
 
 ## Configuration
 ### bin/console
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L32)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L34)
 
 
 
@@ -93,7 +95,7 @@ Please remember that the installation must be modified so that it can be
 
 
 ### default_timeout
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L34)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L36)
 
 Overrides [default_timeout](/docs/recipe/common.md#default_timeout) from `recipe/common.php`.
 
@@ -102,7 +104,7 @@ Overrides [default_timeout](/docs/recipe/common.md#default_timeout) from `recipe
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L37)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L39)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -119,7 +121,7 @@ These files are shared among all releases.
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L47)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -138,7 +140,7 @@ These directories are shared among all releases.
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L56)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L58)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -167,7 +169,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
 ## Tasks
 
 ### sw:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L72)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L74)
 
 
 
@@ -175,7 +177,7 @@ This task remotely executes the `cache:clear` console command on the target serv
 
 
 ### sw:cache:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L80)
 
 
 
@@ -184,7 +186,7 @@ visits the website, doesn't have to wait for the cache to be built up.
 
 
 ### sw:database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L84)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L86)
 
 
 
@@ -192,7 +194,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:plugin:refresh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L88)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L90)
 
 
 
@@ -200,7 +202,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:scheduled-task:register
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L92)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L94)
 
 
 
@@ -208,7 +210,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:theme:refresh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L96)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L98)
 
 
 
@@ -216,7 +218,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 ### sw:theme:compile
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L102)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L104)
 
 
 
@@ -225,7 +227,7 @@ to build the theme remotely instead of locally.
 
 
 ### sw:plugin:update:all
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L114)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L116)
 
 
 
@@ -233,7 +235,7 @@ to build the theme remotely instead of locally.
 
 
 ### sw:writable:jwt
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L124)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L126)
 
 
 
@@ -241,7 +243,7 @@ to build the theme remotely instead of locally.
 
 
 ### sw:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L131)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L133)
 
 
 
@@ -259,7 +261,7 @@ This task is group task which contains next tasks:
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L142)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L144)
 
 Deploys your project.
 
@@ -276,7 +278,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:get-remote-config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L151)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L153)
 
 
 
@@ -284,7 +286,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db:build
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L164)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L166)
 
 
 
@@ -292,7 +294,7 @@ This task is group task which contains next tasks:
 
 
 ### sw-build-without-db
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L168)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L170)
 
 
 

@@ -23,7 +23,7 @@ task('provision:website', function () {
     run("[ -d log ] || mkdir log");
     run("chgrp caddy log");
 
-    $caddyfile = parse(file_get_contents('./Caddyfile'));
+    $caddyfile = parse(file_get_contents(__DIR__ . '/Caddyfile'));
 
     if (test('[ -f Caddyfile ]')) {
         run("echo $'$caddyfile' > Caddyfile.new");

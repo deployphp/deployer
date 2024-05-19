@@ -64,12 +64,19 @@ task('provision:configure', function () {
         'public_path',
         'php_version',
         'db_type',
+    ];
+    $dbparams = [
         'db_user',
         'db_name',
         'db_password',
     ];
     foreach ($params as $name) {
         get($name);
+    }
+    if (get('db_type') !== 'none') {
+        foreach ($dbparams as $name) {
+            get($name);
+        }
     }
 });
 

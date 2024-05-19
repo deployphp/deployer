@@ -13,12 +13,15 @@ require 'recipe/provision/php.php';
 
 ## Configuration
 ### php_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L4)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L5)
 
 
 
 ```php title="Default value"
-return ask(' What PHP version to install? ', '8.2', ['5.6', '7.4', '8.0', '8.1', '8.2']);
+$defaultphpVersion = file_exists('composer.json')
+? explode('|', preg_replace('/[^0-9.|]+/', '', json_decode(file_get_contents('composer.json'), true)['require']['php'] ?? '8.3'))[0]
+: '8.3';
+return ask(' What PHP version to install? ', $defaultphpVersion, ['5.6', '7.4', '8.0', '8.1', '8.2']);
 ```
 
 
@@ -26,7 +29,7 @@ return ask(' What PHP version to install? ', '8.2', ['5.6', '7.4', '8.0', '8.1',
 ## Tasks
 
 ### provision:php
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L13)
 
 Installs PHP packages.
 
@@ -34,7 +37,7 @@ Installs PHP packages.
 
 
 ### logs:php-fpm
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L62)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L66)
 
 Shows php-fpm logs.
 
@@ -42,7 +45,7 @@ Shows php-fpm logs.
 
 
 ### provision:composer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L67)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L71)
 
 Installs Composer.
 

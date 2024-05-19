@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require __DIR__ . '/provision/databases.php';
@@ -67,12 +68,6 @@ task('provision:configure', function () {
         'db_name',
         'db_password',
     ];
-    $code = "\n\n    host(<info>'{{alias}}'</info>)";
-    foreach ($params as $name) {
-        $code .= "\n        ->set(<info>'$name'</info>, <info>'…'</info>)";
-    }
-    $code .= ";\n\n";
-    writeln($code);
     foreach ($params as $name) {
         get($name);
     }

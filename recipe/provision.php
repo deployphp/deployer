@@ -53,6 +53,9 @@ task('provision:check', function () {
         warning('!!  Only Ubuntu 20.04 LTS supported!  !!');
         warning('!!                                    !!');
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        if (!askConfirmation(' Do you want to continue? (Not recommended)', false)) {
+            throw new \RuntimeException('Provision aborted due to incompatible OS.');
+        }
     }
 })->oncePerNode();
 

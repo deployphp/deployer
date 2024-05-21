@@ -434,8 +434,14 @@ task('artifact:build', [
         'deploy:vendors',
         'magento:compile',
         'magento:deploy:assets',
+        'artifact:set-permissions',
         'artifact:package',
 ]);
+
+desc('Set permissions on files and directories');
+task('artifact:fix-permissions', function () {
+    run('chmod -R 644 {{release_or_current_path}} && chmod -R a+X {{release_or_current_path}} && chmod ug+x {{release_or_current_path}}/bin/*');
+});
 
 // Array of shared files that will be added to the default shared_files without overriding
 set('additional_shared_files', []);

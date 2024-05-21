@@ -29,7 +29,7 @@ return run("lsb_release -s -c");
 
 
 ### sudo_password
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L221)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L228)
 
 
 
@@ -39,7 +39,7 @@ return askHiddenResponse(' Password for sudo: ');
 
 
 ### ssh_copy_id
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L227)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L234)
 
 Specify which key to copy to server.
 Set to `false` to disable copy of key.
@@ -95,7 +95,7 @@ Collects required params.
 
 
 ### provision:update
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L94)
 
 Adds repositories and update.
 
@@ -103,7 +103,7 @@ Adds repositories and update.
 
 
 ### provision:upgrade
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L109)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L116)
 
 Upgrades all packages.
 
@@ -111,7 +111,7 @@ Upgrades all packages.
 
 
 ### provision:install
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L116)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L123)
 
 Installs packages.
 
@@ -119,7 +119,7 @@ Installs packages.
 
 
 ### provision:server
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L150)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L157)
 
 Configures a server.
 
@@ -127,7 +127,7 @@ Configures a server.
 
 
 ### provision:ssh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L211)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L218)
 
 Configures the ssh.
 
@@ -135,7 +135,7 @@ Configures the ssh.
 
 
 ### provision:deployer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L230)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L237)
 
 Setups a deployer user.
 
@@ -143,7 +143,7 @@ Setups a deployer user.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L277)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L284)
 
 Setups a firewall.
 
@@ -151,7 +151,7 @@ Setups a firewall.
 
 
 ### provision:verify
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L285)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L292)
 
 Verifies what provision was successful.
 

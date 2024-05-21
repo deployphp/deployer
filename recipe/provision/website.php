@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Deployer;
 
 set('domain', function () {
@@ -11,17 +14,16 @@ set('public_path', function () {
 
 desc('Provision website');
 task('provision:website', function () {
-    set('deploy_path', run("realpath {{deploy_path}}"));
-
     run("[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}}");
     run("chown -R deployer:deployer {{deploy_path}}");
 
+    set('deploy_path', run("realpath {{deploy_path}}"));
     cd('{{deploy_path}}');
 
     run("[ -d log ] || mkdir log");
     run("chgrp caddy log");
 
-    $caddyfile = parse(file_get_contents('./Caddyfile'));
+    $caddyfile = parse(file_get_contents(__DIR__ . '/Caddyfile'));
 
     if (test('[ -f Caddyfile ]')) {
         run("echo $'$caddyfile' > Caddyfile.new");
@@ -59,4 +61,3 @@ desc('Shows caddy syslog');
 task('logs:caddy:syslog', function () {
     run('sudo journalctl -u caddy -f');
 })->verbose();
-

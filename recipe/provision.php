@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require __DIR__ . '/provision/databases.php';
@@ -52,6 +53,9 @@ task('provision:check', function () {
         warning('!!  Only Ubuntu 20.04 LTS supported!  !!');
         warning('!!                                    !!');
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        if (!askConfirmation(' Do you want to continue? (Not recommended)', false)) {
+            throw new \RuntimeException('Provision aborted due to incompatible OS.');
+        }
     }
 })->oncePerNode();
 
@@ -63,18 +67,19 @@ task('provision:configure', function () {
         'public_path',
         'php_version',
         'db_type',
+    ];
+    $dbparams = [
         'db_user',
         'db_name',
         'db_password',
     ];
-    $code = "\n\n    host(<info>'{{alias}}'</info>)";
-    foreach ($params as $name) {
-        $code .= "\n        ->set(<info>'$name'</info>, <info>'…'</info>)";
-    }
-    $code .= ";\n\n";
-    writeln($code);
     foreach ($params as $name) {
         get($name);
+    }
+    if (get('db_type') !== 'none') {
+        foreach ($dbparams as $name) {
+            get($name);
+        }
     }
 });
 

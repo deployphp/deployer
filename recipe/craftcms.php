@@ -22,12 +22,12 @@ set('writable_dirs', [
     'web/cpresources',
 ]);
 
-
 /**
  * Run a craft command.
  *
  * Supported options:
  *  - 'showOutput': Show the output of the command if given.
+ *  - 'interactive': Don't append the --interactive=0 flag to the command.
  *
  * @param string $command The craft command (with cli options if any).
  * @param array $options The options that define the behaviour of the command.
@@ -41,6 +41,11 @@ function craft($command, $options = [])
             throw new \Exception('Your .env file is empty! Cannot proceed.');
         }
 
+        // By default we don't want any command to be interactive
+        if(! in_array('interactive', $options)) {
+            $command .= ' --interactive=0';
+        }
+
         $output = run("{{bin/php}} {{release_path}}/craft $command");
 
         if (in_array('showOutput', $options)) {
@@ -49,22 +54,83 @@ function craft($command, $options = [])
     };
 }
 
-desc('Execute craft migrate/all');
-task('craft:migrate/all', craft('migrate/all --interactive=0'))->once();
+/*
+ * Migrations
+ */
 
-desc('Execute craft project-config/apply');
-task('craft:project-config/apply', craft('project-config/apply --interactive=0'))->once();
+desc('Runs all pending Craft, plugin, and content migrations');
+task('craft:migrate/all', craft('migrate/all'));
 
-desc('Execute craft clear-caches/all');
-task('craft:clear-caches/all', craft('clear-caches/all --interactive=0'))->once();
+desc('Upgrades Craft by applying new migrations');
+task('craft:migrate/up', craft('migrate/up'));
 
-desc('deploy');
+/*
+ * Generate keys
+ */
+
+desc('Generates a new application ID and saves it in the `.env` file');
+task('craft:setup/app-id', craft('setup/app-id'));
+
+desc('Generates a new security key and saves it in the `.env` file');
+task('craft:setup/security-key', craft('setup/security-key'));
+
+/*
+ * Project config
+ */
+
+desc('Applies project config file changes.');
+task('craft:project-config/apply', craft('project-config/apply'));
+
+/*
+ * Caches
+ */
+
+desc('Flushes all caches registered in the system');
+task('craft:cache/flush-all', craft('cache/flush-all'));
+
+desc('Clear all caches');
+task('craft:clear-caches/all', craft('clear-caches/all'));
+
+desc('Clear all Asset caches');
+task('craft:clear-caches/asset', craft('clear-caches/asset'));
+
+desc('Clear all Asset indexing data');
+task('craft:clear-caches/asset-indexing-data', craft('clear-caches/asset-indexing-data'));
+
+desc('Clear all compiled classes');
+task('craft:clear-caches/compiled-classes', craft('clear-caches/compiled-classes'));
+
+desc('Clear all compiled templates');
+task('craft:clear-caches/compiled-templates', craft('clear-caches/compiled-templates'));
+
+desc('Clear all control panel resources');
+task('craft:clear-caches/cp-resources', craft('clear-caches/cp-resources'));
+
+desc('Clear all data caches');
+task('craft:clear-caches/data', craft('clear-caches/data'));
+
+desc('Clear all temp files');
+task('craft:clear-caches/temp-files', craft('clear-caches/temp-files'));
+
+/*
+ * Garbage collection
+ */
+
+desc('Runs garbage collection');
+task('craft:gc', craft('gc --delete-all-trashed=1 --silent-exit-on-exception=1', ['showOutput']));
+
+/*
+ * Main deploy
+ */
+
+desc('Deploys Craft CMS');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
-    'craft:clear-caches/all',
+    'craft:clear-caches/compiled-classes',
     'craft:migrate/all',
     'craft:project-config/apply',
+    'craft:gc',
+    'craft:clear-caches/all',
     'deploy:publish',
 ]);
-

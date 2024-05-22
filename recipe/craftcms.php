@@ -27,9 +27,11 @@ set('writable_dirs', [
  * Run a craft command.
  *
  * Supported options:
+ *  - 'showOutput': Show the output of the command if given.
  *
  * @param string $command The craft command (with cli options if any).
  * @param array $options The options that define the behaviour of the command.
+ *
  * @return callable A function that can be used as a task.
  */
 function craft($command, $options = [])
@@ -39,14 +41,10 @@ function craft($command, $options = [])
             throw new \Exception('Your .env file is empty! Cannot proceed.');
         }
 
-        try {
-            $output = run("cd {{release_path}} && {{bin/php}} craft $command");
+        $output = run("{{bin/php}} {{release_path}}/craft $command");
 
-            if (in_array('showOutput', $options)) {
-                writeln("<info>$output</info>");
-            }
-        } catch (\Throwable $e) {
-            writeln("<error>{$e->getMessage()}</error>");
+        if (in_array('showOutput', $options)) {
+            writeln("<info>$output</info>");
         }
     };
 }

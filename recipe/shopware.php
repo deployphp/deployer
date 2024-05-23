@@ -2,13 +2,14 @@
 /**
  * ## Usage
  *
- * Add {{repository}} to your _deploy.php_ file:
+ * Add `repository` to your _deploy.php_ file:
  *
  * ```php
  * set('repository', 'git@github.com:shopware/production.git');
  * ```
  *
  * configure host:
+ * ```php
  * host('SSH-HOSTNAME')
  *     ->set('remote_user', 'SSH-USER')
  *     ->set('deploy_path', '/var/www/shopware') // This is the path, where deployer will create its directory structure
@@ -17,6 +18,7 @@
  *     ->set('writable_mode', 'chmod')
  *     ->set('writable_recursive', true)
  *     ->set('become', 'www-data'); // You might want to change user to execute remote tasks because of access rights of created cache files
+ * ```
  * 
  * :::note
  * Please remember that the installation must be modified so that it can be

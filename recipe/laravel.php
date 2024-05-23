@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -25,6 +26,7 @@ set('laravel_version', function () {
     preg_match_all('/(\d+\.?)+/', $result, $matches);
     return $matches[0][0] ?? 5.5;
 });
+set('public_path', 'public');
 
 /**
  * Run an artisan command.

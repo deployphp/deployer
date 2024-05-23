@@ -73,12 +73,17 @@ task('provision:configure', function () {
         'db_name',
         'db_password',
     ];
-    $code = "\n\n    host(<info>'{{alias}}'</info>)";
-    foreach ($params as $name) {
-        $code .= "\n        ->set(<info>'$name'</info>, <info>'…'</info>)";
+    $code = "\n\n<comment>* To streamline script execution, include the following configuration in your <info>deploy.php</info>.</comment>";
+    $code .= "\n<fg=magenta> - Do not include sensitive information if the file is shared. Replace <info>…</info> with actual data</>";
+    $code .= "\n<fg=magenta> - If a database configuration is not required, 'db_user', 'db_name', and 'db_password' can be omitted.</>";
+    $code .= "\n\n<comment>====== Configuration Start ======</comment>";
+    $code .= "\nhost(<info>'{{alias}}'</info>)";
+    foreach (array_merge($params, $dbparams) as $name) {
+        $code .= "\n    ->set(<info>'$name'</info>, <info>'…'</info>)";
     }
-    $code .= ";\n\n";
-    writeln($code);    
+    $code .= ";\n";
+    $code .= "<comment>====== Configuration End ======</comment>\n\n";
+    writeln($code);
     foreach ($params as $name) {
         get($name);
     }

@@ -202,7 +202,7 @@ task('magento:deploy:assets', function () {
                 $themesToCompile .= ' -t ' . $theme;
             }
         }
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+        run("{{bin/php}} {{release_or_current_path}}/{{magento_dir}}/bin/magento setup:static-content:deploy -f --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
     }
 });
 

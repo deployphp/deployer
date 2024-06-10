@@ -269,6 +269,15 @@ task('magento:sync:content_version', function () {
 
 before('magento:deploy:assets', 'magento:sync:content_version');
 
+before('deploy:vendors', function(){
+    set('original_release_or_current_path',get('release_or_current_path'));
+    set('release_or_current_path', get('release_or_current_path') .'/'. get('magento_dir'));
+});
+
+after('deploy:vendors', function (){
+    set('release_or_current_path', get('original_release_or_current_path'));
+});
+
 desc('Enables maintenance mode');
 task('magento:maintenance:enable', function () {
     // do not use {{bin/magento}} because it would be in "release" but the maintenance mode must be set in "current"

@@ -1,18 +1,19 @@
 # CLI Usage
 
-We recommend adding next alias to your .bashrc file:
+We recommend adding the following alias to your .bashrc file:
 
 ```bash
 alias dep='vendor/bin/dep'
 ```
 
-As well as installing completion script for Deployer, completion supports:
+It is also recommended to install the completion script for Deployer. Completion supports:
+
 - tasks,
 - options,
 - host names,
 - and configs.
 
-For example for macOS run next commands:
+For example, on macOS run the following commands:
 
 ```bash
 brew install bash-completion
@@ -49,7 +50,8 @@ dep run 'uptime -p'
 
 ## Tree command
 
-Deployer has group tasks and before/after hooks, so see task tree use **dep tree** command:
+Deployer supports [task grouping](tasks.md#task-grouping) and [before/after hooks](tasks.md#addbefore). 
+To visualize the task hierarchy, use the **dep tree** command.
 
 ```
 $ dep tree deploy
@@ -79,8 +81,8 @@ The task-tree for deploy:
 
 ## Execution plan
 
-Before executing tasks, Deployer needs to flatten task tree and to decide in which order it will be executing tasks
-on which hosts. Use `--plan` option to output table with tasks/hosts:
+Before executing tasks, Deployer needs to flatten the task tree and decide in which order it will be executing tasks
+on which hosts. Use the `--plan` option to output a table with tasks/hosts:
 
 ```
 $ dep deploy --plan all
@@ -111,7 +113,7 @@ $ dep deploy --plan all
 └──────────────────────┴──────────────────────┴──────────────────────┴──────────────────────┘
 ```
 
-The **deploy.php*:
+The **deploy.php**:
 
 ```php
 host('prod[01:04]');
@@ -120,14 +122,14 @@ task('deploy:symlink')->limit(1);
 
 ## The `runLocally` working dir
 
-By default `runLocally()` commands are executed relative to the recipe file directory. 
+By default, `runLocally()` commands are executed relative to the recipe file directory.
 This can be overridden globally by setting an environment variable:
 
 ```
 DEPLOYER_ROOT=. dep taskname`
 ```
 
-Alternatively the root directory can be overridden per command via the cwd configuration.
+Alternatively, the root directory can be overridden per command via the cwd configuration.
 
 ```php
 runLocally('ls', ['cwd' => '/root/directory']);
@@ -136,9 +138,9 @@ runLocally('ls', ['cwd' => '/root/directory']);
 ## Play blackjack
 
 > Yeah, well. I'm gonna go build my own theme park... with blackjack and hookers!
-> 
+>
 > In fact, forget the park!
-> 
+>
 > — Bender
 
 ```

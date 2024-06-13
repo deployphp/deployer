@@ -4,6 +4,10 @@
 
 # Shared Recipe
 
+```php
+require 'recipe/deploy/shared.php';
+```
+
 [Source](/recipe/deploy/shared.php)
 
 

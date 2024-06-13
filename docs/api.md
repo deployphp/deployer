@@ -339,11 +339,10 @@ invoke('deploy:symlink');
 upload($source, string $destination, array $config = []): void
 ```
 
-Upload file or directory to host.
+Upload files or directories to host.
 
-> You may have noticed that there is a trailing slash (/) at the end of the first argument in the above command, this is necessary to mean “the contents of build“.
->
-> The alternative, without the trailing slash, would place build, including the directory, within public. This would create a hierarchy that looks like: {{release_path}}/public/build
+> To upload the _contents_ of a directory, include a trailing slash (eg `upload('build/', '{{release_path}}/public');`).
+> Without the trailing slash, the build directory itself will be uploaded (resulting in `{{release_path}}/public/build`).
 
  The `$config` array supports the following keys:
 
@@ -351,7 +350,11 @@ Upload file or directory to host.
 - `options` with additional flags passed directly to the `rsync` command
 - `timeout` for `Process::fromShellCommandline()` (`null` by default)
 - `progress_bar` to display upload/download progress
-- `display_stats' to display rsync set of statistics
+- `display_stats` to display rsync set of statistics
+
+Note: due to the way php escapes command line arguments, list-notation for the rsync `--exclude={'file','anotherfile'}` option will not work.
+A workaround is to add a separate `--exclude=file` argument for each exclude to `options` (also, _do not_ wrap the filename/filter in quotes).
+An alternative might be to write the excludes to a temporary file (one per line) and use `--exclude-from=temporary_file` argument instead.
 
 
 

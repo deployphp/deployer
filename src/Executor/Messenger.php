@@ -52,7 +52,9 @@ class Messenger
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::group::task {$task->getName()}");
         } else if (getenv('GITLAB_CI')) {
-            $this->output->writeln("\e[0Ksection_start:{$this->startTime}:{$this->startTime}[collapsed=true]\r\e[0K{$task->getName()}");
+            $sectionId = md5($task->getName());
+            $start = round($this->startTime/1000);
+            $this->output->writeln("\e[0Ksection_start:{$start}:{$sectionId}[collapsed=true]\r\e[0K{$task->getName()}");
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }
@@ -62,7 +64,7 @@ class Messenger
     /*
      * Print task was ok.
      */
-    public function endTask(Task $task): void
+    public function endTask(Task $task, bool $error = false): void
     {
         if (empty($this->startTime)) {
             $this->startTime = round(microtime(true) * 1000);
@@ -77,9 +79,15 @@ class Messenger
         if (getenv('GITHUB_WORKFLOW')) {
             $this->output->writeln("::endgroup::");
         } else if (getenv('GITLAB_CI')) {
-            $this->output->writeln("\e[0Ksection_end:{$taskTime}:{$this->startTime}\r\e[0K");
+            $sectionId = md5($task->getName());
+            $endTime = round($endTime/1000);
+            $this->output->writeln("\e[0Ksection_end:{$endTime}:{$sectionId}\r\e[0K");
         } else if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
+        }
+        if ($error) {
+            $this->output->writeln("\e[0K\e[31;1mERROR: Task {$task->getName()} failed!\e[0;m");
+            return;
         }
         $this->logger->log("done {$task->getName()} $taskTime");
 

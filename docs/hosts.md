@@ -120,63 +120,69 @@ set('default_selector', "stage=prod&role=web,role=special");
 
 ### `alias`
 
-The identifier used to identify a host. 
+The identifier used to identify a host.
 You can use actual hostname or something like `prod` or `staging`.
 
-### `hostname` 
+### `hostname`
 
 Deployer uses this config for actual ssh connection.
 
-### `remote_user` 
+### `remote_user`
 
-Deployer uses this config for actual ssh connection. If not specified, 
+Deployer uses this config for actual ssh connection. If not specified,
 Deployer will be using `RemoteUser` from **~/.ssh/config** file, or current
 OS username.
 
-### `port` 
+### `port`
 
 Port of remote ssh server to connect to. Default is `22`.
 
-### `config_file` 
+### `config_file`
 
 Default is `~/.ssh/config`.
 
 :::info Config file
-It is a good practice to keep connection parameters out of `deploy.php` file, as
-they can change depending on where the deploy is executed from. Only specify
-`hostname` and `remote_user` and other keep in `~/.ssh/config`:
+For best practices, avoid storing connection parameters in the `deploy.php` file, as 
+these can vary based on the deployment execution location. Instead, only include the 
+hostname and remote_user in `deploy.php`, while maintaining other parameters in the
+`~/.ssh/config` file.
 
 ```
 Host *
   IdentityFile ~/.ssh/id_rsa
 ```
+
 :::
 
-### `identity_file` 
+### `identity_file`
 
 For example, `~/.ssh/id_rsa`.
 
-### `forward_agent` 
+### `forward_agent`
+
+SSH forwarding is a way to securely tunnel network connections from your local computer to a remote server, and from the remote server to another destination. There are several types of SSH forwarding, including local, remote, and dynamic forwarding. SSH agent forwarding is a specific type of local forwarding that allows you to use your local SSH keys to authenticate on remote servers. This can be useful if you want to use your local SSH keys to connect to a remote server, but don't want to copy your keys to the remote server.
 
 Default is `true`.
 
-### `ssh_multiplexing` 
+### `ssh_multiplexing`
+
+SSH multiplexing is a technique that allows a single Secure Shell (SSH) connection to be used for multiple interactive sessions or for multiple tunneled connections. This can be useful in a number of situations, such as when you want to open multiple terminal sessions to a remote server over a single SSH connection, or when you want to establish multiple secure connections to a remote server but don't want to open multiple SSH connections.
 
 Default is `true`.
 
-### `shell` 
+### `shell`
 
 Default is `bash -ls`.
 
-### `deploy_path` 
+### `deploy_path`
 
 For example, `~/myapp`.
 
-### `labels` 
+### `labels`
 
 Key-value pairs for host selector.
 
-### `ssh_arguments` 
+### `ssh_arguments`
 
 For example, `['-o UserKnownHostsFile=/dev/null']`
 
@@ -184,7 +190,7 @@ For example, `['-o UserKnownHostsFile=/dev/null']`
 
 Default is `~/.ssh/%C`.
 
-If **CI** env is present, default value is `/dev/shm/%C`. 
+If **CI** env is present, default value is `/dev/shm/%C`.
 
 ## Multiple hosts
 
@@ -226,7 +232,7 @@ localhost('ci'); // Alias is "ci", hostname is "localhost".
 ## YAML Inventory
 
 You can use the [import()](api.md#import) function to keep host definitions in a
-separate file. For example, *inventory.yaml*.
+separate file. For example, _inventory.yaml_.
 
 ```php title="deploy.php"
 import('inventory.yaml');

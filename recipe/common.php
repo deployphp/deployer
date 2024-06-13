@@ -152,6 +152,13 @@ task('deploy:publish', [
     'deploy:success',
 ]);
 
+desc('Deploys your project');
+task('deploy', [
+    'deploy:prepare',
+    'deploy:publish',
+]);
+
+
 /**
  * Prints success message
  */

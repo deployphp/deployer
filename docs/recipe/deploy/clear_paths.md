@@ -4,6 +4,10 @@
 
 # Clear Paths Recipe
 
+```php
+require 'recipe/deploy/clear_paths.php';
+```
+
 [Source](/recipe/deploy/clear_paths.php)
 
 

@@ -4,17 +4,13 @@
 
 # Hipchat Recipe
 
-[Source](/contrib/hipchat.php)
-
-
-
-## Installing
-
-Add to your _deploy.php_
-
 ```php
 require 'contrib/hipchat.php';
 ```
+
+[Source](/contrib/hipchat.php)
+
+
 
 ## Configuration
 
@@ -37,7 +33,7 @@ after('deploy', 'hipchat:notify');
 
 ## Configuration
 ### hipchat_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L25)
 
 
 
@@ -47,7 +43,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_from
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L34)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L26)
 
 
 
@@ -57,7 +53,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_message
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L27)
 
 
 
@@ -67,7 +63,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L36)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L28)
 
 
 
@@ -80,7 +76,7 @@ after('deploy', 'hipchat:notify');
 ## Tasks
 
 ### hipchat:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L39)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L31)
 
 Notifies Hipchat channel of deployment.
 

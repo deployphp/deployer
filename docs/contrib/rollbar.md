@@ -4,17 +4,14 @@
 
 # Rollbar Recipe
 
+```php
+require 'contrib/rollbar.php';
+```
+
 [Source](/contrib/rollbar.php)
 
 
 
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/rollbar.php';
-```
 
 ## Configuration
 
@@ -37,7 +34,7 @@ after('deploy', 'rollbar:notify');
 
 ## Configuration
 ### rollbar_comment
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L26)
 
 
 
@@ -50,7 +47,7 @@ after('deploy', 'rollbar:notify');
 ## Tasks
 
 ### rollbar:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L36)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L29)
 
 Notifies Rollbar of deployment.
 

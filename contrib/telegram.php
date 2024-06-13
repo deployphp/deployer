@@ -4,11 +4,7 @@
   1. Create telegram bot with [BotFather](https://t.me/BotFather) and grab the token provided
   2. Send `/start` to your bot and open https://api.telegram.org/bot{$TELEGRAM_TOKEN_HERE}/getUpdates
   3. Take chat_id from response
-Require telegram recipe in your `deploy.php` file:
 
-```php
-require 'contrib/telegram.php';
-```
 
 Add hook on deploy:
 
@@ -88,10 +84,12 @@ set('telegram_failure_text', 'Deploy to *{{target}}* failed');
 desc('Notifies Telegram');
 task('telegram:notify', function () {
     if (!get('telegram_token', false)) {
+        warning('No Telegram token configured');
         return;
     }
 
     if (!get('telegram_chat_id', false)) {
+        warning('No Telegram chat id configured');
         return;
     }
 
@@ -117,10 +115,12 @@ task('telegram:notify', function () {
   desc('Notifies Telegram about deploy finish');
   task('telegram:notify:success', function () {
       if (!get('telegram_token', false)) {
+          warning('No Telegram token configured');
           return;
       }
 
       if (!get('telegram_chat_id', false)) {
+          warning('No Telegram chat id configured');
           return;
       }
 
@@ -145,13 +145,15 @@ task('telegram:notify', function () {
 
   desc('Notifies Telegram about deploy failure');
   task('telegram:notify:failure', function () {
-      if (!get('telegram_token', false)) {
-          return;
-      }
+    if (!get('telegram_token', false)) {
+        warning('No Telegram token configured');
+        return;
+    }
 
-      if (!get('telegram_chat_id', false)) {
-          return;
-      }
+    if (!get('telegram_chat_id', false)) {
+        warning('No Telegram chat id configured');
+        return;
+    }
 
       $telegramUrl = get('telegram_url') . '?' . http_build_query (
           Array (

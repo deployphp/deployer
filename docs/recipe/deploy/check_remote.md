@@ -4,6 +4,10 @@
 
 # Check Remote Recipe
 
+```php
+require 'recipe/deploy/check_remote.php';
+```
+
 [Source](/recipe/deploy/check_remote.php)
 
 

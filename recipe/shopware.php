@@ -2,12 +2,24 @@
 /**
  * ## Usage
  *
- * Add {{repository}} to your _deploy.php_ file:
+ * Add `repository` to your _deploy.php_ file:
  *
  * ```php
  * set('repository', 'git@github.com:shopware/production.git');
  * ```
  *
+ * configure host:
+ * ```php
+ * host('SSH-HOSTNAME')
+ *     ->set('remote_user', 'SSH-USER')
+ *     ->set('deploy_path', '/var/www/shopware') // This is the path, where deployer will create its directory structure
+ *     ->set('http_user', 'www-data') // Not needed, if the `user` is the same user, the webserver is running with
+ *     ->set('http_group', 'www-data')
+ *     ->set('writable_mode', 'chmod')
+ *     ->set('writable_recursive', true)
+ *     ->set('become', 'www-data'); // You might want to change user to execute remote tasks because of access rights of created cache files
+ * ```
+ * 
  * :::note
  * Please remember that the installation must be modified so that it can be
  * [build without database](https://developer.shopware.com/docs/guides/hosting/installation-updates/deployments/build-w-o-db#compiling-the-storefront-without-database).
@@ -19,12 +31,13 @@ require_once __DIR__ . '/common.php';
 
 add('recipes', ['shopware']);
 
+set('bin/console', '{{bin/php}} {{release_or_current_path}}/bin/console');
 
 set('default_timeout', 3600); // Increase when tasks take longer than that.
 
 // These files are shared among all releases.
 set('shared_files', [
-    '.env',
+    '.env.local',
     'install.lock',
     'public/.htaccess',
     'public/.user.ini',
@@ -59,53 +72,43 @@ set('writable_dirs', [
 
 // This task remotely executes the `cache:clear` console command on the target server.
 task('sw:cache:clear', static function () {
-    run('cd {{release_path}} && bin/console cache:clear');
+    run('cd {{release_path}} && {{bin/console}} cache:clear --no-warmup');
 });
 
 // This task remotely executes the cache warmup console commands on the target server, so that the first user, who
 // visits the website, doesn't have to wait for the cache to be built up.
 task('sw:cache:warmup', static function () {
-    run('cd {{release_path}} && bin/console cache:warmup');
-    run('cd {{release_path}} && bin/console http:cache:warm:up');
+    run('cd {{release_path}} && {{bin/console}} cache:warmup');
+    run('cd {{release_path}} && {{bin/console}} http:cache:warm:up');
 });
 
 // This task remotely executes the `database:migrate` console command on the target server.
 task('sw:database:migrate', static function () {
-    run('cd {{release_path}} && bin/console database:migrate --all');
+    run('cd {{release_path}} && {{bin/console}} database:migrate --all');
 });
 
 task('sw:plugin:refresh', function () {
-    run('cd {{release_path}} && bin/console plugin:refresh');
+    run('cd {{release_path}} && {{bin/console}} plugin:refresh');
+});
+
+task('sw:scheduled-task:register', function () {
+    run('cd {{release_path}} && {{bin/console}} scheduled-task:register');
+});
+
+task('sw:theme:refresh', function () {
+    run('cd {{release_path}} && {{bin/console}} theme:refresh');
+});
+
+// This task is not used per default, but can be used, e.g. in combination with `SHOPWARE_SKIP_THEME_COMPILE=1`,
+// to build the theme remotely instead of locally.
+task('sw:theme:compile', function () {
+    run('cd {{release_path}} && {{bin/console}} theme:compile');
 });
 
 function getPlugins(): array
 {
-    $output = explode("\n", run('cd {{release_path}} && bin/console plugin:list'));
-
-    // Take line over headlines and count "-" to get the size of the cells.
-    $lengths = array_filter(array_map('strlen', explode(' ', $output[4])));
-    $splitRow = function ($row) use ($lengths) {
-        $columns = [];
-        foreach ($lengths as $length) {
-            $columns[] = trim(substr($row, 0, $length));
-            $row = substr($row, $length + 1);
-        }
-        return $columns;
-    };
-    $headers = $splitRow($output[5]);
-    $splitRowIntoStructure = function ($row) use ($splitRow, $headers) {
-        $columns = $splitRow($row);
-        return array_combine($headers, $columns);
-    };
-
-    // Ignore first seven lines (headline, title, table, ...).
-    $rows = array_slice($output, 7, -3);
-
-    $plugins = [];
-    foreach ($rows as $row) {
-        $pluginInformation = $splitRowIntoStructure($row);
-        $plugins[] = $pluginInformation;
-    }
+    $output = run('cd {{release_path}} && {{bin/console}} plugin:list --json');
+    $plugins = json_decode($output);
 
     return $plugins;
 }
@@ -113,9 +116,9 @@ function getPlugins(): array
 task('sw:plugin:update:all', static function () {
     $plugins = getPlugins();
     foreach ($plugins as $plugin) {
-        if ($plugin['Installed'] === 'Yes') {
-            writeln("<info>Running plugin update for " . $plugin['Plugin'] . "</info>\n");
-            run("cd {{release_path}} && bin/console plugin:update " . $plugin['Plugin']);
+        if ($plugin->installedAt && $plugin->upgradeVersion) {
+            writeln("<info>Running plugin update for " . $plugin->name . "</info>\n");
+            run("cd {{release_path}} && {{bin/console}} plugin:update " . $plugin->name);
         }
     }
 });
@@ -130,6 +133,8 @@ task('sw:writable:jwt', static function () {
 task('sw:deploy', [
     'sw:database:migrate',
     'sw:plugin:refresh',
+    'sw:theme:refresh',
+    'sw:scheduled-task:register',
     'sw:cache:clear',
     'sw:plugin:update:all',
     'sw:cache:clear',
@@ -145,35 +150,31 @@ task('deploy', [
     'deploy:publish',
 ]);
 
+task('deploy:update_code')->setCallback(static function () {
+    upload('.', '{{release_path}}', [
+        'options' => [
+            '--exclude=.git',
+            '--exclude=deploy.php',
+            '--exclude=node_modules',
+        ],
+    ]);
+});
 
 task('sw-build-without-db:get-remote-config', static function () {
     if (!test('[ -d {{current_path}} ]')) {
         return;
     }
     within('{{deploy_path}}/current', function () {
-        run('./bin/console bundle:dump');
+        run('{{bin/php}} ./bin/console bundle:dump');
         download('{{deploy_path}}/current/var/plugins.json', './var/');
 
-        run('./bin/console theme:dump');
+        run('{{bin/php}} ./bin/console theme:dump');
         download('{{deploy_path}}/current/files/theme-config', './files/');
-
-        // Temporary workaround to remove absolute file paths in Shopware <6.4.6.0
-        // See:
-        // - https://github.com/shopware/platform/commit/01c8ff86c7d8d3bee1888a26c24c9dc9b4529cbc
-        // - https://issues.shopware.com/issues/NEXT-17720
-        // - https://github.com/deployphp/deployer/issues/2754
-        $deployPath = get('deploy_path');
-        if (substr($deployPath, -1, 1) !== '/') {
-            $deployPath .= '/';
-        }
-        $deployPath .= 'releases/[0-9a-zA-Z]*/';
-        $escapedDeployPath = str_replace('/', '\\\\/', $deployPath);
-        runLocally("sed -iE 's#${escapedDeployPath}##g' files/theme-config/* || true");
     });
 });
 
 task('sw-build-without-db:build', static function () {
-    runLocally('CI=1 SHOPWARE_SKIP_BUNDLE_DUMP=1 ./bin/build.sh');
+    runLocally('CI=1 SHOPWARE_SKIP_BUNDLE_DUMP=1 ./bin/build-js.sh');
 });
 
 task('sw-build-without-db', [

@@ -5,7 +5,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 if (ini_get('phar.readonly') === '1') {
     throw new \Exception('Writing to phar files is disabled. Change your `php.ini` or append `-d phar.readonly=false` to the shebang, if supported by your `env` executable.');
 }
@@ -50,7 +49,8 @@ $iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo
 });
 $iterator = new RecursiveIteratorIterator($iterator);
 $iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
-    return in_array($fileInfo->getExtension(), ['php', 'exe'], true);
+    //'bash', 'fish', 'zsh' is a completion templates
+    return in_array($fileInfo->getExtension(), ['php', 'exe', 'bash', 'fish', 'zsh'], true);
 });
 
 foreach ($iterator as $fileInfo) {
@@ -70,7 +70,9 @@ foreach ($iterator as $fileInfo) {
 // Add schema.json
 echo "Add file: /src/schema.json\n";
 $phar->addFile(realpath(__DIR__ . '/../src/schema.json'), '/src/schema.json');
-
+// Add Caddyfile
+echo "Add file: /Caddyfile\n";
+$phar->addFile(realpath(__DIR__ . '/../recipe/provision/Caddyfile'), '/recipe/provision/Caddyfile');
 // Add bin/dep file
 echo "Add file: /bin/dep\n";
 $depContent = file_get_contents(__ROOT__ . '/bin/dep');
@@ -78,7 +80,8 @@ $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
 $depContent = preg_replace("/run\('.+?'/", "run('$version'", $depContent);
 $phar->addFromString('bin/dep', $depContent);
-$phar->setStub(<<<STUB
+$phar->setStub(
+    <<<STUB
 #!/usr/bin/env php
 <?php
 Phar::mapPhar('{$pharName}');

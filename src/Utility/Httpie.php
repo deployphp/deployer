@@ -71,6 +71,23 @@ class Httpie
         return $http;
     }
 
+    
+    public static function put(string $url): Httpie
+    {
+        $http = new self;
+        $http->method = 'PUT';
+        $http->url = $url;
+        return $http;
+    }
+
+    public static function delete(string $url): Httpie
+    {
+        $http = new self;
+        $http->method = 'DELETE';
+        $http->url = $url;
+        return $http;
+    }
+    
     public function query(array $params): Httpie
     {
         $http = clone $this;
@@ -137,6 +154,9 @@ class Httpie
 
     public function send(?array &$info = null): string
     {
+        if($this->url === '') {
+            throw new \RuntimeException('URL must not be empty to Httpie::send()');
+        }
         $ch = curl_init($this->url);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Deployer ' . DEPLOYER_VERSION);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method);
@@ -178,7 +198,10 @@ class Httpie
         $result = $this->send();
         $response = json_decode($result, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new HttpieException('JSON Error: ' . json_last_error_msg());
+            throw new HttpieException(
+                'JSON Error: ' . json_last_error_msg() . '\n' .
+                'Response: ' . $result
+            );
         }
         return $response;
     }

@@ -2,40 +2,50 @@
 <!-- Instead edit recipe/statamic.php -->
 <!-- Then run bin/docgen -->
 
-# How to Deploy Statamic
+# How to Deploy a Statamic Project
+
+```php
+require 'recipe/statamic.php';
+```
 
 [Source](/recipe/statamic.php)
 
-## How to deploy a Statamic project with zero downtime?
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your Statamic application to a server. 
+It is very easy to use and has a lot of features. 
 
-- First, [install](/docs/installation.md) the Deployer. 
-- Second, require `recipe/statamic.php` recipe into your _deploy.php_ or _deploy.yaml_ file.
-- Third, now you can have a zero downtime deployment!
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
 
-Did you know that you can deploy **Statamic** project with a single command? Just run `dep deploy`.
-Something went wrong? Just run `dep rollback` to rollback your changes.
-Also, you can take an advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
 
-Also, another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
-This command will configure webserver, databases, php, ssl certificates, and more. 
-You will get everything you need to run your **Statamic** project.
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
-Deployer does next steps to [deploy](#deploy) **Statamic**:
-* Displays info about deployment
-* Prepares host for deploy
-* Locks deploy
-* Prepares release
-* Updates code
-* Creates symlinks for shared files and dirs
-* Makes writable dirs
-* Installs vendors
-* Creates the symbolic links configured for the application
-* Flushes the application cache
-* Clears the "Stache" cache
-* Builds the "Stache" cache
-* Creates symlink to release
-* Unlocks deploy
-* Cleanup old releases
+The [deploy](#deploy) task of **Statamic** consists of:
+* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
+* [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink) – Creates the symbolic links configured for the application
+* [artisan:cache:clear](/docs/recipe/laravel.md#artisancacheclear) – Flushes the application cache
+* [statamic:stache:clear](/docs/recipe/statamic.md#statamicstacheclear) – Clears the "Stache" cache
+* [statamic:stache:warm](/docs/recipe/statamic.md#statamicstachewarm) – Builds the "Stache" cache
+* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
 
 
 The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
@@ -46,6 +56,11 @@ The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
 
 
 
+```php title="Default value"
+$result = run('{{bin/php}} {{release_or_current_path}}/please --version');
+preg_match_all('/(\d+\.?)+/', $result, $matches);
+return $matches[0][0] ?? 'unknown';
+```
 
 
 

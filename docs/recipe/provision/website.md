@@ -4,29 +4,39 @@
 
 # Website Recipe
 
+```php
+require 'recipe/provision/website.php';
+```
+
 [Source](/recipe/provision/website.php)
 
 
 ## Configuration
 ### domain
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L4)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L7)
 
 
 
+```php title="Default value"
+return ask(' Domain: ');
+```
 
 
 ### public_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L11)
 
 
 
+```php title="Default value"
+return ask(' Public path: ', 'public');
+```
 
 
 
 ## Tasks
 
 ### provision:website
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L13)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L16)
 
 Provision website.
 
@@ -34,7 +44,7 @@ Provision website.
 
 
 ### logs:caddy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L56)
 
 Shows caddy logs.
 
@@ -42,7 +52,7 @@ Shows caddy logs.
 
 
 ### logs:caddy:syslog
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L61)
 
 Shows caddy syslog.
 

@@ -4,6 +4,10 @@
 
 # Cleanup Recipe
 
+```php
+require 'recipe/deploy/cleanup.php';
+```
+
 [Source](/recipe/deploy/cleanup.php)
 
 

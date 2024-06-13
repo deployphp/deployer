@@ -4,17 +4,13 @@
 
 # Cpanel Recipe
 
-[Source](/contrib/cpanel.php)
-
-
-
-### Installing
-
-Add to your _deploy.php_
-
 ```php
 require 'contrib/cpanel.php';
 ```
+
+[Source](/contrib/cpanel.php)
+
+
 
 ### Description
 This is a recipe that uses the [cPanel 2 API](https://documentation.cPanel.net/display/DD/Guide+to+cPanel+API+2).
@@ -154,7 +150,7 @@ after('deploy:prepare', 'cpanel:createdb');
 ## Tasks
 
 ### cpanel:createdb
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L203)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L195)
 
 Creates database though CPanel API.
 
@@ -162,7 +158,7 @@ Creates database though CPanel API.
 
 
 ### cpanel:createaddondomain
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L231)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L223)
 
 Creates addon domain though CPanel API.
 
@@ -170,7 +166,7 @@ Creates addon domain though CPanel API.
 
 
 ### cpanel:deleteaddondomain
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L254)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/cpanel.php#L246)
 
 Deletes addon domain though CPanel API.
 

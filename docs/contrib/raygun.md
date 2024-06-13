@@ -4,17 +4,14 @@
 
 # Raygun Recipe
 
+```php
+require 'contrib/raygun.php';
+```
+
 [Source](/contrib/raygun.php)
 
 
 
-## Installing
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/raygun.php';
-```
 
 ## Configuration
 
@@ -39,7 +36,7 @@ after('deploy', 'raygun:notify');
 ## Tasks
 
 ### raygun:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/raygun.php#L34)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/raygun.php#L27)
 
 Notifies Raygun of deployment.
 

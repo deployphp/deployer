@@ -108,7 +108,7 @@ class DocGen
                 }
                 return $output;
             };
-            $findTask = function (string $name) use ($recipe): ?DocTask {
+            $findTask = function (string $name, bool $searchOtherRecipes = true) use ($recipe): ?DocTask {
                 if (array_key_exists($name, $recipe->tasks)) {
                     return $recipe->tasks[$name];
                 }
@@ -119,83 +119,116 @@ class DocGen
                         }
                     }
                 }
-                foreach ($this->recipes as $r) {
-                    if (array_key_exists($name, $r->tasks)) {
-                        return $r->tasks[$name];
+                if ($searchOtherRecipes) {
+                    foreach ($this->recipes as $r) {
+                        if (array_key_exists($name, $r->tasks)) {
+                            return $r->tasks[$name];
+                        }
                     }
                 }
                 return null;
             };
 
-            $filePath = "$destination/" . php_to_md($recipe->recipePath);
-            $frameworkRecipe =
-                preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
-                !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
-
-            $brandName = $recipe->recipeName;
-            if ($frameworkRecipe) {
-                $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
-                $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
-                $brandName = preg_replace('/_/', ' ', $brandName);
-                $brandName = preg_replace('/framework/', 'Framework', $brandName);
-                $brandName = ucfirst($brandName);
-                $title = 'How to Deploy ' . $brandName;
-            } else {
-                $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
-            }
-
-            $intro = '';
+            $title = join(' ', array_map('ucfirst', explode('_', $recipe->recipeName))) . ' Recipe';
             $config = '';
             $tasks = '';
+            $intro = <<<MD
+```php
+require '$recipe->recipePath';
+```
 
-            if ($frameworkRecipe) {
-                srand(crc32($brandName));
-                $application = ['application', 'project'][rand(0, 1)];
-                $https = ['https', 'ssl certificates'][rand(0, 1)];
-                $justRun = ['Just run', 'Just execute'][rand(0, 1)];
-                $advantage = ['advantage', 'advantages'][rand(0, 1)];
-                $another = ['Another', 'Another cool', 'Also, another'][rand(0, 2)];
-                $now = ['now', 'and now'][rand(0, 1)];
-                $intro .= <<<MD
-## How to deploy a $brandName project with zero downtime?
+[Source](/$recipe->recipePath)
 
-- First, [install](/docs/installation.md) the Deployer. 
-- Second, require `$recipe->recipePath` recipe into your _deploy.php_ or _deploy.yaml_ file.
-- Third, $now you can have a zero downtime deployment!
 
-Did you know that you can deploy **$brandName** project with a single command? $justRun `dep deploy`.
-Something went wrong? Just run `dep rollback` to rollback your changes.
-Also, you can take an $advantage of the [Deployer's CLI](/docs/cli.md) to deploy your project.
+MD;
+            if (is_framework_recipe($recipe)) {
+                $brandName = framework_brand_name($recipe->recipeName);
+                $typeOfProject = preg_match('/^symfony/i', $recipe->recipeName) ? 'Application' : 'Project';
+                $title = "How to Deploy a $brandName $typeOfProject";
 
-$another feature of the Deployer is [provisioning](/docs/recipe/provision.md). Take any server, and run `dep provision` command.
-This command will configure webserver, databases, php, $https, and more. 
-You will get everything you need to run your **$brandName** $application.
-MD. "\n\n";
+                $intro .= <<<MARKDOWN
+Deployer is a free and open source deployment tool written in PHP. 
+It helps you to deploy your $brandName application to a server. 
+It is very easy to use and has a lot of features. 
 
-                $deployTask = $findTask('deploy');
-                if ($deployTask !== null) {
-                    $intro .= "Deployer does next steps to [deploy](#deploy) **$brandName**:\n";
-                    $map = function (DocTask $task) use (&$map, $findTask, &$intro): void {
-                        foreach ($task->group as $taskName) {
-                            $t = $findTask($taskName);
-                            if ($t !== null) {
-                                if ($t->group !== null) {
-                                    $map($t);
-                                } else {
-                                    if (!empty($t->desc)) {
-                                        $intro .= "* " . $t->desc . "\n";
-                                    }
-                                }
+Three main features of Deployer are:
+- **Provisioning** - provision your server for you.
+- **Zero downtime deployment** - deploy your application without a downtime.
+- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
+
+Additionally, Deployer has a lot of other features, like:
+- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+- **Secure** - Deployer uses SSH to connect to your server.
+- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
+
+You can read more about Deployer in [Getting Started](/docs/getting-started.md).
+
+
+MARKDOWN;
+
+                $map = function (DocTask $task, $ident = '') use (&$map, $findTask, &$intro): void {
+                    foreach ($task->group as $taskName) {
+                        $t = $findTask($taskName);
+                        if ($t !== null) {
+                            $intro .= "$ident* {$t->mdLink()} – $t->desc\n";
+                            if ($t->group !== null) {
+                                $map($t, $ident . '  ');
                             }
                         }
-                    };
+                    }
+                };
+                $deployTask = $findTask('deploy');
+                if ($deployTask !== null) {
+                    $intro .= "The [deploy](#deploy) task of **$brandName** consists of:\n";
                     $map($deployTask);
                 }
 
                 $intro .= "\n\n";
+
+                $artifactBuildTask = $findTask('artifact:build', false);
+                $artifactDeployTask = $findTask('artifact:deploy', false);
+                if ($artifactDeployTask !== null && $artifactBuildTask !== null) {
+                    $intro .= "In addition the **$brandName** recipe contains an artifact deployment.\n";
+                    $intro .= <<<MD
+This is a two step process where you first execute
+
+```php
+bin/dep artifact:build [options] [localhost]
+```
+
+to build an artifact, which then is deployed on a server with
+
+```php
+bin/dep artifact:deploy [host]
+```
+
+The `localhost` to build the artifact on has to be declared local, so either add
+```php
+localhost()
+    ->set('local', true);
+```
+to your deploy.php or
+```yaml
+hosts:
+    localhost:
+        local: true
+```
+to your deploy yaml.
+
+The [artifact:build](#artifact:build) command of **$brandName** consists of: 
+MD;
+                    $map($artifactBuildTask);
+
+                    $intro .= "\n\n The [artifact:deploy](#artifact:deploy) command of **$brandName** consists of:\n";
+
+                    $map($artifactDeployTask);
+
+                    $intro .= "\n\n";
+                }
             }
             if (count($recipe->require) > 0) {
-                if ($frameworkRecipe) {
+                if (is_framework_recipe($recipe)) {
                     $link = recipe_to_md_link($recipe->require[0]);
                     $intro .= "The $recipe->recipeName recipe is based on the $link recipe.\n";
                 } else {
@@ -212,7 +245,6 @@ MD. "\n\n";
             if (count($recipe->config) > 0) {
                 $config .= "## Configuration\n";
                 foreach ($recipe->config as $c) {
-                    $anchor = anchor($c->name);
                     $config .= "### {$c->name}\n";
                     $config .= "[Source](https://github.com/deployphp/deployer/blob/master/{$c->recipePath}#L{$c->lineNumber})\n\n";
                     $o = $findConfigOverride($recipe, $c->name);
@@ -239,7 +271,6 @@ MD. "\n\n";
             if (count($recipe->tasks) > 0) {
                 $tasks .= "## Tasks\n\n";
                 foreach ($recipe->tasks as $t) {
-                    $anchor = anchor($t->name);
                     $tasks .= "### {$t->name}\n";
                     $tasks .= "[Source](https://github.com/deployphp/deployer/blob/master/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= add_tailing_dot($t->desc) . "\n\n";
@@ -250,9 +281,7 @@ MD. "\n\n";
                         foreach ($t->group as $taskName) {
                             $t = $findTask($taskName);
                             if ($t !== null) {
-                                $md = php_to_md($t->recipePath);
-                                $anchor = anchor($t->name);
-                                $tasks .= "* [$taskName](/docs/$md#$anchor)\n";
+                                $tasks .= "* {$t->mdLink()}\n";
                             } else {
                                 $tasks .= "* `$taskName`\n";
                             }
@@ -269,20 +298,49 @@ MD. "\n\n";
 
 # $title
 
-[Source](/$recipe->recipePath)
-
 $intro
 $config
 $tasks
 MD;
 
+            $filePath = "$destination/" . php_to_md($recipe->recipePath);
             if (!file_exists(dirname($filePath))) {
                 mkdir(dirname($filePath), 0755, true);
             }
             $output = remove_text_emoji($output);
             file_put_contents($filePath, $output);
         }
+        $this->generateRecipesIndex($destination);
+        $this->generateContribIndex($destination);
         return null;
+    }
+
+    public function generateRecipesIndex(string $destination) {
+        $index = "# All Recipes\n\n";
+        $list = [];
+        foreach ($this->recipes as $recipe) {
+            if (preg_match('/^recipe\/[^\/]+\.php$/', $recipe->recipePath)) {
+                $name = framework_brand_name($recipe->recipeName);
+                $list[] = "* [$name Recipe](/docs/recipe/{$recipe->recipeName}.md)";
+            }
+        }
+        sort($list);
+        $index .= implode("\n", $list);
+        file_put_contents("$destination/recipe/README.md", $index);
+    }
+
+    public function generateContribIndex(string $destination) {
+        $index = "# All Contrib Recipes\n\n";
+        $list = [];
+        foreach ($this->recipes as $recipe) {
+            if (preg_match('/^contrib\/[^\/]+\.php$/', $recipe->recipePath)) {
+                $name = ucfirst($recipe->recipeName);
+                $list[] = "* [$name Recipe](/docs/contrib/$recipe->recipeName.md)";
+            }
+        }
+        sort($list);
+        $index .= implode("\n", $list);
+        file_put_contents("$destination/contrib/README.md", $index);
     }
 }
 
@@ -329,4 +387,21 @@ function recipe_to_md_link(string $recipe): string
     $md = php_to_md($recipe);
     $basename = basename($recipe, '.php');
     return "[$basename](/docs/$md)";
+}
+
+function is_framework_recipe(DocRecipe $recipe): bool
+{
+    return preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
+    !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
+}
+
+function framework_brand_name(string $brandName): string
+{
+    $brandName = preg_replace('/(\w+)(\d)/', '$1 $2', $brandName);
+    $brandName = preg_replace('/typo 3/', 'TYPO3', $brandName);
+    $brandName = preg_replace('/yii/', 'Yii2', $brandName);
+    $brandName = preg_replace('/wordpress/', 'WordPress', $brandName);
+    $brandName = preg_replace('/_/', ' ', $brandName);
+    $brandName = preg_replace('/framework/', 'Framework', $brandName);
+    return ucfirst($brandName);
 }

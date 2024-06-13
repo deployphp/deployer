@@ -4,6 +4,10 @@
 
 # Ms-teams Recipe
 
+```php
+require 'contrib/ms-teams.php';
+```
+
 [Source](/contrib/ms-teams.php)
 
 
@@ -17,7 +21,7 @@ Setup:
 2. Navigate to Teams section
 3. Select existing or create new team
 4. Select existing or create new channel
-5. Hover over channel to get tree dots, click, in menu select "Connectors"
+5. Hover over channel to get three dots, click, in menu select "Connectors"
 6. Search for and configure "Incoming Webhook"
 7. Confirm/create and copy your Webhook URL
 8. Setup deploy.php
@@ -85,6 +89,9 @@ after('deploy:failed', 'teams:notify:failure');
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### teams_text
@@ -159,7 +166,7 @@ Notifies Teams.
 
 
 ### teams:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L107)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L108)
 
 Notifies Teams about deploy finish.
 
@@ -167,7 +174,7 @@ Notifies Teams about deploy finish.
 
 
 ### teams:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L121)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L123)
 
 Notifies Teams about deploy failure.
 

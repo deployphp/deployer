@@ -4,11 +4,6 @@
 
 <a href="https://slack.com/oauth/authorize?&client_id=113734341365.225973502034&scope=incoming-webhook"><img alt="Add to Slack" height="40" width="139" src="https://platform.slack-edge.com/img/add_to_slack.png" srcset="https://platform.slack-edge.com/img/add_to_slack.png 1x, https://platform.slack-edge.com/img/add_to_slack@2x.png 2x" /></a>
 
-Require slack recipe in your `deploy.php` file:
-
-```php
-require 'contrib/slack.php';
-```
 
 Add hook on deploy:
 
@@ -103,6 +98,7 @@ function checkSlackAnswer($result)
 desc('Notifies Slack');
 task('slack:notify', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 
@@ -122,6 +118,7 @@ task('slack:notify', function () {
 desc('Notifies Slack about deploy finish');
 task('slack:notify:success', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 
@@ -142,6 +139,7 @@ task('slack:notify:success', function () {
 desc('Notifies Slack about deploy failure');
 task('slack:notify:failure', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 
@@ -161,6 +159,7 @@ task('slack:notify:failure', function () {
 desc('Notifies Slack about rollback');
 task('slack:notify:rollback', function () {
     if (!get('slack_webhook', false)) {
+        warning('No Slack webhook configured');
         return;
     }
 

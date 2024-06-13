@@ -13,7 +13,7 @@ releases/
 ## The problem
 
 PHP Opcodes get cached. And if `SCRIPT_FILENAME` contains _current_ symlink, on
-new deploy nothing updates.  Usually, a solution is simple to reload **php-fpm** 
+new deploy nothing updates. Usually, a solution is simple to reload **php-fpm**
 after deploy, but such reload can lead to **dropped** or **failed** requests.
 The correct fix is to configure your server set `SCRIPT_FILENAME` to a resolved path.
 You can check your server configuration by printing `SCRIPT_FILENAME`.
@@ -22,7 +22,7 @@ You can check your server configuration by printing `SCRIPT_FILENAME`.
 echo $_SERVER['SCRIPT_FILENAME'];
 ```
 
-If it prints something like `/home/deployer/example.com/current/index.php` with 
+If it prints something like `/home/deployer/example.com/current/index.php` with
 _current_ in the path, your server configured incorrectly.
 
 ## Fix for Nginx
@@ -33,7 +33,7 @@ Nginx has special variable `$realpath_root`, use it to set up `SCRIPT_FILENAME`:
 location ~ \.php$ {
   include fastcgi_params;
   fastcgi_pass unix:/var/run/php/php-fpm.sock;
-- fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;  
+- fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
 + fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
 }
 ```
@@ -41,7 +41,7 @@ location ~ \.php$ {
 ## Fix for Caddy
 
 :::tip
-If you're already using servers provisioned by Deployer, you don't need to fix 
+If you're already using servers provisioned by Deployer, you don't need to fix
 anything, as everything is already configured properly.
 :::
 
@@ -51,4 +51,12 @@ Use `resolve_root_symlink`:
 php_fastcgi * unix//run/php/php-fpm.sock {
     resolve_root_symlink
 }
+```
+
+## Fix for Apache
+
+Enable `revalidate_path` in `php.ini`:
+
+```ini
+opcache.revalidate_path=1
 ```

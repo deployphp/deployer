@@ -4,11 +4,14 @@
 
 # Php-fpm Recipe
 
+```php
+require 'contrib/php-fpm.php';
+```
+
 [Source](/contrib/php-fpm.php)
 
 
 
-## Installing
 
 :::caution
 Do **not** reload php-fpm. Some user requests could fail or not complete in the
@@ -17,12 +20,6 @@ process of reloading.
 Instead, configure your server [properly](https://ï.at/avoid-php-fpm-reloading). If you're using Deployer's provision
 recipe, it's already configured the right way and no php-fpm reload is needed.
 :::
-
-Add to your _deploy.php_
-
-```php
-require 'contrib/php-fpm.php';
-```
 
 ## Configuration
 
@@ -46,14 +43,17 @@ after('deploy', 'php-fpm:reload');
 
 ## Configuration
 ### php_fpm_version
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L34)
 
 Automatically detects by using [bin/php](/docs/recipe/common.md#bin/php).
 
+```php title="Default value"
+return run('{{bin/php}} -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);"');
+```
 
 
 ### php_fpm_service
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L38)
 
 
 
@@ -66,7 +66,7 @@ Automatically detects by using [bin/php](/docs/recipe/common.md#bin/php).
 ## Tasks
 
 ### php-fpm:reload
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L48)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L41)
 
 Reloads the php-fpm service.
 

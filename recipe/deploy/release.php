@@ -3,6 +3,7 @@ namespace Deployer;
 
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Helper\Table;
+use function Deployer\Support\escape_shell_argument;
 
 // The name of the release.
 set('release_name', function () {
@@ -42,13 +43,13 @@ set('releases_list', function () {
         return basename(rtrim(trim($release), '/'));
     }, $ll);
 
-    $releasesLog = get('releases_log');
+    // Return releases from newest to oldest.
+    $releasesLog = array_reverse(get('releases_log'));
 
     $releases = [];
-    for ($i = count($releasesLog) - 1; $i >= 0; --$i) {
-        $release = $releasesLog[$i]['release_name'];
-        if (in_array($release, $ll, true)) {
-            $releases[] = $release;
+    foreach ($releasesLog as $release) {
+        if (in_array($release['release_name'], $ll, true)) {
+            $releases[] = $release['release_name'];
         }
     }
     return $releases;
@@ -84,7 +85,6 @@ task('deploy:release', function () {
 
     // Clean up if there is unfinished release.
     if (test('[ -h release ]')) {
-        run('rm -rf "$(readlink release)"'); // Delete release.
         run('rm release'); // Delete symlink.
     }
 
@@ -97,7 +97,16 @@ task('deploy:release', function () {
 
     // Check what there is no such release path.
     if (test("[ -d $releasePath ]")) {
-        throw new Exception("Release name \"$releaseName\" already exists.\nRelease name can be overridden via:\n dep deploy -o release_name=$releaseName");
+        $freeReleaseName = '...';
+        // Check what $releaseName is integer.
+        if (ctype_digit($releaseName)) {
+            $freeReleaseName = intval($releaseName);
+            // Find free release name.
+            while (test("[ -d releases/$freeReleaseName ]")) {
+                $freeReleaseName++;
+            }
+        }
+        throw new Exception("Release name \"$releaseName\" already exists.\nRelease name can be overridden via:\n dep deploy -o release_name=$freeReleaseName");
     }
 
     // Save release_name.
@@ -115,8 +124,8 @@ task('deploy:release', function () {
     ];
 
     // Save metainfo about release.
-    $json = json_encode($metainfo);
-    run("echo '$json' >> .dep/releases_log");
+    $json = escape_shell_argument(json_encode($metainfo));
+    run("echo $json >> .dep/releases_log");
 
     // Make new release.
     run("mkdir -p $releasePath");

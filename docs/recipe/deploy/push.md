@@ -4,6 +4,10 @@
 
 # Push Recipe
 
+```php
+require 'recipe/deploy/push.php';
+```
+
 [Source](/recipe/deploy/push.php)
 
 

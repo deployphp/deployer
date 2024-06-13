@@ -4,6 +4,10 @@
 
 # Telegram Recipe
 
+```php
+require 'contrib/telegram.php';
+```
+
 [Source](/contrib/telegram.php)
 
 
@@ -12,11 +16,7 @@
   1. Create telegram bot with [BotFather](https://t.me/BotFather) and grab the token provided
   2. Send `/start` to your bot and open https://api.telegram.org/bot{$TELEGRAM_TOKEN_HERE}/getUpdates
   3. Take chat_id from response
-Require telegram recipe in your `deploy.php` file:
 
-```php
-require 'contrib/telegram.php';
-```
 
 Add hook on deploy:
 
@@ -71,35 +71,49 @@ after('deploy:failed', 'telegram:notify:failure');
 
 ## Configuration
 ### telegram_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L67)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L63)
 
 Title of project
 
+```php title="Default value"
+return get('application', 'Project');
+```
 
 
 ### telegram_token
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L72)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L68)
 
 Telegram settings
+:::info Required
+Throws exception if not set.
+:::
+
 
 
 
 ### telegram_chat_id
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L75)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L71)
 
+
+:::info Required
+Throws exception if not set.
+:::
 
 
 
 
 ### telegram_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L78)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L74)
 
 
 
+```php title="Default value"
+return 'https://api.telegram.org/bot' . get('telegram_token') . '/sendmessage';
+```
 
 
 ### telegram_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L79)
 
 Deploy message
 
@@ -109,7 +123,7 @@ Deploy message
 
 
 ### telegram_success_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L84)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L80)
 
 
 
@@ -119,7 +133,7 @@ Deploy message
 
 
 ### telegram_failure_text
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L85)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L81)
 
 
 
@@ -132,7 +146,7 @@ Deploy message
 ## Tasks
 
 ### telegram:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L89)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L85)
 
 Notifies Telegram.
 

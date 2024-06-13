@@ -1,6 +1,5 @@
-
 <h1><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/logo.png" alt="Deployer Logo" height="30"></a> Deployer</h1>
-<p>A deployment tool written in PHP with support for popular frameworks out of the box.</p>
+<p>The PHP deployment tool with support for popular frameworks out of the box.</p>
 
 <p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>
 

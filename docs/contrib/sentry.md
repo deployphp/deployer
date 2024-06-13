@@ -4,17 +4,14 @@
 
 # Sentry Recipe
 
+```php
+require 'contrib/sentry.php';
+```
+
 [Source](/contrib/sentry.php)
 
 
 
-### Installing
-
-```php
-deploy.php
-
-require 'contrib/sentry.php';
-```
 
 ### Configuration options
 

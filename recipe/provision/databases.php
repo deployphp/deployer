@@ -58,6 +58,7 @@ task('provision:mariadb', function () {
 desc('Provision PostgreSQL');
 task('provision:postgresql', function () {
     run('apt-get install -y postgresql postgresql-contrib', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
-    run('sudo -u postgres createuser deployer');
-    run('sudo -u postgres createdb deployer');
+    run("sudo -u postgres psql <<< $'CREATE DATABASE {{db_name}};'");
+    run("sudo -u postgres psql <<< $'CREATE USER {{db_user}} WITH ENCRYPTED PASSWORD \'%secret%\';'", ['secret' => get('db_password')]);
+    run("sudo -u postgres psql <<< $'GRANT ALL PRIVILEGES ON DATABASE {{db_name}} TO {{db_user}};'");
 });

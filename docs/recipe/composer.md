@@ -4,6 +4,10 @@
 
 # Composer Recipe
 
+```php
+require 'recipe/composer.php';
+```
+
 [Source](/recipe/composer.php)
 
 * Requires

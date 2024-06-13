@@ -4,6 +4,10 @@
 
 # Rabbit Recipe
 
+```php
+require 'contrib/rabbit.php';
+```
+
 [Source](/contrib/rabbit.php)
 
 

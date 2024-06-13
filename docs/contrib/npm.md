@@ -4,17 +4,13 @@
 
 # Npm Recipe
 
-[Source](/contrib/npm.php)
-
-
-
-## Installing
-
-Add to your _deploy.php_
-
 ```php
 require 'contrib/npm.php';
 ```
+
+[Source](/contrib/npm.php)
+
+
 
 ## Configuration
 
@@ -30,17 +26,20 @@ after('deploy:update_code', 'npm:install');
 
 ## Configuration
 ### bin/npm
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L24)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L16)
 
 
 
+```php title="Default value"
+return which('npm');
+```
 
 
 
 ## Tasks
 
 ### npm:install
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L34)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L26)
 
 Installs npm packages.
 

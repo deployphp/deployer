@@ -69,7 +69,7 @@ class SshCommand extends Command
             }
 
             if (count($hostsAliases) === 1) {
-                $host = current($this->deployer->hosts->all());
+                $host = $this->deployer->hosts->get($hostsAliases[0]);
             } else {
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(

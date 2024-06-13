@@ -4,6 +4,10 @@
 
 # Copy Dirs Recipe
 
+```php
+require 'recipe/deploy/copy_dirs.php';
+```
+
 [Source](/recipe/deploy/copy_dirs.php)
 
 

@@ -4,17 +4,13 @@
 
 # Yarn Recipe
 
-[Source](/contrib/yarn.php)
-
-
-
-## Installing
-
-Add to your _deploy.php_
-
 ```php
 require 'contrib/yarn.php';
 ```
+
+[Source](/contrib/yarn.php)
+
+
 
 ## Configuration
 
@@ -29,17 +25,20 @@ after('deploy:update_code', 'yarn:install');
 
 ## Configuration
 ### bin/yarn
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L15)
 
 
 
+```php title="Default value"
+return which('yarn');
+```
 
 
 
 ## Tasks
 
 ### yarn:install
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L21)
 
 Installs Yarn packages.
 

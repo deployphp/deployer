@@ -1,12 +1,5 @@
 <?php
 /*
-### Installing
-
-```php
-// deploy.php
-
-require 'contrib/sentry.php';
-```
 
 ### Configuration options
 

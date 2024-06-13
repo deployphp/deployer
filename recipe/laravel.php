@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -14,6 +15,7 @@ set('writable_dirs', [
     'storage/app/public',
     'storage/framework',
     'storage/framework/cache',
+    'storage/framework/cache/data',
     'storage/framework/sessions',
     'storage/framework/views',
     'storage/logs',
@@ -24,6 +26,7 @@ set('laravel_version', function () {
     preg_match_all('/(\d+\.?)+/', $result, $matches);
     return $matches[0][0] ?? 5.5;
 });
+set('public_path', 'public');
 
 /**
  * Run an artisan command.
@@ -106,19 +109,19 @@ task('artisan:passport:keys', artisan('passport:keys'));
  */
 
 desc('Seeds the database with records');
-task('artisan:db:seed', artisan('db:seed --force', ['showOutput']));
+task('artisan:db:seed', artisan('db:seed --force', ['skipIfNoEnv', 'showOutput']));
 
 desc('Runs the database migrations');
 task('artisan:migrate', artisan('migrate --force', ['skipIfNoEnv']));
 
 desc('Drops all tables and re-run all migrations');
-task('artisan:migrate:fresh', artisan('migrate:fresh --force'));
+task('artisan:migrate:fresh', artisan('migrate:fresh --force', ['skipIfNoEnv']));
 
 desc('Rollbacks the last database migration');
-task('artisan:migrate:rollback', artisan('migrate:rollback --force', ['showOutput']));
+task('artisan:migrate:rollback', artisan('migrate:rollback --force', ['skipIfNoEnv', 'showOutput']));
 
 desc('Shows the status of each migration');
-task('artisan:migrate:status', artisan('migrate:status', ['showOutput']));
+task('artisan:migrate:status', artisan('migrate:status', ['skipIfNoEnv', 'showOutput']));
 
 /*
  * Cache and optimizations.
@@ -203,6 +206,9 @@ task('artisan:horizon:status', artisan('horizon:status', ['showOutput']));
 desc('Terminates the master supervisor so it can be restarted');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
 
+desc('Publish all of the Horizon resources');
+task('artisan:horizon:publish', artisan('horizon:publish'));
+
 /*
  * Telescope.
  */
@@ -212,6 +218,45 @@ task('artisan:telescope:clear', artisan('telescope:clear'));
 
 desc('Prunes stale entries from the Telescope database');
 task('artisan:telescope:prune', artisan('telescope:prune'));
+
+/*
+ * Octane.
+ */
+
+desc('Starts the octane server');
+task('artisan:octane', artisan('octane:start'));
+
+desc('Reloads the octane server');
+task('artisan:octane:reload', artisan('octane:reload'));
+
+desc('Stops the octane server');
+task('artisan:octane:stop', artisan('octane:stop'));
+
+desc('Check the status of the octane server');
+task('artisan:octane:status', artisan('octane:status'));
+
+/*
+ * Nova.
+ */
+
+desc('Publish all of the Laravel Nova resources');
+task('artisan:nova:publish', artisan('nova:publish'));
+
+/*
+ * Pulse.
+ */
+
+desc('Starts the Pulse server');
+task('artisan:pulse:check', artisan('pulse:check'));
+
+desc('Restarts the Pulse server');
+task('artisan:pulse:restart', artisan('pulse:restart'));
+
+desc('Purges all Pulse data from storage');
+task('artisan:pulse:purge', artisan('pulse:purge'));
+
+desc('Process incoming Pulse data from the ingest stream');
+task('artisan:pulse:work', artisan('pulse:work'));
 
 /**
  * Main deploy task.

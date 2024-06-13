@@ -6,6 +6,8 @@ A **recipe** is a file containing definitions for **hosts** and **tasks**.
 
 Deployer CLI requires two arguments to run: a **task** to run and a **selector**.
 
+Hosts can also be [selected via labels](hosts.md#labels), also a default host selection can be configured.
+
 ```
 $ dep deploy deployer.org
   --- ------ ------------
@@ -53,6 +55,10 @@ $ dep my_task
 task my_task
 $
 ```
+
+If no host is provided and no default_selector is set, Deployer will show an interactive prompt for selecting hosts.
+If your recipe contains only one host, Deployer will automatically choose it. 
+To select all hosts specify `all`.
 
 But where is our `whoami` command output? By default, Deployer runs with normal verbosity
 level and shows only the names of executed tasks. Let's increase verbosity to verbose, and

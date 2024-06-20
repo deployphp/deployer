@@ -21,7 +21,42 @@ class InitCommand extends Command
 {
     use CommandCommon;
 
-    protected function configure()
+    /**
+     * @var string $recipePath
+     */
+    protected $recipePath;
+
+    /**
+     * @var string $language
+     */
+    protected $language;
+
+    /**
+     * @var string $template
+     */
+    protected $template;
+
+    /**
+     * @var string $repository
+     */
+    protected $repository;
+
+    /**
+     * @var string $project
+     */
+    protected $project;
+
+    /**
+     * @var array $hosts
+     */
+    protected $hosts;
+
+    /**
+     * @var string $tempHostFile
+     */
+    protected $tempHostFile;
+
+    protected function configure(): void
     {
         $this
             ->setName('init')
@@ -30,6 +65,143 @@ class InitCommand extends Command
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $this->printHeader($output);
+
+        $this->setTemplateVars($input, $output);
+
+        $language = $this->language;
+        file_put_contents(
+            $this->recipePath,
+            $this->$language()
+        );
+
+        $this->telemetry();
+        $output->writeln(sprintf(
+            '<info>Successfully created</info> <comment>%s</comment>',
+            $this->recipePath
+        ));
+        return 0;
+    }
+
+    protected function php(): string
+    {
+        $h = "";
+        foreach ($this->hosts as $host) {
+            $h .= "host('{$host}')\n" .
+                "    ->set('remote_user', 'deployer')\n" .
+                "    ->set('deploy_path', '~/{$this->project}');\n";
+        }
+
+        return <<<PHP
+<?php
+namespace Deployer;
+
+require 'recipe/$this->template.php';
+
+// Config
+
+set('repository', '{$this->repository}');
+
+add('shared_files', []);
+add('shared_dirs', []);
+add('writable_dirs', []);
+
+// Hosts
+
+{$h}
+// Hooks
+
+after('deploy:failed', 'deploy:unlock');
+
+PHP;
+    }
+
+    protected function yaml(): string
+    {
+        $h = "";
+        foreach ($this->hosts as $host) {
+            $h .= "  $host:\n".
+                "    remote_user: deployer\n" .
+                "    deploy_path: '~/{$this->project}'\n";
+        }
+
+        $additionalConfigs = $this->getAdditionalConfigs($this->template);
+
+        return <<<YAML
+import: 
+  - recipe/$this->template.php
+
+config:
+  repository: '$this->repository'
+$additionalConfigs
+hosts:
+$h
+tasks:
+  build:
+    - run: uptime  
+
+after:
+  deploy:failed: deploy:unlock
+
+YAML;
+    }
+
+    protected function getAdditionalConfigs(string $template): string
+    {
+        if ($template !== 'common') {
+            return '';
+        }
+
+        return <<<YAML
+  shared_files:
+    - .env
+  shared_dirs:
+    - uploads
+  writable_dirs:
+    - uploads
+  
+YAML;
+    }
+
+    protected function recipes(): array
+    {
+        $recipes = [];
+        $dir = new \DirectoryIterator(__DIR__ . '/../../recipe');
+        foreach ($dir as $fileinfo) {
+            if ($fileinfo->isDot()) {
+                continue;
+            }
+            if ($fileinfo->isDir()) {
+                continue;
+            }
+
+            $recipe = pathinfo($fileinfo->getFilename(), PATHINFO_FILENAME);
+
+            if ($recipe === 'README') {
+                continue;
+            }
+
+            $recipes[] = $recipe;
+        }
+
+        sort($recipes);
+        return $recipes;
+    }
+
+    protected function setTemplateVars(InputInterface $input, OutputInterface $output): void
+    {
+        $io = new SymfonyStyle($input, $output);
+
+        $this->setRecipePath($input, $io);
+        $this->setTemplate($io);
+        $this->setRepository($io);
+        $this->setProject($io);
+        $this->guessHost();
+        $this->setHosts($io);
+    }
+
+    protected function printHeader(OutputInterface $output): void
     {
         if (getenv('COLORTERM') === 'truecolor') {
             $output->write(<<<EOF
@@ -64,41 +236,50 @@ EOF
 EOF
             );
         }
+    }
 
-        $io = new SymfonyStyle($input, $output);
-        $recipePath = $input->getOption('path');
+    protected function setRecipePath(InputInterface $input, SymfonyStyle $io): void
+    {
+        $this->language = $io->choice('Select recipe language', ['php', 'yaml'], 'php');
 
-        $language = $io->choice('Select recipe language', ['php', 'yaml'], 'php');
-        if (empty($recipePath)) {
-            $recipePath = "deploy.$language";
+        if (!$this->recipePath) {
+            $this->recipePath = "deploy.$this->language";
         }
 
         // Avoid accidentally override of existing file.
-        if (file_exists($recipePath)) {
-            $io->warning("$recipePath already exists");
+        if (file_exists($this->recipePath)) {
+            $io->warning("$this->recipePath already exists");
             if (!$io->confirm("Do you want to override the existing file?", false)) {
                 $io->block('👍🏻');
                 exit(1);
             }
         }
+    }
 
-        // Template
-        $template = $io->choice('Select project template', $this->recipes(), 'common');
+    protected function setTemplate(SymfonyStyle $io): void
+    {
+        $this->template = $io->choice('Select project template', $this->recipes(), 'common');
+    }
 
-        // Repo
+    protected function setRepository(SymfonyStyle $io): void
+    {
         $default = '';
         try {
             $process = Process::fromShellCommandline('git remote get-url origin');
             $default = $process->mustRun()->getOutput();
             $default = trim($default);
         } catch (RuntimeException $e) {
+            //@TODO Throw error $e->getMessage();
         }
-        $repository = $io->ask('Repository', $default);
 
-        // Guess host
-        if (preg_match('/github.com:(?<org>[A-Za-z0-9_.\-]+)\//', $repository, $m)) {
+        $this->repository = $io->ask('Repository', $default);
+    }
+
+    protected function guessHost(): void
+    {
+        if (preg_match('/github.com:(?<org>[A-Za-z0-9_.\-]+)\//', $this->repository, $m)) {
             $org = $m['org'];
-            $tempHostFile = tempnam(sys_get_temp_dir(), 'temp-host-file');
+            $this->tempHostFile = tempnam(sys_get_temp_dir(), 'temp-host-file');
             $php = new PhpProcess(<<<EOF
 <?php
 \$ch = curl_init('https://api.github.com/orgs/$org');
@@ -113,26 +294,31 @@ curl_setopt(\$ch, CURLOPT_TIMEOUT, 5);
 curl_close(\$ch);
 \$json = json_decode(\$result);
 \$host = parse_url(\$json->blog, PHP_URL_HOST);
-file_put_contents('$tempHostFile', \$host);
+file_put_contents('$this->tempHostFile', \$host);
 EOF
             );
             $php->start();
         }
+    }
 
-        // Project
+    protected function setProject(SymfonyStyle $io): void
+    {
         $default = '';
         try {
             $process = Process::fromShellCommandline('basename "$PWD"');
             $default = $process->mustRun()->getOutput();
             $default = trim($default);
         } catch (RuntimeException $e) {
+            //@TODO Throw error $e->getMessage();
         }
-        $project = $io->ask('Project name', $default);
+        $this->project = $io->ask('Project name', $default);
+    }
 
-        // Hosts
+    protected function setHosts(SymfonyStyle $io): void
+    {
         $host = null;
-        if (isset($tempHostFile)) {
-            $host = file_get_contents($tempHostFile);
+        if (isset($this->tempHostFile)) {
+            $host = file_get_contents($this->tempHostFile);
         }
         $hostsString = $io->ask('Hosts (comma separated)', $host);
         if ($hostsString !== null) {
@@ -141,118 +327,6 @@ EOF
             $hosts = [];
         }
 
-        file_put_contents($recipePath, $this->$language($template, $project, $repository, $hosts));
-
-        $this->telemetry();
-        $output->writeln(sprintf(
-            '<info>Successfully created</info> <comment>%s</comment>',
-            $recipePath
-        ));
-        return 0;
-    }
-
-    private function php(string $template, string $project, string $repository, array $hosts): string
-    {
-        $h = "";
-        foreach ($hosts as $host) {
-            $h .= "host('{$host}')\n" .
-                "    ->set('remote_user', 'deployer')\n" .
-                "    ->set('deploy_path', '~/{$project}');\n";
-        }
-
-        return <<<PHP
-<?php
-namespace Deployer;
-
-require 'recipe/$template.php';
-
-// Config
-
-set('repository', '{$repository}');
-
-add('shared_files', []);
-add('shared_dirs', []);
-add('writable_dirs', []);
-
-// Hosts
-
-{$h}
-// Hooks
-
-after('deploy:failed', 'deploy:unlock');
-
-PHP;
-    }
-
-    private function yaml(string $template, string $project, string $repository, array $hosts): string
-    {
-        $h = "";
-        foreach ($hosts as $host) {
-            $h .= "  $host:\n".
-                "    remote_user: deployer\n" .
-                "    deploy_path: '~/{$project}'\n";
-        }
-
-        $additionalConfigs = $this->getAdditionalConfigs($template);
-
-        return <<<YAML
-import: 
-  - recipe/$template.php
-
-config:
-  repository: '$repository'
-$additionalConfigs
-hosts:
-$h
-tasks:
-  build:
-    - run: uptime  
-
-after:
-  deploy:failed: deploy:unlock
-
-YAML;
-    }
-
-    private function getAdditionalConfigs(string $template): string
-    {
-        if ($template !== 'common') {
-            return '';
-        }
-
-        return <<<YAML
-  shared_files:
-    - .env
-  shared_dirs:
-    - uploads
-  writable_dirs:
-    - uploads
-  
-YAML;
-    }
-
-    private function recipes(): array
-    {
-        $recipes = [];
-        $dir = new \DirectoryIterator(__DIR__ . '/../../recipe');
-        foreach ($dir as $fileinfo) {
-            if ($fileinfo->isDot()) {
-                continue;
-            }
-            if ($fileinfo->isDir()) {
-                continue;
-            }
-
-            $recipe = pathinfo($fileinfo->getFilename(), PATHINFO_FILENAME);
-
-            if ($recipe === 'README') {
-                continue;
-            }
-
-            $recipes[] = $recipe;
-        }
-
-        sort($recipes);
-        return $recipes;
+        $this->hosts = $hosts;
     }
 }

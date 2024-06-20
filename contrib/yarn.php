@@ -21,7 +21,7 @@ desc('Installs Yarn packages');
 task('yarn:install', function () {
     if (has('previous_release')) {
         if (test('[ -d {{previous_release}}/node_modules ]')) {
-            run('cp -R {{previous_release}}/node_modules {{release_path}}');
+            run('cp -al {{previous_release}}/node_modules {{release_path}}');
         }
     }
     run("cd {{release_path}} && {{bin/yarn}}");

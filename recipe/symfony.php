@@ -62,6 +62,11 @@ task('deploy:cache:clear', function () {
     }
 });
 
+desc('Optimize environment variables');
+task('deploy:env', function () {
+    run('{{bin/console}} dump-env "${APP_ENV:-prod}" || true');
+});
+
 desc('Deploys project');
 task('deploy', [
     'deploy:prepare',

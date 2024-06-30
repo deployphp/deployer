@@ -33,7 +33,7 @@ The [deploy](#deploy) task of **Yii2** consists of:
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/shopware.md#deployupdate_code) – 
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors

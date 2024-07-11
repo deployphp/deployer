@@ -52,3 +52,11 @@ php_fastcgi * unix//run/php/php-fpm.sock {
     resolve_root_symlink
 }
 ```
+
+## Fix for Apache
+
+Enable `revalidate_path` in `php.ini`:
+
+```ini
+opcache.revalidate_path=1
+```

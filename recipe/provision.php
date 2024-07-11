@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require __DIR__ . '/provision/databases.php';
@@ -37,7 +38,7 @@ task('provision', [
 
 desc('Checks pre-required state');
 task('provision:check', function () {
-    if (get('remote_user') !== 'root') {
+    if (get('remote_user') !== 'root' && get('become') !== 'root') {
         warning('');
         warning('Run provision as root: -o remote_user=root');
         warning('or with a sudo enabled user: -o become=root');
@@ -52,6 +53,9 @@ task('provision:check', function () {
         warning('!!  Only Ubuntu 20.04 LTS supported!  !!');
         warning('!!                                    !!');
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        if (!askConfirmation(' Do you want to continue? (Not recommended)', false)) {
+            throw new \RuntimeException('Provision aborted due to incompatible OS.');
+        }
     }
 })->oncePerNode();
 
@@ -63,20 +67,33 @@ task('provision:configure', function () {
         'public_path',
         'php_version',
         'db_type',
+    ];
+    $dbparams = [
         'db_user',
         'db_name',
         'db_password',
     ];
-    $code = "\n\n    host(<info>'{{alias}}'</info>)";
-    foreach ($params as $name) {
-        $code .= "\n        ->set(<info>'$name'</info>, <info>'…'</info>)";
+    $code = "\n\n<comment>* To streamline script execution, include the following configuration in your <info>deploy.php</info>.</comment>";
+    $code .= "\n<fg=magenta> - Do not include sensitive information if the file is shared. Replace <info>…</info> with actual data</>";
+    $code .= "\n<fg=magenta> - If a database configuration is not required, 'db_user', 'db_name', and 'db_password' can be omitted.</>";
+    $code .= "\n\n<comment>====== Configuration Start ======</comment>";
+    $code .= "\nhost(<info>'{{alias}}'</info>)";
+    foreach (array_merge($params, $dbparams) as $name) {
+        $code .= "\n    ->set(<info>'$name'</info>, <info>'…'</info>)";
     }
-    $code .= ";\n\n";
+    $code .= ";\n";
+    $code .= "<comment>====== Configuration End ======</comment>\n\n";
     writeln($code);
     foreach ($params as $name) {
         get($name);
     }
+    if (get('db_type') !== 'none') {
+        foreach ($dbparams as $name) {
+            get($name);
+        }
+    }
 });
+
 
 desc('Adds repositories and update');
 task('provision:update', function () {

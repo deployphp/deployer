@@ -5,23 +5,21 @@ namespace Deployer\Importer;
 
 use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\Input;
+use Symfony\Component\Console\Output\Output;
 
 class ImporterTest extends TestCase
 {
-    private $previousInput;
-    private $previousOutput;
-
     public function setUp(): void
     {
-        $deployer = Deployer::get();
-        $this->previousInput = $deployer->input;
-        $this->previousOutput = $deployer->output;
-    }
+        $console = new Application();
+        $input = $this->createMock(Input::class);
+        $output = $this->createMock(Output::class);
 
-    public function tearDown(): void
-    {
-        Deployer::get()->input = $this->previousInput;
-        Deployer::get()->output = $this->previousOutput;
+        $deployer = new Deployer($console);
+        $deployer->input = $input;
+        $deployer->output = $output;
     }
 
     public function testCanOneOverrideStaticMethod(): void

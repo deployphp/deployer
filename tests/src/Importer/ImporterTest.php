@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Deployer\Importer;
 
 use Deployer\Deployer;
+use Deployer\Exception\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\Input;
@@ -76,5 +77,20 @@ EOL;
         self::assertEquals('production', Deployer::get()->hosts->get('production')->getLabels()['stage']);
         self::assertEquals('foo', Deployer::get()->hosts->get('acceptance')->getRemoteUser());
         self::assertEquals('bar', Deployer::get()->hosts->get('production')->getRemoteUser());
+    }
+
+    public function testThrowsForInvalidConfig(): void
+    {
+        $data = <<<EOL
+unknownProperty: some-string-value
+EOL;
+        $tmpFile = tempnam(sys_get_temp_dir(), 'deployer-') . '.yaml';
+        file_put_contents($tmpFile, $data);
+
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessageMatches('/' . basename($tmpFile) . '/');
+        $this->expectExceptionMessageMatches('/The property unknownProperty is not defined and the definition does not allow additional properties/');
+
+        Importer::import($tmpFile);
     }
 }

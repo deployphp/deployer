@@ -58,5 +58,5 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
-      - name: Run test suite
+      - name: Run PHP_CodeSniffer
         run: composer phpcs

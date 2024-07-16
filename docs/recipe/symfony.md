@@ -185,7 +185,7 @@ Optimize environment variables.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L73)
 
 Deploys project.
 

@@ -42,7 +42,7 @@ class Httpie
         if (!extension_loaded('curl')) {
             throw new \Exception(
                 "Please, install curl extension.\n" .
-                "https://goo.gl/yTAeZh"
+                "https://php.net/curl.installation"
             );
         }
     }

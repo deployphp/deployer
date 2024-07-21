@@ -202,7 +202,7 @@ task('magento:deploy:assets', function () {
                 $themesToCompile .= ' -t ' . $theme;
             }
         }
-        run("{{bin/php}} {{release_or_current_path}}/bin/magento setup:static-content:deploy -f --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
+        run("{{bin/php}} {{release_or_current_path}}/{{magento_dir}}/bin/magento setup:static-content:deploy -f --content-version={{content_version}} {{static_deploy_options}} {{static_content_locales}} $themesToCompile -j {{static_content_jobs}}");
     }
 });
 
@@ -268,6 +268,15 @@ task('magento:sync:content_version', function () {
 })->once();
 
 before('magento:deploy:assets', 'magento:sync:content_version');
+
+before('deploy:vendors', function(){
+    set('original_release_or_current_path',get('release_or_current_path'));
+    set('release_or_current_path', get('release_or_current_path') .'/'. get('magento_dir'));
+});
+
+after('deploy:vendors', function (){
+    set('release_or_current_path', get('original_release_or_current_path'));
+});
 
 desc('Enables maintenance mode');
 task('magento:maintenance:enable', function () {

@@ -669,13 +669,15 @@ Adds additional files and dirs to the list of shared files and dirs.
 
 
 ### magento:set_cache_prefix
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L462)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L465)
 
-Description: Update cache id_prefix on deploy to ensure compilation against a fresh cache.
+Update cache id_prefix.
 
-The cache ID prefix is generated using the magento_cache_id_prefix variable if it is set. If magento_cache_id_prefix is not set, it falls back to using the alias. This ensures that the cache prefix is unique for each deployment, preventing conflicts and ensuring that the latest version of the cache is used.
+Update cache id_prefix on deploy to ensure compilation against a fresh cache
+The cache ID prefix is generated using the magento_cache_id_prefix variable if it is set.
+If magento_cache_id_prefix is not set, it falls back to using the alias.
+This ensures that the cache prefix is unique for each deployment, preventing conflicts and ensuring that the latest version of the cache is used.
 Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
-
 To use this feature, add the following to your deployer scripts:
 ```php
 after('deploy:shared', 'magento:set_cache_prefix');
@@ -684,7 +686,7 @@ after('deploy:magento', 'magento:cleanup_cache_prefix');
 
 
 ### magento:cleanup_cache_prefix
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L507)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L510)
 
 Cleanup cache id_prefix env files.
 
@@ -692,7 +694,7 @@ After successful deployment, move the tmp_env.php file to env.php ready for next
 
 
 ### magento:cron:stop
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L523)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L526)
 
 Remove cron from crontab and kill running cron jobs.
 
@@ -704,7 +706,7 @@ To use this feature, add the following to your deployer scripts:
 
 
 ### magento:cron:install
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L539)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L542)
 
 Install cron in crontab.
 
@@ -716,7 +718,7 @@ To use this feature, add the following to your deployer scripts:
 
 
 ### artifact:prepare
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L545)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L548)
 
 Prepares an artifact on the target server.
 
@@ -736,7 +738,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:finish
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L558)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L561)
 
 Executes the tasks after artifact is released.
 
@@ -751,7 +753,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L567)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L570)
 
 Actually releases the artifact deployment.
 

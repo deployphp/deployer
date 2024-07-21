@@ -450,7 +450,10 @@ task('deploy:additional-shared', function () {
 });
 
 /**
- * Update cache id_prefix on deploy so that you are compiling against a fresh cache
+ * Update cache id_prefix on deploy to ensure compilation against a fresh cache
+ * The cache ID prefix is generated using the magento_cache_id_prefix variable if it is set.
+ * If magento_cache_id_prefix is not set, it falls back to using the alias.
+ * This ensures that the cache prefix is unique for each deployment, preventing conflicts and ensuring that the latest version of the cache is used.
  * Reference Issue: https://github.com/davidalger/capistrano-magento2/issues/151
  * To use this feature, add the following to your deployer scripts:
  * ```php

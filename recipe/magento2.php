@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -196,7 +197,7 @@ task('magento:deploy:assets', function () {
         invoke('magento:deploy:assets:adminhtml');
         invoke('magento:deploy:assets:frontend');
     } else {
-        if (count(get('magento_themes')) > 0 ) {
+        if (count(get('magento_themes')) > 0) {
             $themes = array_is_list(get('magento_themes')) ? get('magento_themes') : array_keys(get('magento_themes'));
             foreach ($themes as $theme) {
                 $themesToCompile .= ' -t ' . $theme;
@@ -377,7 +378,7 @@ set('bin/tar', function () {
 // tasks section
 
 desc('Packages all relevant files in an artifact.');
-task('artifact:package', function() {
+task('artifact:package', function () {
     if (!test('[ -f {{artifact_excludes_file}} ]')) {
         throw new GracefulShutdownException(
             "No artifact excludes file provided, provide one at artifacts/excludes or change location"
@@ -398,12 +399,12 @@ task('artifact:extract', function () {
 });
 
 desc('Clears generated files prior to building.');
-task('build:remove-generated', function() {
+task('build:remove-generated', function () {
     run('rm -rf generated/*');
 });
 
 desc('Prepare local artifact build');
-task('build:prepare', function() {
+task('build:prepare', function () {
     if (!currentHost()->get('local')) {
         throw new GracefulShutdownException('Artifact can only be built locally, you provided a non local host');
     }
@@ -464,8 +465,10 @@ task('magento:set_cache_prefix', function () {
     $tmpConfigFile = tempnam(sys_get_temp_dir(), 'deployer_config');
     download('{{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH, $tmpConfigFile);
     $envConfigArray = include($tmpConfigFile);
+    //check if stage is used for multi server deploy, otherwise use alias
+    $prefixId = get('stage') ?? get('alias');
     //set prefix to `alias_releasename_`
-    $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
+    $prefixUpdate = $prefixId . '_' . get('release_name') . '_';
 
     //check for preload keys and update
     if (isset($envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'])) {

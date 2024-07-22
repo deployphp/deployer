@@ -107,6 +107,6 @@ function getRemoteCrontab(): array
         return [];
     }
 
-    return explode(PHP_EOL, run("$sudo {{bin/crontab}} -l"));
+    return preg_split('/\r\n|\r|\n/', run("$sudo {{bin/crontab}} -l"));
 }
 

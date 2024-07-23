@@ -176,8 +176,16 @@ Clears cache.
 
 
 
-### deploy
+### deploy:env
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L66)
+
+Optimize environment variables.
+
+
+
+
+### deploy
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L73)
 
 Deploys project.
 

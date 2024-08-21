@@ -243,6 +243,16 @@ desc('Publish all of the Laravel Nova resources');
 task('artisan:nova:publish', artisan('nova:publish'));
 
 /*
+ * Reverb.
+ */
+
+desc('Starts the Reverb server');
+task('artisan:reverb:start', artisan('pulse:start'));
+
+desc('Restarts the Reverb server');
+task('artisan:reverb:restart', artisan('pulse:restart'));
+
+/*
  * Pulse.
  */
 

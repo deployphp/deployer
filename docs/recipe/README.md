@@ -1,6 +1,7 @@
 # All Recipes
 
 * [Cakephp Recipe](/docs/recipe/cakephp.md)
+* [Codeigniter 4 Recipe](/docs/recipe/codeigniter4.md)
 * [Codeigniter Recipe](/docs/recipe/codeigniter.md)
 * [Common Recipe](/docs/recipe/common.md)
 * [Composer Recipe](/docs/recipe/composer.md)

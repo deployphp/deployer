@@ -132,6 +132,7 @@ EXAMPLE
         $response = Httpie::post(
             $releasesApiUrl
         )
+            ->setopt(CURLOPT_TIMEOUT, 10)
             ->header('Authorization', sprintf('Bearer %s', $config['token']))
             ->jsonBody($releaseData)
             ->getJson();
@@ -162,6 +163,7 @@ EXAMPLE
         $response = Httpie::post(
             $releasesApiUrl . $response['version'] . '/deploys/'
         )
+            ->setopt(CURLOPT_TIMEOUT, 10)
             ->header('Authorization', sprintf('Bearer %s', $config['token']))
             ->jsonBody($deployData)
             ->getJson();

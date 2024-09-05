@@ -16,11 +16,6 @@ task('pimcore:rebuild-classes', function () {
     run('{{bin/console}} pimcore:deployment:classes-rebuild --create-classes --delete-classes --no-interaction');
 });
 
-desc('Creates Custom Layouts');
-task('pimcore:custom-layouts-rebuild', function () {
-    run('{{bin/console}} pimcore:deployment:custom-layouts-rebuild --create-custom-layouts --delete-custom-layouts --no-interaction');
-});
-
 desc('Removes cache');
 task('pimcore:cache_clear', function () {
     run('rm -rf {{release_or_current_path}}/var/cache/dev/*');
@@ -28,7 +23,6 @@ task('pimcore:cache_clear', function () {
 
 task('pimcore:deploy', [
     'pimcore:rebuild-classes',
-    'pimcore:custom-layouts-rebuild',
     'pimcore:cache_clear'
 ]);
 

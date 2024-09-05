@@ -58,16 +58,8 @@ Rebuilds Pimcore Classes.
 
 
 
-### pimcore:custom-layouts-rebuild
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L20)
-
-Creates Custom Layouts.
-
-
-
-
 ### pimcore:cache_clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L20)
 
 Removes cache.
 
@@ -75,7 +67,7 @@ Removes cache.
 
 
 ### pimcore:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L24)
 
 
 
@@ -84,6 +76,5 @@ Removes cache.
 
 This task is group task which contains next tasks:
 * [pimcore:rebuild-classes](/docs/recipe/pimcore.md#pimcorerebuild-classes)
-* [pimcore:custom-layouts-rebuild](/docs/recipe/pimcore.md#pimcorecustom-layouts-rebuild)
 
 

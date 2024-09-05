@@ -23,7 +23,6 @@ task('pimcore:cache_clear', function () {
 
 task('pimcore:deploy', [
     'pimcore:rebuild-classes',
-    'pimcore:custom-layouts-rebuild',
     'pimcore:cache_clear'
 ]);
 

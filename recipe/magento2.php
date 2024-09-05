@@ -319,7 +319,6 @@ task('deploy:magento', [
     'magento:config:import',
     'magento:upgrade:db',
     'magento:maintenance:disable',
-    'magento:cache:flush',
 ]);
 
 desc('Magento2 build operations');
@@ -336,6 +335,8 @@ task('deploy', [
     'deploy:magento',
     'deploy:publish',
 ]);
+
+after('deploy:symlink', 'magento:cache:flush');
 
 after('deploy:failed', 'magento:maintenance:disable');
 

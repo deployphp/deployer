@@ -1,7 +1,7 @@
 name: stale
 on:
   schedule:
-    - cron: * * * * *
+    - cron: "* * * * *"
 
 jobs:
   close-issues:

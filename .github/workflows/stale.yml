@@ -11,7 +11,9 @@ jobs:
     steps:
       - uses: actions/stale@v9
         with:
+          days-before-issue-stale: 0
           days-before-issue-close: 0
+          ignore-updates: true
           close-issue-message: |
             This issue has been automatically closed. Please, open a discussion for bug reports and feature requests.
             

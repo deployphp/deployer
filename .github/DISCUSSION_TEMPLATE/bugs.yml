@@ -40,8 +40,9 @@ body:
       required: true
 
   - type: textarea
+    id: deploy-src
     attributes:
-      label: deploy-php
+      label: `deploy.php` or `deploy.yaml`
       description: Please, provide a minimal reproducible example of deploy.php or deploy.yaml file.
     validations:
       required: false
@@ -49,11 +50,6 @@ body:
   - type: textarea
     attributes:
       label: Steps to reproduce
-      description: |
-        Please provide the steps to reproduce the bug.
-        
-        1.
-        2.
-        3.
+      description: Please provide the steps to reproduce the bug.
     validations:
       required: true

@@ -42,7 +42,7 @@ body:
   - type: textarea
     id: deploy-src
     attributes:
-      label: `deploy.php` or `deploy.yaml`
+      label: deploy.php or deploy.yaml
       description: Please, provide a minimal reproducible example of deploy.php or deploy.yaml file.
     validations:
       required: false

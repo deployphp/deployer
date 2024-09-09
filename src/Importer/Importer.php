@@ -191,9 +191,9 @@ class Importer
 
                     if (isset($download)) {
                         if (isset($has)) {
-                            throw new ConfigurationException("Task step can not have both $has and downlaod.");
+                            throw new ConfigurationException("Task step can not have both $has and download.");
                         }
-                        $has = 'downlaod';
+                        $has = 'download';
                         $prev = $body;
                         $body = function () use ($download, $prev) {
                             $prev();

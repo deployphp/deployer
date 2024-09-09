@@ -1,0 +1,59 @@
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before opening a bug report, please search the existing discussions.
+        To address this bug as fast as possible, we need the following information.
+
+  - type: input
+    id: deployer-version
+    attributes:
+      label: Deployer Version
+      description: Which version of Deployer are you using? Please provide the full version, e.g. v7.4.0.
+      placeholder: v7.4.0
+    validations:
+      required: true
+
+  - type: input
+    id: target-os
+    attributes:
+      label: Target OS
+      description: Which operating system are you using? Please provide the full version, e.g. Ubuntu 22.04.
+      placeholder: Ubuntu 22.04
+    validations:
+      required: true
+
+  - type: dropdown
+    id: php-version
+    attributes:
+      label: Which PHP version are you using?
+      options:
+        - PHP 8.3
+        - PHP 8.2
+        - PHP 8.1
+        - PHP 8.0
+        - PHP 7.4
+        - PHP 7.3
+        - PHP 7.2
+        - PHP 7.1
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: deploy-php
+      description: Please, provide a minimal reproducible example of deploy.php or deploy.yaml file.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Please provide the steps to reproduce the bug.
+        
+        1.
+        2.
+        3.
+    validations:
+      required: true

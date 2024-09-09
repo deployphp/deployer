@@ -2,6 +2,7 @@ name: stale
 on:
   schedule:
     - cron: "* * * * *"
+  workflow_dispatch:
 
 jobs:
   close-issues:

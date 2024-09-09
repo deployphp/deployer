@@ -2,8 +2,8 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before opening a bug report, please search the existing discussions.
-        To address this bug as fast as possible, we need the following information.
+        **Before opening a bug report, please search the existing discussions.**
+        **To address this bug as fast as possible, we need the following information.**
 
   - type: input
     id: deployer-version

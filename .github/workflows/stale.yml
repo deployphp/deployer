@@ -18,7 +18,7 @@ jobs:
           close-issue-message: |
             This issue has been automatically closed. Please, open a discussion for bug reports and feature requests.
             
-            Read more: [https://github.com/deployphp/deployer/discussions/3888]
+            Read more: https://github.com/deployphp/deployer/discussions/3888
           days-before-pr-stale: -1
           days-before-pr-close: -1
           operations-per-run: 1440

@@ -22,6 +22,7 @@ jobs:
       - name: Add & Commit
         uses: EndBug/add-and-commit@v9
         with:
+          default_author: github_actions
           add: 'docs'
           message: '[automatic] Update docs with bin/docgen'
 

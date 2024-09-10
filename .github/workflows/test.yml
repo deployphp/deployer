@@ -53,7 +53,7 @@ jobs:
         continue-on-error: true
 
       - name: Build the docker-compose stack
-        run: cd tests/docker && docker compose build .
+        run: cd tests/docker && docker compose build
 
       - name: Get Composer Cache Directory
         id: composer-cache

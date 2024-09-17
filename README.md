@@ -1,4 +1,12 @@
-<h1><a href="https://deployer.org"><img src="https://deployer.org/img/logo.svg" alt="Deployer Logo" height="30"></a> Deployer</h1>
+<h1>
+    <a href="https://deployer.org">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="https://deployer.org/img/logo-white.svg" height="30">
+            <img src="https://deployer.org/img/logo.svg" alt="Deployer Logo" height="30">
+        </picture>
+    </a>
+    Deployer
+</h1>
 <p>The PHP deployment tool with support for popular frameworks out of the box.</p>
 
 <p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>

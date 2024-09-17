@@ -20,7 +20,7 @@ You can provide also other configuration options:
  - *username* - default is *guest*
  - *password* - default is *guest*
  - *channel* - no default value, need to be specified via config
- - *message* - default is **Deployment to '{$host}' on *{$prod}* was successful\n($releasePath)**
+ - *message* - default is **Deployment to '$host' on *$prod* was successful\n$releasePath**
  - *vhost* - default is
 
 

@@ -1,7 +1,7 @@
 # Selector
 
 Deployer uses the selector to choose hosts. Each host can have a set of labels. 
-Labels are key-value pairs. 
+Labels are key-value pairs.
 
 For example, `stage: production` or `role: web`. 
 
@@ -23,6 +23,8 @@ host('db.example.com')
         'env' => 'prod',
     ]);
 ```
+or use `->addLables()` method to add labels to the existing host.
+
 
 Now let's define a task to check labels:
 
@@ -54,6 +56,16 @@ task info
 
 Label syntax is represented by [disjunctive normal form](https://en.wikipedia.org/wiki/Disjunctive_normal_form) 
 (**OR of ANDs**).
+```
+(condition1 AND condition2) OR (condition3 AND condition4)
+```
+
+Each condition in the subquery that is represented by [conjunctive normal form](https://en.wikipedia.org/wiki/Conjunctive_normal_form)
+```
+(condition1 OR condition2) AND (condition3 OR condition4)
+```
+
+### Explanation
 
 For example, `type=web,env=prod` is a selector of: `type=web` **OR** `env=prod`.
 
@@ -66,11 +78,21 @@ task info
 
 As you can see, both hosts are selected (as both of them have the `env: prod` label).
 
+
 We can use `&` to define **AND**. For example, `type=web & env=prod` is a selector
 for hosts with `type: web` **AND** `env: prod` labels.
 
 ```bash
 $ dep info 'type=web & env=prod'
+task info
+[web.example.com] type:web env:prod
+```
+
+We can use `|` to define **OR** in a subquery. For example, `type=web|db & env=prod` is a selector
+for hosts with (`type: web` **OR** `type:db`) **AND** `env: prod` labels.
+
+```bash
+$ dep info 'type=web|db & env=prod'
 task info
 [web.example.com] type:web env:prod
 ```
@@ -119,7 +141,7 @@ You can use the [select()](api.md#select) function to select hosts by selector i
 
 ```php
 task('info', function () {
-    $hosts = select('type=web,env=prod');
+    $hosts = select('type=web|db,env=prod');
     foreach ($hosts as $host) {
         writeln('type:' . $host->get('labels')['type'] . ' env:' . $host->get('labels')['env']);
     }
@@ -143,8 +165,10 @@ To restrict a task to run only on selected hosts, you can use the [select()](tas
 ```php
 task('info', function () {
     // ...
-})->select('type=web,env=prod');
+})->select('type=web|db,env=prod');
 ```
+
+
 
 ## Labels in YAML
 

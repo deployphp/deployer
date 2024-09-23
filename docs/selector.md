@@ -1,7 +1,7 @@
 # Selector
 
 Deployer uses the selector to choose hosts. Each host can have a set of labels. 
-Labels are key-value pairs.
+Labels are key-value pairs. 
 
 For example, `stage: production` or `role: web`. 
 
@@ -24,7 +24,6 @@ host('db.example.com')
     ]);
 ```
 or use `->addLables()` method to add labels to the existing host.
-
 
 Now let's define a task to check labels:
 
@@ -78,7 +77,6 @@ task info
 
 As you can see, both hosts are selected (as both of them have the `env: prod` label).
 
-
 We can use `&` to define **AND**. For example, `type=web & env=prod` is a selector
 for hosts with `type: web` **AND** `env: prod` labels.
 
@@ -89,7 +87,7 @@ task info
 ```
 
 We can use `|` to define **OR** in a subquery. For example, `type=web|db & env=prod` is a selector
-for hosts with (`type: web` **OR** `type:db`) **AND** `env: prod` labels.
+for hosts with (`type: web` **OR** `type: db`) **AND** `env: prod` labels.
 
 ```bash
 $ dep info 'type=web|db & env=prod'
@@ -167,8 +165,6 @@ task('info', function () {
     // ...
 })->select('type=web|db,env=prod');
 ```
-
-
 
 ## Labels in YAML
 

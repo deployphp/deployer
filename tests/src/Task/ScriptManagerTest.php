@@ -72,7 +72,6 @@ class ScriptManagerTest extends TestCase
         $scriptManager = new ScriptManager($taskCollection);
         self::assertEquals([$a, $b, $c], $scriptManager->getTasks('group'));
         self::assertNull($a->getSelector());
-
         self::assertEquals([[['=', 'stage', ['beta']]]], $b->getSelector());
         self::assertEquals([[['=', 'stage', ['alpha', 'beta']],['=', 'role', ['db']]]], $c->getSelector());
 

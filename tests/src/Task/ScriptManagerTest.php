@@ -58,23 +58,29 @@ class ScriptManagerTest extends TestCase
     {
         $a = new Task('a');
         $b = new Task('b');
+        $c = new Task('c');
         $b->select('stage=beta');
-        $group = new GroupTask('group', ['a', 'b']);
+        $c->select('stage=alpha|beta & role=db');
+        $group = new GroupTask('group', ['a', 'b', 'c']);
 
         $taskCollection = new TaskCollection();
         $taskCollection->add($a);
         $taskCollection->add($b);
+        $taskCollection->add($c);
         $taskCollection->add($group);
 
         $scriptManager = new ScriptManager($taskCollection);
-        self::assertEquals([$a, $b], $scriptManager->getTasks('group'));
+        self::assertEquals([$a, $b, $c], $scriptManager->getTasks('group'));
         self::assertNull($a->getSelector());
-        self::assertEquals([[['=', 'stage', 'beta']]], $b->getSelector());
+
+        self::assertEquals([[['=', 'stage', ['beta']]]], $b->getSelector());
+        self::assertEquals([[['=', 'stage', ['alpha', 'beta']],['=', 'role', ['db']]]], $c->getSelector());
 
         $group->select('role=prod');
-        self::assertEquals([$a, $b], $scriptManager->getTasks('group'));
-        self::assertEquals([[['=', 'role', 'prod']]], $a->getSelector());
-        self::assertEquals([[['=', 'stage', 'beta']],[['=', 'role', 'prod']]], $b->getSelector());
+        self::assertEquals([$a, $b, $c], $scriptManager->getTasks('group'));
+        self::assertEquals([[['=', 'role', ['prod']]]], $a->getSelector());
+        self::assertEquals([[['=', 'stage', ['beta']]],[['=', 'role', ['prod']]]], $b->getSelector());
+        self::assertEquals([[['=', 'stage', ['alpha', 'beta']],['=', 'role', ['db']]],[['=', 'role', ['prod']]]], $c->getSelector());
     }
 
     public function testThrowsExceptionIfTaskCollectionEmpty()

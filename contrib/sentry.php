@@ -186,6 +186,7 @@ EXAMPLE
 function getPreviousReleaseRevision()
 {
     switch (get('update_code_strategy')) {
+        case 'local_archive':
         case 'archive':
             if (has('previous_release')) {
                 return run('cat {{previous_release}}/REVISION');
@@ -207,6 +208,7 @@ function getPreviousReleaseRevision()
 function getCurrentReleaseRevision()
 {
     switch (get('update_code_strategy')) {
+        case 'local_archive':
         case 'archive':
             return run('cat {{release_path}}/REVISION');
 
@@ -222,20 +224,20 @@ function getCurrentReleaseRevision()
 function getReleaseGitRef(): Closure
 {
     return static function ($config = []): string {
-        if (get('update_code_strategy') === 'archive') {
-            if (isset($config['git_version_command'])) {
-                cd('{{deploy_path}}/.dep/repo');
+        $strategy = get('update_code_strategy');
 
-                return trim(run($config['git_version_command']));
-            }
-
-            return run('cat {{current_path}}/REVISION');
+        if ($strategy === 'archive') {
+            cd('{{deploy_path}}/.dep/repo');
+        } else {
+            cd('{{release_path}}');
         }
-
-        cd('{{release_path}}');
 
         if (isset($config['git_version_command'])) {
             return trim(run($config['git_version_command']));
+        }
+
+        if ($strategy !== 'clone') {
+            return run('cat {{current_path}}/REVISION');
         }
 
         return trim(run('git log -n 1 --format="%h"'));

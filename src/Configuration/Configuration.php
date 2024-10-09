@@ -26,7 +26,7 @@ class Configuration implements \ArrayAccess
      */
     private $values = [];
 
-    public function __construct(Configuration $parent = null)
+    public function __construct(?Configuration $parent = null)
     {
         $this->parent = $parent;
     }

@@ -68,7 +68,7 @@ class Task
     /**
      * @param callable():void $callback
      */
-    public function __construct(string $name, callable $callback = null)
+    public function __construct(string $name, ?callable $callback = null)
     {
         $this->name = $name;
         $this->callback = $callback;

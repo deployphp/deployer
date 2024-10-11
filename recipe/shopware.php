@@ -144,10 +144,10 @@ task('sw:deploy', [
 desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
+    'sw:writable:jwt',
     'sw:deploy',
     'deploy:clear_paths',
     'sw:cache:warmup',
-    'sw:writable:jwt',
     'deploy:publish',
 ]);
 

@@ -101,7 +101,6 @@ class DocRecipe
                             $line = $lines[++$i];
                             while (!preg_match('/^}\);$/', $line)) {
                                 $body[] = trim($line);
-                                var_dump($line);
                                 $line = $lines[++$i];
                             }
                             if (count($body) === 1 && preg_match('/throw new/', $body[0])) {

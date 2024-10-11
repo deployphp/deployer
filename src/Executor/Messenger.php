@@ -54,7 +54,7 @@ class Messenger
         } else if (getenv('GITLAB_CI')) {
             $sectionId = md5($task->getName());
             $start = round($this->startTime/1000);
-            $this->output->writeln("\e[0Ksection_start:{$start}:{$sectionId}[collapsed=true]\r\e[0K{$task->getName()}");
+            $this->output->writeln("\e[0Ksection_start:{$start}:{$sectionId}\r\e[0K{$task->getName()}");
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }

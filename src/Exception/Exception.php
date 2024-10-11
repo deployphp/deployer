@@ -25,7 +25,7 @@ class Exception extends \Exception
      */
     private $taskLineNumber = 0;
 
-    public function __construct(string $message = "", int $code = 0, Throwable $previous = null)
+    public function __construct(string $message = "", int $code = 0, ?Throwable $previous = null)
     {
         if (function_exists('debug_backtrace')) {
             $trace = debug_backtrace();

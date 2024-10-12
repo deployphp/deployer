@@ -18,7 +18,7 @@ jobs:
       - name: Get version
         run: |
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
-          if [ -z "$VERSION" ]; then
+          if [ -n "$VERSION" ]; then
             echo "RELEASE_VERSION=${{ inputs.version }}" >> $GITHUB_ENV
           fi
         env:

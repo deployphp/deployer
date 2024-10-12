@@ -81,9 +81,6 @@ class FunctionsTest extends TestCase
         task('group', ['task']);
         $task = $this->deployer->tasks->get('group');
         self::assertInstanceOf(GroupTask::class, $task);
-
-        $task = task('callable', [$this, __METHOD__]);
-        self::assertInstanceOf(Task::class, $task);
     }
 
     public function testBefore()

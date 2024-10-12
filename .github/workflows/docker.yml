@@ -44,13 +44,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
+          platforms: linux/amd64,linux/arm64
           push: true
+          provenance: true
           tags: deployphp/deployer:${{ env.RELEASE_VERSION }}
 
-      - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: deployer.phar
-          subject-name: deployphp/deployer
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true

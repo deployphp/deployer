@@ -31,7 +31,7 @@ jobs:
         run: php -d phar.readonly=0 bin/build -v"$RELEASE_VERSION"
 
       - name: Upload phar
-        run: gh release upload v"${RELEASE_VERSION"}" deployer.phar
+        run: gh release upload v"${RELEASE_VERSION}" deployer.phar
         env:
           GH_TOKEN: ${{ github.token }}
 

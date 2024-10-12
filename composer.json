@@ -43,7 +43,7 @@
     "require": {
         "php": "^8.0|^7.3",
         "ext-json": "*",
-        "justinrainbow/json-schema": "^5.2",
+        "justinrainbow/json-schema": "6.0.0-beta",
         "psr/http-message": "^1",
         "react/http": "^1.5",
         "symfony/console": "^5.4.9",

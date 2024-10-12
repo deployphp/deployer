@@ -3,6 +3,11 @@ name: release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version'
+        required: true
 
 permissions:
   contents: write
@@ -14,13 +19,19 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Get version
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
+        run: |
+          echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
+          if [ -n "$VERSION" ]; then
+            echo "RELEASE_VERSION=${{ inputs.version }}" >> $GITHUB_ENV
+          fi
+        env:
+          VERSION: ${{ inputs.version }}
 
       - name: Build phar
         run: php -d phar.readonly=0 bin/build -v"$RELEASE_VERSION"
 
       - name: Upload phar
-        run: gh release upload ${{ github.event.release.tag_name }} deployer.phar
+        run: gh release upload v"${RELEASE_VERSION"}" deployer.phar
         env:
           GH_TOKEN: ${{ github.token }}
 

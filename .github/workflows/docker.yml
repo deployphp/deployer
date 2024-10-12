@@ -41,6 +41,8 @@ jobs:
           images: deployphp/deployer
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
+            type=sha,format=long
+            type=sha
             type=semver,pattern=v{{major}}.{{minor}}.{{patch}}
             type=semver,pattern=v{{major}}.{{minor}}
             type=semver,pattern=v{{major}}

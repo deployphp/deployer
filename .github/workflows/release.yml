@@ -35,7 +35,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Add deployer.phar
+      - name: Add deployer.phar1
         run: |
           set -x
           git checkout -b dist

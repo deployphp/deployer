@@ -46,11 +46,11 @@
         "ext-json": "*"
     },
     "require-dev": {
-        "pestphp/pest": "^1.0",
+        "pestphp/pest": "^3.3",
         "phpstan/phpstan": "^1.4",
-        "phpunit/php-code-coverage": "^9.2",
-        "phpunit/phpunit": "^9.3",
-        "slevomat/coding-standard": "^7.0",
+        "phpunit/php-code-coverage": "^11.0",
+        "phpunit/phpunit": "^11.4",
+        "slevomat/coding-standard": "^8.0",
         "squizlabs/php_codesniffer": "^3.5"
     },
     "config": {

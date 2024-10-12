@@ -454,7 +454,7 @@ class PimpleTest extends TestCase
     /**
      * Provider for invalid service definitions.
      */
-    public function badServiceDefinitionProvider()
+    public static function badServiceDefinitionProvider()
     {
         return [
             [123],
@@ -465,7 +465,7 @@ class PimpleTest extends TestCase
     /**
      * Provider for service definitions.
      */
-    public function serviceDefinitionProvider()
+    public static function serviceDefinitionProvider()
     {
         return [
             [function ($value) {

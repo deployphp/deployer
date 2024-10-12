@@ -14,7 +14,7 @@ class ObjectProxyTest extends TestCase
     public function testObjectProxy()
     {
         $mock = self::getMockBuilder('stdClass')
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
         $mock
             ->expects(self::once())

@@ -22,7 +22,7 @@ class TaskTest extends TestCase
     public function testTask()
     {
         $mock = self::getMockBuilder('stdClass')
-            ->setMethods(['callback'])
+            ->addMethods(['callback'])
             ->getMock();
         $mock
             ->expects(self::exactly(1))
@@ -58,7 +58,7 @@ class TaskTest extends TestCase
 
         // Test create task with [$object, 'method']
         $mock1 = self::getMockBuilder('stdClass')
-            ->setMethods(['callback'])
+            ->addMethods(['callback'])
             ->getMock();
         $mock1
             ->expects(self::once())
@@ -68,7 +68,7 @@ class TaskTest extends TestCase
 
         // Test create task with anonymous functions
         $mock2 = self::getMockBuilder('stdClass')
-            ->setMethods(['callback'])
+            ->addMethods(['callback'])
             ->getMock();
         $mock2
             ->expects(self::once())

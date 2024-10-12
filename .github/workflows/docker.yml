@@ -10,7 +10,7 @@ on:
         required: true
 
 jobs:
-  push:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

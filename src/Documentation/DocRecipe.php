@@ -132,7 +132,7 @@ class DocRecipe
                         $currentTask = $task;
                         break;
                     }
-                    if ($match('^task\([\'"](?<task_name>[\w_:-]+?)[\'"]')) {
+                    if ($match('^task\([\'"](?<task_name>[\w_:-]+?)[\'"],')) {
                         $task = new DocTask();
                         $task->name = $m['task_name'];
                         $task->desc = $desc;

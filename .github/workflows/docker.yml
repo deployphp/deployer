@@ -9,6 +9,10 @@ on:
         description: 'Version'
         required: true
 
+permissions:
+  id-token: write
+  attestations: write
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
@@ -42,3 +46,10 @@ jobs:
           context: .
           push: true
           tags: deployphp/deployer:${{ env.RELEASE_VERSION }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: deployphp/deployer
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

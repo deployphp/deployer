@@ -49,7 +49,7 @@ The yii recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L10)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -61,7 +61,7 @@ Yii shared dirs
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L12)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L13)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -76,7 +76,7 @@ Yii writable dirs
 ## Tasks
 
 ### deploy:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L15)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L16)
 
 Runs Yii2 migrations for your project.
 
@@ -84,7 +84,7 @@ Runs Yii2 migrations for your project.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L24)
 
 Deploys your project.
 

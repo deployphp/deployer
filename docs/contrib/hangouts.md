@@ -11,48 +11,9 @@ require 'contrib/hangouts.php';
 [Source](/contrib/hangouts.php)
 
 
-
-
-Add hook on deploy:
-
-```php
-before('deploy', 'chat:notify');
-```
-
-## Configuration
-
-- `chat_webhook` – chat incoming webhook url, **required**
-- `chat_title` – the title of your notification card, default `{{application}}`
-- `chat_subtitle` – the subtitle of your card, default `{{hostname}}`
-- `chat_favicon` – an image for the header of your card, default `http://{{hostname}}/favicon.png`
-- `chat_line1` – first line of the text in your card, default: `{{branch}}`
-- `chat_line2` – second line of the text in your card, default: `{{stage}}`
-
-## Usage
-
-If you want to notify only about beginning of deployment add this line only:
-
-```php
-before('deploy', 'chat:notify');
-```
-
-If you want to notify about successful end of deployment add this too:
-
-```php
-after('deploy:success', 'chat:notify:success');
-```
-
-If you want to notify about failed deployment add this too:
-
-```php
-after('deploy:failed', 'chat:notify:failure');
-```
-
-
-
 ## Configuration
 ### chat_title
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L45)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L46)
 
 Title of project
 
@@ -62,7 +23,7 @@ return get('application', 'Project');
 
 
 ### chat_subtitle
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L49)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L50)
 
 
 
@@ -72,7 +33,7 @@ get('hostname')
 
 
 ### favicon
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L52)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L53)
 
 If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
@@ -82,7 +43,7 @@ If 'favicon' is set Google Hangouts Chat will decorate your card with an image.
 
 
 ### chat_line1
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L55)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L56)
 
 Deploy messages
 
@@ -92,7 +53,7 @@ Deploy messages
 
 
 ### chat_line2
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L56)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L57)
 
 
 
@@ -105,7 +66,7 @@ Deploy messages
 ## Tasks
 
 ### chat:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L60)
 
 Notifies Google Hangouts Chat.
 
@@ -113,7 +74,7 @@ Notifies Google Hangouts Chat.
 
 
 ### chat:notify:success
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L101)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L102)
 
 Notifies Google Hangouts Chat about deploy finish.
 
@@ -121,7 +82,7 @@ Notifies Google Hangouts Chat about deploy finish.
 
 
 ### chat:notify:failure
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L143)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L144)
 
 Notifies Google Hangouts Chat about deploy failure.
 

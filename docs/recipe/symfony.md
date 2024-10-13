@@ -49,7 +49,7 @@ The symfony recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### symfony_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L9)
 
 
 
@@ -61,7 +61,7 @@ return $matches[0][0] ?? 5.0;
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L14)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L15)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -75,7 +75,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L18)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L19)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -83,13 +83,13 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 ```php title="Default value"
 [
-    '.env.local'
+    '.env.local',
 ]
 ```
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L22)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L23)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -98,15 +98,15 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ```php title="Default value"
 [
     'var',
-    'var/cache', 
-    'var/log', 
+    'var/cache',
+    'var/log',
     'var/sessions',
 ]
 ```
 
 
 ### log_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L29)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L30)
 
 
 
@@ -116,21 +116,21 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### migrations_config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L31)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L32)
 
 
 
 
 
 ### doctrine_schema_validate_config
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L34)
 
 
 
 
 
 ### bin/console
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L36)
 
 
 
@@ -140,7 +140,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 
 ### console_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L37)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L38)
 
 
 
@@ -153,7 +153,7 @@ return '--no-interaction';
 ## Tasks
 
 ### database:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L42)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L43)
 
 Migrates database.
 
@@ -161,7 +161,7 @@ Migrates database.
 
 
 ### doctrine:schema:validate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L52)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L53)
 
 Validate the Doctrine mapping files.
 
@@ -169,7 +169,7 @@ Validate the Doctrine mapping files.
 
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L57)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L58)
 
 Clears cache.
 
@@ -177,7 +177,7 @@ Clears cache.
 
 
 ### deploy:env
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L66)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L67)
 
 Optimize environment variables.
 
@@ -185,7 +185,7 @@ Optimize environment variables.
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L74)
 
 Deploys project.
 

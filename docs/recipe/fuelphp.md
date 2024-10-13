@@ -48,7 +48,7 @@ The fuelphp recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L10)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -65,7 +65,7 @@ FuelPHP 1.x shared dirs
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L17)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/fuelphp.php#L18)
 
 Deploys your project.
 

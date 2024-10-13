@@ -98,7 +98,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
     'writable/debugbar',
     'writable/logs',
     'writable/session',
-    'writable/uploads'
+    'writable/uploads',
 ]
 ```
 

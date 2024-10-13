@@ -11,121 +11,9 @@ require 'contrib/rsync.php';
 [Source](/contrib/rsync.php)
 
 
-
-:::warning
-This must not be confused with `/src/Utility/Rsync.php`, deployer's built-in rsync. Their configuration options are also very different, read carefully below.
-:::
-
-## Configuration options
-
-- **rsync**: Accepts an array with following rsync options (all are optional and defaults are ok):
-    - *exclude*: accepts an *array* with patterns to be excluded from sending to server
-    - *exclude-file*: accepts a *string* containing absolute path to file, which contains exclude patterns
-    - *include*: accepts an *array* with patterns to be included in sending to server
-    - *include-file*: accepts a *string* containing absolute path to file, which contains include patterns
-    - *filter*: accepts an *array* of rsync filter rules
-    - *filter-file*: accepts a *string* containing merge-file filename.
-    - *filter-perdir*: accepts a *string* containing merge-file filename to be scanned and merger per each directory in rsync list on files to send
-    - *flags*: accepts a *string* of flags to set when calling rsync command. Please **avoid** flags that accept params, and use *options* instead.
-    - *options*: accepts an *array* of options to set when calling rsync command. **DO NOT** prefix options with `--` as it's automatically added.
-    - *timeout*: accepts an *int* defining timeout for rsync command to run locally.
-
-### Sample Configuration:
-
-Following is default configuration. By default rsync ignores only git dir and `deploy.php` file.
-
-```php
-deploy.php
-
-set('rsync',[
-    'exclude'      => [
-        '.git',
-        'deploy.php',
-    ],
-    'exclude-file' => false,
-    'include'      => [],
-    'include-file' => false,
-    'filter'       => [],
-    'filter-file'  => false,
-    'filter-perdir'=> false,
-    'flags'        => 'rz', // Recursive, with compress
-    'options'      => ['delete'],
-    'timeout'      => 60,
-]);
-```
-
-If You have multiple excludes, You can put them in file and reference that instead. If You use `deploy:rsync_warmup` You could set additional options that could speed-up and/or affect way things are working. For example:
-
-```php
-deploy.php
-
-set('rsync',[
-    'exclude'       => ['excludes_file'],
-    'exclude-file'  => '/tmp/localdeploys/excludes_file', //Use absolute path to avoid possible rsync problems
-    'include'       => [],
-    'include-file'  => false,
-    'filter'        => [],
-    'filter-file'   => false,
-    'filter-perdir' => false,
-    'flags'         => 'rzcE', // Recursive, with compress, check based on checksum rather than time/size, preserve Executable flag
-    'options'       => ['delete', 'delete-after', 'force'], //Delete after successful transfer, delete even if deleted dir is not empty
-    'timeout'       => 3600, //for those huge repos or crappy connection
-]);
-```
-
-
-### Parameter
-
-- **rsync_src**: per-host rsync source. This can be server, stage or whatever-dependent. By default it's set to current directory
-- **rsync_dest**: per-host rsync destination. This can be server, stage or whatever-dependent. by default it's equivalent to release deploy destination.
-
-### Sample configurations:
-
-This is default configuration:
-
-```php
-set('rsync_src', __DIR__);
-set('rsync_dest','{{release_path}}');
-```
-
-If You use local deploy recipe You can set src to local release:
-
-```php
-host('hostname')
-    ->hostname('10.10.10.10')
-    ->port(22)
-    ->set('deploy_path','/your/remote/path/app')
-    ->set('rsync_src', '/your/local/path/app')
-    ->set('rsync_dest','{{release_path}}');
-```
-
-## Usage
-
-- `rsync` task
-
-    Set `rsync_src` to locally cloned repository and rsync to `rsync_dest`. Then set this task instead of `deploy:update_code` in Your `deploy` task if Your hosting provider does not allow git.
-
-- `rsync:warmup` task
-
-    If Your deploy task looks like:
-
-    ```php
-    task('deploy', [
-        'deploy:prepare',
-        'deploy:release',
-        'rsync',
-        'deploy:vendors',
-        'deploy:symlink',
-    ])->desc('Deploy your project');
-    ```
-
-    And Your `rsync_dest` is set to `{{release_path}}` then You could add this task to run before `rsync` task or after `deploy:release`, whatever is more convenient.
-
-
-
 ## Configuration
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L119)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L120)
 
 
 
@@ -149,7 +37,7 @@ host('hostname')
 
 
 ### rsync_src
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L135)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L136)
 
 
 
@@ -159,7 +47,7 @@ __DIR__
 
 
 ### rsync_dest
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L136)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L137)
 
 
 
@@ -169,7 +57,7 @@ __DIR__
 
 
 ### rsync_excludes
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L138)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L139)
 
 
 :::info Autogenerated
@@ -180,7 +68,7 @@ The value of this configuration is autogenerated on access.
 
 
 ### rsync_includes
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L153)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L154)
 
 
 :::info Autogenerated
@@ -191,7 +79,7 @@ The value of this configuration is autogenerated on access.
 
 
 ### rsync_filter
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L168)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L169)
 
 
 :::info Autogenerated
@@ -202,7 +90,7 @@ The value of this configuration is autogenerated on access.
 
 
 ### rsync_options
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L186)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L187)
 
 
 :::info Autogenerated
@@ -216,7 +104,7 @@ The value of this configuration is autogenerated on access.
 ## Tasks
 
 ### rsync:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L198)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L199)
 
 Warmups remote Rsync target.
 
@@ -224,7 +112,7 @@ Warmups remote Rsync target.
 
 
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L213)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/rsync.php#L214)
 
 Rsync local->remote.
 

@@ -48,7 +48,7 @@ The magento recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L13)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L14)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -60,7 +60,7 @@ Magento shared dirs
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L16)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L17)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -72,7 +72,7 @@ Magento shared files
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L19)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L20)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -87,7 +87,7 @@ Magento writable dirs
 ## Tasks
 
 ### deploy:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L26)
 
 Clears cache.
 
@@ -95,7 +95,7 @@ Clear cache
 
 
 ### deploy:clear_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L32)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L33)
 
 
 
@@ -103,7 +103,7 @@ Remove files that can be used to compromise Magento
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L46)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L47)
 
 Deploys your project.
 

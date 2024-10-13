@@ -17,7 +17,7 @@ require 'recipe/composer.php';
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/composer.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/composer.php#L10)
 
 Deploys your project.
 

@@ -11,29 +11,9 @@ require 'contrib/hipchat.php';
 [Source](/contrib/hipchat.php)
 
 
-
-## Configuration
-
-- `hipchat_token` – Hipchat V1 auth token
-- `hipchat_room_id` – Room ID or name
-- `hipchat_message` –  Deploy message, default is `_{{user}}_ deploying `{{branch}}` to *{{target}}*`
-- `hipchat_from` – Default to target
-- `hipchat_color` – Message color, default is **green**
-- `hipchat_url` –  The URL to the message endpoint, default is https://api.hipchat.com/v1/rooms/message
-
-## Usage
-
-Since you should only notify Hipchat room of a successful deployment, the `hipchat:notify` task should be executed right at the end.
-
-```php
-after('deploy', 'hipchat:notify');
-```
-
-
-
 ## Configuration
 ### hipchat_color
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L26)
 
 
 
@@ -43,7 +23,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_from
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L27)
 
 
 
@@ -53,7 +33,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_message
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L28)
 
 
 
@@ -63,7 +43,7 @@ after('deploy', 'hipchat:notify');
 
 
 ### hipchat_url
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L28)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L29)
 
 
 
@@ -76,7 +56,7 @@ after('deploy', 'hipchat:notify');
 ## Tasks
 
 ### hipchat:notify
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L31)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L32)
 
 Notifies Hipchat channel of deployment.
 

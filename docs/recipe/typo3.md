@@ -48,7 +48,7 @@ The typo3 recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### typo3_webroot
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L11)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L12)
 
 DocumentRoot / WebRoot for the TYPO3 installation
 
@@ -58,7 +58,7 @@ DocumentRoot / WebRoot for the TYPO3 installation
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L26)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L27)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -68,13 +68,13 @@ Shared directories
 [
     '{{typo3_webroot}}/fileadmin',
     '{{typo3_webroot}}/typo3temp',
-    '{{typo3_webroot}}/uploads'
+    '{{typo3_webroot}}/uploads',
 ]
 ```
 
 
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L36)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -82,13 +82,13 @@ Shared files
 
 ```php title="Default value"
 [
-    '{{typo3_webroot}}/.htaccess'
+    '{{typo3_webroot}}/.htaccess',
 ]
 ```
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L42)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L43)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -99,7 +99,7 @@ Writeable directories
     '{{typo3_webroot}}/fileadmin',
     '{{typo3_webroot}}/typo3temp',
     '{{typo3_webroot}}/typo3conf',
-    '{{typo3_webroot}}/uploads'
+    '{{typo3_webroot}}/uploads',
 ]
 ```
 
@@ -108,7 +108,7 @@ Writeable directories
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L17)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L18)
 
 Deploys your project.
 

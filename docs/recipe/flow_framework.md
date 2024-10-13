@@ -50,7 +50,7 @@ The flow_framework recipe is based on the [common](/docs/recipe/common.md) recip
 
 ## Configuration
 ### flow_context
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L10)
 
 Flow-Framework application-context
 
@@ -60,7 +60,7 @@ Flow-Framework application-context
 
 
 ### flow_command
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L12)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L13)
 
 Flow-Framework cli-command
 
@@ -70,7 +70,7 @@ Flow-Framework cli-command
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L15)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L16)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -80,7 +80,7 @@ Flow-Framework shared directories
 [
     'Data/Persistent',
     'Data/Logs',
-    'Configuration/{{flow_context}}'
+    'Configuration/{{flow_context}}',
 ]
 ```
 
@@ -89,7 +89,7 @@ Flow-Framework shared directories
 ## Tasks
 
 ### deploy:run_migrations
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L26)
 
 Applies database migrations.
 
@@ -97,7 +97,7 @@ Apply database migrations
 
 
 ### deploy:publish_resources
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L34)
 
 Publishes resources.
 
@@ -105,7 +105,7 @@ Publish resources
 
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L42)
 
 Deploys your project.
 

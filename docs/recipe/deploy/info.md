@@ -15,7 +15,7 @@ require 'recipe/deploy/info.php';
 ## Tasks
 
 ### deploy:info
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/info.php#L6)
 
 Displays info about deployment.
 

@@ -15,7 +15,7 @@ require 'recipe/deploy/push.php';
 ## Tasks
 
 ### push
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/push.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/push.php#L9)
 
 Pushes local changes to remote host.
 

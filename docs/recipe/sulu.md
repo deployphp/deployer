@@ -49,7 +49,7 @@ The sulu recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 
 ## Configuration
 ### bin/websiteconsole
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L12)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L13)
 
 
 
@@ -62,7 +62,7 @@ return parse('{{bin/php}} {{release_or_current_path}}/bin/websiteconsole --no-in
 ## Tasks
 
 ### phpcr:migrate
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L17)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L18)
 
 Migrates PHPCR.
 
@@ -70,7 +70,7 @@ Migrates PHPCR.
 
 
 ### deploy:website:cache:clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L22)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L23)
 
 Clears cache.
 
@@ -78,7 +78,7 @@ Clears cache.
 
 
 ### deploy:website:cache:warmup
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L28)
 
 Warmups cache.
 

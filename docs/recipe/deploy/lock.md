@@ -15,7 +15,7 @@ require 'recipe/deploy/lock.php';
 ## Tasks
 
 ### deploy:lock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L7)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L8)
 
 Locks deploy.
 
@@ -23,7 +23,7 @@ Locks deploy.
 
 
 ### deploy:unlock
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L20)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L21)
 
 Unlocks deploy.
 
@@ -31,7 +31,7 @@ Unlocks deploy.
 
 
 ### deploy:is_locked
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/lock.php#L26)
 
 Checks if deploy is locked.
 

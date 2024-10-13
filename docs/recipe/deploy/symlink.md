@@ -13,7 +13,7 @@ require 'recipe/deploy/symlink.php';
 
 ## Configuration
 ### use_atomic_symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L6)
 
 Use mv -T if available. Will check automatically.
 
@@ -26,7 +26,7 @@ return commandSupportsOption('mv', '--no-target-directory');
 ## Tasks
 
 ### deploy:symlink
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L10)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L11)
 
 Creates symlink to release.
 

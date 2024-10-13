@@ -51,7 +51,7 @@ The pimcore recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 ## Tasks
 
 ### pimcore:rebuild-classes
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L15)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L16)
 
 Rebuilds Pimcore Classes.
 
@@ -59,7 +59,7 @@ Rebuilds Pimcore Classes.
 
 
 ### pimcore:cache_clear
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L20)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L21)
 
 Removes cache.
 
@@ -67,7 +67,7 @@ Removes cache.
 
 
 ### pimcore:deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L24)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L25)
 
 
 
@@ -76,5 +76,6 @@ Removes cache.
 
 This task is group task which contains next tasks:
 * [pimcore:rebuild-classes](/docs/recipe/pimcore.md#pimcorerebuild-classes)
+* [pimcore:cache_clear](/docs/recipe/pimcore.md#pimcorecache_clear)
 
 

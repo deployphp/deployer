@@ -47,7 +47,7 @@ The joomla recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 ## Configuration
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L9)
 
 Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
 
@@ -59,7 +59,7 @@ Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recip
 
 
 ### shared_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L10)
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
@@ -71,7 +71,7 @@ Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L10)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L11)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -86,7 +86,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L13)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/joomla.php#L14)
 
 Deploys your project.
 

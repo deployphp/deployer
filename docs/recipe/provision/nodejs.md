@@ -13,7 +13,7 @@ require 'recipe/provision/nodejs.php';
 
 ## Configuration
 ### nodejs_version
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L6)
 
 Node.js version from https://github.com/nodesource/distributions.
 
@@ -26,7 +26,7 @@ Node.js version from https://github.com/nodesource/distributions.
 ## Tasks
 
 ### provision:npm
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L9)
 
 Installs npm packages.
 

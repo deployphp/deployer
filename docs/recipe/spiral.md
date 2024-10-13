@@ -46,6 +46,7 @@ The [deploy](#deploy) task of **Spiral** consists of:
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
   * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+* [deploy:restart-rr](/docs/recipe/spiral.md#deployrestart-rr) – Restart RoadRunner
 
 
 The spiral recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -280,5 +281,6 @@ This task is group task which contains next tasks:
 * [spiral:configure](/docs/recipe/spiral.md#spiralconfigure)
 * [deploy:download-rr](/docs/recipe/spiral.md#deploydownload-rr)
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
+* [deploy:restart-rr](/docs/recipe/spiral.md#deployrestart-rr)
 
 

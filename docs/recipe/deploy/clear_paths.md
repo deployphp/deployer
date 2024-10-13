@@ -13,14 +13,14 @@ require 'recipe/deploy/clear_paths.php';
 
 ## Configuration
 ### clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L5)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L6)
 
 List of paths to remove from [release_path](/docs/recipe/deploy/release.md#release_path).
 
 
 
 ### clear_use_sudo
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L9)
 
 Use sudo for deploy:clear_path task?
 
@@ -33,7 +33,7 @@ false
 ## Tasks
 
 ### deploy:clear_paths
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L11)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L12)
 
 Cleanup files and/or directories.
 

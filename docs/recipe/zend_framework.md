@@ -50,7 +50,7 @@ The zend_framework recipe is based on the [common](/docs/recipe/common.md) recip
 ## Tasks
 
 ### deploy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/zend_framework.php#L12)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/zend_framework.php#L13)
 
 Deploys your project.
 

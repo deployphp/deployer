@@ -56,6 +56,7 @@ to run it after the `deploy:update_code` task is completed.
 For further reading see [phinx.org](https://phinx.org). Complete descriptions of all possible options can be found on the [commands page](http://docs.phinx.org/en/latest/commands.html).
 
  */
+
 namespace Deployer;
 
 use Deployer\Exception\RunException;
@@ -86,9 +87,9 @@ set('bin/phinx', function () {
 
     if ($phinxPath !== null) {
         return "phinx";
-    } else if (test('[ -f {{release_path}}/vendor/bin/phinx ]')) {
+    } elseif (test('[ -f {{release_path}}/vendor/bin/phinx ]')) {
         return "{{release_path}}/vendor/bin/phinx";
-    } else if (test('[ -f ~/.composer/vendor/bin/phinx ]')) {
+    } elseif (test('[ -f ~/.composer/vendor/bin/phinx ]')) {
         return '~/.composer/vendor/bin/phinx';
     } else {
         throw new \RuntimeException('Cannot find phinx. Please specify path to phinx manually');
@@ -151,7 +152,7 @@ task('phinx:migrate', function () {
         'date',
         'environment',
         'target',
-        'parser'
+        'parser',
     ];
 
     $conf = phinx_get_allowed_config($ALLOWED_OPTIONS);
@@ -172,7 +173,7 @@ task('phinx:rollback', function () {
         'date',
         'environment',
         'target',
-        'parser'
+        'parser',
     ];
 
     $conf = phinx_get_allowed_config($ALLOWED_OPTIONS);
@@ -192,7 +193,7 @@ task('phinx:seed', function () {
         'configuration',
         'environment',
         'parser',
-        'seed'
+        'seed',
     ];
 
     $conf = phinx_get_allowed_config($ALLOWED_OPTIONS);
@@ -212,7 +213,7 @@ task('phinx:breakpoint', function () {
         'configuration',
         'environment',
         'remove-all',
-        'target'
+        'target',
     ];
 
     $conf = phinx_get_allowed_config($ALLOWED_OPTIONS);

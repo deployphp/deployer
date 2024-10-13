@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -24,7 +26,7 @@ const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '
 
 function spinner(string $message = ''): string
 {
-    $frame = FRAMES[(int) ((new \DateTime)->format('u') / 1e5) % count(FRAMES)];
+    $frame = FRAMES[(int) ((new \DateTime())->format('u') / 1e5) % count(FRAMES)];
     return "  $frame $message\r";
 }
 
@@ -59,9 +61,8 @@ class Master
         InputInterface  $input,
         OutputInterface $output,
         Server          $server,
-        Messenger       $messenger
-    )
-    {
+        Messenger       $messenger,
+    ) {
         $this->input = $input;
         $this->output = $output;
         $this->server = $server;
@@ -75,7 +76,7 @@ class Master
      */
     public function run(array $tasks, array $hosts, ?Planner $plan = null): int
     {
-        $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
+        $globalLimit = (int) $this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
             if (!$plan) {
@@ -94,7 +95,7 @@ class Master
                         break;
                     }
                 }
-            } else if ($task->isOncePerNode()) {
+            } elseif ($task->isOncePerNode()) {
                 $plannedHosts = [];
                 foreach ($hosts as $currentHost) {
                     if (Selector::apply($task->getSelector(), $currentHost)) {

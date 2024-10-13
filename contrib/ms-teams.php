@@ -70,6 +70,7 @@ If you want to notify about failed deployment add this too:
 after('deploy:failed', 'teams:notify:failure');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -98,7 +99,7 @@ task('teams:notify', function () {
 
     Httpie::post(get('teams_webhook'))->jsonBody([
         "themeColor" => get('teams_color'),
-        'text'       => get('teams_text')
+        'text'       => get('teams_text'),
     ])->send();
 })
     ->once()
@@ -113,7 +114,7 @@ task('teams:notify:success', function () {
 
     Httpie::post(get('teams_webhook'))->jsonBody([
         "themeColor" => get('teams_success_color'),
-        'text'       => get('teams_success_text')
+        'text'       => get('teams_success_text'),
     ])->send();
 })
     ->once()
@@ -128,7 +129,7 @@ task('teams:notify:failure', function () {
 
     Httpie::post(get('teams_webhook'))->jsonBody([
         "themeColor" => get('teams_failure_color'),
-        'text'       => get('teams_failure_text')
+        'text'       => get('teams_failure_text'),
     ])->send();
 })
     ->once()

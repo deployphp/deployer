@@ -55,6 +55,7 @@ If you want to notify about failed deployment add this too:
 after('deploy:failed', 'cimonitor:notify:failure');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -67,8 +68,8 @@ set('cimonitor_title', function () {
 });
 set('cimonitor_user', function () {
     return [
-      'name' => runLocally('git config --get user.name'),
-      'email' => runLocally('git config --get user.email'),
+        'name' => runLocally('git config --get user.name'),
+        'email' => runLocally('git config --get user.email'),
     ];
 });
 
@@ -101,7 +102,7 @@ task('cimonitor:notify', function () {
                 'name' => 'Deploying...',
                 'stage' => '',
                 'state' => get('cimonitor_job_state_running'),
-            ]
+            ],
         ],
     ];
 
@@ -116,7 +117,7 @@ task('cimonitor:notify:success', function () {
         return;
     }
 
-    $depstage = 'Deployed to '.get('stage', '');
+    $depstage = 'Deployed to ' . get('stage', '');
 
     $body = [
         'state' => get('cimonitor_status_success'),
@@ -129,7 +130,7 @@ task('cimonitor:notify:success', function () {
                 'name' => 'Deploy',
                 'stage' => $depstage,
                 'state' => get('cimonitor_job_state_success'),
-            ]
+            ],
         ],
     ];
 
@@ -155,7 +156,7 @@ task('cimonitor:notify:failure', function () {
                 'name' => 'Deploy',
                 'stage' => '',
                 'state' => get('cimonitor_job_state_error'),
-            ]
+            ],
         ],
     ];
 
@@ -163,4 +164,3 @@ task('cimonitor:notify:failure', function () {
 })
     ->once()
     ->hidden();
-

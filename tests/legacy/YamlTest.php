@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\Output;
 
 class YamlTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/deploy.yaml';
+    public const RECIPE = __DIR__ . '/recipe/deploy.yaml';
 
     public function testDeploy()
     {
@@ -20,7 +20,7 @@ class YamlTest extends AbstractTest
         $this->tester->run([
             'deploy',
             'selector' => 'all',
-            '-f' => self::RECIPE
+            '-f' => self::RECIPE,
         ], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,

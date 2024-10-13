@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -90,7 +92,7 @@ class Deployer extends Container
          ******************************/
 
         $console->getDefinition()->addOption(
-            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'Recipe file path')
+            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'Recipe file path'),
         );
 
         $this['console'] = function () use ($console) {
@@ -321,7 +323,7 @@ class Deployer extends Container
                 $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
             }
             self::printException($output, $exception);
-            
+
             exit(1);
         }
     }

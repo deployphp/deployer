@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -53,7 +55,7 @@ class TreeCommand extends Command
         $this->addArgument(
             'task',
             InputArgument::REQUIRED,
-            'Task to display the tree for'
+            'Task to display the tree for',
         );
     }
 
@@ -134,7 +136,7 @@ class TreeCommand extends Command
             'taskName' => $taskName,
             'depth' => $this->depth,
             'isLast' => $isLast,
-            'openDepths' => $this->openGroupDepths
+            'openDepths' => $this->openGroupDepths,
         ];
     }
 

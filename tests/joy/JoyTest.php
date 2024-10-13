@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\ApplicationTester;
+
 use const __TEMP_DIR__;
 
 abstract class JoyTest extends TestCase
@@ -65,7 +66,7 @@ abstract class JoyTest extends TestCase
             $task,
             'selector' => 'all',
             '--file' => $recipe,
-            '--limit' => 1
+            '--limit' => 1,
         ], $args), [
             'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
             'interactive' => false,

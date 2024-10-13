@@ -10,6 +10,7 @@
 after('deploy:update_code', 'yarn:install');
 ```
  */
+
 namespace Deployer;
 
 set('bin/yarn', function () {

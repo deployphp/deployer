@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate;
 
@@ -25,7 +27,7 @@ class Manifest
      *
      * @param Update[] $updates The updates.
      */
-    public function __construct(array $updates = array())
+    public function __construct(array $updates = [])
     {
         $this->updates = $updates;
     }
@@ -37,7 +39,7 @@ class Manifest
      * @param boolean $major   Lock to major version?
      * @param boolean $pre     Allow pre-releases?
      */
-    public function findRecent(Version $version, bool $major = false, bool $pre = false):? Update
+    public function findRecent(Version $version, bool $major = false, bool $pre = false): ?Update
     {
         /** @var Update|null */
         $current = null;
@@ -104,7 +106,7 @@ class Manifest
      */
     private static function create(array $decoded): self
     {
-        $updates = array();
+        $updates = [];
 
         foreach ($decoded as $update) {
             $updates[] = new Update(
@@ -112,7 +114,7 @@ class Manifest
                 $update->sha1,
                 $update->url,
                 Parser::toVersion($update->version),
-                isset($update->publicKey) ? $update->publicKey : null
+                $update->publicKey ?? null,
             );
         }
 
@@ -121,9 +123,9 @@ class Manifest
             function (Update $a, Update $b) {
                 return Comparator::isGreaterThan(
                     $a->getVersion(),
-                    $b->getVersion()
+                    $b->getVersion(),
                 ) ? 1 : 0;
-            }
+            },
         );
 
         return new static($updates);

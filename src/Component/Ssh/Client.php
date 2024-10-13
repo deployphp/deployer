@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -17,6 +19,7 @@ use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
+
 use function Deployer\Support\parse_home_dir;
 
 class Client
@@ -68,7 +71,7 @@ class Client
         if ($this->output->isDebug()) {
             $sshString = $ssh[0];
             for ($i = 1; $i < count($ssh); $i++) {
-                $sshString .= ' ' . escapeshellarg((string)$ssh[$i]);
+                $sshString .= ' ' . escapeshellarg((string) $ssh[$i]);
             }
             $this->output->writeln("[$host] $sshString");
         }
@@ -99,7 +102,7 @@ class Client
             $this->run($host, "kill -9 -$pid");
             throw new TimeoutException(
                 $command,
-                $exception->getExceededTimeout()
+                $exception->getExceededTimeout(),
             );
         }
 
@@ -112,7 +115,7 @@ class Client
                 $command,
                 $exitCode,
                 $output,
-                $process->getErrorOutput()
+                $process->getErrorOutput(),
             );
         }
 
@@ -122,6 +125,6 @@ class Client
     private function parseExitStatus(Process $process): int
     {
         preg_match('/\[exit_code:(\d*)]/', $process->getOutput(), $match);
-        return (int)($match[1] ?? -1);
+        return (int) ($match[1] ?? -1);
     }
 }

@@ -16,6 +16,7 @@ after('deploy', 'newrelic:notify');
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

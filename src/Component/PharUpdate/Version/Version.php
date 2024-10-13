@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Version;
 
@@ -57,8 +59,8 @@ class Version
         int $major = 0,
         int $minor = 0,
         int $patch = 0,
-        array $pre = array(),
-        array $build = array()
+        array $pre = [],
+        array $build = [],
     ) {
         $this->build = $build;
         $this->major = $major;

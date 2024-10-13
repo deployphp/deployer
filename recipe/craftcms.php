@@ -42,7 +42,7 @@ function craft($command, $options = [])
         }
 
         // By default we don't want any command to be interactive
-        if(! in_array('interactive', $options)) {
+        if (! in_array('interactive', $options)) {
             $command .= ' --interactive=0';
         }
 

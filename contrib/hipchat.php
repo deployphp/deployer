@@ -18,6 +18,7 @@ after('deploy', 'hipchat:notify');
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

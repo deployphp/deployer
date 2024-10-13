@@ -1,8 +1,10 @@
 <?php
+
 namespace Deployer;
 
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Helper\Table;
+
 use function Deployer\Support\escape_shell_argument;
 
 // The name of the release.
@@ -172,7 +174,7 @@ task('releases', function () {
         if (in_array($release, $releasesList, true)) {
             if (test("[ -f releases/$release/BAD_RELEASE ]")) {
                 $status = "<error>$release</error> (bad)";
-            } else if (test("[ -f releases/$release/DIRTY_RELEASE ]")) {
+            } elseif (test("[ -f releases/$release/DIRTY_RELEASE ]")) {
                 $status = "<error>$release</error> (dirty)";
             } else {
                 $status = "<info>$release</info>";

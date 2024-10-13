@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\Output;
 
 class ParallelTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/parallel.php';
+    public const RECIPE = __DIR__ . '/recipe/parallel.php';
 
     public static function setUpBeforeClass(): void
     {
@@ -31,7 +31,7 @@ class ParallelTest extends AbstractTest
         $this->tester->run([
             'echo',
             '-f' => self::RECIPE,
-            'selector' => 'all'
+            'selector' => 'all',
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
         ]);
@@ -69,7 +69,7 @@ class ParallelTest extends AbstractTest
             [
                 'verbosity' => Output::VERBOSITY_DEBUG,
                 'interactive' => false,
-            ]
+            ],
         );
 
         $display = $this->tester->getDisplay();
@@ -84,7 +84,7 @@ class ParallelTest extends AbstractTest
         $this->tester->run([
             'cache_config_test',
             '-f' => self::RECIPE,
-            'selector' => 'all'
+            'selector' => 'all',
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
         ]);
@@ -101,7 +101,7 @@ class ParallelTest extends AbstractTest
         $this->tester->run([
             'host_config_from_callback',
             '-f' => self::RECIPE,
-            'selector' => 'all'
+            'selector' => 'all',
         ], [
             'verbosity' => Output::VERBOSITY_NORMAL,
         ]);

@@ -9,7 +9,7 @@ namespace Deployer;
 
 class EnvTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/env.php';
+    public const RECIPE = __DIR__ . '/recipe/env.php';
 
     public function testOnce()
     {

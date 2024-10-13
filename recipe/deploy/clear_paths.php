@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // List of paths to remove from {{release_path}}.

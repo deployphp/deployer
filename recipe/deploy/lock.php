@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 use Deployer\Exception\GracefulShutdownException;
@@ -11,7 +12,7 @@ task('deploy:lock', function () {
         $lockedUser = run("cat {{deploy_path}}/.dep/deploy.lock");
         throw new GracefulShutdownException(
             "Deploy locked by $lockedUser.\n" .
-            "Execute \"deploy:unlock\" task to unlock."
+            "Execute \"deploy:unlock\" task to unlock.",
         );
     }
 });

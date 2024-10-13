@@ -13,26 +13,26 @@ class OnFuncTest extends JoyTest
     protected function recipe(): string
     {
         return <<<'PHP'
-<?php
-namespace Deployer;
-localhost('prod');
-localhost('beta');
+            <?php
+            namespace Deployer;
+            localhost('prod');
+            localhost('beta');
 
-task('test', [
-    'first',
-    'second',
-]);
+            task('test', [
+                'first',
+                'second',
+            ]);
 
-task('first', function () {
-    set('foo', '{{alias}}');
-});
+            task('first', function () {
+                set('foo', '{{alias}}');
+            });
 
-task('second', function () {
-    on(selectedHosts(), function () {
-        writeln('foo = {{foo}}');
-    }); 
-})->once();
-PHP;
+            task('second', function () {
+                on(selectedHosts(), function () {
+                    writeln('foo = {{foo}}');
+                }); 
+            })->once();
+            PHP;
     }
 
     public function testOnFunc()

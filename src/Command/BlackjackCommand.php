@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -13,6 +15,7 @@ use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Output\OutputInterface as Output;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use function Deployer\Support\array_flatten;
 
 class BlackjackCommand extends Command
@@ -61,10 +64,10 @@ class BlackjackCommand extends Command
         if (md5(strval(getenv('MONEY'))) === '5a7c2f336d0cc43b68951e75cdffe333') {
             $money += 25;
             $this->print('<fg=cyan>You got an extra $25.</>');
-        } else if (md5(strval(getenv('MONEY'))) === '530029252abcbda4a2a2069036ccc7fc') {
+        } elseif (md5(strval(getenv('MONEY'))) === '530029252abcbda4a2a2069036ccc7fc') {
             $money += 100;
             $this->print('<fg=cyan>You got an extra $100.</>');
-        } else if (md5(strval(getenv('MONEY'))) === '1aa827a06ecbfa5d6fa7c62ad245f3a3') {
+        } elseif (md5(strval(getenv('MONEY'))) === '1aa827a06ecbfa5d6fa7c62ad245f3a3') {
             $money = 100000;
         }
 
@@ -89,10 +92,14 @@ class BlackjackCommand extends Command
         start:
         $this->print("You have <info>$</info><info>$money</info>.");
         if ($money > 0) {
-            $bet = (int)$io->ask('Your bet', '5');
-            if ($bet <= 0) goto start;
-            if ($bet > $money) goto start;
-        } else if ($hasWatch) {
+            $bet = (int) $io->ask('Your bet', '5');
+            if ($bet <= 0) {
+                goto start;
+            }
+            if ($bet > $money) {
+                goto start;
+            }
+        } elseif ($hasWatch) {
             $answer = $io->askQuestion(new ChoiceQuestion('?', ['leave', '- Here, take my watch! [$25]'], 0));
             if ($answer == 'leave') {
                 goto leave;
@@ -162,7 +169,7 @@ class BlackjackCommand extends Command
             $this->print("<fg=cyan>You won!</>");
             $this->print("+<info>$</info><info>$bet</info>");
             $money += $bet;
-        } else if ($p < $d) {
+        } elseif ($p < $d) {
             $this->print("<fg=cyan>You lose!</>");
             $this->print("-<info>$</info><info>$bet</info>");
             $money -= $bet;
@@ -181,7 +188,7 @@ class BlackjackCommand extends Command
             if ($money >= 5) {
                 array_push($choices, 'tip the waitress [$5]');
             }
-        } else if ($money >= 5) {
+        } elseif ($money >= 5) {
             array_push($choices, 'order whiskey [$5]');
         }
 
@@ -193,12 +200,12 @@ class BlackjackCommand extends Command
 
         if ($answer == 'leave') {
             goto leave;
-        } else if ($money >= 5 && $answer == 'order whiskey [$5]') {
+        } elseif ($money >= 5 && $answer == 'order whiskey [$5]') {
             $orderWhiskey = true;
             $this->print('You say:');
             $this->print(' - Whiskey, please.');
             $money -= 5;
-        } else if ($money >= 5 && $answer == 'tip the waitress [$5]') {
+        } elseif ($money >= 5 && $answer == 'tip the waitress [$5]') {
             $this->print('The waitress says:');
             $this->print(' - Thank you, sir!');
             $money -= 5;
@@ -241,7 +248,7 @@ class BlackjackCommand extends Command
     {
         $aces = 0;
         $value = 0;
-        foreach ($hand as list($rank)) {
+        foreach ($hand as [$rank]) {
             switch ($rank) {
                 case '2':
                     $value += 2;
@@ -304,7 +311,7 @@ class BlackjackCommand extends Command
     {
         $cards = [];
         for ($i = 0; $i < count($hand) - $offset; $i++) {
-            list($rank) = $hand[$i];
+            [$rank] = $hand[$i];
             $cards[] = [
                 "┌───",
                 "│" . str_pad($rank, 3),
@@ -317,7 +324,7 @@ class BlackjackCommand extends Command
         }
 
         for (; $i < count($hand); $i++) {
-            list($rank, $suit) = $hand[$i];
+            [$rank, $suit] = $hand[$i];
             $cards[] = [
                 "┌───────┐",
                 "│" . str_pad($rank, 7) . "│",
@@ -343,50 +350,50 @@ class BlackjackCommand extends Command
         if ($whiskeyLevel == 4) {
             echo <<<ASCII
 
- |          |
- |__________|
- |          |
- | /\ / /\ /|
- |/_/__/__\_|
+                 |          |
+                 |__________|
+                 |          |
+                 | /\ / /\ /|
+                 |/_/__/__\_|
 
 
-ASCII;
+                ASCII;
         }
         if ($whiskeyLevel == 3) {
             echo <<<ASCII
 
- |          |
- |          |
- |__________|
- | /\ / /\ /|
- |/_/__/__\_|
+                 |          |
+                 |          |
+                 |__________|
+                 | /\ / /\ /|
+                 |/_/__/__\_|
 
 
-ASCII;
+                ASCII;
         }
         if ($whiskeyLevel == 2) {
             echo <<<ASCII
 
- |          |
- |          |
- |          |
- |_/\_/_/\_/|
- |/_/__/__\_|
+                 |          |
+                 |          |
+                 |          |
+                 |_/\_/_/\_/|
+                 |/_/__/__\_|
 
 
-ASCII;
+                ASCII;
         }
         if ($whiskeyLevel == 1) {
             echo <<<ASCII
 
- |          |
- |          |
- |          |
- | /\ / /\ /|
- |/_/__/__\_|
+                 |          |
+                 |          |
+                 |          |
+                 | /\ / /\ /|
+                 |/_/__/__\_|
 
 
-ASCII;
+                ASCII;
         }
     }
 }

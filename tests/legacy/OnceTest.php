@@ -9,7 +9,7 @@ namespace Deployer;
 
 class OnceTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/once.php';
+    public const RECIPE = __DIR__ . '/recipe/once.php';
 
     public function testOnce()
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Version;
 
@@ -12,12 +14,12 @@ class Validator
     /**
      * The regular expression for a valid identifier.
      */
-    const IDENTIFIER_REGEX = '/^[0-9A-Za-z\-]+$/';
+    public const IDENTIFIER_REGEX = '/^[0-9A-Za-z\-]+$/';
 
     /**
      * The regular expression for a valid semantic version number.
      */
-    const VERSION_REGEX = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
+    public const VERSION_REGEX = '/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?$/';
 
     /**
      * Checks if a identifier is valid.
@@ -40,7 +42,7 @@ class Validator
      */
     public static function isNumber(int $number): bool
     {
-        return (true == preg_match('/^(0|[1-9]\d*)$/', (string)$number));
+        return (true == preg_match('/^(0|[1-9]\d*)$/', (string) $number));
     }
 
     /**

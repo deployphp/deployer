@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Deployer\Importer;
@@ -26,8 +27,7 @@ class ImporterTest extends TestCase
 
     public function testCanOneOverrideStaticMethod(): void
     {
-        $extendedImporter = new class extends Importer
-        {
+        $extendedImporter = new class extends Importer {
             public static $config = [];
 
             protected static function config(array $config)
@@ -37,10 +37,10 @@ class ImporterTest extends TestCase
         };
 
         $data = <<<EOL
-config:
-    foo: bar
-# test.yaml
-EOL;
+            config:
+                foo: bar
+            # test.yaml
+            EOL;
 
         $extendedImporter::import("data:text/yaml,$data");
 
@@ -50,25 +50,25 @@ EOL;
     public function testImporterIgnoresYamlHiddenKeys(): void
     {
         $data = <<<EOL
-.base: &base
-  remote_user: foo
-  labels:
-    stage: production
+            .base: &base
+              remote_user: foo
+              labels:
+                stage: production
 
-hosts:
-  acceptance:
-    <<: *base
-    labels:
-      stage: acceptance
+            hosts:
+              acceptance:
+                <<: *base
+                labels:
+                  stage: acceptance
 
-  production:
-    <<: *base
-    remote_user: bar
-  
-  production.beta:
-    <<: *base
-# test.yaml
-EOL;
+              production:
+                <<: *base
+                remote_user: bar
+              
+              production.beta:
+                <<: *base
+            # test.yaml
+            EOL;
 
         Importer::import("data:text/yaml,$data");
         self::assertTrue(Deployer::get()->hosts->has('production'));

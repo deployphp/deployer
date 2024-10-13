@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -35,7 +37,8 @@ class DocTask
      */
     public $lineNumber;
 
-    public function mdLink(): string {
+    public function mdLink(): string
+    {
         $md = php_to_md($this->recipePath);
         $anchor = anchor($this->name);
         return "[$this->name](/docs/$md#$anchor)";

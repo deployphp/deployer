@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -15,7 +16,7 @@ set('flow_command', 'flow');
 set('shared_dirs', [
     'Data/Persistent',
     'Data/Logs',
-    'Configuration/{{flow_context}}'
+    'Configuration/{{flow_context}}',
 ]);
 
 /**

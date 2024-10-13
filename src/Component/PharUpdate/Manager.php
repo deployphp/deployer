@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate;
 
@@ -74,7 +76,7 @@ class Manager
         if (false === is_file($file)) {
             throw InvalidArgumentException::create(
                 'The file "%s" is not a file or it does not exist.',
-                $file
+                $file,
             );
         }
 
@@ -99,7 +101,7 @@ class Manager
         if (null !== ($update = $this->manifest->findRecent(
             $version,
             $major,
-            $pre
+            $pre,
         ))) {
             $update->getFile();
             $update->copyTo($this->getRunningFile());

@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require __DIR__ . '/provision.php';
@@ -171,8 +172,7 @@ task('deploy:success', function () {
 /**
  * Hook on deploy failure.
  */
-task('deploy:failed', function () {
-})
+task('deploy:failed', function () {})
     ->hidden();
 
 fail('deploy', 'deploy:failed');

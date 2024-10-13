@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate;
 
@@ -74,7 +76,7 @@ class Update
         string $sha1,
         string $url,
         Version $version,
-        string $key = null
+        string $key = null,
     ) {
         $this->name = $name;
         $this->publicKey = $key;
@@ -95,11 +97,11 @@ class Update
     {
         if (null === $this->file) {
             throw LogicException::create(
-                'The update file has not been downloaded.'
+                'The update file has not been downloaded.',
             );
         }
 
-        $mode = 0755;
+        $mode = 0o755;
 
         if (file_exists($file)) {
             $mode = fileperms($file) & 511;
@@ -167,7 +169,7 @@ class Update
      * @throws FileException            If the SHA1 checksum differs.
      * @throws UnexpectedValueException If the Phar is corrupt.
      */
-    public function getFile():? string
+    public function getFile(): ?string
     {
         if (null === $this->file) {
             unlink($this->file = tempnam(sys_get_temp_dir(), 'upd'));
@@ -201,7 +203,7 @@ class Update
                 throw FileException::create(
                     'Mismatch of the SHA1 checksum (%s) of the downloaded file (%s).',
                     $this->sha1,
-                    $sha1
+                    $sha1,
                 );
             }
 

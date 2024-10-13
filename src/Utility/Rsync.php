@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -16,6 +18,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
+
 use function Deployer\writeln;
 
 class Rsync
@@ -49,7 +52,7 @@ class Rsync
             'options' => [],
             'flags' => '-azP',
             'progress_bar' => true,
-            'display_stats' => false
+            'display_stats' => false,
         ];
         $config = array_merge($defaults, $config);
 
@@ -146,7 +149,7 @@ class Rsync
                 $commandString,
                 $process->getExitCode(),
                 $process->getOutput(),
-                $process->getErrorOutput()
+                $process->getErrorOutput(),
             );
         } finally {
             if ($progressBar) {

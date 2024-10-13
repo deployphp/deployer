@@ -38,7 +38,7 @@ class HelpersTest extends TestCase
         ]);
 
         $config = array_merge_alternate($config, [
-            'extra'
+            'extra',
         ]);
 
         self::assertEquals([

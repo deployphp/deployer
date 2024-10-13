@@ -45,6 +45,7 @@ If you want to notify about failed deployment add this too:
 after('deploy:failed', 'discord:notify:failure');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Task\Context;
@@ -55,17 +56,17 @@ set('discord_webhook', function () {
 });
 
 // Deploy messages
-set('discord_notify_text', function() {
+set('discord_notify_text', function () {
     return [
         'text' => parse(':information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_'),
     ];
 });
-set('discord_success_text', function() {
+set('discord_success_text', function () {
     return [
         'text' => parse(':white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully'),
     ];
 });
-set('discord_failure_text', function() {
+set('discord_failure_text', function () {
     return [
         'text' => parse(':no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_'),
     ];
@@ -75,7 +76,7 @@ set('discord_failure_text', function() {
 set('discord_message', 'discord_notify_text');
 
 // Helpers
-task('discord_send_message', function(){
+task('discord_send_message', function () {
     $message = get(get('discord_message'));
 
     Httpie::post(get('discord_webhook'))->jsonBody($message)->send();

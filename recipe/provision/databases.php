@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 set('db_type', function () {

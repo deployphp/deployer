@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -16,6 +18,7 @@ use JsonSchema\Constraints\Factory;
 use JsonSchema\SchemaStorage;
 use JsonSchema\Validator;
 use Symfony\Component\Yaml\Yaml;
+
 use function array_filter;
 use function array_keys;
 use function Deployer\after;
@@ -31,6 +34,7 @@ use function Deployer\Support\find_line_number;
 use function Deployer\task;
 use function Deployer\upload;
 use function substr;
+
 use const ARRAY_FILTER_USE_KEY;
 
 class Importer
@@ -69,7 +73,7 @@ class Importer
                         }
                     }
                 });
-            } else if (preg_match('/\.ya?ml$/i', $path)) {
+            } elseif (preg_match('/\.ya?ml$/i', $path)) {
                 self::$recipeFilename = basename($path);
                 self::$recipeSource = file_get_contents($path, true);
                 $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
@@ -128,8 +132,7 @@ class Importer
     protected static function tasks(array $tasks)
     {
         $buildTask = function ($name, $steps) {
-            $body = function () {
-            };
+            $body = function () {};
             $task = task($name, $body);
 
             foreach ($steps as $step) {

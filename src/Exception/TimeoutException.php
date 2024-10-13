@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -12,7 +14,7 @@ class TimeoutException extends Exception
 {
     public function __construct(
         string $command,
-        ?float $timeout
+        ?float $timeout,
     ) {
         $message = sprintf('The command "%s" exceeded the timeout of %s seconds.', $command, $timeout);
         parent::__construct($message, 1);

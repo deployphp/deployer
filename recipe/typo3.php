@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -26,14 +27,14 @@ task('deploy', [
 set('shared_dirs', [
     '{{typo3_webroot}}/fileadmin',
     '{{typo3_webroot}}/typo3temp',
-    '{{typo3_webroot}}/uploads'
+    '{{typo3_webroot}}/uploads',
 ]);
 
 /**
  * Shared files
  */
 set('shared_files', [
-    '{{typo3_webroot}}/.htaccess'
+    '{{typo3_webroot}}/.htaccess',
 ]);
 
 /**
@@ -43,5 +44,5 @@ set('writable_dirs', [
     '{{typo3_webroot}}/fileadmin',
     '{{typo3_webroot}}/typo3temp',
     '{{typo3_webroot}}/typo3conf',
-    '{{typo3_webroot}}/uploads'
+    '{{typo3_webroot}}/uploads',
 ]);

@@ -28,6 +28,7 @@ after('deploy', 'php-fpm:reload');
 ```
 
  */
+
 namespace Deployer;
 
 // Automatically detects by using {{bin/php}}.

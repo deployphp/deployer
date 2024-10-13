@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -39,7 +41,7 @@ class RunException extends Exception
         string $command,
         int $exitCode,
         string $output,
-        string $errorOutput
+        string $errorOutput,
     ) {
         $this->host = $host;
         $this->command = $command;

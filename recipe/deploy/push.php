@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // Creates patch of local changes and pushes them on host.
@@ -16,7 +17,7 @@ task('push', function () {
     upload(
         $files,
         '{{current_path}}',
-        ['progress_bar' => false, 'options' => ['--relative']]
+        ['progress_bar' => false, 'options' => ['--relative']],
     );
 
     // Mark this release as dirty.

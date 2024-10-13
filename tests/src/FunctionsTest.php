@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Output\Output;
+
 use function Deployer\localhost;
 
 class FunctionsTest extends TestCase
@@ -69,8 +70,7 @@ class FunctionsTest extends TestCase
 
     public function testTask()
     {
-        task('task', function () {
-        });
+        task('task', function () {});
 
         $task = $this->deployer->tasks->get('task');
         self::assertInstanceOf(Task::class, $task);
@@ -158,7 +158,7 @@ class FunctionsTest extends TestCase
     public function testWithinReturningValue()
     {
         $output = within('/foo', function () {
-           return 'bar';
+            return 'bar';
         });
 
         self::assertEquals('bar', $output);

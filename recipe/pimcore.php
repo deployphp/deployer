@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/symfony.php';
@@ -23,7 +24,7 @@ task('pimcore:cache_clear', function () {
 
 task('pimcore:deploy', [
     'pimcore:rebuild-classes',
-    'pimcore:cache_clear'
+    'pimcore:cache_clear',
 ]);
 
 after('deploy:vendors', 'pimcore:deploy');

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -87,10 +89,10 @@ function env_stringify(array $array): string
 {
     return implode(' ', array_map(
         function ($key, $value) {
-            return sprintf("%s=%s", $key, escapeshellarg((string)$value));
+            return sprintf("%s=%s", $key, escapeshellarg((string) $value));
         },
         array_keys($array),
-        $array
+        $array,
     ));
 }
 
@@ -255,5 +257,5 @@ function colorize_host(string $alias): string
 
 function escape_shell_argument(string $argument): string
 {
-    return "'".str_replace("'", "'\\''", $argument)."'";
+    return "'" . str_replace("'", "'\\''", $argument) . "'";
 }

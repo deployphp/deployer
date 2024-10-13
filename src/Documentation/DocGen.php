@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -12,6 +14,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
+
 use function Deployer\Support\str_contains as str_contains;
 
 class DocGen
@@ -133,39 +136,39 @@ class DocGen
             $config = '';
             $tasks = '';
             $intro = <<<MD
-```php
-require '$recipe->recipePath';
-```
+                ```php
+                require '$recipe->recipePath';
+                ```
 
-[Source](/$recipe->recipePath)
+                [Source](/$recipe->recipePath)
 
 
-MD;
+                MD;
             if (is_framework_recipe($recipe)) {
                 $brandName = framework_brand_name($recipe->recipeName);
                 $typeOfProject = preg_match('/^symfony/i', $recipe->recipeName) ? 'Application' : 'Project';
                 $title = "How to Deploy a $brandName $typeOfProject";
 
                 $intro .= <<<MARKDOWN
-Deployer is a free and open source deployment tool written in PHP. 
-It helps you to deploy your $brandName application to a server. 
-It is very easy to use and has a lot of features. 
+                    Deployer is a free and open source deployment tool written in PHP. 
+                    It helps you to deploy your $brandName application to a server. 
+                    It is very easy to use and has a lot of features. 
 
-Three main features of Deployer are:
-- **Provisioning** - provision your server for you.
-- **Zero downtime deployment** - deploy your application without a downtime.
-- **Rollbacks** - rollback your application to a previous version, if something goes wrong.
+                    Three main features of Deployer are:
+                    - **Provisioning** - provision your server for you.
+                    - **Zero downtime deployment** - deploy your application without a downtime.
+                    - **Rollbacks** - rollback your application to a previous version, if something goes wrong.
 
-Additionally, Deployer has a lot of other features, like:
-- **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
-- **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
-- **Secure** - Deployer uses SSH to connect to your server.
-- **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
+                    Additionally, Deployer has a lot of other features, like:
+                    - **Easy to use** - Deployer is very easy to use. It has a simple and intuitive syntax.
+                    - **Fast** - Deployer is very fast. It uses parallel connections to deploy your application.
+                    - **Secure** - Deployer uses SSH to connect to your server.
+                    - **Supports all major PHP frameworks** - Deployer supports all major PHP frameworks.
 
-You can read more about Deployer in [Getting Started](/docs/getting-started.md).
+                    You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 
-MARKDOWN;
+                    MARKDOWN;
 
                 $map = function (DocTask $task, $ident = '') use (&$map, $findTask, &$intro): void {
                     foreach ($task->group as $taskName) {
@@ -191,33 +194,33 @@ MARKDOWN;
                 if ($artifactDeployTask !== null && $artifactBuildTask !== null) {
                     $intro .= "In addition the **$brandName** recipe contains an artifact deployment.\n";
                     $intro .= <<<MD
-This is a two step process where you first execute
+                        This is a two step process where you first execute
 
-```php
-bin/dep artifact:build [options] [localhost]
-```
+                        ```php
+                        bin/dep artifact:build [options] [localhost]
+                        ```
 
-to build an artifact, which then is deployed on a server with
+                        to build an artifact, which then is deployed on a server with
 
-```php
-bin/dep artifact:deploy [host]
-```
+                        ```php
+                        bin/dep artifact:deploy [host]
+                        ```
 
-The `localhost` to build the artifact on has to be declared local, so either add
-```php
-localhost()
-    ->set('local', true);
-```
-to your deploy.php or
-```yaml
-hosts:
-    localhost:
-        local: true
-```
-to your deploy yaml.
+                        The `localhost` to build the artifact on has to be declared local, so either add
+                        ```php
+                        localhost()
+                            ->set('local', true);
+                        ```
+                        to your deploy.php or
+                        ```yaml
+                        hosts:
+                            localhost:
+                                local: true
+                        ```
+                        to your deploy yaml.
 
-The [artifact:build](#artifact:build) command of **$brandName** consists of: 
-MD;
+                        The [artifact:build](#artifact:build) command of **$brandName** consists of: 
+                        MD;
                     $map($artifactBuildTask);
 
                     $intro .= "\n\n The [artifact:deploy](#artifact:deploy) command of **$brandName** consists of:\n";
@@ -292,20 +295,20 @@ MD;
             }
 
             $output = <<<MD
-<!-- DO NOT EDIT THIS FILE! -->
-<!-- Instead edit $recipe->recipePath -->
-<!-- Then run bin/docgen -->
+                <!-- DO NOT EDIT THIS FILE! -->
+                <!-- Instead edit $recipe->recipePath -->
+                <!-- Then run bin/docgen -->
 
-# $title
+                # $title
 
-$intro
-$config
-$tasks
-MD;
+                $intro
+                $config
+                $tasks
+                MD;
 
             $filePath = "$destination/" . php_to_md($recipe->recipePath);
             if (!file_exists(dirname($filePath))) {
-                mkdir(dirname($filePath), 0755, true);
+                mkdir(dirname($filePath), 0o755, true);
             }
             $output = remove_text_emoji($output);
             file_put_contents($filePath, $output);
@@ -315,7 +318,8 @@ MD;
         return null;
     }
 
-    public function generateRecipesIndex(string $destination) {
+    public function generateRecipesIndex(string $destination)
+    {
         $index = "# All Recipes\n\n";
         $list = [];
         foreach ($this->recipes as $recipe) {
@@ -329,7 +333,8 @@ MD;
         file_put_contents("$destination/recipe/README.md", $index);
     }
 
-    public function generateContribIndex(string $destination) {
+    public function generateContribIndex(string $destination)
+    {
         $index = "# All Contrib Recipes\n\n";
         $list = [];
         foreach ($this->recipes as $recipe) {

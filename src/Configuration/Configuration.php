@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -10,6 +12,7 @@ namespace Deployer\Configuration;
 
 use Deployer\Exception\ConfigurationException;
 use Deployer\Utility\Httpie;
+
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;
@@ -99,7 +102,7 @@ class Configuration implements \ArrayAccess
                 if (is_closure($rawValue)) {
                     return $this->values[$name] = $this->parse(call_user_func($rawValue));
                 } else {
-                    return $this->values[$name]= $this->parse($rawValue);
+                    return $this->values[$name] = $this->parse($rawValue);
                 }
             }
         }

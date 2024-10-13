@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /* (c) Anton Medvedev <anton@medv.io>
  *
  * For the full copyright and license information, please view the LICENSE
@@ -14,6 +16,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use RuntimeException;
+
 use function extension_loaded;
 
 class PimpleTest extends TestCase
@@ -263,8 +266,7 @@ class PimpleTest extends TestCase
         $this->expectExceptionMessage('Identifier "foo" is not defined.');
 
         $pimple = new Container();
-        $pimple->extend('foo', function () {
-        });
+        $pimple->extend('foo', function () {});
     }
 
     /**
@@ -276,8 +278,7 @@ class PimpleTest extends TestCase
         $this->expectExceptionMessage('Identifier "foo" is not defined.');
 
         $pimple = new Container();
-        $pimple->extend('foo', function () {
-        });
+        $pimple->extend('foo', function () {});
     }
 
     public function testKeys()
@@ -359,8 +360,7 @@ class PimpleTest extends TestCase
 
         $pimple = new Container();
         $pimple['foo'] = $service;
-        $pimple->extend('foo', function () {
-        });
+        $pimple->extend('foo', function () {});
     }
 
     /**
@@ -374,8 +374,7 @@ class PimpleTest extends TestCase
 
         $pimple = new Container();
         $pimple['foo'] = $service;
-        $pimple->extend('foo', function () {
-        });
+        $pimple->extend('foo', function () {});
     }
 
     /**
@@ -403,8 +402,7 @@ class PimpleTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $pimple = new Container();
-        $pimple['foo'] = function () {
-        };
+        $pimple['foo'] = function () {};
         $pimple->extend('foo', $service);
     }
 
@@ -416,8 +414,7 @@ class PimpleTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $pimple = new Container();
-        $pimple['foo'] = function () {
-        };
+        $pimple['foo'] = function () {};
         $pimple->extend('foo', $service);
     }
 
@@ -432,8 +429,7 @@ class PimpleTest extends TestCase
         };
         $foo = $pimple['foo'];
 
-        $pimple->extend('foo', function () {
-        });
+        $pimple->extend('foo', function () {});
     }
 
     public function testExtendFailsIfFrozenServiceIsInvokable()
@@ -447,8 +443,7 @@ class PimpleTest extends TestCase
         };
         $foo = $pimple['foo'];
 
-        $pimple->extend('foo', function () {
-        });
+        $pimple->extend('foo', function () {});
     }
 
     /**
@@ -588,9 +583,7 @@ class Invokable
 
 class NonInvokable
 {
-    public function __call($a, $b)
-    {
-    }
+    public function __call($a, $b) {}
 }
 
 class Service

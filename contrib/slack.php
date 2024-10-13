@@ -61,6 +61,7 @@ after('deploy:failed', 'slack:notify:failure');
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

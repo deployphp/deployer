@@ -154,5 +154,5 @@ task('deploy', [
     'spiral:configure',
     'deploy:download-rr',
     'deploy:publish',
-    'deploy:restart-rr'
+    'deploy:restart-rr',
 ]);

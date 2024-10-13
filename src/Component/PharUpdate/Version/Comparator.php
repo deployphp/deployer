@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Version;
 
@@ -12,17 +14,17 @@ class Comparator
     /**
      * The version is equal to another.
      */
-    const EQUAL_TO = 0;
+    public const EQUAL_TO = 0;
 
     /**
      * The version is greater than another.
      */
-    const GREATER_THAN = 1;
+    public const GREATER_THAN = 1;
 
     /**
      * The version is less than another.
      */
-    const LESS_THAN = -1;
+    public const LESS_THAN = -1;
 
     /**
      * Compares one version with another.
@@ -51,13 +53,13 @@ class Comparator
                 return self::GREATER_THAN;
             case ($left->getPatch() < $right->getPatch()):
                 return self::LESS_THAN;
-            // @codeCoverageIgnoreStart
+                // @codeCoverageIgnoreStart
         }
         // @codeCoverageIgnoreEnd
 
         return self::compareIdentifiers(
             $left->getPreRelease(),
-            $right->getPreRelease()
+            $right->getPreRelease(),
         );
     }
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -19,8 +21,8 @@ $filter->excludeDirectory('/project/vendor');
 $filter->excludeDirectory('/project/tests');
 
 $outputCoverage = new CodeCoverage(
-    (new Selector)->forLineCoverage($filter),
-    $filter
+    (new Selector())->forLineCoverage($filter),
+    $filter,
 );
 
 $coverageReports = glob("/tmp/ccov/*.php");
@@ -37,4 +39,3 @@ $cloverReport = new Clover();
 $cloverReport->process($outputCoverage, $outputFile);
 
 echo "Clover report file written to {$outputFile}\n";
-

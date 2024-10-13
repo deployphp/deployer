@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // List of dirs to copy between releases.

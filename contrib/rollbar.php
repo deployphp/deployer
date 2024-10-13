@@ -19,6 +19,7 @@ after('deploy', 'rollbar:notify');
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

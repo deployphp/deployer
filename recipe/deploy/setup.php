@@ -1,16 +1,18 @@
 <?php
+
 namespace Deployer;
 
 desc('Prepares host for deploy');
 task('deploy:setup', function () {
-    run(<<<EOF
-[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}};
-cd {{deploy_path}};
-[ -d .dep ] || mkdir .dep;
-[ -d releases ] || mkdir releases;
-[ -d shared ] || mkdir shared;
-EOF
-);
+    run(
+        <<<EOF
+            [ -d {{deploy_path}} ] || mkdir -p {{deploy_path}};
+            cd {{deploy_path}};
+            [ -d .dep ] || mkdir .dep;
+            [ -d releases ] || mkdir releases;
+            [ -d shared ] || mkdir shared;
+            EOF,
+    );
 
     // If current_path points to something like "/var/www/html", make sure it is
     // a symlink and not a directory.

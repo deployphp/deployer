@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Console;
 
@@ -78,13 +80,13 @@ class Command extends Base
             'pre',
             'p',
             InputOption::VALUE_NONE,
-            'Allow pre-release updates.'
+            'Allow pre-release updates.',
         );
         $this->addOption(
             'redo',
             'r',
             InputOption::VALUE_NONE,
-            'Redownload update if already using current version.'
+            'Redownload update if already using current version.',
         );
 
         if (false === $this->disableUpgrade) {
@@ -92,7 +94,7 @@ class Command extends Base
                 'upgrade',
                 'u',
                 InputOption::VALUE_NONE,
-                'Upgrade to next major release, if available.'
+                'Upgrade to next major release, if available.',
             );
         }
     }
@@ -104,7 +106,7 @@ class Command extends Base
     {
         if (null === $this->manifestUri) {
             throw new LogicException(
-                'No manifest URI has been configured.'
+                'No manifest URI has been configured.',
             );
         }
 
@@ -119,7 +121,7 @@ class Command extends Base
         if ($manager->update(
             $this->getApplication()->getVersion(),
             $this->disableUpgrade ?: (false === $input->getOption('upgrade')),
-            $input->getOption('pre')
+            $input->getOption('pre'),
         )) {
             $output->writeln('<info>Update successful!</info>');
         } else {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Version;
 
@@ -17,7 +19,7 @@ class Builder extends Version
      */
     public function clearBuild(): void
     {
-        $this->build = array();
+        $this->build = [];
     }
 
     /**
@@ -25,7 +27,7 @@ class Builder extends Version
      */
     public function clearPreRelease(): void
     {
-        $this->preRelease = array();
+        $this->preRelease = [];
     }
 
     /**
@@ -50,7 +52,7 @@ class Builder extends Version
             $this->minor,
             $this->patch,
             $this->preRelease,
-            $this->build
+            $this->build,
         );
     }
 
@@ -66,7 +68,7 @@ class Builder extends Version
         if (isset($components[Parser::BUILD])) {
             $this->build = $components[Parser::BUILD];
         } else {
-            $this->build = array();
+            $this->build = [];
         }
 
         if (isset($components[Parser::MAJOR])) {
@@ -90,7 +92,7 @@ class Builder extends Version
         if (isset($components[Parser::PRE_RELEASE])) {
             $this->preRelease = $components[Parser::PRE_RELEASE];
         } else {
-            $this->preRelease = array();
+            $this->preRelease = [];
         }
 
         return $this;

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Version;
 
@@ -14,27 +16,27 @@ class Parser
     /**
      * The build metadata component.
      */
-    const BUILD = 'build';
+    public const BUILD = 'build';
 
     /**
      * The major version number component.
      */
-    const MAJOR = 'major';
+    public const MAJOR = 'major';
 
     /**
      * The minor version number component.
      */
-    const MINOR = 'minor';
+    public const MINOR = 'minor';
 
     /**
      * The patch version number component.
      */
-    const PATCH = 'patch';
+    public const PATCH = 'patch';
 
     /**
      * The pre-release version number component.
      */
-    const PRE_RELEASE = 'pre';
+    public const PRE_RELEASE = 'pre';
 
     /**
      * Returns a Version builder for the string representation.
@@ -46,7 +48,7 @@ class Parser
     public static function toBuilder(string $version): Builder
     {
         return Builder::create()->importComponents(
-            self::toComponents($version)
+            self::toComponents($version),
         );
     }
 
@@ -67,30 +69,30 @@ class Parser
         }
 
         if (false !== strpos($version, '+')) {
-            list($version, $build) = explode('+', $version);
+            [$version, $build] = explode('+', $version);
 
             $build = explode('.', $build);
         }
 
         if (false !== strpos($version, '-')) {
-            list($version, $pre) = explode('-', $version);
+            [$version, $pre] = explode('-', $version);
 
             $pre = explode('.', $pre);
         }
 
-        list(
+        [
             $major,
             $minor,
-            $patch
-        ) = explode('.', $version);
+            $patch,
+        ] = explode('.', $version);
 
-        return array(
+        return [
             self::MAJOR => intval($major),
             self::MINOR => intval($minor),
             self::PATCH => intval($patch),
-            self::PRE_RELEASE => isset($pre) ? $pre : array(),
-            self::BUILD => isset($build) ? $build : array(),
-        );
+            self::PRE_RELEASE => $pre ?? [],
+            self::BUILD => $build ?? [],
+        ];
     }
 
     /**
@@ -109,7 +111,7 @@ class Parser
             $components['minor'],
             $components['patch'],
             $components['pre'],
-            $components['build']
+            $components['build'],
         );
     }
 }

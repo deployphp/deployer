@@ -73,6 +73,7 @@ after('deploy:failed', 'mattermost:notify:failure');
 ```
 
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -90,7 +91,7 @@ set('mattermost_success_text', 'Deploy to **{{target}}** successful {{mattermost
 set('mattermost_failure_text', 'Deploy to **{{target}}** failed {{mattermost_failure_emoji}}');
 
 desc('Notifies mattermost');
-task('mattermost:notify', function() {
+task('mattermost:notify', function () {
     if (null === get('mattermost_webhook')) {
         return;
     }
@@ -111,7 +112,7 @@ task('mattermost:notify', function() {
 });
 
 desc('Notifies mattermost about deploy finish');
-task('mattermost:notify:success', function() {
+task('mattermost:notify:success', function () {
     if (null === get('mattermost_webhook')) {
         return;
     }
@@ -132,7 +133,7 @@ task('mattermost:notify:success', function() {
 });
 
 desc('Notifies mattermost about deploy failure');
-task('mattermost:notify:failure', function() {
+task('mattermost:notify:failure', function () {
     if (null === get('mattermost_webhook')) {
         return;
     }

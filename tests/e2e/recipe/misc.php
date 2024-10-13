@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace Deployer;
 
 // we need to user require instead of require_once, as the hosts HAVE to be loaded multiple times
@@ -9,4 +12,3 @@ task('test:misc:sudo-write-user', function (): void {
     $output = run($cmd);
     writeln($output);
 });
-

@@ -47,12 +47,12 @@ Since you should only notify RabbitMQ channel of a successful deployment, the `d
 before('deploy:end', 'deploy:rabbit');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Task\Context;
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-
 
 desc('Notifies RabbitMQ channel about deployment');
 task('deploy:rabbit', function () {
@@ -75,17 +75,17 @@ task('deploy:rabbit', function () {
             $message,
             $host->getHostname(),
             $stageInfo,
-            $releasePath
+            $releasePath,
         );
     }
 
-    $defaultConfig = array(
+    $defaultConfig = [
         'host' => 'localhost',
         'port' => 5672,
         'username' => 'guest',
         'password' => 'guest',
         'vhost' => '/',
-    );
+    ];
 
     $config = array_merge($defaultConfig, $config);
 
@@ -95,8 +95,7 @@ task('deploy:rabbit', function () {
         !isset($config['port']) ||
         !isset($config['username']) ||
         !isset($config['password']) ||
-        !isset($config['vhost']) )
-    {
+        !isset($config['vhost'])) {
         throw new \RuntimeException("<comment>Please configure rabbit config:</comment> <info>set('rabbit', array('channel' => 'channel', 'host' => 'host', 'port' => 'port', 'username' => 'username', 'password' => 'password'));</info>");
     }
 

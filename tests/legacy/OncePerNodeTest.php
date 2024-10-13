@@ -9,7 +9,7 @@ namespace Deployer;
 
 class OncePerNodeTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/once_per_node.php';
+    public const RECIPE = __DIR__ . '/recipe/once_per_node.php';
 
     public function testOnce()
     {

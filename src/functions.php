@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -29,6 +31,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\env_stringify;
 use function Deployer\Support\is_closure;
@@ -297,7 +300,7 @@ function fail(string $task, $do)
 function option(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null): void
 {
     Deployer::get()->inputDefinition->addOption(
-        new InputOption($name, $shortcut, $mode, $description, $default)
+        new InputOption($name, $shortcut, $mode, $description, $default),
     );
 }
 
@@ -823,7 +826,7 @@ function askHiddenResponse(string $message): string
     }
 
     if (Deployer::isWorker()) {
-        return (string)Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return (string) Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */
@@ -837,7 +840,7 @@ function askHiddenResponse(string $message): string
     $question->setHidden(true);
     $question->setHiddenFallback(false);
 
-    return (string)$helper->ask(input(), output(), $question);
+    return (string) $helper->ask(input(), output(), $question);
 }
 
 function input(): InputInterface
@@ -904,7 +907,7 @@ function remoteEnv(): array
     $vars = [];
     $data = run('env');
     foreach (explode("\n", $data) as $line) {
-        list($name, $value) = explode('=', $line, 2);
+        [$name, $value] = explode('=', $line, 2);
         $vars[$name] = $value;
     }
     return $vars;

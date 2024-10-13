@@ -17,7 +17,9 @@
     - `domain_php_version` – Domain PHP Version, default: 1 (required when using directadmin:php-version)
 
  */
+
 namespace Deployer;
+
 use Deployer\Task\Context;
 use Deployer\Utility\Httpie;
 
@@ -33,7 +35,7 @@ function getDirectAdminConfig()
     if (!is_array($config) ||
         !isset($config['host']) ||
         !isset($config['username']) ||
-        !isset($config['password']) ) {
+        !isset($config['password'])) {
         throw new \RuntimeException("Please set the following DirectAdmin config:" . PHP_EOL . "set('directadmin', ['host' => '127.0.0.1', 'port' => 2222, 'username' => 'admin', 'password' => 'password']);");
     }
 
@@ -77,7 +79,7 @@ task('directadmin:createdb', function () {
     if (!is_array($config) ||
         !isset($config['db_name']) ||
         !isset($config['db_user']) ||
-        !isset($config['db_password']) ) {
+        !isset($config['db_password'])) {
         throw new \RuntimeException("Please add the following DirectAdmin config:" . PHP_EOL . "add('directadmin', ['db_name' => 'test', 'db_user' => 'test', 'db_password' => '123456']);");
     }
 

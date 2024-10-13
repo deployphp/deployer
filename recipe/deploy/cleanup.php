@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // Use sudo in deploy:cleanup task for rm command.

@@ -64,7 +64,7 @@ abstract class AbstractTest extends TestCase
             $task,
             'selector' => 'all',
             '-f' => $recipe,
-            '-l' => 1
+            '-l' => 1,
         ], [
             'verbosity' => Output::VERBOSITY_VERBOSE,
             'interactive' => false,

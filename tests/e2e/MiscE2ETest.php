@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 namespace e2e;
 
 class MiscE2ETest extends AbstractE2ETest

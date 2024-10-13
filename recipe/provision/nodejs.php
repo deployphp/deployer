@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // Node.js version from https://github.com/nodesource/distributions.

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace Deployer\Component\PharUpdate\Version;
 
@@ -18,13 +20,13 @@ class Dumper
      */
     public static function toComponents(Version $version)
     {
-        return array(
+        return [
             Parser::MAJOR => $version->getMajor(),
             Parser::MINOR => $version->getMinor(),
             Parser::PATCH => $version->getPatch(),
             Parser::PRE_RELEASE => $version->getPreRelease(),
-            Parser::BUILD => $version->getBuild()
-        );
+            Parser::BUILD => $version->getBuild(),
+        ];
     }
 
     /**
@@ -46,7 +48,7 @@ class Dumper
                 : '',
             $version->getBuild()
                 ? '+' . join('.', $version->getBuild())
-                : ''
+                : '',
         );
     }
 }

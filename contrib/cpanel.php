@@ -133,10 +133,11 @@ after('deploy:prepare', 'cpanel:createaddondomain');
 after('deploy:prepare', 'cpanel:createdb');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Task\Context;
-use \Gufy\CpanelPhp\Cpanel;
+use Gufy\CpanelPhp\Cpanel;
 
 /**
  * @return Cpanel
@@ -162,7 +163,7 @@ function getCpanel()
         !isset($config['port']) ||
         !isset($config['username']) ||
         !isset($config['token']) ||
-        !isset($config['user']) ) {
+        !isset($config['user'])) {
         throw new \RuntimeException("<comment>Please configure CPanel config:</comment> <info>set('cpanel', array('host' => 'xxx.xxx.xxx.xxx:', 'port' => 2087 , 'username' => 'root', 'token' => 'asdfasdf', 'cpaneluser' => 'guy'));</info>");
     }
 
@@ -187,7 +188,7 @@ function getDomainInfo()
     return [
         'domain' => $domain,
         'subDomain' => $subDomain,
-        'subDomainWithSuffix' => $subDomain . get('cpanel')['subdomain_suffix']
+        'subDomainWithSuffix' => $subDomain . get('cpanel')['subdomain_suffix'],
     ];
 }
 
@@ -201,7 +202,7 @@ task('cpanel:createdb', function () {
     }
 
     $createDbDataResult = $cpanel->cpanel('MysqlFE', 'createdb', $config['user'], ['db' => get('cpanel_createdb')]);
-    $addPrivilegesDataResult = $cpanel->cpanel('MysqlFE', 'setdbuserprivileges', $config['user'], ['privileges' => $config['db_user_privileges'], 'db'=> get('cpanel_createdb'), 'dbuser' => $config['db_user']]);
+    $addPrivilegesDataResult = $cpanel->cpanel('MysqlFE', 'setdbuserprivileges', $config['user'], ['privileges' => $config['db_user_privileges'], 'db' => get('cpanel_createdb'), 'dbuser' => $config['db_user']]);
 
     $createDbData = json_decode($createDbDataResult, true);
     $addPrivilegesData = json_decode($addPrivilegesDataResult, true);
@@ -231,7 +232,7 @@ task('cpanel:createaddondomain', function () {
 
     writeln(sprintf('Creates addon domain %s and pointing it to %s', $domain, get('addondir')));
 
-    $addAddonDomainResult = $cpanel->cpanel('AddonDomain', 'addaddondomain', $config['user'], ['dir' => get('addondir'), 'newdomain'=> $domain, 'subdomain' => $subDomain]);
+    $addAddonDomainResult = $cpanel->cpanel('AddonDomain', 'addaddondomain', $config['user'], ['dir' => get('addondir'), 'newdomain' => $domain, 'subdomain' => $subDomain]);
     $addAddonDomainData = json_decode($addAddonDomainResult, true);
 
     if (isset($addAddonDomainResult['cpanelresult']['error'])) {
@@ -256,7 +257,7 @@ task('cpanel:deleteaddondomain', function () {
 
     writeln(sprintf('Deleting addon domain %s', $domain));
 
-    $delAddonDomainResult = $cpanel->cpanel('AddonDomain', 'deladdondomain', $config['user'], ['domain'=> $domain, 'subdomain' => $subDomainWithSuffix]);
+    $delAddonDomainResult = $cpanel->cpanel('AddonDomain', 'deladdondomain', $config['user'], ['domain' => $domain, 'subdomain' => $subDomainWithSuffix]);
     $delAddonDomainResult = json_decode($delAddonDomainResult, true);
 
     if (isset($delAddonDomainResult['cpanelresult']['error'])) {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -35,9 +36,11 @@ set('writable_dirs', [
 ]);
 
 desc('Deploys your project');
-task('deploy', [
+task(
+    'deploy',
+    [
         'deploy:prepare',
         'deploy:vendors',
         'deploy:publish',
-    ]
+    ],
 );

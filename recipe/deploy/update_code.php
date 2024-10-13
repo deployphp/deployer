@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 use Deployer\Exception\ConfigurationException;
@@ -81,7 +82,7 @@ task('deploy:update_code', function () {
     $bare = parse('{{deploy_path}}/.dep/repo');
     $env = [
         'GIT_TERMINAL_PROMPT' => '0',
-        'GIT_SSH_COMMAND' => get('git_ssh_command')
+        'GIT_SSH_COMMAND' => get('git_ssh_command'),
     ];
 
     start:
@@ -104,7 +105,7 @@ task('deploy:update_code', function () {
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
         run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
-    } else if (get('update_code_strategy') === 'clone') {
+    } elseif (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
         run("$git remote set-url origin $repository", ['env' => $env]);

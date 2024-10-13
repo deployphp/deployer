@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -13,15 +15,15 @@ class HostDefaultConfigTest extends JoyTest
     protected function recipe(): string
     {
         return <<<'PHP'
-<?php
-namespace Deployer;
-localhost();
+            <?php
+            namespace Deployer;
+            localhost();
 
-task('test', function () {
-    $port = currentHost()->getPort();
-    writeln(empty($port) ? 'empty' : "port:$port");
-});
-PHP;
+            task('test', function () {
+                $port = currentHost()->getPort();
+                writeln(empty($port) ? 'empty' : "port:$port");
+            });
+            PHP;
     }
 
     public function testOnFunc()

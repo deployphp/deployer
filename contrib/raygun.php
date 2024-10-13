@@ -19,6 +19,7 @@ To notify Raygun of a successful deployment, you can use the 'raygun:notify' tas
 after('deploy', 'raygun:notify');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;
@@ -32,7 +33,7 @@ task('raygun:notify', function () {
         'emailAddress' => get('raygun_email'),
         'comment' => get('raygun_comment'),
         'scmIdentifier' => get('raygun_scm_identifier'),
-        'scmType' => get('raygun_scm_type')
+        'scmType' => get('raygun_scm_type'),
     ];
 
     Httpie::post('https://app.raygun.io/deployments')

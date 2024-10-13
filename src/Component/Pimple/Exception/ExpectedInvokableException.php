@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -15,6 +17,4 @@ use Psr\Container\ContainerExceptionInterface;
  *
  * @author Pascal Luna <skalpa@zetareticuli.org>
  */
-class ExpectedInvokableException extends \InvalidArgumentException implements ContainerExceptionInterface
-{
-}
+class ExpectedInvokableException extends \InvalidArgumentException implements ContainerExceptionInterface {}

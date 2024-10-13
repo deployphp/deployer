@@ -110,6 +110,7 @@ host('hostname')
     And Your `rsync_dest` is set to `{{release_path}}` then You could add this task to run before `rsync` task or after `deploy:release`, whatever is more convenient.
 
  */
+
 namespace Deployer;
 
 use Deployer\Component\Ssh\Client;
@@ -141,7 +142,7 @@ set('rsync_excludes', function () {
     $excludeFile = $config['exclude-file'];
     $excludesRsync = '';
     foreach ($excludes as $exclude) {
-        $excludesRsync.=' --exclude=' . escapeshellarg($exclude);
+        $excludesRsync .= ' --exclude=' . escapeshellarg($exclude);
     }
     if (!empty($excludeFile) && file_exists($excludeFile) && is_file($excludeFile) && is_readable($excludeFile)) {
         $excludesRsync .= ' --exclude-from=' . escapeshellarg($excludeFile);
@@ -156,7 +157,7 @@ set('rsync_includes', function () {
     $includeFile = $config['include-file'];
     $includesRsync = '';
     foreach ($includes as $include) {
-        $includesRsync.=' --include=' . escapeshellarg($include);
+        $includesRsync .= ' --include=' . escapeshellarg($include);
     }
     if (!empty($includeFile) && file_exists($includeFile) && is_file($includeFile) && is_readable($includeFile)) {
         $includesRsync .= ' --include-from=' . escapeshellarg($includeFile);
@@ -172,7 +173,7 @@ set('rsync_filter', function () {
     $filterPerDir = $config['filter-perdir'];
     $filtersRsync = '';
     foreach ($filters as $filter) {
-        $filtersRsync.=" --filter='$filter'";
+        $filtersRsync .= " --filter='$filter'";
     }
     if (!empty($filterFile)) {
         $filtersRsync .= " --filter='merge $filterFile'";
@@ -195,7 +196,7 @@ set('rsync_options', function () {
 
 
 desc('Warmups remote Rsync target');
-task('rsync:warmup', function() {
+task('rsync:warmup', function () {
     $config = get('rsync');
 
     $source = "{{current_path}}";
@@ -210,7 +211,7 @@ task('rsync:warmup', function() {
 
 
 desc('Rsync local->remote');
-task('rsync', function() {
+task('rsync', function () {
     $config = get('rsync');
 
     $src = get('rsync_src');

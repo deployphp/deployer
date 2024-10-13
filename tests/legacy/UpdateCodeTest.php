@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\Output;
 
 class UpdateCodeTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/update_code.php';
+    public const RECIPE = __DIR__ . '/recipe/update_code.php';
 
     public function testDeployWithDifferentUpdateCodeTask()
     {

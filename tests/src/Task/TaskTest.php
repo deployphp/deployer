@@ -9,6 +9,7 @@ namespace Deployer\Task;
 
 use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
+
 use function Deployer\invoke;
 use function Deployer\task;
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 // Use mv -T if available. Will check automatically.

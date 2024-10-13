@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -14,8 +16,8 @@ $filter->excludeDirectory('/project/tests');
 $report = new PHPReport();
 
 $coverage = new CodeCoverage(
-    (new Selector)->forLineCoverage($filter),
-    $filter
+    (new Selector())->forLineCoverage($filter),
+    $filter,
 );
 
 $outputDir = '/tmp/ccov';
@@ -34,13 +36,15 @@ if (!is_dir($outputDir)) {
     /** @var string|null */
     private $coverageName;
 
-    public function __construct(CodeCoverage $coverage, PHPReport $report, string $outputDir) {
+    public function __construct(CodeCoverage $coverage, PHPReport $report, string $outputDir)
+    {
         $this->coverage = $coverage;
         $this->report = $report;
         $this->outputDir = $outputDir;
     }
 
-    public function start():void {
+    public function start(): void
+    {
         register_shutdown_function([$this, 'stop']);
 
         $coverageName = uniqid('coverage_');
@@ -48,13 +52,11 @@ if (!is_dir($outputDir)) {
         $this->coverage->start($this->coverageName);
     }
 
-    public function stop():void {
+    public function stop(): void
+    {
         $this->coverage->stop();
 
         $outputFile = $this->outputDir . "/{$this->coverageName}.php";
         $this->report->process($this->coverage, $outputFile);
     }
 })->start();
-
-
-

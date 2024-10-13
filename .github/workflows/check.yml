@@ -34,7 +34,7 @@ jobs:
       - name: Run test suite
         run: composer phpstan
 
-  phpcs:
+  code-style:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -63,5 +63,5 @@ jobs:
         if: steps.composer-cache.outputs.cache-hit != 'true'
         run: composer install --prefer-dist --no-progress
 
-      - name: Run PHP_CodeSniffer
-        run: composer phpcs
+      - name: Run php-cs-fixer
+        run: composer check

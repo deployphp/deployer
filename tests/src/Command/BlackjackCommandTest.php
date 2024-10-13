@@ -5,7 +5,6 @@ use PHPUnit\Framework\TestCase;
 
 class BlackjackCommandTest extends TestCase
 {
-
     public function testHandValue()
     {
         self::assertEquals(3, BlackjackCommand::handValue([['3']]));

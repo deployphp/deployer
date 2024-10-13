@@ -18,7 +18,7 @@ set('writable_dirs', [
     'writable/debugbar',
     'writable/logs',
     'writable/session',
-    'writable/uploads'
+    'writable/uploads',
 ]);
 
 set('log_files', 'writable/logs/*.log');

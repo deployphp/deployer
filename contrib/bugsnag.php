@@ -15,6 +15,7 @@ Since you should only notify Bugsnag of a successful deployment, the `bugsnag:no
 after('deploy', 'bugsnag:notify');
 ```
 */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

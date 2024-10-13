@@ -13,7 +13,7 @@ set('shared_dirs', [
 ]);
 set('shared_files', [
     '.env',
-    'config/test.yaml'
+    'config/test.yaml',
 ]);
 set('keep_releases', 3);
 set('http_user', false);
@@ -23,7 +23,7 @@ localhost('prod');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
-    'deploy:publish'
+    'deploy:publish',
 ]);
 
 // Mock vendors installation to speed up tests.
@@ -37,7 +37,7 @@ task('deploy:vendors', function () {
 task('deploy:fail', [
     'deploy:prepare',
     'fail',
-    'deploy:publish'
+    'deploy:publish',
 ]);
 
 task('fail', function () {

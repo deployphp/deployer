@@ -20,15 +20,15 @@ class IOArgumentsTest extends TestCase
             new InputOption('plan', null, InputOption::VALUE_NONE, 'Show execution plan'),
             new InputOption('start-from', null, InputOption::VALUE_REQUIRED, 'Start execution from this task'),
             new InputOption('log', null, InputOption::VALUE_REQUIRED, 'Write log to a file'),
-            new InputOption('profile', null, InputOption::VALUE_REQUIRED, 'Write profile to a file',),
-            new InputOption('ansi', null, InputOption::VALUE_OPTIONAL, 'Force ANSI output',),
+            new InputOption('profile', null, InputOption::VALUE_REQUIRED, 'Write profile to a file', ),
+            new InputOption('ansi', null, InputOption::VALUE_OPTIONAL, 'Force ANSI output', ),
         ]);
 
         $args = IOArguments::collect(
             new ArgvInput(['deploy', '-o', 'env=prod', '--ansi', '-l1'], $definition),
-            new ConsoleOutput(OutputInterface::VERBOSITY_DEBUG, false)
+            new ConsoleOutput(OutputInterface::VERBOSITY_DEBUG, false),
         );
 
-        self::assertEquals(['--option' ,'env=prod', '--limit', '1', '-vvv'], $args);
+        self::assertEquals(['--option','env=prod', '--limit', '1', '-vvv'], $args);
     }
 }

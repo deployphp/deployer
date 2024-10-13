@@ -44,6 +44,5 @@ after('cache_config_test', function () {
 set('host_level_callback_config', 'from global');
 
 task('host_config_from_callback', function () {
-   writeln('config value is {{host_level_callback_config}}');
+    writeln('config value is {{host_level_callback_config}}');
 });
-

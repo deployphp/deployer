@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\Output;
 
 class SelectTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/select.php';
+    public const RECIPE = __DIR__ . '/recipe/select.php';
 
     public function testSelect()
     {
@@ -19,7 +19,7 @@ class SelectTest extends AbstractTest
         $this->tester->run([
             'test',
             '-f' => self::RECIPE,
-            'selector' => 'prod'
+            'selector' => 'prod',
         ], [
             'verbosity' => Output::VERBOSITY_DEBUG,
         ]);

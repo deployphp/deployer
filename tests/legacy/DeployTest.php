@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\Output;
 
 class DeployTest extends AbstractTest
 {
-    const RECIPE = __DIR__ . '/recipe/deploy.php';
+    public const RECIPE = __DIR__ . '/recipe/deploy.php';
 
     public function testDeploy()
     {

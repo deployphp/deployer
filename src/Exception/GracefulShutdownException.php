@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -21,5 +23,5 @@ namespace Deployer\Exception;
  */
 class GracefulShutdownException extends Exception
 {
-    const EXIT_CODE = 42;
+    public const EXIT_CODE = 42;
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -19,22 +20,22 @@ set('shared_assets', function () {
 
 // Silverstripe shared dirs
 set('shared_dirs', [
-    '{{shared_assets}}'
+    '{{shared_assets}}',
 ]);
 
 // Silverstripe writable dirs
 set('writable_dirs', [
-    '{{shared_assets}}'
+    '{{shared_assets}}',
 ]);
 
 // Silverstripe cli script
 set('silverstripe_cli_script', function () {
     $paths = [
         'framework/cli-script.php',
-        'vendor/silverstripe/framework/cli-script.php'
+        'vendor/silverstripe/framework/cli-script.php',
     ];
     foreach ($paths as $path) {
-        if (test('[ -f {{release_or_current_path}}/'.$path.' ]')) {
+        if (test('[ -f {{release_or_current_path}}/' . $path . ' ]')) {
             return $path;
         }
     }

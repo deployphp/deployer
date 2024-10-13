@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -42,14 +44,14 @@ class Httpie
         if (!extension_loaded('curl')) {
             throw new \Exception(
                 "Please, install curl extension.\n" .
-                "https://php.net/curl.installation"
+                "https://php.net/curl.installation",
             );
         }
     }
 
     public static function get(string $url): Httpie
     {
-        $http = new self;
+        $http = new self();
         $http->method = 'GET';
         $http->url = $url;
         return $http;
@@ -57,24 +59,24 @@ class Httpie
 
     public static function post(string $url): Httpie
     {
-        $http = new self;
+        $http = new self();
         $http->method = 'POST';
         $http->url = $url;
         return $http;
     }
-    
+
     public static function patch(string $url): Httpie
     {
-        $http = new self;
+        $http = new self();
         $http->method = 'PATCH';
         $http->url = $url;
         return $http;
     }
 
-    
+
     public static function put(string $url): Httpie
     {
-        $http = new self;
+        $http = new self();
         $http->method = 'PUT';
         $http->url = $url;
         return $http;
@@ -82,12 +84,12 @@ class Httpie
 
     public static function delete(string $url): Httpie
     {
-        $http = new self;
+        $http = new self();
         $http->method = 'DELETE';
         $http->url = $url;
         return $http;
     }
-    
+
     public function query(array $params): Httpie
     {
         $http = clone $this;
@@ -154,7 +156,7 @@ class Httpie
 
     public function send(?array &$info = null): string
     {
-        if($this->url === '') {
+        if ($this->url === '') {
             throw new \RuntimeException('URL must not be empty to Httpie::send()');
         }
         $ch = curl_init($this->url);
@@ -200,7 +202,7 @@ class Httpie
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new HttpieException(
                 'JSON Error: ' . json_last_error_msg() . '\n' .
-                'Response: ' . $result
+                'Response: ' . $result,
             );
         }
         return $response;

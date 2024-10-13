@@ -82,6 +82,7 @@ If you want to notify about failed deployment add this too:
 after('deploy:failed', 'ntfy:notify:failure');
 ```
  */
+
 namespace Deployer;
 
 use Deployer\Utility\Httpie;

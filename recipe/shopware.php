@@ -19,12 +19,13 @@
  *     ->set('writable_recursive', true)
  *     ->set('become', 'www-data'); // You might want to change user to execute remote tasks because of access rights of created cache files
  * ```
- * 
+ *
  * :::note
  * Please remember that the installation must be modified so that it can be
  * [build without database](https://developer.shopware.com/docs/guides/hosting/installation-updates/deployments/build-w-o-db#compiling-the-storefront-without-database).
  * :::
  */
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';

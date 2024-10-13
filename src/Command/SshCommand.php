@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /* (c) Anton Medvedev <anton@medv.io>
  *
@@ -44,7 +46,7 @@ class SshCommand extends Command
         $this->addArgument(
             'hostname',
             InputArgument::OPTIONAL,
-            'Hostname'
+            'Hostname',
         );
     }
 
@@ -74,7 +76,7 @@ class SshCommand extends Command
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(
                     '<question>Select host:</question>',
-                    $hostsAliases
+                    $hostsAliases,
                 );
                 $question->setErrorMessage('There is no "%s" host.');
 

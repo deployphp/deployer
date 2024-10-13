@@ -12,6 +12,20 @@ require 'contrib/cloudflare.php';
 
 
 
+### Configuration
+- `cloudflare` – array with configuration for cloudflare
+    - `service_key` – Cloudflare Service Key. If this is not provided, use api_key and email.
+    - `api_key` – Cloudflare API key generated on the "My Account" page.
+    - `email` – Cloudflare Email address associated with your account.
+    - `api_token` – Cloudflare API Token generated on the "My Account" page.
+    - `domain` – The domain you want to clear (optional if zone_id is provided).
+    - `zone_id` – Cloudflare Zone ID (optional).
+### Usage
+Since the website should be built and some load is likely about to be applied to your server, this should be one of,
+if not the, last tasks before cleanup
+
+
+
 ## Tasks
 
 ### deploy:cloudflare
@@ -19,6 +33,16 @@ require 'contrib/cloudflare.php';
 
 Clears Cloudflare Cache.
 
-
+### Configuration
+- `cloudflare` – array with configuration for cloudflare
+    - `service_key` – Cloudflare Service Key. If this is not provided, use api_key and email.
+    - `api_key` – Cloudflare API key generated on the "My Account" page.
+    - `email` – Cloudflare Email address associated with your account.
+    - `api_token` – Cloudflare API Token generated on the "My Account" page.
+    - `domain` – The domain you want to clear (optional if zone_id is provided).
+    - `zone_id` – Cloudflare Zone ID (optional).
+### Usage
+Since the website should be built and some load is likely about to be applied to your server, this should be one of,
+if not the, last tasks before cleanup
 
 

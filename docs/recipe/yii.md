@@ -42,7 +42,7 @@ The [deploy](#deploy) task of **Yii2** consists of:
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 The yii recipe is based on the [common](/docs/recipe/common.md) recipe.

@@ -12,6 +12,24 @@ require 'contrib/directadmin.php';
 
 
 
+### Configuration
+- `directadmin` – array with configuration for DirectAdmin
+    - `host` – DirectAdmin host
+    - `port` – DirectAdmin port (default: 2222, not required)
+    - `scheme` – DirectAdmin scheme (default: http, not required)
+    - `username` – DirectAdmin username
+    - `password` – DirectAdmin password (it is recommended to use login keys!)
+    - `db_user` – Database username (required when using directadmin:createdb or directadmin:deletedb)
+    - `db_name` – Database namse (required when using directadmin:createdb)
+    - `db_password` – Database password (required when using directadmin:createdb)
+    - `domain_name` – Domain to create, delete or edit (required when using directadmin:createdomain, directadmin:deletedomain, directadmin:symlink-private-html or directadmin:php-version)
+    - `domain_ssl` – Enable SSL, options: ON/OFF, default: ON (optional when using directadmin:createdb)
+    - `domain_cgi` – Enable CGI, options: ON/OFF, default: ON (optional when using directadmin:createdb)
+    - `domain_php` – Enable PHP, options: ON/OFF, default: ON (optional when using directadmin:createdb)
+    - `domain_php_version` – Domain PHP Version, default: 1 (required when using directadmin:php-version)
+
+
+
 ## Tasks
 
 ### directadmin:createdb

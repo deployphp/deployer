@@ -11,6 +11,21 @@ require 'contrib/hipchat.php';
 [Source](/contrib/hipchat.php)
 
 
+
+## Configuration
+- `hipchat_token` – Hipchat V1 auth token
+- `hipchat_room_id` – Room ID or name
+- `hipchat_message` –  Deploy message, default is `_{{user}}_ deploying `{{branch}}` to *{{target}}*`
+- `hipchat_from` – Default to target
+- `hipchat_color` – Message color, default is **green**
+- `hipchat_url` –  The URL to the message endpoint, default is https://api.hipchat.com/v1/rooms/message
+## Usage
+Since you should only notify Hipchat room of a successful deployment, the `hipchat:notify` task should be executed right at the end.
+```php
+after('deploy', 'hipchat:notify');
+```
+
+
 ## Configuration
 ### hipchat_color
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hipchat.php#L26)

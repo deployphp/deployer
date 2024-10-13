@@ -241,7 +241,7 @@ This task is group task which contains next tasks:
 ### deploy:success
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/common.php#L166)
 
-
+Deploys your project.
 
 Prints success message
 

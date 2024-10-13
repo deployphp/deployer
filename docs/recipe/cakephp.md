@@ -43,7 +43,7 @@ The [deploy](#deploy) task of **Cakephp** consists of:
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 The cakephp recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -54,6 +54,7 @@ The cakephp recipe is based on the [common](/docs/recipe/common.md) recipe.
 
 Overrides [shared_dirs](/docs/recipe/deploy/shared.md#shared_dirs) from `recipe/deploy/shared.php`.
 
+CakePHP 4 Project Template configuration
 CakePHP 4 Project Template shared dirs
 
 ```php title="Default value"

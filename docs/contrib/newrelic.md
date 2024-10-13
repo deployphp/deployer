@@ -11,6 +11,19 @@ require 'contrib/newrelic.php';
 [Source](/contrib/newrelic.php)
 
 
+
+## Configuration
+- `newrelic_app_id` – newrelic's app id
+- `newrelic_api_key` – newrelic's api key
+- `newrelic_description` – message to send
+- `newrelic_endpoint` – newrelic's REST API endpoint
+## Usage
+Since you should only notify New Relic of a successful deployment, the `newrelic:notify` task should be executed right at the end.
+```php
+after('deploy', 'newrelic:notify');
+```
+
+
 ## Configuration
 ### newrelic_app_id
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L24)

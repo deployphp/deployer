@@ -11,6 +11,41 @@ require 'contrib/discord.php';
 [Source](/contrib/discord.php)
 
 
+
+## Installing
+Add hook on deploy:
+```php
+before('deploy', 'discord:notify');
+```
+## Configuration
+- `discord_channel` – Discord channel ID, **required**
+- `discord_token` – Discord channel token, **required**
+- `discord_notify_text` – notification message template, markdown supported, default:
+  ```markdown
+  :&#8203;information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_
+  ```
+- `discord_success_text` – success template, default:
+  ```markdown
+  :&#8203;white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully
+  ```
+- `discord_failure_text` – failure template, default:
+  ```markdown
+  :&#8203;no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_
+## Usage
+If you want to notify only about beginning of deployment add this line only:
+```php
+before('deploy', 'discord:notify');
+```
+If you want to notify about successful end of deployment add this too:
+```php
+after('deploy:success', 'discord:notify:success');
+```
+If you want to notify about failed deployment add this too:
+```php
+after('deploy:failed', 'discord:notify:failure');
+```
+
+
 ## Configuration
 ### discord_webhook
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L54)

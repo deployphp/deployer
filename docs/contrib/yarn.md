@@ -11,11 +11,25 @@ require 'contrib/yarn.php';
 [Source](/contrib/yarn.php)
 
 
+
+## Configuration
+- **bin/yarn** *(optional)*: set Yarn binary, automatically detected otherwise.
+## Usage
+```php
+after('deploy:update_code', 'yarn:install');
+```
+
+
 ## Configuration
 ### bin/yarn
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L16)
 
-
+## Configuration
+- **bin/yarn** *(optional)*: set Yarn binary, automatically detected otherwise.
+## Usage
+```php
+after('deploy:update_code', 'yarn:install');
+```
 
 ```php title="Default value"
 return which('yarn');

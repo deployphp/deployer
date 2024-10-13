@@ -104,7 +104,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 Runs garbage collection.
 
-
+Garbage collection
 
 
 ### deploy
@@ -112,7 +112,7 @@ Runs garbage collection.
 
 Deploys Craft CMS.
 
-
+Main deploy
 
 
 This task is group task which contains next tasks:

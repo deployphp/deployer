@@ -11,6 +11,49 @@ require 'contrib/cimonitor.php';
 [Source](/contrib/cimonitor.php)
 
 
+
+Monitor your deployments on [CIMonitor](https://github.com/CIMonitor/CIMonitor).
+![CIMonitorGif](https://www.steefmin.xyz/deployer-example.gif)
+Add tasks on deploy:
+```php
+before('deploy', 'cimonitor:notify');
+after('deploy:success', 'cimonitor:notify:success');
+after('deploy:failed', 'cimonitor:notify:failure');
+```
+## Configuration
+- `cimonitor_webhook` – CIMonitor server webhook url, **required**
+  ```
+  set('cimonitor_webhook', 'https://cimonitor.enrise.com/webhook/deployer');
+  ```
+- `cimonitor_title` – the title of application, default the username\reponame combination from `{{repository}}`
+  ```
+  set('cimonitor_title', '');
+  ```
+- `cimonitor_user` – User object with name and email, default gets information from `git config`
+  ```
+  set('cimonitor_user', function () {
+    return [
+      'name' => 'John Doe',
+      'email' => 'john@enrise.com',
+    ];
+  });
+  ```
+Various cimonitor statusses are set, in case you want to change these yourselves. See the [CIMonitor documentation](https://cimonitor.readthedocs.io/en/latest/) for the usages of different states.
+## Usage
+If you want to notify only about beginning of deployment add this line only:
+```php
+before('deploy', 'cimonitor:notify');
+```
+If you want to notify about successful end of deployment add this too:
+```php
+after('deploy:success', 'cimonitor:notify:success');
+```
+If you want to notify about failed deployment add this too:
+```php
+after('deploy:failed', 'cimonitor:notify:failure');
+```
+
+
 ## Configuration
 ### cimonitor_title
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L64)

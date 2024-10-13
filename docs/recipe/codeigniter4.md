@@ -43,7 +43,7 @@ The [deploy](#deploy) task of **Codeigniter 4** consists of:
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 The codeigniter4 recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -133,7 +133,7 @@ return $matches[0][0] ?? 5.5;
 
 Shows file cache information in the current system.
 
-
+Discover & Checks
 
 
 ### spark:config:check
@@ -197,7 +197,7 @@ Displays all routes.
 
 Generates a new encryption key and writes it in an `.env` file.
 
-
+Actions
 
 
 ### spark:optimize
@@ -221,7 +221,7 @@ Discovers and executes all predefined Publisher classes.
 
 Create a new database schema.
 
-
+Database and migrations.
 
 
 ### spark:db:seed
@@ -277,7 +277,7 @@ Displays a list of all migrations and whether they\'ve been run or not.
 
 Clears the current system caches.
 
-
+Housekeeping
 
 
 ### spark:debugbar:clear

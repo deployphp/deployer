@@ -59,6 +59,11 @@ class DocRecipe
 
         for ($i = 0; $i < count($lines); $i++) {
             $line = $lines[$i];
+
+            if (empty($line)) {
+                continue; // Skip empty lines
+            }
+
             $m = [];
             $match = function ($regexp) use ($line, &$m) {
                 return preg_match("#$regexp#", $line, $m);

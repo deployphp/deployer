@@ -11,11 +11,77 @@ require 'contrib/cachetool.php';
 [Source](/contrib/cachetool.php)
 
 
+
+## Configuration
+- **cachetool** *(optional)*: accepts a *string* or an *array* of strings with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a configuration file. The file must be named .cachetool.yml or .cachetool.yaml. CacheTool will look for this file on the current directory and in any parent directory until it finds one. If the paths above fail it will try to load /etc/cachetool.yml or /etc/cachetool.yaml configuration file.
+    ```php
+    set('cachetool', '/var/run/php-fpm.sock');
+    // or
+    set('cachetool', '127.0.0.1:9000');
+    // or
+    set('cachetool', ['/var/run/php-fpm.sock', '/var/run/php-fpm-other.sock']);
+    ```
+You can also specify different cachetool settings for each host:
+```php
+host('staging')
+    ->set('cachetool', '127.0.0.1:9000');
+host('production')
+    ->set('cachetool', '/var/run/php-fpm.sock');
+```
+By default, if no `cachetool` parameter is provided, this recipe will fallback to the global setting.
+If your deployment user does not have permission to access the php-fpm.sock, you can alternatively use
+the web adapter that creates a temporary php file and makes a web request to it with a configuration like
+```php
+set('cachetool_args', '--web --web-path=./public --web-url=https://{{hostname}}');
+```
+## Usage
+Since APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
+```php
+after('deploy:symlink', 'cachetool:clear:opcache');
+or
+after('deploy:symlink', 'cachetool:clear:apcu');
+```
+## Read more
+Read more information about cachetool on the website:
+http://gordalina.github.io/cachetool/
+
+
 ## Configuration
 ### cachetool
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cachetool.php#L51)
 
-
+## Configuration
+- **cachetool** *(optional)*: accepts a *string* or an *array* of strings with the unix socket or ip address to php-fpm. If `cachetool` is not given, then the application will look for a configuration file. The file must be named .cachetool.yml or .cachetool.yaml. CacheTool will look for this file on the current directory and in any parent directory until it finds one. If the paths above fail it will try to load /etc/cachetool.yml or /etc/cachetool.yaml configuration file.
+    ```php
+    set('cachetool', '/var/run/php-fpm.sock');
+    // or
+    set('cachetool', '127.0.0.1:9000');
+    // or
+    set('cachetool', ['/var/run/php-fpm.sock', '/var/run/php-fpm-other.sock']);
+    ```
+You can also specify different cachetool settings for each host:
+```php
+host('staging')
+    ->set('cachetool', '127.0.0.1:9000');
+host('production')
+    ->set('cachetool', '/var/run/php-fpm.sock');
+```
+By default, if no `cachetool` parameter is provided, this recipe will fallback to the global setting.
+If your deployment user does not have permission to access the php-fpm.sock, you can alternatively use
+the web adapter that creates a temporary php file and makes a web request to it with a configuration like
+```php
+set('cachetool_args', '--web --web-path=./public --web-url=https://{{hostname}}');
+```
+## Usage
+Since APCu and OPcache deal with compiling and caching files, they should be executed right after the symlink is created for the new release:
+```php
+after('deploy:symlink', 'cachetool:clear:opcache');
+or
+after('deploy:symlink', 'cachetool:clear:apcu');
+```
+## Read more
+Read more information about cachetool on the website:
+http://gordalina.github.io/cachetool/
 
 
 

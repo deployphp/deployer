@@ -50,7 +50,7 @@ The [deploy](#deploy) task of **Magento 2** consists of:
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 In addition the **Magento 2** recipe contains an artifact deployment.
@@ -108,7 +108,7 @@ The [artifact:build](#artifact:build) command of **Magento 2** consists of: * [b
   * [cachetool:clear:opcache](/docs/contrib/cachetool.md#cachetoolclearopcache) – Clears OPcode cache
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 The magento2 recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -117,6 +117,7 @@ The magento2 recipe is based on the [common](/docs/recipe/common.md) recipe.
 ### static_content_locales
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L27)
 
+Configuration
 By default setup:static-content:deploy uses `en_US`.
 To change that, simply put `set('static_content_locales', 'en_US de_DE');`
 in you deployer script.
@@ -129,6 +130,7 @@ in you deployer script.
 ### magento_themes
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L44)
 
+Configuration
 You can also set the themes to run against. By default it'll deploy
 all themes - `add('magento_themes', ['Magento/luma', 'Magento/backend']);`
 If the themes are set as a simple list of strings, then all languages defined in [static_content_locales](/docs/recipe/magento2.md#static_content_locales) are
@@ -191,6 +193,7 @@ This setting supports the same options/structure as [magento_themes](/docs/recip
 ### static_content_jobs
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L65)
 
+Configuration
 Also set the number of concurrent jobs to run. The default is 1
 Update using: `set('static_content_jobs', '1');`
 
@@ -355,6 +358,7 @@ true
 ### artifact_file
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L347)
 
+Artifact deployment section
 The file the artifact is saved to
 
 ```php title="Default value"
@@ -451,6 +455,7 @@ Array of shared directories that will be added to the default shared_dirs withou
 
 Compiles magento di.
 
+Tasks
 To work correctly with artifact deployment, it is necessary to set the MAGE_MODE correctly in `app/etc/config.php`
 e.g.
 ```php
@@ -607,7 +612,7 @@ This task is group task which contains next tasks:
 
 Packages all relevant files in an artifact.
 
-
+tasks section
 
 
 ### artifact:upload

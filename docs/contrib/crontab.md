@@ -11,10 +11,39 @@ require 'contrib/crontab.php';
 [Source](/contrib/crontab.php)
 
 
+
+Recipe for adding crontab jobs.
+This recipe creates a new section in the crontab file with the configured jobs.
+The section is identified by the *crontab:identifier* variable, by default the application name.
+## Configuration
+- *crontab:jobs* - An array of strings with crontab lines.
+## Usage
+```php
+require 'contrib/crontab.php';
+after('deploy:success', 'crontab:sync');
+add('crontab:jobs', [
+    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
+]);
+```
+
+
 ## Configuration
 ### bin/crontab
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L28)
 
+Recipe for adding crontab jobs.
+This recipe creates a new section in the crontab file with the configured jobs.
+The section is identified by the *crontab:identifier* variable, by default the application name.
+## Configuration
+- *crontab:jobs* - An array of strings with crontab lines.
+## Usage
+```php
+require 'contrib/crontab.php';
+after('deploy:success', 'crontab:sync');
+add('crontab:jobs', [
+    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
+]);
+```
 Get path to bin
 
 ```php title="Default value"

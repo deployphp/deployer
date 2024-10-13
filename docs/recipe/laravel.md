@@ -47,7 +47,7 @@ The [deploy](#deploy) task of **Laravel** consists of:
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 The laravel recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -142,7 +142,7 @@ Overrides [public_path](/docs/recipe/provision/website.md#public_path) from `rec
 
 Puts the application into maintenance / demo mode.
 
-
+Maintenance mode.
 
 
 ### artisan:up
@@ -158,7 +158,7 @@ Brings the application out of maintenance mode.
 
 Sets the application key.
 
-
+Generate keys.
 
 
 ### artisan:passport:keys
@@ -174,7 +174,7 @@ Creates the encryption keys for API authentication.
 
 Seeds the database with records.
 
-
+Database and migrations.
 
 
 ### artisan:migrate
@@ -214,7 +214,7 @@ Shows the status of each migration.
 
 Flushes the application cache.
 
-
+Cache and optimizations.
 
 
 ### artisan:config:cache
@@ -326,7 +326,7 @@ Clears all compiled view files.
 
 Lists all of the failed queue jobs.
 
-
+Queue and Horizon.
 
 
 ### artisan:queue:flush
@@ -422,7 +422,7 @@ Publish all of the Horizon resources.
 
 Clears all entries from Telescope.
 
-
+Telescope.
 
 
 ### artisan:&#8203;telescope:prune
@@ -438,7 +438,7 @@ Prunes stale entries from the Telescope database.
 
 Starts the octane server.
 
-
+Octane.
 
 
 ### artisan:octane:reload
@@ -470,7 +470,7 @@ Check the status of the octane server.
 
 Publish all of the Laravel Nova resources.
 
-
+Nova.
 
 
 ### artisan:reverb:start
@@ -478,7 +478,7 @@ Publish all of the Laravel Nova resources.
 
 Starts the Reverb server.
 
-
+Reverb.
 
 
 ### artisan:reverb:restart
@@ -494,7 +494,7 @@ Restarts the Reverb server.
 
 Starts the Pulse server.
 
-
+Pulse.
 
 
 ### artisan:pulse:restart

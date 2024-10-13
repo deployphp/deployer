@@ -45,7 +45,7 @@ The [deploy](#deploy) task of **Statamic** consists of:
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – 
+  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
 
 
 The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
@@ -71,7 +71,7 @@ return $matches[0][0] ?? 'unknown';
 
 Rebuilds the cached addon package manifest.
 
-
+Addons
 
 
 ### statamic:assets:generate-presets
@@ -79,7 +79,7 @@ Rebuilds the cached addon package manifest.
 
 Generates asset preset manipulations.
 
-
+Assets
 
 
 ### statamic:assets:meta
@@ -95,7 +95,7 @@ Generates asset metadata files.
 
 Git add and commit tracked content.
 
-
+Git
 
 
 ### statamic:glide:clear
@@ -103,7 +103,7 @@ Git add and commit tracked content.
 
 Clears the Glide image cache.
 
-
+Glide
 
 
 ### statamic:responsive:generate
@@ -111,7 +111,7 @@ Clears the Glide image cache.
 
 Generates responsive images.
 
-
+Responsive Images (not in the core)
 
 
 ### statamic:responsive:regenerate
@@ -127,7 +127,7 @@ Regenerate responsive images.
 
 Inserts an item into its search indexes.
 
-
+Search
 
 
 ### statamic:search:update
@@ -143,7 +143,7 @@ Update a search index.
 
 Clears the "Stache" cache.
 
-
+Stache
 
 
 ### statamic:stache:doctor
@@ -175,7 +175,7 @@ Builds the "Stache" cache.
 
 Clears the static page cache.
 
-
+Static
 
 
 ### statamic:static:warm
@@ -191,7 +191,7 @@ Warms the static cache by visiting all URLs.
 
 Outputs details helpful for support requests.
 
-
+Support
 
 
 ### statamic:updates:run
@@ -199,7 +199,7 @@ Outputs details helpful for support requests.
 
 Runs update scripts from specific version.
 
-
+Updated
 
 
 ### deploy
@@ -207,7 +207,8 @@ Runs update scripts from specific version.
 
 Deploys your project.
 
-
+Main Deploy Script for Statamic, which
+will overwrite the Laravel default.
 
 
 This task is group task which contains next tasks:

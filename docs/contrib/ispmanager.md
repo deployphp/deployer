@@ -11,6 +11,10 @@ require 'contrib/ispmanager.php';
 [Source](/contrib/ispmanager.php)
 
 
+
+This recipe for work with ISPManager Lite panel by API.
+
+
 ## Configuration
 ### ispmanager_owner
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ispmanager.php#L11)

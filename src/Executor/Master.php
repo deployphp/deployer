@@ -26,7 +26,7 @@ const FRAMES = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '
 
 function spinner(string $message = ''): string
 {
-    $frame = FRAMES[(int)((int)(new \DateTime())->format('u') / 1e5) % count(FRAMES)];
+    $frame = FRAMES[(int) ((int) (new \DateTime())->format('u') / 1e5) % count(FRAMES)];
     return "  $frame $message\r";
 }
 
@@ -76,7 +76,7 @@ class Master
      */
     public function run(array $tasks, array $hosts, ?Planner $plan = null): int
     {
-        $globalLimit = (int)$this->input->getOption('limit') ?: count($hosts);
+        $globalLimit = (int) $this->input->getOption('limit') ?: count($hosts);
 
         foreach ($tasks as $task) {
             if (!$plan) {

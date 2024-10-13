@@ -10,13 +10,13 @@ declare(strict_types=1);
 
 namespace Deployer\Command;
 
-use Deployer\Component\Ssh\Client;
 use Deployer\Deployer;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Completion\CompletionInput;
 use Symfony\Component\Console\Completion\CompletionSuggestions;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -73,6 +73,7 @@ class SshCommand extends Command
             if (count($hostsAliases) === 1) {
                 $host = $this->deployer->hosts->get($hostsAliases[0]);
             } else {
+                /** @var QuestionHelper $helper */
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(
                     '<question>Select host:</question>',

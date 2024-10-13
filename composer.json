@@ -35,7 +35,7 @@
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "check": "php-cs-fixer check",
         "fix": "php-cs-fixer fix",
-        "phpstan": "phpstan analyse -c phpstan.neon",
+        "phpstan": "phpstan analyse -c phpstan.neon --memory-limit 1G",
         "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
     },
     "bin": [

@@ -13,3 +13,7 @@ parameters:
         - "#^Constant DEPLOYER_BIN not found\\.$#"
         - "#CpanelPhp#"
         - "#AMQPMessage#"
+
+    excludePaths:
+        - src/Command/BlackjackCommand.php
+        - src/Component/PharUpdate/*

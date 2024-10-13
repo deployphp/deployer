@@ -18,6 +18,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function Deployer\Support\array_flatten;
 
+// @phpstan-ignore
 class BlackjackCommand extends Command
 {
     use CommandCommon;

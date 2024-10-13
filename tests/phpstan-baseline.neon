@@ -11,11 +11,6 @@ parameters:
 			path: ../src/Command/BlackjackCommand.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../src/Command/BlackjackCommand.php
-
-		-
 			message: "#^If condition is always false\\.$#"
 			count: 1
 			path: ../src/Command/BlackjackCommand.php
@@ -29,11 +24,6 @@ parameters:
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 2
 			path: ../src/Component/PharUpdate/Exception/Exception.php
-
-		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 1
-			path: ../src/Component/PharUpdate/Manifest.php
 
 		-
 			message: "#^If condition is always true\\.$#"

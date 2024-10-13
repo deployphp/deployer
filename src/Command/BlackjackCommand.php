@@ -18,7 +18,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 use function Deployer\Support\array_flatten;
 
-// @phpstan-ignore
 class BlackjackCommand extends Command
 {
     use CommandCommon;
@@ -100,7 +99,7 @@ class BlackjackCommand extends Command
             if ($bet > $money) {
                 goto start;
             }
-        } elseif ($hasWatch) {
+        } elseif ($hasWatch) { // @phpstan-ignore-line
             $answer = $io->askQuestion(new ChoiceQuestion('?', ['leave', '- Here, take my watch! [$25]'], 0));
             if ($answer == 'leave') {
                 goto leave;

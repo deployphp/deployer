@@ -73,13 +73,15 @@ class ProcessRunner
             $process->mustRun($callback);
             return $process->getOutput();
         } catch (ProcessFailedException $exception) {
-            throw new RunException(
-                $host,
-                $command,
-                $process->getExitCode(),
-                $process->getOutput(),
-                $process->getErrorOutput()
-            );
+            if (!$config['no_throw']) {
+                throw new RunException(
+                    $host,
+                    $command,
+                    $process->getExitCode(),
+                    $process->getOutput(),
+                    $process->getErrorOutput()
+                );
+            }
         } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line can be thrown but is absent from the phpdoc
             throw new TimeoutException(
                 $command,

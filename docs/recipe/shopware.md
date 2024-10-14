@@ -36,6 +36,7 @@ The [deploy](#deploy) task of **Shopware** consists of:
   * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
   * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
+* [sw:writable:jwt](/docs/recipe/shopware.md#swwritablejwt) – 
 * [sw:deploy](/docs/recipe/shopware.md#swdeploy) – 
   * [sw:database:migrate](/docs/recipe/shopware.md#swdatabasemigrate) – 
   * [sw:plugin:refresh](/docs/recipe/shopware.md#swpluginrefresh) – 
@@ -46,7 +47,6 @@ The [deploy](#deploy) task of **Shopware** consists of:
   * [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear) – 
 * [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths) – Cleanup files and/or directories
 * [sw:cache:warmup](/docs/recipe/shopware.md#swcachewarmup) – 
-* [sw:writable:jwt](/docs/recipe/shopware.md#swwritablejwt) – 
 * [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
@@ -270,10 +270,10 @@ Deploys your project.
 
 This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deployprepare)
+* [sw:writable:jwt](/docs/recipe/shopware.md#swwritablejwt)
 * [sw:deploy](/docs/recipe/shopware.md#swdeploy)
 * [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
 * [sw:cache:warmup](/docs/recipe/shopware.md#swcachewarmup)
-* [sw:writable:jwt](/docs/recipe/shopware.md#swwritablejwt)
 * [deploy:publish](/docs/recipe/common.md#deploypublish)
 
 

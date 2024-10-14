@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  fix:
+  docgen-and-commit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

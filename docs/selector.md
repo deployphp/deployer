@@ -23,6 +23,7 @@ host('db.example.com')
         'env' => 'prod',
     ]);
 ```
+or use `->addLables()` method to add labels to the existing host.
 
 Now let's define a task to check labels:
 
@@ -54,6 +55,16 @@ task info
 
 Label syntax is represented by [disjunctive normal form](https://en.wikipedia.org/wiki/Disjunctive_normal_form) 
 (**OR of ANDs**).
+```
+(condition1 AND condition2) OR (condition3 AND condition4)
+```
+
+Each condition in the subquery that is represented by [conjunctive normal form](https://en.wikipedia.org/wiki/Conjunctive_normal_form)
+```
+(condition1 OR condition2) AND (condition3 OR condition4)
+```
+
+### Explanation
 
 For example, `type=web,env=prod` is a selector of: `type=web` **OR** `env=prod`.
 
@@ -71,6 +82,15 @@ for hosts with `type: web` **AND** `env: prod` labels.
 
 ```bash
 $ dep info 'type=web & env=prod'
+task info
+[web.example.com] type:web env:prod
+```
+
+We can use `|` to define **OR** in a subquery. For example, `type=web|db & env=prod` is a selector
+for hosts with (`type: web` **OR** `type: db`) **AND** `env: prod` labels.
+
+```bash
+$ dep info 'type=web|db & env=prod'
 task info
 [web.example.com] type:web env:prod
 ```
@@ -119,7 +139,7 @@ You can use the [select()](api.md#select) function to select hosts by selector i
 
 ```php
 task('info', function () {
-    $hosts = select('type=web,env=prod');
+    $hosts = select('type=web|db,env=prod');
     foreach ($hosts as $host) {
         writeln('type:' . $host->get('labels')['type'] . ' env:' . $host->get('labels')['env']);
     }
@@ -143,7 +163,7 @@ To restrict a task to run only on selected hosts, you can use the [select()](tas
 ```php
 task('info', function () {
     // ...
-})->select('type=web,env=prod');
+})->select('type=web|db,env=prod');
 ```
 
 ## Labels in YAML

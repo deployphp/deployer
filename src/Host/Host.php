@@ -215,6 +215,13 @@ class Host
         return $this;
     }
 
+    public function addLabels(array $labels): self
+    {
+        $existingLabels = $this->getLabels() ?? [];
+        $this->setLabels(array_replace_recursive($existingLabels, $labels));
+        return $this;
+    }
+
     public function getLabels(): ?array
     {
         return $this->config->get('labels', null);

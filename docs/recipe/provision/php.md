@@ -18,10 +18,10 @@ require 'recipe/provision/php.php';
 
 
 ```php title="Default value"
-$defaultphpVersion = file_exists('composer.json')
+$defaultPhpVersion = file_exists('composer.json')
 ? explode('|', preg_replace('/[^0-9.|]+/', '', json_decode(file_get_contents('composer.json'), true)['require']['php'] ?? '8.3'))[0]
 : '8.3';
-return ask(' What PHP version to install? ', $defaultphpVersion, ['5.6', '7.4', '8.0', '8.1', '8.2']);
+return ask(' What PHP version to install? ', $defaultPhpVersion, ['5.6', '7.4', '8.0', '8.1', '8.2']);
 ```
 
 

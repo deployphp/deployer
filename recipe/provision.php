@@ -7,6 +7,7 @@ require __DIR__ . '/provision/nodejs.php';
 require __DIR__ . '/provision/php.php';
 require __DIR__ . '/provision/website.php';
 
+use Deployer\Task\Context;
 use function Deployer\Support\parse_home_dir;
 
 add('recipes', ['provision']);
@@ -47,12 +48,19 @@ task('provision:check', function () {
 
     $release = run('cat /etc/os-release');
     ['NAME' => $name, 'VERSION_ID' => $version] = parse_ini_string($release);
-    if ($name !== 'Ubuntu' || $version !== '20.04') {
+    if ($name !== 'Ubuntu') {
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         warning('!!                                    !!');
-        warning('!!  Only Ubuntu 20.04 LTS supported!  !!');
+        warning('!!      Only Ubuntu is supported!     !!');
         warning('!!                                    !!');
         warning('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        if (!askConfirmation(' Do you want to continue? (Not recommended)', false)) {
+            throw new \RuntimeException('Provision aborted due to incompatible OS.');
+        }
+    }
+    // Also only version 20 and older are supported.
+    if (version_compare($version, '20', '<')) {
+        warning("Ubuntu $version is not supported. Use Ubuntu 20 or newer.");
         if (!askConfirmation(' Do you want to continue? (Not recommended)', false)) {
             throw new \RuntimeException('Provision aborted due to incompatible OS.');
         }
@@ -73,24 +81,34 @@ task('provision:configure', function () {
         'db_name',
         'db_password',
     ];
-    $code = "\n\n<comment>* To streamline script execution, include the following configuration in your <info>deploy.php</info>.</comment>";
-    $code .= "\n<fg=magenta> - Do not include sensitive information if the file is shared. Replace <info>…</info> with actual data</>";
-    $code .= "\n<fg=magenta> - If a database configuration is not required, 'db_user', 'db_name', and 'db_password' can be omitted.</>";
-    $code .= "\n\n<comment>====== Configuration Start ======</comment>";
+
+    $showCode = false;
+
+    foreach ($params as $name) {
+        if (!Context::get()->getConfig()->hasOwn($name)) {
+            $showCode = true;
+        }
+        get($name);
+    }
+
+    if (get('db_type') !== 'none') {
+        foreach ($dbparams as $name) {
+            if (!Context::get()->getConfig()->hasOwn($name)) {
+                $showCode = true;
+            }
+            get($name);
+        }
+    }
+
+    if ($showCode) {
+    $code = "\n\n<comment>====== Configuration Start ======</comment>";
     $code .= "\nhost(<info>'{{alias}}'</info>)";
     foreach (array_merge($params, $dbparams) as $name) {
-        $code .= "\n    ->set(<info>'$name'</info>, <info>'…'</info>)";
+        $code .= "\n    ->set(<info>'$name'</info>, <info>'" . get($name) . "'</info>)";
     }
     $code .= ";\n";
     $code .= "<comment>====== Configuration End ======</comment>\n\n";
     writeln($code);
-    foreach ($params as $name) {
-        get($name);
-    }
-    if (get('db_type') !== 'none') {
-        foreach ($dbparams as $name) {
-            get($name);
-        }
     }
 });
 
@@ -103,13 +121,6 @@ task('provision:update', function () {
     // Caddy
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor --yes -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg");
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
-
-    // Nodejs
-    $keyring = '/usr/share/keyrings/nodesource.gpg';
-    run("curl -fsSL https://deb.nodesource.com/gpgkey/nodesource.gpg.key | gpg --dearmor | sudo tee '$keyring' >/dev/null");
-    run("gpg --no-default-keyring --keyring '$keyring' --list-keys");
-    run("echo 'deb [signed-by=$keyring] https://deb.nodesource.com/{{nodejs_version}} {{lsb_release}} main' | sudo tee /etc/apt/sources.list.d/nodesource.list");
-    run("echo 'deb-src [signed-by=$keyring] https://deb.nodesource.com/{{nodejs_version}} {{lsb_release}} main' | sudo tee -a /etc/apt/sources.list.d/nodesource.list");
 
     // Update
     run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);

@@ -1,5 +1,4 @@
 {{domain}} {
-
 	root * {{deploy_path}}/current/{{public_path}}
 	file_server
 	php_fastcgi * unix//run/php/php{{php_version}}-fpm.sock {

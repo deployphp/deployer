@@ -13,7 +13,7 @@ set('db_type', function () {
 });
 
 set('db_name', function () {
-    return ask(' DB name: ');
+    return ask(' DB name: ', 'prod');
 });
 
 set('db_user', function () {

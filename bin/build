@@ -71,9 +71,11 @@ foreach ($iterator as $fileInfo) {
 // Add schema.json
 echo "Add file: /src/schema.json\n";
 $phar->addFile(realpath(__DIR__ . '/../src/schema.json'), '/src/schema.json');
+
 // Add Caddyfile
-echo "Add file: /Caddyfile\n";
+echo "Add file: /recipe/provision/Caddyfile\n";
 $phar->addFile(realpath(__DIR__ . '/../recipe/provision/Caddyfile'), '/recipe/provision/Caddyfile');
+
 // Add bin/dep file
 echo "Add file: /bin/dep\n";
 $depContent = file_get_contents(__ROOT__ . '/bin/dep');
@@ -81,6 +83,7 @@ $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
 $depContent = preg_replace("/run\('.+?'/", "run('$version'", $depContent);
 $phar->addFromString('bin/dep', $depContent);
+
 $phar->setStub(
     <<<STUB
 #!/usr/bin/env php

@@ -96,7 +96,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy of `{{target}}` to *{{hostname}}* successful'
 ```
 
 
@@ -106,7 +106,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy of `{{target}}` to *{{hostname}}* failed'
 ```
 
 

@@ -24,7 +24,7 @@ if (!preg_match('/^\d+\.\d+\.\d+(\-\w+(\.\d+)?)?$/', $version)) {
     exit(1);
 }
 
-`composer install --no-dev --prefer-dist --optimize-autoloader`;
+echo `set -x; composer install --no-dev --prefer-dist --optimize-autoloader`;
 
 $pharName = "deployer.phar";
 $pharFile = __ROOT__ . '/' . $pharName;
@@ -38,6 +38,7 @@ $ignore = [
     'Tests',
     'tests',
     'deploy.php',
+    '.php-cs-fixer.dist.php',
 ];
 
 $phar = new \Phar($pharFile, 0, $pharName);

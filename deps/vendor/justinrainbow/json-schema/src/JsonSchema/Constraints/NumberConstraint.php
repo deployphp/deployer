@@ -22,7 +22,7 @@ class NumberConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function check(&$element, $schema = null, ?JsonPointer $path = null, $i = null)
+    public function check(&$element, $schema = null, JsonPointer $path = null, $i = null)
     {
         // Verify minimum
         if (isset($schema->exclusiveMinimum)) {

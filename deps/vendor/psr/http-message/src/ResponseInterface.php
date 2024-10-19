@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Psr\Http\Message;
 
 /**
@@ -51,7 +49,7 @@ interface ResponseInterface extends MessageInterface
      * @return static
      * @throws \InvalidArgumentException For invalid status code arguments.
      */
-    public function withStatus(int $code, string $reasonPhrase = '');
+    public function withStatus($code, $reasonPhrase = '');
 
     /**
      * Gets the response reason phrase associated with the status code.

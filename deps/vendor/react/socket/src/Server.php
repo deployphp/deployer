@@ -43,18 +43,14 @@ final class Server extends EventEmitter implements ServerInterface
      * For BC reasons, you can also pass the TCP socket context options as a simple
      * array without wrapping this in another array under the `tcp` key.
      *
-     * @param string|int     $uri
-     * @param ?LoopInterface $loop
-     * @param array          $context
+     * @param string|int    $uri
+     * @param LoopInterface $loop
+     * @param array         $context
      * @deprecated 1.9.0 See `SocketServer` instead
      * @see SocketServer
      */
-    public function __construct($uri, $loop = null, array $context = array())
+    public function __construct($uri, LoopInterface $loop = null, array $context = array())
     {
-        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
-            throw new \InvalidArgumentException('Argument #2 ($loop) expected null|React\EventLoop\LoopInterface');
-        }
-
         $loop = $loop ?: Loop::get();
 
         // sanitize TCP context options if not properly wrapped

@@ -196,7 +196,7 @@ interface WritableStreamInterface extends EventEmitterInterface
      * The stream SHOULD send a `drain` event once the buffer is ready to accept
      * more data.
      *
-     * Similarly, if the stream is not writable (already in a closed state)
+     * Similarly, if the the stream is not writable (already in a closed state)
      * it MUST NOT process the given `$data` and SHOULD return `false`,
      * indicating that the caller should stop sending data.
      *

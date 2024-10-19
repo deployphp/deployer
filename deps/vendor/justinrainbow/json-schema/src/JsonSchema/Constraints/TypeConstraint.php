@@ -39,7 +39,7 @@ class TypeConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function check(&$value = null, $schema = null, ?JsonPointer $path = null, $i = null)
+    public function check(&$value = null, $schema = null, JsonPointer $path = null, $i = null)
     {
         $type = isset($schema->type) ? $schema->type : null;
         $isValid = false;
@@ -134,7 +134,7 @@ class TypeConstraint extends Constraint
      */
     protected function validateTypeNameWording($type)
     {
-        if (!array_key_exists($type, self::$wording)) {
+        if (!isset(self::$wording[$type])) {
             throw new StandardUnexpectedValueException(
                 sprintf(
                     'No wording for %s available, expected wordings are: [%s]',

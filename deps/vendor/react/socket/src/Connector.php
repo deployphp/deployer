@@ -170,7 +170,7 @@ final class Connector implements ConnectorInterface
         if (!isset($this->connectors[$scheme])) {
             return \React\Promise\reject(new \RuntimeException(
                 'No connector available for URI scheme "' . $scheme . '" (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : (\defined('PCNTL_EINVAL') ? \PCNTL_EINVAL : 22)
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             ));
         }
 

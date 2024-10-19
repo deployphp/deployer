@@ -1,46 +1,5 @@
 # Changelog
 
-## 1.13.0 (2024-06-13)
-
-*   Feature: Improve PHP 8.4+ support by avoiding implicitly nullable type declarations.
-    (#224 by @WyriHaximus)
-
-## 1.12.0 (2023-11-29)
-
-*   Feature: Full PHP 8.3 compatibility.
-    (#217 by @sergiy-petrov)
-
-*   Update test environment and avoid unhandled promise rejections.
-    (#215, #216 and #218 by @clue)
-
-## 1.11.0 (2023-06-02)
-
-*   Feature: Include timeout logic to avoid dependency on reactphp/promise-timer.
-    (#213 by @clue)
-
-*   Improve test suite and project setup and report failed assertions.
-    (#210 by @clue, #212 by @WyriHaximus and #209 and #211 by @SimonFrings)
-
-## 1.10.0 (2022-09-08)
-
-*   Feature: Full support for PHP 8.2 release.
-    (#201 by @clue and #207 by @WyriHaximus)
-
-*   Feature: Optimize forward compatibility with Promise v3, avoid hitting autoloader.
-    (#202 by @clue)
-
-*   Feature / Fix: Improve error reporting when custom error handler is used.
-    (#197 by @clue)
-
-*   Fix: Fix invalid references in exception stack trace.
-    (#191 by @clue)
-
-*   Minor documentation improvements.
-    (#195 by @SimonFrings and #203 by @nhedger)
-
-*   Improve test suite, update to use default loop and new reactphp/async package.
-    (#204, #205 and #206 by @clue and #196 by @SimonFrings)
-
 ## 1.9.0 (2021-12-20)
 
 *   Feature: Full support for PHP 8.1 release and prepare PHP 8.2 compatibility

@@ -3,13 +3,12 @@ Symfony Polyfill / Php80
 
 This component provides features added to PHP 8.0 core:
 
-- [`Stringable`](https://php.net/stringable) interface
+- `Stringable` interface
 - [`fdiv`](https://php.net/fdiv)
-- [`ValueError`](https://php.net/valueerror) class
-- [`UnhandledMatchError`](https://php.net/unhandledmatcherror) class
+- `ValueError` class
+- `UnhandledMatchError` class
 - `FILTER_VALIDATE_BOOL` constant
 - [`get_debug_type`](https://php.net/get_debug_type)
-- [`PhpToken`](https://php.net/phptoken) class
 - [`preg_last_error_msg`](https://php.net/preg_last_error_msg)
 - [`str_contains`](https://php.net/str_contains)
 - [`str_starts_with`](https://php.net/str_starts_with)

@@ -96,7 +96,7 @@ class Command
      *
      * @throws LogicException When the command name is empty
      */
-    public function __construct(?string $name = null)
+    public function __construct(string $name = null)
     {
         $this->definition = new InputDefinition();
 
@@ -132,7 +132,7 @@ class Command
         $this->ignoreValidationErrors = true;
     }
 
-    public function setApplication(?Application $application = null)
+    public function setApplication(Application $application = null)
     {
         $this->application = $application;
         if ($application) {
@@ -429,11 +429,11 @@ class Command
      * @param int|null $mode    The argument mode: InputArgument::REQUIRED or InputArgument::OPTIONAL
      * @param mixed    $default The default value (for InputArgument::OPTIONAL mode only)
      *
-     * @return $this
-     *
      * @throws InvalidArgumentException When argument mode is not valid
+     *
+     * @return $this
      */
-    public function addArgument(string $name, ?int $mode = null, string $description = '', $default = null)
+    public function addArgument(string $name, int $mode = null, string $description = '', $default = null)
     {
         $this->definition->addArgument(new InputArgument($name, $mode, $description, $default));
         if (null !== $this->fullDefinition) {
@@ -450,11 +450,11 @@ class Command
      * @param int|null          $mode     The option mode: One of the InputOption::VALUE_* constants
      * @param mixed             $default  The default value (must be null for InputOption::VALUE_NONE)
      *
-     * @return $this
-     *
      * @throws InvalidArgumentException If option mode is invalid or incompatible
+     *
+     * @return $this
      */
-    public function addOption(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
+    public function addOption(string $name, $shortcut = null, int $mode = null, string $description = '', $default = null)
     {
         $this->definition->addOption(new InputOption($name, $shortcut, $mode, $description, $default));
         if (null !== $this->fullDefinition) {

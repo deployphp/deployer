@@ -1,7 +1,6 @@
 # HTTP
 
-[![CI status](https://github.com/reactphp/http/actions/workflows/ci.yml/badge.svg)](https://github.com/reactphp/http/actions)
-[![installs on Packagist](https://img.shields.io/packagist/dt/react/http?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/react/http)
+[![CI status](https://github.com/reactphp/http/workflows/CI/badge.svg)](https://github.com/reactphp/http/actions)
 
 Event-driven, streaming HTTP client and server implementation for [ReactPHP](https://reactphp.org/).
 
@@ -69,17 +68,13 @@ multiple concurrent HTTP requests without blocking.
         * [withBase()](#withbase)
         * [withProtocolVersion()](#withprotocolversion)
         * [withResponseBuffer()](#withresponsebuffer)
-        * [withHeader()](#withheader)
-        * [withoutHeader()](#withoutheader)
     * [React\Http\Message](#reacthttpmessage)
         * [Response](#response)
             * [html()](#html)
             * [json()](#json)
             * [plaintext()](#plaintext)
             * [xml()](#xml)
-        * [Request](#request-1)
         * [ServerRequest](#serverrequest)
-        * [Uri](#uri)
         * [ResponseException](#responseexception)
     * [React\Http\Middleware](#reacthttpmiddleware)
         * [StreamingRequestMiddleware](#streamingrequestmiddleware)
@@ -344,10 +339,9 @@ $browser->get($url, $headers)->then(function (Psr\Http\Message\ResponseInterface
 Any redirected requests will follow the semantics of the original request and
 will include the same request headers as the original request except for those
 listed below.
-If the original request is a temporary (307) or a permanent (308) redirect, request
-body and headers will be passed to the redirected request. Otherwise, the request 
-body will never be passed to the redirected request. Accordingly, each redirected 
-request will remove any `Content-Length` and `Content-Type` request headers.
+If the original request contained a request body, this request body will never
+be passed to the redirected request. Accordingly, each redirected request will
+remove any `Content-Length` and `Content-Type` request headers.
 
 If the original request used HTTP authentication with an `Authorization` request
 header, this request header will only be passed as part of the redirected
@@ -378,42 +372,38 @@ See also [`withFollowRedirects()`](#withfollowredirects) for more details.
 
 As stated above, this library provides you a powerful, async API by default.
 
-You can also integrate this into your traditional, blocking environment by using
-[reactphp/async](https://github.com/reactphp/async). This allows you to simply
-await async HTTP requests like this:
+If, however, you want to integrate this into your traditional, blocking environment,
+you should look into also using [clue/reactphp-block](https://github.com/clue/reactphp-block).
+
+The resulting blocking code could look something like this:
 
 ```php
-use function React\Async\await;
+use Clue\React\Block;
 
 $browser = new React\Http\Browser();
 
 $promise = $browser->get('http://example.com/');
 
 try {
-    $response = await($promise);
+    $response = Block\await($promise, Loop::get());
     // response successfully received
 } catch (Exception $e) {
-    // an error occurred while performing the request
+    // an error occured while performing the request
 }
 ```
 
 Similarly, you can also process multiple requests concurrently and await an array of `Response` objects:
 
 ```php
-use function React\Async\await;
-use function React\Promise\all;
-
 $promises = array(
     $browser->get('http://example.com/'),
     $browser->get('http://www.example.org/'),
 );
 
-$responses = await(all($promises));
+$responses = Block\awaitAll($promises, Loop::get());
 ```
 
-This is made possible thanks to fibers available in PHP 8.1+ and our
-compatibility API that also works on all supported PHP versions.
-Please refer to [reactphp/async](https://github.com/reactphp/async#readme) for more details.
+Please refer to [clue/reactphp-block](https://github.com/clue/reactphp-block#readme) for more details.
 
 Keep in mind the above remark about buffering the whole response message in memory.
 As an alternative, you may also see one of the following chapters for the
@@ -1309,7 +1299,7 @@ get all cookies sent with the current request.
 
 ```php 
 $http = new React\Http\HttpServer(function (Psr\Http\Message\ServerRequestInterface $request) {
-    $key = 'greeting';
+    $key = 'react\php';
 
     if (isset($request->getCookieParams()[$key])) {
         $body = "Your cookie value is: " . $request->getCookieParams()[$key] . "\n";
@@ -1321,7 +1311,7 @@ $http = new React\Http\HttpServer(function (Psr\Http\Message\ServerRequestInterf
 
     return React\Http\Message\Response::plaintext(
         "Your cookie has been set.\n"
-    )->withHeader('Set-Cookie', $key . '=' . urlencode('Hello world!'));
+    )->withHeader('Set-Cookie', urlencode($key) . '=' . urlencode('test;more'));
 });
 ```
 
@@ -1435,21 +1425,13 @@ may only support strings.
 $http = new React\Http\HttpServer(function (Psr\Http\Message\ServerRequestInterface $request) {
     $stream = new ThroughStream();
 
-    // send some data every once in a while with periodic timer
     $timer = Loop::addPeriodicTimer(0.5, function () use ($stream) {
         $stream->write(microtime(true) . PHP_EOL);
     });
 
-    // end stream after a few seconds
-    $timeout = Loop::addTimer(5.0, function() use ($stream, $timer) {
+    Loop::addTimer(5, function() use ($timer, $stream) {
         Loop::cancelTimer($timer);
         $stream->end();
-    });
-
-    // stop timer if stream is closed (such as when connection is closed)
-    $stream->on('close', function () use ($timer, $timeout) {
-        Loop::cancelTimer($timer);
-        Loop::cancelTimer($timeout);
     });
 
     return new React\Http\Message\Response(
@@ -2390,36 +2372,6 @@ Notice that the [`Browser`](#browser) is an immutable object, i.e. this
 method actually returns a *new* [`Browser`](#browser) instance with the
 given setting applied.
 
-#### withHeader()
-
-The `withHeader(string $header, string $value): Browser` method can be used to
-add a request header for all following requests.
-
-```php
-$browser = $browser->withHeader('User-Agent', 'ACME');
-
-$browser->get($url)->then(…);
-```
-
-Note that the new header will overwrite any headers previously set with
-the same name (case-insensitive). Following requests will use these headers
-by default unless they are explicitly set for any requests.
-
-#### withoutHeader()
-
-The `withoutHeader(string $header): Browser` method can be used to
-remove any default request headers previously set via
-the [`withHeader()` method](#withheader).
-
-```php
-$browser = $browser->withoutHeader('User-Agent');
-
-$browser->get($url)->then(…);
-```
-
-Note that this method only affects the headers which were set with the
-method `withHeader(string $header, string $value): Browser`
-
 ### React\Http\Message
 
 #### Response
@@ -2449,7 +2401,8 @@ constants with the `STATUS_*` prefix. For instance, the `200 OK` and
 `404 Not Found` status codes can used as `Response::STATUS_OK` and
 `Response::STATUS_NOT_FOUND` respectively.
 
-> Internally, this implementation builds on top of a base class which is
+> Internally, this implementation builds on top of an existing incoming
+  response message and only adds required streaming support. This base class is
   considered an implementation detail that may change in the future.
 
 ##### html()
@@ -2629,23 +2582,6 @@ $response = React\Http\Message\Response::xml(
 )->withStatus(React\Http\Message\Response::STATUS_BAD_REQUEST);
 ```
 
-#### Request
-
-The `React\Http\Message\Request` class can be used to
-respresent an outgoing HTTP request message.
-
-This class implements the
-[PSR-7 `RequestInterface`](https://www.php-fig.org/psr/psr-7/#32-psrhttpmessagerequestinterface)
-which extends the
-[PSR-7 `MessageInterface`](https://www.php-fig.org/psr/psr-7/#31-psrhttpmessagemessageinterface).
-
-This is mostly used internally to represent each outgoing HTTP request
-message for the HTTP client implementation. Likewise, you can also use this
-class with other HTTP client implementations and for tests.
-
-> Internally, this implementation builds on top of a base class which is
-  considered an implementation detail that may change in the future.
-
 #### ServerRequest
 
 The `React\Http\Message\ServerRequest` class can be used to
@@ -2662,20 +2598,9 @@ This is mostly used internally to represent each incoming request message.
 Likewise, you can also use this class in test cases to test how your web
 application reacts to certain HTTP requests.
 
-> Internally, this implementation builds on top of a base class which is
+> Internally, this implementation builds on top of an existing outgoing
+  request message and only adds required server methods. This base class is
   considered an implementation detail that may change in the future.
-
-#### Uri
-
-The `React\Http\Message\Uri` class can be used to
-respresent a URI (or URL).
-
-This class implements the
-[PSR-7 `UriInterface`](https://www.php-fig.org/psr/psr-7/#35-psrhttpmessageuriinterface).
-
-This is mostly used internally to represent the URI of each HTTP request
-message for our HTTP client and server implementations. Likewise, you may
-also use this class with other HTTP implementations and for tests.
 
 #### ResponseException
 
@@ -2986,7 +2911,7 @@ This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-composer require react/http:^1.10
+$ composer require react/http:^1.6
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
@@ -3002,13 +2927,13 @@ To run the test suite, you first need to clone this repo and then install all
 dependencies [through Composer](https://getcomposer.org/):
 
 ```bash
-composer install
+$ composer install
 ```
 
 To run the test suite, go to the project root and run:
 
 ```bash
-vendor/bin/phpunit
+$ vendor/bin/phpunit
 ```
 
 The test suite also contains a number of functional integration tests that rely
@@ -3016,7 +2941,7 @@ on a stable internet connection.
 If you do not want to run these, they can simply be skipped like this:
 
 ```bash
-vendor/bin/phpunit --exclude-group internet
+$ vendor/bin/phpunit --exclude-group internet
 ```
 
 ## License

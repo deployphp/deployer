@@ -20,8 +20,8 @@ use SplObjectStorage;
  * An [unofficial update](https://github.com/php/pecl-event-libevent/pull/2) for
  * PHP 7 does exist, but it is known to cause regular crashes due to `SEGFAULT`s.
  * To reiterate: Using this event loop on PHP 7 is not recommended.
- * Accordingly, neither the [`Loop` class](#loop) nor the deprecated
- * [`Factory` class](#factory) will try to use this event loop on PHP 7.
+ * Accordingly, the [`Factory`](#factory) will not try to use this event loop on
+ * PHP 7.
  *
  * This event loop is known to trigger a readable listener only if
  * the stream *becomes* readable (edge-triggered) and may not trigger if the

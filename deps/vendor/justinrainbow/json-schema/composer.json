@@ -27,12 +27,17 @@
         }
     ],
     "require": {
-        "php": ">=7.1"
+        "php": ">=5.3.3"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "~2.2.20||~2.15.1",
         "json-schema/json-schema-test-suite": "1.2.0",
         "phpunit/phpunit": "^4.8.35"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.0.x-dev"
+        }
     },
     "autoload": {
         "psr-4": {
@@ -62,10 +67,10 @@
         "bin/validate-json"
     ],
     "scripts": {
-        "coverage": "@php phpunit --coverage-text",
-        "style-check": "@php php-cs-fixer fix --dry-run --verbose --diff",
-        "style-fix": "@php php-cs-fixer fix --verbose",
-        "test": "@php phpunit",
-        "testOnly": "@php phpunit --colors --filter"
+        "coverage": "phpunit --coverage-text",
+        "style-check": "php-cs-fixer fix --dry-run --verbose --diff",
+        "style-fix": "php-cs-fixer fix --verbose",
+        "test": "phpunit",
+        "testOnly": "phpunit --colors --filter"
     }
 }

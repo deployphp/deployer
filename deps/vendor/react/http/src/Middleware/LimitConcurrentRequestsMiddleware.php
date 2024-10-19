@@ -206,6 +206,6 @@ final class LimitConcurrentRequestsMiddleware
         $first = \reset($this->queue);
         unset($this->queue[key($this->queue)]);
 
-        $first->resolve(null);
+        $first->resolve();
     }
 }

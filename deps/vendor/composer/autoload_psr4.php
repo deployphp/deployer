@@ -18,8 +18,11 @@ return array(
     'Symfony\\Component\\String\\' => array($vendorDir . '/symfony/string'),
     'Symfony\\Component\\Process\\' => array($vendorDir . '/symfony/process'),
     'Symfony\\Component\\Console\\' => array($vendorDir . '/symfony/console'),
+    'RingCentral\\Psr7\\' => array($vendorDir . '/ringcentral/psr7/src'),
     'React\\Stream\\' => array($vendorDir . '/react/stream/src'),
     'React\\Socket\\' => array($vendorDir . '/react/socket/src'),
+    'React\\Promise\\Timer\\' => array($vendorDir . '/react/promise-timer/src'),
+    'React\\Promise\\Stream\\' => array($vendorDir . '/react/promise-stream/src'),
     'React\\Promise\\' => array($vendorDir . '/react/promise/src'),
     'React\\Http\\' => array($vendorDir . '/react/http/src'),
     'React\\EventLoop\\' => array($vendorDir . '/react/event-loop/src'),
@@ -29,5 +32,4 @@ return array(
     'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'JsonSchema\\' => array($vendorDir . '/justinrainbow/json-schema/src/JsonSchema'),
     'Fig\\Http\\Message\\' => array($vendorDir . '/fig/http-message-util/src'),
-    'Evenement\\' => array($vendorDir . '/evenement/evenement/src'),
 );

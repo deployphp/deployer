@@ -1,7 +1,6 @@
 # Cache
 
-[![CI status](https://github.com/reactphp/cache/actions/workflows/ci.yml/badge.svg)](https://github.com/reactphp/cache/actions)
-[![installs on Packagist](https://img.shields.io/packagist/dt/react/cache?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/react/cache)
+[![Build Status](https://travis-ci.org/reactphp/cache.svg?branch=master)](https://travis-ci.org/reactphp/cache)
 
 Async, [Promise](https://github.com/reactphp/promise)-based cache interface
 for [ReactPHP](https://reactphp.org/).
@@ -337,13 +336,13 @@ This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-composer require react/cache:^1.2
+$ composer require react/cache:^1.1
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 
 This project aims to run on any platform and thus does not require any PHP
-extensions and supports running on legacy PHP 5.3 through current PHP 8+ and
+extensions and supports running on legacy PHP 5.3 through current PHP 7+ and
 HHVM.
 It's *highly recommended to use PHP 7+* for this project.
 
@@ -353,13 +352,13 @@ To run the test suite, you first need to clone this repo and then install all
 dependencies [through Composer](https://getcomposer.org):
 
 ```bash
-composer install
+$ composer install
 ```
 
 To run the test suite, go to the project root and run:
 
 ```bash
-vendor/bin/phpunit
+$ php vendor/bin/phpunit
 ```
 
 ## License

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Psr\Http\Message;
 
 /**
@@ -57,10 +55,10 @@ interface RequestInterface extends MessageInterface
      *
      * @link http://tools.ietf.org/html/rfc7230#section-5.3 (for the various
      *     request-target forms allowed in request messages)
-     * @param string $requestTarget
+     * @param mixed $requestTarget
      * @return static
      */
-    public function withRequestTarget(string $requestTarget);
+    public function withRequestTarget($requestTarget);
 
     /**
      * Retrieves the HTTP method of the request.
@@ -84,7 +82,7 @@ interface RequestInterface extends MessageInterface
      * @return static
      * @throws \InvalidArgumentException for invalid HTTP methods.
      */
-    public function withMethod(string $method);
+    public function withMethod($method);
 
     /**
      * Retrieves the URI instance.
@@ -127,5 +125,5 @@ interface RequestInterface extends MessageInterface
      * @param bool $preserveHost Preserve the original state of the Host header.
      * @return static
      */
-    public function withUri(UriInterface $uri, bool $preserveHost = false);
+    public function withUri(UriInterface $uri, $preserveHost = false);
 }

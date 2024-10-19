@@ -16,7 +16,7 @@ use SplObjectStorage;
  * that provides an interface to `libevent` library.
  * `libevent` itself supports a number of system-specific backends (epoll, kqueue).
  *
- * This loop is known to work with PHP 5.4 through PHP 8+.
+ * This loop is known to work with PHP 5.4 through PHP 7+.
  *
  * @link https://pecl.php.net/package/event
  */

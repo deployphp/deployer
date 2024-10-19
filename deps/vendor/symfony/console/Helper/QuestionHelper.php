@@ -128,18 +128,7 @@ class QuestionHelper extends Helper
             }
 
             if (false === $ret) {
-                $isBlocked = stream_get_meta_data($inputStream)['blocked'] ?? true;
-
-                if (!$isBlocked) {
-                    stream_set_blocking($inputStream, true);
-                }
-
                 $ret = $this->readInput($inputStream, $question);
-
-                if (!$isBlocked) {
-                    stream_set_blocking($inputStream, false);
-                }
-
                 if (false === $ret) {
                     throw new MissingInputException('Aborted.');
                 }
@@ -503,7 +492,21 @@ class QuestionHelper extends Helper
             return self::$stdinIsInteractive;
         }
 
-        return self::$stdinIsInteractive = @stream_isatty(fopen('php://stdin', 'r'));
+        if (\function_exists('stream_isatty')) {
+            return self::$stdinIsInteractive = @stream_isatty(fopen('php://stdin', 'r'));
+        }
+
+        if (\function_exists('posix_isatty')) {
+            return self::$stdinIsInteractive = @posix_isatty(fopen('php://stdin', 'r'));
+        }
+
+        if (!\function_exists('exec')) {
+            return self::$stdinIsInteractive = true;
+        }
+
+        exec('stty 2> /dev/null', $output, $status);
+
+        return self::$stdinIsInteractive = 1 !== $status;
     }
 
     /**

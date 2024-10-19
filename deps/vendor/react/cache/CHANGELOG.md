@@ -1,16 +1,5 @@
 # Changelog
 
-## 1.2.0 (2022-11-30)
-
-*   Feature: Support PHP 8.1 and PHP 8.2.
-    (#47 by @SimonFrings and #52 by @WyriHaximus)
-
-*   Minor documentation improvements.
-    (#48 by @SimonFrings and #51 by @nhedger)
-
-*   Update test suite and use GitHub actions for continuous integration (CI).
-    (#45 and #49 by @SimonFrings and #54 by @clue)
-
 ## 1.1.0 (2020-09-18)
 
 *   Feature: Forward compatibility with react/promise 3.

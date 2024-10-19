@@ -1,0 +1,24 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - hhvm
+  - nightly
+
+matrix:
+    allow_failures:
+        - php: hhvm
+        - php: nightly
+
+before_script:
+  - wget http://getcomposer.org/composer.phar
+  - php composer.phar install
+
+script:
+  - ./vendor/bin/phpunit --coverage-text
+  - php -n examples/benchmark-emit-no-arguments.php
+  - php -n examples/benchmark-emit-one-argument.php
+  - php -n examples/benchmark-emit.php
+  - php -n examples/benchmark-emit-once.php
+  - php -n examples/benchmark-remove-listener-once.php

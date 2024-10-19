@@ -1,7 +1,6 @@
-# EventLoop
+# EventLoop Component
 
-[![CI status](https://github.com/reactphp/event-loop/actions/workflows/ci.yml/badge.svg)](https://github.com/reactphp/event-loop/actions)
-[![installs on Packagist](https://img.shields.io/packagist/dt/react/event-loop?color=blue&label=installs%20on%20Packagist)](https://packagist.org/packages/react/event-loop)
+[![CI status](https://github.com/reactphp/event-loop/workflows/CI/badge.svg)](https://github.com/reactphp/event-loop/actions)
 
 [ReactPHP](https://reactphp.org/)'s core reactor event loop that libraries can use for evented I/O.
 
@@ -10,7 +9,7 @@ same event loop. This component provides a common `LoopInterface` that any
 library can target. This allows them to be used in the same loop, with one
 single [`run()`](#run) call that is controlled by the user.
 
-**Table of contents**
+**Table of Contents**
 
 * [Quickstart example](#quickstart-example)
 * [Usage](#usage)
@@ -84,8 +83,8 @@ See also the [examples](examples).
 
 ## Usage
 
-Typical applications would use the [`Loop` class](#loop) to use the default
-event loop like this:
+As of `v1.2.0`, typical applications would use the [`Loop` object](#loop)
+to use the currently active event loop like this:
 
 ```php
 use React\EventLoop\Loop;
@@ -124,14 +123,14 @@ In both cases, the program would perform the exact same steps.
 
 1. The event loop instance is created at the beginning of the program. This is
    implicitly done the first time you call the [`Loop` class](#loop) or
-   explicitly when using the deprecated [`Factory::create()` method](#create)
+   explicitly when using the deprecated [`Factory::create() method`](#create)
    (or manually instantiating any of the [loop implementations](#loop-implementations)).
 2. The event loop is used directly or passed as an instance to library and
    application code. In this example, a periodic timer is registered with the
    event loop which simply outputs `Tick` every fraction of a second until another
    timer stops the periodic timer after a second.
 3. The event loop is run at the end of the program. This is automatically done
-   when using the [`Loop` class](#loop) or explicitly with a single [`run()`](#run)
+   when using [`Loop` class](#loop) or explicitly with a single [`run()`](#run)
    call at the end of the program.
 
 As of `v1.2.0`, we highly recommend using the [`Loop` class](#loop).
@@ -340,7 +339,7 @@ All of the event loops support these features:
 
 For most consumers of this package, the underlying event loop implementation is
 an implementation detail.
-You should use the [`Loop` class](#loop) to automatically create a new instance.
+You should use the [`Factory`](#factory) to automatically create a new instance.
 
 Advanced! If you explicitly need a certain event loop implementation, you can
 manually instantiate one of the following classes.
@@ -352,14 +351,13 @@ event loop implementation first or they will throw a `BadMethodCallException` on
 A `stream_select()` based event loop.
 
 This uses the [`stream_select()`](https://www.php.net/manual/en/function.stream-select.php)
-function and is the only implementation that works out of the box with PHP.
+function and is the only implementation which works out of the box with PHP.
 
-This event loop works out of the box on PHP 5.3 through PHP 8+ and HHVM.
+This event loop works out of the box on PHP 5.3 through PHP 7+ and HHVM.
 This means that no installation is required and this library works on all
 platforms and supported PHP versions.
-Accordingly, the [`Loop` class](#loop) and the deprecated [`Factory`](#factory)
-will use this event loop by default if you do not install any of the event loop
-extensions listed below.
+Accordingly, the [`Factory`](#factory) will use this event loop by default if
+you do not install any of the event loop extensions listed below.
 
 Under the hood, it does a simple `select` system call.
 This system call is limited to the maximum file descriptor number of
@@ -398,7 +396,7 @@ This uses the [`event` PECL extension](https://pecl.php.net/package/event),
 that provides an interface to `libevent` library.
 `libevent` itself supports a number of system-specific backends (epoll, kqueue).
 
-This loop is known to work with PHP 5.4 through PHP 8+.
+This loop is known to work with PHP 5.4 through PHP 7+.
 
 #### ExtEvLoop
 
@@ -409,7 +407,7 @@ that provides an interface to `libev` library.
 `libev` itself supports a number of system-specific backends (epoll, kqueue).
 
 
-This loop is known to work with PHP 5.4 through PHP 8+.
+This loop is known to work with PHP 5.4 through PHP 7+.
 
 #### ExtUvLoop
 
@@ -435,8 +433,8 @@ This event loop does only work with PHP 5.
 An [unofficial update](https://github.com/php/pecl-event-libevent/pull/2) for
 PHP 7 does exist, but it is known to cause regular crashes due to `SEGFAULT`s.
 To reiterate: Using this event loop on PHP 7 is not recommended.
-Accordingly, neither the [`Loop` class](#loop) nor the deprecated
-[`Factory` class](#factory) will try to use this event loop on PHP 7.
+Accordingly, the [`Factory`](#factory) will not try to use this event loop on
+PHP 7.
 
 This event loop is known to trigger a readable listener only if
 the stream *becomes* readable (edge-triggered) and may not trigger if the
@@ -470,7 +468,7 @@ run the event loop until there are no more tasks to perform.
 
 For many applications, this method is the only directly visible
 invocation on the event loop.
-As a rule of thumb, it is usually recommended to attach everything to the
+As a rule of thumb, it is usally recommended to attach everything to the
 same loop instance and then run the loop once at the bottom end of the
 application.
 
@@ -488,7 +486,7 @@ run it will result in the application exiting without actually waiting
 for any of the attached listeners.
 
 This method MUST NOT be called while the loop is already running.
-This method MAY be called more than once after it has explicitly been
+This method MAY be called more than once after it has explicity been
 [`stop()`ped](#stop) or after it automatically stopped because it
 previously did no longer have anything to do.
 
@@ -517,21 +515,18 @@ on a loop instance that has already been stopped has no effect.
 The `addTimer(float $interval, callable $callback): TimerInterface` method can be used to
 enqueue a callback to be invoked once after the given interval.
 
-The second parameter MUST be a timer callback function that accepts
-the timer instance as its only parameter.
-If you don't use the timer instance inside your timer callback function
-you MAY use a function which has no parameters at all.
+The timer callback function MUST be able to accept a single parameter,
+the timer instance as also returned by this method or you MAY use a
+function which has no parameters at all.
 
 The timer callback function MUST NOT throw an `Exception`.
 The return value of the timer callback function will be ignored and has
 no effect, so for performance reasons you're recommended to not return
 any excessive data structures.
 
-This method returns a timer instance. The same timer instance will also be 
-passed into the timer callback function as described above.
-You can invoke [`cancelTimer`](#canceltimer) to cancel a pending timer.
 Unlike [`addPeriodicTimer()`](#addperiodictimer), this method will ensure
 the callback will be invoked only once after the given interval.
+You can invoke [`cancelTimer`](#canceltimer) to cancel a pending timer.
 
 ```php
 $loop->addTimer(0.8, function () {
@@ -586,21 +581,18 @@ See also [event loop implementations](#loop-implementations) for more details.
 The `addPeriodicTimer(float $interval, callable $callback): TimerInterface` method can be used to
 enqueue a callback to be invoked repeatedly after the given interval.
 
-The second parameter MUST be a timer callback function that accepts
-the timer instance as its only parameter.
-If you don't use the timer instance inside your timer callback function
-you MAY use a function which has no parameters at all.
+The timer callback function MUST be able to accept a single parameter,
+the timer instance as also returned by this method or you MAY use a
+function which has no parameters at all.
 
 The timer callback function MUST NOT throw an `Exception`.
 The return value of the timer callback function will be ignored and has
 no effect, so for performance reasons you're recommended to not return
 any excessive data structures.
 
-This method returns a timer instance. The same timer instance will also be 
-passed into the timer callback function as described above.
-Unlike [`addTimer()`](#addtimer), this method will ensure the callback 
-will be invoked infinitely after the given interval or until you invoke 
-[`cancelTimer`](#canceltimer).
+Unlike [`addTimer()`](#addtimer), this method will ensure the the
+callback will be invoked infinitely after the given interval or until you
+invoke [`cancelTimer`](#canceltimer).
 
 ```php
 $timer = $loop->addPeriodicTimer(0.1, function () {
@@ -728,10 +720,9 @@ register a listener to be notified when a signal has been caught by this process
 This is useful to catch user interrupt signals or shutdown signals from
 tools like `supervisor` or `systemd`.
 
-The second parameter MUST be a listener callback function that accepts
-the signal as its only parameter.
-If you don't use the signal inside your listener callback function
-you MAY use a function which has no parameters at all.
+The listener callback function MUST be able to accept a single parameter,
+the signal added by this method or you MAY use a function which
+has no parameters at all.
 
 The listener callback function MUST NOT throw an `Exception`.
 The return value of the listener callback function will be ignored and has
@@ -746,14 +737,14 @@ $loop->addSignal(SIGINT, function (int $signal) {
 
 See also [example #4](examples).
 
-Signaling is only available on Unix-like platforms, Windows isn't
+Signaling is only available on Unix-like platform, Windows isn't
 supported due to operating system limitations.
 This method may throw a `BadMethodCallException` if signals aren't
 supported on this platform, for example when required extensions are
 missing.
 
 **Note: A listener can only be added once to the same signal, any
-attempts to add it more than once will be ignored.**
+attempts to add it more then once will be ignored.**
 
 #### removeSignal()
 
@@ -784,10 +775,9 @@ react to this event with a single listener and then dispatch from this
 listener. This method MAY throw an `Exception` if the given resource type
 is not supported by this loop implementation.
 
-The second parameter MUST be a listener callback function that accepts
-the stream resource as its only parameter.
-If you don't use the stream resource inside your listener callback function
-you MAY use a function which has no parameters at all.
+The listener callback function MUST be able to accept a single parameter,
+the stream resource added by this method or you MAY use a function which
+has no parameters at all.
 
 The listener callback function MUST NOT throw an `Exception`.
 The return value of the listener callback function will be ignored and has
@@ -837,10 +827,9 @@ react to this event with a single listener and then dispatch from this
 listener. This method MAY throw an `Exception` if the given resource type
 is not supported by this loop implementation.
 
-The second parameter MUST be a listener callback function that accepts
-the stream resource as its only parameter.
-If you don't use the stream resource inside your listener callback function
-you MAY use a function which has no parameters at all.
+The listener callback function MUST be able to accept a single parameter,
+the stream resource added by this method or you MAY use a function which
+has no parameters at all.
 
 The listener callback function MUST NOT throw an `Exception`.
 The return value of the listener callback function will be ignored and has
@@ -882,14 +871,14 @@ to remove a stream that was never added or is invalid has no effect.
 
 ## Install
 
-The recommended way to install this library is [through Composer](https://getcomposer.org/).
+The recommended way to install this library is [through Composer](https://getcomposer.org).
 [New to Composer?](https://getcomposer.org/doc/00-intro.md)
 
 This project follows [SemVer](https://semver.org/).
 This will install the latest supported version:
 
 ```bash
-composer require react/event-loop:^1.5
+$ composer require react/event-loop:^1.2
 ```
 
 See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
@@ -897,7 +886,7 @@ See also the [CHANGELOG](CHANGELOG.md) for details about version upgrades.
 This project aims to run on any platform and thus does not require any PHP
 extensions and supports running on legacy PHP 5.3 through current PHP 8+ and
 HHVM.
-It's *highly recommended to use the latest supported PHP version* for this project.
+It's *highly recommended to use PHP 7+* for this project.
 
 Installing any of the event loop extensions is suggested, but entirely optional.
 See also [event loop implementations](#loop-implementations) for more details.
@@ -905,16 +894,16 @@ See also [event loop implementations](#loop-implementations) for more details.
 ## Tests
 
 To run the test suite, you first need to clone this repo and then install all
-dependencies [through Composer](https://getcomposer.org/):
+dependencies [through Composer](https://getcomposer.org):
 
 ```bash
-composer install
+$ composer install
 ```
 
 To run the test suite, go to the project root and run:
 
 ```bash
-vendor/bin/phpunit
+$ php vendor/bin/phpunit
 ```
 
 ## License

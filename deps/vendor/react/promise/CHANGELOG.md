@@ -1,156 +1,186 @@
-# Changelog
+CHANGELOG for 2.x
+=================
 
-## 3.2.0 (2024-05-24)
+* 2.9.0 (2022-02-11)
 
-*   Feature: Improve PHP 8.4+ support by avoiding implicitly nullable type declarations.
-    (#260 by @Ayesh)
+    *   Feature: Support union types and address deprecation of `ReflectionType::getClass()` (PHP 8+).
+        (#198 by @cdosoftei and @SimonFrings)
 
-*   Feature: Include previous exceptions when reporting unhandled promise rejections.
-    (#262 by @clue)
+        ```php
+        $promise->otherwise(function (OverflowException|UnderflowException $e) {
+            echo 'Error: ' . $e->getMessage() . PHP_EOL;
+        });
+        ```
 
-*   Update test suite to improve PHP 8.4+ support.
-    (#261 by @SimonFrings)
+    *   Feature: Support intersection types (PHP 8.1+).
+        (#195 by @bzikarsky)
 
-## 3.1.0 (2023-11-16)
+        ```php
+        $promise->otherwise(function (OverflowException&CacheException $e) {
+            echo 'Error: ' . $e->getMessage() . PHP_EOL;
+        });
+        ```
 
-*   Feature: Full PHP 8.3 compatibility.
-    (#255 by @clue)
+    *   Improve test suite, use GitHub actions for continuous integration (CI),
+        update to PHPUnit 9, and add full core team to the license.
+        (#174, #183, #186, and #201 by @SimonFrings and #211 by @clue)
 
-*   Feature: Describe all callable arguments with types for `Promise` and `Deferred`.
-    (#253 by @clue)
+* 2.8.0 (2020-05-12)
 
-*   Update test suite and minor documentation improvements.
-    (#251 by @ondrejmirtes and #250 by @SQKo)
+    *   Mark `FulfilledPromise`, `RejectedPromise` and `LazyPromise` as deprecated for Promise v2 (and remove for Promise v3).
+        (#143 and #165 by @clue)
 
-## 3.0.0 (2023-07-11)
+        ```php
+        // deprecated
+        $fulfilled = new React\Promise\FulfilledPromise($value);
+        $rejected = new React\Promise\RejectedPromise($reason);
 
-A major new feature release, see [**release announcement**](https://clue.engineering/2023/announcing-reactphp-promise-v3).
+        // recommended alternatives
+        $fulfilled = React\Promise\resolve($value);
+        $rejected = React\Promise\reject($reason);
+        ```
 
-*   We'd like to emphasize that this component is production ready and battle-tested.
-    We plan to support all long-term support (LTS) releases for at least 24 months,
-    so you have a rock-solid foundation to build on top of.
+    *   Fix: Fix checking whether cancellable promise is an object and avoid possible warning.
+        (#168 by @smscr and @jsor)
 
-*   The v3 release will be the way forward for this package. However, we will still
-    actively support v2 and v1 to provide a smooth upgrade path for those not yet
-    on the latest versions.
+    *   Improve documentation and add docblocks to functions and interfaces.
+        (#135 by @CharlotteDunois)
 
-This update involves some major new features and a minor BC break over the
-`v2.0.0` release. We've tried hard to avoid BC breaks where possible and
-minimize impact otherwise. We expect that most consumers of this package will be
-affected by BC breaks, but updating should take no longer than a few minutes.
-See below for more details:
+    *   Add `.gitattributes` to exclude dev files from exports.
+        (#154 by @reedy)
 
-*   BC break: PHP 8.1+ recommended, PHP 7.1+ required.
-    (#138 and #149 by @WyriHaximus)
+    *   Improve test suite, run tests on PHP 7.4 and update PHPUnit test setup.
+        (#163 by @clue)
 
-*   Feature / BC break: The `PromiseInterface` now includes the functionality of the old ~~`ExtendedPromiseInterface`~~ and ~~`CancellablePromiseInterface`~~.
-    Each promise now always includes the `then()`, `catch()`, `finally()` and `cancel()` methods.
-    The new `catch()` and `finally()` methods replace the deprecated ~~`otherwise()`~~ and ~~`always()`~~ methods which continue to exist for BC reasons.
-    The old ~~`ExtendedPromiseInterface`~~ and ~~`CancellablePromiseInterface`~~ are no longer needed and have been removed as a consequence.
-    (#75 by @jsor and #208 by @clue and @WyriHaximus)
+* 2.7.1 (2018-01-07)
 
-    ```php
-    // old (multiple interfaces may or may not be implemented)
-    assert($promise instanceof PromiseInterface);
-    assert(method_exists($promise, 'then'));
-    if ($promise instanceof ExtendedPromiseInterface) { assert(method_exists($promise, 'otherwise')); }
-    if ($promise instanceof ExtendedPromiseInterface) { assert(method_exists($promise, 'always')); }
-    if ($promise instanceof CancellablePromiseInterface) { assert(method_exists($promise, 'cancel')); }
-    
-    // new (single PromiseInterface with all methods)
-    assert($promise instanceof PromiseInterface);
-    assert(method_exists($promise, 'then'));
-    assert(method_exists($promise, 'catch'));
-    assert(method_exists($promise, 'finally'));
-    assert(method_exists($promise, 'cancel'));
-    ```
+    *   Fix: file_exists warning when resolving with long strings.
+        (#130 by @sbesselsen)
+    *   Improve performance by prefixing all global functions calls with \ to skip the look up and resolve process and go straight to the global function.
+        (#133 by @WyriHaximus)
 
-*   Feature / BC break: Improve type safety of promises. Require `mixed` fulfillment value argument and `Throwable` (or `Exception`) as rejection reason.
-    Add PHPStan template types to ensure strict types for `resolve(T $value): PromiseInterface<T>` and `reject(Throwable $reason): PromiseInterface<never>`.
-    It is no longer possible to resolve a promise without a value (use `null` instead) or reject a promise without a reason (use `Throwable` instead).
-    (#93, #141 and #142 by @jsor, #138, #149 and #247 by @WyriHaximus and #213 and #246 by @clue)
+* 2.7.0 (2018-06-13)
 
-    ```php
-    // old (arguments used to be optional)
-    $promise = resolve();
-    $promise = reject();
-    
-    // new (already supported before)
-    $promise = resolve(null);
-    $promise = reject(new RuntimeException());
-    ```
+    *   Feature: Improve memory consumption for pending promises by using static internal callbacks without binding to self.
+        (#124 by @clue)
 
-*   Feature / BC break: Report all unhandled rejections by default and remove ~~`done()`~~ method.
-    Add new `set_rejection_handler()` function to set the global rejection handler for unhandled promise rejections.
-    (#248, #249 and #224 by @clue)
+* 2.6.0 (2018-06-11)
 
-    ```php
-    // Unhandled promise rejection with RuntimeException: Unhandled in example.php:2
-    reject(new RuntimeException('Unhandled'));
-    ```
+    *   Feature: Significantly improve memory consumption and performance by only passing resolver args
+        to resolver and canceller if callback requires them. Also use static callbacks without
+        binding to promise, clean up canceller function reference when they are no longer
+        needed and hide resolver and canceller references from call stack on PHP 7+.
+        (#113, #115, #116, #117, #118, #119 and #123 by @clue)
 
-*   BC break: Remove all deprecated APIs and reduce API surface.
-    Remove ~~`some()`~~, ~~`map()`~~, ~~`reduce()`~~ functions, use `any()` and `all()` functions instead.
-    Remove internal ~~`FulfilledPromise`~~ and ~~`RejectedPromise`~~ classes, use `resolve()` and `reject()` functions instead.
-    Remove legacy promise progress API (deprecated third argument to `then()` method) and deprecated ~~`LazyPromise`~~ class. 
-    (#32 and #98 by @jsor and #164, #219 and #220 by @clue)
+        These changes combined mean that rejecting promises with an `Exception` should
+        no longer cause any internal circular references which could cause some unexpected
+        memory growth in previous versions. By explicitly avoiding and explicitly
+        cleaning up said references, we can avoid relying on PHP's circular garbage collector
+        to kick in which significantly improves performance when rejecting many promises.
 
-*   BC break: Make all classes final to encourage composition over inheritance.
-    (#80 by @jsor)
+    *   Mark legacy progress support / notification API as deprecated
+        (#112 by @clue)
 
-*   Feature / BC break: Require `array` (or `iterable`) type for `all()` + `race()` + `any()` functions and bring in line with ES6 specification.
-    These functions now require a single argument with a variable number of promises or values as input.
-    (#225 by @clue and #35 by @jsor)
+    *   Recommend rejecting promises by throwing an exception
+        (#114 by @jsor)
 
-*   Fix / BC break: Fix `race()` to return a forever pending promise when called with an empty `array` (or `iterable`) and bring in line with ES6 specification.
-    (#83 by @jsor and #225 by @clue)
+    *   Improve documentation to properly instantiate LazyPromise
+        (#121 by @holtkamp)
 
-*   Minor performance improvements by initializing `Deferred` in the constructor and avoiding `call_user_func()` calls.
-    (#151 by @WyriHaximus and #171 by @Kubo2)
+    *   Follower cancellation propagation was originally planned for this release
+        but has been reverted for now and is planned for a future release.
+        (#99 by @jsor and #122 by @clue)
 
-*   Minor documentation improvements.
-    (#110 by @seregazhuk, #132 by @CharlotteDunois, #145 by @danielecr, #178 by @WyriHaximus, #189 by @srdante, #212 by @clue, #214, #239 and #243 by @SimonFrings and #231 by @nhedger)
+* 2.5.1 (2017-03-25)
 
-The following changes had to be ported to this release due to our branching
-strategy, but also appeared in the [`2.x` branch](https://github.com/reactphp/promise/tree/2.x):
+    * Fix circular references when resolving with a promise which follows
+      itself (#94).
 
-*   Feature: Support union types and address deprecation of `ReflectionType::getClass()` (PHP 8+).
-    (#197 by @cdosoftei and @SimonFrings)
+* 2.5.0 (2016-12-22)
 
-*   Feature: Support intersection types (PHP 8.1+).
-    (#209 by @bzikarsky)
+    * Revert automatic cancellation of pending collection promises once the
+      output promise resolves. This was introduced in 42d86b7 (PR #36, released
+      in [v2.3.0](https://github.com/reactphp/promise/releases/tag/v2.3.0)) and
+      was both unintended and backward incompatible.
 
-*   Feature: Support DNS types (PHP 8.2+).
-    (#236 by @nhedger)
+      If you need automatic cancellation, you can use something like:
 
-*   Feature: Port all memory improvements from `2.x` to `3.x`.
-    (#150 by @clue and @WyriHaximus)
+      ```php
+      function allAndCancel(array $promises)
+      {
+           return \React\Promise\all($promises)
+               ->always(function() use ($promises) {
+                   foreach ($promises as $promise) {
+                       if ($promise instanceof \React\Promise\CancellablePromiseInterface) {
+                           $promise->cancel();
+                       }
+                   }
+              });
+      }
+      ```
+    * `all()` and `map()` functions now preserve the order of the array (#77).
+    * Fix circular references when resolving a promise with itself (#71).
 
-*   Fix: Fix checking whether cancellable promise is an object and avoid possible warning.
-    (#161 by @smscr)
+* 2.4.1 (2016-05-03)
 
-*   Improve performance by prefixing all global functions calls with \ to skip the look up and resolve process and go straight to the global function.
-    (#134 by @WyriHaximus)
+    * Fix `some()` not cancelling pending promises when too much input promises
+      reject (16ff799).
 
-*   Improve test suite, update PHPUnit and PHP versions and add `.gitattributes` to exclude dev files from exports.
-    (#107 by @carusogabriel, #148 and #234 by @WyriHaximus, #153 by @reedy, #162, #230 and #240 by @clue, #173, #177, #185 and #199 by @SimonFrings, #193 by @woodongwong and #210 by @bzikarsky)
+* 2.4.0 (2016-03-31)
 
-The following changes were originally planned for this release but later reverted
-and are not part of the final release:
+    * Support foreign thenables in `resolve()`.
+      Any object that provides a `then()` method is now assimilated to a trusted
+      promise that follows the state of this thenable (#52).
+    * Fix `some()` and `any()` for input arrays containing not enough items
+      (#34).
 
-*   Add iterative callback queue handler to avoid recursion (later removed to improve Fiber support). 
-    (#28, #82 and #86 by @jsor, #158 by @WyriHaximus and #229 and #238 by @clue)
+* 2.3.0 (2016-03-24)
 
-*   Trigger an `E_USER_ERROR` instead of throwing an exception from `done()` (later removed entire `done()` method to globally report unhandled rejections).
-    (#97 by @jsor and #224 and #248 by @clue)
+    * Allow cancellation of promises returned by functions working on promise
+      collections (#36).
+    * Handle `\Throwable` in the same way as `\Exception` (#51 by @joshdifabio).
 
-*   Add type declarations for `some()` (later removed entire `some()` function).
-    (#172 by @WyriHaximus and #219 by @clue)
+* 2.2.2 (2016-02-26)
 
-## 2.0.0 (2013-12-10)
+    * Fix cancellation handlers called multiple times (#47 by @clue).
 
-See [`2.x` CHANGELOG](https://github.com/reactphp/promise/blob/2.x/CHANGELOG.md) for more details.
+* 2.2.1 (2015-07-03)
 
-## 1.0.0 (2012-11-07)
+    * Fix stack error when resolving a promise in its own fulfillment or
+      rejection handlers.
 
-See [`1.x` CHANGELOG](https://github.com/reactphp/promise/blob/1.x/CHANGELOG.md) for more details.
+* 2.2.0 (2014-12-30)
+
+    * Introduce new `ExtendedPromiseInterface` implemented by all promises.
+    * Add new `done()` method (part of the `ExtendedPromiseInterface`).
+    * Add new `otherwise()` method (part of the `ExtendedPromiseInterface`).
+    * Add new `always()` method (part of the `ExtendedPromiseInterface`).
+    * Add new `progress()` method (part of the `ExtendedPromiseInterface`).
+    * Rename `Deferred::progress` to `Deferred::notify` to avoid confusion with
+      `ExtendedPromiseInterface::progress` (a `Deferred::progress` alias is
+      still available for backward compatibility)
+    * `resolve()` now always returns a `ExtendedPromiseInterface`.
+
+* 2.1.0 (2014-10-15)
+
+    * Introduce new `CancellablePromiseInterface` implemented by all promises.
+    * Add new `cancel()` method (part of the `CancellablePromiseInterface`).
+
+* 2.0.0 (2013-12-10)
+
+    New major release. The goal is to streamline the API and to make it more
+    compliant with other promise libraries and especially with the new upcoming
+    [ES6 promises specification](https://github.com/domenic/promises-unwrapping/).
+
+    * Add standalone Promise class.
+    * Add new `race()` function.
+    * BC break: Bump minimum PHP version to PHP 5.4.
+    * BC break: Remove `ResolverInterface` and `PromiseInterface` from 
+      `Deferred`.
+    * BC break: Change signature of `PromiseInterface`.
+    * BC break: Remove `When` and `Util` classes and move static methods to
+      functions.
+    * BC break: `FulfilledPromise` and `RejectedPromise` now throw an exception
+      when initialized with a promise instead of a value/reason.
+    * BC break: `Deferred::resolve()` and `Deferred::reject()` no longer return
+      a promise.

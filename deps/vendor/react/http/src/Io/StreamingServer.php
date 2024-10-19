@@ -9,6 +9,7 @@ use React\EventLoop\LoopInterface;
 use React\Http\Message\Response;
 use React\Http\Message\ServerRequest;
 use React\Promise;
+use React\Promise\CancellablePromiseInterface;
 use React\Promise\PromiseInterface;
 use React\Socket\ConnectionInterface;
 use React\Socket\ServerInterface;
@@ -83,9 +84,7 @@ final class StreamingServer extends EventEmitter
 {
     private $callback;
     private $parser;
-
-    /** @var Clock */
-    private $clock;
+    private $loop;
 
     /**
      * Creates an HTTP server that invokes the given callback for each incoming HTTP request
@@ -105,9 +104,10 @@ final class StreamingServer extends EventEmitter
             throw new \InvalidArgumentException('Invalid request handler given');
         }
 
+        $this->loop = $loop;
+
         $this->callback = $requestHandler;
-        $this->clock = new Clock($loop);
-        $this->parser = new RequestHeaderParser($this->clock);
+        $this->parser = new RequestHeaderParser();
 
         $that = $this;
         $this->parser->on('headers', function (ServerRequestInterface $request, ConnectionInterface $conn) use ($that) {
@@ -157,17 +157,10 @@ final class StreamingServer extends EventEmitter
         }
 
         // cancel pending promise once connection closes
-        $connectionOnCloseResponseCancelerHandler = function () {};
-        if ($response instanceof PromiseInterface && \method_exists($response, 'cancel')) {
-            $connectionOnCloseResponseCanceler = function () use ($response) {
+        if ($response instanceof CancellablePromiseInterface) {
+            $conn->on('close', function () use ($response) {
                 $response->cancel();
-            };
-            $connectionOnCloseResponseCancelerHandler = function () use ($connectionOnCloseResponseCanceler, $conn) {
-                if ($connectionOnCloseResponseCanceler !== null) {
-                    $conn->removeListener('close', $connectionOnCloseResponseCanceler);
-                }
-            };
-            $conn->on('close', $connectionOnCloseResponseCanceler);
+            });
         }
 
         // happy path: response returned, handle and return immediately
@@ -208,7 +201,7 @@ final class StreamingServer extends EventEmitter
                 $that->emit('error', array($exception));
                 return $that->writeError($conn, Response::STATUS_INTERNAL_SERVER_ERROR, $request);
             }
-        )->then($connectionOnCloseResponseCancelerHandler, $connectionOnCloseResponseCancelerHandler);
+        );
     }
 
     /** @internal */
@@ -262,7 +255,7 @@ final class StreamingServer extends EventEmitter
         // assign default "Date" header from current time automatically
         if (!$response->hasHeader('Date')) {
             // IMF-fixdate  = day-name "," SP date1 SP time-of-day SP GMT
-            $response = $response->withHeader('Date', gmdate('D, d M Y H:i:s', (int) $this->clock->now()) . ' GMT');
+            $response = $response->withHeader('Date', gmdate('D, d M Y H:i:s') . ' GMT');
         } elseif ($response->getHeaderLine('Date') === ''){
             $response = $response->withoutHeader('Date');
         }
@@ -272,8 +265,6 @@ final class StreamingServer extends EventEmitter
         if (($method === 'CONNECT' && $code >= 200 && $code < 300) || ($code >= 100 && $code < 200) || $code === Response::STATUS_NO_CONTENT) {
             // 2xx response to CONNECT and 1xx and 204 MUST NOT include Content-Length or Transfer-Encoding header
             $response = $response->withoutHeader('Content-Length');
-        } elseif ($method === 'HEAD' && $response->hasHeader('Content-Length')) {
-            // HEAD Request: preserve explicit Content-Length
         } elseif ($code === Response::STATUS_NOT_MODIFIED && ($response->hasHeader('Content-Length') || $body->getSize() === 0)) {
             // 304 Not Modified: preserve explicit Content-Length and preserve missing header if body is empty
         } elseif ($body->getSize() !== null) {
@@ -333,24 +324,11 @@ final class StreamingServer extends EventEmitter
         }
 
         // build HTTP response header by appending status line and header fields
-        $expected = 0;
         $headers = "HTTP/" . $version . " " . $code . " " . $response->getReasonPhrase() . "\r\n";
         foreach ($response->getHeaders() as $name => $values) {
-            if (\strpos($name, ':') !== false) {
-                $expected = -1;
-                break;
-            }
             foreach ($values as $value) {
                 $headers .= $name . ": " . $value . "\r\n";
-                ++$expected;
             }
-        }
-
-        /** @var array $m legacy PHP 5.3 only */
-        if ($code < 100 || $code > 999 || \substr_count($headers, "\n") !== ($expected + 1) || (\PHP_VERSION_ID >= 50400 ? \preg_match_all(AbstractMessage::REGEX_HEADERS, $headers) : \preg_match_all(AbstractMessage::REGEX_HEADERS, $headers, $m)) !== $expected) {
-            $this->emit('error', array(new \InvalidArgumentException('Unable to send response with invalid response headers')));
-            $this->writeError($connection, Response::STATUS_INTERNAL_SERVER_ERROR, $request);
-            return;
         }
 
         // response to HEAD and 1xx, 204 and 304 responses MUST NOT include a body

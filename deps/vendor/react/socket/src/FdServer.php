@@ -75,7 +75,7 @@ final class FdServer extends EventEmitter implements ServerInterface
      * @throws \InvalidArgumentException if the listening address is invalid
      * @throws \RuntimeException if listening on this address fails (already in use etc.)
      */
-    public function __construct($fd, $loop = null)
+    public function __construct($fd, LoopInterface $loop = null)
     {
         if (\preg_match('#^php://fd/(\d+)$#', $fd, $m)) {
             $fd = (int) $m[1];
@@ -83,31 +83,21 @@ final class FdServer extends EventEmitter implements ServerInterface
         if (!\is_int($fd) || $fd < 0 || $fd >= \PHP_INT_MAX) {
             throw new \InvalidArgumentException(
                 'Invalid FD number given (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : (\defined('PCNTL_EINVAL') ? \PCNTL_EINVAL : 22)
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             );
-        }
-
-        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
-            throw new \InvalidArgumentException('Argument #2 ($loop) expected null|React\EventLoop\LoopInterface');
         }
 
         $this->loop = $loop ?: Loop::get();
 
-        $errno = 0;
-        $errstr = '';
-        \set_error_handler(function ($_, $error) use (&$errno, &$errstr) {
+        $this->master = @\fopen('php://fd/' . $fd, 'r+');
+        if (false === $this->master) {
             // Match errstr from PHP's warning message.
             // fopen(php://fd/3): Failed to open stream: Error duping file descriptor 3; possibly it doesn't exist: [9]: Bad file descriptor
-            \preg_match('/\[(\d+)\]: (.*)/', $error, $m);
+            $error = \error_get_last();
+            \preg_match('/\[(\d+)\]: (.*)/', $error['message'], $m);
             $errno = isset($m[1]) ? (int) $m[1] : 0;
-            $errstr = isset($m[2]) ? $m[2] : $error;
-        });
+            $errstr = isset($m[2]) ? $m[2] : $error['message'];
 
-        $this->master = \fopen('php://fd/' . $fd, 'r+');
-
-        \restore_error_handler();
-
-        if (false === $this->master) {
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . SocketServer::errconst($errno),
                 $errno

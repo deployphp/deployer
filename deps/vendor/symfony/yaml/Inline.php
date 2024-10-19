@@ -34,7 +34,7 @@ class Inline
     private static $objectForMap = false;
     private static $constantSupport = false;
 
-    public static function initialize(int $flags, ?int $parsedLineNumber = null, ?string $parsedFilename = null)
+    public static function initialize(int $flags, int $parsedLineNumber = null, string $parsedFilename = null)
     {
         self::$exceptionOnInvalidType = (bool) (Yaml::PARSE_EXCEPTION_ON_INVALID_TYPE & $flags);
         self::$objectSupport = (bool) (Yaml::PARSE_OBJECT & $flags);
@@ -50,20 +50,16 @@ class Inline
     /**
      * Converts a YAML string to a PHP value.
      *
-     * @param string|null $value      A YAML string
-     * @param int         $flags      A bit field of Yaml::PARSE_* constants to customize the YAML parser behavior
-     * @param array       $references Mapping of variable names to values
+     * @param string $value      A YAML string
+     * @param int    $flags      A bit field of PARSE_* constants to customize the YAML parser behavior
+     * @param array  $references Mapping of variable names to values
      *
      * @return mixed
      *
      * @throws ParseException
      */
-    public static function parse(?string $value = null, int $flags = 0, array &$references = [])
+    public static function parse(string $value = null, int $flags = 0, array &$references = [])
     {
-        if (null === $value) {
-            return '';
-        }
-
         self::initialize($flags);
 
         $value = trim($value);
@@ -72,7 +68,7 @@ class Inline
             return '';
         }
 
-        if (2 /* MB_OVERLOAD_STRING */ & (int) \ini_get('mbstring.func_overload')) {
+        if (2 /* MB_OVERLOAD_STRING */ & (int) ini_get('mbstring.func_overload')) {
             $mbEncoding = mb_internal_encoding();
             mb_internal_encoding('ASCII');
         }
@@ -90,7 +86,7 @@ class Inline
                     ++$i;
                     break;
                 default:
-                    $result = self::parseScalar($value, $flags, null, $i, true, $references);
+                    $result = self::parseScalar($value, $flags, null, $i, null === $tag, $references);
             }
 
             // some comments are allowed at the end
@@ -269,7 +265,7 @@ class Inline
      *
      * @throws ParseException When malformed inline YAML string is parsed
      */
-    public static function parseScalar(string $scalar, int $flags = 0, ?array $delimiters = null, int &$i = 0, bool $evaluate = true, array &$references = [], ?bool &$isQuoted = null)
+    public static function parseScalar(string $scalar, int $flags = 0, array $delimiters = null, int &$i = 0, bool $evaluate = true, array &$references = [], bool &$isQuoted = null)
     {
         if (\in_array($scalar[$i], ['"', "'"], true)) {
             // quoted scalar
@@ -355,18 +351,11 @@ class Inline
         ++$i;
 
         // [foo, bar, ...]
-        $lastToken = null;
         while ($i < $len) {
             if (']' === $sequence[$i]) {
                 return $output;
             }
             if (',' === $sequence[$i] || ' ' === $sequence[$i]) {
-                if (',' === $sequence[$i] && (null === $lastToken || 'separator' === $lastToken)) {
-                    $output[] = null;
-                } elseif (',' === $sequence[$i]) {
-                    $lastToken = 'separator';
-                }
-
                 ++$i;
 
                 continue;
@@ -410,7 +399,6 @@ class Inline
 
             $output[] = $value;
 
-            $lastToken = 'value';
             ++$i;
         }
 
@@ -539,7 +527,7 @@ class Inline
                         if ('<<' === $key) {
                             $output += $value;
                         } elseif ($allowOverwrite || !isset($output[$key])) {
-                            if (!$isValueQuoted && \is_string($value) && '' !== $value && '&' === $value[0] && !self::isBinaryString($value) && Parser::preg_match(Parser::REFERENCE_PATTERN, $value, $matches)) {
+                            if (!$isValueQuoted && \is_string($value) && '' !== $value && '&' === $value[0] && Parser::preg_match(Parser::REFERENCE_PATTERN, $value, $matches)) {
                                 $references[$matches['ref']] = $matches['value'];
                                 $value = $matches['value'];
                             }
@@ -570,7 +558,7 @@ class Inline
      *
      * @throws ParseException when object parsing support was disabled and the parser detected a PHP object or when a reference could not be resolved
      */
-    private static function evaluateScalar(string $scalar, int $flags, array &$references = [], ?bool &$isQuotedString = null)
+    private static function evaluateScalar(string $scalar, int $flags, array &$references = [], bool &$isQuotedString = null)
     {
         $isQuotedString = false;
         $scalar = trim($scalar);
@@ -669,6 +657,7 @@ class Inline
                 }
 
                 return octdec($value);
+            // Optimize for returning strings.
             case \in_array($scalar[0], ['+', '-', '.'], true) || is_numeric($scalar[0]):
                 if (Parser::preg_match('{^[+-]?[0-9][0-9_]*$}', $scalar)) {
                     $scalar = str_replace('_', '', $scalar);
@@ -708,13 +697,8 @@ class Inline
                     case Parser::preg_match('/^(-|\+)?[0-9][0-9_]*(\.[0-9_]+)?$/', $scalar):
                         return (float) str_replace('_', '', $scalar);
                     case Parser::preg_match(self::getTimestampRegex(), $scalar):
-                        try {
-                            // When no timezone is provided in the parsed date, YAML spec says we must assume UTC.
-                            $time = new \DateTime($scalar, new \DateTimeZone('UTC'));
-                        } catch (\Exception $e) {
-                            // Some dates accepted by the regex are not valid dates.
-                            throw new ParseException(\sprintf('The date "%s" could not be parsed as it is an invalid date.', $scalar), self::$parsedLineNumber + 1, $scalar, self::$parsedFilename, $e);
-                        }
+                        // When no timezone is provided in the parsed date, YAML spec says we must assume UTC.
+                        $time = new \DateTime($scalar, new \DateTimeZone('UTC'));
 
                         if (Yaml::PARSE_DATETIME & $flags) {
                             return $time;

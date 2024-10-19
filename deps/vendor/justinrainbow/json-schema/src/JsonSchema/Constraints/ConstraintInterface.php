@@ -40,7 +40,7 @@ interface ConstraintInterface
      * @param string           $constraint the constraint/rule that is broken, e.g.: 'minLength'
      * @param array            $more       more array elements to add to the error
      */
-    public function addError(?JsonPointer $path, $message, $constraint='', ?array $more = null);
+    public function addError(JsonPointer $path = null, $message, $constraint='', array $more = null);
 
     /**
      * checks if the validator has not raised errors
@@ -61,5 +61,5 @@ interface ConstraintInterface
      *
      * @throws \JsonSchema\Exception\ExceptionInterface
      */
-    public function check(&$value, $schema = null, ?JsonPointer $path = null, $i = null);
+    public function check(&$value, $schema = null, JsonPointer $path = null, $i = null);
 }

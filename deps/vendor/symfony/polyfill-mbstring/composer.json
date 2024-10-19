@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": ">=7.2"
+        "php": ">=7.1"
     },
     "provide": {
         "ext-mbstring": "*"
@@ -30,6 +30,9 @@
     },
     "minimum-stability": "dev",
     "extra": {
+        "branch-alias": {
+            "dev-main": "1.23-dev"
+        },
         "thanks": {
             "name": "symfony/polyfill",
             "url": "https://github.com/symfony/polyfill"

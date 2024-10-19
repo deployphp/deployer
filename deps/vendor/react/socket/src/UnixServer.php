@@ -50,12 +50,8 @@ final class UnixServer extends EventEmitter implements ServerInterface
      * @throws InvalidArgumentException if the listening address is invalid
      * @throws RuntimeException if listening on this address fails (already in use etc.)
      */
-    public function __construct($path, $loop = null, array $context = array())
+    public function __construct($path, LoopInterface $loop = null, array $context = array())
     {
-        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
-            throw new \InvalidArgumentException('Argument #2 ($loop) expected null|React\EventLoop\LoopInterface');
-        }
-
         $this->loop = $loop ?: Loop::get();
 
         if (\strpos($path, '://') === false) {
@@ -63,33 +59,29 @@ final class UnixServer extends EventEmitter implements ServerInterface
         } elseif (\substr($path, 0, 7) !== 'unix://') {
             throw new \InvalidArgumentException(
                 'Given URI "' . $path . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : (\defined('PCNTL_EINVAL') ? \PCNTL_EINVAL : 22)
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             );
         }
 
-        $errno = 0;
-        $errstr = '';
-        \set_error_handler(function ($_, $error) use (&$errno, &$errstr) {
-            // PHP does not seem to report errno/errstr for Unix domain sockets (UDS) right now.
-            // This only applies to UDS server sockets, see also https://3v4l.org/NAhpr.
-            // Parse PHP warning message containing unknown error, HHVM reports proper info at least.
-            if (\preg_match('/\(([^\)]+)\)|\[(\d+)\]: (.*)/', $error, $match)) {
-                $errstr = isset($match[3]) ? $match['3'] : $match[1];
-                $errno = isset($match[2]) ? (int)$match[2] : 0;
-            }
-        });
-
-        $this->master = \stream_socket_server(
+        $this->master = @\stream_socket_server(
             $path,
             $errno,
             $errstr,
             \STREAM_SERVER_BIND | \STREAM_SERVER_LISTEN,
             \stream_context_create(array('socket' => $context))
         );
-
-        \restore_error_handler();
-
         if (false === $this->master) {
+            // PHP does not seem to report errno/errstr for Unix domain sockets (UDS) right now.
+            // This only applies to UDS server sockets, see also https://3v4l.org/NAhpr.
+            // Parse PHP warning message containing unknown error, HHVM reports proper info at least.
+            if ($errno === 0 && $errstr === '') {
+                $error = \error_get_last();
+                if (\preg_match('/\(([^\)]+)\)|\[(\d+)\]: (.*)/', $error['message'], $match)) {
+                    $errstr = isset($match[3]) ? $match['3'] : $match[1];
+                    $errno = isset($match[2]) ? (int)$match[2] : 0;
+                }
+            }
+
             throw new \RuntimeException(
                 'Failed to listen on Unix domain socket "' . $path . '": ' . $errstr . SocketServer::errconst($errno),
                 $errno

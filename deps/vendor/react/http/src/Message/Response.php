@@ -3,12 +3,11 @@
 namespace React\Http\Message;
 
 use Fig\Http\Message\StatusCodeInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use React\Http\Io\AbstractMessage;
 use React\Http\Io\BufferedBody;
 use React\Http\Io\HttpBodyStream;
 use React\Stream\ReadableStreamInterface;
+use RingCentral\Psr7\Response as Psr7Response;
 
 /**
  * Represents an outgoing server response message.
@@ -35,12 +34,13 @@ use React\Stream\ReadableStreamInterface;
  * `404 Not Found` status codes can used as `Response::STATUS_OK` and
  * `Response::STATUS_NOT_FOUND` respectively.
  *
- * > Internally, this implementation builds on top a base class which is
+ * > Internally, this implementation builds on top of an existing incoming
+ *   response message and only adds required streaming support. This base class is
  *   considered an implementation detail that may change in the future.
  *
  * @see \Psr\Http\Message\ResponseInterface
  */
-final class Response extends AbstractMessage implements ResponseInterface, StatusCodeInterface
+final class Response extends Psr7Response implements StatusCodeInterface
 {
     /**
      * Create an HTML response
@@ -258,41 +258,6 @@ final class Response extends AbstractMessage implements ResponseInterface, Statu
     }
 
     /**
-     * @var bool
-     * @see self::$phrasesMap
-     */
-    private static $phrasesInitialized = false;
-
-    /**
-     * Map of standard HTTP status codes to standard reason phrases.
-     *
-     * This map will be fully populated with all standard reason phrases on
-     * first access. By default, it only contains a subset of HTTP status codes
-     * that have a custom mapping to reason phrases (such as those with dashes
-     * and all caps words). See `self::STATUS_*` for all possible status code
-     * constants.
-     *
-     * @var array<int,string>
-     * @see self::STATUS_*
-     * @see self::getReasonPhraseForStatusCode()
-     */
-    private static $phrasesMap = array(
-        200 => 'OK',
-        203 => 'Non-Authoritative Information',
-        207 => 'Multi-Status',
-        226 => 'IM Used',
-        414 => 'URI Too Large',
-        418 => 'I\'m a teapot',
-        505 => 'HTTP Version Not Supported'
-    );
-
-    /** @var int */
-    private $statusCode;
-
-    /** @var string */
-    private $reasonPhrase;
-
-    /**
      * @param int                                            $status  HTTP status code (e.g. 200/404), see `self::STATUS_*` constants
      * @param array<string,string|string[]>                  $headers additional response headers
      * @param string|ReadableStreamInterface|StreamInterface $body    response body
@@ -315,100 +280,12 @@ final class Response extends AbstractMessage implements ResponseInterface, Statu
             throw new \InvalidArgumentException('Invalid response body given');
         }
 
-        parent::__construct($version, $headers, $body);
-
-        $this->statusCode = (int) $status;
-        $this->reasonPhrase = ($reason !== '' && $reason !== null) ? (string) $reason : self::getReasonPhraseForStatusCode($status);
-    }
-
-    public function getStatusCode()
-    {
-        return $this->statusCode;
-    }
-
-    public function withStatus($code, $reasonPhrase = '')
-    {
-        if ((string) $reasonPhrase === '') {
-            $reasonPhrase = self::getReasonPhraseForStatusCode($code);
-        }
-
-        if ($this->statusCode === (int) $code && $this->reasonPhrase === (string) $reasonPhrase) {
-            return $this;
-        }
-
-        $response = clone $this;
-        $response->statusCode = (int) $code;
-        $response->reasonPhrase = (string) $reasonPhrase;
-
-        return $response;
-    }
-
-    public function getReasonPhrase()
-    {
-        return $this->reasonPhrase;
-    }
-
-    /**
-     * @param int $code
-     * @return string default reason phrase for given status code or empty string if unknown
-     */
-    private static function getReasonPhraseForStatusCode($code)
-    {
-        if (!self::$phrasesInitialized) {
-            self::$phrasesInitialized = true;
-
-            // map all `self::STATUS_` constants from status code to reason phrase
-            // e.g. `self::STATUS_NOT_FOUND = 404` will be mapped to `404 Not Found`
-            $ref = new \ReflectionClass(__CLASS__);
-            foreach ($ref->getConstants() as $name => $value) {
-                if (!isset(self::$phrasesMap[$value]) && \strpos($name, 'STATUS_') === 0) {
-                    self::$phrasesMap[$value] = \ucwords(\strtolower(\str_replace('_', ' ', \substr($name, 7))));
-                }
-            }
-        }
-
-        return isset(self::$phrasesMap[$code]) ? self::$phrasesMap[$code] : '';
-    }
-
-    /**
-     * [Internal] Parse incoming HTTP protocol message
-     *
-     * @internal
-     * @param string $message
-     * @return self
-     * @throws \InvalidArgumentException if given $message is not a valid HTTP response message
-     */
-    public static function parseMessage($message)
-    {
-        $start = array();
-        if (!\preg_match('#^HTTP/(?<version>\d\.\d) (?<status>\d{3})(?: (?<reason>[^\r\n]*+))?[\r]?+\n#m', $message, $start)) {
-            throw new \InvalidArgumentException('Unable to parse invalid status-line');
-        }
-
-        // only support HTTP/1.1 and HTTP/1.0 requests
-        if ($start['version'] !== '1.1' && $start['version'] !== '1.0') {
-            throw new \InvalidArgumentException('Received response with invalid protocol version');
-        }
-
-        // check number of valid header fields matches number of lines + status line
-        $matches = array();
-        $n = \preg_match_all(self::REGEX_HEADERS, $message, $matches, \PREG_SET_ORDER);
-        if (\substr_count($message, "\n") !== $n + 1) {
-            throw new \InvalidArgumentException('Unable to parse invalid response header fields');
-        }
-
-        // format all header fields into associative array
-        $headers = array();
-        foreach ($matches as $match) {
-            $headers[$match[1]][] = $match[2];
-        }
-
-        return new self(
-            (int) $start['status'],
+        parent::__construct(
+            $status,
             $headers,
-            '',
-            $start['version'],
-            isset($start['reason']) ? $start['reason'] : ''
+            $body,
+            $version,
+            $reason
         );
     }
 }

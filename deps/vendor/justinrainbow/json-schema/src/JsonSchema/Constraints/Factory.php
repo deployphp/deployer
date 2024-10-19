@@ -74,8 +74,8 @@ class Factory
      * @param int                   $checkMode
      */
     public function __construct(
-        ?SchemaStorageInterface $schemaStorage = null,
-        ?UriRetrieverInterface $uriRetriever = null,
+        SchemaStorageInterface $schemaStorage = null,
+        UriRetrieverInterface $uriRetriever = null,
         $checkMode = Constraint::CHECK_MODE_NORMAL
     ) {
         // set provided config options

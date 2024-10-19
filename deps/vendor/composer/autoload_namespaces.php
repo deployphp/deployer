@@ -6,4 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Evenement' => array($vendorDir . '/evenement/evenement/src'),
 );

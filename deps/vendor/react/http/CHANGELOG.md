@@ -1,112 +1,5 @@
 # Changelog
 
-## 1.10.0 (2024-03-27)
-
-*   Feature: Add new PSR-7 implementation and remove dated RingCentral PSR-7 dependency.
-    (#518, #519, #520 and #522 by @clue)
-
-    This changeset allows us to maintain our own PSR-7 implementation and reduce
-    dependencies on external projects. It also improves performance slightly and
-    does not otherwise affect our public API. If you want to explicitly install
-    the old RingCentral PSR-7 dependency, you can still install it like this:
-
-    ```bash
-    composer require ringcentral/psr7
-    ```
-
-*   Feature: Add new `Uri` class for new PSR-7 implementation.
-    (#521 by @clue)
-
-*   Feature: Validate outgoing HTTP message headers and reject invalid messages.
-    (#523 by @clue)
-
-*   Feature: Full PHP 8.3 compatibility.
-    (#508 by @clue)
-
-*   Fix: Fix HTTP client to omit `Transfer-Encoding: chunked` when streaming empty request body.
-    (#516 by @clue)
-
-*   Fix: Ensure connection close handler is cleaned up for each request.
-    (#515 by @WyriHaximus)
-
-*   Update test suite and avoid unhandled promise rejections.
-    (#501 and #502 by @clue)
-
-## 1.9.0 (2023-04-26)
-
-This is a **SECURITY** and feature release for the 1.x series of ReactPHP's HTTP component.
-
-*   Security fix: This release fixes a medium severity security issue in ReactPHP's HTTP server component
-    that affects all versions between `v0.8.0` and `v1.8.0`. All users are encouraged to upgrade immediately.
-    (CVE-2023-26044 reported and fixed by @WyriHaximus)
-
-*   Feature: Support HTTP keep-alive for HTTP client (reusing persistent connections).
-    (#481, #484, #486 and #495 by @clue)
-
-    This feature offers significant performance improvements when sending many
-    requests to the same host as it avoids recreating the underlying TCP/IP
-    connection and repeating the TLS handshake for secure HTTPS requests.
-
-    ```php
-    $browser = new React\Http\Browser();
-
-    // Up to 300% faster! HTTP keep-alive is enabled by default
-    $response = React\Async\await($browser->get('https://httpbingo.org/redirect/6'));
-    assert($response instanceof Psr\Http\Message\ResponseInterface);
-    ```
-
-*   Feature: Add `Request` class to represent outgoing HTTP request message.
-    (#480 by @clue)
-
-*   Feature: Preserve request method and body for `307 Temporary Redirect` and `308 Permanent Redirect`.
-    (#442 by @dinooo13)
-
-*   Feature: Include buffer logic to avoid dependency on reactphp/promise-stream.
-    (#482 by @clue)
-
-*   Improve test suite and project setup and report failed assertions.
-    (#478 by @clue, #487 and #491 by @WyriHaximus and #475 and #479 by @SimonFrings)
-
-## 1.8.0 (2022-09-29)
-
-*   Feature: Support for default request headers.
-    (#461 by @51imyy)
-
-    ```php
-    $browser = new React\Http\Browser();
-    $browser = $browser->withHeader('User-Agent', 'ACME');
-
-    $browser->get($url)->then(…);
-    ```
-
-*   Feature: Forward compatibility with upcoming Promise v3.
-    (#460 by @clue)
-
-## 1.7.0 (2022-08-23)
-
-This is a **SECURITY** and feature release for the 1.x series of ReactPHP's HTTP component.
-
-*   Security fix: This release fixes a medium severity security issue in ReactPHP's HTTP server component
-    that affects all versions between `v0.7.0` and `v1.6.0`. All users are encouraged to upgrade immediately.
-    Special thanks to Marco Squarcina (TU Wien) for reporting this and working with us to coordinate this release.
-    (CVE-2022-36032 reported by @lavish and fixed by @clue)
-
-*   Feature: Improve HTTP server performance by ~20%, reuse syscall values for clock time and socket addresses.
-    (#457 and #467 by @clue)
-
-*   Feature: Full PHP 8.2+ compatibility, refactor internal `Transaction` to avoid assigning dynamic properties.
-    (#459 by @clue and #466 by @WyriHaximus)
-
-*   Feature / Fix: Allow explicit `Content-Length` response header on `HEAD` requests.
-    (#444 by @mrsimonbennett)
-
-*   Minor documentation improvements.
-    (#452 by @clue, #458 by @nhedger, #448 by @jorrit and #446 by @SimonFrings)
-
-*   Improve test suite, update to use new reactphp/async package instead of clue/reactphp-block,
-    skip memory tests when lowering memory limit fails and fix legacy HHVM build.
-    (#464 and #440 by @clue and #450 by @SimonFrings)
-
 ## 1.6.0 (2022-02-03)
 
 *   Feature: Add factory methods for common HTML/JSON/plaintext/XML response types.
@@ -117,6 +10,7 @@ This is a **SECURITY** and feature release for the 1.x series of ReactPHP's HTTP
     $response = React\Http\Response\json(['message' => 'Hello wörld!']);
     $response = React\Http\Response\plaintext("Hello wörld!\n");
     $response = React\Http\Response\xml("<message>Hello wörld!</message>\n");
+    $response = React\Http\Response\redirect('https://reactphp.org/');
     ```
 
 *   Feature: Expose all status code constants via `Response` class.

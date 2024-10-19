@@ -38,7 +38,7 @@ final class Timers
 
     public function add(TimerInterface $timer)
     {
-        $id = \PHP_VERSION_ID < 70200 ? \spl_object_hash($timer) : \spl_object_id($timer);
+        $id = \spl_object_hash($timer);
         $this->timers[$id] = $timer;
         $this->schedule[$id] = $timer->getInterval() + $this->updateTime();
         $this->sorted = false;
@@ -46,13 +46,12 @@ final class Timers
 
     public function contains(TimerInterface $timer)
     {
-        $id = \PHP_VERSION_ID < 70200 ? \spl_object_hash($timer) : \spl_object_id($timer);
-        return isset($this->timers[$id]);
+        return isset($this->timers[\spl_object_hash($timer)]);
     }
 
     public function cancel(TimerInterface $timer)
     {
-        $id = \PHP_VERSION_ID < 70200 ? \spl_object_hash($timer) : \spl_object_id($timer);
+        $id = \spl_object_hash($timer);
         unset($this->timers[$id], $this->schedule[$id]);
     }
 
@@ -74,11 +73,6 @@ final class Timers
 
     public function tick()
     {
-        // hot path: skip timers if nothing is scheduled
-        if (!$this->schedule) {
-            return;
-        }
-
         // ensure timers are sorted so we can execute in order
         if (!$this->sorted) {
             $this->sorted = true;

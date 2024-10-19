@@ -4,7 +4,7 @@ namespace React\Socket;
 
 use React\Dns\Resolver\ResolverInterface;
 use React\Promise;
-use React\Promise\PromiseInterface;
+use React\Promise\CancellablePromiseInterface;
 
 final class DnsConnector implements ConnectorInterface
 {
@@ -33,7 +33,7 @@ final class DnsConnector implements ConnectorInterface
         if (!$parts || !isset($parts['host'])) {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $original . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : (\defined('PCNTL_EINVAL') ? \PCNTL_EINVAL : 22)
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             ));
         }
 
@@ -73,11 +73,11 @@ final class DnsConnector implements ConnectorInterface
 
                             // Exception trace arguments are not available on some PHP 7.4 installs
                             // @codeCoverageIgnoreStart
-                            foreach ($trace as $ti => $one) {
+                            foreach ($trace as &$one) {
                                 if (isset($one['args'])) {
-                                    foreach ($one['args'] as $ai => $arg) {
+                                    foreach ($one['args'] as &$arg) {
                                         if ($arg instanceof \Closure) {
-                                            $trace[$ti]['args'][$ai] = 'Object(' . \get_class($arg) . ')';
+                                            $arg = 'Object(' . \get_class($arg) . ')';
                                         }
                                     }
                                 }
@@ -103,7 +103,7 @@ final class DnsConnector implements ConnectorInterface
                 }
 
                 // (try to) cancel pending DNS lookup / connection attempt
-                if ($promise instanceof PromiseInterface && \method_exists($promise, 'cancel')) {
+                if ($promise instanceof CancellablePromiseInterface) {
                     // overwrite callback arguments for PHP7+ only, so they do not show
                     // up in the Exception trace and do not cause a possible cyclic reference.
                     $_ = $reject = null;

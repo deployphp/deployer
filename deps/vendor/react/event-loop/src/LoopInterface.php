@@ -20,10 +20,9 @@ interface LoopInterface
      * listener. This method MAY throw an `Exception` if the given resource type
      * is not supported by this loop implementation.
      *
-     * The second parameter MUST be a listener callback function that accepts
-     * the stream resource as its only parameter.
-     * If you don't use the stream resource inside your listener callback function
-     * you MAY use a function which has no parameters at all.
+     * The listener callback function MUST be able to accept a single parameter,
+     * the stream resource added by this method or you MAY use a function which
+     * has no parameters at all.
      *
      * The listener callback function MUST NOT throw an `Exception`.
      * The return value of the listener callback function will be ignored and has
@@ -70,10 +69,9 @@ interface LoopInterface
      * listener. This method MAY throw an `Exception` if the given resource type
      * is not supported by this loop implementation.
      *
-     * The second parameter MUST be a listener callback function that accepts
-     * the stream resource as its only parameter.
-     * If you don't use the stream resource inside your listener callback function
-     * you MAY use a function which has no parameters at all.
+     * The listener callback function MUST be able to accept a single parameter,
+     * the stream resource added by this method or you MAY use a function which
+     * has no parameters at all.
      *
      * The listener callback function MUST NOT throw an `Exception`.
      * The return value of the listener callback function will be ignored and has
@@ -135,21 +133,18 @@ interface LoopInterface
     /**
      * Enqueue a callback to be invoked once after the given interval.
      *
-     * The second parameter MUST be a timer callback function that accepts
-     * the timer instance as its only parameter.
-     * If you don't use the timer instance inside your timer callback function
-     * you MAY use a function which has no parameters at all.
+     * The timer callback function MUST be able to accept a single parameter,
+     * the timer instance as also returned by this method or you MAY use a
+     * function which has no parameters at all.
      *
      * The timer callback function MUST NOT throw an `Exception`.
      * The return value of the timer callback function will be ignored and has
      * no effect, so for performance reasons you're recommended to not return
      * any excessive data structures.
      *
-     * This method returns a timer instance. The same timer instance will also be
-     * passed into the timer callback function as described above.
-     * You can invoke [`cancelTimer`](#canceltimer) to cancel a pending timer.
      * Unlike [`addPeriodicTimer()`](#addperiodictimer), this method will ensure
      * the callback will be invoked only once after the given interval.
+     * You can invoke [`cancelTimer`](#canceltimer) to cancel a pending timer.
      *
      * ```php
      * $loop->addTimer(0.8, function () {
@@ -209,21 +204,18 @@ interface LoopInterface
     /**
      * Enqueue a callback to be invoked repeatedly after the given interval.
      *
-     * The second parameter MUST be a timer callback function that accepts
-     * the timer instance as its only parameter.
-     * If you don't use the timer instance inside your timer callback function
-     * you MAY use a function which has no parameters at all.
+     * The timer callback function MUST be able to accept a single parameter,
+     * the timer instance as also returned by this method or you MAY use a
+     * function which has no parameters at all.
      *
      * The timer callback function MUST NOT throw an `Exception`.
      * The return value of the timer callback function will be ignored and has
      * no effect, so for performance reasons you're recommended to not return
      * any excessive data structures.
      *
-     * This method returns a timer instance. The same timer instance will also be
-     * passed into the timer callback function as described above.
-     * Unlike [`addTimer()`](#addtimer), this method will ensure the callback
-     * will be invoked infinitely after the given interval or until you invoke
-     * [`cancelTimer`](#canceltimer).
+     * Unlike [`addTimer()`](#addtimer), this method will ensure the the
+     * callback will be invoked infinitely after the given interval or until you
+     * invoke [`cancelTimer`](#canceltimer).
      *
      * ```php
      * $timer = $loop->addPeriodicTimer(0.1, function () {
@@ -364,10 +356,9 @@ interface LoopInterface
      * This is useful to catch user interrupt signals or shutdown signals from
      * tools like `supervisor` or `systemd`.
      *
-     * The second parameter MUST be a listener callback function that accepts
-     * the signal as its only parameter.
-     * If you don't use the signal inside your listener callback function
-     * you MAY use a function which has no parameters at all.
+     * The listener callback function MUST be able to accept a single parameter,
+     * the signal added by this method or you MAY use a function which
+     * has no parameters at all.
      *
      * The listener callback function MUST NOT throw an `Exception`.
      * The return value of the listener callback function will be ignored and has
@@ -382,14 +373,14 @@ interface LoopInterface
      *
      * See also [example #4](examples).
      *
-     * Signaling is only available on Unix-like platforms, Windows isn't
+     * Signaling is only available on Unix-like platform, Windows isn't
      * supported due to operating system limitations.
      * This method may throw a `BadMethodCallException` if signals aren't
      * supported on this platform, for example when required extensions are
      * missing.
      *
      * **Note: A listener can only be added once to the same signal, any
-     * attempts to add it more than once will be ignored.**
+     * attempts to add it more then once will be ignored.**
      *
      * @param int $signal
      * @param callable $listener
@@ -422,7 +413,7 @@ interface LoopInterface
      *
      * For many applications, this method is the only directly visible
      * invocation on the event loop.
-     * As a rule of thumb, it is usually recommended to attach everything to the
+     * As a rule of thumb, it is usally recommended to attach everything to the
      * same loop instance and then run the loop once at the bottom end of the
      * application.
      *
@@ -440,7 +431,7 @@ interface LoopInterface
      * for any of the attached listeners.
      *
      * This method MUST NOT be called while the loop is already running.
-     * This method MAY be called more than once after it has explicitly been
+     * This method MAY be called more than once after it has explicity been
      * [`stop()`ped](#stop) or after it automatically stopped because it
      * previously did no longer have anything to do.
      *

@@ -24,17 +24,6 @@ class RequestHeaderParser extends EventEmitter
 {
     private $maxSize = 8192;
 
-    /** @var Clock */
-    private $clock;
-
-    /** @var array<string|int,array<string,string>> */
-    private $connectionParams = array();
-
-    public function __construct(Clock $clock)
-    {
-        $this->clock = $clock;
-    }
-
     public function handle(ConnectionInterface $conn)
     {
         $buffer = '';
@@ -69,7 +58,8 @@ class RequestHeaderParser extends EventEmitter
             try {
                 $request = $that->parseRequest(
                     (string)\substr($buffer, 0, $endOfHeader + 2),
-                    $conn
+                    $conn->getRemoteAddress(),
+                    $conn->getLocalAddress()
                 );
             } catch (Exception $exception) {
                 $buffer = '';
@@ -121,59 +111,171 @@ class RequestHeaderParser extends EventEmitter
 
     /**
      * @param string $headers buffer string containing request headers only
-     * @param ConnectionInterface $connection
+     * @param ?string $remoteSocketUri
+     * @param ?string $localSocketUri
      * @return ServerRequestInterface
      * @throws \InvalidArgumentException
      * @internal
      */
-    public function parseRequest($headers, ConnectionInterface $connection)
+    public function parseRequest($headers, $remoteSocketUri, $localSocketUri)
     {
-        // reuse same connection params for all server params for this connection
-        $cid = \PHP_VERSION_ID < 70200 ? \spl_object_hash($connection) : \spl_object_id($connection);
-        if (isset($this->connectionParams[$cid])) {
-            $serverParams = $this->connectionParams[$cid];
-        } else {
-            // assign new server params for new connection
-            $serverParams = array();
+        // additional, stricter safe-guard for request line
+        // because request parser doesn't properly cope with invalid ones
+        $start = array();
+        if (!\preg_match('#^(?<method>[^ ]+) (?<target>[^ ]+) HTTP/(?<version>\d\.\d)#m', $headers, $start)) {
+            throw new \InvalidArgumentException('Unable to parse invalid request-line');
+        }
 
-            // scheme is `http` unless TLS is used
-            $localSocketUri = $connection->getLocalAddress();
-            $localParts = $localSocketUri === null ? array() : \parse_url($localSocketUri);
-            if (isset($localParts['scheme']) && $localParts['scheme'] === 'tls') {
-                $serverParams['HTTPS'] = 'on';
+        // only support HTTP/1.1 and HTTP/1.0 requests
+        if ($start['version'] !== '1.1' && $start['version'] !== '1.0') {
+            throw new \InvalidArgumentException('Received request with invalid protocol version', Response::STATUS_VERSION_NOT_SUPPORTED);
+        }
+
+        // match all request header fields into array, thanks to @kelunik for checking the HTTP specs and coming up with this regex
+        $matches = array();
+        $n = \preg_match_all('/^([^()<>@,;:\\\"\/\[\]?={}\x01-\x20\x7F]++):[\x20\x09]*+((?:[\x20\x09]*+[\x21-\x7E\x80-\xFF]++)*+)[\x20\x09]*+[\r]?+\n/m', $headers, $matches, \PREG_SET_ORDER);
+
+        // check number of valid header fields matches number of lines + request line
+        if (\substr_count($headers, "\n") !== $n + 1) {
+            throw new \InvalidArgumentException('Unable to parse invalid request header fields');
+        }
+
+        // format all header fields into associative array
+        $host = null;
+        $fields = array();
+        foreach ($matches as $match) {
+            $fields[$match[1]][] = $match[2];
+
+            // match `Host` request header
+            if ($host === null && \strtolower($match[1]) === 'host') {
+                $host = $match[2];
             }
-
-            // apply SERVER_ADDR and SERVER_PORT if server address is known
-            // address should always be known, even for Unix domain sockets (UDS)
-            // but skip UDS as it doesn't have a concept of host/port.
-            if ($localSocketUri !== null && isset($localParts['host'], $localParts['port'])) {
-                $serverParams['SERVER_ADDR'] = $localParts['host'];
-                $serverParams['SERVER_PORT'] = $localParts['port'];
-            }
-
-            // apply REMOTE_ADDR and REMOTE_PORT if source address is known
-            // address should always be known, unless this is over Unix domain sockets (UDS)
-            $remoteSocketUri = $connection->getRemoteAddress();
-            if ($remoteSocketUri !== null) {
-                $remoteAddress = \parse_url($remoteSocketUri);
-                $serverParams['REMOTE_ADDR'] = $remoteAddress['host'];
-                $serverParams['REMOTE_PORT'] = $remoteAddress['port'];
-            }
-
-            // remember server params for all requests from this connection, reset on connection close
-            $this->connectionParams[$cid] = $serverParams;
-            $params =& $this->connectionParams;
-            $connection->on('close', function () use (&$params, $cid) {
-                assert(\is_array($params));
-                unset($params[$cid]);
-            });
         }
 
         // create new obj implementing ServerRequestInterface by preserving all
         // previous properties and restoring original request-target
-        $serverParams['REQUEST_TIME'] = (int) ($now = $this->clock->now());
-        $serverParams['REQUEST_TIME_FLOAT'] = $now;
+        $serverParams = array(
+            'REQUEST_TIME' => \time(),
+            'REQUEST_TIME_FLOAT' => \microtime(true)
+        );
 
-        return ServerRequest::parseMessage($headers, $serverParams);
+        // scheme is `http` unless TLS is used
+        $localParts = $localSocketUri === null ? array() : \parse_url($localSocketUri);
+        if (isset($localParts['scheme']) && $localParts['scheme'] === 'tls') {
+            $scheme = 'https://';
+            $serverParams['HTTPS'] = 'on';
+        } else {
+            $scheme = 'http://';
+        }
+
+        // default host if unset comes from local socket address or defaults to localhost
+        $hasHost = $host !== null;
+        if ($host === null) {
+            $host = isset($localParts['host'], $localParts['port']) ? $localParts['host'] . ':' . $localParts['port'] : '127.0.0.1';
+        }
+
+        if ($start['method'] === 'OPTIONS' && $start['target'] === '*') {
+            // support asterisk-form for `OPTIONS *` request line only
+            $uri = $scheme . $host;
+        } elseif ($start['method'] === 'CONNECT') {
+            $parts = \parse_url('tcp://' . $start['target']);
+
+            // check this is a valid authority-form request-target (host:port)
+            if (!isset($parts['scheme'], $parts['host'], $parts['port']) || \count($parts) !== 3) {
+                throw new \InvalidArgumentException('CONNECT method MUST use authority-form request target');
+            }
+            $uri = $scheme . $start['target'];
+        } else {
+            // support absolute-form or origin-form for proxy requests
+            if ($start['target'][0] === '/') {
+                $uri = $scheme . $host . $start['target'];
+            } else {
+                // ensure absolute-form request-target contains a valid URI
+                $parts = \parse_url($start['target']);
+
+                // make sure value contains valid host component (IP or hostname), but no fragment
+                if (!isset($parts['scheme'], $parts['host']) || $parts['scheme'] !== 'http' || isset($parts['fragment'])) {
+                    throw new \InvalidArgumentException('Invalid absolute-form request-target');
+                }
+
+                $uri = $start['target'];
+            }
+        }
+
+        // apply REMOTE_ADDR and REMOTE_PORT if source address is known
+        // address should always be known, unless this is over Unix domain sockets (UDS)
+        if ($remoteSocketUri !== null) {
+            $remoteAddress = \parse_url($remoteSocketUri);
+            $serverParams['REMOTE_ADDR'] = $remoteAddress['host'];
+            $serverParams['REMOTE_PORT'] = $remoteAddress['port'];
+        }
+
+        // apply SERVER_ADDR and SERVER_PORT if server address is known
+        // address should always be known, even for Unix domain sockets (UDS)
+        // but skip UDS as it doesn't have a concept of host/port.
+        if ($localSocketUri !== null && isset($localParts['host'], $localParts['port'])) {
+            $serverParams['SERVER_ADDR'] = $localParts['host'];
+            $serverParams['SERVER_PORT'] = $localParts['port'];
+        }
+
+        $request = new ServerRequest(
+            $start['method'],
+            $uri,
+            $fields,
+            '',
+            $start['version'],
+            $serverParams
+        );
+
+        // only assign request target if it is not in origin-form (happy path for most normal requests)
+        if ($start['target'][0] !== '/') {
+            $request = $request->withRequestTarget($start['target']);
+        }
+
+        if ($hasHost) {
+            // Optional Host request header value MUST be valid (host and optional port)
+            $parts = \parse_url('http://' . $request->getHeaderLine('Host'));
+
+            // make sure value contains valid host component (IP or hostname)
+            if (!$parts || !isset($parts['scheme'], $parts['host'])) {
+                $parts = false;
+            }
+
+            // make sure value does not contain any other URI component
+            if (\is_array($parts)) {
+                unset($parts['scheme'], $parts['host'], $parts['port']);
+            }
+            if ($parts === false || $parts) {
+                throw new \InvalidArgumentException('Invalid Host header value');
+            }
+        } elseif (!$hasHost && $start['version'] === '1.1' && $start['method'] !== 'CONNECT') {
+            // require Host request header for HTTP/1.1 (except for CONNECT method)
+            throw new \InvalidArgumentException('Missing required Host request header');
+        } elseif (!$hasHost) {
+            // remove default Host request header for HTTP/1.0 when not explicitly given
+            $request = $request->withoutHeader('Host');
+        }
+
+        // ensure message boundaries are valid according to Content-Length and Transfer-Encoding request headers
+        if ($request->hasHeader('Transfer-Encoding')) {
+            if (\strtolower($request->getHeaderLine('Transfer-Encoding')) !== 'chunked') {
+                throw new \InvalidArgumentException('Only chunked-encoding is allowed for Transfer-Encoding', Response::STATUS_NOT_IMPLEMENTED);
+            }
+
+            // Transfer-Encoding: chunked and Content-Length header MUST NOT be used at the same time
+            // as per https://tools.ietf.org/html/rfc7230#section-3.3.3
+            if ($request->hasHeader('Content-Length')) {
+                throw new \InvalidArgumentException('Using both `Transfer-Encoding: chunked` and `Content-Length` is not allowed', Response::STATUS_BAD_REQUEST);
+            }
+        } elseif ($request->hasHeader('Content-Length')) {
+            $string = $request->getHeaderLine('Content-Length');
+
+            if ((string)(int)$string !== $string) {
+                // Content-Length value is not an integer or not a single integer
+                throw new \InvalidArgumentException('The value of `Content-Length` is not valid', Response::STATUS_BAD_REQUEST);
+            }
+        }
+
+        return $request;
     }
 }

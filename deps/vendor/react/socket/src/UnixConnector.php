@@ -18,15 +18,8 @@ final class UnixConnector implements ConnectorInterface
 {
     private $loop;
 
-    /**
-     * @param ?LoopInterface $loop
-     */
-    public function __construct($loop = null)
+    public function __construct(LoopInterface $loop = null)
     {
-        if ($loop !== null && !$loop instanceof LoopInterface) { // manual type check to support legacy PHP < 7.1
-            throw new \InvalidArgumentException('Argument #1 ($loop) expected null|React\EventLoop\LoopInterface');
-        }
-
         $this->loop = $loop ?: Loop::get();
     }
 
@@ -37,7 +30,7 @@ final class UnixConnector implements ConnectorInterface
         } elseif (\substr($path, 0, 7) !== 'unix://') {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $path . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : (\defined('PCNTL_EINVAL') ? \PCNTL_EINVAL : 22)
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             ));
         }
 

@@ -51,8 +51,7 @@ interface ConnectorInterface
      * ```
      *
      * @param string $uri
-     * @return \React\Promise\PromiseInterface<ConnectionInterface>
-     *     Resolves with a `ConnectionInterface` on success or rejects with an `Exception` on error.
+     * @return \React\Promise\PromiseInterface resolves with a stream implementing ConnectionInterface on success or rejects with an Exception on error
      * @see ConnectionInterface
      */
     public function connect($uri);

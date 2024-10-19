@@ -27,7 +27,7 @@ class ObjectConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function check(&$element, $schema = null, ?JsonPointer $path = null, $properties = null,
+    public function check(&$element, $schema = null, JsonPointer $path = null, $properties = null,
         $additionalProp = null, $patternProperties = null, $appliedDefaults = array())
     {
         if ($element instanceof UndefinedConstraint) {
@@ -51,7 +51,7 @@ class ObjectConstraint extends Constraint
         $this->validateElement($element, $matches, $schema, $path, $properties, $additionalProp);
     }
 
-    public function validatePatternProperties($element, ?JsonPointer $path, $patternProperties)
+    public function validatePatternProperties($element, JsonPointer $path = null, $patternProperties)
     {
         $try = array('/', '#', '+', '~', '%');
         $matches = array();
@@ -90,7 +90,7 @@ class ObjectConstraint extends Constraint
      * @param \StdClass        $properties     Properties
      * @param mixed            $additionalProp Additional properties
      */
-    public function validateElement($element, $matches, $schema = null, ?JsonPointer $path = null,
+    public function validateElement($element, $matches, $schema = null, JsonPointer $path = null,
         $properties = null, $additionalProp = null)
     {
         $this->validateMinMaxConstraint($element, $schema, $path);
@@ -132,7 +132,7 @@ class ObjectConstraint extends Constraint
      * @param \stdClass        $properties Property definitions
      * @param JsonPointer|null $path       Path?
      */
-    public function validateProperties(&$element, $properties = null, ?JsonPointer $path = null)
+    public function validateProperties(&$element, $properties = null, JsonPointer $path = null)
     {
         $undefinedConstraint = $this->factory->createInstanceFor('undefined');
 
@@ -174,7 +174,7 @@ class ObjectConstraint extends Constraint
      * @param \stdClass        $objectDefinition ObjectConstraint definition
      * @param JsonPointer|null $path             Path to test?
      */
-    protected function validateMinMaxConstraint($element, $objectDefinition, ?JsonPointer $path = null)
+    protected function validateMinMaxConstraint($element, $objectDefinition, JsonPointer $path = null)
     {
         // Verify minimum number of properties
         if (isset($objectDefinition->minProperties) && !is_object($objectDefinition->minProperties)) {

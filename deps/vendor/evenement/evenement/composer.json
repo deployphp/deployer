@@ -13,17 +13,17 @@
         "php": ">=7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9 || ^6"
+        "phpunit/phpunit": "^6.0"
     },
     "autoload": {
-        "psr-4": {
-            "Evenement\\": "src/"
+        "psr-0": {
+            "Evenement": "src"
         }
     },
     "autoload-dev": {
-        "psr-4": {
-            "Evenement\\Tests\\": "tests/"
+        "psr-0": {
+            "Evenement": "tests"
         },
-        "files": ["tests/functions.php"]
+        "files": ["tests/Evenement/Tests/functions.php"]
     }
 }

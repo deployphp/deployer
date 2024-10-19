@@ -39,7 +39,7 @@ interface ResolverInterface
      * ```
      *
      * @param string $domain
-     * @return \React\Promise\PromiseInterface<string>
+     * @return \React\Promise\PromiseInterface<string,\Exception>
      *     resolves with a single IP address on success or rejects with an Exception on error.
      */
     public function resolve($domain);
@@ -87,7 +87,7 @@ interface ResolverInterface
      * ```
      *
      * @param string $domain
-     * @return \React\Promise\PromiseInterface<array>
+     * @return \React\Promise\PromiseInterface<array,\Exception>
      *     Resolves with all record values on success or rejects with an Exception on error.
      */
     public function resolveAll($domain, $type);

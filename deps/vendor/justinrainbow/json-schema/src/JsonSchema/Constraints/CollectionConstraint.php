@@ -22,7 +22,7 @@ class CollectionConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function check(&$value, $schema = null, ?JsonPointer $path = null, $i = null)
+    public function check(&$value, $schema = null, JsonPointer $path = null, $i = null)
     {
         // Verify minItems
         if (isset($schema->minItems) && count($value) < $schema->minItems) {
@@ -61,7 +61,7 @@ class CollectionConstraint extends Constraint
      * @param JsonPointer|null $path
      * @param string           $i
      */
-    protected function validateItems(&$value, $schema = null, ?JsonPointer $path = null, $i = null)
+    protected function validateItems(&$value, $schema = null, JsonPointer $path = null, $i = null)
     {
         if (is_object($schema->items)) {
             // just one type definition for the whole array

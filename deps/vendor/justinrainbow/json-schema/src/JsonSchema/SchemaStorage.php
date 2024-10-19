@@ -17,8 +17,8 @@ class SchemaStorage implements SchemaStorageInterface
     protected $schemas = array();
 
     public function __construct(
-        ?UriRetrieverInterface $uriRetriever = null,
-        ?UriResolverInterface $uriResolver = null
+        UriRetrieverInterface $uriRetriever = null,
+        UriResolverInterface $uriResolver = null
     ) {
         $this->uriRetriever = $uriRetriever ?: new UriRetriever();
         $this->uriResolver = $uriResolver ?: new UriResolver();

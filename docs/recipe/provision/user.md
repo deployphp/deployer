@@ -13,7 +13,7 @@ require 'recipe/provision/user.php';
 
 ## Configuration
 ### sudo_password
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L8)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L7)
 
 
 
@@ -26,7 +26,7 @@ return askHiddenResponse(' Password for sudo: ');
 ## Tasks
 
 ### provision:user
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L14)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L13)
 
 Setups a deployer user.
 
@@ -34,7 +34,7 @@ Setups a deployer user.
 
 
 ### provision:ssh_copy_id
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L54)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L53)
 
 Copy public key to remote server.
 

@@ -39,14 +39,12 @@ task('provision', [
     'provision:verify',
 ]);
 
+// Default user to use for provisioning.
+set('provision_user', 'root');
+
 desc('Checks pre-required state');
 task('provision:check', function () {
-    if (get('remote_user') !== 'root' && get('become') !== 'root') {
-        warning('');
-        warning('Run provision as root: -o remote_user=root');
-        warning('or with a sudo enabled user: -o become=root');
-        warning('');
-    }
+    set('remote_user', get('provision_user'));
 
     $release = run('cat /etc/os-release');
     ['NAME' => $name, 'VERSION_ID' => $version] = parse_ini_string($release);

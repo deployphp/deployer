@@ -582,13 +582,3 @@ var_dump($info['http_code'], $result);
 ```
 
 
-## appendToFile()
-
-```php
-appendToFile(string $file, string $string): void
-```
-
-Appends a string to a file.
-
-
-

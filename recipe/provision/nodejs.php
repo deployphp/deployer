@@ -2,12 +2,15 @@
 
 namespace Deployer;
 
+use function Deployer\Support\escape_shell_argument;
 use function Deployer\Support\starts_with;
 
 set('node_version', '23.x');
 
 desc('Installs npm packages');
 task('provision:node', function () {
+    set('remote_user', get('provision_user'));
+
     if (has('nodejs_version')) {
         throw new \RuntimeException('nodejs_version is deprecated, use node_version_version instead.');
     }
@@ -22,6 +25,7 @@ task('provision:node', function () {
     }
 
     $url = "https://github.com/Schniz/fnm/releases/latest/download/$filename.zip";
+    run("rm -rf /tmp/$filename.zip");
     run("curl -sSL $url --output /tmp/$filename.zip");
 
     run("unzip /tmp/$filename.zip -d /tmp");
@@ -30,6 +34,6 @@ task('provision:node', function () {
     run('chmod +x /usr/local/bin/fnm');
 
     run('fnm install {{node_version}}');
-    appendToFile('/home/deployer/.bashrc', 'eval "`fnm env`"');
+    run("echo " . escape_shell_argument('eval "`fnm env`"') . " >> /etc/profile.d/fnm.sh");
 })
     ->oncePerNode();

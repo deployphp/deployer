@@ -980,18 +980,3 @@ function fetch(string $url, string $method = 'get', array $headers = [], ?string
     }
     return $http->send($info);
 }
-
-
-/**
- * Appends a string to a file.
- *
- * @param string $file
- * @param string $string
- * @throws Exception
- * @throws RunException
- * @throws TimeoutException
- */
-function appendToFile(string $file, string $string): void
-{
-    run("echo " . escape_shell_argument($string) . " >> $file");
-}

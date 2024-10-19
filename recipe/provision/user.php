@@ -27,6 +27,7 @@ task('provision:user', function () {
         run('chsh -s /bin/bash deployer');
         run('cp /root/.profile /home/deployer/.profile');
         run('cp /root/.bashrc /home/deployer/.bashrc');
+        run('touch /home/deployer/.sudo_as_admin_successful');
 
         // Make color prompt.
         run("sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' /home/deployer/.bashrc");

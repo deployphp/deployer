@@ -34,11 +34,11 @@ task('provision:php', function () {
     run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 
     // Configure PHP-CLI
-    run("sudo sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/$version/cli/php.ini");
-    run("sudo sed -i 's/display_errors = .*/display_errors = On/' /etc/php/$version/cli/php.ini");
-    run("sudo sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/$version/cli/php.ini");
-    run("sudo sed -i 's/upload_max_filesize = .*/upload_max_filesize = 128M/' /etc/php/$version/cli/php.ini");
-    run("sudo sed -i 's/;date.timezone.*/date.timezone = UTC/' /etc/php/$version/cli/php.ini");
+    run("sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/$version/cli/php.ini");
+    run("sed -i 's/display_errors = .*/display_errors = On/' /etc/php/$version/cli/php.ini");
+    run("sed -i 's/memory_limit = .*/memory_limit = 512M/' /etc/php/$version/cli/php.ini");
+    run("sed -i 's/upload_max_filesize = .*/upload_max_filesize = 128M/' /etc/php/$version/cli/php.ini");
+    run("sed -i 's/;date.timezone.*/date.timezone = UTC/' /etc/php/$version/cli/php.ini");
 
     // Configure PHP-FPM
     run("sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/$version/fpm/php.ini");

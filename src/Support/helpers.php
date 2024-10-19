@@ -76,10 +76,10 @@ function str_contains(string $haystack, string $needle): bool
 /**
  * Checks if string stars with given prefix.
  */
-function starts_with(string $string, string $startString): bool
+function starts_with(string $string, string $prefix): bool
 {
-    $len = strlen($startString);
-    return (substr($string, 0, $len) === $startString);
+    $len = strlen($prefix);
+    return (substr($string, 0, $len) === $prefix);
 }
 
 /**

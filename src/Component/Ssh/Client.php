@@ -61,7 +61,7 @@ class Client
 
         $shellId = bin2hex(random_bytes(10));
         $shellCommand = $host->getShell();
-        if ($host->has('become')) {
+        if ($host->has('become') && !empty($host->get('become'))) {
             $shellCommand = "sudo -H -u {$host->get('become')} " . $shellCommand;
         }
 

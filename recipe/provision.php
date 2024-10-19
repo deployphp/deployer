@@ -9,6 +9,7 @@ require __DIR__ . '/provision/user.php';
 require __DIR__ . '/provision/website.php';
 
 use Deployer\Task\Context;
+
 use function Deployer\Support\parse_home_dir;
 
 add('recipes', ['provision']);
@@ -102,14 +103,14 @@ task('provision:configure', function () {
     }
 
     if ($showCode) {
-    $code = "\n\n<comment>====== Configuration Start ======</comment>";
-    $code .= "\nhost(<info>'{{alias}}'</info>)";
-    foreach (array_merge($params, $dbparams) as $name) {
-        $code .= "\n    ->set(<info>'$name'</info>, <info>'" . get($name) . "'</info>)";
-    }
-    $code .= ";\n";
-    $code .= "<comment>====== Configuration End ======</comment>\n\n";
-    writeln($code);
+        $code = "\n\n<comment>====== Configuration Start ======</comment>";
+        $code .= "\nhost(<info>'{{alias}}'</info>)";
+        foreach (array_merge($params, $dbparams) as $name) {
+            $code .= "\n    ->set(<info>'$name'</info>, <info>'" . get($name) . "'</info>)";
+        }
+        $code .= ";\n";
+        $code .= "<comment>====== Configuration End ======</comment>\n\n";
+        writeln($code);
     }
 });
 

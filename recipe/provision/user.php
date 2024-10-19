@@ -2,7 +2,6 @@
 
 namespace Deployer;
 
-
 use function Deployer\Support\parse_home_dir;
 
 set('sudo_password', function () {
@@ -69,10 +68,10 @@ task('provision:ssh_copy_id', function () {
     }
 
     if (!$publicKeyContent) {
-        $publicKeyContent = ask(' Public key: ', false);
+        $publicKeyContent = ask(' Public key: ', '');
     }
 
-    if (!$publicKeyContent) {
+    if (empty($publicKeyContent)) {
         info('Skipping public key copy as no public key was found or provided.');
         return;
     }

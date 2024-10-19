@@ -35,8 +35,8 @@ jobs:
           mkdir -p ~/.gnupg/
           chmod 0700 ~/.gnupg/
           echo "$GPG_SIGNING_KEY" > ~/.gnupg/private.key
-          gpg --import ~/.gnupg/private.key
-          gpg -u anton@deployer.org --pinentry-mode loopback --passphrase "${GPG_PASSPHRASE}" --detach-sign --output deployer.phar.asc deployer.phar
+          gpg --import --no-tty --batch --yes ~/.gnupg/private.key
+          gpg -u anton@deployer.org --command-fd 0 --passphrase-fd 0 --batch --pinentry-mode loopback --passphrase "${GPG_PASSPHRASE}" --detach-sign --output deployer.phar.asc deployer.phar
         env:
           GPG_SIGNING_KEY: |
             ${{ secrets.GPG_SIGNING_KEY }}

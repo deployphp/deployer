@@ -35,31 +35,18 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-      - name: Add deployer.phar1
+      - name: Sign phar
         run: |
-          set -x
-          git checkout -b dist
-          mv deployer.phar dep
-          chmod +x dep
-          git add -f dep
+          mkdir -p ~/.gnupg/
+          chmod 0700 ~/.gnupg/
+          echo "$GPG_SIGNING_KEY" > ~/.gnupg/private.key
+          gpg --import ~/.gnupg/private.key
+          gpg -u anton@deployer.org --detach-sign --output deployer.phar.asc deployer.phar
+        env:
+          GPG_SIGNING_KEY: |
+            ${{ secrets.GPG_SIGNING_KEY }}
 
-      - name: Remove obsolete files & dirs
-        run: |
-          set -x
-          git rm -r .github/ bin/ docs/ tests/ *.lock *.yaml *.xml *.neon
-
-      - name: Update composer.json
-        run: |
-          set -x
-          cat composer.json | jq 'del(.autoload) | del(.scripts) | del(.require) | del(."require-dev") | setpath(["bin"]; "dep")' > composer-new.json
-          mv composer-new.json composer.json
-          git add composer.json
-
-      - name: Push release tag
-        run: |
-          set -x
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions"
-          git commit -m "Deployer $RELEASE_VERSION"
-          git tag "v$RELEASE_VERSION" --force
-          git push origin "v$RELEASE_VERSION" --force
+      - name: Upload signature
+        run: gh release upload v"${RELEASE_VERSION}" deployer.phar.asc
+        env:
+          GH_TOKEN: ${{ github.token }}

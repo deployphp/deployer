@@ -56,7 +56,7 @@ $iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInf
 
 foreach ($iterator as $fileInfo) {
     $file = str_replace(__ROOT__, '', $fileInfo->getRealPath());
-    echo "Add file: " . $file . "\n";
+    echo "+ " . $file . "\n";
     $phar->addFile($fileInfo->getRealPath(), $file);
 
     if (!array_key_exists('nozip', $opt)) {
@@ -69,15 +69,19 @@ foreach ($iterator as $fileInfo) {
 }
 
 // Add schema.json
-echo "Add file: /src/schema.json\n";
+echo "+ /src/schema.json\n";
 $phar->addFile(realpath(__DIR__ . '/../src/schema.json'), '/src/schema.json');
 
 // Add Caddyfile
-echo "Add file: /recipe/provision/Caddyfile\n";
+echo "+ /recipe/provision/Caddyfile\n";
 $phar->addFile(realpath(__DIR__ . '/../recipe/provision/Caddyfile'), '/recipe/provision/Caddyfile');
 
+// Add 404.html
+echo "+ /recipe/provision/404.html\n";
+$phar->addFile(realpath(__DIR__ . '/../recipe/provision/404.html'), '/recipe/provision/404.html');
+
 // Add bin/dep file
-echo "Add file: /bin/dep\n";
+echo "+ /bin/dep\n";
 $depContent = file_get_contents(__ROOT__ . '/bin/dep');
 $depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
 $depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);

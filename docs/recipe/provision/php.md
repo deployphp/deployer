@@ -45,7 +45,7 @@ Shows php-fpm logs.
 
 
 ### provision:composer
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L77)
 
 Installs Composer.
 

@@ -41,10 +41,11 @@ jobs:
           chmod 0700 ~/.gnupg/
           echo "$GPG_SIGNING_KEY" > ~/.gnupg/private.key
           gpg --import ~/.gnupg/private.key
-          gpg -u anton@deployer.org --detach-sign --output deployer.phar.asc deployer.phar
+          gpg -u anton@deployer.org --passphrase "${GPG_PASSPHRASE}" --detach-sign --output deployer.phar.asc deployer.phar
         env:
           GPG_SIGNING_KEY: |
             ${{ secrets.GPG_SIGNING_KEY }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
 
       - name: Upload signature
         run: gh release upload v"${RELEASE_VERSION}" deployer.phar.asc

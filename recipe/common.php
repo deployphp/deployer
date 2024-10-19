@@ -7,6 +7,7 @@ require __DIR__ . '/deploy/check_remote.php';
 require __DIR__ . '/deploy/cleanup.php';
 require __DIR__ . '/deploy/clear_paths.php';
 require __DIR__ . '/deploy/copy_dirs.php';
+require __DIR__ . '/deploy/env.php';
 require __DIR__ . '/deploy/info.php';
 require __DIR__ . '/deploy/lock.php';
 require __DIR__ . '/deploy/push.php';
@@ -141,6 +142,7 @@ task('deploy:prepare', [
     'deploy:lock',
     'deploy:release',
     'deploy:update_code',
+    'deploy:env',
     'deploy:shared',
     'deploy:writable',
 ]);

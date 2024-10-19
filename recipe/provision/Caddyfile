@@ -15,7 +15,7 @@
 		}
 		rewrite @404 /404.html
 		file_server {
-			root /var/dep/html
+			root /var/deployer
 		}
 	}
 }

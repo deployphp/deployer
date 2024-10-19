@@ -40,7 +40,7 @@ jobs:
           mkdir -p ~/.gnupg/
           chmod 0700 ~/.gnupg/
           echo "$GPG_SIGNING_KEY" > ~/.gnupg/private.key
-          gpg --import ~/.gnupg/private.key
+          gpg --import --passphrase "${GPG_PASSPHRASE}" ~/.gnupg/private.key
           gpg -u anton@deployer.org --passphrase "${GPG_PASSPHRASE}" --detach-sign --output deployer.phar.asc deployer.phar
         env:
           GPG_SIGNING_KEY: |

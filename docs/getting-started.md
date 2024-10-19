@@ -58,14 +58,16 @@ Host *
   IdentityFile ~/.ssh/id_rsa
 ```
 
-Now let's provision our server. As our host doesn't have a user `deployer`,
-we are going to override `remote_user` for provisioning via `-o remote_user=root`.
+Now let's provision our server.
 
 ```sh
-dep provision -o remote_user=root
+dep provision
 ```
 
 :::tip
+
+Deployer uses `root` user by default, but you can change it via `-o provision_user=your-user`.
+
 If your server doesn't have a `root` user but your remote user can use `sudo` to
 become root, then use:
 

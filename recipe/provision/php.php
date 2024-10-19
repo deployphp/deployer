@@ -66,7 +66,11 @@ task('provision:php', function () {
 
 desc('Shows php-fpm logs');
 task('logs:php-fpm', function () {
-    run('tail -f /var/log/fpm-php.www.log');
+    $fpmLogs = run("ls -1 /var/log | grep fpm");
+    if (empty($fpmLogs)) {
+        throw new \RuntimeException('No PHP-FPM logs found.');
+    }
+    run("sudo tail -f /var/log/$fpmLogs");
 })->verbose();
 
 desc('Installs Composer');

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Deployer;
 
 set('domain', function () {
-    return ask(' Domain: ');
+    return ask(' Domain: ', get('hostname'));
 });
 
 set('public_path', function () {

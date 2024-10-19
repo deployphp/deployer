@@ -44,7 +44,7 @@ Configures a server.
 
 
 ### provision:website
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L77)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L23)
 
 Provision website.
 
@@ -52,7 +52,7 @@ Provision website.
 
 
 ### logs:access
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L121)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L67)
 
 Shows access logs.
 
@@ -60,7 +60,7 @@ Shows access logs.
 
 
 ### logs:caddy
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L126)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L72)
 
 Shows caddy syslog.
 

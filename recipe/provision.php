@@ -105,7 +105,11 @@ task('provision:configure', function () {
     if ($showCode) {
         $code = "\n\n<comment>====== Configuration Start ======</comment>";
         $code .= "\nhost(<info>'{{alias}}'</info>)";
-        foreach (array_merge($params, $dbparams) as $name) {
+        $codeParams = $params;
+        if (get('db_type') !== 'none') {
+            $codeParams = array_merge($codeParams, $dbparams);
+        }
+        foreach ($codeParams as $name) {
             $code .= "\n    ->set(<info>'$name'</info>, <info>'" . get($name) . "'</info>)";
         }
         $code .= ";\n";

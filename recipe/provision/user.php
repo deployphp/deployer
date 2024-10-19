@@ -39,14 +39,17 @@ task('provision:user', function () {
 
         // Create ssh key if not already exists.
         run('ssh-keygen -f /home/deployer/.ssh/id_ed25519 -t ed25519 -N ""');
-
-        run('chown -R deployer:deployer /home/deployer');
-        run('chmod -R 755 /home/deployer');
         run('chmod 700 /home/deployer/.ssh/id_ed25519');
+
+        try {
+            run('chown -R deployer:deployer /home/deployer');
+            run('chmod -R 755 /home/deployer');
+        } catch (\Throwable $e) {
+            warning($e->getMessage());
+        }
 
         run('usermod -a -G www-data deployer');
         run('usermod -a -G caddy deployer');
-        run('groups deployer');
     }
 })->oncePerNode();
 

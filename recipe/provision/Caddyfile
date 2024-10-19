@@ -7,6 +7,9 @@
 
 	log {
 		output file {{deploy_path}}/log/access.log
+		roll_size 100MiB
+		roll_keep 10
+		mode 0644
 	}
 
 	handle_errors {

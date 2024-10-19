@@ -18,7 +18,7 @@ require 'recipe/provision/website.php';
 
 
 ```php title="Default value"
-return ask(' Domain: ');
+return ask(' Domain: ', get('hostname'));
 ```
 
 

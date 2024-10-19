@@ -69,6 +69,8 @@ task('provision:check', function () {
 
 desc('Collects required params');
 task('provision:configure', function () {
+    set('remote_user', get('provision_user'));
+
     $params = [
         'sudo_password',
         'domain',
@@ -115,6 +117,8 @@ task('provision:configure', function () {
 
 desc('Adds repositories and update');
 task('provision:update', function () {
+    set('remote_user', get('provision_user'));
+
     // PHP
     run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
 
@@ -130,6 +134,7 @@ task('provision:update', function () {
 
 desc('Upgrades all packages');
 task('provision:upgrade', function () {
+    set('remote_user', get('provision_user'));
     run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
 })
     ->oncePerNode()
@@ -137,6 +142,7 @@ task('provision:upgrade', function () {
 
 desc('Installs packages');
 task('provision:install', function () {
+    set('remote_user', get('provision_user'));
     $packages = [
         'acl',
         'apt-transport-https',
@@ -171,6 +177,7 @@ task('provision:install', function () {
 
 desc('Configures the ssh');
 task('provision:ssh', function () {
+    set('remote_user', get('provision_user'));
     run("sed -i 's/PasswordAuthentication .*/PasswordAuthentication no/' /etc/ssh/sshd_config");
     run('ssh-keygen -A');
     run('service ssh restart');
@@ -182,6 +189,7 @@ task('provision:ssh', function () {
 
 desc('Setups a firewall');
 task('provision:firewall', function () {
+    set('remote_user', get('provision_user'));
     run('ufw allow 22');
     run('ufw allow 80');
     run('ufw allow 443');

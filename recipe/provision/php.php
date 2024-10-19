@@ -11,6 +11,8 @@ set('php_version', function () {
 
 desc('Installs PHP packages');
 task('provision:php', function () {
+    set('remote_user', get('provision_user'));
+
     $version = get('php_version');
     info("Installing PHP $version");
     $packages = [

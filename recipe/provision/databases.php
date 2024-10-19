@@ -26,6 +26,8 @@ set('db_password', function () {
 
 desc('Provision databases');
 task('provision:databases', function () {
+    set('remote_user', get('provision_user'));
+
     $dbType = get('db_type');
     if ($dbType === 'none') {
         return;

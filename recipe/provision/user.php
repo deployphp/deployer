@@ -11,6 +11,8 @@ set('sudo_password', function () {
 
 desc('Setups a deployer user');
 task('provision:user', function () {
+    set('remote_user', get('provision_user'));
+
     if (test('id deployer >/dev/null 2>&1')) {
         // TODO: Check what created deployer user configured correctly.
         // TODO: Update sudo_password of deployer user.

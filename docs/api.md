@@ -188,6 +188,25 @@ cd(string $path): void
 Change the current working directory.
 
 
+## become()
+
+```php
+become(string $user): \Closure
+```
+
+Change the current user.
+
+Usage:
+```php
+$restore = become('deployer');
+
+// do something
+
+$restore(); // revert back to the previous user
+```
+
+
+
 ## within()
 
 ```php
@@ -561,5 +580,15 @@ Example usage:
 $result = fetch('{{domain}}', info: $info);
 var_dump($info['http_code'], $result);
 ```
+
+
+## appendToFile()
+
+```php
+appendToFile(string $file, string $string): void
+```
+
+Appends a string to a file.
+
 
 

@@ -30,6 +30,6 @@ task('provision:node', function () {
     run('chmod +x /usr/local/bin/fnm');
 
     run('fnm install {{node_version}}');
-    appendToFile('~/.bashrc', 'eval "`fnm env`"');
+    appendToFile('/home/deployer/.bashrc', 'eval "`fnm env`"');
 })
     ->oncePerNode();

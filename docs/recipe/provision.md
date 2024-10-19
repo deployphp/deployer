@@ -29,6 +29,16 @@ return run("lsb_release -s -c");
 ```
 
 
+### provision_user
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L43)
+
+Default user to use for provisioning.
+
+```php title="Default value"
+'root'
+```
+
+
 
 ## Tasks
 
@@ -59,7 +69,7 @@ This task is group task which contains next tasks:
 
 
 ### provision:check
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L46)
 
 Checks pre-required state.
 
@@ -67,7 +77,7 @@ Checks pre-required state.
 
 
 ### provision:configure
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L71)
 
 Collects required params.
 
@@ -75,7 +85,7 @@ Collects required params.
 
 
 ### provision:update
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L119)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L117)
 
 Adds repositories and update.
 
@@ -83,7 +93,7 @@ Adds repositories and update.
 
 
 ### provision:upgrade
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L134)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L132)
 
 Upgrades all packages.
 
@@ -91,7 +101,7 @@ Upgrades all packages.
 
 
 ### provision:install
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L141)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L139)
 
 Installs packages.
 
@@ -99,7 +109,7 @@ Installs packages.
 
 
 ### provision:ssh
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L175)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L173)
 
 Configures the ssh.
 
@@ -107,7 +117,7 @@ Configures the ssh.
 
 
 ### provision:firewall
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L186)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L184)
 
 Setups a firewall.
 
@@ -115,7 +125,7 @@ Setups a firewall.
 
 
 ### provision:verify
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L194)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L192)
 
 Verifies what provision was successful.
 

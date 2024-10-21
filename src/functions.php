@@ -424,6 +424,11 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
         return rtrim($output);
     };
 
+    // Fail at any multiline command
+    if(strstr($command, PHP_EOL) && strpos($command, 'set -') !== 0) {
+        $command = "set -e -o pipefail\n$command";
+    }
+
     if (preg_match('/^sudo\b/', $command)) {
         try {
             return $run($command, $options);
@@ -479,6 +484,11 @@ function runLocally(string $command, ?array $options = [], ?int $timeout = null,
 
     $process = Deployer::get()->processRunner;
     $command = parse($command);
+
+    // Fail at any multiline command
+    if(strstr($command, PHP_EOL) && strpos($command, 'set -') !== 0) {
+        $command = "set -e -o pipefail\n$command";
+    }
 
     $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
     if (!empty($env)) {

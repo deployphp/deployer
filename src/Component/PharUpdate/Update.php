@@ -76,7 +76,7 @@ class Update
         string $sha1,
         string $url,
         Version $version,
-        string $key = null,
+        string $key = null
     ) {
         $this->name = $name;
         $this->publicKey = $key;

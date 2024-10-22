@@ -60,7 +60,7 @@ class Version
         int $minor = 0,
         int $patch = 0,
         array $pre = [],
-        array $build = [],
+        array $build = []
     ) {
         $this->build = $build;
         $this->major = $major;

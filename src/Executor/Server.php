@@ -46,7 +46,7 @@ class Server
 
     public function __construct(
         OutputInterface $output,
-        Deployer        $deployer,
+        Deployer        $deployer
     ) {
         $this->output = $output;
         $this->deployer = $deployer;

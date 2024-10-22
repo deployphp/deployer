@@ -14,7 +14,7 @@ class TimeoutException extends Exception
 {
     public function __construct(
         string $command,
-        ?float $timeout,
+        ?float $timeout
     ) {
         $message = sprintf('The command "%s" exceeded the timeout of %s seconds.', $command, $timeout);
         parent::__construct($message, 1);

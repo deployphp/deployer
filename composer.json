@@ -20,44 +20,11 @@
             "url": "https://github.com/sponsors/antonmedv"
         }
     ],
-    "autoload": {
-        "psr-4": {
-            "Deployer\\": "src/"
-        },
-        "files": [
-            "vendor/autoload.php",
-            "src/Support/helpers.php",
-            "src/functions.php"
-        ]
-    },
-    "scripts": {
-        "test": "pest",
-        "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
-        "check": "php-cs-fixer check",
-        "fix": "php-cs-fixer fix",
-        "phpstan": "phpstan analyse -c phpstan.neon --memory-limit 1G",
-        "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
-    },
     "bin": [
         "bin/dep"
     ],
     "require": {
         "php": "^8.0|^7.3",
         "ext-json": "*"
-    },
-    "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64",
-        "pestphp/pest": "^3.3",
-        "phpstan/phpstan": "^1.4",
-        "phpunit/php-code-coverage": "^11.0",
-        "phpunit/phpunit": "^11.4"
-    },
-    "config": {
-        "sort-packages": true,
-        "process-timeout": 0,
-        "allow-plugins": {
-            "pestphp/pest-plugin": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
     }
 }

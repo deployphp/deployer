@@ -33,9 +33,6 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
 
-      - name: Build phar
-        run: php -d phar.readonly=0 bin/build -v"$RELEASE_VERSION"
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 

@@ -100,7 +100,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 ## Tasks
 
-### craft:gc {#craft-gc}
+### craft\:gc {#craft-gc}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L120)
 
 Runs garbage collection.

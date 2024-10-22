@@ -145,7 +145,7 @@ Color of attachment
 
 ## Tasks
 
-### teams:notify {#teams-notify}
+### teams\:notify {#teams-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L94)
 
 Notifies Teams.
@@ -153,7 +153,7 @@ Notifies Teams.
 
 
 
-### teams:notify:success {#teams-notify-success}
+### teams\:notify\:success {#teams-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L109)
 
 Notifies Teams about deploy finish.
@@ -161,7 +161,7 @@ Notifies Teams about deploy finish.
 
 
 
-### teams:notify:failure {#teams-notify-failure}
+### teams\:notify\:failure {#teams-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ms-teams.php#L124)
 
 Notifies Teams about deploy failure.

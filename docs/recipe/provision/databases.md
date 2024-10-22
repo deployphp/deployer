@@ -56,7 +56,7 @@ return askHiddenResponse(' DB password: ');
 
 ## Tasks
 
-### provision:databases {#provision-databases}
+### provision\:databases {#provision-databases}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L28)
 
 Provision databases.
@@ -64,7 +64,7 @@ Provision databases.
 
 
 
-### provision:mysql {#provision-mysql}
+### provision\:mysql {#provision-mysql}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L40)
 
 Provision MySQL.
@@ -72,7 +72,7 @@ Provision MySQL.
 
 
 
-### provision:mariadb {#provision-mariadb}
+### provision\:mariadb {#provision-mariadb}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L51)
 
 Provision MariaDB.
@@ -80,7 +80,7 @@ Provision MariaDB.
 
 
 
-### provision:postgresql {#provision-postgresql}
+### provision\:postgresql {#provision-postgresql}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/databases.php#L62)
 
 Provision PostgreSQL.

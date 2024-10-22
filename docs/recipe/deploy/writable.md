@@ -94,7 +94,7 @@ The chmod mode.
 
 ## Tasks
 
-### deploy:writable {#deploy-writable}
+### deploy\:writable {#deploy-writable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L62)
 
 Makes writable dirs.

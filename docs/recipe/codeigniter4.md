@@ -129,7 +129,7 @@ return $matches[0][0] ?? 5.5;
 
 ## Tasks
 
-### spark:cache:info {#spark-cache-info}
+### spark\:cache\:info {#spark-cache-info}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L94)
 
 Shows file cache information in the current system.
@@ -137,7 +137,7 @@ Shows file cache information in the current system.
 Discover & Checks
 
 
-### spark:config:check {#spark-config-check}
+### spark\:config\:check {#spark-config-check}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L97)
 
 Check your Config values.
@@ -145,7 +145,7 @@ Check your Config values.
 
 
 
-### spark:env {#spark-env}
+### spark\:env {#spark-env}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L100)
 
 Retrieves the current environment, or set a new one.
@@ -153,7 +153,7 @@ Retrieves the current environment, or set a new one.
 
 
 
-### spark:filter:check {#spark-filter-check}
+### spark\:filter\:check {#spark-filter-check}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L103)
 
 Check filters for a route.
@@ -161,7 +161,7 @@ Check filters for a route.
 
 
 
-### spark:lang:find {#spark-lang-find}
+### spark\:lang\:find {#spark-lang-find}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L106)
 
 Find and save available phrases to translate.
@@ -169,7 +169,7 @@ Find and save available phrases to translate.
 
 
 
-### spark:namespaces {#spark-namespaces}
+### spark\:namespaces {#spark-namespaces}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L109)
 
 Verifies your namespaces are setup correctly.
@@ -177,7 +177,7 @@ Verifies your namespaces are setup correctly.
 
 
 
-### spark:phpini:check {#spark-phpini-check}
+### spark\:phpini\:check {#spark-phpini-check}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L112)
 
 Check your php.ini values.
@@ -185,7 +185,7 @@ Check your php.ini values.
 
 
 
-### spark:routes {#spark-routes}
+### spark\:routes {#spark-routes}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L115)
 
 Displays all routes.
@@ -193,7 +193,7 @@ Displays all routes.
 
 
 
-### spark:&#8203;key:generate {#spark-key-generate}
+### spark\:key\:generate {#spark-key-generate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L123)
 
 Generates a new encryption key and writes it in an `.env` file.
@@ -201,7 +201,7 @@ Generates a new encryption key and writes it in an `.env` file.
 Actions
 
 
-### spark:optimize {#spark-optimize}
+### spark\:optimize {#spark-optimize}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L126)
 
 Optimize for production.
@@ -209,7 +209,7 @@ Optimize for production.
 
 
 
-### spark:publish {#spark-publish}
+### spark\:publish {#spark-publish}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L129)
 
 Discovers and executes all predefined Publisher classes.
@@ -217,7 +217,7 @@ Discovers and executes all predefined Publisher classes.
 
 
 
-### spark:db:create {#spark-db-create}
+### spark\:db\:create {#spark-db-create}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L137)
 
 Create a new database schema.
@@ -225,7 +225,7 @@ Create a new database schema.
 Database and migrations.
 
 
-### spark:db:seed {#spark-db-seed}
+### spark\:db\:seed {#spark-db-seed}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L140)
 
 Runs the specified seeder to populate known data into the database.
@@ -233,7 +233,7 @@ Runs the specified seeder to populate known data into the database.
 
 
 
-### spark:db:table {#spark-db-table}
+### spark\:db\:table {#spark-db-table}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L143)
 
 Retrieves information on the selected table.
@@ -241,7 +241,7 @@ Retrieves information on the selected table.
 
 
 
-### spark:migrate {#spark-migrate}
+### spark\:migrate {#spark-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L146)
 
 Locates and runs all new migrations against the database.
@@ -249,7 +249,7 @@ Locates and runs all new migrations against the database.
 
 
 
-### spark:migrate:refresh {#spark-migrate-refresh}
+### spark\:migrate\:refresh {#spark-migrate-refresh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L149)
 
 Does a rollback followed by a latest to refresh the current state of the database.
@@ -257,7 +257,7 @@ Does a rollback followed by a latest to refresh the current state of the databas
 
 
 
-### spark:migrate:rollback {#spark-migrate-rollback}
+### spark\:migrate\:rollback {#spark-migrate-rollback}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L152)
 
 Runs the "down" method for all migrations in the last batch.
@@ -265,7 +265,7 @@ Runs the "down" method for all migrations in the last batch.
 
 
 
-### spark:migrate:status {#spark-migrate-status}
+### spark\:migrate\:status {#spark-migrate-status}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L155)
 
 Displays a list of all migrations and whether they\'ve been run or not.
@@ -273,7 +273,7 @@ Displays a list of all migrations and whether they\'ve been run or not.
 
 
 
-### spark:cache:clear {#spark-cache-clear}
+### spark\:cache\:clear {#spark-cache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L163)
 
 Clears the current system caches.
@@ -281,7 +281,7 @@ Clears the current system caches.
 Housekeeping
 
 
-### spark:debugbar:clear {#spark-debugbar-clear}
+### spark\:debugbar\:clear {#spark-debugbar-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L166)
 
 Clears all debugbar JSON files.
@@ -289,7 +289,7 @@ Clears all debugbar JSON files.
 
 
 
-### spark:logs:clear {#spark-logs-clear}
+### spark\:logs\:clear {#spark-logs-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L169)
 
 Clears all log files.
@@ -297,7 +297,7 @@ Clears all log files.
 
 
 
-### spark:custom {#spark-custom}
+### spark\:custom {#spark-custom}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/codeigniter4.php#L176)
 
 Run a custom spark command.

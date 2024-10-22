@@ -89,7 +89,7 @@ Flow-Framework shared directories
 
 ## Tasks
 
-### deploy:run_migrations {#deploy-run_migrations}
+### deploy\:run_migrations {#deploy-run_migrations}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L26)
 
 Applies database migrations.
@@ -97,7 +97,7 @@ Applies database migrations.
 Apply database migrations
 
 
-### deploy:publish_resources {#deploy-publish_resources}
+### deploy\:publish_resources {#deploy-publish_resources}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/flow_framework.php#L34)
 
 Publishes resources.

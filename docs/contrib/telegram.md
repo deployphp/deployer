@@ -131,7 +131,7 @@ Deploy message
 
 ## Tasks
 
-### telegram:notify {#telegram-notify}
+### telegram\:notify {#telegram-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L87)
 
 Notifies Telegram.
@@ -139,7 +139,7 @@ Notifies Telegram.
 
 
 
-### telegram:notify:success {#telegram-notify-success}
+### telegram\:notify\:success {#telegram-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L118)
 
 Notifies Telegram about deploy finish.
@@ -147,7 +147,7 @@ Notifies Telegram about deploy finish.
 
 
 
-### telegram:notify:failure {#telegram-notify-failure}
+### telegram\:notify\:failure {#telegram-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/telegram.php#L149)
 
 Notifies Telegram about deploy failure.

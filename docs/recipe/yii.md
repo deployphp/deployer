@@ -76,7 +76,7 @@ Yii writable dirs
 
 ## Tasks
 
-### deploy:migrate {#deploy-migrate}
+### deploy\:migrate {#deploy-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/yii.php#L16)
 
 Runs Yii2 migrations for your project.

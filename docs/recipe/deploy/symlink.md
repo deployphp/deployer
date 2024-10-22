@@ -25,7 +25,7 @@ return commandSupportsOption('mv', '--no-target-directory');
 
 ## Tasks
 
-### deploy:symlink {#deploy-symlink}
+### deploy\:symlink {#deploy-symlink}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/symlink.php#L11)
 
 Creates symlink to release.

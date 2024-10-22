@@ -74,7 +74,7 @@ false
 
 ## Tasks
 
-### crontab:sync {#crontab-sync}
+### crontab\:sync {#crontab-sync}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L41)
 
 Sync crontab jobs.

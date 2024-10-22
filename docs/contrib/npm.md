@@ -39,7 +39,7 @@ return which('npm');
 
 ## Tasks
 
-### npm:install {#npm-install}
+### npm\:install {#npm-install}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L27)
 
 Installs npm packages.

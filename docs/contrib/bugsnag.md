@@ -26,7 +26,7 @@ after('deploy', 'bugsnag:notify');
 
 ## Tasks
 
-### bugsnag:notify {#bugsnag-notify}
+### bugsnag\:notify {#bugsnag-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/bugsnag.php#L24)
 
 Notifies Bugsnag of deployment.

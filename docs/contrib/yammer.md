@@ -102,7 +102,7 @@ Deploy message
 
 ## Tasks
 
-### yammer:notify {#yammer-notify}
+### yammer\:notify {#yammer-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L68)
 
 Notifies Yammer.
@@ -110,7 +110,7 @@ Notifies Yammer.
 
 
 
-### yammer:notify:success {#yammer-notify-success}
+### yammer\:notify\:success {#yammer-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L87)
 
 Notifies Yammer about deploy finish.
@@ -118,7 +118,7 @@ Notifies Yammer about deploy finish.
 
 
 
-### yammer:notify:failure {#yammer-notify-failure}
+### yammer\:notify\:failure {#yammer-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yammer.php#L106)
 
 Notifies Yammer about deploy failure.

@@ -49,7 +49,7 @@ before('deploy:end', 'deploy:rabbit');
 
 ## Tasks
 
-### deploy:rabbit {#deploy-rabbit}
+### deploy\:rabbit {#deploy-rabbit}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rabbit.php#L58)
 
 Notifies RabbitMQ channel about deployment.

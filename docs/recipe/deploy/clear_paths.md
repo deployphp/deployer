@@ -32,7 +32,7 @@ false
 
 ## Tasks
 
-### deploy:clear_paths {#deploy-clear_paths}
+### deploy\:clear_paths {#deploy-clear_paths}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/clear_paths.php#L12)
 
 Cleanup files and/or directories.

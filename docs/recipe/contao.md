@@ -108,7 +108,7 @@ return $matches[0][0] ?? 5.0;
 
 ## Tasks
 
-### contao:migrate {#contao-migrate}
+### contao\:migrate {#contao-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L56)
 
 Run Contao migrations.
@@ -124,7 +124,7 @@ task('contao:migrate', function () {
 ```
 
 
-### contao:manager:download {#contao-manager-download}
+### contao\:manager\:download {#contao-manager-download}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L62)
 
 Download the Contao Manager.
@@ -132,7 +132,7 @@ Download the Contao Manager.
 Downloads the `contao-manager.phar.php` into the public path.
 
 
-### contao:install:lock {#contao-install-lock}
+### contao\:install\:lock {#contao-install-lock}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L68)
 
 Lock the Contao Install Tool.
@@ -140,7 +140,7 @@ Lock the Contao Install Tool.
 Locks the Contao install tool which is useful if you don't use it.
 
 
-### contao:manager:lock {#contao-manager-lock}
+### contao\:manager\:lock {#contao-manager-lock}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L74)
 
 Lock the Contao Manager.
@@ -148,7 +148,7 @@ Lock the Contao Manager.
 Locks the Contao Manager which is useful if you only need the API of the Manager rather than the UI.
 
 
-### contao:maintenance:enable {#contao-maintenance-enable}
+### contao\:maintenance\:enable {#contao-maintenance-enable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L80)
 
 Enable maintenance mode.
@@ -156,7 +156,7 @@ Enable maintenance mode.
 
 
 
-### contao:maintenance:disable {#contao-maintenance-disable}
+### contao\:maintenance\:disable {#contao-maintenance-disable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L95)
 
 Disable maintenance mode.

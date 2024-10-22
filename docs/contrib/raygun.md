@@ -30,7 +30,7 @@ after('deploy', 'raygun:notify');
 
 ## Tasks
 
-### raygun:notify {#raygun-notify}
+### raygun\:notify {#raygun-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/raygun.php#L28)
 
 Notifies Raygun of deployment.

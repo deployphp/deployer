@@ -92,7 +92,7 @@ Deploy messages
 
 ## Tasks
 
-### chat:notify {#chat-notify}
+### chat\:notify {#chat-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L60)
 
 Notifies Google Hangouts Chat.
@@ -100,7 +100,7 @@ Notifies Google Hangouts Chat.
 
 
 
-### chat:notify:success {#chat-notify-success}
+### chat\:notify\:success {#chat-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L102)
 
 Notifies Google Hangouts Chat about deploy finish.
@@ -108,7 +108,7 @@ Notifies Google Hangouts Chat about deploy finish.
 
 
 
-### chat:notify:failure {#chat-notify-failure}
+### chat\:notify\:failure {#chat-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/hangouts.php#L144)
 
 Notifies Google Hangouts Chat about deploy failure.

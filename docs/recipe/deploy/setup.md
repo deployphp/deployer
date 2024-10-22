@@ -14,7 +14,7 @@ require 'recipe/deploy/setup.php';
 
 ## Tasks
 
-### deploy:setup {#deploy-setup}
+### deploy\:setup {#deploy-setup}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/setup.php#L6)
 
 Prepares host for deploy.

@@ -158,7 +158,7 @@ Message tags
 
 ## Tasks
 
-### ntfy:notify {#ntfy-notify}
+### ntfy\:notify {#ntfy-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ntfy.php#L108)
 
 Notifies ntfy server.
@@ -166,7 +166,7 @@ Notifies ntfy server.
 
 
 
-### ntfy:notify:success {#ntfy-notify-success}
+### ntfy\:notify\:success {#ntfy-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ntfy.php#L126)
 
 Notifies ntfy server about deploy finish.
@@ -174,7 +174,7 @@ Notifies ntfy server about deploy finish.
 
 
 
-### ntfy:notify:failure {#ntfy-notify-failure}
+### ntfy\:notify\:failure {#ntfy-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/ntfy.php#L144)
 
 Notifies ntfy server about deploy failure.

@@ -183,7 +183,7 @@ get('cimonitor_status_success')
 
 ## Tasks
 
-### cimonitor:notify {#cimonitor-notify}
+### cimonitor\:notify {#cimonitor-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L89)
 
 Notifies CIMonitor.
@@ -191,7 +191,7 @@ Notifies CIMonitor.
 
 
 
-### cimonitor:notify:success {#cimonitor-notify-success}
+### cimonitor\:notify\:success {#cimonitor-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L115)
 
 Notifies CIMonitor about deploy finish.
@@ -199,7 +199,7 @@ Notifies CIMonitor about deploy finish.
 
 
 
-### cimonitor:notify:failure {#cimonitor-notify-failure}
+### cimonitor\:notify\:failure {#cimonitor-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/cimonitor.php#L143)
 
 Notifies CIMonitor about deploy failure.

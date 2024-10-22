@@ -451,7 +451,7 @@ Array of shared directories that will be added to the default shared_dirs withou
 
 ## Tasks
 
-### magento:compile {#magento-compile}
+### magento\:compile {#magento-compile}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L158)
 
 Compiles magento di.
@@ -464,7 +464,7 @@ e.g.
 ```
 
 
-### magento:deploy:assets {#magento-deploy-assets}
+### magento\:deploy\:assets {#magento-deploy-assets}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L184)
 
 Deploys assets.
@@ -491,7 +491,7 @@ in `app/etc/config.php`, e.g.:
 ```
 
 
-### magento:deploy:assets:adminhtml {#magento-deploy-assets-adminhtml}
+### magento\:deploy\:assets\:adminhtml {#magento-deploy-assets-adminhtml}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L201)
 
 Deploys assets for backend only.
@@ -499,7 +499,7 @@ Deploys assets for backend only.
 
 
 
-### magento:deploy:assets:frontend {#magento-deploy-assets-frontend}
+### magento\:deploy\:assets\:frontend {#magento-deploy-assets-frontend}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L206)
 
 Deploys assets for frontend only.
@@ -507,7 +507,7 @@ Deploys assets for frontend only.
 
 
 
-### magento:sync:content_version {#magento-sync-content_version}
+### magento\:sync\:content_version {#magento-sync-content_version}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L254)
 
 Syncs content version.
@@ -515,7 +515,7 @@ Syncs content version.
 
 
 
-### magento:maintenance:enable {#magento-maintenance-enable}
+### magento\:maintenance\:enable {#magento-maintenance-enable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L264)
 
 Enables maintenance mode.
@@ -523,7 +523,7 @@ Enables maintenance mode.
 
 
 
-### magento:maintenance:disable {#magento-maintenance-disable}
+### magento\:maintenance\:disable {#magento-maintenance-disable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L270)
 
 Disables maintenance mode.
@@ -531,7 +531,7 @@ Disables maintenance mode.
 
 
 
-### magento:maintenance:enable-if-needed {#magento-maintenance-enable-if-needed}
+### magento\:maintenance\:enable-if-needed {#magento-maintenance-enable-if-needed}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L276)
 
 Set maintenance mode if needed.
@@ -539,7 +539,7 @@ Set maintenance mode if needed.
 
 
 
-### magento:config:import {#magento-config-import}
+### magento\:config\:import {#magento-config-import}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L283)
 
 Config Import.
@@ -547,7 +547,7 @@ Config Import.
 
 
 
-### magento:upgrade:db {#magento-upgrade-db}
+### magento\:upgrade\:db {#magento-upgrade-db}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L292)
 
 Upgrades magento database.
@@ -555,7 +555,7 @@ Upgrades magento database.
 
 
 
-### magento:cache:flush {#magento-cache-flush}
+### magento\:cache\:flush {#magento-cache-flush}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L302)
 
 Flushes Magento Cache.
@@ -563,7 +563,7 @@ Flushes Magento Cache.
 
 
 
-### deploy:magento {#deploy-magento}
+### deploy\:magento {#deploy-magento}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L307)
 
 Magento2 deployment operations.
@@ -579,7 +579,7 @@ This task is group task which contains next tasks:
 * [magento:maintenance:disable](/docs/recipe/magento2.md#magento-maintenance-disable)
 
 
-### magento:build {#magento-build}
+### magento\:build {#magento-build}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L316)
 
 Magento2 build operations.
@@ -608,7 +608,7 @@ This task is group task which contains next tasks:
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 
-### artifact:package {#artifact-package}
+### artifact\:package {#artifact-package}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L372)
 
 Packages all relevant files in an artifact.
@@ -616,7 +616,7 @@ Packages all relevant files in an artifact.
 tasks section
 
 
-### artifact:upload {#artifact-upload}
+### artifact\:upload {#artifact-upload}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L382)
 
 Uploads artifact in release folder for extraction.
@@ -624,7 +624,7 @@ Uploads artifact in release folder for extraction.
 
 
 
-### artifact:extract {#artifact-extract}
+### artifact\:extract {#artifact-extract}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L387)
 
 Extracts artifact in release path.
@@ -632,7 +632,7 @@ Extracts artifact in release path.
 
 
 
-### build:remove-generated {#build-remove-generated}
+### build\:remove-generated {#build-remove-generated}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L393)
 
 Clears generated files prior to building.
@@ -640,7 +640,7 @@ Clears generated files prior to building.
 
 
 
-### build:prepare {#build-prepare}
+### build\:prepare {#build-prepare}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L398)
 
 Prepare local artifact build.
@@ -648,7 +648,7 @@ Prepare local artifact build.
 
 
 
-### artifact:build {#artifact-build}
+### artifact\:build {#artifact-build}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L423)
 
 Builds an artifact.
@@ -665,7 +665,7 @@ This task is group task which contains next tasks:
 * [artifact:package](/docs/recipe/magento2.md#artifact-package)
 
 
-### deploy:additional-shared {#deploy-additional-shared}
+### deploy\:additional-shared {#deploy-additional-shared}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L439)
 
 Adds additional files and dirs to the list of shared files and dirs.
@@ -673,7 +673,7 @@ Adds additional files and dirs to the list of shared files and dirs.
 
 
 
-### magento:set_cache_prefix {#magento-set_cache_prefix}
+### magento\:set_cache_prefix {#magento-set_cache_prefix}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L454)
 
 Update cache id_prefix.
@@ -687,7 +687,7 @@ after('deploy:magento', 'magento:cleanup_cache_prefix');
 ```
 
 
-### magento:cleanup_cache_prefix {#magento-cleanup_cache_prefix}
+### magento\:cleanup_cache_prefix {#magento-cleanup_cache_prefix}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L494)
 
 Cleanup cache id_prefix env files.
@@ -695,7 +695,7 @@ Cleanup cache id_prefix env files.
 After successful deployment, move the tmp_env.php file to env.php ready for next deployment
 
 
-### magento:cron:stop {#magento-cron-stop}
+### magento\:cron\:stop {#magento-cron-stop}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L510)
 
 Remove cron from crontab and kill running cron jobs.
@@ -707,7 +707,7 @@ To use this feature, add the following to your deployer scripts:
  ```
 
 
-### magento:cron:install {#magento-cron-install}
+### magento\:cron\:install {#magento-cron-install}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L526)
 
 Install cron in crontab.
@@ -719,7 +719,7 @@ To use this feature, add the following to your deployer scripts:
   ```
 
 
-### artifact:prepare {#artifact-prepare}
+### artifact\:prepare {#artifact-prepare}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L532)
 
 Prepares an artifact on the target server.
@@ -739,7 +739,7 @@ This task is group task which contains next tasks:
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable)
 
 
-### artifact:finish {#artifact-finish}
+### artifact\:finish {#artifact-finish}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L545)
 
 Executes the tasks after artifact is released.
@@ -755,7 +755,7 @@ This task is group task which contains next tasks:
 * [deploy:success](/docs/recipe/common.md#deploy-success)
 
 
-### artifact:deploy {#artifact-deploy}
+### artifact\:deploy {#artifact-deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L554)
 
 Actually releases the artifact deployment.

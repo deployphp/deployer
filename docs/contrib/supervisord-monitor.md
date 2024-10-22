@@ -80,7 +80,7 @@ task('supervisord', ['supervisord-monitor:restart'])
 
 ## Tasks
 
-### supervisord-monitor:restart {#supervisord-monitor-restart}
+### supervisord-monitor\:restart {#supervisord-monitor-restart}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L134)
 
 
@@ -88,7 +88,7 @@ task('supervisord', ['supervisord-monitor:restart'])
 
 
 
-### supervisord-monitor:stop {#supervisord-monitor-stop}
+### supervisord-monitor\:stop {#supervisord-monitor-stop}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L151)
 
 
@@ -96,7 +96,7 @@ task('supervisord', ['supervisord-monitor:restart'])
 
 
 
-### supervisord-monitor:start {#supervisord-monitor-start}
+### supervisord-monitor\:start {#supervisord-monitor-start}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/supervisord-monitor.php#L165)
 
 

@@ -83,7 +83,7 @@ return $releaseExists ? get('release_path') : get('current_path');
 
 ## Tasks
 
-### deploy:release {#deploy-release}
+### deploy\:release {#deploy-release}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L85)
 
 Prepares release.

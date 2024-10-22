@@ -275,7 +275,8 @@ class DocGen
                 $tasks .= "## Tasks\n\n";
                 foreach ($recipe->tasks as $t) {
                     $anchorTag = '{#' . anchor($t->name) . '}';
-                    $tasks .= "### {$t->name} $anchorTag\n";
+                    $name = title($t->name);
+                    $tasks .= "### $name $anchorTag\n";
                     $tasks .= "[Source](https://github.com/deployphp/deployer/blob/master/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= add_tailing_dot($t->desc) . "\n\n";
                     $tasks .= $replaceLinks($t->comment);
@@ -365,6 +366,11 @@ function indent(string $text): string
 function php_to_md(string $file): string
 {
     return preg_replace('#\.php$#', '.md', $file);
+}
+
+function title(string $s): string
+{
+    return str_replace(':', '\\:', $s);
 }
 
 function anchor(string $s): string

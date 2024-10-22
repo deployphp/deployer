@@ -35,7 +35,7 @@ return ask(' Public path: ', 'public');
 
 ## Tasks
 
-### provision:server {#provision-server}
+### provision\:server {#provision-server}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L18)
 
 Configures a server.
@@ -43,7 +43,7 @@ Configures a server.
 
 
 
-### provision:website {#provision-website}
+### provision\:website {#provision-website}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L27)
 
 Provision website.
@@ -51,7 +51,7 @@ Provision website.
 
 
 
-### logs:access {#logs-access}
+### logs\:access {#logs-access}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L71)
 
 Shows access logs.
@@ -59,7 +59,7 @@ Shows access logs.
 
 
 
-### logs:caddy {#logs-caddy}
+### logs\:caddy {#logs-caddy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L76)
 
 Shows caddy syslog.

@@ -84,7 +84,7 @@ CakePHP 4 Project Template shared files
 
 ## Tasks
 
-### deploy:init {#deploy-init}
+### deploy\:init {#deploy-init}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L28)
 
 
@@ -92,7 +92,7 @@ CakePHP 4 Project Template shared files
 Create plugins' symlinks
 
 
-### deploy:run_migrations {#deploy-run_migrations}
+### deploy\:run_migrations {#deploy-run_migrations}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/cakephp.php#L35)
 
 

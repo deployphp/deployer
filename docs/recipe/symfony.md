@@ -153,7 +153,7 @@ return '--no-interaction';
 
 ## Tasks
 
-### database:migrate {#database-migrate}
+### database\:migrate {#database-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L43)
 
 Migrates database.
@@ -161,7 +161,7 @@ Migrates database.
 
 
 
-### doctrine:schema:validate {#doctrine-schema-validate}
+### doctrine\:schema\:validate {#doctrine-schema-validate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L53)
 
 Validate the Doctrine mapping files.
@@ -169,7 +169,7 @@ Validate the Doctrine mapping files.
 
 
 
-### deploy:cache:clear {#deploy-cache-clear}
+### deploy\:cache\:clear {#deploy-cache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L58)
 
 Clears cache.
@@ -177,7 +177,7 @@ Clears cache.
 
 
 
-### deploy:env {#deploy-env}
+### deploy\:env {#deploy-env}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/symfony.php#L67)
 
 Optimize environment variables.

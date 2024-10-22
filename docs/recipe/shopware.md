@@ -169,7 +169,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
 
 ## Tasks
 
-### sw:cache:clear {#sw-cache-clear}
+### sw\:cache\:clear {#sw-cache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L75)
 
 
@@ -177,7 +177,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
 This task remotely executes the `cache:clear` console command on the target server.
 
 
-### sw:cache:warmup {#sw-cache-warmup}
+### sw\:cache\:warmup {#sw-cache-warmup}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L81)
 
 
@@ -186,7 +186,7 @@ This task remotely executes the cache warmup console commands on the target serv
 visits the website, doesn't have to wait for the cache to be built up.
 
 
-### sw:database:migrate {#sw-database-migrate}
+### sw\:database\:migrate {#sw-database-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L87)
 
 
@@ -194,7 +194,7 @@ visits the website, doesn't have to wait for the cache to be built up.
 This task remotely executes the `database:migrate` console command on the target server.
 
 
-### sw:plugin:refresh {#sw-plugin-refresh}
+### sw\:plugin\:refresh {#sw-plugin-refresh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L91)
 
 
@@ -202,7 +202,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:scheduled-task:register {#sw-scheduled-task-register}
+### sw\:scheduled-task\:register {#sw-scheduled-task-register}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L95)
 
 
@@ -210,7 +210,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:theme:refresh {#sw-theme-refresh}
+### sw\:theme\:refresh {#sw-theme-refresh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L99)
 
 
@@ -218,7 +218,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:theme:compile {#sw-theme-compile}
+### sw\:theme\:compile {#sw-theme-compile}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L105)
 
 
@@ -227,7 +227,7 @@ This task is not used per default, but can be used, e.g. in combination with `SH
 to build the theme remotely instead of locally.
 
 
-### sw:plugin:update:all {#sw-plugin-update-all}
+### sw\:plugin\:update\:all {#sw-plugin-update-all}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L117)
 
 
@@ -235,7 +235,7 @@ to build the theme remotely instead of locally.
 
 
 
-### sw:writable:jwt {#sw-writable-jwt}
+### sw\:writable\:jwt {#sw-writable-jwt}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L127)
 
 
@@ -243,7 +243,7 @@ to build the theme remotely instead of locally.
 
 
 
-### sw:deploy {#sw-deploy}
+### sw\:deploy {#sw-deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L134)
 
 
@@ -278,7 +278,7 @@ This task is group task which contains next tasks:
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 
-### sw-build-without-db:get-remote-config {#sw-build-without-db-get-remote-config}
+### sw-build-without-db\:get-remote-config {#sw-build-without-db-get-remote-config}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L164)
 
 
@@ -286,7 +286,7 @@ This task is group task which contains next tasks:
 
 
 
-### sw-build-without-db:build {#sw-build-without-db-build}
+### sw-build-without-db\:build {#sw-build-without-db-build}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L177)
 
 

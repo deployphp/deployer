@@ -69,7 +69,7 @@ return runLocally('git log -n 1 --format="%h"');
 
 ## Tasks
 
-### newrelic:notify {#newrelic-notify}
+### newrelic\:notify {#newrelic-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/newrelic.php#L39)
 
 Notifies New Relic of deployment.

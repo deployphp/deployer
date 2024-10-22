@@ -80,7 +80,7 @@ false
 
 ## Tasks
 
-### deploy:update_code {#deploy-update_code}
+### deploy\:update_code {#deploy-update_code}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L72)
 
 Updates code.

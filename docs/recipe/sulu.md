@@ -62,7 +62,7 @@ return parse('{{bin/php}} {{release_or_current_path}}/bin/websiteconsole --no-in
 
 ## Tasks
 
-### phpcr:migrate {#phpcr-migrate}
+### phpcr\:migrate {#phpcr-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L18)
 
 Migrates PHPCR.
@@ -70,7 +70,7 @@ Migrates PHPCR.
 
 
 
-### deploy:website:cache:clear {#deploy-website-cache-clear}
+### deploy\:website\:cache\:clear {#deploy-website-cache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L23)
 
 Clears cache.
@@ -78,7 +78,7 @@ Clears cache.
 
 
 
-### deploy:website:cache:warmup {#deploy-website-cache-warmup}
+### deploy\:website\:cache\:warmup {#deploy-website-cache-warmup}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/sulu.php#L28)
 
 Warmups cache.

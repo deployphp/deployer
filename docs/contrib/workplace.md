@@ -102,7 +102,7 @@ false
 
 ## Tasks
 
-### workplace:notify {#workplace-notify}
+### workplace\:notify {#workplace-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L79)
 
 Notifies Workplace.
@@ -110,7 +110,7 @@ Notifies Workplace.
 
 
 
-### workplace:notify:success {#workplace-notify-success}
+### workplace\:notify\:success {#workplace-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L103)
 
 Notifies Workplace about deploy finish.
@@ -118,7 +118,7 @@ Notifies Workplace about deploy finish.
 
 
 
-### workplace:notify:failure {#workplace-notify-failure}
+### workplace\:notify\:failure {#workplace-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/workplace.php#L114)
 
 Notifies Workplace about deploy failure.

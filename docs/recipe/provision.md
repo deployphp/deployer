@@ -68,7 +68,7 @@ This task is group task which contains next tasks:
 * [provision:verify](/docs/recipe/provision.md#provision-verify)
 
 
-### provision:check {#provision-check}
+### provision\:check {#provision-check}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L46)
 
 Checks pre-required state.
@@ -76,7 +76,7 @@ Checks pre-required state.
 
 
 
-### provision:configure {#provision-configure}
+### provision\:configure {#provision-configure}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L71)
 
 Collects required params.
@@ -84,7 +84,7 @@ Collects required params.
 
 
 
-### provision:update {#provision-update}
+### provision\:update {#provision-update}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L123)
 
 Adds repositories and update.
@@ -92,7 +92,7 @@ Adds repositories and update.
 
 
 
-### provision:upgrade {#provision-upgrade}
+### provision\:upgrade {#provision-upgrade}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L140)
 
 Upgrades all packages.
@@ -100,7 +100,7 @@ Upgrades all packages.
 
 
 
-### provision:install {#provision-install}
+### provision\:install {#provision-install}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L148)
 
 Installs packages.
@@ -108,7 +108,7 @@ Installs packages.
 
 
 
-### provision:ssh {#provision-ssh}
+### provision\:ssh {#provision-ssh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L183)
 
 Configures the ssh.
@@ -116,7 +116,7 @@ Configures the ssh.
 
 
 
-### provision:firewall {#provision-firewall}
+### provision\:firewall {#provision-firewall}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L195)
 
 Setups a firewall.
@@ -124,7 +124,7 @@ Setups a firewall.
 
 
 
-### provision:verify {#provision-verify}
+### provision\:verify {#provision-verify}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L204)
 
 Verifies what provision was successful.

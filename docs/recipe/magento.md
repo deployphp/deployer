@@ -88,7 +88,7 @@ Magento writable dirs
 
 ## Tasks
 
-### deploy:cache:clear {#deploy-cache-clear}
+### deploy\:cache\:clear {#deploy-cache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L26)
 
 Clears cache.
@@ -96,7 +96,7 @@ Clears cache.
 Clear cache
 
 
-### deploy:clear_version {#deploy-clear_version}
+### deploy\:clear_version {#deploy-clear_version}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento.php#L33)
 
 

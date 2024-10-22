@@ -115,7 +115,7 @@ This task is group task which contains next tasks:
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 
-### drupal:settings {#drupal-settings}
+### drupal\:settings {#drupal-settings}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L34)
 
 
@@ -123,7 +123,7 @@ This task is group task which contains next tasks:
 Create and upload Drupal 7 settings.php using values from secrets
 
 
-### drupal:upload_files {#drupal-upload_files}
+### drupal\:upload_files {#drupal-upload_files}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/drupal7.php#L76)
 
 

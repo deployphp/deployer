@@ -45,7 +45,8 @@ class WorkerCommand extends MainCommand
         if (!$output->isDecorated() && !defined('NO_ANSI')) {
             define('NO_ANSI', 'true');
         }
-        $this->deployer->config->set('master_url', 'http://localhost:' . $input->getOption('port'));
+
+        define('MASTER_ENDPOINT', 'http://localhost:' . $input->getOption('port'));
 
         $task = $this->deployer->tasks->get($input->getOption('task'));
         $host = $this->deployer->hosts->get($input->getOption('host'));

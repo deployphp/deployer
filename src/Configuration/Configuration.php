@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Configuration;
 
+use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Utility\Httpie;
 
@@ -204,11 +205,13 @@ class Configuration implements \ArrayAccess
 
     public function load(): void
     {
-        if (!$this->has('master_url')) {
+        if (!Deployer::isWorker()) {
             return;
         }
 
-        $values = Httpie::get($this->get('master_url') . '/load')
+        $values = Httpie::get(MASTER_ENDPOINT . '/load')
+            ->setopt(CURLOPT_CONNECTTIMEOUT, 0)
+            ->setopt(CURLOPT_TIMEOUT, 0)
             ->jsonBody([
                 'host' => $this->get('alias'),
             ])
@@ -218,11 +221,13 @@ class Configuration implements \ArrayAccess
 
     public function save(): void
     {
-        if (!$this->has('master_url')) {
+        if (!Deployer::isWorker()) {
             return;
         }
 
-        Httpie::get($this->get('master_url') . '/save')
+        Httpie::get(MASTER_ENDPOINT . '/save')
+            ->setopt(CURLOPT_CONNECTTIMEOUT, 0)
+            ->setopt(CURLOPT_TIMEOUT, 0)
             ->jsonBody([
                 'host' => $this->get('alias'),
                 'config' => $this->persist(),

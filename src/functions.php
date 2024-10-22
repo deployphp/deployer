@@ -749,7 +749,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return Deployer::masterCall(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */
@@ -795,7 +795,7 @@ function askChoice(string $message, array $availableChoices, $default = null, bo
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return Deployer::masterCall(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */
@@ -823,7 +823,7 @@ function askConfirmation(string $message, bool $default = false): bool
     }
 
     if (Deployer::isWorker()) {
-        return Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return Deployer::masterCall(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */
@@ -851,7 +851,7 @@ function askHiddenResponse(string $message): string
     }
 
     if (Deployer::isWorker()) {
-        return (string) Deployer::proxyCallToMaster(currentHost(), __FUNCTION__, ...func_get_args());
+        return (string) Deployer::masterCall(currentHost(), __FUNCTION__, ...func_get_args());
     }
 
     /** @var QuestionHelper */

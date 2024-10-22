@@ -28,7 +28,6 @@ use Deployer\Component\Ssh\Client;
 use Deployer\Configuration\Configuration;
 use Deployer\Executor\Master;
 use Deployer\Executor\Messenger;
-use Deployer\Executor\Server;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
 use Deployer\Host\Localhost;
@@ -37,7 +36,6 @@ use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
 use Deployer\Selector\Selector;
-use Deployer\Task;
 use Deployer\Task\ScriptManager;
 use Deployer\Task\TaskCollection;
 use Deployer\Utility\Httpie;
@@ -66,7 +64,6 @@ use Throwable;
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
- * @property Server $server
  * @property Master $master
  * @property Messenger $messenger
  * @property Messenger $logger
@@ -79,9 +76,8 @@ class Deployer extends Container
 {
     /**
      * Global instance of deployer. It's can be accessed only after constructor call.
-     * @var Deployer
      */
-    private static $instance;
+    private static Deployer $instance;
 
     public function __construct(Application $console)
     {
@@ -163,17 +159,11 @@ class Deployer extends Container
         $this['messenger'] = function ($c) {
             return new Messenger($c['input'], $c['output'], $c['logger']);
         };
-        $this['server'] = function ($c) {
-            return new Server(
-                $c['output'],
-                $this,
-            );
-        };
         $this['master'] = function ($c) {
             return new Master(
+                $c['hosts'],
                 $c['input'],
                 $c['output'],
-                $c['server'],
                 $c['messenger'],
             );
         };
@@ -351,7 +341,7 @@ class Deployer extends Container
 
     public static function isWorker(): bool
     {
-        return Deployer::get()->config->has('master_url');
+        return defined('MASTER_ENDPOINT');
     }
 
     /**
@@ -359,13 +349,14 @@ class Deployer extends Container
      * @return array|bool|string
      * @throws \Exception
      */
-    public static function proxyCallToMaster(Host $host, string $func, ...$arguments)
+    public static function masterCall(Host $host, string $func, ...$arguments)
     {
-        // As request to master will stop master permanently,
-        // wait a little bit in order for periodic timer of
-        // master gather worker outputs and print it to user.
-        usleep(100000); // Sleep 100ms.
-        return Httpie::get(get('master_url') . '/proxy')
+        // As request to master will stop master permanently, wait a little bit
+        // in order for ticker gather worker outputs and print it to user.
+        usleep(100_000); // Sleep 100ms.
+
+        return Httpie::get(MASTER_ENDPOINT . '/proxy')
+            ->setopt(CURLOPT_CONNECTTIMEOUT, 0) // no timeout
             ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
             ->jsonBody([
                 'host' => $host->getAlias(),

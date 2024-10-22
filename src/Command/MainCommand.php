@@ -130,8 +130,6 @@ class MainCommand extends SelectCommand
 
         if (!$plan) {
             $this->checkUpdates();
-            $this->deployer->server->start();
-
             if (!empty($skippedTasks)) {
                 foreach ($skippedTasks as $taskName) {
                     $output->writeln("<fg=yellow;options=bold>skip</> $taskName");

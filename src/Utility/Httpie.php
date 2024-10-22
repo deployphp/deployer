@@ -14,30 +14,12 @@ use Deployer\Exception\HttpieException;
 
 class Httpie
 {
-    /**
-     * @var string
-     */
-    private $method = 'GET';
-    /**
-     * @var string
-     */
-    private $url = '';
-    /**
-     * @var array
-     */
-    private $headers = [];
-    /**
-     * @var string
-     */
-    private $body = '';
-    /**
-     * @var array
-     */
-    private $curlopts = [];
-    /**
-     * @var bool
-     */
-    private $nothrow = false;
+    private string $method = 'GET';
+    private string $url = '';
+    private array $headers = [];
+    private string $body = '';
+    private array $curlopts = [];
+    private bool $nothrow = false;
 
     public function __construct()
     {
@@ -109,7 +91,6 @@ class Httpie
         $http = clone $this;
         $http->body = $body;
         $http->headers = array_merge($http->headers, [
-            'Content-Type' => 'application/json',
             'Content-Length' => strlen($http->body),
         ]);
         return $http;
@@ -192,10 +173,7 @@ class Httpie
         return $result;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getJson()
+    public function getJson(): mixed
     {
         $result = $this->send();
         $response = json_decode($result, true);

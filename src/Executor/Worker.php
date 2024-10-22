@@ -21,10 +21,7 @@ use Throwable;
 
 class Worker
 {
-    /**
-     * @var Deployer
-     */
-    private $deployer;
+    private Deployer $deployer;
 
     public function __construct(Deployer $deployer)
     {

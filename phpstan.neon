@@ -11,6 +11,7 @@ parameters:
     ignoreErrors:
         - "#^Constant DEPLOYER_VERSION not found\\.$#"
         - "#^Constant DEPLOYER_BIN not found\\.$#"
+        - "#^Constant MASTER_ENDPOINT not found\\.$#"
         - "#CpanelPhp#"
         - "#AMQPMessage#"
 

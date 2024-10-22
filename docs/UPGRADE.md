@@ -1,5 +1,8 @@
 # Upgrade a major version
 
+## Upgrade from 7.x to 8.x
+
+
 ## Upgrade from 6.x to 7.x
 
 ### Step 1: Update deploy.php

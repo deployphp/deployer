@@ -68,10 +68,6 @@ foreach ($iterator as $fileInfo) {
     }
 }
 
-// Add schema.json
-echo "+ /src/schema.json\n";
-$phar->addFile(realpath(__DIR__ . '/../src/schema.json'), '/src/schema.json');
-
 // Add Caddyfile
 echo "+ /recipe/provision/Caddyfile\n";
 $phar->addFile(realpath(__DIR__ . '/../recipe/provision/Caddyfile'), '/recipe/provision/Caddyfile');

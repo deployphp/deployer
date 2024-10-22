@@ -10,15 +10,9 @@ declare(strict_types=1);
 
 namespace Deployer\Importer;
 
-use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
-use JsonSchema\Constraints\Constraint;
-use JsonSchema\Constraints\Factory;
-use JsonSchema\SchemaStorage;
-use JsonSchema\Validator;
 use Symfony\Component\Yaml\Yaml;
-
 use function array_filter;
 use function array_keys;
 use function Deployer\after;
@@ -33,8 +27,6 @@ use function Deployer\set;
 use function Deployer\Support\find_line_number;
 use function Deployer\task;
 use function Deployer\upload;
-use function substr;
-
 use const ARRAY_FILTER_USE_KEY;
 
 class Importer
@@ -76,26 +68,10 @@ class Importer
             } elseif (preg_match('/\.ya?ml$/i', $path)) {
                 self::$recipeFilename = basename($path);
                 self::$recipeSource = file_get_contents($path, true);
-                $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
-                    return substr($key, 0, 1) !== '.';
-                }, ARRAY_FILTER_USE_KEY);
 
-                $schema = 'file://' . __DIR__ . '/../schema.json';
-                if (Deployer::isPharArchive()) {
-                    $schema = __DIR__ . '/../schema.json';
-                }
-                $yamlSchema = json_decode(file_get_contents($schema));
-                $schemaStorage = new SchemaStorage();
-                $schemaStorage->addSchema('file://schema', $yamlSchema);
-                $validator = new Validator(new Factory($schemaStorage));
-                $validator->validate($root, $yamlSchema, Constraint::CHECK_MODE_TYPE_CAST);
-                if (!$validator->isValid()) {
-                    $msg = "YAML " . self::$recipeFilename . " does not validate. Violations:\n";
-                    foreach ($validator->getErrors() as $error) {
-                        $msg .= "[{$error['property']}] {$error['message']}\n";
-                    }
-                    throw new ConfigurationException($msg);
-                }
+                $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
+                    return !str_starts_with($key, '.');
+                }, ARRAY_FILTER_USE_KEY);
 
                 foreach (array_keys($root) as $key) {
                     static::$key($root[$key]);

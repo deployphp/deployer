@@ -25,9 +25,8 @@
             "Deployer\\": "src/"
         },
         "files": [
-            "deps/vendor/autoload.php",
-            "src/Support/helpers.php",
-            "src/functions.php"
+            "src/functions.php",
+            "src/Support/helpers.php"
         ]
     },
     "scripts": {
@@ -42,8 +41,12 @@
         "bin/dep"
     ],
     "require": {
-        "php": "^8.0|^7.3",
-        "ext-json": "*"
+        "php": "^8.0",
+        "ext-json": "*",
+        "ext-curl": "*",
+        "symfony/console": "^7.1",
+        "symfony/process": "^7.1",
+        "symfony/yaml": "^7.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.64",

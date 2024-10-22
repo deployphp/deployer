@@ -188,7 +188,7 @@ null
 
 ## Tasks
 
-### rocketchat:notify
+### rocketchat:notify {#rocketchat-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L86)
 
 Notifies RocketChat.
@@ -196,7 +196,7 @@ Notifies RocketChat.
 
 
 
-### rocketchat:notify:success
+### rocketchat:notify:success {#rocketchat-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L116)
 
 Notifies RocketChat about deploy finish.
@@ -204,7 +204,7 @@ Notifies RocketChat about deploy finish.
 
 
 
-### rocketchat:notify:failure
+### rocketchat:notify:failure {#rocketchat-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rocketchat.php#L146)
 
 Notifies RocketChat about deploy failure.

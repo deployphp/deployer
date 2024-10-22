@@ -40,7 +40,7 @@ after('deploy', 'rollbar:notify');
 
 ## Tasks
 
-### rollbar:notify
+### rollbar:notify {#rollbar-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/rollbar.php#L30)
 
 Notifies Rollbar of deployment.

@@ -28,25 +28,25 @@ Additionally, Deployer has a lot of other features, like:
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 The [deploy](#deploy) task of **Statamic** consists of:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
-  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
-  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
-  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
-  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
-  * [deploy:env](/docs/recipe/symfony.md#deployenv) – Optimize environment variables
-  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
-  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
-* [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink) – Creates the symbolic links configured for the application
-* [artisan:cache:clear](/docs/recipe/laravel.md#artisancacheclear) – Flushes the application cache
-* [statamic:stache:clear](/docs/recipe/statamic.md#statamicstacheclear) – Clears the "Stache" cache
-* [statamic:stache:warm](/docs/recipe/statamic.md#statamicstachewarm) – Builds the "Stache" cache
-* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
-  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
-  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
-  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deploy-info) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploy-setup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deploy-update_code) – Updates code
+  * [deploy:env](/docs/recipe/symfony.md#deploy-env) – Optimize environment variables
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
+* [artisan:storage:link](/docs/recipe/laravel.md#artisan-storage-link) – Creates the symbolic links configured for the application
+* [artisan:cache:clear](/docs/recipe/laravel.md#artisan-cache-clear) – Flushes the application cache
+* [statamic:stache:clear](/docs/recipe/statamic.md#statamic-stache-clear) – Clears the "Stache" cache
+* [statamic:stache:warm](/docs/recipe/statamic.md#statamic-stache-warm) – Builds the "Stache" cache
+* [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
 
 
 The statamic recipe is based on the [laravel](/docs/recipe/laravel.md) recipe.
@@ -67,7 +67,7 @@ return $matches[0][0] ?? 'unknown';
 
 ## Tasks
 
-### statamic:addons:discover
+### statamic:addons:discover {#statamic-addons-discover}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L27)
 
 Rebuilds the cached addon package manifest.
@@ -75,7 +75,7 @@ Rebuilds the cached addon package manifest.
 Addons
 
 
-### statamic:assets:generate-presets
+### statamic:assets:generate-presets {#statamic-assets-generate-presets}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L34)
 
 Generates asset preset manipulations.
@@ -83,7 +83,7 @@ Generates asset preset manipulations.
 Assets
 
 
-### statamic:assets:meta
+### statamic:assets:meta {#statamic-assets-meta}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L37)
 
 Generates asset metadata files.
@@ -91,7 +91,7 @@ Generates asset metadata files.
 
 
 
-### statamic:git:commit
+### statamic:git:commit {#statamic-git-commit}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L44)
 
 Git add and commit tracked content.
@@ -99,7 +99,7 @@ Git add and commit tracked content.
 Git
 
 
-### statamic:glide:clear
+### statamic:glide:clear {#statamic-glide-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L51)
 
 Clears the Glide image cache.
@@ -107,7 +107,7 @@ Clears the Glide image cache.
 Glide
 
 
-### statamic:responsive:generate
+### statamic:responsive:generate {#statamic-responsive-generate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L58)
 
 Generates responsive images.
@@ -115,7 +115,7 @@ Generates responsive images.
 Responsive Images (not in the core)
 
 
-### statamic:responsive:regenerate
+### statamic:responsive:regenerate {#statamic-responsive-regenerate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L61)
 
 Regenerate responsive images.
@@ -123,7 +123,7 @@ Regenerate responsive images.
 
 
 
-### statamic:search:insert
+### statamic:search:insert {#statamic-search-insert}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L68)
 
 Inserts an item into its search indexes.
@@ -131,7 +131,7 @@ Inserts an item into its search indexes.
 Search
 
 
-### statamic:search:update
+### statamic:search:update {#statamic-search-update}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L71)
 
 Update a search index.
@@ -139,7 +139,7 @@ Update a search index.
 
 
 
-### statamic:stache:clear
+### statamic:stache:clear {#statamic-stache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L78)
 
 Clears the "Stache" cache.
@@ -147,7 +147,7 @@ Clears the "Stache" cache.
 Stache
 
 
-### statamic:stache:doctor
+### statamic:stache:doctor {#statamic-stache-doctor}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L81)
 
 Diagnose any problems with the Stache.
@@ -155,7 +155,7 @@ Diagnose any problems with the Stache.
 
 
 
-### statamic:stache:refresh
+### statamic:stache:refresh {#statamic-stache-refresh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L84)
 
 Clears and rebuild the "Stache" cache.
@@ -163,7 +163,7 @@ Clears and rebuild the "Stache" cache.
 
 
 
-### statamic:stache:warm
+### statamic:stache:warm {#statamic-stache-warm}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L87)
 
 Builds the "Stache" cache.
@@ -171,7 +171,7 @@ Builds the "Stache" cache.
 
 
 
-### statamic:static:clear
+### statamic:static:clear {#statamic-static-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L94)
 
 Clears the static page cache.
@@ -179,7 +179,7 @@ Clears the static page cache.
 Static
 
 
-### statamic:static:warm
+### statamic:static:warm {#statamic-static-warm}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L97)
 
 Warms the static cache by visiting all URLs.
@@ -187,7 +187,7 @@ Warms the static cache by visiting all URLs.
 
 
 
-### statamic:support:details
+### statamic:support:details {#statamic-support-details}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L104)
 
 Outputs details helpful for support requests.
@@ -195,7 +195,7 @@ Outputs details helpful for support requests.
 Support
 
 
-### statamic:updates:run
+### statamic:updates:run {#statamic-updates-run}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L111)
 
 Runs update scripts from specific version.
@@ -203,7 +203,7 @@ Runs update scripts from specific version.
 Updated
 
 
-### deploy
+### deploy {#deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/statamic.php#L119)
 
 Deploys your project.
@@ -213,12 +213,12 @@ will overwrite the Laravel default.
 
 
 This task is group task which contains next tasks:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare)
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
-* [artisan:storage:link](/docs/recipe/laravel.md#artisanstoragelink)
-* [artisan:cache:clear](/docs/recipe/laravel.md#artisancacheclear)
-* [statamic:stache:clear](/docs/recipe/statamic.md#statamicstacheclear)
-* [statamic:stache:warm](/docs/recipe/statamic.md#statamicstachewarm)
-* [deploy:publish](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
+* [artisan:storage:link](/docs/recipe/laravel.md#artisan-storage-link)
+* [artisan:cache:clear](/docs/recipe/laravel.md#artisan-cache-clear)
+* [statamic:stache:clear](/docs/recipe/statamic.md#statamic-stache-clear)
+* [statamic:stache:warm](/docs/recipe/statamic.md#statamic-stache-warm)
+* [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 

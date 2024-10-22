@@ -16,7 +16,7 @@ require 'recipe/composer.php';
 
 ## Tasks
 
-### deploy
+### deploy {#deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/composer.php#L10)
 
 Deploys your project.
@@ -25,8 +25,8 @@ Deploys your project.
 
 
 This task is group task which contains next tasks:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare)
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
-* [deploy:publish](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
+* [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 

@@ -28,7 +28,7 @@ return ask(' What PHP version to install? ', $defaultPhpVersion, ['5.6', '7.4', 
 
 ## Tasks
 
-### provision:php
+### provision:php {#provision-php}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L13)
 
 Installs PHP packages.
@@ -36,7 +36,7 @@ Installs PHP packages.
 
 
 
-### logs:php-fpm
+### logs:php-fpm {#logs-php-fpm}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L68)
 
 Shows php-fpm logs.
@@ -44,7 +44,7 @@ Shows php-fpm logs.
 
 
 
-### provision:composer
+### provision:composer {#provision-composer}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/php.php#L77)
 
 Installs Composer.

@@ -42,7 +42,7 @@ Default user to use for provisioning.
 
 ## Tasks
 
-### provision
+### provision {#provision}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L24)
 
 Provision the server.
@@ -51,24 +51,24 @@ Provision the server.
 
 
 This task is group task which contains next tasks:
-* [provision:check](/docs/recipe/provision.md#provisioncheck)
-* [provision:configure](/docs/recipe/provision.md#provisionconfigure)
-* [provision:update](/docs/recipe/provision.md#provisionupdate)
-* [provision:upgrade](/docs/recipe/provision.md#provisionupgrade)
-* [provision:install](/docs/recipe/provision.md#provisioninstall)
-* [provision:ssh](/docs/recipe/provision.md#provisionssh)
-* [provision:firewall](/docs/recipe/provision.md#provisionfirewall)
-* [provision:user](/docs/recipe/provision/user.md#provisionuser)
-* [provision:php](/docs/recipe/provision/php.md#provisionphp)
-* [provision:node](/docs/recipe/provision/nodejs.md#provisionnode)
-* [provision:databases](/docs/recipe/provision/databases.md#provisiondatabases)
-* [provision:composer](/docs/recipe/provision/php.md#provisioncomposer)
-* [provision:server](/docs/recipe/provision/website.md#provisionserver)
-* [provision:website](/docs/recipe/provision/website.md#provisionwebsite)
-* [provision:verify](/docs/recipe/provision.md#provisionverify)
+* [provision:check](/docs/recipe/provision.md#provision-check)
+* [provision:configure](/docs/recipe/provision.md#provision-configure)
+* [provision:update](/docs/recipe/provision.md#provision-update)
+* [provision:upgrade](/docs/recipe/provision.md#provision-upgrade)
+* [provision:install](/docs/recipe/provision.md#provision-install)
+* [provision:ssh](/docs/recipe/provision.md#provision-ssh)
+* [provision:firewall](/docs/recipe/provision.md#provision-firewall)
+* [provision:user](/docs/recipe/provision/user.md#provision-user)
+* [provision:php](/docs/recipe/provision/php.md#provision-php)
+* [provision:node](/docs/recipe/provision/nodejs.md#provision-node)
+* [provision:databases](/docs/recipe/provision/databases.md#provision-databases)
+* [provision:composer](/docs/recipe/provision/php.md#provision-composer)
+* [provision:server](/docs/recipe/provision/website.md#provision-server)
+* [provision:website](/docs/recipe/provision/website.md#provision-website)
+* [provision:verify](/docs/recipe/provision.md#provision-verify)
 
 
-### provision:check
+### provision:check {#provision-check}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L46)
 
 Checks pre-required state.
@@ -76,7 +76,7 @@ Checks pre-required state.
 
 
 
-### provision:configure
+### provision:configure {#provision-configure}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L71)
 
 Collects required params.
@@ -84,7 +84,7 @@ Collects required params.
 
 
 
-### provision:update
+### provision:update {#provision-update}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L123)
 
 Adds repositories and update.
@@ -92,7 +92,7 @@ Adds repositories and update.
 
 
 
-### provision:upgrade
+### provision:upgrade {#provision-upgrade}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L140)
 
 Upgrades all packages.
@@ -100,7 +100,7 @@ Upgrades all packages.
 
 
 
-### provision:install
+### provision:install {#provision-install}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L148)
 
 Installs packages.
@@ -108,7 +108,7 @@ Installs packages.
 
 
 
-### provision:ssh
+### provision:ssh {#provision-ssh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L183)
 
 Configures the ssh.
@@ -116,7 +116,7 @@ Configures the ssh.
 
 
 
-### provision:firewall
+### provision:firewall {#provision-firewall}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L195)
 
 Setups a firewall.
@@ -124,7 +124,7 @@ Setups a firewall.
 
 
 
-### provision:verify
+### provision:verify {#provision-verify}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision.php#L204)
 
 Verifies what provision was successful.

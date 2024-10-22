@@ -39,7 +39,7 @@ return which('yarn');
 
 ## Tasks
 
-### yarn:install
+### yarn:install {#yarn-install}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L22)
 
 Installs Yarn packages.

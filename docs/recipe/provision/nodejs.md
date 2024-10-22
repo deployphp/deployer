@@ -25,7 +25,7 @@ require 'recipe/provision/nodejs.php';
 
 ## Tasks
 
-### provision:node
+### provision:node {#provision-node}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/nodejs.php#L11)
 
 Installs npm packages.

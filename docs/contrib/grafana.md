@@ -36,7 +36,7 @@ after('deploy:success', 'grafana:annotation');
 
 ## Tasks
 
-### grafana:annotation
+### grafana:annotation {#grafana-annotation}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/grafana.php#L38)
 
 Creates Grafana annotation of deployment.

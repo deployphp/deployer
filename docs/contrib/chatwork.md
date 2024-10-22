@@ -148,7 +148,7 @@ The Messages
 
 ## Tasks
 
-### chatwork_send_message
+### chatwork_send_message {#chatwork_send_message}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L109)
 
 
@@ -156,7 +156,7 @@ The Messages
 Helpers
 
 
-### chatwork:test
+### chatwork:test {#chatwork-test}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L118)
 
 Tests messages.
@@ -164,7 +164,7 @@ Tests messages.
 Tasks
 
 
-### chatwork:notify
+### chatwork:notify {#chatwork-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L129)
 
 Notifies Chatwork.
@@ -172,7 +172,7 @@ Notifies Chatwork.
 
 
 
-### chatwork:notify:success
+### chatwork:notify:success {#chatwork-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L144)
 
 Notifies Chatwork about deploy finish.
@@ -180,7 +180,7 @@ Notifies Chatwork about deploy finish.
 
 
 
-### chatwork:notify:failure
+### chatwork:notify:failure {#chatwork-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/chatwork.php#L160)
 
 Notifies Chatwork about deploy failure.

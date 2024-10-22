@@ -28,31 +28,31 @@ Additionally, Deployer has a lot of other features, like:
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 The [deploy](#deploy) task of **Shopware** consists of:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
-  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
-  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
-  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
-  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
-  * [deploy:env](/docs/recipe/symfony.md#deployenv) – Optimize environment variables
-  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
-  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
-* [sw:writable:jwt](/docs/recipe/shopware.md#swwritablejwt) – 
-* [sw:deploy](/docs/recipe/shopware.md#swdeploy) – 
-  * [sw:database:migrate](/docs/recipe/shopware.md#swdatabasemigrate) – 
-  * [sw:plugin:refresh](/docs/recipe/shopware.md#swpluginrefresh) – 
-  * [sw:theme:refresh](/docs/recipe/shopware.md#swthemerefresh) – 
-  * [sw:scheduled-task:register](/docs/recipe/shopware.md#swscheduled-taskregister) – 
-  * [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear) – 
-  * [sw:plugin:update:all](/docs/recipe/shopware.md#swpluginupdateall) – 
-  * [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear) – 
-* [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths) – Cleanup files and/or directories
-* [sw:cache:warmup](/docs/recipe/shopware.md#swcachewarmup) – 
-* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
-  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
-  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
-  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deploy-info) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploy-setup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deploy-update_code) – Updates code
+  * [deploy:env](/docs/recipe/symfony.md#deploy-env) – Optimize environment variables
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
+* [sw:writable:jwt](/docs/recipe/shopware.md#sw-writable-jwt) – 
+* [sw:deploy](/docs/recipe/shopware.md#sw-deploy) – 
+  * [sw:database:migrate](/docs/recipe/shopware.md#sw-database-migrate) – 
+  * [sw:plugin:refresh](/docs/recipe/shopware.md#sw-plugin-refresh) – 
+  * [sw:theme:refresh](/docs/recipe/shopware.md#sw-theme-refresh) – 
+  * [sw:scheduled-task:register](/docs/recipe/shopware.md#sw-scheduled-task-register) – 
+  * [sw:cache:clear](/docs/recipe/shopware.md#sw-cache-clear) – 
+  * [sw:plugin:update:all](/docs/recipe/shopware.md#sw-plugin-update-all) – 
+  * [sw:cache:clear](/docs/recipe/shopware.md#sw-cache-clear) – 
+* [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deploy-clear_paths) – Cleanup files and/or directories
+* [sw:cache:warmup](/docs/recipe/shopware.md#sw-cache-warmup) – 
+* [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
 
 
 The shopware recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -169,7 +169,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
 
 ## Tasks
 
-### sw:cache:clear
+### sw:cache:clear {#sw-cache-clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L75)
 
 
@@ -177,7 +177,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
 This task remotely executes the `cache:clear` console command on the target server.
 
 
-### sw:cache:warmup
+### sw:cache:warmup {#sw-cache-warmup}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L81)
 
 
@@ -186,7 +186,7 @@ This task remotely executes the cache warmup console commands on the target serv
 visits the website, doesn't have to wait for the cache to be built up.
 
 
-### sw:database:migrate
+### sw:database:migrate {#sw-database-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L87)
 
 
@@ -194,7 +194,7 @@ visits the website, doesn't have to wait for the cache to be built up.
 This task remotely executes the `database:migrate` console command on the target server.
 
 
-### sw:plugin:refresh
+### sw:plugin:refresh {#sw-plugin-refresh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L91)
 
 
@@ -202,7 +202,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:scheduled-task:register
+### sw:scheduled-task:register {#sw-scheduled-task-register}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L95)
 
 
@@ -210,7 +210,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:theme:refresh
+### sw:theme:refresh {#sw-theme-refresh}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L99)
 
 
@@ -218,7 +218,7 @@ This task remotely executes the `database:migrate` console command on the target
 
 
 
-### sw:theme:compile
+### sw:theme:compile {#sw-theme-compile}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L105)
 
 
@@ -227,7 +227,7 @@ This task is not used per default, but can be used, e.g. in combination with `SH
 to build the theme remotely instead of locally.
 
 
-### sw:plugin:update:all
+### sw:plugin:update:all {#sw-plugin-update-all}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L117)
 
 
@@ -235,7 +235,7 @@ to build the theme remotely instead of locally.
 
 
 
-### sw:writable:jwt
+### sw:writable:jwt {#sw-writable-jwt}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L127)
 
 
@@ -243,7 +243,7 @@ to build the theme remotely instead of locally.
 
 
 
-### sw:deploy
+### sw:deploy {#sw-deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L134)
 
 
@@ -252,16 +252,16 @@ Grouped SW deploy tasks.
 
 
 This task is group task which contains next tasks:
-* [sw:database:migrate](/docs/recipe/shopware.md#swdatabasemigrate)
-* [sw:plugin:refresh](/docs/recipe/shopware.md#swpluginrefresh)
-* [sw:theme:refresh](/docs/recipe/shopware.md#swthemerefresh)
-* [sw:scheduled-task:register](/docs/recipe/shopware.md#swscheduled-taskregister)
-* [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear)
-* [sw:plugin:update:all](/docs/recipe/shopware.md#swpluginupdateall)
-* [sw:cache:clear](/docs/recipe/shopware.md#swcacheclear)
+* [sw:database:migrate](/docs/recipe/shopware.md#sw-database-migrate)
+* [sw:plugin:refresh](/docs/recipe/shopware.md#sw-plugin-refresh)
+* [sw:theme:refresh](/docs/recipe/shopware.md#sw-theme-refresh)
+* [sw:scheduled-task:register](/docs/recipe/shopware.md#sw-scheduled-task-register)
+* [sw:cache:clear](/docs/recipe/shopware.md#sw-cache-clear)
+* [sw:plugin:update:all](/docs/recipe/shopware.md#sw-plugin-update-all)
+* [sw:cache:clear](/docs/recipe/shopware.md#sw-cache-clear)
 
 
-### deploy
+### deploy {#deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L145)
 
 Deploys your project.
@@ -270,15 +270,15 @@ Deploys your project.
 
 
 This task is group task which contains next tasks:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare)
-* [sw:writable:jwt](/docs/recipe/shopware.md#swwritablejwt)
-* [sw:deploy](/docs/recipe/shopware.md#swdeploy)
-* [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deployclear_paths)
-* [sw:cache:warmup](/docs/recipe/shopware.md#swcachewarmup)
-* [deploy:publish](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare)
+* [sw:writable:jwt](/docs/recipe/shopware.md#sw-writable-jwt)
+* [sw:deploy](/docs/recipe/shopware.md#sw-deploy)
+* [deploy:clear_paths](/docs/recipe/deploy/clear_paths.md#deploy-clear_paths)
+* [sw:cache:warmup](/docs/recipe/shopware.md#sw-cache-warmup)
+* [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 
-### sw-build-without-db:get-remote-config
+### sw-build-without-db:get-remote-config {#sw-build-without-db-get-remote-config}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L164)
 
 
@@ -286,7 +286,7 @@ This task is group task which contains next tasks:
 
 
 
-### sw-build-without-db:build
+### sw-build-without-db:build {#sw-build-without-db-build}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L177)
 
 
@@ -294,7 +294,7 @@ This task is group task which contains next tasks:
 
 
 
-### sw-build-without-db
+### sw-build-without-db {#sw-build-without-db}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/shopware.php#L181)
 
 
@@ -303,7 +303,7 @@ This task is group task which contains next tasks:
 
 
 This task is group task which contains next tasks:
-* [sw-build-without-db:get-remote-config](/docs/recipe/shopware.md#sw-build-without-dbget-remote-config)
-* [sw-build-without-db:build](/docs/recipe/shopware.md#sw-build-without-dbbuild)
+* [sw-build-without-db:get-remote-config](/docs/recipe/shopware.md#sw-build-without-db-get-remote-config)
+* [sw-build-without-db:build](/docs/recipe/shopware.md#sw-build-without-db-build)
 
 

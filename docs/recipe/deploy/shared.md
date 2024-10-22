@@ -37,7 +37,7 @@ set('shared_files', ['.env']);
 
 ## Tasks
 
-### deploy:shared
+### deploy:shared {#deploy-shared}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L23)
 
 Creates symlinks for shared files and dirs.

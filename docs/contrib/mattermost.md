@@ -159,7 +159,7 @@ null
 
 ## Tasks
 
-### mattermost:notify
+### mattermost:notify {#mattermost-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L94)
 
 Notifies mattermost.
@@ -167,7 +167,7 @@ Notifies mattermost.
 
 
 
-### mattermost:notify:success
+### mattermost:notify:success {#mattermost-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L115)
 
 Notifies mattermost about deploy finish.
@@ -175,7 +175,7 @@ Notifies mattermost about deploy finish.
 
 
 
-### mattermost:notify:failure
+### mattermost:notify:failure {#mattermost-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/mattermost.php#L136)
 
 Notifies mattermost about deploy failure.

@@ -274,7 +274,8 @@ class DocGen
             if (count($recipe->tasks) > 0) {
                 $tasks .= "## Tasks\n\n";
                 foreach ($recipe->tasks as $t) {
-                    $tasks .= "### {$t->name}\n";
+                    $anchorTag = '{#' . anchor($t->name) . '}';
+                    $tasks .= "### {$t->name} $anchorTag\n";
                     $tasks .= "[Source](https://github.com/deployphp/deployer/blob/master/{$t->recipePath}#L{$t->lineNumber})\n\n";
                     $tasks .= add_tailing_dot($t->desc) . "\n\n";
                     $tasks .= $replaceLinks($t->comment);
@@ -368,7 +369,7 @@ function php_to_md(string $file): string
 
 function anchor(string $s): string
 {
-    return strtolower(str_replace(':', '', $s));
+    return strtolower(str_replace(':', '-', $s));
 }
 
 function remove_text_emoji(string $text): string

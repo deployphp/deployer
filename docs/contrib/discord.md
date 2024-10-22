@@ -106,7 +106,7 @@ The message
 
 ## Tasks
 
-### discord_send_message
+### discord_send_message {#discord_send_message}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L79)
 
 
@@ -114,7 +114,7 @@ The message
 Helpers
 
 
-### discord:test
+### discord:test {#discord-test}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L87)
 
 Tests messages.
@@ -122,7 +122,7 @@ Tests messages.
 Tasks
 
 
-### discord:notify
+### discord:notify {#discord-notify}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L98)
 
 Notifies Discord.
@@ -130,7 +130,7 @@ Notifies Discord.
 
 
 
-### discord:notify:success
+### discord:notify:success {#discord-notify-success}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L106)
 
 Notifies Discord about deploy finish.
@@ -138,7 +138,7 @@ Notifies Discord about deploy finish.
 
 
 
-### discord:notify:failure
+### discord:notify:failure {#discord-notify-failure}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/discord.php#L114)
 
 Notifies Discord about deploy failure.

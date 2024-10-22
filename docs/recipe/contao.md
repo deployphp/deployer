@@ -28,24 +28,24 @@ Additionally, Deployer has a lot of other features, like:
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 The [deploy](#deploy) task of **Contao** consists of:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
-  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
-  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
-  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
-  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
-  * [deploy:env](/docs/recipe/symfony.md#deployenv) – Optimize environment variables
-  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
-  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
-* [contao:maintenance:enable](/docs/recipe/contao.md#contaomaintenanceenable) – Enable maintenance mode
-* [contao:migrate](/docs/recipe/contao.md#contaomigrate) – Run Contao migrations
-* [contao:maintenance:disable](/docs/recipe/contao.md#contaomaintenancedisable) – Disable maintenance mode
-* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
-  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
-  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
-  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deploy-info) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploy-setup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deploy-update_code) – Updates code
+  * [deploy:env](/docs/recipe/symfony.md#deploy-env) – Optimize environment variables
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
+* [contao:maintenance:enable](/docs/recipe/contao.md#contao-maintenance-enable) – Enable maintenance mode
+* [contao:migrate](/docs/recipe/contao.md#contao-migrate) – Run Contao migrations
+* [contao:maintenance:disable](/docs/recipe/contao.md#contao-maintenance-disable) – Disable maintenance mode
+* [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
 
 
 The contao recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
@@ -108,7 +108,7 @@ return $matches[0][0] ?? 5.0;
 
 ## Tasks
 
-### contao:migrate
+### contao:migrate {#contao-migrate}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L56)
 
 Run Contao migrations.
@@ -124,7 +124,7 @@ task('contao:migrate', function () {
 ```
 
 
-### contao:manager:download
+### contao:manager:download {#contao-manager-download}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L62)
 
 Download the Contao Manager.
@@ -132,7 +132,7 @@ Download the Contao Manager.
 Downloads the `contao-manager.phar.php` into the public path.
 
 
-### contao:install:lock
+### contao:install:lock {#contao-install-lock}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L68)
 
 Lock the Contao Install Tool.
@@ -140,7 +140,7 @@ Lock the Contao Install Tool.
 Locks the Contao install tool which is useful if you don't use it.
 
 
-### contao:manager:lock
+### contao:manager:lock {#contao-manager-lock}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L74)
 
 Lock the Contao Manager.
@@ -148,7 +148,7 @@ Lock the Contao Manager.
 Locks the Contao Manager which is useful if you only need the API of the Manager rather than the UI.
 
 
-### contao:maintenance:enable
+### contao:maintenance:enable {#contao-maintenance-enable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L80)
 
 Enable maintenance mode.
@@ -156,7 +156,7 @@ Enable maintenance mode.
 
 
 
-### contao:maintenance:disable
+### contao:maintenance:disable {#contao-maintenance-disable}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L95)
 
 Disable maintenance mode.
@@ -164,7 +164,7 @@ Disable maintenance mode.
 
 
 
-### deploy
+### deploy {#deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/contao.php#L107)
 
 Deploy the project.
@@ -173,11 +173,11 @@ Deploy the project.
 
 
 This task is group task which contains next tasks:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare)
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors)
-* [contao:maintenance:enable](/docs/recipe/contao.md#contaomaintenanceenable)
-* [contao:migrate](/docs/recipe/contao.md#contaomigrate)
-* [contao:maintenance:disable](/docs/recipe/contao.md#contaomaintenancedisable)
-* [deploy:publish](/docs/recipe/common.md#deploypublish)
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
+* [contao:maintenance:enable](/docs/recipe/contao.md#contao-maintenance-enable)
+* [contao:migrate](/docs/recipe/contao.md#contao-migrate)
+* [contao:maintenance:disable](/docs/recipe/contao.md#contao-maintenance-disable)
+* [deploy:publish](/docs/recipe/common.md#deploy-publish)
 
 

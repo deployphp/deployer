@@ -14,7 +14,7 @@ require 'recipe/deploy/env.php';
 
 ## Tasks
 
-### deploy:env
+### deploy:env {#deploy-env}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/env.php#L6)
 
 Configure .env file.

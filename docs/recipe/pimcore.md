@@ -28,22 +28,22 @@ Additionally, Deployer has a lot of other features, like:
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 The [deploy](#deploy) task of **Pimcore** consists of:
-* [deploy:prepare](/docs/recipe/common.md#deployprepare) – Prepares a new release
-  * [deploy:info](/docs/recipe/deploy/info.md#deployinfo) – Displays info about deployment
-  * [deploy:setup](/docs/recipe/deploy/setup.md#deploysetup) – Prepares host for deploy
-  * [deploy:lock](/docs/recipe/deploy/lock.md#deploylock) – Locks deploy
-  * [deploy:release](/docs/recipe/deploy/release.md#deployrelease) – Prepares release
-  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deployupdate_code) – Updates code
-  * [deploy:env](/docs/recipe/symfony.md#deployenv) – Optimize environment variables
-  * [deploy:shared](/docs/recipe/deploy/shared.md#deployshared) – Creates symlinks for shared files and dirs
-  * [deploy:writable](/docs/recipe/deploy/writable.md#deploywritable) – Makes writable dirs
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deployvendors) – Installs vendors
-* [deploy:cache:clear](/docs/recipe/symfony.md#deploycacheclear) – Clears cache
-* [deploy:publish](/docs/recipe/common.md#deploypublish) – Publishes the release
-  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploysymlink) – Creates symlink to release
-  * [deploy:unlock](/docs/recipe/deploy/lock.md#deployunlock) – Unlocks deploy
-  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploycleanup) – Cleanup old releases
-  * [deploy:success](/docs/recipe/common.md#deploysuccess) – Deploys your project
+* [deploy:prepare](/docs/recipe/common.md#deploy-prepare) – Prepares a new release
+  * [deploy:info](/docs/recipe/deploy/info.md#deploy-info) – Displays info about deployment
+  * [deploy:setup](/docs/recipe/deploy/setup.md#deploy-setup) – Prepares host for deploy
+  * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
+  * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
+  * [deploy:update_code](/docs/recipe/deploy/update_code.md#deploy-update_code) – Updates code
+  * [deploy:env](/docs/recipe/symfony.md#deploy-env) – Optimize environment variables
+  * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
+  * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
+* [deploy:cache:clear](/docs/recipe/symfony.md#deploy-cache-clear) – Clears cache
+* [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
 
 
 The pimcore recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
@@ -51,7 +51,7 @@ The pimcore recipe is based on the [symfony](/docs/recipe/symfony.md) recipe.
 
 ## Tasks
 
-### pimcore:rebuild-classes
+### pimcore:rebuild-classes {#pimcore-rebuild-classes}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L16)
 
 Rebuilds Pimcore Classes.
@@ -59,7 +59,7 @@ Rebuilds Pimcore Classes.
 
 
 
-### pimcore:cache_clear
+### pimcore:cache_clear {#pimcore-cache_clear}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L21)
 
 Removes cache.
@@ -67,7 +67,7 @@ Removes cache.
 
 
 
-### pimcore:deploy
+### pimcore:deploy {#pimcore-deploy}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L25)
 
 
@@ -76,7 +76,7 @@ Removes cache.
 
 
 This task is group task which contains next tasks:
-* [pimcore:rebuild-classes](/docs/recipe/pimcore.md#pimcorerebuild-classes)
-* [pimcore:cache_clear](/docs/recipe/pimcore.md#pimcorecache_clear)
+* [pimcore:rebuild-classes](/docs/recipe/pimcore.md#pimcore-rebuild-classes)
+* [pimcore:cache_clear](/docs/recipe/pimcore.md#pimcore-cache_clear)
 
 

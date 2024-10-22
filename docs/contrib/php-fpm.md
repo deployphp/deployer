@@ -74,7 +74,7 @@ return run('{{bin/php}} -r "printf(\'%d.%d\', PHP_MAJOR_VERSION, PHP_MINOR_VERSI
 
 ## Tasks
 
-### php-fpm:reload
+### php-fpm:reload {#php-fpm-reload}
 [Source](https://github.com/deployphp/deployer/blob/master/contrib/php-fpm.php#L42)
 
 Reloads the php-fpm service.

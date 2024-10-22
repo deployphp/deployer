@@ -40,7 +40,7 @@ after('deploy:failed', 'ntfy:notify:failure');
 - `ntfy_title` – the title of the message, default `{{application}}`
 - `ntfy_text` – notification message template
   ```
-  set('ntfy_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('ntfy_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `ntfy_tags` – notification message tags / emojis (comma separated)
   ```
@@ -52,7 +52,7 @@ after('deploy:failed', 'ntfy:notify:failure');
   ```
 - `ntfy_success_text` – success template, default:
   ```
-  set('ntfy_success_text', 'Deploy to *{{target}}* successful');
+  set('ntfy_success_text', 'Deploy to *{{where}}* successful');
   ```
 - `ntfy_success_tags` – success tags / emojis (comma separated)
   ```
@@ -61,7 +61,7 @@ after('deploy:failed', 'ntfy:notify:failure');
 - `ntfy_success_priority` – success notification message priority
 - `ntfy_failure_text` – failure template, default:
   ```
-  set('ntfy_failure_text', 'Deploy to *{{target}}* failed');
+  set('ntfy_failure_text', 'Deploy to *{{where}}* failed');
   ```
 - `ntfy_failure_tags` – failure tags / emojis (comma separated)
   ```
@@ -110,7 +110,7 @@ return get('application', 'Project');
 Deploy message
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 
@@ -120,7 +120,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy to *{{where}}* successful'
 ```
 
 
@@ -130,7 +130,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy to *{{where}}* failed'
 ```
 
 

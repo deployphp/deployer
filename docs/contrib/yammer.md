@@ -23,15 +23,15 @@ before('deploy', 'yammer:notify');
 - `yammer_title` – the title of application, default `{{application}}`
 - `yammer_body` – notification message template, default:
   ```
-  <em>{{user}}</em> deploying {{branch}} to <strong>{{target}}</strong>
+  <em>{{user}}</em> deploying {{what}} to <strong>{{where}}</strong>
   ```
 - `yammer_success_body` – success template, default:
   ```
-  Deploy to <strong>{{target}}</strong> successful
+  Deploy to <strong>{{where}}</strong> successful
   ```
 - `yammer_failure_body` – failure template, default:
   ```
-  Deploy to <strong>{{target}}</strong> failed
+  Deploy to <strong>{{where}}</strong> failed
   ```
 ## Usage
 If you want to notify only about beginning of deployment add this line only:
@@ -75,7 +75,7 @@ return get('application', 'Project');
 Deploy message
 
 ```php title="Default value"
-'<em>{{user}}</em> deploying {{branch}} to <strong>{{target}}</strong>'
+'<em>{{user}}</em> deploying {{what}} to <strong>{{where}}</strong>'
 ```
 
 
@@ -85,7 +85,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to <strong>{{target}}</strong> successful'
+'Deploy to <strong>{{where}}</strong> successful'
 ```
 
 
@@ -95,7 +95,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to <strong>{{target}}</strong> failed'
+'Deploy to <strong>{{where}}</strong> failed'
 ```
 
 

@@ -29,15 +29,15 @@ before('deploy', 'workplace:notify');
    ```
  - `workplace_text` - notification message
    ```
-   set('workplace_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+   set('workplace_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
    ```
  - `workplace_success_text` – success template, default:
   ```
-  set('workplace_success_text', 'Deploy to *{{target}}* successful');
+  set('workplace_success_text', 'Deploy to *{{where}}* successful');
   ```
  - `workplace_failure_text` – failure template, default:
   ```
-  set('workplace_failure_text', 'Deploy to *{{target}}* failed');
+  set('workplace_failure_text', 'Deploy to *{{where}}* failed');
   ```
  - `workplace_edit_post` – whether to create a new post for deploy result, or edit the first one created, default creates a new post:
   ```
@@ -65,7 +65,7 @@ after('deploy:failed', 'workplace:notify:failure');
 Deploy message
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 
@@ -75,7 +75,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy to *{{where}}* successful'
 ```
 
 
@@ -85,7 +85,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy to *{{where}}* failed'
 ```
 
 

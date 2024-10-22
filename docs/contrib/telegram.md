@@ -31,15 +31,15 @@ before('deploy', 'telegram:notify');
 - `telegram_title` – the title of application, default `{{application}}`
 - `telegram_text` – notification message template
   ```
-  _{{user}}_ deploying `{{branch}}` to *{{target}}*
+  _{{user}}_ deploying `{{what}}` to *{{where}}*
   ```
 - `telegram_success_text` – success template, default:
   ```
-  Deploy to *{{target}}* successful
+  Deploy to *{{where}}* successful
   ```
 - `telegram_failure_text` – failure template, default:
   ```
-  Deploy to *{{target}}* failed
+  Deploy to *{{where}}* failed
   ```
 ## Usage
 If you want to notify only about beginning of deployment add this line only:
@@ -104,7 +104,7 @@ return 'https://api.telegram.org/bot' . get('telegram_token') . '/sendmessage';
 Deploy message
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 
@@ -114,7 +114,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy to *{{where}}* successful'
 ```
 
 
@@ -124,7 +124,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy to *{{where}}* failed'
 ```
 
 

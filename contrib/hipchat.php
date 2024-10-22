@@ -4,7 +4,7 @@
 
 - `hipchat_token` – Hipchat V1 auth token
 - `hipchat_room_id` – Room ID or name
-- `hipchat_message` –  Deploy message, default is `_{{user}}_ deploying `{{branch}}` to *{{target}}*`
+- `hipchat_message` –  Deploy message, default is `_{{user}}_ deploying `{{what}}` to *{{where}}*`
 - `hipchat_from` – Default to target
 - `hipchat_color` – Message color, default is **green**
 - `hipchat_url` –  The URL to the message endpoint, default is https://api.hipchat.com/v1/rooms/message
@@ -24,8 +24,8 @@ namespace Deployer;
 use Deployer\Utility\Httpie;
 
 set('hipchat_color', 'green');
-set('hipchat_from', '{{target}}');
-set('hipchat_message', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+set('hipchat_from', '{{where}}');
+set('hipchat_message', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
 set('hipchat_url', 'https://api.hipchat.com/v1/rooms/message');
 
 desc('Notifies Hipchat channel of deployment');

@@ -22,15 +22,15 @@ before('deploy', 'discord:notify');
 - `discord_token` – Discord channel token, **required**
 - `discord_notify_text` – notification message template, markdown supported, default:
   ```markdown
-  :&#8203;information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_
+  :&#8203;information_source: **{{user}}** is deploying branch `{{branch}}` to _{{where}}_
   ```
 - `discord_success_text` – success template, default:
   ```markdown
-  :&#8203;white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully
+  :&#8203;white_check_mark: Branch `{{branch}}` deployed to _{{where}}_ successfully
   ```
 - `discord_failure_text` – failure template, default:
   ```markdown
-  :&#8203;no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_
+  :&#8203;no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{where}}_
 ## Usage
 If you want to notify only about beginning of deployment add this line only:
 ```php
@@ -64,7 +64,7 @@ Deploy messages
 
 ```php title="Default value"
 return [
-'text' => parse(':&#8203;information_source: **{{user}}** is deploying branch `{{branch}}` to _{{target}}_'),
+'text' => parse(':&#8203;information_source: **{{user}}** is deploying branch `{{what}}` to _{{where}}_'),
 ];
 ```
 
@@ -76,7 +76,7 @@ return [
 
 ```php title="Default value"
 return [
-'text' => parse(':&#8203;white_check_mark: Branch `{{branch}}` deployed to _{{target}}_ successfully'),
+'text' => parse(':&#8203;white_check_mark: Branch `{{what}}` deployed to _{{where}}_ successfully'),
 ];
 ```
 
@@ -88,7 +88,7 @@ return [
 
 ```php title="Default value"
 return [
-'text' => parse(':&#8203;no_entry_sign: Branch `{{branch}}` has failed to deploy to _{{target}}_'),
+'text' => parse(':&#8203;no_entry_sign: Branch `{{what}}` has failed to deploy to _{{where}}_'),
 ];
 ```
 

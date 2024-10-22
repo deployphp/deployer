@@ -37,15 +37,15 @@ before('deploy', 'mattermost:notify');
    ```
  - `mattermost_text` - notification message
    ```
-   set('mattermost_text', '_{{user}}_ deploying `{{branch}}` to **{{target}}**');
+   set('mattermost_text', '_{{user}}_ deploying `{{what}}` to **{{where}}**');
    ```
  - `mattermost_success_text` – success template, default:
    ```
-   set('mattermost_success_text', 'Deploy to **{{target}}** successful {{mattermost_success_emoji}}');
+   set('mattermost_success_text', 'Deploy to **{{where}}** successful {{mattermost_success_emoji}}');
    ```
  - `mattermost_failure_text` – failure template, default:
    ```
-   set('mattermost_failure_text', 'Deploy to **{{target}}** failed {{mattermost_failure_emoji}}');
+   set('mattermost_failure_text', 'Deploy to **{{where}}** failed {{mattermost_failure_emoji}}');
    ```
  - `mattermost_success_emoji` – emoji added at the end of success text
  - `mattermost_failure_emoji` – emoji added at the end of failure text
@@ -132,7 +132,7 @@ null
 
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to **{{target}}**'
+'_{{user}}_ deploying `{{what}}` to **{{where}}**'
 ```
 
 
@@ -142,7 +142,7 @@ null
 
 
 ```php title="Default value"
-'Deploy to **{{target}}** successful {{mattermost_success_emoji}}'
+'Deploy to **{{where}}** successful {{mattermost_success_emoji}}'
 ```
 
 
@@ -152,7 +152,7 @@ null
 
 
 ```php title="Default value"
-'Deploy to **{{target}}** failed {{mattermost_failure_emoji}}'
+'Deploy to **{{where}}** failed {{mattermost_failure_emoji}}'
 ```
 
 

@@ -35,15 +35,15 @@ after('deploy:failed', 'teams:notify:failure');
 - `teams_title` – the title of application, default `{{application}}`
 - `teams_text` – notification message template, markdown supported
   ```
-  set('teams_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('teams_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `teams_success_text` – success template, default:
   ```
-  set('teams_success_text', 'Deploy to *{{target}}* successful');
+  set('teams_success_text', 'Deploy to *{{where}}* successful');
   ```
 - `teams_failure_text` – failure template, default:
   ```
-  set('teams_failure_text', 'Deploy to *{{target}}* failed');
+  set('teams_failure_text', 'Deploy to *{{where}}* failed');
   ```
 
 - `teams_color` – color's attachment
@@ -81,9 +81,9 @@ set('teams_title', function () {
 });
 
 // Deploy message
-set('teams_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
-set('teams_success_text', 'Deploy to *{{target}}* successful');
-set('teams_failure_text', 'Deploy to *{{target}}* failed');
+set('teams_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
+set('teams_success_text', 'Deploy to *{{where}}* successful');
+set('teams_failure_text', 'Deploy to *{{where}}* failed');
 
 // Color of attachment
 set('teams_color', '#4d91f7');

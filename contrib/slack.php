@@ -21,15 +21,15 @@ before('deploy', 'slack:notify');
 - `slack_title` – the title of application, default `{{application}}`
 - `slack_text` – notification message template, markdown supported
   ```
-  set('slack_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('slack_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `slack_success_text` – success template, default:
   ```
-  set('slack_success_text', 'Deploy to *{{target}}* successful');
+  set('slack_success_text', 'Deploy to *{{where}}* successful');
   ```
 - `slack_failure_text` – failure template, default:
   ```
-  set('slack_failure_text', 'Deploy to *{{target}}* failed');
+  set('slack_failure_text', 'Deploy to *{{where}}* failed');
   ```
 
 - `slack_color` – color's attachment
@@ -75,10 +75,10 @@ set('slack_title', function () {
 });
 
 // Deploy message
-set('slack_text', '_{{user}}_ deploying `{{target}}` to *{{hostname}}*');
-set('slack_success_text', 'Deploy to *{{target}}* successful');
-set('slack_failure_text', 'Deploy to *{{target}}* failed');
-set('slack_rollback_text', '_{{user}}_ rolled back changes on *{{target}}*');
+set('slack_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
+set('slack_success_text', 'Deploy to *{{where}}* successful');
+set('slack_failure_text', 'Deploy to *{{where}}* failed');
+set('slack_rollback_text', '_{{user}}_ rolled back changes on *{{where}}*');
 set('slack_fields', []);
 
 // Color of attachment

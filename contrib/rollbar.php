@@ -6,7 +6,7 @@
 - `rollbar_token` – access token to rollbar api
 - `rollbar_comment` – comment about deploy, default to
   ```php
-  set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('rollbar_comment', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `rollbar_username` – rollbar user name
 
@@ -24,7 +24,7 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
-set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+set('rollbar_comment', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
 
 desc('Notifies Rollbar of deployment');
 task('rollbar:notify', function () {
@@ -34,7 +34,7 @@ task('rollbar:notify', function () {
 
     $params = [
         'access_token' => get('rollbar_token'),
-        'environment' => get('target'),
+        'environment' => get('where'),
         'revision' => runLocally('git log -n 1 --format="%h"'),
         'local_username' => get('user'),
         'rollbar_username' => get('rollbar_username'),

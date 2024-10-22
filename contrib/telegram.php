@@ -24,16 +24,16 @@ before('deploy', 'telegram:notify');
 - `telegram_title` – the title of application, default `{{application}}`
 - `telegram_text` – notification message template
   ```
-  _{{user}}_ deploying `{{branch}}` to *{{target}}*
+  _{{user}}_ deploying `{{what}}` to *{{where}}*
   ```
 - `telegram_success_text` – success template, default:
   ```
-  Deploy to *{{target}}* successful
+  Deploy to *{{where}}* successful
 
   ```
 - `telegram_failure_text` – failure template, default:
   ```
-  Deploy to *{{target}}* failed
+  Deploy to *{{where}}* failed
   ```
 
 ## Usage
@@ -78,9 +78,9 @@ set('telegram_url', function () {
 });
 
 // Deploy message
-set('telegram_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
-set('telegram_success_text', 'Deploy to *{{target}}* successful');
-set('telegram_failure_text', 'Deploy to *{{target}}* failed');
+set('telegram_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
+set('telegram_success_text', 'Deploy to *{{where}}* successful');
+set('telegram_failure_text', 'Deploy to *{{where}}* failed');
 
 
 desc('Notifies Telegram');

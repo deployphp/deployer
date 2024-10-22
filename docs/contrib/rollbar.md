@@ -16,7 +16,7 @@ require 'contrib/rollbar.php';
 - `rollbar_token` – access token to rollbar api
 - `rollbar_comment` – comment about deploy, default to
   ```php
-  set('rollbar_comment', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('rollbar_comment', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `rollbar_username` – rollbar user name
 ## Usage
@@ -33,7 +33,7 @@ after('deploy', 'rollbar:notify');
 
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 

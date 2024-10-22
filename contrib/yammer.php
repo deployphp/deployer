@@ -15,15 +15,15 @@ before('deploy', 'yammer:notify');
 - `yammer_title` – the title of application, default `{{application}}`
 - `yammer_body` – notification message template, default:
   ```
-  <em>{{user}}</em> deploying {{branch}} to <strong>{{target}}</strong>
+  <em>{{user}}</em> deploying {{what}} to <strong>{{where}}</strong>
   ```
 - `yammer_success_body` – success template, default:
   ```
-  Deploy to <strong>{{target}}</strong> successful
+  Deploy to <strong>{{where}}</strong> successful
   ```
 - `yammer_failure_body` – failure template, default:
   ```
-  Deploy to <strong>{{target}}</strong> failed
+  Deploy to <strong>{{where}}</strong> failed
   ```
 
 ## Usage
@@ -60,9 +60,9 @@ set('yammer_title', function () {
 });
 
 // Deploy message
-set('yammer_body', '<em>{{user}}</em> deploying {{branch}} to <strong>{{target}}</strong>');
-set('yammer_success_body', 'Deploy to <strong>{{target}}</strong> successful');
-set('yammer_failure_body', 'Deploy to <strong>{{target}}</strong> failed');
+set('yammer_body', '<em>{{user}}</em> deploying {{what}} to <strong>{{where}}</strong>');
+set('yammer_success_body', 'Deploy to <strong>{{where}}</strong> successful');
+set('yammer_failure_body', 'Deploy to <strong>{{where}}</strong> failed');
 
 desc('Notifies Yammer');
 task('yammer:notify', function () {

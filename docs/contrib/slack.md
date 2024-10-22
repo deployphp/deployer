@@ -27,15 +27,15 @@ before('deploy', 'slack:notify');
 - `slack_title` – the title of application, default `{{application}}`
 - `slack_text` – notification message template, markdown supported
   ```
-  set('slack_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('slack_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `slack_success_text` – success template, default:
   ```
-  set('slack_success_text', 'Deploy to *{{target}}* successful');
+  set('slack_success_text', 'Deploy to *{{where}}* successful');
   ```
 - `slack_failure_text` – failure template, default:
   ```
-  set('slack_failure_text', 'Deploy to *{{target}}* failed');
+  set('slack_failure_text', 'Deploy to *{{where}}* failed');
   ```
 - `slack_color` – color's attachment
 - `slack_success_color` – success color's attachment
@@ -86,7 +86,7 @@ return get('application', 'Project');
 Deploy message
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{target}}` to *{{hostname}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 
@@ -96,7 +96,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy to *{{where}}* successful'
 ```
 
 
@@ -106,7 +106,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy to *{{where}}* failed'
 ```
 
 
@@ -116,7 +116,7 @@ Deploy message
 
 
 ```php title="Default value"
-'_{{user}}_ rolled back changes on *{{target}}*'
+'_{{user}}_ rolled back changes on *{{where}}*'
 ```
 
 

@@ -43,15 +43,15 @@ after('deploy:failed', 'teams:notify:failure');
 - `teams_title` – the title of application, default `{{application}}`
 - `teams_text` – notification message template, markdown supported
   ```
-  set('teams_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
+  set('teams_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
   ```
 - `teams_success_text` – success template, default:
   ```
-  set('teams_success_text', 'Deploy to *{{target}}* successful');
+  set('teams_success_text', 'Deploy to *{{where}}* successful');
   ```
 - `teams_failure_text` – failure template, default:
   ```
-  set('teams_failure_text', 'Deploy to *{{target}}* failed');
+  set('teams_failure_text', 'Deploy to *{{where}}* failed');
   ```
 - `teams_color` – color's attachment
 - `teams_success_color` – success color's attachment
@@ -88,7 +88,7 @@ return get('application', 'Project');
 Deploy message
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 
@@ -98,7 +98,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy to *{{where}}* successful'
 ```
 
 
@@ -108,7 +108,7 @@ Deploy message
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy to *{{where}}* failed'
 ```
 
 

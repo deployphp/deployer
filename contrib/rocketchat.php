@@ -20,16 +20,16 @@ before('deploy', 'rocketchat:notify');
  - `rocketchat_title` - the title of the application, defaults to `{{application}}`
  - `rocketchat_text` - notification message
    ```
-   set('rocketchat_text', '_{{user}}_ deploying {{branch}} to {{target}}');
+   set('rocketchat_text', '_{{user}}_ deploying {{what}} to {{where}}');
    ```
 
  - `rocketchat_success_text` – success template, default:
   ```
-  set('rocketchat_success_text', 'Deploy to *{{target}}* successful');
+  set('rocketchat_success_text', 'Deploy to *{{where}}* successful');
   ```
  - `rocketchat_failure_text` – failure template, default:
   ```
-  set('rocketchat_failure_text', 'Deploy to *{{target}}* failed');
+  set('rocketchat_failure_text', 'Deploy to *{{where}}* failed');
   ```
 
  - `rocketchat_color` – color's attachment
@@ -78,9 +78,9 @@ set('rocketchat_color', '#000000');
 set('rocketchat_success_color', '#00c100');
 set('rocketchat_failure_color', '#ff0909');
 
-set('rocketchat_text', '_{{user}}_ deploying `{{branch}}` to *{{target}}*');
-set('rocketchat_success_text', 'Deploy to *{{target}}* successful');
-set('rocketchat_failure_text', 'Deploy to *{{target}}* failed');
+set('rocketchat_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
+set('rocketchat_success_text', 'Deploy to *{{where}}* successful');
+set('rocketchat_failure_text', 'Deploy to *{{where}}* failed');
 
 desc('Notifies RocketChat');
 task('rocketchat:notify', function () {

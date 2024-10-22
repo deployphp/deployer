@@ -26,15 +26,15 @@ before('deploy', 'rocketchat:notify');
  - `rocketchat_title` - the title of the application, defaults to `{{application}}`
  - `rocketchat_text` - notification message
    ```
-   set('rocketchat_text', '_{{user}}_ deploying {{branch}} to {{target}}');
+   set('rocketchat_text', '_{{user}}_ deploying {{what}} to {{where}}');
    ```
  - `rocketchat_success_text` – success template, default:
   ```
-  set('rocketchat_success_text', 'Deploy to *{{target}}* successful');
+  set('rocketchat_success_text', 'Deploy to *{{where}}* successful');
   ```
  - `rocketchat_failure_text` – failure template, default:
   ```
-  set('rocketchat_failure_text', 'Deploy to *{{target}}* failed');
+  set('rocketchat_failure_text', 'Deploy to *{{where}}* failed');
   ```
  - `rocketchat_color` – color's attachment
  - `rocketchat_success_color` – success color's attachment
@@ -161,7 +161,7 @@ null
 
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 
@@ -171,7 +171,7 @@ null
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* successful'
+'Deploy to *{{where}}* successful'
 ```
 
 
@@ -181,7 +181,7 @@ null
 
 
 ```php title="Default value"
-'Deploy to *{{target}}* failed'
+'Deploy to *{{where}}* failed'
 ```
 
 

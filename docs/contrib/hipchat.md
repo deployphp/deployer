@@ -15,7 +15,7 @@ require 'contrib/hipchat.php';
 ## Configuration
 - `hipchat_token` – Hipchat V1 auth token
 - `hipchat_room_id` – Room ID or name
-- `hipchat_message` –  Deploy message, default is `_{{user}}_ deploying `{{branch}}` to *{{target}}*`
+- `hipchat_message` –  Deploy message, default is `_{{user}}_ deploying `{{what}}` to *{{where}}*`
 - `hipchat_from` – Default to target
 - `hipchat_color` – Message color, default is **green**
 - `hipchat_url` –  The URL to the message endpoint, default is https://api.hipchat.com/v1/rooms/message
@@ -43,7 +43,7 @@ after('deploy', 'hipchat:notify');
 
 
 ```php title="Default value"
-'{{target}}'
+'{{where}}'
 ```
 
 
@@ -53,7 +53,7 @@ after('deploy', 'hipchat:notify');
 
 
 ```php title="Default value"
-'_{{user}}_ deploying `{{branch}}` to *{{target}}*'
+'_{{user}}_ deploying `{{what}}` to *{{where}}*'
 ```
 
 

@@ -30,6 +30,12 @@ add('recipes', ['common']);
 // otherwise output of `whoami` command.
 set('user', function () {
     if (getenv('CI') !== false) {
+        $ciUserVars = ['GITLAB_USER_NAME', 'GITHUB_ACTOR', 'CIRCLE_USERNAME', 'DRONE_BUILD_TRIGGER'];
+        foreach ($ciUserVars as $var) {
+            if (($ciUser = getenv($var)) !== false) {
+                return $ciUser;
+            }
+        }
         return 'ci';
     }
 

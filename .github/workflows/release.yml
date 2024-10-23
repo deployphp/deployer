@@ -27,6 +27,9 @@ jobs:
         env:
           VERSION: ${{ inputs.version }}
 
+      - name: Build phar
+        run: php -d phar.readonly=0 bin/build -v"$RELEASE_VERSION"
+
       - name: Sign phar
         run: |
           mkdir -p ~/.gnupg/

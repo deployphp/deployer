@@ -1,0 +1,18 @@
+includes:
+    - tests/phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - src
+        - recipe
+        - contrib
+
+    ignoreErrors:
+        - "#^Constant DEPLOYER_VERSION not found\\.$#"
+        - "#^Constant DEPLOYER_BIN not found\\.$#"
+        - "#CpanelPhp#"
+        - "#AMQPMessage#"
+
+    excludePaths:
+        - src/Component/PharUpdate/*

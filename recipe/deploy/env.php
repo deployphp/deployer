@@ -2,11 +2,13 @@
 
 namespace Deployer;
 
+set('dotenv_example', '.env.example');
+
 desc('Configure .env file');
 task('deploy:env', function () {
-    cd('{{release_path}}');
-    if (test('[ -f .env.example ]')) {
-        run('cp .env.example .env');
+    cd('{{release_or_current_path}}');
+    if (test('[ ! -f .env ] && [ -f {{dotenv_example}} ]')) {
+        run('cp {{dotenv_example}} .env');
         set('new_deployment', true);
     }
 });

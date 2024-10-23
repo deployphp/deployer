@@ -34,7 +34,7 @@ The [deploy](#deploy) task of **Cakephp** consists of:
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
   * [deploy:update_code](/docs/recipe/deploy/update_code.md#deploy-update_code) – Updates code
-  * [deploy:env](/docs/recipe/symfony.md#deploy-env) – Optimize environment variables
+  * [deploy:env](/docs/recipe/deploy/env.md#deploy-env) – Configure .env file
   * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors

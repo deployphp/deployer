@@ -34,10 +34,9 @@ The [deploy](#deploy) task of **Spiral** consists of:
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
   * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
   * [deploy:update_code](/docs/recipe/deploy/update_code.md#deploy-update_code) – Updates code
-  * [deploy:env](/docs/recipe/symfony.md#deploy-env) – Optimize environment variables
+  * [deploy:env](/docs/recipe/deploy/env.md#deploy-env) – Configure .env file
   * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
-* [deploy:environment](/docs/recipe/spiral.md#deploy-environment) – Create .env file if it doesn\'t exist
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
 * [spiral:encrypt-key](/docs/recipe/spiral.md#spiral-encrypt-key) – Generate new encryption key, if it doesn\'t exist
 * [spiral:configure](/docs/recipe/spiral.md#spiral-configure) – Configure project
@@ -87,19 +86,23 @@ Path to the RoadRunner server
 ```
 
 
+### dotenv_example
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L18)
+
+Overrides [dotenv_example](/docs/recipe/deploy/env.md#dotenv_example) from `recipe/deploy/env.php`.
+
+
+
+```php title="Default value"
+'.env.sample'
+```
+
+
 
 ## Tasks
 
-### deploy\:environment {#deploy-environment}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L19)
-
-Create .env file if it doesn\'t exist.
-
-
-
-
 ### spiral\:configure {#spiral-configure}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L61)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L58)
 
 Configure project.
 
@@ -107,7 +110,7 @@ Spiral Framework console commands
 
 
 ### spiral\:cycle {#spiral-cycle}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L64)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L61)
 
 Update (init) cycle schema from database and annotated classes.
 
@@ -115,7 +118,7 @@ Update (init) cycle schema from database and annotated classes.
 
 
 ### spiral\:migrate {#spiral-migrate}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L67)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L64)
 
 Perform all outstanding migrations.
 
@@ -123,7 +126,7 @@ Perform all outstanding migrations.
 
 
 ### spiral\:update {#spiral-update}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L70)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L67)
 
 Update project state.
 
@@ -131,7 +134,7 @@ Update project state.
 
 
 ### spiral\:cache\:clean {#spiral-cache-clean}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L70)
 
 Clean application runtime cache.
 
@@ -139,7 +142,7 @@ Clean application runtime cache.
 
 
 ### spiral\:i18n\:reset {#spiral-i18n-reset}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L76)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L73)
 
 Reset translation cache.
 
@@ -147,7 +150,7 @@ Reset translation cache.
 
 
 ### spiral\:encrypt-key {#spiral-encrypt-key}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L79)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L76)
 
 Generate new encryption key, if it doesn\'t exist.
 
@@ -155,7 +158,7 @@ Generate new encryption key, if it doesn\'t exist.
 
 
 ### spiral\:views\:compile {#spiral-views-compile}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L82)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L79)
 
 Warm-up view cache.
 
@@ -163,7 +166,7 @@ Warm-up view cache.
 
 
 ### spiral\:views\:reset {#spiral-views-reset}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L85)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L82)
 
 Clear view cache.
 
@@ -171,7 +174,7 @@ Clear view cache.
 
 
 ### cycle\:migrate {#cycle-migrate}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L91)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L88)
 
 Generate ORM schema migrations.
 
@@ -179,7 +182,7 @@ Cycle ORM and migrations console commands
 
 
 ### cycle\:render {#cycle-render}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L94)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L91)
 
 Render available CycleORM schemas.
 
@@ -187,7 +190,7 @@ Render available CycleORM schemas.
 
 
 ### cycle\:sync {#cycle-sync}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L97)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L94)
 
 Sync Cycle ORM schema with database without intermediate migration (risk operation).
 
@@ -195,7 +198,7 @@ Sync Cycle ORM schema with database without intermediate migration (risk operati
 
 
 ### migrate\:init {#migrate-init}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L100)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L97)
 
 Init migrations component (create migrations table).
 
@@ -203,7 +206,7 @@ Init migrations component (create migrations table).
 
 
 ### migrate\:replay {#migrate-replay}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L103)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L100)
 
 Replay (down, up) one or multiple migrations.
 
@@ -211,7 +214,7 @@ Replay (down, up) one or multiple migrations.
 
 
 ### migrate\:rollback {#migrate-rollback}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L106)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L103)
 
 Rollback one (default) or multiple migrations.
 
@@ -219,7 +222,7 @@ Rollback one (default) or multiple migrations.
 
 
 ### migrate\:status {#migrate-status}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L109)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L106)
 
 Get list of all available migrations and their statuses.
 
@@ -227,7 +230,7 @@ Get list of all available migrations and their statuses.
 
 
 ### roadrunner\:serve {#roadrunner-serve}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L115)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L112)
 
 Start RoadRunner server.
 
@@ -235,7 +238,7 @@ RoadRunner console commands
 
 
 ### roadrunner\:stop {#roadrunner-stop}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L117)
 
 Stop RoadRunner server.
 
@@ -243,7 +246,7 @@ Stop RoadRunner server.
 
 
 ### roadrunner\:reset {#roadrunner-reset}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L123)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L120)
 
 Reset workers of all services.
 
@@ -251,7 +254,7 @@ Reset workers of all services.
 
 
 ### deploy\:download-rr {#deploy-download-rr}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L129)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L126)
 
 Download RoadRunner.
 
@@ -259,7 +262,7 @@ Download and restart RoadRunner
 
 
 ### deploy\:restart-rr {#deploy-restart-rr}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L135)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L132)
 
 Restart RoadRunner.
 
@@ -267,7 +270,7 @@ Restart RoadRunner.
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L149)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/spiral.php#L146)
 
 Deploys your project.
 
@@ -276,7 +279,6 @@ Main task
 
 This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deploy-prepare)
-* [deploy:environment](/docs/recipe/spiral.md#deploy-environment)
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
 * [spiral:encrypt-key](/docs/recipe/spiral.md#spiral-encrypt-key)
 * [spiral:configure](/docs/recipe/spiral.md#spiral-configure)

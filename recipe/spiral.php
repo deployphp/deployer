@@ -15,10 +15,7 @@ set('writable_dirs', ['runtime', 'public']);
 // Path to the RoadRunner server
 set('roadrunner_path', '{{release_or_current_path}}');
 
-desc('Create .env file if it doesn\'t exist');
-task('deploy:environment', function (): void {
-    run('cd {{release_or_current_path}} && [ ! -f .env ] && cp .env.sample .env');
-});
+set('dotenv_example', '.env.sample');
 
 /**
  * Run a console command.
@@ -148,7 +145,6 @@ task('deploy:restart-rr', function (): void {
 desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
-    'deploy:environment',
     'deploy:vendors',
     'spiral:encrypt-key',
     'spiral:configure',

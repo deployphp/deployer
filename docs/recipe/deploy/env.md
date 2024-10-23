@@ -11,11 +11,22 @@ require 'recipe/deploy/env.php';
 [Source](/recipe/deploy/env.php)
 
 
+## Configuration
+### dotenv_example
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/env.php#L5)
+
+
+
+```php title="Default value"
+'.env.example'
+```
+
+
 
 ## Tasks
 
-### deploy:env
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/env.php#L6)
+### deploy\:env {#deploy-env}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/env.php#L8)
 
 Configure .env file.
 

@@ -198,6 +198,17 @@ class Host
         return $this->config->get('shell', null);
     }
 
+    public function setShellPath(string $path): self
+    {
+        $this->config->set('shell_path', $path);
+        return $this;
+    }
+
+    public function getShellPath(): ?string
+    {
+        return $this->config->get('shell_path', null);
+    }
+
     public function setDeployPath(string $path): self
     {
         $this->config->set('deploy_path', $path);

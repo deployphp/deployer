@@ -6,6 +6,12 @@
  * file that was distributed with this source code.
  */
 
+// Check PHP version
+if (PHP_VERSION_ID < 80200) {
+    fwrite(STDERR, "PHP 8.2 or higher is required.\n");
+    exit(1);
+}
+
 // Detect deploy.php location
 $deployFile = null;
 foreach ($argv as $i => $arg) {

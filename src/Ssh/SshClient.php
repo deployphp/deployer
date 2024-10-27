@@ -104,10 +104,4 @@ class SshClient
 
         return $output;
     }
-
-    private function parseExitStatus(Process $process): int
-    {
-        preg_match('/\[exit_code:(\d*)]/', $process->getOutput(), $match);
-        return (int) ($match[1] ?? -1);
-    }
 }

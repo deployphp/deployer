@@ -26,9 +26,8 @@ class Collection implements Countable, IteratorAggregate
     {
         if ($this->has($name)) {
             return $this->values[$name];
-        } else {
-            $this->throwNotFound($name);
         }
+        throw $this->notFound($name);
     }
 
     public function has(string $name): bool
@@ -45,9 +44,8 @@ class Collection implements Countable, IteratorAggregate
     {
         if ($this->has($name)) {
             unset($this->values[$name]);
-        } else {
-            $this->throwNotFound($name);
         }
+        throw $this->notFound($name);
     }
 
     public function count(): int
@@ -77,8 +75,8 @@ class Collection implements Countable, IteratorAggregate
         return new \ArrayIterator($this->values);
     }
 
-    protected function throwNotFound(string $name): void
+    protected function notFound(string $name): \InvalidArgumentException
     {
-        throw new \InvalidArgumentException("Element \"$name\" not found in collection.");
+        return new \InvalidArgumentException("Element \"$name\" not found in collection.");
     }
 }

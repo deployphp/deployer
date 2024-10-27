@@ -18,8 +18,8 @@ use Deployer\Collection\Collection;
  */
 class HostCollection extends Collection
 {
-    protected function throwNotFound(string $name): void
+    protected function notFound(string $name): \InvalidArgumentException
     {
-        throw new \InvalidArgumentException("Host \"$name\" not found.");
+        return new \InvalidArgumentException("Host \"$name\" not found.");
     }
 }

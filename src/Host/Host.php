@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Host;
 
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;

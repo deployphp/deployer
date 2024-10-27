@@ -25,7 +25,7 @@ use Deployer\Component\Pimple\Container;
 use Deployer\ProcessRunner\Printer;
 use Deployer\ProcessRunner\ProcessRunner;
 use Deployer\Ssh\SshClient;
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use Deployer\Executor\Master;
 use Deployer\Executor\Messenger;
 use Deployer\Host\Host;

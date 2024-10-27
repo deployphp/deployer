@@ -2,6 +2,7 @@
 
 namespace Deployer\Configuration;
 
+use Deployer\Configuration;
 use Deployer\Exception\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 

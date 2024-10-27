@@ -8,9 +8,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Configuration;
+namespace Deployer;
 
-use Deployer\Deployer;
 use Deployer\Exception\ConfigurationException;
 use Deployer\Utility\Httpie;
 
@@ -20,15 +19,8 @@ use function Deployer\Support\normalize_line_endings;
 
 class Configuration implements \ArrayAccess
 {
-    /**
-     * @var Configuration|null
-     */
-    private $parent;
-
-    /**
-     * @var array
-     */
-    private $values = [];
+    private ?Configuration $parent;
+    private array $values = [];
 
     public function __construct(?Configuration $parent = null)
     {
@@ -45,10 +37,7 @@ class Configuration implements \ArrayAccess
         $this->parent = $parent;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function set(string $name, $value): void
+    public function set(string $name, mixed $value): void
     {
         $this->values[$name] = $value;
     }
@@ -83,11 +72,7 @@ class Configuration implements \ArrayAccess
         }
     }
 
-    /**
-     * @param mixed|null $default
-     * @return mixed|null
-     */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         if (array_key_exists($name, $this->values)) {
             if (is_closure($this->values[$name])) {
@@ -115,10 +100,7 @@ class Configuration implements \ArrayAccess
         throw new ConfigurationException("Config option \"$name\" does not exist.");
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function fetch(string $name)
+    protected function fetch(string $name): mixed
     {
         if (array_key_exists($name, $this->values)) {
             return $this->values[$name];
@@ -129,23 +111,16 @@ class Configuration implements \ArrayAccess
         return null;
     }
 
-    /**
-     * @param string|mixed $value
-     * @return string|mixed
-     */
-    public function parse($value)
+    public function parse(mixed $value): mixed
     {
         if (is_string($value)) {
             $normalizedValue = normalize_line_endings($value);
-            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', [$this, 'parseCallback'], $normalizedValue);
+            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', function (array $matches) {
+                return isset($matches[1]) ? $this->get($matches[1]) : null;
+            }, $normalizedValue);
         }
 
         return $value;
-    }
-
-    public function ownValues(): array
-    {
-        return $this->values;
     }
 
     public function keys(): array
@@ -154,16 +129,7 @@ class Configuration implements \ArrayAccess
     }
 
     /**
-     * @param array $matches
-     * @return mixed|null
-     */
-    private function parseCallback(array $matches)
-    {
-        return isset($matches[1]) ? $this->get($matches[1]) : null;
-    }
-
-    /**
-     * @param mixed $offset
+     * @param string $offset
      * @return bool
      */
     #[\ReturnTypeWillChange]
@@ -174,8 +140,7 @@ class Configuration implements \ArrayAccess
 
     /**
      * @param string $offset
-     * @return mixed|null
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @return mixed
      */
     #[\ReturnTypeWillChange]
     public function offsetGet($offset)
@@ -186,7 +151,6 @@ class Configuration implements \ArrayAccess
     /**
      * @param string $offset
      * @param mixed $value
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[\ReturnTypeWillChange]
     public function offsetSet($offset, $value): void

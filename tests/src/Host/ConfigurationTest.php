@@ -7,7 +7,7 @@
 
 namespace Deployer\Host;
 
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use Deployer\Exception\ConfigurationException;
 use PHPUnit\Framework\TestCase;
 

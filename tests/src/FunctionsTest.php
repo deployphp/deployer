@@ -7,7 +7,7 @@
 
 namespace Deployer;
 
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;

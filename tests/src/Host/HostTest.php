@@ -7,7 +7,7 @@
 
 namespace Deployer\Host;
 
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use PHPUnit\Framework\TestCase;
 
 class HostTest extends TestCase

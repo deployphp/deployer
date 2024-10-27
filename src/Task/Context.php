@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Task;
 
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Symfony\Component\Console\Input\InputInterface;

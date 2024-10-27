@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Command;
 
-use Deployer\Configuration\Configuration;
+use Deployer\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;

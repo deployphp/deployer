@@ -8,26 +8,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Component\ProcessRunner;
+namespace Deployer\ProcessRunner;
 
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
 use Deployer\Logger\Logger;
+use Deployer\ProcessRunner\Printer;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 class ProcessRunner
 {
-    /**
-     * @var Printer
-     */
-    private $pop;
-    /**
-     * @var Logger
-     */
-    private $logger;
+    private Printer $pop;
+    private Logger $logger;
 
     public function __construct(Printer $pop, Logger $logger)
     {
@@ -35,11 +30,6 @@ class ProcessRunner
         $this->logger = $logger;
     }
 
-    /**
-     * Runs a command, consider deployer global configs (timeout,...)
-     *
-     * @throws RunException
-     */
     public function run(Host $host, string $command, array $config = []): string
     {
         $defaults = [
@@ -82,7 +72,7 @@ class ProcessRunner
                 $process->getOutput(),
                 $process->getErrorOutput(),
             );
-        } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line can be thrown but is absent from the phpdoc
+        } catch (ProcessTimedOutException $exception) {
             throw new TimeoutException(
                 $command,
                 $exception->getExceededTimeout(),

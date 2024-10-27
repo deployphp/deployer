@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Utility;
 
-use Deployer\Component\ProcessRunner\Printer;
+use Deployer\ProcessRunner\Printer;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Symfony\Component\Console\Helper\ProgressBar;

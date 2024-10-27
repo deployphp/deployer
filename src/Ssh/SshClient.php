@@ -10,7 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Ssh;
 
-use Deployer\Component\ProcessRunner\Printer;
+use Deployer\ProcessRunner\Printer;
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;

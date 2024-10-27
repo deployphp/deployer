@@ -8,17 +8,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Component\ProcessRunner;
+namespace Deployer\ProcessRunner;
 
 use Deployer\Host\Host;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Printer
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
+    private OutputInterface $output;
 
     public function __construct(OutputInterface $output)
     {

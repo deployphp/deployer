@@ -14,7 +14,6 @@ use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
 use Deployer\Logger\Logger;
-use Deployer\ProcessRunner\Printer;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
@@ -72,7 +71,7 @@ class ProcessRunner
                 $process->getOutput(),
                 $process->getErrorOutput(),
             );
-        } catch (ProcessTimedOutException $exception) {
+        } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line PHPStan doesn't know about ProcessTimedOutException for some reason.
             throw new TimeoutException(
                 $command,
                 $exception->getExceededTimeout(),

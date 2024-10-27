@@ -116,7 +116,7 @@ class Configuration implements \ArrayAccess
         if (is_string($value)) {
             $normalizedValue = normalize_line_endings($value);
             return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', function (array $matches) {
-                return isset($matches[1]) ? $this->get($matches[1]) : null;
+                return $this->get($matches[1]);
             }, $normalizedValue);
         }
 

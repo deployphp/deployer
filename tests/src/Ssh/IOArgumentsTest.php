@@ -1,6 +1,6 @@
 <?php
 
-namespace Deployer\Component\Ssh;
+namespace Deployer\Ssh;
 
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArgvInput;

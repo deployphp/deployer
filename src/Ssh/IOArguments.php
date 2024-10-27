@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Component\Ssh;
+namespace Deployer\Ssh;
 
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Input\InputInterface;

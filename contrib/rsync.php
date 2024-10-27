@@ -113,7 +113,6 @@ host('hostname')
 
 namespace Deployer;
 
-use Deployer\Component\Ssh\Client;
 use Deployer\Host\Localhost;
 use Deployer\Task\Context;
 

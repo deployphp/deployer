@@ -47,8 +47,6 @@ class Logger
 
     public function writeln(Host $host, string $type, string $line): void
     {
-        $line = Printer::filterOutput($line);
-
         // Omit empty lines
         if (empty($line)) {
             return;

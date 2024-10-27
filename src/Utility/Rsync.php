@@ -11,14 +11,12 @@ declare(strict_types=1);
 namespace Deployer\Utility;
 
 use Deployer\Component\ProcessRunner\Printer;
-use Deployer\Component\Ssh\Client;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
-
 use function Deployer\writeln;
 
 class Rsync

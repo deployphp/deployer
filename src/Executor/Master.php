@@ -10,14 +10,11 @@ declare(strict_types=1);
 
 namespace Deployer\Executor;
 
-use Deployer\Component\Ssh\Client;
-use Deployer\Component\Ssh\IOArguments;
 use Deployer\Deployer;
-use Deployer\Exception\Exception;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
-use Deployer\Host\Localhost;
 use Deployer\Selector\Selector;
+use Deployer\Ssh\IOArguments;
 use Deployer\Task\Context;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\InputInterface;

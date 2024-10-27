@@ -24,7 +24,7 @@ use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Deployer\Component\Pimple\Container;
 use Deployer\Component\ProcessRunner\Printer;
 use Deployer\Component\ProcessRunner\ProcessRunner;
-use Deployer\Component\Ssh\Client;
+use Deployer\Ssh\SshClient;
 use Deployer\Configuration\Configuration;
 use Deployer\Executor\Master;
 use Deployer\Executor\Messenger;
@@ -58,7 +58,7 @@ use Throwable;
  * @property HostCollection|Host[] $hosts
  * @property Configuration $config
  * @property Rsync $rsync
- * @property Client $sshClient
+ * @property SshClient $sshClient
  * @property ProcessRunner $processRunner
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
@@ -128,7 +128,7 @@ class Deployer extends Container
             return new Printer($c['output']);
         };
         $this['sshClient'] = function ($c) {
-            return new Client($c['output'], $c['pop'], $c['logger']);
+            return new SshClient($c['output'], $c['pop'], $c['logger']);
         };
         $this['rsync'] = function ($c) {
             return new Rsync($c['pop'], $c['output']);

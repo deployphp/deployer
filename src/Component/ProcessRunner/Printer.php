@@ -59,18 +59,11 @@ class Printer
 
     public function writeln(string $type, Host $host, string $line): void
     {
-        $line = self::filterOutput($line);
-
         // Omit empty lines
         if (empty($line)) {
             return;
         }
 
         $this->output->writeln("[$host] $line");
-    }
-
-    public static function filterOutput(string $output): string
-    {
-        return preg_replace('/\[exit_code:(.*?)]/', '', $output);
     }
 }

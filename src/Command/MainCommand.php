@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Deployer\Command;
 
-use Deployer\Configuration;
 use Deployer\Deployer;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
@@ -21,9 +20,6 @@ use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface as Output;
-
-use function Deployer\Support\find_config_line;
-use function Deployer\warning;
 
 class MainCommand extends SelectCommand
 {

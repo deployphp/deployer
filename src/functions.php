@@ -34,9 +34,7 @@ use Symfony\Component\Console\Question\Question;
 
 use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\env_stringify;
-use function Deployer\Support\escape_shell_argument;
 use function Deployer\Support\is_closure;
-use function Deployer\Support\str_contains;
 
 /**
  * Defines a host or hosts.

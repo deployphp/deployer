@@ -3,7 +3,6 @@
 namespace Deployer;
 
 use function Deployer\Support\escape_shell_argument;
-use function Deployer\Support\starts_with;
 
 set('node_version', '23.x');
 
@@ -16,9 +15,9 @@ task('provision:node', function () {
     }
     $arch = run('uname -m');
 
-    if ($arch === 'arm' || starts_with($arch, 'armv7')) {
+    if ($arch === 'arm' || str_starts_with($arch, 'armv7')) {
         $filename = 'fnm-arm32';
-    } elseif (starts_with($arch, 'aarch') || starts_with($arch, 'armv8')) {
+    } elseif (str_starts_with($arch, 'aarch') || str_starts_with($arch, 'armv8')) {
         $filename = 'fnm-arm64';
     } else {
         $filename = 'fnm-linux';

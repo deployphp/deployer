@@ -15,8 +15,6 @@ use RecursiveIteratorIterator;
 use RecursiveRegexIterator;
 use RegexIterator;
 
-use function Deployer\Support\str_contains as str_contains;
-
 class DocGen
 {
     /**

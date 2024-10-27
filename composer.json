@@ -41,9 +41,7 @@
         "bin/dep"
     ],
     "require": {
-        "php": "^8.0",
-        "ext-json": "*",
-        "ext-curl": "*",
+        "php": ">=8.2",
         "symfony/console": "^7.1",
         "symfony/process": "^7.1",
         "symfony/yaml": "^7.1"

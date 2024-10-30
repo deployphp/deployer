@@ -33,7 +33,7 @@ task('provision:php', function () {
         "php$version-xml",
         "php$version-zip",
     ];
-    run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get install -y ' . implode(' ', $packages), env: ['DEBIAN_FRONTEND' => 'noninteractive']);
 
     // Configure PHP-CLI
     run("sed -i 's/error_reporting = .*/error_reporting = E_ALL/' /etc/php/$version/cli/php.ini");

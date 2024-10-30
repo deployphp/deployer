@@ -111,21 +111,6 @@ class FunctionsTest extends TestCase
         self::assertEquals('hello', $output);
     }
 
-    public function testRunLocallyWithOptions()
-    {
-        Context::get()->getConfig()->set('env', ['DEPLOYER_ENV' => 'default', 'DEPLOYER_ENV_TMP' => 'default']);
-
-        $output = runLocally('echo $DEPLOYER_ENV');
-        self::assertEquals('default', $output);
-        $output = runLocally('echo $DEPLOYER_ENV_TMP');
-        self::assertEquals('default', $output);
-
-        $output = runLocally('echo $DEPLOYER_ENV', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
-        self::assertEquals('default', $output);
-        $output = runLocally('echo $DEPLOYER_ENV_TMP', ['env' => ['DEPLOYER_ENV_TMP' => 'overwritten']]);
-        self::assertEquals('overwritten', $output);
-    }
-
     public function testWithinSetsWorkingPaths()
     {
         Context::get()->getConfig()->set('working_path', '/foo');

@@ -124,14 +124,14 @@ task('provision:update', function () {
     set('remote_user', get('provision_user'));
 
     // PHP
-    run('apt-add-repository ppa:ondrej/php -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-add-repository ppa:ondrej/php -y', env: ['DEBIAN_FRONTEND' => 'noninteractive']);
 
     // Caddy
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor --yes -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg");
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/debian.deb.txt' > /etc/apt/sources.list.d/caddy-stable.list");
 
     // Update
-    run('apt-get update', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive']]);
+    run('apt-get update', env: ['DEBIAN_FRONTEND' => 'noninteractive']);
 })
     ->oncePerNode()
     ->verbose();
@@ -139,7 +139,7 @@ task('provision:update', function () {
 desc('Upgrades all packages');
 task('provision:upgrade', function () {
     set('remote_user', get('provision_user'));
-    run('apt-get upgrade -y', ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
+    run('apt-get upgrade -y', env: ['DEBIAN_FRONTEND' => 'noninteractive'], timeout: 900);
 })
     ->oncePerNode()
     ->verbose();
@@ -174,7 +174,7 @@ task('provision:install', function () {
         'uuid-runtime',
         'whois',
     ];
-    run('apt-get install -y ' . implode(' ', $packages), ['env' => ['DEBIAN_FRONTEND' => 'noninteractive'], 'timeout' => 900]);
+    run('apt-get install -y ' . implode(' ', $packages), env: ['DEBIAN_FRONTEND' => 'noninteractive'], timeout: 900);
 })
     ->verbose()
     ->oncePerNode();

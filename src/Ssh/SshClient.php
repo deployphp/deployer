@@ -19,6 +19,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
+use function Deployer\Support\env_stringify;
+
 class SshClient
 {
     private OutputInterface $output;
@@ -32,16 +34,8 @@ class SshClient
         $this->logger = $logger;
     }
 
-    public function run(Host $host, string $command, array $config = []): string
+    public function run(Host $host, string $command, RunParams $params): string
     {
-        $defaults = [
-            'timeout' => $host->get('default_timeout', 300),
-            'idle_timeout' => null,
-            'real_time_output' => false,
-            'no_throw' => false,
-        ];
-        $config = array_merge($defaults, $config);
-
         $shellId = 'id$' . bin2hex(random_bytes(10));
         $shellCommand = $host->getShell();
         if ($host->has('become') && !empty($host->get('become'))) {
@@ -59,30 +53,43 @@ class SshClient
             $this->output->writeln("[$host] $sshString");
         }
 
+        if (!empty($params->cwd)) {
+            $command = "cd $params->cwd && ($command)";
+        }
+
+        if (!empty($params->env)) {
+            $env = env_stringify($params->env);
+            $command = "export $env; $command";
+        }
+
+        if (!empty($params->secrets)) {
+            foreach ($params->secrets as $key => $value) {
+                $command = str_replace('%' . $key . '%', strval($value), $command);
+            }
+        }
+
         $this->pop->command($host, 'run', $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
-        $command = str_replace('%secret%', strval($config['secret'] ?? ''), $command);
-        $command = str_replace('%sudo_pass%', strval($config['sudo_pass'] ?? ''), $command);
 
         $process = new Process($ssh);
         $process
             ->setInput($command)
-            ->setTimeout((null === $config['timeout']) ? null : (float) $config['timeout'])
-            ->setIdleTimeout((null === $config['idle_timeout']) ? null : (float) $config['idle_timeout']);
+            ->setTimeout($params->timeout)
+            ->setIdleTimeout($params->idleTimeout);
 
-        $callback = function ($type, $buffer) use ($config, $host) {
+        $callback = function ($type, $buffer) use ($params, $host) {
             $this->logger->printBuffer($host, $type, $buffer);
-            $this->pop->callback($host, boolval($config['real_time_output']))($type, $buffer);
+            $this->pop->callback($host, $params->forceOutput)($type, $buffer);
         };
 
         try {
             $process->run($callback);
         } catch (ProcessTimedOutException $exception) {
             // Let's try to kill all processes started by this command.
-            $pid = $this->run($host, "ps x | grep $shellId | grep -v grep | awk '{print \$1}'");
+            $pid = $this->run($host, "ps x | grep $shellId | grep -v grep | awk '{print \$1}'", $params->with(timeout: 10));
             // Minus before pid means all processes in this group.
-            $this->run($host, "kill -9 -$pid");
+            $this->run($host, "kill -9 -$pid", $params->with(timeout: 20));
             throw new TimeoutException(
                 $command,
                 $exception->getExceededTimeout(),
@@ -92,7 +99,7 @@ class SshClient
         $output = $process->getOutput();
         $exitCode = $process->getExitCode();
 
-        if ($exitCode !== 0 && !$config['no_throw']) {
+        if ($exitCode !== 0 && !$params->nothrow) {
             throw new RunException(
                 $host,
                 $command,

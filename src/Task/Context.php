@@ -18,15 +18,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class Context
 {
-    /**
-     * @var Host
-     */
-    private $host;
+    private Host $host;
 
     /**
      * @var Context[]
      */
-    private static $contexts = [];
+    private static array $contexts = [];
 
     public function __construct(Host $host)
     {
@@ -43,11 +40,7 @@ class Context
         return !empty(self::$contexts);
     }
 
-    /**
-     * @return Context|false
-     * @throws Exception
-     */
-    public static function get()
+    public static function get(): Context
     {
         if (empty(self::$contexts)) {
             throw new Exception("Context was requested but was not available.");

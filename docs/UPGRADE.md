@@ -2,6 +2,10 @@
 
 ## Upgrade from 7.x to 8.x
 
+- `run()` and `runLocally()` doesn't accept `options` parameter anymore. Use named arguments instead.
+   - `no_throw` is now `nothrow`.
+   - `real_time_output` is now `forceOutput`.
+   - `idle_timeout` is now `idleTimeout`.
 
 ## Upgrade from 6.x to 7.x
 

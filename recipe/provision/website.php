@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Deployer;
 
-use function Deployer\Support\escape_shell_argument;
-
 set('domain', function () {
     return ask(' Domain: ', get('hostname'));
 });
@@ -40,7 +38,7 @@ task('provision:website', function () {
 
     if (test('[ -f Caddyfile ]')) {
         run("echo $'$caddyfile' > Caddyfile.new");
-        $diff = run('diff -U5 --color=always Caddyfile Caddyfile.new', ['no_throw' => true]);
+        $diff = run('diff -U5 --color=always Caddyfile Caddyfile.new', nothrow: true);
         if (empty($diff)) {
             run('rm Caddyfile.new');
         } else {

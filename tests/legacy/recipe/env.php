@@ -10,9 +10,9 @@ set('env', [
 
 task('test', function () {
     info('global=' . run('echo $VAR'));
-    info('local=' . run('echo $VAR', ['env' => ['VAR' => 'local']]));
+    info('local=' . run('echo $VAR', env: ['VAR' => 'local']));
     info('dotenv=' . run('echo $KEY'));
-    info('dotenv=' . run('echo $KEY', ['env' => ['KEY' => 'local']]));
+    info('dotenv=' . run('echo $KEY', env: ['KEY' => 'local']));
 });
 
 before('test', function () {

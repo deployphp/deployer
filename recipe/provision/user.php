@@ -32,8 +32,8 @@ task('provision:user', function () {
         // Make color prompt.
         run("sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' /home/deployer/.bashrc");
 
-        $password = run("mkpasswd -m sha-512 '%secret%'", ['secret' => get('sudo_password')]);
-        run("usermod --password '%secret%' deployer", ['secret' => $password]);
+        $password = run("mkpasswd -m sha-512 '%secret%'", secret: get('sudo_password'));
+        run("usermod --password '%secret%' deployer", secret: $password);
 
         // Copy root public key to deployer user so user can login without password.
         run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
@@ -82,9 +82,5 @@ task('provision:ssh_copy_id', function () {
         return;
     }
 
-    run('echo "$PUBLIC_KEY" >> /home/deployer/.ssh/authorized_keys', [
-        'env' => [
-            'PUBLIC_KEY' => $publicKeyContent,
-        ],
-    ]);
+    run('echo "$PUBLIC_KEY" >> /home/deployer/.ssh/authorized_keys', env: ['PUBLIC_KEY' => $publicKeyContent]);
 });

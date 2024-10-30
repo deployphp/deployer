@@ -14,9 +14,13 @@ use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
 use Deployer\Logger\Logger;
+use Deployer\Ssh\RunParams;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
+
+use function Deployer\Support\deployer_root;
+use function Deployer\Support\env_stringify;
 
 class ProcessRunner
 {
@@ -29,41 +33,44 @@ class ProcessRunner
         $this->logger = $logger;
     }
 
-    public function run(Host $host, string $command, array $config = []): string
+    public function run(Host $host, string $command, RunParams $params): string
     {
-        $defaults = [
-            'timeout' => $host->get('default_timeout', 300),
-            'idle_timeout' => null,
-            'cwd' => getenv('DEPLOYER_ROOT') !== false ? getenv('DEPLOYER_ROOT') : (defined('DEPLOYER_DEPLOY_FILE') ? dirname(DEPLOYER_DEPLOY_FILE) : null),
-            'real_time_output' => false,
-            'shell' => 'bash -s',
-        ];
-        $config = array_merge($defaults, $config);
-
         $this->pop->command($host, 'run', $command);
 
-        $terminalOutput = $this->pop->callback($host, $config['real_time_output']);
+        $terminalOutput = $this->pop->callback($host, $params->forceOutput);
         $callback = function ($type, $buffer) use ($host, $terminalOutput) {
             $this->logger->printBuffer($host, $type, $buffer);
             $terminalOutput($type, $buffer);
         };
 
-        $command = str_replace('%secret%', $config['secret'] ?? '', $command);
-        $command = str_replace('%sudo_pass%', $config['sudo_pass'] ?? '', $command);
-
-        $process = Process::fromShellCommandline($config['shell'])
-            ->setInput($command)
-            ->setTimeout($config['timeout'])
-            ->setIdleTimeout($config['idle_timeout']);
-
-        if ($config['cwd'] !== null) {
-            $process->setWorkingDirectory($config['cwd']);
+        if (!empty($params->secrets)) {
+            foreach ($params->secrets as $key => $value) {
+                $command = str_replace('%' . $key . '%', $value, $command);
+            }
         }
+
+        if (!empty($params->env)) {
+            $env = env_stringify($params->env);
+            $command = "export $env; $command";
+        }
+
+        if (!empty($params->dotenv)) {
+            $command = "source $params->dotenv; $command";
+        }
+
+        $process = Process::fromShellCommandline($params->shell)
+            ->setInput($command)
+            ->setTimeout($params->timeout)
+            ->setIdleTimeout($params->idleTimeout)
+            ->setWorkingDirectory($params->cwd ?? deployer_root());
 
         try {
             $process->mustRun($callback);
             return $process->getOutput();
-        } catch (ProcessFailedException $exception) {
+        } catch (ProcessFailedException) {
+            if ($params->nothrow) {
+                return '';
+            }
             throw new RunException(
                 $host,
                 $command,

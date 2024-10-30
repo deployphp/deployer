@@ -212,3 +212,16 @@ function escape_shell_argument(string $argument): string
 {
     return "'" . str_replace("'", "'\\''", $argument) . "'";
 }
+
+function deployer_root(): string
+{
+    if (getenv('DEPLOYER_ROOT') !== false) {
+        return getenv('DEPLOYER_ROOT');
+    } else {
+        if (defined('DEPLOYER_DEPLOY_FILE')) {
+            return dirname(DEPLOYER_DEPLOY_FILE);
+        } else {
+            return getcwd();
+        }
+    }
+}

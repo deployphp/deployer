@@ -72,10 +72,11 @@ class RunCommand extends SelectCommand
                     cd($path);
                 }
             }
-            run($command, [
-                'real_time_output' => true,
-                'timeout' => intval($input->getOption('timeout')),
-            ]);
+            run(
+                $command,
+                timeout: intval($input->getOption('timeout')),
+                forceOutput: true,
+            );
         });
 
         foreach ($hosts as $host) {

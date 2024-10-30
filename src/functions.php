@@ -19,6 +19,7 @@ use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
 use Deployer\Importer\Importer;
+use Deployer\Ssh\RunParams;
 use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
 use Deployer\Task\GroupTask;
@@ -33,7 +34,6 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
 use function Deployer\Support\array_merge_alternate;
-use function Deployer\Support\env_stringify;
 use function Deployer\Support\is_closure;
 
 /**
@@ -49,10 +49,8 @@ use function Deployer\Support\is_closure;
  *     $port = host('example.org')->get('port');
  * });
  * ```
- *
- * @return Host|ObjectProxy
  */
-function host(string ...$hostname)
+function host(string ...$hostname): Host|ObjectProxy
 {
     $deployer = Deployer::get();
     if (count($hostname) === 1 && $deployer->hosts->has($hostname[0])) {
@@ -77,14 +75,19 @@ function host(string ...$hostname)
             $deployer->hosts->set($hostname, $host);
             return $host;
         }, $aliases);
-        return new ObjectProxy($hosts);
+        return new ObjectProxy($hosts); // @phpstan-ignore-line Acts like a host.
     }
 }
 
 /**
- * @return Localhost|ObjectProxy
+ * Define a local host.
+ * Deployer will not connect to this host, but will execute commands locally instead.
+ *
+ * ```php
+ * localhost('ci'); // Alias and hostname will be "ci".
+ * ```
  */
-function localhost(string ...$hostnames)
+function localhost(string ...$hostnames): Localhost|ObjectProxy
 {
     $deployer = Deployer::get();
     $hostnames = Range::expand($hostnames);
@@ -99,7 +102,7 @@ function localhost(string ...$hostnames)
             $deployer->hosts->set($host->getAlias(), $host);
             return $host;
         }, $hostnames);
-        return new ObjectProxy($hosts);
+        return new ObjectProxy($hosts); // @phpstan-ignore-line Acts like a host.
     }
 }
 
@@ -151,8 +154,6 @@ function selectedHosts(): array
  * ```php
  * import(__DIR__ . '/config/hosts.yaml');
  * ```
- *
- * @throws Exception
  */
 function import(string $file): void
 {
@@ -179,9 +180,10 @@ function desc(?string $title = null): ?string
  * Alternatively get a defined task.
  *
  * @param string $name Name of current task.
- * @param callable():void|array|null $body Callable task, array of other tasks names or nothing to get a defined tasks
+ * @param callable|array|null $body Callable task, array of other tasks names or nothing to get a defined tasks
+ * @return Task
  */
-function task(string $name, $body = null): Task
+function task(string $name, callable|array|null $body = null): Task
 {
     $deployer = Deployer::get();
 
@@ -229,11 +231,11 @@ function task(string $name, $body = null): Task
  * Call that task before specified task runs.
  *
  * @param string $task The task before $that should be run.
- * @param string|callable():void $do The task to be run.
+ * @param string|callable $do The task to be run.
  *
- * @return Task|null
+ * @return ?Task
  */
-function before(string $task, $do)
+function before(string $task, string|callable $do): ?Task
 {
     if (is_closure($do)) {
         $newTask = task("before:$task", $do);
@@ -249,11 +251,11 @@ function before(string $task, $do)
  * Call that task after specified task runs.
  *
  * @param string $task The task after $that should be run.
- * @param string|callable():void $do The task to be run.
+ * @param string|callable $do The task to be run.
  *
- * @return Task|null
+ * @return ?Task
  */
-function after(string $task, $do)
+function after(string $task, string|callable $do): ?Task
 {
     if (is_closure($do)) {
         $newTask = task("after:$task", $do);
@@ -270,11 +272,11 @@ function after(string $task, $do)
  * When called multiple times for a task, previous fail() definitions will be overridden.
  *
  * @param string $task The task which need to fail so $that should be run.
- * @param string|callable():void $do The task to be run.
+ * @param string|callable $do The task to be run.
  *
- * @return Task|null
+ * @return ?Task
  */
-function fail(string $task, $do)
+function fail(string $task, string|callable $do): ?Task
 {
     if (is_callable($do)) {
         $newTask = task("fail:$task", $do);
@@ -305,6 +307,11 @@ function option(string $name, $shortcut = null, ?int $mode = null, string $descr
 
 /**
  * Change the current working directory.
+ *
+ * ```php
+ * cd('~/myapp');
+ * run('ls'); // Will run `ls` in ~/myapp.
+ * ```
  */
 function cd(string $path): void
 {
@@ -325,7 +332,6 @@ function cd(string $path): void
  *
  * @param string $user
  * @return \Closure
- * @throws Exception
  */
 function become(string $user): \Closure
 {
@@ -339,10 +345,10 @@ function become(string $user): \Closure
 /**
  * Execute a callback within a specific directory and revert back to the initial working directory.
  *
- * @return mixed|null Return value of the $callback function or null if callback doesn't return anything
+ * @return mixed Return value of the $callback function or null if callback doesn't return anything
  * @throws Exception
  */
-function within(string $path, callable $callback)
+function within(string $path, callable $callback): mixed
 {
     $lastWorkingPath = get('working_path', '');
     try {
@@ -371,61 +377,62 @@ function within(string $path, callable $callback)
  * ```
  *
  * @param string $command Command to run on remote host.
- * @param array|null $options Array of options will override passed named arguments.
+ * @param string|null $cwd Sets the process working directory. If not set {{working_path}} will be used.
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
- * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
+ * @param int|null $idleTimeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
- * @param bool|null $real_time_output Print command output in real-time.
- * @param bool|null $no_throw Don't throw an exception of non-zero exit code.
- *
- * @throws Exception|RunException|TimeoutException
+ * @param bool|null $forceOutput Print command output in real-time.
+ * @param bool|null $nothrow Don't throw an exception of non-zero exit code.
+ * @return string
+ * @throws RunException
+ * @throws TimeoutException
+ * @throws WillAskUser
  */
-function run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false, ?bool $no_throw = false): string
-{
-    $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'env', 'real_time_output', 'no_throw'] as $arg) {
-        if ($$arg !== null) {
-            $namedArguments[$arg] = $$arg;
-        }
+function run(
+    string  $command,
+    ?string $cwd = null,
+    ?array  $env = null,
+    ?string $secret = null,
+    ?bool   $nothrow = false,
+    ?bool   $forceOutput = false,
+    ?int    $timeout = null,
+    ?int    $idleTimeout = null,
+): string {
+    $runParams = new RunParams(
+        shell: currentHost()->getShell(),
+        cwd: $cwd ?? has('working_path') ? get('working_path') : null,
+        env: array_merge_alternate(get('env', []), $env ?? []),
+        nothrow: $nothrow,
+        timeout: $timeout ?? get('default_timeout', 300),
+        idleTimeout: $idleTimeout,
+        forceOutput: $forceOutput,
+        secrets: empty($secret) ? null : ['secret' => $secret],
+    );
+
+    $dotenv = get('dotenv', false);
+    if (!empty($dotenv)) {
+        $runParams->dotenv = $dotenv;
     }
-    $options = array_merge($namedArguments, $options);
-    $run = function ($command, $options = []): string {
+
+    $run = function (string $command, ?RunParams $params = null) use ($runParams): string {
+        $params = $params ?? $runParams;
         $host = currentHost();
-
         $command = parse($command);
-        $workingPath = get('working_path', '');
-
-        if (!empty($workingPath)) {
-            $command = "cd $workingPath && ($command)";
-        }
-
-        $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
-        if (!empty($env)) {
-            $env = env_stringify($env);
-            $command = "export $env; $command";
-        }
-
-        $dotenv = get('dotenv', false);
-        if (!empty($dotenv)) {
-            $command = ". $dotenv; $command";
-        }
-
         if ($host instanceof Localhost) {
             $process = Deployer::get()->processRunner;
-            $output = $process->run($host, $command, $options);
+            $output = $process->run($host, $command, $params);
         } else {
             $client = Deployer::get()->sshClient;
-            $output = $client->run($host, $command, $options);
+            $output = $client->run($host, $command, $params);
         }
-
         return rtrim($output);
     };
 
     if (preg_match('/^sudo\b/', $command)) {
         try {
-            return $run($command, $options);
-        } catch (RunException $exception) {
+            return $run($command);
+        } catch (RunException) {
             $askpass = get('sudo_askpass', '/tmp/dep_sudo_pass');
             $password = get('sudo_pass', false);
             if ($password === false) {
@@ -435,12 +442,14 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
             $run("echo -e '#!/bin/sh\necho \"\$PASSWORD\"' > $askpass");
             $run("chmod a+x $askpass");
             $command = preg_replace('/^sudo\b/', 'sudo -A', $command);
-            $output = $run(" SUDO_ASKPASS=$askpass PASSWORD=%sudo_pass% $command", array_merge($options, ['sudo_pass' => escapeshellarg($password)]));
+            $output = $run(" SUDO_ASKPASS=$askpass PASSWORD=%sudo_pass% $command", $runParams->with(
+                secrets: ['sudo_pass' => escapeshellarg($password)],
+            ));
             $run("rm $askpass");
             return $output;
         }
     } else {
-        return $run($command, $options);
+        return $run($command);
     }
 }
 
@@ -456,36 +465,45 @@ function run(string $command, ?array $options = [], ?int $timeout = null, ?int $
  * ```
  *
  * @param string $command Command to run on localhost.
- * @param array|null $options Array of options will override passed named arguments.
+ * @param string|null $cwd Sets the process working directory. If not set {{working_path}} will be used.
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
- * @param int|null $idle_timeout Sets the process idle timeout (max. time since last output) in seconds.
+ * @param int|null $idleTimeout Sets the process idle timeout (max. time since last output) in seconds.
  * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
  * @param array|null $env Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
+ * @param bool|null $forceOutput Print command output in real-time.
+ * @param bool|null $nothrow Don't throw an exception of non-zero exit code.
  * @param string|null $shell Shell to run in. Default is `bash -s`.
  *
+ * @return string
  * @throws RunException
+ * @throws TimeoutException
  */
-function runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?string $shell = null): string
-{
-    $namedArguments = [];
-    foreach (['timeout', 'idle_timeout', 'secret', 'env', 'shell'] as $arg) {
-        if ($$arg !== null) {
-            $namedArguments[$arg] = $$arg;
-        }
-    }
-    $options = array_merge($namedArguments, $options);
+function runLocally(
+    string  $command,
+    ?string $cwd = null,
+    ?int    $timeout = null,
+    ?int    $idleTimeout = null,
+    ?string $secret = null,
+    ?array  $env = null,
+    ?bool   $forceOutput = false,
+    ?bool   $nothrow = false,
+    ?string $shell = null,
+): string {
+    $runParams = new RunParams(
+        shell: $shell ?? 'bash -s',
+        cwd: $cwd,
+        env: $env,
+        nothrow: $nothrow,
+        timeout: $timeout,
+        idleTimeout: $idleTimeout,
+        forceOutput: $forceOutput,
+        secrets: empty($secret) ? null : ['secret' => $secret],
+    );
 
     $process = Deployer::get()->processRunner;
     $command = parse($command);
 
-    $env = array_merge_alternate(get('env', []), $options['env'] ?? []);
-    if (!empty($env)) {
-        $env = env_stringify($env);
-        $command = "export $env; $command";
-    }
-
-    $output = $process->run(new Localhost(), $command, $options);
-
+    $output = $process->run(new Localhost(), $command, $runParams);
     return rtrim($output);
 }
 

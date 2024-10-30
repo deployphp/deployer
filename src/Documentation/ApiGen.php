@@ -21,6 +21,7 @@ class ApiGen
     {
         $comment = '';
         $params = '';
+        $signature = '';
 
         $source = str_replace("\r\n", "\n", $source);
 
@@ -34,7 +35,7 @@ class ApiGen
                     }
                     if (str_starts_with($line, 'function')) {
                         $signature = preg_replace('/^function\s+/', '', $line);
-                        $funcName = preg_replace('/\(.+$/', '', $signature);
+                        $funcName = preg_replace('/\(.*$/', '', $signature);
                         $this->fns[] = [
                             'comment' => $comment,
                             'params' => $params,
@@ -43,7 +44,12 @@ class ApiGen
                         ];
                         $comment = '';
                         $params = '';
-                        break;
+
+                        if (str_ends_with($signature, '(')) {
+                            $state = 'params';
+                        } else {
+                            $signature = '';
+                        }
                     }
                     break;
 
@@ -67,6 +73,16 @@ class ApiGen
                         break;
                     }
                     $comment .= preg_replace('/^\s\*\s?/', '', $line) . "\n";
+                    break;
+
+                case 'params':
+                    if (preg_match('/^\).+\{$/', $line, $matches)) {
+                        $signature .= "\n" . preg_replace('/\{$/', '', $line);
+                        $this->fns[count($this->fns) - 1]['signature'] = $signature;
+                        $state = 'root';
+                    } else {
+                        $signature .= "\n" . $line;
+                    }
                     break;
             }
         }

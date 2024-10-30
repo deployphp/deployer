@@ -7,7 +7,7 @@
 ## host()
 
 ```php
-host(string ...$hostname)
+host(string ...$hostname): Host
 ```
 
 Defines a host or hosts.
@@ -24,13 +24,18 @@ task('test', function () {
 ```
 
 
-
 ## localhost()
 
 ```php
-localhost(string ...$hostnames)
+localhost(string ...$hostnames): Localhost
 ```
 
+Define a local host.
+Deployer will not connect to this host, but will execute commands locally instead.
+
+```php
+localhost('ci'); // Alias and hostname will be "ci".
+```
 
 
 ## currentHost()
@@ -85,7 +90,6 @@ import(__DIR__ . '/config/hosts.yaml');
 ```
 
 
-
 ## desc()
 
 ```php
@@ -98,7 +102,7 @@ Set task description.
 ## task()
 
 ```php
-task(string $name, $body = null): Task
+task(string $name, ?callable $body = null): Task
 ```
 
 Define a new task and save to tasks list.
@@ -110,12 +114,12 @@ Alternatively get a defined task.
 | Argument | Type | Comment |
 |---|---|---|
 | `$name` | `string` | Name of current task. |
-| `$body` | `callable():void` or `array` or `null` | Callable task, array of other tasks names or nothing to get a defined tasks |
+| `$body` | `?callable` | Callable task, array of other tasks names or nothing to get a defined tasks |
 
 ## before()
 
 ```php
-before(string $task, $do)
+before(string $task, string|callable $do): ?Task
 ```
 
 Call that task before specified task runs.
@@ -126,12 +130,12 @@ Call that task before specified task runs.
 | Argument | Type | Comment |
 |---|---|---|
 | `$task` | `string` | The task before $that should be run. |
-| `$do` | `string` or `callable():void` | The task to be run. |
+| `$do` | `string` or `callable` | The task to be run. |
 
 ## after()
 
 ```php
-after(string $task, $do)
+after(string $task, string|callable $do): ?Task
 ```
 
 Call that task after specified task runs.
@@ -142,12 +146,12 @@ Call that task after specified task runs.
 | Argument | Type | Comment |
 |---|---|---|
 | `$task` | `string` | The task after $that should be run. |
-| `$do` | `string` or `callable():void` | The task to be run. |
+| `$do` | `string` or `callable` | The task to be run. |
 
 ## fail()
 
 ```php
-fail(string $task, $do)
+fail(string $task, string|callable $do): ?Task
 ```
 
 Setup which task run on failure of $task.
@@ -159,7 +163,7 @@ When called multiple times for a task, previous fail() definitions will be overr
 | Argument | Type | Comment |
 |---|---|---|
 | `$task` | `string` | The task which need to fail so $that should be run. |
-| `$do` | `string` or `callable():void` | The task to be run. |
+| `$do` | `string` or `callable` | The task to be run. |
 
 ## option()
 
@@ -187,6 +191,11 @@ cd(string $path): void
 
 Change the current working directory.
 
+```php
+cd('~/myapp');
+run('ls'); // Will run `ls` in ~/myapp.
+```
+
 
 ## become()
 
@@ -210,7 +219,7 @@ $restore(); // revert back to the previous user
 ## within()
 
 ```php
-within(string $path, callable $callback)
+within(string $path, callable $callback): mixed
 ```
 
 Execute a callback within a specific directory and revert back to the initial working directory.
@@ -220,7 +229,15 @@ Execute a callback within a specific directory and revert back to the initial wo
 ## run()
 
 ```php
-run(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?bool $real_time_output = false, ?bool $no_throw = false): string
+run(
+    string  $command,
+    ?int    $timeout = null,
+    ?int    $idle_timeout = null,
+    ?string $secret = null,
+    ?array  $env = null,
+    ?bool   $real_time_output = false,
+    ?bool   $no_throw = false,
+): string 
 ```
 
 Executes given command on remote host.
@@ -245,7 +262,6 @@ run("echo $path");
 | Argument | Type | Comment |
 |---|---|---|
 | `$command` | `string` | Command to run on remote host. |
-| `$options` | `array` or `null` | Array of options will override passed named arguments. |
 | `$timeout` | `int` or `null` | Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable). |
 | `$idle_timeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
 | `$secret` | `string` or `null` | Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs. |

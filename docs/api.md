@@ -7,7 +7,7 @@
 ## host()
 
 ```php
-host(string ...$hostname): Host
+host(string ...$hostname): Host|ObjectProxy
 ```
 
 Defines a host or hosts.
@@ -27,7 +27,7 @@ task('test', function () {
 ## localhost()
 
 ```php
-localhost(string ...$hostnames): Localhost
+localhost(string ...$hostnames): Localhost|ObjectProxy
 ```
 
 Define a local host.
@@ -102,7 +102,7 @@ Set task description.
 ## task()
 
 ```php
-task(string $name, ?callable $body = null): Task
+task(string $name, callable|array|null $body = null): Task
 ```
 
 Define a new task and save to tasks list.
@@ -114,7 +114,7 @@ Alternatively get a defined task.
 | Argument | Type | Comment |
 |---|---|---|
 | `$name` | `string` | Name of current task. |
-| `$body` | `?callable` | Callable task, array of other tasks names or nothing to get a defined tasks |
+| `$body` | `callable` or `array` or `null` | Callable task, array of other tasks names or nothing to get a defined tasks |
 
 ## before()
 
@@ -231,12 +231,13 @@ Execute a callback within a specific directory and revert back to the initial wo
 ```php
 run(
     string  $command,
-    ?int    $timeout = null,
-    ?int    $idle_timeout = null,
-    ?string $secret = null,
+    ?string $cwd = null,
     ?array  $env = null,
-    ?bool   $real_time_output = false,
-    ?bool   $no_throw = false,
+    ?string $secret = null,
+    ?bool   $nothrow = false,
+    ?bool   $forceOutput = false,
+    ?int    $timeout = null,
+    ?int    $idleTimeout = null,
 ): string 
 ```
 
@@ -258,21 +259,31 @@ run("echo $path");
 
 
 
-
 | Argument | Type | Comment |
 |---|---|---|
 | `$command` | `string` | Command to run on remote host. |
+| `$cwd` | `string` or `null` | Sets the process working directory. If not set {{working_path}} will be used. |
 | `$timeout` | `int` or `null` | Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable). |
-| `$idle_timeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
+| `$idleTimeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
 | `$secret` | `string` or `null` | Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs. |
 | `$env` | `array` or `null` | Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);` |
-| `$real_time_output` | `bool` or `null` | Print command output in real-time. |
-| `$no_throw` | `bool` or `null` | Don't throw an exception of non-zero exit code. |
+| `$forceOutput` | `bool` or `null` | Print command output in real-time. |
+| `$nothrow` | `bool` or `null` | Don't throw an exception of non-zero exit code. |
 
 ## runLocally()
 
 ```php
-runLocally(string $command, ?array $options = [], ?int $timeout = null, ?int $idle_timeout = null, ?string $secret = null, ?array $env = null, ?string $shell = null): string
+runLocally(
+    string  $command,
+    ?string $cwd = null,
+    ?int    $timeout = null,
+    ?int    $idleTimeout = null,
+    ?string $secret = null,
+    ?array  $env = null,
+    ?bool   $forceOutput = false,
+    ?bool   $nothrow = false,
+    ?string $shell = null,
+): string 
 ```
 
 Execute commands on a local machine.
@@ -290,11 +301,13 @@ runLocally("echo $user");
 | Argument | Type | Comment |
 |---|---|---|
 | `$command` | `string` | Command to run on localhost. |
-| `$options` | `array` or `null` | Array of options will override passed named arguments. |
+| `$cwd` | `string` or `null` | Sets the process working directory. If not set {{working_path}} will be used. |
 | `$timeout` | `int` or `null` | Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable). |
-| `$idle_timeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
+| `$idleTimeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
 | `$secret` | `string` or `null` | Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs. |
 | `$env` | `array` or `null` | Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);` |
+| `$forceOutput` | `bool` or `null` | Print command output in real-time. |
+| `$nothrow` | `bool` or `null` | Don't throw an exception of non-zero exit code. |
 | `$shell` | `string` or `null` | Shell to run in. Default is `bash -s`. |
 
 ## test()

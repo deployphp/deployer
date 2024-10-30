@@ -13,7 +13,7 @@ require 'recipe/provision/website.php';
 
 ## Configuration
 ### domain
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L9)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L7)
 
 
 
@@ -23,7 +23,7 @@ return ask(' Domain: ', get('hostname'));
 
 
 ### public_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L13)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L11)
 
 
 
@@ -36,7 +36,7 @@ return ask(' Public path: ', 'public');
 ## Tasks
 
 ### provision\:server {#provision-server}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L18)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L16)
 
 Configures a server.
 
@@ -44,7 +44,7 @@ Configures a server.
 
 
 ### provision\:website {#provision-website}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L25)
 
 Provision website.
 
@@ -52,7 +52,7 @@ Provision website.
 
 
 ### logs\:access {#logs-access}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L71)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L69)
 
 Shows access logs.
 
@@ -60,7 +60,7 @@ Shows access logs.
 
 
 ### logs\:caddy {#logs-caddy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L76)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/website.php#L74)
 
 Shows caddy syslog.
 

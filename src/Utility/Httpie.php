@@ -72,67 +72,60 @@ class Httpie
         return $http;
     }
 
-    public function query(array $params): Httpie
+    public function query(array $params): self
     {
-        $http = clone $this;
-        $http->url .= '?' . http_build_query($params);
-        return $http;
+        $this->url .= '?' . http_build_query($params);
+        return $this;
     }
 
-    public function header(string $header, string $value): Httpie
+    public function header(string $header, string $value): self
     {
-        $http = clone $this;
-        $http->headers[$header] = $value;
-        return $http;
+        $this->headers[$header] = $value;
+        return $this;
     }
 
-    public function body(string $body): Httpie
+    public function body(string $body): self
     {
-        $http = clone $this;
-        $http->body = $body;
-        $http->headers = array_merge($http->headers, [
-            'Content-Length' => strlen($http->body),
+        $this->body = $body;
+        $this->headers = array_merge($this->headers, [
+            'Content-Length' => strlen($this->body),
         ]);
-        return $http;
+        return $this;
     }
 
-    public function jsonBody(array $data): Httpie
+    public function jsonBody(array $data): self
     {
-        $http = clone $this;
-        $http->body = json_encode($data, JSON_PRETTY_PRINT);
-        $http->headers = array_merge($http->headers, [
+        $this->body = json_encode($data, JSON_PRETTY_PRINT);
+        $this->headers = array_merge($this->headers, [
             'Content-Type' => 'application/json',
-            'Content-Length' => strlen($http->body),
+            'Content-Length' => strlen($this->body),
         ]);
-        return $http;
+        return $this;
     }
 
-    public function formBody(array $data): Httpie
+    public function formBody(array $data): self
     {
-        $http = clone $this;
-        $http->body = http_build_query($data);
-        $http->headers = array_merge($this->headers, [
+        $this->body = http_build_query($data);
+        $this->headers = array_merge($this->headers, [
             'Content-type' => 'application/x-www-form-urlencoded',
-            'Content-Length' => strlen($http->body),
+            'Content-Length' => strlen($this->body),
         ]);
-        return $http;
+        return $this;
     }
 
     /**
      * @param mixed $value
      */
-    public function setopt(int $key, $value): Httpie
+    public function setopt(int $key, $value): self
     {
-        $http = clone $this;
-        $http->curlopts[$key] = $value;
-        return $http;
+        $this->curlopts[$key] = $value;
+        return $this;
     }
 
-    public function nothrow(bool $on = true): Httpie
+    public function nothrow(bool $on = true): self
     {
-        $http = clone $this;
-        $http->nothrow = $on;
-        return $http;
+        $this->nothrow = $on;
+        return $this;
     }
 
     public function send(?array &$info = null): string

@@ -75,7 +75,7 @@ function host(string ...$hostname): Host|ObjectProxy
             $deployer->hosts->set($hostname, $host);
             return $host;
         }, $aliases);
-        return new ObjectProxy($hosts); // @phpstan-ignore-line Acts like a host.
+        return new ObjectProxy($hosts);
     }
 }
 
@@ -102,7 +102,7 @@ function localhost(string ...$hostnames): Localhost|ObjectProxy
             $deployer->hosts->set($host->getAlias(), $host);
             return $host;
         }, $hostnames);
-        return new ObjectProxy($hosts); // @phpstan-ignore-line Acts like a host.
+        return new ObjectProxy($hosts);
     }
 }
 

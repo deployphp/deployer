@@ -95,7 +95,7 @@ CacheTool 8.x works with PHP >=8.0
 CacheTool 7.x works with PHP >=7.3
 
 ```php title="Default value"
-'https://github.com/gordalina/cachetool/releases/download/9.0.0/cachetool.phar'
+'https://github.com/gordalina/cachetool/releases/download/9.1.0/cachetool.phar'
 ```
 
 

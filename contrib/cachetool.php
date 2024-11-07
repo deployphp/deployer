@@ -56,7 +56,7 @@ set('cachetool', '');
  * CacheTool 8.x works with PHP >=8.0
  * CacheTool 7.x works with PHP >=7.3
  */
-set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/9.0.0/cachetool.phar');
+set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/9.1.0/cachetool.phar');
 set('cachetool_args', '');
 set('bin/cachetool', function () {
     if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {

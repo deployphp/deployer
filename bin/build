@@ -5,5 +5,97 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+if (ini_get('phar.readonly') === '1') {
+    throw new \Exception('Writing to phar files is disabled. Change your `php.ini` or append `-d phar.readonly=false` to the shebang, if supported by your `env` executable.');
+}
 
-echo "No nothing.\n";
+define('__ROOT__', realpath(__DIR__ . '/..'));
+chdir(__ROOT__);
+
+$opt = getopt('v:', ['nozip']);
+
+$version = $opt['v'] ?? null;
+if (empty($version)) {
+    echo "Please, specify version as \"-v8.0.0\".\n";
+    exit(1);
+}
+if (!preg_match('/^\d+\.\d+\.\d+(\-\w+(\.\d+)?)?$/', $version)) {
+    echo "Version must be \"7.0.0-beta.42\". Got \"$version\".\n";
+    exit(1);
+}
+
+$pharName = "deployer.phar";
+$pharFile = __ROOT__ . '/' . $pharName;
+if (file_exists($pharFile)) {
+    unlink($pharFile);
+}
+
+$ignore = [
+    '.anton',
+    '.git',
+    'Tests',
+    'tests',
+    'deploy.php',
+    '.php-cs-fixer.dist.php',
+];
+
+$phar = new \Phar($pharFile, 0, $pharName);
+$phar->setSignatureAlgorithm(\Phar::SHA1);
+$phar->startBuffering();
+$iterator = new RecursiveDirectoryIterator(__ROOT__, FilesystemIterator::SKIP_DOTS);
+$iterator = new RecursiveCallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) use ($ignore) {
+    return !in_array($fileInfo->getBasename(), $ignore, true);
+});
+$iterator = new RecursiveIteratorIterator($iterator);
+$iterator = new CallbackFilterIterator($iterator, function (SplFileInfo $fileInfo) {
+    //'bash', 'fish', 'zsh' is a completion templates
+    return in_array($fileInfo->getExtension(), ['php', 'exe', 'bash', 'fish', 'zsh'], true);
+});
+
+foreach ($iterator as $fileInfo) {
+    $file = str_replace(__ROOT__, '', $fileInfo->getRealPath());
+    echo "+ " . $file . "\n";
+    $phar->addFile($fileInfo->getRealPath(), $file);
+
+    if (!array_key_exists('nozip', $opt)) {
+        $phar[$file]->compress(Phar::GZ);
+
+        if (!$phar[$file]->isCompressed()) {
+            echo "Could not compress File: $file\n";
+        }
+    }
+}
+
+// Add schema.json
+echo "+ /src/schema.json\n";
+$phar->addFile(realpath(__DIR__ . '/../src/schema.json'), '/src/schema.json');
+
+// Add Caddyfile
+echo "+ /recipe/provision/Caddyfile\n";
+$phar->addFile(realpath(__DIR__ . '/../recipe/provision/Caddyfile'), '/recipe/provision/Caddyfile');
+
+// Add 404.html
+echo "+ /recipe/provision/404.html\n";
+$phar->addFile(realpath(__DIR__ . '/../recipe/provision/404.html'), '/recipe/provision/404.html');
+
+// Add bin/dep file
+echo "+ /bin/dep\n";
+$depContent = file_get_contents(__ROOT__ . '/bin/dep');
+$depContent = str_replace("#!/usr/bin/env php\n", '', $depContent);
+$depContent = str_replace('__FILE__', 'str_replace("phar://", "", Phar::running())', $depContent);
+$depContent = preg_replace("/run\('.+?'/", "run('$version'", $depContent);
+$phar->addFromString('bin/dep', $depContent);
+
+$phar->setStub(
+    <<<STUB
+#!/usr/bin/env php
+<?php
+Phar::mapPhar('{$pharName}');
+require 'phar://{$pharName}/bin/dep';
+__HALT_COMPILER();
+STUB
+);
+$phar->stopBuffering();
+unset($phar);
+
+echo "$pharName was created successfully.\n";

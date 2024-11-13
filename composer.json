@@ -20,6 +20,16 @@
             "url": "https://github.com/sponsors/antonmedv"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Deployer\\": "src/"
+        },
+        "files": [
+            "vendor/autoload.php",
+            "src/Support/helpers.php",
+            "src/functions.php"
+        ]
+    },
     "scripts": {
         "test": "pest",
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",

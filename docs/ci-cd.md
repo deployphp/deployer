@@ -61,7 +61,7 @@ stages:
 deploy:
   stage: deploy
   image:
-    name: deployphp/deployer:7
+    name: deployphp/deployer:v7
     entrypoint: [""]
   before_script:
     - mkdir -p ~/.ssh

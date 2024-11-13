@@ -2,8 +2,8 @@ FROM php:8.3-cli-alpine
 
 RUN apk add --no-cache bash git openssh-client rsync
 
-COPY deployer.phar /bin/deployer.phar
+COPY --chmod=755 deployer.phar /bin/dep
 
 WORKDIR /app
 
-ENTRYPOINT ["php", "/bin/deployer.phar"]
+ENTRYPOINT ["/bin/dep"]

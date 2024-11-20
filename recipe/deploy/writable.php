@@ -58,7 +58,7 @@ set('writable_recursive', false);
 // The chmod mode.
 set('writable_chmod_mode', '0755');
 
-// Additional groups to give write permission to.
+// List of additional groups to give write permission to.
 set('writable_acl_groups', []);
 
 desc('Makes writable dirs');

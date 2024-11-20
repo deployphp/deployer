@@ -91,11 +91,20 @@ The chmod mode.
 ```
 
 
+### writable_acl_groups
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L62)
+
+List of additional groups to give write permission to.
+
+```php title="Default value"
+[]
+```
+
 
 ## Tasks
 
 ### deploy\:writable {#deploy-writable}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L62)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L65)
 
 Makes writable dirs.
 

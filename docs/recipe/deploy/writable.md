@@ -96,9 +96,7 @@ The chmod mode.
 
 List of additional groups to give write permission to.
 
-```php title="Default value"
-[]
-```
+
 
 
 ## Tasks

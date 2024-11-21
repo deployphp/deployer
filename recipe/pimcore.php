@@ -14,6 +14,7 @@ add('writable_dirs', ['public/var', 'var/cache/dev']);
 
 desc('Rebuilds Pimcore Classes');
 task('pimcore:rebuild-classes', function () {
+    run('{{bin/console}} pimcore:build:classes');
     run('{{bin/console}} pimcore:deployment:classes-rebuild --create-classes --delete-classes --no-interaction');
 });
 

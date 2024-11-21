@@ -60,7 +60,7 @@ Rebuilds Pimcore Classes.
 
 
 ### pimcore\:cache_clear {#pimcore-cache_clear}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L21)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L22)
 
 Removes cache.
 
@@ -68,7 +68,7 @@ Removes cache.
 
 
 ### pimcore\:deploy {#pimcore-deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L25)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/pimcore.php#L26)
 
 
 

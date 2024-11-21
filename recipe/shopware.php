@@ -165,12 +165,12 @@ task('sw-build-without-db:get-remote-config', static function () {
     if (!test('[ -d {{current_path}} ]')) {
         return;
     }
-    within('{{deploy_path}}/current', function () {
+    within('{{current_path}}', function () {
         run('{{bin/php}} ./bin/console bundle:dump');
-        download('{{deploy_path}}/current/var/plugins.json', './var/');
+        download('{{current_path}}/var/plugins.json', './var/');
 
         run('{{bin/php}} ./bin/console theme:dump');
-        download('{{deploy_path}}/current/files/theme-config', './files/');
+        download('{{current_path}}/files/theme-config', './files/');
     });
 });
 

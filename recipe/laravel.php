@@ -247,10 +247,10 @@ task('artisan:nova:publish', artisan('nova:publish'));
  */
 
 desc('Starts the Reverb server');
-task('artisan:reverb:start', artisan('pulse:start'));
+task('artisan:reverb:start', artisan('reverb:start'));
 
 desc('Restarts the Reverb server');
-task('artisan:reverb:restart', artisan('pulse:restart'));
+task('artisan:reverb:restart', artisan('reverb:restart'));
 
 /*
  * Pulse.

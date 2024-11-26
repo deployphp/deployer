@@ -101,13 +101,6 @@ task('artisan:up', artisan('up', ['showOutput']));
 desc('Sets the application key');
 task('artisan:key:generate', artisan('key:generate'));
 
-desc('Generates the application key for new deployments');
-task('artisan:create_key', function () {
-    if (has('new_deployment')) {
-        invoke('artisan:key:generate');
-    }
-})->hidden();
-
 desc('Creates the encryption keys for API authentication');
 task('artisan:passport:keys', artisan('passport:keys'));
 
@@ -282,7 +275,6 @@ desc('Deploys your project');
 task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
-    'artisan:create_key',
     'artisan:storage:link',
     'artisan:config:cache',
     'artisan:route:cache',

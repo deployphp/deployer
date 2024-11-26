@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -9,10 +10,10 @@ use Psr\Http\Message\StreamInterface;
 abstract class MessageTrait
 {
     /** @var array Cached HTTP header collection with lowercase key to values */
-    protected $headers = array();
+    protected $headers = [];
 
     /** @var array Actual key to list of values per header. */
-    protected $headerLines = array();
+    protected $headerLines = [];
 
     /** @var string */
     protected $protocol = '1.1';
@@ -49,7 +50,7 @@ abstract class MessageTrait
     public function getHeader($header)
     {
         $name = strtolower($header);
-        return isset($this->headers[$name]) ? $this->headers[$name] : array();
+        return isset($this->headers[$name]) ? $this->headers[$name] : [];
     }
 
     public function getHeaderLine($header)
@@ -64,7 +65,7 @@ abstract class MessageTrait
         $name = strtolower($header);
 
         if (!is_array($value)) {
-            $new->headers[$name] = array(trim($value));
+            $new->headers[$name] = [trim($value)];
         } else {
             $new->headers[$name] = $value;
             foreach ($new->headers[$name] as &$v) {
@@ -147,7 +148,7 @@ abstract class MessageTrait
 
     protected function setHeaders(array $headers)
     {
-        $this->headerLines = $this->headers = array();
+        $this->headerLines = $this->headers = [];
         foreach ($headers as $header => $value) {
             $header = trim($header);
             $name = strtolower($header);

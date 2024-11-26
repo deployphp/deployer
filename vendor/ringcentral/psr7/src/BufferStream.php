@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -132,6 +133,6 @@ class BufferStream implements StreamInterface
             return $this->hwm;
         }
 
-        return $key ? null : array();
+        return $key ? null : [];
     }
 }

@@ -16,6 +16,4 @@ namespace Symfony\Component\Console\Exception;
  *
  * @author Gabriel Ostrolucký <gabriel.ostrolucky@gmail.com>
  */
-class MissingInputException extends RuntimeException implements ExceptionInterface
-{
-}
+class MissingInputException extends RuntimeException implements ExceptionInterface {}

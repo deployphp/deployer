@@ -22,12 +22,12 @@ final class ExtUvLoop implements LoopInterface
     private $uv;
     private $futureTickQueue;
     private $timers;
-    private $streamEvents = array();
-    private $readStreams = array();
-    private $writeStreams = array();
+    private $streamEvents = [];
+    private $readStreams = [];
+    private $writeStreams = [];
     private $running;
     private $signals;
-    private $signalEvents = array();
+    private $signalEvents = [];
     private $streamListener;
 
     public function __construct()
@@ -130,7 +130,7 @@ final class ExtUvLoop implements LoopInterface
             $event,
             $this->convertFloatSecondsToMilliseconds($interval),
             0,
-            $callback
+            $callback,
         );
 
         return $timer;
@@ -154,7 +154,7 @@ final class ExtUvLoop implements LoopInterface
             $event,
             $interval,
             (int) $interval === 0 ? 1 : $interval,
-            $callback
+            $callback,
         );
 
         return $timer;
@@ -244,7 +244,7 @@ final class ExtUvLoop implements LoopInterface
     private function addStream($stream)
     {
         if (!isset($this->streamEvents[(int) $stream])) {
-            $this->streamEvents[(int)$stream] = \uv_poll_init_socket($this->uv, $stream);
+            $this->streamEvents[(int) $stream] = \uv_poll_init_socket($this->uv, $stream);
         }
 
         if ($this->streamEvents[(int) $stream] !== false) {
@@ -333,7 +333,7 @@ final class ExtUvLoop implements LoopInterface
 
         if (($intInterval <= 0 && $interval > 1) || $intInterval >= $maxValue) {
             throw new \InvalidArgumentException(
-                "Interval overflow, value must be lower than '{$maxValue}', but '{$interval}' passed."
+                "Interval overflow, value must be lower than '{$maxValue}', but '{$interval}' passed.",
             );
         }
 

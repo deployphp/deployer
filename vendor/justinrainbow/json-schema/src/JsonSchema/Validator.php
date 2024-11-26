@@ -22,12 +22,12 @@ use JsonSchema\Constraints\Constraint;
  */
 class Validator extends BaseConstraint
 {
-    const SCHEMA_MEDIA_TYPE = 'application/schema+json';
+    public const SCHEMA_MEDIA_TYPE = 'application/schema+json';
 
-    const ERROR_NONE                    = 0x00000000;
-    const ERROR_ALL                     = 0xFFFFFFFF;
-    const ERROR_DOCUMENT_VALIDATION     = 0x00000001;
-    const ERROR_SCHEMA_VALIDATION       = 0x00000002;
+    public const ERROR_NONE                    = 0x00000000;
+    public const ERROR_ALL                     = 0xFFFFFFFF;
+    public const ERROR_DOCUMENT_VALIDATION     = 0x00000001;
+    public const ERROR_SCHEMA_VALIDATION       = 0x00000002;
 
     /**
      * Validates the given data against the schema and returns an object containing the results
@@ -60,7 +60,7 @@ class Validator extends BaseConstraint
         $validator = $this->factory->createInstanceFor('schema');
         $validator->check(
             $value,
-            $this->factory->getSchemaStorage()->getSchema($schemaURI)
+            $this->factory->getSchemaStorage()->getSchema($schemaURI),
         );
 
         $this->factory->setConfig($initialCheckMode);

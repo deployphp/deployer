@@ -13,7 +13,7 @@ final class CachingExecutor implements ExecutorInterface
      *
      * @internal
      */
-    const TTL = 60;
+    public const TTL = 60;
 
     private $executor;
     private $cache;
@@ -49,9 +49,9 @@ final class CachingExecutor implements ExecutorInterface
                             }
 
                             return $message;
-                        }
+                        },
                     );
-                }
+                },
             )->then($resolve, function ($e) use ($reject, &$pending) {
                 $reject($e);
                 $pending = null;

@@ -41,12 +41,12 @@ class ExtEvLoop implements LoopInterface
     /**
      * @var EvIo[]
      */
-    private $readStreams = array();
+    private $readStreams = [];
 
     /**
      * @var EvIo[]
      */
-    private $writeStreams = array();
+    private $writeStreams = [];
 
     /**
      * @var bool
@@ -61,7 +61,7 @@ class ExtEvLoop implements LoopInterface
     /**
      * @var \EvSignal[]
      */
-    private $signalEvents = array();
+    private $signalEvents = [];
 
     public function __construct()
     {
@@ -73,7 +73,7 @@ class ExtEvLoop implements LoopInterface
 
     public function addReadStream($stream, $listener)
     {
-        $key = (int)$stream;
+        $key = (int) $stream;
 
         if (isset($this->readStreams[$key])) {
             return;
@@ -99,7 +99,7 @@ class ExtEvLoop implements LoopInterface
 
     public function addWriteStream($stream, $listener)
     {
-        $key = (int)$stream;
+        $key = (int) $stream;
 
         if (isset($this->writeStreams[$key])) {
             return;
@@ -112,7 +112,7 @@ class ExtEvLoop implements LoopInterface
 
     public function removeReadStream($stream)
     {
-        $key = (int)$stream;
+        $key = (int) $stream;
 
         if (!isset($this->readStreams[$key])) {
             return;
@@ -124,7 +124,7 @@ class ExtEvLoop implements LoopInterface
 
     public function removeWriteStream($stream)
     {
-        $key = (int)$stream;
+        $key = (int) $stream;
 
         if (!isset($this->writeStreams[$key])) {
             return;
@@ -235,7 +235,7 @@ class ExtEvLoop implements LoopInterface
         $this->signals->add($signal, $listener);
 
         if (!isset($this->signalEvents[$signal])) {
-            $this->signalEvents[$signal] = $this->loop->signal($signal, function() use ($signal) {
+            $this->signalEvents[$signal] = $this->loop->signal($signal, function () use ($signal) {
                 $this->signals->call($signal);
             });
         }

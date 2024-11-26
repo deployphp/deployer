@@ -117,16 +117,16 @@ class JsonDescriptor extends Descriptor
     private function getInputOptionData(InputOption $option, bool $negated = false): array
     {
         return $negated ? [
-            'name' => '--no-'.$option->getName(),
+            'name' => '--no-' . $option->getName(),
             'shortcut' => '',
             'accept_value' => false,
             'is_value_required' => false,
             'is_multiple' => false,
-            'description' => 'Negate the "--'.$option->getName().'" option',
+            'description' => 'Negate the "--' . $option->getName() . '" option',
             'default' => false,
         ] : [
-            'name' => '--'.$option->getName(),
-            'shortcut' => $option->getShortcut() ? '-'.str_replace('|', '|-', $option->getShortcut()) : '',
+            'name' => '--' . $option->getName(),
+            'shortcut' => $option->getShortcut() ? '-' . str_replace('|', '|-', $option->getShortcut()) : '',
             'accept_value' => $option->acceptValue(),
             'is_value_required' => $option->isValueRequired(),
             'is_multiple' => $option->isArray(),
@@ -146,7 +146,7 @@ class JsonDescriptor extends Descriptor
         foreach ($definition->getOptions() as $name => $option) {
             $inputOptions[$name] = $this->getInputOptionData($option);
             if ($option->isNegatable()) {
-                $inputOptions['no-'.$name] = $this->getInputOptionData($option, true);
+                $inputOptions['no-' . $name] = $this->getInputOptionData($option, true);
             }
         }
 

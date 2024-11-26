@@ -159,7 +159,7 @@ trait TesterTrait
         } else {
             $this->output = new ConsoleOutput(
                 $options['verbosity'] ?? ConsoleOutput::VERBOSITY_NORMAL,
-                $options['decorated'] ?? null
+                $options['decorated'] ?? null,
             );
 
             $errorOutput = new StreamOutput(fopen('php://memory', 'w', false));
@@ -187,7 +187,7 @@ trait TesterTrait
         $stream = fopen('php://memory', 'r+', false);
 
         foreach ($inputs as $input) {
-            fwrite($stream, $input.\PHP_EOL);
+            fwrite($stream, $input . \PHP_EOL);
         }
 
         rewind($stream);

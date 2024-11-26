@@ -1,4 +1,5 @@
 <?php
+
 /*
  * This recipe for work with ISPManager Lite panel by API.
  */

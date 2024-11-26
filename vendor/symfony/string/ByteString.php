@@ -42,7 +42,7 @@ class ByteString extends AbstractString
      * Copyright (c) 2004-2020, Facebook, Inc. (https://www.facebook.com/)
      */
 
-    public static function fromRandom(int $length = 16, string $alphabet = null): self
+    public static function fromRandom(int $length = 16, ?string $alphabet = null): self
     {
         if ($length <= 0) {
             throw new InvalidArgumentException(sprintf('A strictly positive length is expected, "%d" given.', $length));
@@ -210,12 +210,12 @@ class ByteString extends AbstractString
         return '' === $this->string || preg_match('//u', $this->string);
     }
 
-    public function join(array $strings, string $lastGlue = null): parent
+    public function join(array $strings, ?string $lastGlue = null): parent
     {
         $str = clone $this;
 
-        $tail = null !== $lastGlue && 1 < \count($strings) ? $lastGlue.array_pop($strings) : '';
-        $str->string = implode($this->string, $strings).$tail;
+        $tail = null !== $lastGlue && 1 < \count($strings) ? $lastGlue . array_pop($strings) : '';
+        $str->string = implode($this->string, $strings) . $tail;
 
         return $str;
     }
@@ -249,7 +249,7 @@ class ByteString extends AbstractString
 
                 foreach (get_defined_constants(true)['pcre'] as $k => $v) {
                     if ($lastError === $v && '_ERROR' === substr($k, -6)) {
-                        throw new RuntimeException('Matching failed with '.$k.'.');
+                        throw new RuntimeException('Matching failed with ' . $k . '.');
                     }
                 }
 
@@ -289,7 +289,7 @@ class ByteString extends AbstractString
     public function prepend(string ...$prefix): parent
     {
         $str = clone $this;
-        $str->string = (1 >= \count($prefix) ? ($prefix[0] ?? '') : implode('', $prefix)).$str->string;
+        $str->string = (1 >= \count($prefix) ? ($prefix[0] ?? '') : implode('', $prefix)) . $str->string;
 
         return $str;
     }
@@ -329,7 +329,7 @@ class ByteString extends AbstractString
 
                 foreach (get_defined_constants(true)['pcre'] as $k => $v) {
                     if ($lastError === $v && '_ERROR' === substr($k, -6)) {
-                        throw new RuntimeException('Matching failed with '.$k.'.');
+                        throw new RuntimeException('Matching failed with ' . $k . '.');
                     }
                 }
 
@@ -353,7 +353,7 @@ class ByteString extends AbstractString
         return $str;
     }
 
-    public function slice(int $start = 0, int $length = null): parent
+    public function slice(int $start = 0, ?int $length = null): parent
     {
         $str = clone $this;
         $str->string = (string) substr($this->string, $start, $length ?? \PHP_INT_MAX);
@@ -369,7 +369,7 @@ class ByteString extends AbstractString
         return $str;
     }
 
-    public function splice(string $replacement, int $start = 0, int $length = null): parent
+    public function splice(string $replacement, int $start = 0, ?int $length = null): parent
     {
         $str = clone $this;
         $str->string = substr_replace($this->string, $replacement, $start, $length ?? \PHP_INT_MAX);
@@ -377,7 +377,7 @@ class ByteString extends AbstractString
         return $str;
     }
 
-    public function split(string $delimiter, int $limit = null, int $flags = null): array
+    public function split(string $delimiter, ?int $limit = null, ?int $flags = null): array
     {
         if (1 > $limit = $limit ?? \PHP_INT_MAX) {
             throw new InvalidArgumentException('Split limit must be a positive integer.');
@@ -393,7 +393,7 @@ class ByteString extends AbstractString
 
         $str = clone $this;
         $chunks = $this->ignoreCase
-            ? preg_split('{'.preg_quote($delimiter).'}iD', $this->string, $limit)
+            ? preg_split('{' . preg_quote($delimiter) . '}iD', $this->string, $limit)
             : explode($delimiter, $this->string, $limit);
 
         foreach ($chunks as &$chunk) {
@@ -423,12 +423,12 @@ class ByteString extends AbstractString
         return $str;
     }
 
-    public function toUnicodeString(string $fromEncoding = null): UnicodeString
+    public function toUnicodeString(?string $fromEncoding = null): UnicodeString
     {
         return new UnicodeString($this->toCodePointString($fromEncoding)->string);
     }
 
-    public function toCodePointString(string $fromEncoding = null): CodePointString
+    public function toCodePointString(?string $fromEncoding = null): CodePointString
     {
         $u = new CodePointString();
 

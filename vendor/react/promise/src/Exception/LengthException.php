@@ -2,6 +2,4 @@
 
 namespace React\Promise\Exception;
 
-class LengthException extends \LengthException
-{
-}
+class LengthException extends \LengthException {}

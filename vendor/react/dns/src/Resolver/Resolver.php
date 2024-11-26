@@ -32,7 +32,7 @@ final class Resolver implements ResolverInterface
         $that = $this;
 
         return $this->executor->query(
-            $query
+            $query,
         )->then(function (Message $response) use ($query, $that) {
             return $that->extractValues($query, $response);
         });
@@ -73,7 +73,7 @@ final class Resolver implements ResolverInterface
             }
             throw new RecordNotFoundException(
                 'DNS query for ' . $query->describe() . ' returned an error response (' . $message . ')',
-                $code
+                $code,
             );
         }
 
@@ -83,7 +83,7 @@ final class Resolver implements ResolverInterface
         // reject if we did not receive a valid answer (domain is valid, but no record for this type could be found)
         if (0 === count($addresses)) {
             throw new RecordNotFoundException(
-                'DNS query for ' . $query->describe() . ' did not return a valid answer (NOERROR / NODATA)'
+                'DNS query for ' . $query->describe() . ' did not return a valid answer (NOERROR / NODATA)',
             );
         }
 
@@ -112,7 +112,7 @@ final class Resolver implements ResolverInterface
             foreach ($cnames as $cname) {
                 $records = array_merge(
                     $records,
-                    $this->valuesByNameAndType($answers, $cname, $type)
+                    $this->valuesByNameAndType($answers, $cname, $type),
                 );
             }
         }

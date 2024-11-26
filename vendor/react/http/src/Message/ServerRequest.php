@@ -32,12 +32,12 @@ use RingCentral\Psr7\Request;
  */
 final class ServerRequest extends Request implements ServerRequestInterface
 {
-    private $attributes = array();
+    private $attributes = [];
 
     private $serverParams;
-    private $fileParams = array();
-    private $cookies = array();
-    private $queryParams = array();
+    private $fileParams = [];
+    private $cookies = [];
+    private $queryParams = [];
     private $parsedBody;
 
     /**
@@ -52,10 +52,10 @@ final class ServerRequest extends Request implements ServerRequestInterface
     public function __construct(
         $method,
         $url,
-        array $headers = array(),
+        array $headers = [],
         $body = '',
         $version = '1.1',
-        $serverParams = array()
+        $serverParams = [],
     ) {
         $stream = null;
         if (\is_string($body)) {
@@ -179,7 +179,7 @@ final class ServerRequest extends Request implements ServerRequestInterface
     private function parseCookie($cookie)
     {
         $cookieArray = \explode(';', $cookie);
-        $result = array();
+        $result = [];
 
         foreach ($cookieArray as $pair) {
             $pair = \trim($pair);

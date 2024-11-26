@@ -49,21 +49,21 @@ final class Server extends EventEmitter implements ServerInterface
      * @deprecated 1.9.0 See `SocketServer` instead
      * @see SocketServer
      */
-    public function __construct($uri, LoopInterface $loop = null, array $context = array())
+    public function __construct($uri, ?LoopInterface $loop = null, array $context = [])
     {
         $loop = $loop ?: Loop::get();
 
         // sanitize TCP context options if not properly wrapped
         if ($context && (!isset($context['tcp']) && !isset($context['tls']) && !isset($context['unix']))) {
-            $context = array('tcp' => $context);
+            $context = ['tcp' => $context];
         }
 
         // apply default options if not explicitly given
-        $context += array(
-            'tcp' => array(),
-            'tls' => array(),
-            'unix' => array()
-        );
+        $context += [
+            'tcp' => [],
+            'tls' => [],
+            'unix' => [],
+        ];
 
         $scheme = 'tcp';
         $pos = \strpos($uri, '://');
@@ -85,10 +85,10 @@ final class Server extends EventEmitter implements ServerInterface
 
         $that = $this;
         $server->on('connection', function (ConnectionInterface $conn) use ($that) {
-            $that->emit('connection', array($conn));
+            $that->emit('connection', [$conn]);
         });
         $server->on('error', function (Exception $error) use ($that) {
-            $that->emit('error', array($error));
+            $that->emit('error', [$error]);
         });
     }
 

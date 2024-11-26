@@ -98,7 +98,7 @@ class HostsFile
     {
         $name = strtolower($name);
 
-        $ips = array();
+        $ips = [];
         foreach (preg_split('/\r?\n/', $this->contents) as $line) {
             $parts = preg_split('/\s+/', $line);
             $ip = array_shift($parts);
@@ -128,10 +128,10 @@ class HostsFile
         // check binary representation of IP to avoid string case and short notation
         $ip = @inet_pton($ip);
         if ($ip === false) {
-            return array();
+            return [];
         }
 
-        $names = array();
+        $names = [];
         foreach (preg_split('/\r?\n/', $this->contents) as $line) {
             $parts = preg_split('/\s+/', $line, -1, PREG_SPLIT_NO_EMPTY);
             $addr = (string) array_shift($parts);

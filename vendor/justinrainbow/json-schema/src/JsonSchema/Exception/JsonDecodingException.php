@@ -14,7 +14,7 @@ namespace JsonSchema\Exception;
  */
 class JsonDecodingException extends RuntimeException
 {
-    public function __construct($code = JSON_ERROR_NONE, \Exception $previous = null)
+    public function __construct($code = JSON_ERROR_NONE, ?\Exception $previous = null)
     {
         switch ($code) {
             case JSON_ERROR_DEPTH:

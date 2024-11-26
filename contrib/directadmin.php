@@ -1,4 +1,5 @@
 <?php
+
 /*
 ### Configuration
 - `directadmin` – array with configuration for DirectAdmin

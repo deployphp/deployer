@@ -57,7 +57,7 @@ class Dumper
         }
 
         if ($inline <= 0 || (!\is_array($input) && !$input instanceof TaggedValue && $dumpObjectAsInlineMap) || empty($input)) {
-            $output .= $prefix.Inline::dump($input, $flags);
+            $output .= $prefix . Inline::dump($input, $flags);
         } else {
             $dumpAsMap = Inline::isHash($input);
 
@@ -79,7 +79,7 @@ class Dumper
                         $blockChompingIndicator = '-';
                     }
 
-                    $output .= sprintf('%s%s%s |%s%s', $prefix, $dumpAsMap ? Inline::dump($key, $flags).':' : '-', '', $blockIndentationIndicator, $blockChompingIndicator);
+                    $output .= sprintf('%s%s%s |%s%s', $prefix, $dumpAsMap ? Inline::dump($key, $flags) . ':' : '-', '', $blockIndentationIndicator, $blockChompingIndicator);
 
                     foreach (explode("\n", $value) as $row) {
                         if ('' === $row) {
@@ -93,7 +93,7 @@ class Dumper
                 }
 
                 if ($value instanceof TaggedValue) {
-                    $output .= sprintf('%s%s !%s', $prefix, $dumpAsMap ? Inline::dump($key, $flags).':' : '-', $value->getTag());
+                    $output .= sprintf('%s%s !%s', $prefix, $dumpAsMap ? Inline::dump($key, $flags) . ':' : '-', $value->getTag());
 
                     if (Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK & $flags && \is_string($value->getValue()) && false !== strpos($value->getValue(), "\n") && false === strpos($value->getValue(), "\r\n")) {
                         // If the first line starts with a space character, the spec requires a blockIndicationIndicator
@@ -109,7 +109,7 @@ class Dumper
                     }
 
                     if ($inline - 1 <= 0 || null === $value->getValue() || is_scalar($value->getValue())) {
-                        $output .= ' '.$this->dump($value->getValue(), $inline - 1, 0, $flags)."\n";
+                        $output .= ' ' . $this->dump($value->getValue(), $inline - 1, 0, $flags) . "\n";
                     } else {
                         $output .= "\n";
                         $output .= $this->dump($value->getValue(), $inline - 1, $dumpAsMap ? $indent + $this->indentation : $indent + 2, $flags);
@@ -126,12 +126,13 @@ class Dumper
 
                 $willBeInlined = $inline - 1 <= 0 || !\is_array($value) && $dumpObjectAsInlineMap || empty($value);
 
-                $output .= sprintf('%s%s%s%s',
+                $output .= sprintf(
+                    '%s%s%s%s',
                     $prefix,
-                    $dumpAsMap ? Inline::dump($key, $flags).':' : '-',
+                    $dumpAsMap ? Inline::dump($key, $flags) . ':' : '-',
                     $willBeInlined ? ' ' : "\n",
-                    $this->dump($value, $inline - 1, $willBeInlined ? 0 : $indent + $this->indentation, $flags)
-                ).($willBeInlined ? "\n" : '');
+                    $this->dump($value, $inline - 1, $willBeInlined ? 0 : $indent + $this->indentation, $flags),
+                ) . ($willBeInlined ? "\n" : '');
             }
         }
 

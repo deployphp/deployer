@@ -26,7 +26,7 @@ final class Dumper
     private $cloner;
     private $handler;
 
-    public function __construct(OutputInterface $output, CliDumper $dumper = null, ClonerInterface $cloner = null)
+    public function __construct(OutputInterface $output, ?CliDumper $dumper = null, ?ClonerInterface $cloner = null)
     {
         $this->output = $output;
         $this->dumper = $dumper;
@@ -49,7 +49,7 @@ final class Dumper
                     case false === $var:
                         return 'false';
                     case \is_string($var):
-                        return '"'.$var.'"';
+                        return '"' . $var . '"';
                     default:
                         return rtrim(print_r($var, true));
                 }

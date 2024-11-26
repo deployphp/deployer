@@ -139,7 +139,7 @@ use React\Promise\PromiseInterface;
  * @param ?LoopInterface $loop
  * @return PromiseInterface<mixed, TimeoutException|\Exception|mixed>
  */
-function timeout(PromiseInterface $promise, $time, LoopInterface $loop = null)
+function timeout(PromiseInterface $promise, $time, ?LoopInterface $loop = null)
 {
     // cancelling this promise will only try to cancel the input promise,
     // thus leaving responsibility to the input promise.
@@ -226,7 +226,7 @@ function timeout(PromiseInterface $promise, $time, LoopInterface $loop = null)
  * @param ?LoopInterface $loop
  * @return PromiseInterface<void, \RuntimeException>
  */
-function sleep($time, LoopInterface $loop = null)
+function sleep($time, ?LoopInterface $loop = null)
 {
     if ($loop === null) {
         $loop = Loop::get();
@@ -284,9 +284,9 @@ function sleep($time, LoopInterface $loop = null)
  * @deprecated 1.8.0 See `sleep()` instead
  * @see sleep()
  */
-function resolve($time, LoopInterface $loop = null)
+function resolve($time, ?LoopInterface $loop = null)
 {
-    return sleep($time, $loop)->then(function() use ($time) {
+    return sleep($time, $loop)->then(function () use ($time) {
         return $time;
     });
 }
@@ -327,7 +327,7 @@ function resolve($time, LoopInterface $loop = null)
  * @deprecated 1.8.0 See `sleep()` instead
  * @see sleep()
  */
-function reject($time, LoopInterface $loop = null)
+function reject($time, ?LoopInterface $loop = null)
 {
     return sleep($time, $loop)->then(function () use ($time) {
         throw new TimeoutException($time, 'Timer expired after ' . $time . ' seconds');

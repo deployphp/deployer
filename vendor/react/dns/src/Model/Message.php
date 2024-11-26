@@ -11,16 +11,16 @@ use React\Dns\Query\Query;
  */
 final class Message
 {
-    const TYPE_A = 1;
-    const TYPE_NS = 2;
-    const TYPE_CNAME = 5;
-    const TYPE_SOA = 6;
-    const TYPE_PTR = 12;
-    const TYPE_MX = 15;
-    const TYPE_TXT = 16;
-    const TYPE_AAAA = 28;
-    const TYPE_SRV = 33;
-    const TYPE_SSHFP = 44;
+    public const TYPE_A = 1;
+    public const TYPE_NS = 2;
+    public const TYPE_CNAME = 5;
+    public const TYPE_SOA = 6;
+    public const TYPE_PTR = 12;
+    public const TYPE_MX = 15;
+    public const TYPE_TXT = 16;
+    public const TYPE_AAAA = 28;
+    public const TYPE_SRV = 33;
+    public const TYPE_SSHFP = 44;
 
     /**
      * pseudo-type for EDNS0
@@ -33,7 +33,7 @@ final class Message
      *
      * The OPT record uses the "ttl" field to store additional flags.
      */
-    const TYPE_OPT = 41;
+    public const TYPE_OPT = 41;
 
     /**
      * Sender Policy Framework (SPF) had a dedicated SPF type which has been
@@ -42,23 +42,23 @@ final class Message
      * @deprecated https://datatracker.ietf.org/doc/html/rfc7208#section-3.1
      * @see self::TYPE_TXT
      */
-    const TYPE_SPF = 99;
+    public const TYPE_SPF = 99;
 
-    const TYPE_ANY = 255;
-    const TYPE_CAA = 257;
+    public const TYPE_ANY = 255;
+    public const TYPE_CAA = 257;
 
-    const CLASS_IN = 1;
+    public const CLASS_IN = 1;
 
-    const OPCODE_QUERY = 0;
-    const OPCODE_IQUERY = 1; // inverse query
-    const OPCODE_STATUS = 2;
+    public const OPCODE_QUERY = 0;
+    public const OPCODE_IQUERY = 1; // inverse query
+    public const OPCODE_STATUS = 2;
 
-    const RCODE_OK = 0;
-    const RCODE_FORMAT_ERROR = 1;
-    const RCODE_SERVER_FAILURE = 2;
-    const RCODE_NAME_ERROR = 3;
-    const RCODE_NOT_IMPLEMENTED = 4;
-    const RCODE_REFUSED = 5;
+    public const RCODE_OK = 0;
+    public const RCODE_FORMAT_ERROR = 1;
+    public const RCODE_SERVER_FAILURE = 2;
+    public const RCODE_NAME_ERROR = 3;
+    public const RCODE_NOT_IMPLEMENTED = 4;
+    public const RCODE_REFUSED = 5;
 
     /**
      * The edns-tcp-keepalive EDNS0 Option
@@ -68,7 +68,7 @@ final class Message
      *
      * @link https://tools.ietf.org/html/rfc7828
      */
-    const OPT_TCP_KEEPALIVE = 11;
+    public const OPT_TCP_KEEPALIVE = 11;
 
     /**
      * The EDNS(0) Padding Option
@@ -78,7 +78,7 @@ final class Message
      *
      * @link https://tools.ietf.org/html/rfc7830
      */
-    const OPT_PADDING = 12;
+    public const OPT_PADDING = 12;
 
     /**
      * Creates a new request message for the given query
@@ -211,20 +211,20 @@ final class Message
      *
      * @var Query[]
      */
-    public $questions = array();
+    public $questions = [];
 
     /**
      * @var Record[]
      */
-    public $answers = array();
+    public $answers = [];
 
     /**
      * @var Record[]
      */
-    public $authority = array();
+    public $authority = [];
 
     /**
      * @var Record[]
      */
-    public $additional = array();
+    public $additional = [];
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * This file is part of Evenement.
@@ -13,7 +15,7 @@ const ITERATIONS = 10000000;
 
 use Evenement\EventEmitter;
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 $emitter = new EventEmitter();
 

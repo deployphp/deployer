@@ -48,7 +48,7 @@ class CommandCompletionTester
 
         $options = [];
         foreach ($suggestions->getOptionSuggestions() as $option) {
-            $options[] = '--'.$option->getName();
+            $options[] = '--' . $option->getName();
         }
 
         return array_map('strval', array_merge($options, $suggestions->getValueSuggestions()));

@@ -31,14 +31,14 @@ final class SocketServer extends EventEmitter implements ServerInterface
      * @throws \InvalidArgumentException if the listening address is invalid
      * @throws \RuntimeException if listening on this address fails (already in use etc.)
      */
-    public function __construct($uri, array $context = array(), LoopInterface $loop = null)
+    public function __construct($uri, array $context = [], ?LoopInterface $loop = null)
     {
         // apply default options if not explicitly given
-        $context += array(
-            'tcp' => array(),
-            'tls' => array(),
-            'unix' => array()
-        );
+        $context += [
+            'tcp' => [],
+            'tls' => [],
+            'unix' => [],
+        ];
 
         $scheme = 'tcp';
         $pos = \strpos($uri, '://');
@@ -54,7 +54,7 @@ final class SocketServer extends EventEmitter implements ServerInterface
             if (preg_match('#^(?:\w+://)?\d+$#', $uri)) {
                 throw new \InvalidArgumentException(
                     'Invalid URI given (EINVAL)',
-                    \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                    \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
                 );
             }
 
@@ -69,10 +69,10 @@ final class SocketServer extends EventEmitter implements ServerInterface
 
         $that = $this;
         $server->on('connection', function (ConnectionInterface $conn) use ($that) {
-            $that->emit('connection', array($conn));
+            $that->emit('connection', [$conn]);
         });
         $server->on('error', function (\Exception $error) use ($that) {
-            $that->emit('error', array($error));
+            $that->emit('error', [$error]);
         });
     }
 
@@ -117,7 +117,7 @@ final class SocketServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Unable to accept new connection: ' . $errstr . self::errconst($errno),
-                $errno
+                $errno,
             );
         }
 

@@ -41,7 +41,8 @@ class ListCommand extends Command
                 new InputOption('short', null, InputOption::VALUE_NONE, 'To skip describing commands\' arguments'),
             ])
             ->setDescription('List commands')
-            ->setHelp(<<<'EOF'
+            ->setHelp(
+                <<<'EOF'
 The <info>%command.name%</info> command lists all commands:
 
   <info>%command.full_name%</info>
@@ -57,7 +58,7 @@ You can also output the information in other formats by using the <comment>--for
 It's also possible to get raw list of commands (useful for embedding command runner):
 
   <info>%command.full_name% --raw</info>
-EOF
+EOF,
             )
         ;
     }

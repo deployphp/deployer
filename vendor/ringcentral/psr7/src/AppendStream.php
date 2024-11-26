@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -11,7 +12,7 @@ use Psr\Http\Message\StreamInterface;
 class AppendStream implements StreamInterface
 {
     /** @var StreamInterface[] Streams being decorated */
-    private $streams = array();
+    private $streams = [];
 
     private $seekable = true;
     private $current = 0;
@@ -22,7 +23,7 @@ class AppendStream implements StreamInterface
      * @param StreamInterface[] $streams Streams to decorate. Each stream must
      *                                   be readable.
      */
-    public function __construct(array $streams = array())
+    public function __construct(array $streams = [])
     {
         foreach ($streams as $stream) {
             $this->addStream($stream);
@@ -78,7 +79,7 @@ class AppendStream implements StreamInterface
             $stream->close();
         }
 
-        $this->streams = array();
+        $this->streams = [];
     }
 
     /**
@@ -228,6 +229,6 @@ class AppendStream implements StreamInterface
 
     public function getMetadata($key = null)
     {
-        return $key ? null : array();
+        return $key ? null : [];
     }
 }

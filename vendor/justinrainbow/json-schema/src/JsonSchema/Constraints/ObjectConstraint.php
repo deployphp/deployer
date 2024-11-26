@@ -22,21 +22,27 @@ class ObjectConstraint extends Constraint
     /**
      * @var array List of properties to which a default value has been applied
      */
-    protected $appliedDefaults = array();
+    protected $appliedDefaults = [];
 
     /**
      * {@inheritdoc}
      */
-    public function check(&$element, $schema = null, JsonPointer $path = null, $properties = null,
-        $additionalProp = null, $patternProperties = null, $appliedDefaults = array())
-    {
+    public function check(
+        &$element,
+        $schema = null,
+        ?JsonPointer $path = null,
+        $properties = null,
+        $additionalProp = null,
+        $patternProperties = null,
+        $appliedDefaults = [],
+    ) {
         if ($element instanceof UndefinedConstraint) {
             return;
         }
 
         $this->appliedDefaults = $appliedDefaults;
 
-        $matches = array();
+        $matches = [];
         if ($patternProperties) {
             // validate the element pattern properties
             $matches = $this->validatePatternProperties($element, $path, $patternProperties);
@@ -51,10 +57,10 @@ class ObjectConstraint extends Constraint
         $this->validateElement($element, $matches, $schema, $path, $properties, $additionalProp);
     }
 
-    public function validatePatternProperties($element, JsonPointer $path = null, $patternProperties)
+    public function validatePatternProperties($element, ?JsonPointer $path = null, $patternProperties)
     {
-        $try = array('/', '#', '+', '~', '%');
-        $matches = array();
+        $try = ['/', '#', '+', '~', '%'];
+        $matches = [];
         foreach ($patternProperties as $pregex => $schema) {
             $delimiter = '/';
             // Choose delimiter. Necessary for patterns like ^/ , otherwise you get error
@@ -66,7 +72,7 @@ class ObjectConstraint extends Constraint
 
             // Validate the pattern before using it to test for matches
             if (@preg_match($delimiter . $pregex . $delimiter . 'u', '') === false) {
-                $this->addError($path, 'The pattern "' . $pregex . '" is invalid', 'pregex', array('pregex' => $pregex));
+                $this->addError($path, 'The pattern "' . $pregex . '" is invalid', 'pregex', ['pregex' => $pregex]);
                 continue;
             }
             foreach ($element as $i => $value) {
@@ -90,9 +96,14 @@ class ObjectConstraint extends Constraint
      * @param \StdClass        $properties     Properties
      * @param mixed            $additionalProp Additional properties
      */
-    public function validateElement($element, $matches, $schema = null, JsonPointer $path = null,
-        $properties = null, $additionalProp = null)
-    {
+    public function validateElement(
+        $element,
+        $matches,
+        $schema = null,
+        ?JsonPointer $path = null,
+        $properties = null,
+        $additionalProp = null,
+    ) {
         $this->validateMinMaxConstraint($element, $schema, $path);
 
         foreach ($element as $i => $value) {
@@ -132,7 +143,7 @@ class ObjectConstraint extends Constraint
      * @param \stdClass        $properties Property definitions
      * @param JsonPointer|null $path       Path?
      */
-    public function validateProperties(&$element, $properties = null, JsonPointer $path = null)
+    public function validateProperties(&$element, $properties = null, ?JsonPointer $path = null)
     {
         $undefinedConstraint = $this->factory->createInstanceFor('undefined');
 
@@ -174,18 +185,18 @@ class ObjectConstraint extends Constraint
      * @param \stdClass        $objectDefinition ObjectConstraint definition
      * @param JsonPointer|null $path             Path to test?
      */
-    protected function validateMinMaxConstraint($element, $objectDefinition, JsonPointer $path = null)
+    protected function validateMinMaxConstraint($element, $objectDefinition, ?JsonPointer $path = null)
     {
         // Verify minimum number of properties
         if (isset($objectDefinition->minProperties) && !is_object($objectDefinition->minProperties)) {
             if ($this->getTypeCheck()->propertyCount($element) < $objectDefinition->minProperties) {
-                $this->addError($path, 'Must contain a minimum of ' . $objectDefinition->minProperties . ' properties', 'minProperties', array('minProperties' => $objectDefinition->minProperties));
+                $this->addError($path, 'Must contain a minimum of ' . $objectDefinition->minProperties . ' properties', 'minProperties', ['minProperties' => $objectDefinition->minProperties]);
             }
         }
         // Verify maximum number of properties
         if (isset($objectDefinition->maxProperties) && !is_object($objectDefinition->maxProperties)) {
             if ($this->getTypeCheck()->propertyCount($element) > $objectDefinition->maxProperties) {
-                $this->addError($path, 'Must contain no more than ' . $objectDefinition->maxProperties . ' properties', 'maxProperties', array('maxProperties' => $objectDefinition->maxProperties));
+                $this->addError($path, 'Must contain no more than ' . $objectDefinition->maxProperties . ' properties', 'maxProperties', ['maxProperties' => $objectDefinition->maxProperties]);
             }
         }
     }

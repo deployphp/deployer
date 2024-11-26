@@ -220,7 +220,7 @@ final class Ctype
         }
 
         if (\PHP_VERSION_ID >= 80100) {
-            @trigger_error($function.'(): Argument of type int will be interpreted as string in the future', \E_USER_DEPRECATED);
+            @trigger_error($function . '(): Argument of type int will be interpreted as string in the future', \E_USER_DEPRECATED);
         }
 
         if ($int < 0) {

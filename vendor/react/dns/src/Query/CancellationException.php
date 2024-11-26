@@ -2,6 +2,4 @@
 
 namespace React\Dns\Query;
 
-final class CancellationException extends \RuntimeException
-{
-}
+final class CancellationException extends \RuntimeException {}

@@ -37,7 +37,7 @@ final class CommandIsSuccessful extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return 'the command '.$this->toString();
+        return 'the command ' . $this->toString();
     }
 
     /**

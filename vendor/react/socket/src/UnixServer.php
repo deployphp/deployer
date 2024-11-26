@@ -50,7 +50,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
      * @throws InvalidArgumentException if the listening address is invalid
      * @throws RuntimeException if listening on this address fails (already in use etc.)
      */
-    public function __construct($path, LoopInterface $loop = null, array $context = array())
+    public function __construct($path, ?LoopInterface $loop = null, array $context = [])
     {
         $this->loop = $loop ?: Loop::get();
 
@@ -59,7 +59,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
         } elseif (\substr($path, 0, 7) !== 'unix://') {
             throw new \InvalidArgumentException(
                 'Given URI "' . $path . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             );
         }
 
@@ -68,7 +68,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
             $errno,
             $errstr,
             \STREAM_SERVER_BIND | \STREAM_SERVER_LISTEN,
-            \stream_context_create(array('socket' => $context))
+            \stream_context_create(['socket' => $context]),
         );
         if (false === $this->master) {
             // PHP does not seem to report errno/errstr for Unix domain sockets (UDS) right now.
@@ -78,13 +78,13 @@ final class UnixServer extends EventEmitter implements ServerInterface
                 $error = \error_get_last();
                 if (\preg_match('/\(([^\)]+)\)|\[(\d+)\]: (.*)/', $error['message'], $match)) {
                     $errstr = isset($match[3]) ? $match['3'] : $match[1];
-                    $errno = isset($match[2]) ? (int)$match[2] : 0;
+                    $errno = isset($match[2]) ? (int) $match[2] : 0;
                 }
             }
 
             throw new \RuntimeException(
                 'Failed to listen on Unix domain socket "' . $path . '": ' . $errstr . SocketServer::errconst($errno),
-                $errno
+                $errno,
             );
         }
         \stream_set_blocking($this->master, 0);
@@ -122,7 +122,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
             try {
                 $newSocket = SocketServer::accept($master);
             } catch (\RuntimeException $e) {
-                $that->emit('error', array($e));
+                $that->emit('error', [$e]);
                 return;
             }
             $that->handleConnection($newSocket);
@@ -147,8 +147,8 @@ final class UnixServer extends EventEmitter implements ServerInterface
         $connection = new Connection($socket, $this->loop);
         $connection->unix = true;
 
-        $this->emit('connection', array(
-            $connection
-        ));
+        $this->emit('connection', [
+            $connection,
+        ]);
     }
 }

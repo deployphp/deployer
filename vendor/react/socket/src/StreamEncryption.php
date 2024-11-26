@@ -91,7 +91,7 @@ class StreamEncryption
             $stream->resume();
 
             return $stream;
-        }, function($error) use ($stream, $socket, $loop) {
+        }, function ($error) use ($stream, $socket, $loop) {
             $loop->removeReadStream($socket);
             $stream->resume();
             throw $error;
@@ -102,7 +102,7 @@ class StreamEncryption
     {
         $error = null;
         \set_error_handler(function ($_, $errstr) use (&$error) {
-            $error = \str_replace(array("\r", "\n"), ' ', $errstr);
+            $error = \str_replace(["\r", "\n"], ' ', $errstr);
 
             // remove useless function name from error message
             if (($pos = \strpos($error, "): ")) !== false) {
@@ -116,7 +116,7 @@ class StreamEncryption
 
         if (true === $result) {
             $deferred->resolve();
-        } else if (false === $result) {
+        } elseif (false === $result) {
             // overwrite callback arguments for PHP7+ only, so they do not show
             // up in the Exception trace and do not cause a possible cyclic reference.
             $d = $deferred;
@@ -126,12 +126,12 @@ class StreamEncryption
                 // EOF or failed without error => connection closed during handshake
                 $d->reject(new \UnexpectedValueException(
                     'Connection lost during TLS handshake (ECONNRESET)',
-                    \defined('SOCKET_ECONNRESET') ? \SOCKET_ECONNRESET : 104
+                    \defined('SOCKET_ECONNRESET') ? \SOCKET_ECONNRESET : 104,
                 ));
             } else {
                 // handshake failed with error message
                 $d->reject(new \UnexpectedValueException(
-                    $error
+                    $error,
                 ));
             }
         } else {

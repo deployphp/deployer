@@ -31,11 +31,11 @@ final class ExtLibevLoop implements LoopInterface
     private $loop;
     private $futureTickQueue;
     private $timerEvents;
-    private $readEvents = array();
-    private $writeEvents = array();
+    private $readEvents = [];
+    private $writeEvents = [];
     private $running;
     private $signals;
-    private $signalEvents = array();
+    private $signalEvents = [];
 
     public function __construct()
     {
@@ -105,7 +105,7 @@ final class ExtLibevLoop implements LoopInterface
 
     public function addTimer($interval, $callback)
     {
-        $timer = new Timer( $interval, $callback, false);
+        $timer = new Timer($interval, $callback, false);
 
         $that = $this;
         $timers = $this->timerEvents;

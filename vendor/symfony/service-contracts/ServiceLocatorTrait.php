@@ -89,7 +89,7 @@ trait ServiceLocatorTrait
                 } else {
                     $type = (new \ReflectionFunction($factory))->getReturnType();
 
-                    $this->providedTypes[$name] = $type ? ($type->allowsNull() ? '?' : '').($type instanceof \ReflectionNamedType ? $type->getName() : $type) : '?';
+                    $this->providedTypes[$name] = $type ? ($type->allowsNull() ? '?' : '') . ($type instanceof \ReflectionNamedType ? $type->getName() : $type) : '?';
                 }
             }
         }
@@ -116,13 +116,11 @@ trait ServiceLocatorTrait
             $message = sprintf('Service "%s" not found: the current service locator %s', $id, $message);
         }
 
-        return new class($message) extends \InvalidArgumentException implements NotFoundExceptionInterface {
-        };
+        return new class ($message) extends \InvalidArgumentException implements NotFoundExceptionInterface {};
     }
 
     private function createCircularReferenceException(string $id, array $path): ContainerExceptionInterface
     {
-        return new class(sprintf('Circular reference detected for service "%s", path: "%s".', $id, implode(' -> ', $path))) extends \RuntimeException implements ContainerExceptionInterface {
-        };
+        return new class (sprintf('Circular reference detected for service "%s", path: "%s".', $id, implode(' -> ', $path))) extends \RuntimeException implements ContainerExceptionInterface {};
     }
 }

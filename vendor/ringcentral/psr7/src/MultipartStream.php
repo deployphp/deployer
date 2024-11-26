@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -9,7 +10,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class MultipartStream extends StreamDecoratorTrait implements StreamInterface
 {
-
     private $boundary;
 
     /**
@@ -24,7 +24,7 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct(array $elements = array(), $boundary = null)
+    public function __construct(array $elements = [], $boundary = null)
     {
         $this->boundary = $boundary ?: uniqid();
         parent::__construct($this->createStream($elements));
@@ -77,7 +77,7 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
 
     private function addElement(AppendStream $stream, array $element)
     {
-        foreach (array('contents', 'name') as $key) {
+        foreach (['contents', 'name'] as $key) {
             if (!array_key_exists($key, $element)) {
                 throw new \InvalidArgumentException("A '{$key}' key is required");
             }
@@ -96,7 +96,7 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
             $element['name'],
             $element['contents'],
             isset($element['filename']) ? $element['filename'] : null,
-            isset($element['headers']) ? $element['headers'] : array()
+            isset($element['headers']) ? $element['headers'] : [],
         );
 
         $stream->addStream(stream_for($this->getHeaders($headers)));
@@ -113,9 +113,11 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
         $disposition = $this->getHeader($headers, 'content-disposition');
         if (!$disposition) {
             $headers['Content-Disposition'] = $filename
-                ? sprintf('form-data; name="%s"; filename="%s"',
+                ? sprintf(
+                    'form-data; name="%s"; filename="%s"',
                     $name,
-                    basename($filename))
+                    basename($filename),
+                )
                 : "form-data; name=\"{$name}\"";
         }
 
@@ -135,7 +137,7 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
             }
         }
 
-        return array($stream, $headers);
+        return [$stream, $headers];
     }
 
     private function getHeader(array $headers, $key)

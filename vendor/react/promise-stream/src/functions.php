@@ -71,7 +71,7 @@ function buffer(ReadableStreamInterface $stream, $maxLength = null)
             $reject(new \RuntimeException(
                 'An error occured on the underlying stream while buffering: ' . $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             ));
         });
 
@@ -151,7 +151,7 @@ function first(EventEmitterInterface $stream, $event = 'data')
                 $reject(new \RuntimeException(
                     'An error occured on the underlying stream while waiting for event: ' . $e->getMessage(),
                     $e->getCode(),
-                    $e
+                    $e,
                 ));
             });
         }
@@ -201,18 +201,18 @@ function all(EventEmitterInterface $stream, $event = 'data')
         // readable or duplex stream not readable => already closed
         // a half-open duplex stream is considered closed if its readable side is closed
         if (!$stream->isReadable()) {
-            return Promise\resolve(array());
+            return Promise\resolve([]);
         }
     } elseif ($stream instanceof WritableStreamInterface) {
         // writable-only stream (not duplex) not writable => already closed
         if (!$stream->isWritable()) {
-            return Promise\resolve(array());
+            return Promise\resolve([]);
         }
     }
 
-    $buffer = array();
+    $buffer = [];
     $bufferer = function ($data = null) use (&$buffer) {
-        $buffer []= $data;
+        $buffer [] = $data;
     };
     $stream->on($event, $bufferer);
 
@@ -221,7 +221,7 @@ function all(EventEmitterInterface $stream, $event = 'data')
             $reject(new \RuntimeException(
                 'An error occured on the underlying stream while buffering: ' . $e->getMessage(),
                 $e->getCode(),
-                $e
+                $e,
             ));
         });
 
@@ -234,7 +234,7 @@ function all(EventEmitterInterface $stream, $event = 'data')
 
     return $promise->then(null, function ($error) use (&$buffer, $bufferer, $stream, $event) {
         // promise rejected => clear buffer and buffering
-        $buffer = array();
+        $buffer = [];
         $stream->removeListener($event, $bufferer);
 
         throw $error;

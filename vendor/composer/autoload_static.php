@@ -6,7 +6,7 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit234e1a4a29689e00066666da06e8ece1
 {
-    public static $files = array (
+    public static $files =  [
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '972fda704d680a3a53c68e34e193cb22' => __DIR__ . '/..' . '/react/promise-timer/src/functions_include.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
@@ -21,173 +21,173 @@ class ComposerStaticInit234e1a4a29689e00066666da06e8ece1
         'ebf8799635f67b5d7248946fe2154f4a' => __DIR__ . '/..' . '/ringcentral/psr7/src/functions_include.php',
         'eee1afd8f38c52a8d46f7c5bbb92afdd' => __DIR__ . '/../..' . '/src/Support/helpers.php',
         '135133ad0ca20ef21cc262b30da9a000' => __DIR__ . '/../..' . '/src/functions.php',
-    );
+    ];
 
-    public static $prefixLengthsPsr4 = array (
-        'S' => 
-        array (
-            'Symfony\\Polyfill\\Php80\\' => 23,
-            'Symfony\\Polyfill\\Php73\\' => 23,
-            'Symfony\\Polyfill\\Mbstring\\' => 26,
-            'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
-            'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
-            'Symfony\\Polyfill\\Ctype\\' => 23,
-            'Symfony\\Contracts\\Service\\' => 26,
-            'Symfony\\Component\\Yaml\\' => 23,
-            'Symfony\\Component\\String\\' => 25,
-            'Symfony\\Component\\Process\\' => 26,
-            'Symfony\\Component\\Console\\' => 26,
-        ),
-        'R' => 
-        array (
-            'RingCentral\\Psr7\\' => 17,
-            'React\\Stream\\' => 13,
-            'React\\Socket\\' => 13,
-            'React\\Promise\\Timer\\' => 20,
-            'React\\Promise\\Stream\\' => 21,
-            'React\\Promise\\' => 14,
-            'React\\Http\\' => 11,
-            'React\\EventLoop\\' => 16,
-            'React\\Dns\\' => 10,
-            'React\\Cache\\' => 12,
-        ),
-        'P' => 
-        array (
-            'Psr\\Http\\Message\\' => 17,
-            'Psr\\Container\\' => 14,
-        ),
-        'J' => 
-        array (
-            'JsonSchema\\' => 11,
-        ),
-        'F' => 
-        array (
-            'Fig\\Http\\Message\\' => 17,
-        ),
-        'D' => 
-        array (
-            'Deployer\\' => 9,
-        ),
-    );
+    public static $prefixLengthsPsr4 =  [
+        'S' =>
+         [
+             'Symfony\\Polyfill\\Php80\\' => 23,
+             'Symfony\\Polyfill\\Php73\\' => 23,
+             'Symfony\\Polyfill\\Mbstring\\' => 26,
+             'Symfony\\Polyfill\\Intl\\Normalizer\\' => 33,
+             'Symfony\\Polyfill\\Intl\\Grapheme\\' => 31,
+             'Symfony\\Polyfill\\Ctype\\' => 23,
+             'Symfony\\Contracts\\Service\\' => 26,
+             'Symfony\\Component\\Yaml\\' => 23,
+             'Symfony\\Component\\String\\' => 25,
+             'Symfony\\Component\\Process\\' => 26,
+             'Symfony\\Component\\Console\\' => 26,
+         ],
+        'R' =>
+         [
+             'RingCentral\\Psr7\\' => 17,
+             'React\\Stream\\' => 13,
+             'React\\Socket\\' => 13,
+             'React\\Promise\\Timer\\' => 20,
+             'React\\Promise\\Stream\\' => 21,
+             'React\\Promise\\' => 14,
+             'React\\Http\\' => 11,
+             'React\\EventLoop\\' => 16,
+             'React\\Dns\\' => 10,
+             'React\\Cache\\' => 12,
+         ],
+        'P' =>
+         [
+             'Psr\\Http\\Message\\' => 17,
+             'Psr\\Container\\' => 14,
+         ],
+        'J' =>
+         [
+             'JsonSchema\\' => 11,
+         ],
+        'F' =>
+         [
+             'Fig\\Http\\Message\\' => 17,
+         ],
+        'D' =>
+         [
+             'Deployer\\' => 9,
+         ],
+    ];
 
-    public static $prefixDirsPsr4 = array (
-        'Symfony\\Polyfill\\Php80\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
-        'Symfony\\Polyfill\\Php73\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
-        ),
-        'Symfony\\Polyfill\\Mbstring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
-        ),
-        'Symfony\\Polyfill\\Intl\\Normalizer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
-        ),
-        'Symfony\\Polyfill\\Intl\\Grapheme\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
-        ),
-        'Symfony\\Polyfill\\Ctype\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
-        ),
-        'Symfony\\Contracts\\Service\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/service-contracts',
-        ),
-        'Symfony\\Component\\Yaml\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/yaml',
-        ),
-        'Symfony\\Component\\String\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/string',
-        ),
-        'Symfony\\Component\\Process\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/process',
-        ),
-        'Symfony\\Component\\Console\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/console',
-        ),
-        'RingCentral\\Psr7\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/ringcentral/psr7/src',
-        ),
-        'React\\Stream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/stream/src',
-        ),
-        'React\\Socket\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/socket/src',
-        ),
-        'React\\Promise\\Timer\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/promise-timer/src',
-        ),
-        'React\\Promise\\Stream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/promise-stream/src',
-        ),
-        'React\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/promise/src',
-        ),
-        'React\\Http\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/http/src',
-        ),
-        'React\\EventLoop\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/event-loop/src',
-        ),
-        'React\\Dns\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/dns/src',
-        ),
-        'React\\Cache\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/react/cache/src',
-        ),
-        'Psr\\Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-        ),
-        'Psr\\Container\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/psr/container/src',
-        ),
-        'JsonSchema\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
-        ),
-        'Fig\\Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/fig/http-message-util/src',
-        ),
-        'Deployer\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
-    );
+    public static $prefixDirsPsr4 =  [
+        'Symfony\\Polyfill\\Php80\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
+         ],
+        'Symfony\\Polyfill\\Php73\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
+         ],
+        'Symfony\\Polyfill\\Mbstring\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
+         ],
+        'Symfony\\Polyfill\\Intl\\Normalizer\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-normalizer',
+         ],
+        'Symfony\\Polyfill\\Intl\\Grapheme\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme',
+         ],
+        'Symfony\\Polyfill\\Ctype\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+         ],
+        'Symfony\\Contracts\\Service\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/service-contracts',
+         ],
+        'Symfony\\Component\\Yaml\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/yaml',
+         ],
+        'Symfony\\Component\\String\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/string',
+         ],
+        'Symfony\\Component\\Process\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/process',
+         ],
+        'Symfony\\Component\\Console\\' =>
+         [
+             0 => __DIR__ . '/..' . '/symfony/console',
+         ],
+        'RingCentral\\Psr7\\' =>
+         [
+             0 => __DIR__ . '/..' . '/ringcentral/psr7/src',
+         ],
+        'React\\Stream\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/stream/src',
+         ],
+        'React\\Socket\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/socket/src',
+         ],
+        'React\\Promise\\Timer\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/promise-timer/src',
+         ],
+        'React\\Promise\\Stream\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/promise-stream/src',
+         ],
+        'React\\Promise\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/promise/src',
+         ],
+        'React\\Http\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/http/src',
+         ],
+        'React\\EventLoop\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/event-loop/src',
+         ],
+        'React\\Dns\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/dns/src',
+         ],
+        'React\\Cache\\' =>
+         [
+             0 => __DIR__ . '/..' . '/react/cache/src',
+         ],
+        'Psr\\Http\\Message\\' =>
+         [
+             0 => __DIR__ . '/..' . '/psr/http-message/src',
+         ],
+        'Psr\\Container\\' =>
+         [
+             0 => __DIR__ . '/..' . '/psr/container/src',
+         ],
+        'JsonSchema\\' =>
+         [
+             0 => __DIR__ . '/..' . '/justinrainbow/json-schema/src/JsonSchema',
+         ],
+        'Fig\\Http\\Message\\' =>
+         [
+             0 => __DIR__ . '/..' . '/fig/http-message-util/src',
+         ],
+        'Deployer\\' =>
+         [
+             0 => __DIR__ . '/../..' . '/src',
+         ],
+    ];
 
-    public static $prefixesPsr0 = array (
-        'E' => 
-        array (
-            'Evenement' => 
-            array (
-                0 => __DIR__ . '/..' . '/evenement/evenement/src',
-            ),
-        ),
-    );
+    public static $prefixesPsr0 =  [
+        'E' =>
+         [
+             'Evenement' =>
+              [
+                  0 => __DIR__ . '/..' . '/evenement/evenement/src',
+              ],
+         ],
+    ];
 
-    public static $classMap = array (
+    public static $classMap =  [
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Deployer\\Collection\\Collection' => __DIR__ . '/../..' . '/src/Collection/Collection.php',
@@ -630,7 +630,7 @@ class ComposerStaticInit234e1a4a29689e00066666da06e8ece1
         'Symfony\\Polyfill\\Php80\\PhpToken' => __DIR__ . '/..' . '/symfony/polyfill-php80/PhpToken.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',
-    );
+    ];
 
     public static function getInitializer(ClassLoader $loader)
     {

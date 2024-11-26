@@ -15,8 +15,8 @@ use React\EventLoop\TimerInterface;
 final class Timers
 {
     private $time;
-    private $timers = array();
-    private $schedule = array();
+    private $timers = [];
+    private $schedule = [];
     private $sorted = true;
     private $useHighResolution;
 

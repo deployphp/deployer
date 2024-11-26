@@ -20,7 +20,7 @@ final class HappyEyeBallsConnectionBuilder
      *
      * @link https://tools.ietf.org/html/rfc8305#section-5
      */
-    const CONNECTION_ATTEMPT_DELAY = 0.1;
+    public const CONNECTION_ATTEMPT_DELAY = 0.1;
 
     /**
      * Delay `A` lookup by 50ms sending out connection to IPv4 addresses when IPv6 records haven't
@@ -28,20 +28,20 @@ final class HappyEyeBallsConnectionBuilder
      *
      * @link https://tools.ietf.org/html/rfc8305#section-3
      */
-    const RESOLUTION_DELAY = 0.05;
+    public const RESOLUTION_DELAY = 0.05;
 
     public $loop;
     public $connector;
     public $resolver;
     public $uri;
     public $host;
-    public $resolved = array(
+    public $resolved = [
         Message::TYPE_A    => false,
         Message::TYPE_AAAA => false,
-    );
-    public $resolverPromises = array();
-    public $connectionPromises = array();
-    public $connectQueue = array();
+    ];
+    public $resolverPromises = [];
+    public $connectionPromises = [];
+    public $connectQueue = [];
     public $nextAttemptTimer;
     public $parts;
     public $ipsCount = 0;
@@ -105,7 +105,7 @@ final class HappyEyeBallsConnectionBuilder
         }, function ($_, $reject) use ($that, &$timer) {
             $reject(new \RuntimeException(
                 'Connection to ' . $that->uri . ' cancelled' . (!$that->connectionPromises ? ' during DNS lookup' : '') . ' (ECONNABORTED)',
-                \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103
+                \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103,
             ));
             $_ = $reject = null;
 
@@ -149,12 +149,12 @@ final class HappyEyeBallsConnectionBuilder
                 $reject(new \RuntimeException(
                     $that->error(),
                     0,
-                    $e
+                    $e,
                 ));
             }
 
             // Exception already handled above, so don't throw an unhandled rejection here
-            return array();
+            return [];
         });
     }
 
@@ -211,7 +211,7 @@ final class HappyEyeBallsConnectionBuilder
                 $reject(new \RuntimeException(
                     $that->error(),
                     $e->getCode(),
-                    $e
+                    $e,
                 ));
             }
         });
@@ -245,7 +245,7 @@ final class HappyEyeBallsConnectionBuilder
     public function cleanUp()
     {
         // clear list of outstanding IPs to avoid creating new connections
-        $this->connectQueue = array();
+        $this->connectQueue = [];
 
         foreach ($this->connectionPromises as $connectionPromise) {
             if ($connectionPromise instanceof CancellablePromiseInterface) {
@@ -293,7 +293,7 @@ final class HappyEyeBallsConnectionBuilder
         \shuffle($ips);
         $this->ipsCount += \count($ips);
         $connectQueueStash = $this->connectQueue;
-        $this->connectQueue = array();
+        $this->connectQueue = [];
         while (\count($connectQueueStash) > 0 || \count($ips) > 0) {
             if (\count($ips) > 0) {
                 $this->connectQueue[] = \array_shift($ips);
@@ -328,6 +328,6 @@ final class HappyEyeBallsConnectionBuilder
             $message = ': ' . $message;
         }
 
-        return 'Connection to ' . $this->uri . ' failed'  . $message;
+        return 'Connection to ' . $this->uri . ' failed' . $message;
     }
 }

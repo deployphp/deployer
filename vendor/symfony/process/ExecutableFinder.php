@@ -46,7 +46,7 @@ class ExecutableFinder
      *
      * @return string|null
      */
-    public function find(string $name, string $default = null, array $extraDirs = [])
+    public function find(string $name, ?string $default = null, array $extraDirs = [])
     {
         if (ini_get('open_basedir')) {
             $searchPath = array_merge(explode(\PATH_SEPARATOR, ini_get('open_basedir')), $extraDirs);
@@ -64,7 +64,7 @@ class ExecutableFinder
         } else {
             $dirs = array_merge(
                 explode(\PATH_SEPARATOR, getenv('PATH') ?: getenv('Path')),
-                $extraDirs
+                $extraDirs,
             );
         }
 
@@ -75,7 +75,7 @@ class ExecutableFinder
         }
         foreach ($suffixes as $suffix) {
             foreach ($dirs as $dir) {
-                if (@is_file($file = $dir.\DIRECTORY_SEPARATOR.$name.$suffix) && ('\\' === \DIRECTORY_SEPARATOR || @is_executable($file))) {
+                if (@is_file($file = $dir . \DIRECTORY_SEPARATOR . $name . $suffix) && ('\\' === \DIRECTORY_SEPARATOR || @is_executable($file))) {
                     return $file;
                 }
             }

@@ -41,7 +41,7 @@ class RunException extends Exception
         string $command,
         int $exitCode,
         string $output,
-        string $errorOutput
+        string $errorOutput,
     ) {
         $this->host = $host;
         $this->command = $command;

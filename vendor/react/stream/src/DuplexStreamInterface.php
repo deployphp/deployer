@@ -34,6 +34,4 @@ namespace React\Stream;
  * @see ReadableStreamInterface
  * @see WritableStreamInterface
  */
-interface DuplexStreamInterface extends ReadableStreamInterface, WritableStreamInterface
-{
-}
+interface DuplexStreamInterface extends ReadableStreamInterface, WritableStreamInterface {}

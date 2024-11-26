@@ -13,7 +13,7 @@ final class HappyEyeBallsConnector implements ConnectorInterface
     private $connector;
     private $resolver;
 
-    public function __construct(LoopInterface $loop = null, ConnectorInterface $connector = null, ResolverInterface $resolver = null)
+    public function __construct(?LoopInterface $loop = null, ?ConnectorInterface $connector = null, ?ResolverInterface $resolver = null)
     {
         // $connector and $resolver arguments are actually required, marked
         // optional for technical reasons only. Nullable $loop without default
@@ -45,7 +45,7 @@ final class HappyEyeBallsConnector implements ConnectorInterface
         if (!$parts || !isset($parts['host'])) {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $original . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             ));
         }
 
@@ -62,7 +62,7 @@ final class HappyEyeBallsConnector implements ConnectorInterface
             $this->resolver,
             $uri,
             $host,
-            $parts
+            $parts,
         );
         return $builder->connect();
     }

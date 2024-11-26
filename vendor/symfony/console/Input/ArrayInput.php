@@ -27,7 +27,7 @@ class ArrayInput extends Input
 {
     private $parameters;
 
-    public function __construct(array $parameters, InputDefinition $definition = null)
+    public function __construct(array $parameters, ?InputDefinition $definition = null)
     {
         $this->parameters = $parameters;
 
@@ -111,10 +111,10 @@ class ArrayInput extends Input
                 $glue = ('-' === $param[1]) ? '=' : ' ';
                 if (\is_array($val)) {
                     foreach ($val as $v) {
-                        $params[] = $param.('' != $v ? $glue.$this->escapeToken($v) : '');
+                        $params[] = $param . ('' != $v ? $glue . $this->escapeToken($v) : '');
                     }
                 } else {
-                    $params[] = $param.('' != $val ? $glue.$this->escapeToken($val) : '');
+                    $params[] = $param . ('' != $val ? $glue . $this->escapeToken($val) : '');
                 }
             } else {
                 $params[] = \is_array($val) ? implode(' ', array_map([$this, 'escapeToken'], $val)) : $this->escapeToken($val);

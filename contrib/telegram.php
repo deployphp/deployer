@@ -1,4 +1,5 @@
 <?php
+
 /*
 ## Installing
   1. Create telegram bot with [BotFather](https://t.me/BotFather) and grab the token provided

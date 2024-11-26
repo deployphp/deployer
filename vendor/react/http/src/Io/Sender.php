@@ -48,7 +48,7 @@ class Sender
      * @param ConnectorInterface|null $connector
      * @return self
      */
-    public static function createFromLoop(LoopInterface $loop, ConnectorInterface $connector = null)
+    public static function createFromLoop(LoopInterface $loop, ?ConnectorInterface $connector = null)
     {
         return new self(new HttpClient($loop, $connector));
     }
@@ -79,8 +79,8 @@ class Sender
 
         if ($size !== null && $size !== 0) {
             // automatically assign a "Content-Length" request header if the body size is known and non-empty
-            $request = $request->withHeader('Content-Length', (string)$size);
-        } elseif ($size === 0 && \in_array($request->getMethod(), array('POST', 'PUT', 'PATCH'))) {
+            $request = $request->withHeader('Content-Length', (string) $size);
+        } elseif ($size === 0 && \in_array($request->getMethod(), ['POST', 'PUT', 'PATCH'])) {
             // only assign a "Content-Length: 0" request header if the body is expected for certain methods
             $request = $request->withHeader('Content-Length', '0');
         } elseif ($body instanceof ReadableStreamInterface && $body->isReadable() && !$request->hasHeader('Content-Length')) {
@@ -91,12 +91,12 @@ class Sender
             $size = 0;
         }
 
-        $headers = array();
+        $headers = [];
         foreach ($request->getHeaders() as $name => $values) {
             $headers[$name] = implode(', ', $values);
         }
 
-        $requestStream = $this->http->request($request->getMethod(), (string)$request->getUri(), $headers, $request->getProtocolVersion());
+        $requestStream = $this->http->request($request->getMethod(), (string) $request->getUri(), $headers, $request->getProtocolVersion());
 
         $deferred = new Deferred(function ($_, $reject) use ($requestStream) {
             // close request stream if request is cancelled
@@ -104,7 +104,7 @@ class Sender
             $requestStream->close();
         });
 
-        $requestStream->on('error', function($error) use ($deferred) {
+        $requestStream->on('error', function ($error) use ($deferred) {
             $deferred->reject($error);
         });
 
@@ -152,7 +152,7 @@ class Sender
             }
         } else {
             // body is fully buffered => write as one chunk
-            $requestStream->end((string)$body);
+            $requestStream->end((string) $body);
         }
 
         return $deferred->promise();

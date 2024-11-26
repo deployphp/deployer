@@ -44,7 +44,8 @@ final class DumpCompletionCommand extends Command
         $fullCommand = @realpath($fullCommand) ?: $fullCommand;
 
         $this
-            ->setHelp(<<<EOH
+            ->setHelp(
+                <<<EOH
 The <info>%command.name%</> command dumps the shell completion script required
 to use shell autocompletion (currently only bash completion is supported).
 
@@ -71,7 +72,7 @@ Or dump the script to a local file and source it:
 Add this to the end of your shell configuration file (e.g. <info>"~/.bashrc"</>):
 
     <info>eval "$({$fullCommand} completion bash)"</>
-EOH
+EOH,
             )
             ->addArgument('shell', InputArgument::OPTIONAL, 'The shell type (e.g. "bash"), the value of the "$SHELL" env var will be used if this is not given')
             ->addOption('debug', null, InputOption::VALUE_NONE, 'Tail the completion debug log')
@@ -89,7 +90,7 @@ EOH
         }
 
         $shell = $input->getArgument('shell') ?? self::guessShell();
-        $completionFile = __DIR__.'/../Resources/completion.'.$shell;
+        $completionFile = __DIR__ . '/../Resources/completion.' . $shell;
         if (!file_exists($completionFile)) {
             $supportedShells = $this->getSupportedShells();
 
@@ -117,7 +118,7 @@ EOH
 
     private function tailDebugLog(string $commandName, OutputInterface $output): void
     {
-        $debugFile = sys_get_temp_dir().'/sf_'.$commandName.'.log';
+        $debugFile = sys_get_temp_dir() . '/sf_' . $commandName . '.log';
         if (!file_exists($debugFile)) {
             touch($debugFile);
         }
@@ -134,6 +135,6 @@ EOH
     {
         return array_map(function ($f) {
             return pathinfo($f, \PATHINFO_EXTENSION);
-        }, glob(__DIR__.'/../Resources/completion.*'));
+        }, glob(__DIR__ . '/../Resources/completion.*'));
     }
 }

@@ -27,15 +27,15 @@ final class ExtEventLoop implements LoopInterface
     private $timerCallback;
     private $timerEvents;
     private $streamCallback;
-    private $readEvents = array();
-    private $writeEvents = array();
-    private $readListeners = array();
-    private $writeListeners = array();
-    private $readRefs = array();
-    private $writeRefs = array();
+    private $readEvents = [];
+    private $writeEvents = [];
+    private $readListeners = [];
+    private $writeListeners = [];
+    private $readRefs = [];
+    private $writeRefs = [];
     private $running;
     private $signals;
-    private $signalEvents = array();
+    private $signalEvents = [];
 
     public function __construct()
     {
@@ -67,8 +67,8 @@ final class ExtEventLoop implements LoopInterface
             $this->timerEvents->detach($timer);
         }
 
-        $this->readEvents = array();
-        $this->writeEvents = array();
+        $this->readEvents = [];
+        $this->writeEvents = [];
     }
 
     public function addReadStream($stream, $listener)
@@ -118,7 +118,7 @@ final class ExtEventLoop implements LoopInterface
             unset(
                 $this->readEvents[$key],
                 $this->readListeners[$key],
-                $this->readRefs[$key]
+                $this->readRefs[$key],
             );
         }
     }
@@ -132,7 +132,7 @@ final class ExtEventLoop implements LoopInterface
             unset(
                 $this->writeEvents[$key],
                 $this->writeListeners[$key],
-                $this->writeRefs[$key]
+                $this->writeRefs[$key],
             );
         }
     }
@@ -173,7 +173,7 @@ final class ExtEventLoop implements LoopInterface
         $this->signals->add($signal, $listener);
 
         if (!isset($this->signalEvents[$signal])) {
-            $this->signalEvents[$signal] = Event::signal($this->eventBase, $signal, array($this->signals, 'call'));
+            $this->signalEvents[$signal] = Event::signal($this->eventBase, $signal, [$this->signals, 'call']);
             $this->signalEvents[$signal]->add();
         }
     }
@@ -258,8 +258,8 @@ final class ExtEventLoop implements LoopInterface
      */
     private function createStreamCallback()
     {
-        $read =& $this->readListeners;
-        $write =& $this->writeListeners;
+        $read = & $this->readListeners;
+        $write = & $this->writeListeners;
         $this->streamCallback = function ($stream, $flags) use (&$read, &$write) {
             $key = (int) $stream;
 

@@ -18,7 +18,7 @@ final class UnixConnector implements ConnectorInterface
 {
     private $loop;
 
-    public function __construct(LoopInterface $loop = null)
+    public function __construct(?LoopInterface $loop = null)
     {
         $this->loop = $loop ?: Loop::get();
     }
@@ -30,7 +30,7 @@ final class UnixConnector implements ConnectorInterface
         } elseif (\substr($path, 0, 7) !== 'unix://') {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $path . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             ));
         }
 
@@ -39,7 +39,7 @@ final class UnixConnector implements ConnectorInterface
         if (!$resource) {
             return Promise\reject(new \RuntimeException(
                 'Unable to connect to unix domain socket "' . $path . '": ' . $errstr . SocketServer::errconst($errno),
-                $errno
+                $errno,
             ));
         }
 

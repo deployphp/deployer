@@ -9,6 +9,4 @@
 
 namespace JsonSchema\Exception;
 
-class ValidationException extends RuntimeException
-{
-}
+class ValidationException extends RuntimeException {}

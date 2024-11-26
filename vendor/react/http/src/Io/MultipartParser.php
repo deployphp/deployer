@@ -74,11 +74,11 @@ final class MultipartParser
     {
         $var = \ini_get('max_input_vars');
         if ($var !== false) {
-            $this->maxInputVars = (int)$var;
+            $this->maxInputVars = (int) $var;
         }
         $var = \ini_get('max_input_nesting_level');
         if ($var !== false) {
-            $this->maxInputNestingLevel = (int)$var;
+            $this->maxInputNestingLevel = (int) $var;
         }
 
         if ($uploadMaxFilesize === null) {
@@ -86,18 +86,18 @@ final class MultipartParser
         }
 
         $this->uploadMaxFilesize = IniUtil::iniSizeToBytes($uploadMaxFilesize);
-        $this->maxFileUploads = $maxFileUploads === null ? (\ini_get('file_uploads') === '' ? 0 : (int)\ini_get('max_file_uploads')) : (int)$maxFileUploads;
+        $this->maxFileUploads = $maxFileUploads === null ? (\ini_get('file_uploads') === '' ? 0 : (int) \ini_get('max_file_uploads')) : (int) $maxFileUploads;
     }
 
     public function parse(ServerRequestInterface $request)
     {
         $contentType = $request->getHeaderLine('content-type');
-        if(!\preg_match('/boundary="?(.*?)"?$/', $contentType, $matches)) {
+        if (!\preg_match('/boundary="?(.*?)"?$/', $contentType, $matches)) {
             return $request;
         }
 
         $this->request = $request;
-        $this->parseBody('--' . $matches[1], (string)$request->getBody());
+        $this->parseBody('--' . $matches[1], (string) $request->getBody());
 
         $request = $this->request;
         $this->request = null;
@@ -138,8 +138,8 @@ final class MultipartParser
             return;
         }
 
-        $headers = $this->parseHeaders((string)substr($chunk, 0, $pos));
-        $body = (string)\substr($chunk, $pos + 4);
+        $headers = $this->parseHeaders((string) substr($chunk, 0, $pos));
+        $body = (string) \substr($chunk, $pos + 4);
 
         if (!isset($headers['content-disposition'])) {
             return;
@@ -156,7 +156,7 @@ final class MultipartParser
                 $name,
                 $filename,
                 isset($headers['content-type'][0]) ? $headers['content-type'][0] : null,
-                $body
+                $body,
             );
         } else {
             $this->parsePost($name, $body);
@@ -173,7 +173,7 @@ final class MultipartParser
         $this->request = $this->request->withUploadedFiles($this->extractPost(
             $this->request->getUploadedFiles(),
             $name,
-            $file
+            $file,
         ));
     }
 
@@ -193,7 +193,7 @@ final class MultipartParser
                 $size,
                 \UPLOAD_ERR_NO_FILE,
                 $filename,
-                $contentType
+                $contentType,
             );
         }
 
@@ -209,7 +209,7 @@ final class MultipartParser
                 $size,
                 \UPLOAD_ERR_INI_SIZE,
                 $filename,
-                $contentType
+                $contentType,
             );
         }
 
@@ -220,7 +220,7 @@ final class MultipartParser
                 $size,
                 \UPLOAD_ERR_FORM_SIZE,
                 $filename,
-                $contentType
+                $contentType,
             );
         }
 
@@ -229,7 +229,7 @@ final class MultipartParser
             $size,
             \UPLOAD_ERR_OK,
             $filename,
-            $contentType
+            $contentType,
         );
     }
 
@@ -243,11 +243,11 @@ final class MultipartParser
         $this->request = $this->request->withParsedBody($this->extractPost(
             $this->request->getParsedBody(),
             $name,
-            $value
+            $value,
         ));
 
         if (\strtoupper($name) === 'MAX_FILE_SIZE') {
-            $this->maxFileSize = (int)$value;
+            $this->maxFileSize = (int) $value;
 
             if ($this->maxFileSize === 0) {
                 $this->maxFileSize = null;
@@ -257,7 +257,7 @@ final class MultipartParser
 
     private function parseHeaders($header)
     {
-        $headers = array();
+        $headers = [];
 
         foreach (\explode("\r\n", \trim($header)) as $line) {
             $parts = \explode(':', $line, 2);
@@ -304,12 +304,12 @@ final class MultipartParser
             $previousChunkKey = $chunkKey;
 
             if ($previousChunkKey === '') {
-                $parent[] = array();
+                $parent[] = [];
                 \end($parent);
                 $parent = &$parent[\key($parent)];
             } else {
                 if (!isset($parent[$previousChunkKey]) || !\is_array($parent[$previousChunkKey])) {
-                    $parent[$previousChunkKey] = array();
+                    $parent[$previousChunkKey] = [];
                 }
                 $parent = &$parent[$previousChunkKey];
             }

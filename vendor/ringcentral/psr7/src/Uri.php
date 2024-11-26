@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\UriInterface;
@@ -11,14 +12,14 @@ use Psr\Http\Message\UriInterface;
  */
 class Uri implements UriInterface
 {
-    private static $schemes = array(
+    private static $schemes = [
         'http'  => 80,
         'https' => 443,
-    );
+    ];
 
     private static $charUnreserved = 'a-zA-Z0-9_\-\.~';
     private static $charSubDelims = '!\$&\'\(\)\*\+,;=';
-    private static $replaceQuery = array('=' => '%3D', '&' => '%26');
+    private static $replaceQuery = ['=' => '%3D', '&' => '%26'];
 
     /** @var string Uri scheme. */
     private $scheme = '';
@@ -62,7 +63,7 @@ class Uri implements UriInterface
             $this->getAuthority(),
             $this->getPath(),
             $this->query,
-            $this->fragment
+            $this->fragment,
         );
     }
 
@@ -76,14 +77,14 @@ class Uri implements UriInterface
      */
     public static function removeDotSegments($path)
     {
-        static $noopPaths = array('' => true, '/' => true, '*' => true);
-        static $ignoreSegments = array('.' => true, '..' => true);
+        static $noopPaths = ['' => true, '/' => true, '*' => true];
+        static $ignoreSegments = ['.' => true, '..' => true];
 
         if (isset($noopPaths[$path])) {
             return $path;
         }
 
-        $results = array();
+        $results = [];
         $segments = explode('/', $path);
         foreach ($segments as $segment) {
             if ($segment == '..') {
@@ -132,21 +133,21 @@ class Uri implements UriInterface
             return $rel->withPath(static::removeDotSegments($rel->getPath()));
         }
 
-        $relParts = array(
+        $relParts = [
             'scheme'    => $rel->getScheme(),
             'authority' => $rel->getAuthority(),
             'path'      => $rel->getPath(),
             'query'     => $rel->getQuery(),
-            'fragment'  => $rel->getFragment()
-        );
+            'fragment'  => $rel->getFragment(),
+        ];
 
-        $parts = array(
+        $parts = [
             'scheme'    => $base->getScheme(),
             'authority' => $base->getAuthority(),
             'path'      => $base->getPath(),
             'query'     => $base->getQuery(),
-            'fragment'  => $base->getFragment()
-        );
+            'fragment'  => $base->getFragment(),
+        ];
 
         if (!empty($relParts['authority'])) {
             $parts['authority'] = $relParts['authority'];
@@ -179,7 +180,7 @@ class Uri implements UriInterface
             $parts['authority'],
             $parts['path'],
             $parts['query'],
-            $parts['fragment']
+            $parts['fragment'],
         ));
     }
 
@@ -203,7 +204,7 @@ class Uri implements UriInterface
             return $uri;
         }
 
-        $result = array();
+        $result = [];
         foreach (explode('&', $current) as $part) {
             $subParts = explode('=', $part);
             if ($subParts[0] !== $key) {
@@ -234,9 +235,9 @@ class Uri implements UriInterface
         $key = strtr($key, self::$replaceQuery);
 
         if (!$current) {
-            $result = array();
+            $result = [];
         } else {
-            $result = array();
+            $result = [];
             foreach (explode('&', $current) as $part) {
                 $subParts = explode('=', $part);
                 if ($subParts[0] !== $key) {
@@ -379,7 +380,7 @@ class Uri implements UriInterface
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException(
-                'Invalid path provided; must be a string'
+                'Invalid path provided; must be a string',
             );
         }
 
@@ -398,7 +399,7 @@ class Uri implements UriInterface
     {
         if (!is_string($query) && !method_exists($query, '__toString')) {
             throw new \InvalidArgumentException(
-                'Query string must be a string'
+                'Query string must be a string',
             );
         }
 
@@ -554,7 +555,7 @@ class Uri implements UriInterface
             $port = (int) $port;
             if (1 > $port || 0xffff < $port) {
                 throw new \InvalidArgumentException(
-                    sprintf('Invalid port: %d. Must be between 1 and 65535', $port)
+                    sprintf('Invalid port: %d. Must be between 1 and 65535', $port),
                 );
             }
         }
@@ -573,8 +574,8 @@ class Uri implements UriInterface
     {
         return preg_replace_callback(
             '/(?:[^' . self::$charUnreserved . self::$charSubDelims . ':@\/%]+|%(?![A-Fa-f0-9]{2}))/',
-            array($this, 'rawurlencodeMatchZero'),
-            $path
+            [$this, 'rawurlencodeMatchZero'],
+            $path,
         );
     }
 
@@ -589,8 +590,8 @@ class Uri implements UriInterface
     {
         return preg_replace_callback(
             '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/',
-            array($this, 'rawurlencodeMatchZero'),
-            $str
+            [$this, 'rawurlencodeMatchZero'],
+            $str,
         );
     }
 

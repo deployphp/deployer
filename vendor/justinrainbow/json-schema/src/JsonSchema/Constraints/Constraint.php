@@ -21,15 +21,15 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
 {
     protected $inlineSchemaProperty = '$schema';
 
-    const CHECK_MODE_NONE =             0x00000000;
-    const CHECK_MODE_NORMAL =           0x00000001;
-    const CHECK_MODE_TYPE_CAST =        0x00000002;
-    const CHECK_MODE_COERCE_TYPES =     0x00000004;
-    const CHECK_MODE_APPLY_DEFAULTS =   0x00000008;
-    const CHECK_MODE_EXCEPTIONS =       0x00000010;
-    const CHECK_MODE_DISABLE_FORMAT =   0x00000020;
-    const CHECK_MODE_ONLY_REQUIRED_DEFAULTS   = 0x00000080;
-    const CHECK_MODE_VALIDATE_SCHEMA =  0x00000100;
+    public const CHECK_MODE_NONE =             0x00000000;
+    public const CHECK_MODE_NORMAL =           0x00000001;
+    public const CHECK_MODE_TYPE_CAST =        0x00000002;
+    public const CHECK_MODE_COERCE_TYPES =     0x00000004;
+    public const CHECK_MODE_APPLY_DEFAULTS =   0x00000008;
+    public const CHECK_MODE_EXCEPTIONS =       0x00000010;
+    public const CHECK_MODE_DISABLE_FORMAT =   0x00000020;
+    public const CHECK_MODE_ONLY_REQUIRED_DEFAULTS   = 0x00000080;
+    public const CHECK_MODE_VALIDATE_SCHEMA =  0x00000100;
 
     /**
      * Bubble down the path
@@ -39,7 +39,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      *
      * @return JsonPointer;
      */
-    protected function incrementPath(JsonPointer $path = null, $i)
+    protected function incrementPath(?JsonPointer $path = null, $i)
     {
         $path = $path ?: new JsonPointer('');
 
@@ -50,8 +50,8 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
         $path = $path->withPropertyPaths(
             array_merge(
                 $path->getPropertyPaths(),
-                array($i)
-            )
+                [$i],
+            ),
         );
 
         return $path;
@@ -65,7 +65,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer|null $path
      * @param mixed            $i
      */
-    protected function checkArray(&$value, $schema = null, JsonPointer $path = null, $i = null)
+    protected function checkArray(&$value, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $validator = $this->factory->createInstanceFor('collection');
         $validator->check($value, $schema, $path, $i);
@@ -83,9 +83,15 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param mixed            $additionalProperties
      * @param mixed            $patternProperties
      */
-    protected function checkObject(&$value, $schema = null, JsonPointer $path = null, $properties = null,
-        $additionalProperties = null, $patternProperties = null, $appliedDefaults = array())
-    {
+    protected function checkObject(
+        &$value,
+        $schema = null,
+        ?JsonPointer $path = null,
+        $properties = null,
+        $additionalProperties = null,
+        $patternProperties = null,
+        $appliedDefaults = [],
+    ) {
         $validator = $this->factory->createInstanceFor('object');
         $validator->check($value, $schema, $path, $properties, $additionalProperties, $patternProperties, $appliedDefaults);
 
@@ -100,7 +106,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer|null $path
      * @param mixed            $i
      */
-    protected function checkType(&$value, $schema = null, JsonPointer $path = null, $i = null)
+    protected function checkType(&$value, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $validator = $this->factory->createInstanceFor('type');
         $validator->check($value, $schema, $path, $i);
@@ -116,7 +122,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer|null $path
      * @param mixed            $i
      */
-    protected function checkUndefined(&$value, $schema = null, JsonPointer $path = null, $i = null, $fromDefault = false)
+    protected function checkUndefined(&$value, $schema = null, ?JsonPointer $path = null, $i = null, $fromDefault = false)
     {
         $validator = $this->factory->createInstanceFor('undefined');
 
@@ -133,7 +139,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer|null $path
      * @param mixed            $i
      */
-    protected function checkString($value, $schema = null, JsonPointer $path = null, $i = null)
+    protected function checkString($value, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $validator = $this->factory->createInstanceFor('string');
         $validator->check($value, $schema, $path, $i);
@@ -149,7 +155,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer $path
      * @param mixed       $i
      */
-    protected function checkNumber($value, $schema = null, JsonPointer $path = null, $i = null)
+    protected function checkNumber($value, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $validator = $this->factory->createInstanceFor('number');
         $validator->check($value, $schema, $path, $i);
@@ -165,7 +171,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer|null $path
      * @param mixed            $i
      */
-    protected function checkEnum($value, $schema = null, JsonPointer $path = null, $i = null)
+    protected function checkEnum($value, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $validator = $this->factory->createInstanceFor('enum');
         $validator->check($value, $schema, $path, $i);
@@ -181,7 +187,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      * @param JsonPointer|null $path
      * @param mixed            $i
      */
-    protected function checkFormat($value, $schema = null, JsonPointer $path = null, $i = null)
+    protected function checkFormat($value, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $validator = $this->factory->createInstanceFor('format');
         $validator->check($value, $schema, $path, $i);
@@ -210,7 +216,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
             function ($path) {
                 return sprintf(is_numeric($path) ? '[%d]' : '.%s', $path);
             },
-            $pointer->getPropertyPaths()
+            $pointer->getPropertyPaths(),
         );
 
         return trim(implode('', $result), '.');

@@ -1,4 +1,5 @@
 <?php
+
 namespace Psr\Http\Message;
 
 /**

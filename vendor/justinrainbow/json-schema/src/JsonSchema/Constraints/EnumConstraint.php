@@ -22,7 +22,7 @@ class EnumConstraint extends Constraint
     /**
      * {@inheritdoc}
      */
-    public function check(&$element, $schema = null, JsonPointer $path = null, $i = null)
+    public function check(&$element, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         // Only validate enum if the attribute exists
         if ($element instanceof UndefinedConstraint && (!isset($schema->required) || !$schema->required)) {
@@ -49,6 +49,6 @@ class EnumConstraint extends Constraint
             }
         }
 
-        $this->addError($path, 'Does not have a value in the enumeration ' . json_encode($schema->enum), 'enum', array('enum' => $schema->enum));
+        $this->addError($path, 'Does not have a value in the enumeration ' . json_encode($schema->enum), 'enum', ['enum' => $schema->enum]);
     }
 }

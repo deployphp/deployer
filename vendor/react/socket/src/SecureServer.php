@@ -122,16 +122,16 @@ final class SecureServer extends EventEmitter implements ServerInterface
      * @see TcpServer
      * @link https://www.php.net/manual/en/context.ssl.php for TLS context options
      */
-    public function __construct(ServerInterface $tcp, LoopInterface $loop = null, array $context = array())
+    public function __construct(ServerInterface $tcp, ?LoopInterface $loop = null, array $context = [])
     {
         if (!\function_exists('stream_socket_enable_crypto')) {
             throw new \BadMethodCallException('Encryption not supported on your platform (HHVM < 3.8?)'); // @codeCoverageIgnore
         }
 
         // default to empty passphrase to suppress blocking passphrase prompt
-        $context += array(
-            'passphrase' => ''
-        );
+        $context += [
+            'passphrase' => '',
+        ];
 
         $this->tcp = $tcp;
         $this->encryption = new StreamEncryption($loop ?: Loop::get());
@@ -142,7 +142,7 @@ final class SecureServer extends EventEmitter implements ServerInterface
             $that->handleConnection($connection);
         });
         $this->tcp->on('error', function ($error) use ($that) {
-            $that->emit('error', array($error));
+            $that->emit('error', [$error]);
         });
     }
 
@@ -153,7 +153,7 @@ final class SecureServer extends EventEmitter implements ServerInterface
             return null;
         }
 
-        return \str_replace('tcp://' , 'tls://', $address);
+        return \str_replace('tcp://', 'tls://', $address);
     }
 
     public function pause()
@@ -175,7 +175,7 @@ final class SecureServer extends EventEmitter implements ServerInterface
     public function handleConnection(ConnectionInterface $connection)
     {
         if (!$connection instanceof Connection) {
-            $this->emit('error', array(new \UnexpectedValueException('Base server does not use internal Connection class exposing stream resource')));
+            $this->emit('error', [new \UnexpectedValueException('Base server does not use internal Connection class exposing stream resource')]);
             $connection->close();
             return;
         }
@@ -190,17 +190,17 @@ final class SecureServer extends EventEmitter implements ServerInterface
 
         $this->encryption->enable($connection)->then(
             function ($conn) use ($that) {
-                $that->emit('connection', array($conn));
+                $that->emit('connection', [$conn]);
             },
             function ($error) use ($that, $connection, $remote) {
                 $error = new \RuntimeException(
                     'Connection from ' . $remote . ' failed during TLS handshake: ' . $error->getMessage(),
-                    $error->getCode()
+                    $error->getCode(),
                 );
 
-                $that->emit('error', array($error));
+                $that->emit('error', [$error]);
                 $connection->close();
-            }
+            },
         );
     }
 }

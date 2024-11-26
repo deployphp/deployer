@@ -83,7 +83,7 @@ final class Grapheme
 
         $next = $start;
 
-        $s = preg_split('/('.SYMFONY_GRAPHEME_CLUSTER_RX.')/u', "\r\n".$s, $size + 1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE);
+        $s = preg_split('/(' . SYMFONY_GRAPHEME_CLUSTER_RX . ')/u', "\r\n" . $s, $size + 1, \PREG_SPLIT_NO_EMPTY | \PREG_SPLIT_DELIM_CAPTURE);
 
         if (!isset($s[1])) {
             return false;
@@ -113,7 +113,7 @@ final class Grapheme
 
     public static function grapheme_strlen($s)
     {
-        preg_replace('/'.SYMFONY_GRAPHEME_CLUSTER_RX.'/u', '', $s, -1, $len);
+        preg_replace('/' . SYMFONY_GRAPHEME_CLUSTER_RX . '/u', '', $s, -1, $len);
 
         return 0 === $len && '' !== $s ? null : $len;
     }
@@ -124,7 +124,7 @@ final class Grapheme
             $len = 2147483647;
         }
 
-        preg_match_all('/'.SYMFONY_GRAPHEME_CLUSTER_RX.'/u', $s, $s);
+        preg_match_all('/' . SYMFONY_GRAPHEME_CLUSTER_RX . '/u', $s, $s);
 
         $slen = \count($s[0]);
         $start = (int) $start;

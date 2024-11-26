@@ -23,12 +23,12 @@ use JsonSchema\Validator;
  */
 class SchemaConstraint extends Constraint
 {
-    const DEFAULT_SCHEMA_SPEC = 'http://json-schema.org/draft-04/schema#';
+    public const DEFAULT_SCHEMA_SPEC = 'http://json-schema.org/draft-04/schema#';
 
     /**
      * {@inheritdoc}
      */
-    public function check(&$element, $schema = null, JsonPointer $path = null, $i = null)
+    public function check(&$element, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         if ($schema !== null) {
             // passed schema

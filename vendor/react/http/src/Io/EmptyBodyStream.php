@@ -44,7 +44,7 @@ class EmptyBodyStream extends EventEmitter implements StreamInterface, ReadableS
         // NOOP
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         Util::pipe($this, $dest, $options);
 
@@ -137,6 +137,6 @@ class EmptyBodyStream extends EventEmitter implements StreamInterface, ReadableS
     /** @ignore */
     public function getMetadata($key = null)
     {
-        return ($key === null) ? array() : null;
+        return ($key === null) ? [] : null;
     }
 }

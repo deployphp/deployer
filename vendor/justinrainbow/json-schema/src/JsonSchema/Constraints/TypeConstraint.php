@@ -24,7 +24,7 @@ class TypeConstraint extends Constraint
     /**
      * @var array|string[] type wordings for validation error messages
      */
-    public static $wording = array(
+    public static $wording = [
         'integer' => 'an integer',
         'number'  => 'a number',
         'boolean' => 'a boolean',
@@ -34,16 +34,16 @@ class TypeConstraint extends Constraint
         'null'    => 'a null',
         'any'     => null, // validation of 'any' is always true so is not needed in message wording
         0         => null, // validation of a false-y value is always true, so not needed as well
-    );
+    ];
 
     /**
      * {@inheritdoc}
      */
-    public function check(&$value = null, $schema = null, JsonPointer $path = null, $i = null)
+    public function check(&$value = null, $schema = null, ?JsonPointer $path = null, $i = null)
     {
         $type = isset($schema->type) ? $schema->type : null;
         $isValid = false;
-        $wording = array();
+        $wording = [];
 
         if (is_array($type)) {
             $this->validateTypesArray($value, $type, $wording, $isValid, $path);
@@ -119,7 +119,7 @@ class TypeConstraint extends Constraint
         }
         $lastElement  = array_slice($elements, -1);
         $firsElements = join($delimiter, array_slice($elements, 0, -1));
-        $implodedElements = array_merge(array($firsElements), $lastElement);
+        $implodedElements = array_merge([$firsElements], $lastElement);
 
         return join(" $listEnd ", $implodedElements);
     }
@@ -139,7 +139,8 @@ class TypeConstraint extends Constraint
                 sprintf(
                     'No wording for %s available, expected wordings are: [%s]',
                     var_export($type, true),
-                    implode(', ', array_filter(self::$wording)))
+                    implode(', ', array_filter(self::$wording)),
+                ),
             );
         }
     }

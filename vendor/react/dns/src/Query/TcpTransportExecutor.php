@@ -90,12 +90,12 @@ class TcpTransportExecutor implements ExecutorInterface
     /**
      * @var Deferred[]
      */
-    private $pending = array();
+    private $pending = [];
 
     /**
      * @var string[]
      */
-    private $names = array();
+    private $names = [];
 
     /**
      * Maximum idle time when socket is current unused (i.e. no pending queries outstanding)
@@ -134,7 +134,7 @@ class TcpTransportExecutor implements ExecutorInterface
      * @param string         $nameserver
      * @param ?LoopInterface $loop
      */
-    public function __construct($nameserver, LoopInterface $loop = null)
+    public function __construct($nameserver, ?LoopInterface $loop = null)
     {
         if (\strpos($nameserver, '[') === false && \substr_count($nameserver, ':') >= 2 && \strpos($nameserver, '://') === false) {
             // several colons, but not enclosed in square brackets => enclose IPv6 address in square brackets
@@ -165,7 +165,7 @@ class TcpTransportExecutor implements ExecutorInterface
         $length = \strlen($queryData);
         if ($length > 0xffff) {
             return \React\Promise\reject(new \RuntimeException(
-                'DNS query for ' . $query->describe() . ' failed: Query too large for TCP transport'
+                'DNS query for ' . $query->describe() . ' failed: Query too large for TCP transport',
             ));
         }
 
@@ -176,8 +176,8 @@ class TcpTransportExecutor implements ExecutorInterface
             $socket = @\stream_socket_client($this->nameserver, $errno, $errstr, 0, \STREAM_CLIENT_CONNECT | \STREAM_CLIENT_ASYNC_CONNECT);
             if ($socket === false) {
                 return \React\Promise\reject(new \RuntimeException(
-                    'DNS query for ' . $query->describe() . ' failed: Unable to connect to DNS server ' . $this->nameserver . ' ('  . $errstr . ')',
-                    $errno
+                    'DNS query for ' . $query->describe() . ' failed: Unable to connect to DNS server ' . $this->nameserver . ' (' . $errstr . ')',
+                    $errno,
                 ));
             }
 
@@ -198,10 +198,10 @@ class TcpTransportExecutor implements ExecutorInterface
         $this->writeBuffer .= $queryData;
         if (!$this->writePending) {
             $this->writePending = true;
-            $this->loop->addWriteStream($this->socket, array($this, 'handleWritable'));
+            $this->loop->addWriteStream($this->socket, [$this, 'handleWritable']);
         }
 
-        $names =& $this->names;
+        $names = & $this->names;
         $that = $this;
         $deferred = new Deferred(function () use ($that, &$names, $request) {
             // remove from list of pending names, but remember pending query
@@ -243,7 +243,7 @@ class TcpTransportExecutor implements ExecutorInterface
             }
 
             $this->readPending = true;
-            $this->loop->addReadStream($this->socket, array($this, 'handleRead'));
+            $this->loop->addReadStream($this->socket, [$this, 'handleRead']);
         }
 
         $written = @\fwrite($this->socket, $this->writeBuffer);
@@ -252,7 +252,7 @@ class TcpTransportExecutor implements ExecutorInterface
             \preg_match('/errno=(\d+) (.+)/', $error['message'], $m);
             $this->closeError(
                 'Unable to send query to DNS server ' . $this->nameserver . ' (' . (isset($m[2]) ? $m[2] : $error['message']) . ')',
-                isset($m[1]) ? (int) $m[1] : 0
+                isset($m[1]) ? (int) $m[1] : 0,
             );
             return;
         }
@@ -291,7 +291,7 @@ class TcpTransportExecutor implements ExecutorInterface
             }
 
             $data = \substr($this->readBuffer, 2, $length);
-            $this->readBuffer = (string)substr($this->readBuffer, $length + 2);
+            $this->readBuffer = (string) substr($this->readBuffer, $length + 2);
 
             try {
                 $response = $this->parser->parseMessage($data);
@@ -346,10 +346,10 @@ class TcpTransportExecutor implements ExecutorInterface
         foreach ($this->names as $id => $name) {
             $this->pending[$id]->reject(new \RuntimeException(
                 'DNS query for ' . $name . ' failed: ' . $reason,
-                $code
+                $code,
             ));
         }
-        $this->pending = $this->names = array();
+        $this->pending = $this->names = [];
     }
 
     /**

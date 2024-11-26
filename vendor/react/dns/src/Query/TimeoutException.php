@@ -2,6 +2,4 @@
 
 namespace React\Dns\Query;
 
-final class TimeoutException extends \Exception
-{
-}
+final class TimeoutException extends \Exception {}

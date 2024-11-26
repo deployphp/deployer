@@ -60,10 +60,10 @@ trait ServiceSubscriberTrait
                 $serviceId = $returnType instanceof \ReflectionNamedType ? $returnType->getName() : (string) $returnType;
 
                 if ($returnType->allowsNull()) {
-                    $serviceId = '?'.$serviceId;
+                    $serviceId = '?' . $serviceId;
                 }
 
-                $services[$attribute->newInstance()->key ?? self::class.'::'.$method->name] = $serviceId;
+                $services[$attribute->newInstance()->key ?? self::class . '::' . $method->name] = $serviceId;
                 $attributeOptIn = true;
             }
         }
@@ -90,7 +90,7 @@ trait ServiceSubscriberTrait
                     trigger_deprecation('symfony/service-contracts', '2.5', 'Using "%s" in "%s" without using the "%s" attribute on any method is deprecated.', ServiceSubscriberTrait::class, self::class, SubscribedService::class);
                 }
 
-                $services[self::class.'::'.$method->name] = '?'.($returnType instanceof \ReflectionNamedType ? $returnType->getName() : $returnType);
+                $services[self::class . '::' . $method->name] = '?' . ($returnType instanceof \ReflectionNamedType ? $returnType->getName() : $returnType);
             }
         }
 

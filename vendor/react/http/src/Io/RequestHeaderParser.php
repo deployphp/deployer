@@ -39,10 +39,10 @@ class RequestHeaderParser extends EventEmitter
                 $conn->removeListener('data', $fn);
                 $fn = null;
 
-                $that->emit('error', array(
+                $that->emit('error', [
                     new \OverflowException("Maximum header size of {$maxSize} exceeded.", Response::STATUS_REQUEST_HEADER_FIELDS_TOO_LARGE),
-                    $conn
-                ));
+                    $conn,
+                ]);
                 return;
             }
 
@@ -57,16 +57,16 @@ class RequestHeaderParser extends EventEmitter
 
             try {
                 $request = $that->parseRequest(
-                    (string)\substr($buffer, 0, $endOfHeader + 2),
+                    (string) \substr($buffer, 0, $endOfHeader + 2),
                     $conn->getRemoteAddress(),
-                    $conn->getLocalAddress()
+                    $conn->getLocalAddress(),
                 );
             } catch (Exception $exception) {
                 $buffer = '';
-                $that->emit('error', array(
+                $that->emit('error', [
                     $exception,
-                    $conn
-                ));
+                    $conn,
+                ]);
                 return;
             }
 
@@ -74,7 +74,7 @@ class RequestHeaderParser extends EventEmitter
             if ($request->hasHeader('Transfer-Encoding')) {
                 $contentLength = null;
             } elseif ($request->hasHeader('Content-Length')) {
-                $contentLength = (int)$request->getHeaderLine('Content-Length');
+                $contentLength = (int) $request->getHeaderLine('Content-Length');
             }
 
             if ($contentLength === 0) {
@@ -95,10 +95,10 @@ class RequestHeaderParser extends EventEmitter
 
             $bodyBuffer = isset($buffer[$endOfHeader + 4]) ? \substr($buffer, $endOfHeader + 4) : '';
             $buffer = '';
-            $that->emit('headers', array($request, $conn));
+            $that->emit('headers', [$request, $conn]);
 
             if ($bodyBuffer !== '') {
-                $conn->emit('data', array($bodyBuffer));
+                $conn->emit('data', [$bodyBuffer]);
             }
 
             // happy path: request body is known to be empty => immediately end stream
@@ -121,7 +121,7 @@ class RequestHeaderParser extends EventEmitter
     {
         // additional, stricter safe-guard for request line
         // because request parser doesn't properly cope with invalid ones
-        $start = array();
+        $start = [];
         if (!\preg_match('#^(?<method>[^ ]+) (?<target>[^ ]+) HTTP/(?<version>\d\.\d)#m', $headers, $start)) {
             throw new \InvalidArgumentException('Unable to parse invalid request-line');
         }
@@ -132,7 +132,7 @@ class RequestHeaderParser extends EventEmitter
         }
 
         // match all request header fields into array, thanks to @kelunik for checking the HTTP specs and coming up with this regex
-        $matches = array();
+        $matches = [];
         $n = \preg_match_all('/^([^()<>@,;:\\\"\/\[\]?={}\x01-\x20\x7F]++):[\x20\x09]*+((?:[\x20\x09]*+[\x21-\x7E\x80-\xFF]++)*+)[\x20\x09]*+[\r]?+\n/m', $headers, $matches, \PREG_SET_ORDER);
 
         // check number of valid header fields matches number of lines + request line
@@ -142,7 +142,7 @@ class RequestHeaderParser extends EventEmitter
 
         // format all header fields into associative array
         $host = null;
-        $fields = array();
+        $fields = [];
         foreach ($matches as $match) {
             $fields[$match[1]][] = $match[2];
 
@@ -154,13 +154,13 @@ class RequestHeaderParser extends EventEmitter
 
         // create new obj implementing ServerRequestInterface by preserving all
         // previous properties and restoring original request-target
-        $serverParams = array(
+        $serverParams = [
             'REQUEST_TIME' => \time(),
-            'REQUEST_TIME_FLOAT' => \microtime(true)
-        );
+            'REQUEST_TIME_FLOAT' => \microtime(true),
+        ];
 
         // scheme is `http` unless TLS is used
-        $localParts = $localSocketUri === null ? array() : \parse_url($localSocketUri);
+        $localParts = $localSocketUri === null ? [] : \parse_url($localSocketUri);
         if (isset($localParts['scheme']) && $localParts['scheme'] === 'tls') {
             $scheme = 'https://';
             $serverParams['HTTPS'] = 'on';
@@ -224,7 +224,7 @@ class RequestHeaderParser extends EventEmitter
             $fields,
             '',
             $start['version'],
-            $serverParams
+            $serverParams,
         );
 
         // only assign request target if it is not in origin-form (happy path for most normal requests)
@@ -270,7 +270,7 @@ class RequestHeaderParser extends EventEmitter
         } elseif ($request->hasHeader('Content-Length')) {
             $string = $request->getHeaderLine('Content-Length');
 
-            if ((string)(int)$string !== $string) {
+            if ((string) (int) $string !== $string) {
                 // Content-Length value is not an integer or not a single integer
                 throw new \InvalidArgumentException('The value of `Content-Length` is not valid', Response::STATUS_BAD_REQUEST);
             }

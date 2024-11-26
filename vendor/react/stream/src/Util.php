@@ -13,7 +13,7 @@ final class Util
      * @return WritableStreamInterface $dest stream as-is
      * @see ReadableStreamInterface::pipe() for more details
      */
-    public static function pipe(ReadableStreamInterface $source, WritableStreamInterface $dest, array $options = array())
+    public static function pipe(ReadableStreamInterface $source, WritableStreamInterface $dest, array $options = [])
     {
         // source not readable => NO-OP
         if (!$source->isReadable()) {
@@ -27,7 +27,7 @@ final class Util
             return $dest;
         }
 
-        $dest->emit('pipe', array($source));
+        $dest->emit('pipe', [$source]);
 
         // forward all source data events as $dest->write()
         $source->on('data', $dataer = function ($data) use ($source, $dest) {

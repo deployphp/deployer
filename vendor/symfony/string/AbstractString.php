@@ -286,9 +286,9 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
         }
 
         $suffix = preg_quote($suffix);
-        $regex = '{('.$suffix.')(?:'.$suffix.')++$}D';
+        $regex = '{(' . $suffix . ')(?:' . $suffix . ')++$}D';
 
-        return $this->replaceMatches($regex.($this->ignoreCase ? 'i' : ''), '$1');
+        return $this->replaceMatches($regex . ($this->ignoreCase ? 'i' : ''), '$1');
     }
 
     /**
@@ -399,7 +399,7 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
     /**
      * @return static
      */
-    abstract public function join(array $strings, string $lastGlue = null): self;
+    abstract public function join(array $strings, ?string $lastGlue = null): self;
 
     public function jsonSerialize(): string
     {
@@ -477,7 +477,7 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
     /**
      * @return static
      */
-    abstract public function slice(int $start = 0, int $length = null): self;
+    abstract public function slice(int $start = 0, ?int $length = null): self;
 
     /**
      * @return static
@@ -487,12 +487,12 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
     /**
      * @return static
      */
-    abstract public function splice(string $replacement, int $start = 0, int $length = null): self;
+    abstract public function splice(string $replacement, int $start = 0, ?int $length = null): self;
 
     /**
      * @return static[]
      */
-    public function split(string $delimiter, int $limit = null, int $flags = null): array
+    public function split(string $delimiter, ?int $limit = null, ?int $flags = null): array
     {
         if (null === $flags) {
             throw new \TypeError('Split behavior when $flags is null must be implemented by child classes.');
@@ -510,7 +510,7 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
 
                 foreach (get_defined_constants(true)['pcre'] as $k => $v) {
                     if ($lastError === $v && '_ERROR' === substr($k, -6)) {
-                        throw new RuntimeException('Splitting failed with '.$k.'.');
+                        throw new RuntimeException('Splitting failed with ' . $k . '.');
                     }
                 }
 
@@ -560,7 +560,7 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
      */
     abstract public function title(bool $allWords = false): self;
 
-    public function toByteString(string $toEncoding = null): ByteString
+    public function toByteString(?string $toEncoding = null): ByteString
     {
         $b = new ByteString();
 
@@ -773,7 +773,7 @@ abstract class AbstractString implements \Stringable, \JsonSerializable
         }
 
         $str = clone $this;
-        $str->string = $string.implode('', $chars);
+        $str->string = $string . implode('', $chars);
 
         return $str;
     }

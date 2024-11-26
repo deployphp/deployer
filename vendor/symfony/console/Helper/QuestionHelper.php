@@ -228,7 +228,7 @@ class QuestionHelper extends Helper
         if (null !== $this->getHelperSet() && $this->getHelperSet()->has('formatter')) {
             $message = $this->getHelperSet()->get('formatter')->formatBlock($error->getMessage(), 'error');
         } else {
-            $message = '<error>'.$error->getMessage().'</error>';
+            $message = '<error>' . $error->getMessage() . '</error>';
         }
 
         $output->writeln($message);
@@ -272,7 +272,7 @@ class QuestionHelper extends Helper
 
             // as opposed to fgets(), fread() returns an empty string when the stream content is empty, not false.
             if (false === $c || ('' === $ret && '' === $c && null === $question->getDefault())) {
-                shell_exec('stty '.$sttyMode);
+                shell_exec('stty ' . $sttyMode);
                 throw new MissingInputException('Aborted.');
             } elseif ("\177" === $c) { // Backspace Character
                 if (0 === $numMatches && 0 !== $i) {
@@ -323,7 +323,7 @@ class QuestionHelper extends Helper
                             $autocomplete($ret),
                             function ($match) use ($ret) {
                                 return '' === $ret || str_starts_with($match, $ret);
-                            }
+                            },
                         );
                         $numMatches = \count($matches);
                         $ofs = -1;
@@ -371,13 +371,13 @@ class QuestionHelper extends Helper
                 $cursor->savePosition();
                 // Write highlighted text, complete the partially entered response
                 $charactersEntered = \strlen(trim($this->mostRecentlyEnteredValue($fullChoice)));
-                $output->write('<hl>'.OutputFormatter::escapeTrailingBackslash(substr($matches[$ofs], $charactersEntered)).'</hl>');
+                $output->write('<hl>' . OutputFormatter::escapeTrailingBackslash(substr($matches[$ofs], $charactersEntered)) . '</hl>');
                 $cursor->restorePosition();
             }
         }
 
         // Reset stty so it behaves normally again
-        shell_exec('stty '.$sttyMode);
+        shell_exec('stty ' . $sttyMode);
 
         return $fullChoice;
     }
@@ -408,16 +408,16 @@ class QuestionHelper extends Helper
     private function getHiddenResponse(OutputInterface $output, $inputStream, bool $trimmable = true): string
     {
         if ('\\' === \DIRECTORY_SEPARATOR) {
-            $exe = __DIR__.'/../Resources/bin/hiddeninput.exe';
+            $exe = __DIR__ . '/../Resources/bin/hiddeninput.exe';
 
             // handle code running from a phar
             if ('phar:' === substr(__FILE__, 0, 5)) {
-                $tmpExe = sys_get_temp_dir().'/hiddeninput.exe';
+                $tmpExe = sys_get_temp_dir() . '/hiddeninput.exe';
                 copy($exe, $tmpExe);
                 $exe = $tmpExe;
             }
 
-            $sExec = shell_exec('"'.$exe.'"');
+            $sExec = shell_exec('"' . $exe . '"');
             $value = $trimmable ? rtrim($sExec) : $sExec;
             $output->writeln('');
 
@@ -438,7 +438,7 @@ class QuestionHelper extends Helper
         $value = fgets($inputStream, 4096);
 
         if (self::$stty && Terminal::hasSttyAvailable()) {
-            shell_exec('stty '.$sttyMode);
+            shell_exec('stty ' . $sttyMode);
         }
 
         if (false === $value) {

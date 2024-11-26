@@ -27,10 +27,10 @@ class LengthLimitedStream extends EventEmitter implements ReadableStreamInterfac
         $this->stream = $stream;
         $this->maxLength = $maxLength;
 
-        $this->stream->on('data', array($this, 'handleData'));
-        $this->stream->on('end', array($this, 'handleEnd'));
-        $this->stream->on('error', array($this, 'handleError'));
-        $this->stream->on('close', array($this, 'close'));
+        $this->stream->on('data', [$this, 'handleData']);
+        $this->stream->on('end', [$this, 'handleEnd']);
+        $this->stream->on('error', [$this, 'handleError']);
+        $this->stream->on('close', [$this, 'close']);
     }
 
     public function isReadable()
@@ -48,7 +48,7 @@ class LengthLimitedStream extends EventEmitter implements ReadableStreamInterfac
         $this->stream->resume();
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         Util::pipe($this, $dest, $options);
 
@@ -74,26 +74,26 @@ class LengthLimitedStream extends EventEmitter implements ReadableStreamInterfac
     {
         if (($this->transferredLength + \strlen($data)) > $this->maxLength) {
             // Only emit data until the value of 'Content-Length' is reached, the rest will be ignored
-            $data = (string)\substr($data, 0, $this->maxLength - $this->transferredLength);
+            $data = (string) \substr($data, 0, $this->maxLength - $this->transferredLength);
         }
 
         if ($data !== '') {
             $this->transferredLength += \strlen($data);
-            $this->emit('data', array($data));
+            $this->emit('data', [$data]);
         }
 
         if ($this->transferredLength === $this->maxLength) {
             // 'Content-Length' reached, stream will end
             $this->emit('end');
             $this->close();
-            $this->stream->removeListener('data', array($this, 'handleData'));
+            $this->stream->removeListener('data', [$this, 'handleData']);
         }
     }
 
     /** @internal */
     public function handleError(\Exception $e)
     {
-        $this->emit('error', array($e));
+        $this->emit('error', [$e]);
         $this->close();
     }
 

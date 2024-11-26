@@ -177,8 +177,8 @@ function some($promisesOrValues, $howMany)
                             $howMany,
                             1 === $howMany ? '' : 's',
                             $len,
-                            1 === $len ? '' : 's'
-                        )
+                            1 === $len ? '' : 's',
+                        ),
                     );
                 }
 
@@ -263,7 +263,7 @@ function map($promisesOrValues, callable $mapFunc)
                                 }
                             },
                             $reject,
-                            $notify
+                            $notify,
                         );
                 }
             }, $reject, $notify);
@@ -354,7 +354,7 @@ function _checkTypehint(callable $callback, $object)
 
     // Extract the type of the argument and handle different possibilities
     $type = $expectedException->getType();
-    
+
     $isTypeUnion = true;
     $types = [];
 
@@ -366,7 +366,8 @@ function _checkTypehint(callable $callback, $object)
             break;
         case $type instanceof \ReflectionIntersectionType:
             $isTypeUnion = false;
-        case $type instanceof \ReflectionUnionType;
+            // no break
+        case $type instanceof \ReflectionUnionType:
             $types = $type->getTypes();
             break;
         default:

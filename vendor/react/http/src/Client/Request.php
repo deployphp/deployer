@@ -18,10 +18,10 @@ use RingCentral\Psr7 as gPsr;
  */
 class Request extends EventEmitter implements WritableStreamInterface
 {
-    const STATE_INIT = 0;
-    const STATE_WRITING_HEAD = 1;
-    const STATE_HEAD_WRITTEN = 2;
-    const STATE_END = 3;
+    public const STATE_INIT = 0;
+    public const STATE_WRITING_HEAD = 1;
+    public const STATE_HEAD_WRITTEN = 2;
+    public const STATE_END = 3;
 
     private $connector;
     private $requestData;
@@ -60,11 +60,11 @@ class Request extends EventEmitter implements WritableStreamInterface
             function (ConnectionInterface $stream) use ($requestData, &$streamRef, &$stateRef, &$pendingWrites, $that) {
                 $streamRef = $stream;
 
-                $stream->on('drain', array($that, 'handleDrain'));
-                $stream->on('data', array($that, 'handleData'));
-                $stream->on('end', array($that, 'handleEnd'));
-                $stream->on('error', array($that, 'handleError'));
-                $stream->on('close', array($that, 'handleClose'));
+                $stream->on('drain', [$that, 'handleDrain']);
+                $stream->on('data', [$that, 'handleData']);
+                $stream->on('end', [$that, 'handleEnd']);
+                $stream->on('error', [$that, 'handleError']);
+                $stream->on('close', [$that, 'handleClose']);
 
                 $headers = (string) $requestData;
 
@@ -81,10 +81,10 @@ class Request extends EventEmitter implements WritableStreamInterface
                     }
                 }
             },
-            array($this, 'closeError')
+            [$this, 'closeError'],
         );
 
-        $this->on('close', function() use ($promise) {
+        $this->on('close', function () use ($promise) {
             $promise->cancel();
         });
     }
@@ -117,7 +117,7 @@ class Request extends EventEmitter implements WritableStreamInterface
 
         if (null !== $data) {
             $this->write($data);
-        } else if (self::STATE_WRITING_HEAD > $this->state) {
+        } elseif (self::STATE_WRITING_HEAD > $this->state) {
             $this->writeHead();
         }
 
@@ -141,26 +141,26 @@ class Request extends EventEmitter implements WritableStreamInterface
                 $response = gPsr\parse_response($this->buffer);
                 $bodyChunk = (string) $response->getBody();
             } catch (\InvalidArgumentException $exception) {
-                $this->emit('error', array($exception));
+                $this->emit('error', [$exception]);
             }
 
             $this->buffer = null;
 
-            $this->stream->removeListener('drain', array($this, 'handleDrain'));
-            $this->stream->removeListener('data', array($this, 'handleData'));
-            $this->stream->removeListener('end', array($this, 'handleEnd'));
-            $this->stream->removeListener('error', array($this, 'handleError'));
-            $this->stream->removeListener('close', array($this, 'handleClose'));
+            $this->stream->removeListener('drain', [$this, 'handleDrain']);
+            $this->stream->removeListener('data', [$this, 'handleData']);
+            $this->stream->removeListener('end', [$this, 'handleEnd']);
+            $this->stream->removeListener('error', [$this, 'handleError']);
+            $this->stream->removeListener('close', [$this, 'handleClose']);
 
             if (!isset($response)) {
                 return;
             }
 
-            $this->stream->on('close', array($this, 'handleClose'));
+            $this->stream->on('close', [$this, 'handleClose']);
 
-            $this->emit('response', array($response, $this->stream));
+            $this->emit('response', [$response, $this->stream]);
 
-            $this->stream->emit('data', array($bodyChunk));
+            $this->stream->emit('data', [$bodyChunk]);
         }
     }
 
@@ -168,7 +168,7 @@ class Request extends EventEmitter implements WritableStreamInterface
     public function handleEnd()
     {
         $this->closeError(new \RuntimeException(
-            "Connection ended before receiving response"
+            "Connection ended before receiving response",
         ));
     }
 
@@ -178,7 +178,7 @@ class Request extends EventEmitter implements WritableStreamInterface
         $this->closeError(new \RuntimeException(
             "An error occurred in the underlying stream",
             0,
-            $error
+            $error,
         ));
     }
 
@@ -194,7 +194,7 @@ class Request extends EventEmitter implements WritableStreamInterface
         if (self::STATE_END <= $this->state) {
             return;
         }
-        $this->emit('error', array($error));
+        $this->emit('error', [$error]);
         $this->close();
     }
 
@@ -220,7 +220,7 @@ class Request extends EventEmitter implements WritableStreamInterface
         $scheme = $this->requestData->getScheme();
         if ($scheme !== 'https' && $scheme !== 'http') {
             return Promise\reject(
-                new \InvalidArgumentException('Invalid request URL given')
+                new \InvalidArgumentException('Invalid request URL given'),
             );
         }
 

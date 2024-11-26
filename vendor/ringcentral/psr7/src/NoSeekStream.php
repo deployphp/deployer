@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -8,7 +9,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class NoSeekStream extends StreamDecoratorTrait implements StreamInterface
 {
-
     public function seek($offset, $whence = SEEK_SET)
     {
         throw new \RuntimeException('Cannot seek a NoSeekStream');

@@ -16,7 +16,7 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
 {
     private $promise;
     private $stream;
-    private $buffer = array();
+    private $buffer = [];
     private $closed = false;
     private $ending = false;
 
@@ -28,10 +28,10 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
     public function __construct(PromiseInterface $promise)
     {
         $out = $this;
-        $store  =& $this->stream;
-        $buffer =& $this->buffer;
-        $ending =& $this->ending;
-        $closed =& $this->closed;
+        $store  = & $this->stream;
+        $buffer = & $this->buffer;
+        $ending = & $this->ending;
+        $closed = & $this->closed;
 
         $this->promise = $promise->then(
             function ($stream) {
@@ -39,7 +39,7 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
                     throw new InvalidArgumentException('Not a writable stream');
                 }
                 return $stream;
-            }
+            },
         )->then(
             function (WritableStreamInterface $stream) use ($out, &$store, &$buffer, &$ending, &$closed) {
                 // stream is already closed, make sure to close output stream
@@ -56,18 +56,18 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
 
                 // forward drain events for back pressure
                 $stream->on('drain', function () use ($out) {
-                    $out->emit('drain', array($out));
+                    $out->emit('drain', [$out]);
                 });
 
                 // error events cancel output stream
                 $stream->on('error', function ($error) use ($out) {
-                    $out->emit('error', array($error, $out));
+                    $out->emit('error', [$error, $out]);
                     $out->close();
                 });
 
                 // close both streams once either side closes
-                $stream->on('close', array($out, 'close'));
-                $out->on('close', array($stream, 'close'));
+                $stream->on('close', [$out, 'close']);
+                $out->on('close', [$stream, 'close']);
 
                 if ($buffer) {
                     // flush buffer to stream and check if its buffer is not exceeded
@@ -77,11 +77,11 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
                             $drained = false;
                         }
                     }
-                    $buffer = array();
+                    $buffer = [];
 
                     if ($drained) {
                         // signal drain event, because the output stream previous signalled a full buffer
-                        $out->emit('drain', array($out));
+                        $out->emit('drain', [$out]);
                     }
                 }
 
@@ -95,10 +95,10 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
             },
             function ($e) use ($out, &$closed) {
                 if (!$closed) {
-                    $out->emit('error', array($e, $out));
+                    $out->emit('error', [$e, $out]);
                     $out->close();
                 }
-            }
+            },
         );
     }
 
@@ -148,7 +148,7 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
             return;
         }
 
-        $this->buffer = array();
+        $this->buffer = [];
         $this->ending = true;
         $this->closed = true;
 

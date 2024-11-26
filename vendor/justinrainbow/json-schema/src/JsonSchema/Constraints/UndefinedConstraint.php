@@ -25,12 +25,12 @@ class UndefinedConstraint extends Constraint
     /**
      * @var array List of properties to which a default value has been applied
      */
-    protected $appliedDefaults = array();
+    protected $appliedDefaults = [];
 
     /**
      * {@inheritdoc}
      */
-    public function check(&$value, $schema = null, JsonPointer $path = null, $i = null, $fromDefault = false)
+    public function check(&$value, $schema = null, ?JsonPointer $path = null, $i = null, $fromDefault = false)
     {
         if (is_null($schema) || !is_object($schema)) {
             return;
@@ -68,8 +68,8 @@ class UndefinedConstraint extends Constraint
 
         // check object
         if (LooseTypeCheck::isObject($value)) { // object processing should always be run on assoc arrays,
-                                                // so use LooseTypeCheck here even if CHECK_MODE_TYPE_CAST
-                                                // is not set (i.e. don't use $this->getTypeCheck() here).
+            // so use LooseTypeCheck here even if CHECK_MODE_TYPE_CAST
+            // is not set (i.e. don't use $this->getTypeCheck() here).
             $this->checkObject(
                 $value,
                 $schema,
@@ -77,7 +77,7 @@ class UndefinedConstraint extends Constraint
                 isset($schema->properties) ? $schema->properties : null,
                 isset($schema->additionalProperties) ? $schema->additionalProperties : null,
                 isset($schema->patternProperties) ? $schema->patternProperties : null,
-                $this->appliedDefaults
+                $this->appliedDefaults,
             );
         }
 
@@ -135,7 +135,7 @@ class UndefinedConstraint extends Constraint
                         $this->addError(
                             $this->incrementPath($path ?: new JsonPointer(''), $required),
                             'The property ' . $required . ' is required',
-                            'required'
+                            'required',
                         );
                     }
                 }
@@ -147,7 +147,7 @@ class UndefinedConstraint extends Constraint
                     $this->addError(
                         $path,
                         'The property ' . $propertyName . ' is required',
-                        'required'
+                        'required',
                     );
                 }
             } else {
@@ -265,7 +265,7 @@ class UndefinedConstraint extends Constraint
                 }
             }
         } elseif (isset($schema->items) && LooseTypeCheck::isArray($value)) {
-            $items = array();
+            $items = [];
             if (LooseTypeCheck::isArray($schema->items)) {
                 $items = $schema->items;
             } elseif (isset($schema->minItems) && count($value) < $schema->minItems) {
@@ -346,12 +346,12 @@ class UndefinedConstraint extends Constraint
         }
 
         if (isset($schema->oneOf)) {
-            $allErrors = array();
+            $allErrors = [];
             $matchedSchemas = 0;
             $startErrors = $this->getErrors();
             foreach ($schema->oneOf as $oneOf) {
                 try {
-                    $this->errors = array();
+                    $this->errors = [];
                     $this->checkUndefined($value, $oneOf, $path, $i);
                     if (count($this->getErrors()) == 0) {
                         $matchedSchemas++;

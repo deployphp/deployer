@@ -13,7 +13,7 @@ final class TimeoutConnector implements ConnectorInterface
     private $timeout;
     private $loop;
 
-    public function __construct(ConnectorInterface $connector, $timeout, LoopInterface $loop = null)
+    public function __construct(ConnectorInterface $connector, $timeout, ?LoopInterface $loop = null)
     {
         $this->connector = $connector;
         $this->timeout = $timeout;
@@ -41,7 +41,7 @@ final class TimeoutConnector implements ConnectorInterface
             if ($e instanceof TimeoutException) {
                 throw new \RuntimeException(
                     'Connection to ' . $uri . ' timed out after ' . $e->getTimeout() . ' seconds (ETIMEDOUT)',
-                    \defined('SOCKET_ETIMEDOUT') ? \SOCKET_ETIMEDOUT : 110
+                    \defined('SOCKET_ETIMEDOUT') ? \SOCKET_ETIMEDOUT : 110,
                 );
             }
 

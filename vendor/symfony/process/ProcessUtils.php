@@ -25,9 +25,7 @@ class ProcessUtils
     /**
      * This class should not be instantiated.
      */
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     /**
      * Validates and normalizes a Process input.

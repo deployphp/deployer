@@ -27,7 +27,7 @@ class UnwrapReadableStream extends EventEmitter implements ReadableStreamInterfa
     public function __construct(PromiseInterface $promise)
     {
         $out = $this;
-        $closed =& $this->closed;
+        $closed = & $this->closed;
 
         $this->promise = $promise->then(
             function ($stream) {
@@ -35,7 +35,7 @@ class UnwrapReadableStream extends EventEmitter implements ReadableStreamInterfa
                     throw new InvalidArgumentException('Not a readable stream');
                 }
                 return $stream;
-            }
+            },
         )->then(
             function (ReadableStreamInterface $stream) use ($out, &$closed) {
                 // stream is already closed, make sure to close output stream
@@ -52,38 +52,38 @@ class UnwrapReadableStream extends EventEmitter implements ReadableStreamInterfa
 
                 // stream any writes into output stream
                 $stream->on('data', function ($data) use ($out) {
-                    $out->emit('data', array($data, $out));
+                    $out->emit('data', [$data, $out]);
                 });
 
                 // forward end events and close
                 $stream->on('end', function () use ($out, &$closed) {
                     if (!$closed) {
-                        $out->emit('end', array($out));
+                        $out->emit('end', [$out]);
                         $out->close();
                     }
                 });
 
                 // error events cancel output stream
                 $stream->on('error', function ($error) use ($out) {
-                    $out->emit('error', array($error, $out));
+                    $out->emit('error', [$error, $out]);
                     $out->close();
                 });
 
                 // close both streams once either side closes
-                $stream->on('close', array($out, 'close'));
-                $out->on('close', array($stream, 'close'));
+                $stream->on('close', [$out, 'close']);
+                $out->on('close', [$stream, 'close']);
 
                 return $stream;
             },
             function ($e) use ($out, &$closed) {
                 if (!$closed) {
-                    $out->emit('error', array($e, $out));
+                    $out->emit('error', [$e, $out]);
                     $out->close();
                 }
 
                 // resume() and pause() may attach to this promise, so ensure we actually reject here
                 throw $e;
-            }
+            },
         );
     }
 
@@ -110,7 +110,7 @@ class UnwrapReadableStream extends EventEmitter implements ReadableStreamInterfa
         }
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         Util::pipe($this, $dest, $options);
 

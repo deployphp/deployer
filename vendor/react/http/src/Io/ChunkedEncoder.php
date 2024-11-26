@@ -23,10 +23,10 @@ class ChunkedEncoder extends EventEmitter implements ReadableStreamInterface
     {
         $this->input = $input;
 
-        $this->input->on('data', array($this, 'handleData'));
-        $this->input->on('end', array($this, 'handleEnd'));
-        $this->input->on('error', array($this, 'handleError'));
-        $this->input->on('close', array($this, 'close'));
+        $this->input->on('data', [$this, 'handleData']);
+        $this->input->on('end', [$this, 'handleEnd']);
+        $this->input->on('error', [$this, 'handleError']);
+        $this->input->on('close', [$this, 'close']);
     }
 
     public function isReadable()
@@ -44,7 +44,7 @@ class ChunkedEncoder extends EventEmitter implements ReadableStreamInterface
         $this->input->resume();
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         return Util::pipe($this, $dest, $options);
     }
@@ -66,23 +66,23 @@ class ChunkedEncoder extends EventEmitter implements ReadableStreamInterface
     public function handleData($data)
     {
         if ($data !== '') {
-            $this->emit('data', array(
-                \dechex(\strlen($data)) . "\r\n" . $data . "\r\n"
-            ));
+            $this->emit('data', [
+                \dechex(\strlen($data)) . "\r\n" . $data . "\r\n",
+            ]);
         }
     }
 
     /** @internal */
     public function handleError(\Exception $e)
     {
-        $this->emit('error', array($e));
+        $this->emit('error', [$e]);
         $this->close();
     }
 
     /** @internal */
     public function handleEnd()
     {
-        $this->emit('data', array("0\r\n\r\n"));
+        $this->emit('data', ["0\r\n\r\n"]);
 
         if (!$this->closed) {
             $this->emit('end');

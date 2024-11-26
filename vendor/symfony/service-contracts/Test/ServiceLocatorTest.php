@@ -22,7 +22,7 @@ abstract class ServiceLocatorTest extends TestCase
      */
     protected function getServiceLocator(array $factories)
     {
-        return new class($factories) implements ContainerInterface {
+        return new class ($factories) implements ContainerInterface {
             use ServiceLocatorTrait;
         };
     }

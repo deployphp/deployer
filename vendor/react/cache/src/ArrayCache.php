@@ -8,8 +8,8 @@ use React\Promise\PromiseInterface;
 class ArrayCache implements CacheInterface
 {
     private $limit;
-    private $data = array();
-    private $expires = array();
+    private $data = [];
+    private $expires = [];
     private $supportsHighResolution;
 
     /**
@@ -117,7 +117,7 @@ class ArrayCache implements CacheInterface
 
     public function getMultiple(array $keys, $default = null)
     {
-        $values = array();
+        $values = [];
 
         foreach ($keys as $key) {
             $values[$key] = $this->get($key, $default);
@@ -146,8 +146,8 @@ class ArrayCache implements CacheInterface
 
     public function clear()
     {
-        $this->data = array();
-        $this->expires = array();
+        $this->data = [];
+        $this->expires = [];
 
         return Promise\resolve(true);
     }

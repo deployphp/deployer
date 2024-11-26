@@ -13,7 +13,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
     private $requiredCancelRequests = 0;
     private $cancelRequests = 0;
 
-    public function __construct(callable $resolver, callable $canceller = null)
+    public function __construct(callable $resolver, ?callable $canceller = null)
     {
         $this->canceller = $canceller;
 
@@ -25,7 +25,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
         $this->call($cb);
     }
 
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
         if (null !== $this->result) {
             return $this->result->then($onFulfilled, $onRejected, $onProgress);
@@ -51,11 +51,11 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                 }
 
                 $parent = null;
-            }
+            },
         );
     }
 
-    public function done(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
         if (null !== $this->result) {
             return $this->result->done($onFulfilled, $onRejected, $onProgress);
@@ -112,7 +112,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
         $this->call($canceller);
     }
 
-    private function resolver(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null)
+    private function resolver(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null)
     {
         return function ($resolve, $reject, $notify) use ($onFulfilled, $onRejected, $onProgress) {
             if ($onProgress) {
@@ -154,7 +154,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
         if ($promise === $this) {
             $promise = new RejectedPromise(
-                new \LogicException('Cannot resolve a promise with itself.')
+                new \LogicException('Cannot resolve a promise with itself.'),
             );
         }
 
@@ -222,8 +222,8 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                 // garbage cycles if any callback creates an Exception.
                 // These assumptions are covered by the test suite, so if you ever feel like
                 // refactoring this, go ahead, any alternative suggestions are welcome!
-                $target =& $this;
-                $progressHandlers =& $this->progressHandlers;
+                $target = & $this;
+                $progressHandlers = & $this->progressHandlers;
 
                 $callback(
                     static function ($value = null) use (&$target) {
@@ -242,7 +242,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                         foreach ($progressHandlers as $handler) {
                             $handler($update);
                         }
-                    }
+                    },
                 );
             }
         } catch (\Throwable $e) {

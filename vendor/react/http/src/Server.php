@@ -12,7 +12,5 @@ if (!\class_exists(__NAMESPACE__ . '\\Server', false)) {
      * @deprecated 1.5.0 See HttpServer instead
      * @see HttpServer
      */
-    final class Server extends HttpServer
-    {
-    }
+    final class Server extends HttpServer {}
 }

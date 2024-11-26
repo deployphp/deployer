@@ -128,12 +128,12 @@ final class TcpServer extends EventEmitter implements ServerInterface
      * @throws InvalidArgumentException if the listening address is invalid
      * @throws RuntimeException if listening on this address fails (already in use etc.)
      */
-    public function __construct($uri, LoopInterface $loop = null, array $context = array())
+    public function __construct($uri, ?LoopInterface $loop = null, array $context = [])
     {
         $this->loop = $loop ?: Loop::get();
 
         // a single port has been given => assume localhost
-        if ((string)(int)$uri === (string)$uri) {
+        if ((string) (int) $uri === (string) $uri) {
             $uri = '127.0.0.1:' . $uri;
         }
 
@@ -156,14 +156,14 @@ final class TcpServer extends EventEmitter implements ServerInterface
         if (!$parts || !isset($parts['scheme'], $parts['host'], $parts['port']) || $parts['scheme'] !== 'tcp') {
             throw new \InvalidArgumentException(
                 'Invalid URI "' . $uri . '" given (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             );
         }
 
         if (@\inet_pton(\trim($parts['host'], '[]')) === false) {
             throw new \InvalidArgumentException(
                 'Given URI "' . $uri . '" does not contain a valid host IP (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             );
         }
 
@@ -172,7 +172,7 @@ final class TcpServer extends EventEmitter implements ServerInterface
             $errno,
             $errstr,
             \STREAM_SERVER_BIND | \STREAM_SERVER_LISTEN,
-            \stream_context_create(array('socket' => $context + array('backlog' => 511)))
+            \stream_context_create(['socket' => $context + ['backlog' => 511]]),
         );
         if (false === $this->master) {
             if ($errno === 0) {
@@ -183,7 +183,7 @@ final class TcpServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
-                $errno
+                $errno,
             );
         }
         \stream_set_blocking($this->master, false);
@@ -229,7 +229,7 @@ final class TcpServer extends EventEmitter implements ServerInterface
             try {
                 $newSocket = SocketServer::accept($master);
             } catch (\RuntimeException $e) {
-                $that->emit('error', array($e));
+                $that->emit('error', [$e]);
                 return;
             }
             $that->handleConnection($newSocket);
@@ -251,8 +251,8 @@ final class TcpServer extends EventEmitter implements ServerInterface
     /** @internal */
     public function handleConnection($socket)
     {
-        $this->emit('connection', array(
-            new Connection($socket, $this->loop)
-        ));
+        $this->emit('connection', [
+            new Connection($socket, $this->loop),
+        ]);
     }
 }

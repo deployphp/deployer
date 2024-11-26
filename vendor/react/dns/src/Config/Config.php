@@ -82,7 +82,7 @@ final class Config
             throw new RuntimeException('Unable to load resolv.conf file "' . $path . '"');
         }
 
-        $matches = array();
+        $matches = [];
         preg_match_all('/^nameserver\s+(\S+)\s*$/m', $contents, $matches);
 
         $config = new self();
@@ -133,5 +133,5 @@ final class Config
         return $config;
     }
 
-    public $nameservers = array();
+    public $nameservers = [];
 }

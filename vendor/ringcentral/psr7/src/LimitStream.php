@@ -1,15 +1,14 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
-
 
 /**
  * Decorator used to return only a subset of a stream
  */
 class LimitStream extends StreamDecoratorTrait implements StreamInterface
 {
-
     /** @var int Offset to start reading from */
     private $offset;
 
@@ -26,7 +25,7 @@ class LimitStream extends StreamDecoratorTrait implements StreamInterface
     public function __construct(
         StreamInterface $stream,
         $limit = -1,
-        $offset = 0
+        $offset = 0,
     ) {
         parent::__construct($stream);
         $this->setLimit($limit);
@@ -73,7 +72,7 @@ class LimitStream extends StreamDecoratorTrait implements StreamInterface
             throw new \RuntimeException(sprintf(
                 'Cannot seek to offset % with whence %s',
                 $offset,
-                $whence
+                $whence,
             ));
         }
 

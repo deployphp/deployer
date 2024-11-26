@@ -13,7 +13,7 @@ final class TcpConnector implements ConnectorInterface
     private $loop;
     private $context;
 
-    public function __construct(LoopInterface $loop = null, array $context = array())
+    public function __construct(?LoopInterface $loop = null, array $context = [])
     {
         $this->loop = $loop ?: Loop::get();
         $this->context = $context;
@@ -29,7 +29,7 @@ final class TcpConnector implements ConnectorInterface
         if (!$parts || !isset($parts['scheme'], $parts['host'], $parts['port']) || $parts['scheme'] !== 'tcp') {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $uri . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             ));
         }
 
@@ -37,17 +37,17 @@ final class TcpConnector implements ConnectorInterface
         if (@\inet_pton($ip) === false) {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $uri . '" does not contain a valid host IP (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             ));
         }
 
         // use context given in constructor
-        $context = array(
-            'socket' => $this->context
-        );
+        $context = [
+            'socket' => $this->context,
+        ];
 
         // parse arguments from query component of URI
-        $args = array();
+        $args = [];
         if (isset($parts['query'])) {
             \parse_str($parts['query'], $args);
         }
@@ -58,20 +58,20 @@ final class TcpConnector implements ConnectorInterface
         // These context options are here in case TLS is enabled later on this stream.
         // If TLS is not enabled later, this doesn't hurt either.
         if (isset($args['hostname'])) {
-            $context['ssl'] = array(
+            $context['ssl'] = [
                 'SNI_enabled' => true,
-                'peer_name' => $args['hostname']
-            );
+                'peer_name' => $args['hostname'],
+            ];
 
             // Legacy PHP < 5.6 ignores peer_name and requires legacy context options instead.
             // The SNI_server_name context option has to be set here during construction,
             // as legacy PHP ignores any values set later.
             // @codeCoverageIgnoreStart
             if (\PHP_VERSION_ID < 50600) {
-                $context['ssl'] += array(
+                $context['ssl'] += [
                     'SNI_server_name' => $args['hostname'],
-                    'CN_match' => $args['hostname']
-                );
+                    'CN_match' => $args['hostname'],
+                ];
             }
             // @codeCoverageIgnoreEnd
         }
@@ -86,13 +86,13 @@ final class TcpConnector implements ConnectorInterface
             $errstr,
             0,
             \STREAM_CLIENT_CONNECT | \STREAM_CLIENT_ASYNC_CONNECT,
-            \stream_context_create($context)
+            \stream_context_create($context),
         );
 
         if (false === $stream) {
             return Promise\reject(new \RuntimeException(
                 'Connection to ' . $uri . ' failed: ' . $errstr . SocketServer::errconst($errno),
-                $errno
+                $errno,
             ));
         }
 
@@ -133,7 +133,7 @@ final class TcpConnector implements ConnectorInterface
                     \fclose($stream);
                     $reject(new \RuntimeException(
                         'Connection to ' . $uri . ' failed: ' . $errstr . SocketServer::errconst($errno),
-                        $errno
+                        $errno,
                     ));
                 } else {
                     $resolve(new Connection($stream, $loop));
@@ -152,7 +152,7 @@ final class TcpConnector implements ConnectorInterface
 
             throw new \RuntimeException(
                 'Connection to ' . $uri . ' cancelled during TCP/IP handshake (ECONNABORTED)',
-                \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103
+                \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103,
             );
         });
     }

@@ -14,7 +14,7 @@ use React\EventLoop\TimerInterface;
  */
 final class Timer implements TimerInterface
 {
-    const MIN_INTERVAL = 0.000001;
+    public const MIN_INTERVAL = 0.000001;
 
     private $interval;
     private $callback;

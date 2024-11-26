@@ -70,7 +70,7 @@ class TableCellStyle
             function ($key) {
                 return \in_array($key, self::TAG_OPTIONS) && isset($this->options[$key]);
             },
-            \ARRAY_FILTER_USE_KEY
+            \ARRAY_FILTER_USE_KEY,
         );
     }
 

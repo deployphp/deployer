@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use InvalidArgumentException;
@@ -11,7 +12,6 @@ use Psr\Http\Message\UriInterface;
  */
 class Request extends MessageTrait implements RequestInterface
 {
-
     /** @var string */
     private $method;
 
@@ -33,15 +33,15 @@ class Request extends MessageTrait implements RequestInterface
     public function __construct(
         $method,
         $uri,
-        array $headers = array(),
+        array $headers = [],
         $body = null,
-        $protocolVersion = '1.1'
+        $protocolVersion = '1.1',
     ) {
         if (is_string($uri)) {
             $uri = new Uri($uri);
         } elseif (!($uri instanceof UriInterface)) {
             throw new \InvalidArgumentException(
-                'URI must be a string or Psr\Http\Message\UriInterface'
+                'URI must be a string or Psr\Http\Message\UriInterface',
             );
         }
 
@@ -81,7 +81,7 @@ class Request extends MessageTrait implements RequestInterface
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new InvalidArgumentException(
-                'Invalid request target provided; cannot contain whitespace'
+                'Invalid request target provided; cannot contain whitespace',
             );
         }
 
@@ -140,7 +140,7 @@ class Request extends MessageTrait implements RequestInterface
             $host .= ':' . $port;
         }
 
-        $this->headerLines = array('Host' => array($host)) + $this->headerLines;
-        $this->headers = array('host' => array($host)) + $this->headers;
+        $this->headerLines = ['Host' => [$host]] + $this->headerLines;
+        $this->headers = ['host' => [$host]] + $this->headers;
     }
 }

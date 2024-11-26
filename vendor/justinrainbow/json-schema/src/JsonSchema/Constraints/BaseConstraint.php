@@ -23,7 +23,7 @@ class BaseConstraint
     /**
      * @var array Errors
      */
-    protected $errors = array();
+    protected $errors = [];
 
     /**
      * @var int All error types which have occurred
@@ -38,20 +38,20 @@ class BaseConstraint
     /**
      * @param Factory $factory
      */
-    public function __construct(Factory $factory = null)
+    public function __construct(?Factory $factory = null)
     {
         $this->factory = $factory ?: new Factory();
     }
 
-    public function addError(JsonPointer $path = null, $message, $constraint = '', array $more = null)
+    public function addError(?JsonPointer $path = null, $message, $constraint = '', ?array $more = null)
     {
-        $error = array(
+        $error = [
             'property' => $this->convertJsonPointerIntoPropertyPath($path ?: new JsonPointer('')),
             'pointer' => ltrim(strval($path ?: new JsonPointer('')), '#'),
             'message' => $message,
             'constraint' => $constraint,
             'context' => $this->factory->getErrorContext(),
-        );
+        ];
 
         if ($this->factory->getConfig(Constraint::CHECK_MODE_EXCEPTIONS)) {
             throw new ValidationException(sprintf('Error validating %s: %s', $error['pointer'], $error['message']));
@@ -111,7 +111,7 @@ class BaseConstraint
      */
     public function reset()
     {
-        $this->errors = array();
+        $this->errors = [];
         $this->errorMask = Validator::ERROR_NONE;
     }
 

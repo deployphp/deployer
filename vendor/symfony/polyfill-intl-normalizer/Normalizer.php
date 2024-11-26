@@ -61,10 +61,18 @@ class Normalizer
         }
 
         switch ($form) {
-            case self::NFC: $C = true; $K = false; break;
-            case self::NFD: $C = false; $K = false; break;
-            case self::NFKC: $C = true; $K = true; break;
-            case self::NFKD: $C = false; $K = true; break;
+            case self::NFC: $C = true;
+                $K = false;
+                break;
+            case self::NFD: $C = false;
+                $K = false;
+                break;
+            case self::NFKC: $C = true;
+                $K = true;
+                break;
+            case self::NFKD: $C = false;
+                $K = true;
+                break;
             default:
                 if (\defined('Normalizer::NONE') && \Normalizer::NONE == $form) {
                     return $s;
@@ -156,8 +164,8 @@ class Normalizer
 
                 $ucls = $combClass[$uchr] ?? 0;
 
-                if (isset($compMap[$lastUchr.$uchr]) && (!$lastUcls || $lastUcls < $ucls)) {
-                    $lastUchr = $compMap[$lastUchr.$uchr];
+                if (isset($compMap[$lastUchr . $uchr]) && (!$lastUcls || $lastUcls < $ucls)) {
+                    $lastUchr = $compMap[$lastUchr . $uchr];
                 } elseif ($lastUcls = $ucls) {
                     $tail .= $uchr;
                 } else {
@@ -185,13 +193,13 @@ class Normalizer
                 }
 
                 $L = 0xAC00 + ($L * 21 + $V) * 28 + $T;
-                $lastUchr = \chr(0xE0 | $L >> 12).\chr(0x80 | $L >> 6 & 0x3F).\chr(0x80 | $L & 0x3F);
+                $lastUchr = \chr(0xE0 | $L >> 12) . \chr(0x80 | $L >> 6 & 0x3F) . \chr(0x80 | $L & 0x3F);
             }
 
             $i += $ulen;
         }
 
-        return $result.$lastUchr.$tail;
+        return $result . $lastUchr . $tail;
     }
 
     private static function decompose($s, $c)
@@ -246,7 +254,7 @@ class Normalizer
                         $i -= $j;
 
                         if (0 > $i) {
-                            $s = str_repeat(' ', -$i).$s;
+                            $s = str_repeat(' ', -$i) . $s;
                             $len -= $i;
                             $i = 0;
                         }
@@ -273,13 +281,13 @@ class Normalizer
                 $uchr = unpack('C*', $uchr);
                 $j = (($uchr[1] - 224) << 12) + (($uchr[2] - 128) << 6) + $uchr[3] - 0xAC80;
 
-                $uchr = "\xE1\x84".\chr(0x80 + (int) ($j / 588))
-                       ."\xE1\x85".\chr(0xA1 + (int) (($j % 588) / 28));
+                $uchr = "\xE1\x84" . \chr(0x80 + (int) ($j / 588))
+                       . "\xE1\x85" . \chr(0xA1 + (int) (($j % 588) / 28));
 
                 if ($j %= 28) {
                     $uchr .= $j < 25
-                        ? ("\xE1\x86".\chr(0xA7 + $j))
-                        : ("\xE1\x87".\chr(0x67 + $j));
+                        ? ("\xE1\x86" . \chr(0xA7 + $j))
+                        : ("\xE1\x87" . \chr(0x67 + $j));
                 }
             }
             if ($c) {
@@ -301,7 +309,7 @@ class Normalizer
 
     private static function getData($file)
     {
-        if (file_exists($file = __DIR__.'/Resources/unidata/'.$file.'.php')) {
+        if (file_exists($file = __DIR__ . '/Resources/unidata/' . $file . '.php')) {
             return require $file;
         }
 

@@ -108,20 +108,20 @@ final class Parser
         list($labels, $consumed) = $this->readLabels($data, $consumed);
 
         if ($labels === null || !isset($data[$consumed + 4 - 1])) {
-            return array(null, null);
+            return [null, null];
         }
 
         list($type, $class) = array_values(unpack('n*', substr($data, $consumed, 4)));
         $consumed += 4;
 
-        return array(
+        return [
             new Query(
                 implode('.', $labels),
                 $type,
-                $class
+                $class,
             ),
-            $consumed
-        );
+            $consumed,
+        ];
     }
 
     /**
@@ -134,7 +134,7 @@ final class Parser
         list($name, $consumed) = $this->readDomain($data, $consumed);
 
         if ($name === null || !isset($data[$consumed + 10 - 1])) {
-            return array(null, null);
+            return [null, null];
         }
 
         list($type, $class) = array_values(unpack('n*', substr($data, $consumed, 4)));
@@ -152,7 +152,7 @@ final class Parser
         $consumed += 2;
 
         if (!isset($data[$consumed + $rdLength - 1])) {
-            return array(null, null);
+            return [null, null];
         }
 
         $rdata = null;
@@ -171,10 +171,10 @@ final class Parser
         } elseif (Message::TYPE_CNAME === $type || Message::TYPE_PTR === $type || Message::TYPE_NS === $type) {
             list($rdata, $consumed) = $this->readDomain($data, $consumed);
         } elseif (Message::TYPE_TXT === $type || Message::TYPE_SPF === $type) {
-            $rdata = array();
+            $rdata = [];
             while ($consumed < $expected) {
                 $len = ord($data[$consumed]);
-                $rdata[] = (string)substr($data, $consumed + 1, $len);
+                $rdata[] = (string) substr($data, $consumed + 1, $len);
                 $consumed += $len + 1;
             }
         } elseif (Message::TYPE_MX === $type) {
@@ -182,22 +182,22 @@ final class Parser
                 list($priority) = array_values(unpack('n', substr($data, $consumed, 2)));
                 list($target, $consumed) = $this->readDomain($data, $consumed + 2);
 
-                $rdata = array(
+                $rdata = [
                     'priority' => $priority,
-                    'target' => $target
-                );
+                    'target' => $target,
+                ];
             }
         } elseif (Message::TYPE_SRV === $type) {
             if ($rdLength > 6) {
                 list($priority, $weight, $port) = array_values(unpack('n*', substr($data, $consumed, 6)));
                 list($target, $consumed) = $this->readDomain($data, $consumed + 6);
 
-                $rdata = array(
+                $rdata = [
                     'priority' => $priority,
                     'weight' => $weight,
                     'port' => $port,
-                    'target' => $target
-                );
+                    'target' => $target,
+                ];
             }
         } elseif (Message::TYPE_SSHFP === $type) {
             if ($rdLength > 2) {
@@ -205,11 +205,11 @@ final class Parser
                 $fingerprint = \bin2hex(\substr($data, $consumed + 2, $rdLength - 2));
                 $consumed += $rdLength;
 
-                $rdata = array(
+                $rdata = [
                     'algorithm' => $algorithm,
                     'type' => $hash,
-                    'fingerprint' => $fingerprint
-                );
+                    'fingerprint' => $fingerprint,
+                ];
             }
         } elseif (Message::TYPE_SOA === $type) {
             list($mname, $consumed) = $this->readDomain($data, $consumed);
@@ -219,18 +219,18 @@ final class Parser
                 list($serial, $refresh, $retry, $expire, $minimum) = array_values(unpack('N*', substr($data, $consumed, 20)));
                 $consumed += 20;
 
-                $rdata = array(
+                $rdata = [
                     'mname' => $mname,
                     'rname' => $rname,
                     'serial' => $serial,
                     'refresh' => $refresh,
                     'retry' => $retry,
                     'expire' => $expire,
-                    'minimum' => $minimum
-                );
+                    'minimum' => $minimum,
+                ];
             }
         } elseif (Message::TYPE_OPT === $type) {
-            $rdata = array();
+            $rdata = [];
             while (isset($data[$consumed + 4 - 1])) {
                 list($code, $length) = array_values(unpack('n*', substr($data, $consumed, 4)));
                 $value = (string) substr($data, $consumed + 4, $length);
@@ -254,11 +254,11 @@ final class Parser
                     $value = substr($data, $consumed + 2 + $tagLength, $rdLength - 2 - $tagLength);
                     $consumed += $rdLength;
 
-                    $rdata = array(
+                    $rdata = [
                         'flag' => $flag,
                         'tag' => $tag,
-                        'value' => $value
-                    );
+                        'value' => $value,
+                    ];
                 }
             }
         } else {
@@ -269,36 +269,36 @@ final class Parser
 
         // ensure parsing record data consumes expact number of bytes indicated in record length
         if ($consumed !== $expected || $rdata === null) {
-            return array(null, null);
+            return [null, null];
         }
 
-        return array(
+        return [
             new Record($name, $type, $class, $ttl, $rdata),
-            $consumed
-        );
+            $consumed,
+        ];
     }
 
     private function readDomain($data, $consumed)
     {
-        list ($labels, $consumed) = $this->readLabels($data, $consumed);
+        list($labels, $consumed) = $this->readLabels($data, $consumed);
 
         if ($labels === null) {
-            return array(null, null);
+            return [null, null];
         }
 
         // use escaped notation for each label part, then join using dots
-        return array(
+        return [
             \implode(
                 '.',
                 \array_map(
                     function ($label) {
                         return \addcslashes($label, "\0..\40.\177");
                     },
-                    $labels
-                )
+                    $labels,
+                ),
             ),
-            $consumed
-        );
+            $consumed,
+        ];
     }
 
     /**
@@ -309,11 +309,11 @@ final class Parser
      */
     private function readLabels($data, $consumed, $compressionDepth = 127)
     {
-        $labels = array();
+        $labels = [];
 
         while (true) {
             if (!isset($data[$consumed])) {
-                return array(null, null);
+                return [null, null];
             }
 
             $length = \ord($data[$consumed]);
@@ -328,14 +328,14 @@ final class Parser
             if (($length & 0xc0) === 0xc0 && isset($data[$consumed + 1]) && $compressionDepth) {
                 $offset = ($length & ~0xc0) << 8 | \ord($data[$consumed + 1]);
                 if ($offset >= $consumed) {
-                    return array(null, null);
+                    return [null, null];
                 }
 
                 $consumed += 2;
                 list($newLabels) = $this->readLabels($data, $offset, $compressionDepth - 1);
 
                 if ($newLabels === null) {
-                    return array(null, null);
+                    return [null, null];
                 }
 
                 $labels = array_merge($labels, $newLabels);
@@ -344,13 +344,13 @@ final class Parser
 
             // length MUST be 0-63 (6 bits only) and data has to be large enough
             if ($length & 0xc0 || !isset($data[$consumed + $length - 1])) {
-                return array(null, null);
+                return [null, null];
             }
 
             $labels[] = substr($data, $consumed + 1, $length);
             $consumed += $length + 1;
         }
 
-        return array($labels, $consumed);
+        return [$labels, $consumed];
     }
 }

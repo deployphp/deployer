@@ -132,9 +132,7 @@ class LazyString implements \Stringable, \JsonSerializable
         return $this->__toString();
     }
 
-    private function __construct()
-    {
-    }
+    private function __construct() {}
 
     private static function getPrettyName(callable $callback): string
     {
@@ -159,6 +157,6 @@ class LazyString implements \Stringable, \JsonSerializable
             $method = '__invoke';
         }
 
-        return $class.'::'.$method;
+        return $class . '::' . $method;
     }
 }

@@ -12,7 +12,7 @@ final class TimeoutExecutor implements ExecutorInterface
     private $loop;
     private $timeout;
 
-    public function __construct(ExecutorInterface $executor, $timeout, LoopInterface $loop = null)
+    public function __construct(ExecutorInterface $executor, $timeout, ?LoopInterface $loop = null)
     {
         $this->executor = $executor;
         $this->loop = $loop ?: Loop::get();

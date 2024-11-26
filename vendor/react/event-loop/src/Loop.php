@@ -43,7 +43,7 @@ final class Loop
             $hasRun = true;
         });
 
-        $stopped =& self::$stopped;
+        $stopped = & self::$stopped;
         register_shutdown_function(function () use ($loop, &$hasRun, &$stopped) {
             // Don't run if we're coming from a fatal error (uncaught exception).
             $error = error_get_last();

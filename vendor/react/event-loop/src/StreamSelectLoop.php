@@ -52,14 +52,14 @@ use React\EventLoop\Timer\Timers;
 final class StreamSelectLoop implements LoopInterface
 {
     /** @internal */
-    const MICROSECONDS_PER_SECOND = 1000000;
+    public const MICROSECONDS_PER_SECOND = 1000000;
 
     private $futureTickQueue;
     private $timers;
-    private $readStreams = array();
-    private $readListeners = array();
-    private $writeStreams = array();
-    private $writeListeners = array();
+    private $readStreams = [];
+    private $readListeners = [];
+    private $writeStreams = [];
+    private $writeListeners = [];
     private $running;
     private $pcntl = false;
     private $pcntlPoll = false;
@@ -105,7 +105,7 @@ final class StreamSelectLoop implements LoopInterface
 
         unset(
             $this->readStreams[$key],
-            $this->readListeners[$key]
+            $this->readListeners[$key],
         );
     }
 
@@ -115,7 +115,7 @@ final class StreamSelectLoop implements LoopInterface
 
         unset(
             $this->writeStreams[$key],
-            $this->writeListeners[$key]
+            $this->writeListeners[$key],
         );
     }
 
@@ -157,7 +157,7 @@ final class StreamSelectLoop implements LoopInterface
         $this->signals->add($signal, $listener);
 
         if ($first) {
-            \pcntl_signal($signal, array($this->signals, 'call'));
+            \pcntl_signal($signal, [$this->signals, 'call']);
         }
     }
 
@@ -187,7 +187,7 @@ final class StreamSelectLoop implements LoopInterface
             if (!$this->running || !$this->futureTickQueue->isEmpty()) {
                 $timeout = 0;
 
-            // There is a pending timer, only block until it is due ...
+                // There is a pending timer, only block until it is due ...
             } elseif ($scheduledAt = $this->timers->getFirst()) {
                 $timeout = $scheduledAt - $this->timers->getTime();
                 if ($timeout < 0) {
@@ -197,14 +197,14 @@ final class StreamSelectLoop implements LoopInterface
                     // Ensure we do not exceed maximum integer size, which may
                     // cause the loop to tick once every ~35min on 32bit systems.
                     $timeout *= self::MICROSECONDS_PER_SECOND;
-                    $timeout = $timeout > \PHP_INT_MAX ? \PHP_INT_MAX : (int)$timeout;
+                    $timeout = $timeout > \PHP_INT_MAX ? \PHP_INT_MAX : (int) $timeout;
                 }
 
-            // The only possible event is stream or signal activity, so wait forever ...
+                // The only possible event is stream or signal activity, so wait forever ...
             } elseif ($this->readStreams || $this->writeStreams || !$this->signals->isEmpty()) {
                 $timeout = null;
 
-            // There's nothing left to do ...
+                // There's nothing left to do ...
             } else {
                 break;
             }
@@ -278,7 +278,7 @@ final class StreamSelectLoop implements LoopInterface
             // @link https://docs.microsoft.com/de-de/windows/win32/api/winsock2/nf-winsock2-select
             $except = null;
             if (\DIRECTORY_SEPARATOR === '\\') {
-                $except = array();
+                $except = [];
                 foreach ($write as $key => $socket) {
                     if (!isset($read[$key]) && @\ftell($socket) === 0) {
                         $except[$key] = $socket;

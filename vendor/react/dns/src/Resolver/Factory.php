@@ -36,7 +36,7 @@ final class Factory
      * @throws \InvalidArgumentException for invalid DNS server address
      * @throws \UnderflowException when given DNS Config object has an empty list of nameservers
      */
-    public function create($config, LoopInterface $loop = null)
+    public function create($config, ?LoopInterface $loop = null)
     {
         $executor = $this->decorateHostsFileExecutor($this->createExecutor($config, $loop ?: Loop::get()));
 
@@ -59,7 +59,7 @@ final class Factory
      * @throws \InvalidArgumentException for invalid DNS server address
      * @throws \UnderflowException when given DNS Config object has an empty list of nameservers
      */
-    public function createCached($config, LoopInterface $loop = null, CacheInterface $cache = null)
+    public function createCached($config, ?LoopInterface $loop = null, ?CacheInterface $cache = null)
     {
         // default to keeping maximum of 256 responses in cache unless explicitly given
         if (!($cache instanceof CacheInterface)) {
@@ -85,7 +85,7 @@ final class Factory
         try {
             $executor = new HostsFileExecutor(
                 HostsFile::loadFromPathBlocking(),
-                $executor
+                $executor,
             );
         } catch (\RuntimeException $e) {
             // ignore this file if it can not be loaded
@@ -96,7 +96,7 @@ final class Factory
         if (DIRECTORY_SEPARATOR === '\\') {
             $executor = new HostsFileExecutor(
                 new HostsFile("127.0.0.1 localhost\n::1 localhost"),
-                $executor
+                $executor,
             );
         }
 
@@ -131,10 +131,10 @@ final class Factory
                             $this->createSingleExecutor($primary, $loop),
                             new FallbackExecutor(
                                 $this->createSingleExecutor($secondary, $loop),
-                                $this->createSingleExecutor($tertiary, $loop)
-                            )
-                        )
-                    )
+                                $this->createSingleExecutor($tertiary, $loop),
+                            ),
+                        ),
+                    ),
                 );
             } elseif ($secondary !== false) {
                 // 2 DNS servers given => fallback from first to second
@@ -142,9 +142,9 @@ final class Factory
                     new RetryExecutor(
                         new FallbackExecutor(
                             $this->createSingleExecutor($primary, $loop),
-                            $this->createSingleExecutor($secondary, $loop)
-                        )
-                    )
+                            $this->createSingleExecutor($secondary, $loop),
+                        ),
+                    ),
                 );
             } else {
                 // 1 DNS server given => use single executor
@@ -172,7 +172,7 @@ final class Factory
         } else {
             $executor = new SelectiveTransportExecutor(
                 $this->createUdpExecutor($nameserver, $loop),
-                $this->createTcpExecutor($nameserver, $loop)
+                $this->createTcpExecutor($nameserver, $loop),
             );
         }
 
@@ -190,7 +190,7 @@ final class Factory
         return new TimeoutExecutor(
             new TcpTransportExecutor($nameserver, $loop),
             5.0,
-            $loop
+            $loop,
         );
     }
 
@@ -205,10 +205,10 @@ final class Factory
         return new TimeoutExecutor(
             new UdpTransportExecutor(
                 $nameserver,
-                $loop
+                $loop,
             ),
             5.0,
-            $loop
+            $loop,
         );
     }
 }

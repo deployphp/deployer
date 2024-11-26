@@ -19,7 +19,7 @@ interface ExtendedPromiseInterface extends PromiseInterface
      * @param callable|null $onProgress This argument is deprecated and should not be used anymore.
      * @return void
      */
-    public function done(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null);
+    public function done(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null);
 
     /**
      * Registers a rejection handler for promise. It is a shortcut for:

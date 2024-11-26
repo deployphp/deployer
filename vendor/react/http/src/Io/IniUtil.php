@@ -16,7 +16,7 @@ final class IniUtil
     public static function iniSizeToBytes($size)
     {
         if (\is_numeric($size)) {
-            return (int)$size;
+            return (int) $size;
         }
 
         $suffix = \strtoupper(\substr($size, -1));
@@ -43,6 +43,6 @@ final class IniUtil
             return $strippedSize * 1024  * 1024 * 1024 * 1024;
         }
 
-        return (int)$size;
+        return (int) $size;
     }
 }

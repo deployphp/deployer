@@ -45,7 +45,7 @@ final class RetryExecutor implements ExecutorInterface
                 $deferred->reject($e = new \RuntimeException(
                     'DNS query for ' . $query->describe() . ' failed: too many retries',
                     0,
-                    $e
+                    $e,
                 ));
 
                 // avoid garbage references by replacing all closures in call stack.
@@ -71,14 +71,14 @@ final class RetryExecutor implements ExecutorInterface
                 --$retries;
                 $promise = $executor->query($query)->then(
                     $success,
-                    $errorback
+                    $errorback,
                 );
             }
         };
 
         $promise = $this->executor->query($query)->then(
             $success,
-            $errorback
+            $errorback,
         );
 
         return $deferred->promise();

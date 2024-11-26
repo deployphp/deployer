@@ -409,13 +409,13 @@ final class EnglishInflector implements InflectorInterface
                         $singulars = [];
 
                         foreach ($newSuffix as $newSuffixEntry) {
-                            $singulars[] = $newBase.($firstUpper ? ucfirst($newSuffixEntry) : $newSuffixEntry);
+                            $singulars[] = $newBase . ($firstUpper ? ucfirst($newSuffixEntry) : $newSuffixEntry);
                         }
 
                         return $singulars;
                     }
 
-                    return [$newBase.($firstUpper ? ucfirst($newSuffix) : $newSuffix)];
+                    return [$newBase . ($firstUpper ? ucfirst($newSuffix) : $newSuffix)];
                 }
 
                 // Suffix is longer than word
@@ -489,13 +489,13 @@ final class EnglishInflector implements InflectorInterface
                         $plurals = [];
 
                         foreach ($newSuffix as $newSuffixEntry) {
-                            $plurals[] = $newBase.($firstUpper ? ucfirst($newSuffixEntry) : $newSuffixEntry);
+                            $plurals[] = $newBase . ($firstUpper ? ucfirst($newSuffixEntry) : $newSuffixEntry);
                         }
 
                         return $plurals;
                     }
 
-                    return [$newBase.($firstUpper ? ucfirst($newSuffix) : $newSuffix)];
+                    return [$newBase . ($firstUpper ? ucfirst($newSuffix) : $newSuffix)];
                 }
 
                 // Suffix is longer than word
@@ -506,6 +506,6 @@ final class EnglishInflector implements InflectorInterface
         }
 
         // Assume that plural is singular with a trailing `s`
-        return [$singular.'s'];
+        return [$singular . 's'];
     }
 }

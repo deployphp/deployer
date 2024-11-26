@@ -16,6 +16,4 @@ namespace Symfony\Component\Process\Exception;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface ExceptionInterface extends \Throwable
-{
-}
+interface ExceptionInterface extends \Throwable {}

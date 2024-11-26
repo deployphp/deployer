@@ -79,7 +79,7 @@ class AddConsoleCommandPass implements CompilerPassInterface
 
             if (null === $commandName) {
                 if (!$definition->isPublic() || $definition->isPrivate() || $definition->hasTag($this->privateTagName)) {
-                    $commandId = 'console.command.public_alias.'.$id;
+                    $commandId = 'console.command.public_alias.' . $id;
                     $container->setAlias($commandId, $id)->setPublic(true);
                     $id = $commandId;
                 }
@@ -130,10 +130,10 @@ class AddConsoleCommandPass implements CompilerPassInterface
             if ($description) {
                 $definition->addMethodCall('setDescription', [$description]);
 
-                $container->register('.'.$id.'.lazy', LazyCommand::class)
+                $container->register('.' . $id . '.lazy', LazyCommand::class)
                     ->setArguments([$commandName, $aliases, $description, $isHidden, new ServiceClosureArgument($lazyCommandRefs[$id])]);
 
-                $lazyCommandRefs[$id] = new Reference('.'.$id.'.lazy');
+                $lazyCommandRefs[$id] = new Reference('.' . $id . '.lazy');
             }
         }
 

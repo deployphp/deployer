@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -12,9 +13,11 @@ abstract class StreamDecoratorTrait implements StreamInterface
     /**
      * @param StreamInterface $stream Stream to decorate
      */
-    public function __construct(StreamInterface $stream = null)
+    public function __construct(?StreamInterface $stream = null)
     {
-        if ($stream) $this->stream = $stream;
+        if ($stream) {
+            $this->stream = $stream;
+        }
     }
 
     /**
@@ -65,7 +68,7 @@ abstract class StreamDecoratorTrait implements StreamInterface
      */
     public function __call($method, array $args)
     {
-        $result = call_user_func_array(array($this->stream, $method), $args);
+        $result = call_user_func_array([$this->stream, $method], $args);
 
         // Always return the wrapped object if the result is a return $this
         return $result === $this->stream ? $this : $result;

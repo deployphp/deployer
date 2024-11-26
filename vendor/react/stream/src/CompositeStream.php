@@ -20,11 +20,11 @@ final class CompositeStream extends EventEmitter implements DuplexStreamInterfac
             return;
         }
 
-        Util::forwardEvents($this->readable, $this, array('data', 'end', 'error'));
-        Util::forwardEvents($this->writable, $this, array('drain', 'error', 'pipe'));
+        Util::forwardEvents($this->readable, $this, ['data', 'end', 'error']);
+        Util::forwardEvents($this->writable, $this, ['drain', 'error', 'pipe']);
 
-        $this->readable->on('close', array($this, 'close'));
-        $this->writable->on('close', array($this, 'close'));
+        $this->readable->on('close', [$this, 'close']);
+        $this->writable->on('close', [$this, 'close']);
     }
 
     public function isReadable()
@@ -46,7 +46,7 @@ final class CompositeStream extends EventEmitter implements DuplexStreamInterfac
         $this->readable->resume();
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         return Util::pipe($this, $dest, $options);
     }

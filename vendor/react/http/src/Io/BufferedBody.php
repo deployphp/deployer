@@ -174,6 +174,6 @@ class BufferedBody implements StreamInterface
 
     public function getMetadata($key = null)
     {
-        return $key === null ? array() : null;
+        return $key === null ? [] : null;
     }
 }

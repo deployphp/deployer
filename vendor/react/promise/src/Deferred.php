@@ -10,7 +10,7 @@ class Deferred implements PromisorInterface
     private $notifyCallback;
     private $canceller;
 
-    public function __construct(callable $canceller = null)
+    public function __construct(?callable $canceller = null)
     {
         $this->canceller = $canceller;
     }

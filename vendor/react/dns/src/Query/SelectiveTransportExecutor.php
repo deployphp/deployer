@@ -75,7 +75,7 @@ class SelectiveTransportExecutor implements ExecutorInterface
                     } else {
                         $reject($e);
                     }
-                }
+                },
             );
         }, function () use (&$pending) {
             $pending->cancel();

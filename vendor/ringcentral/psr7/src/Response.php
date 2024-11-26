@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\ResponseInterface;
@@ -8,9 +9,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 class Response extends MessageTrait implements ResponseInterface
 {
-
     /** @var array Map of standard HTTP status code/reason phrases */
-    private static $phrases = array(
+    private static $phrases = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
@@ -68,7 +68,7 @@ class Response extends MessageTrait implements ResponseInterface
         507 => 'Insufficient Storage',
         508 => 'Loop Detected',
         511 => 'Network Authentication Required',
-    );
+    ];
 
     /** @var null|string */
     private $reasonPhrase = '';
@@ -85,10 +85,10 @@ class Response extends MessageTrait implements ResponseInterface
      */
     public function __construct(
         $status = 200,
-        array $headers = array(),
+        array $headers = [],
         $body = null,
         $version = '1.1',
-        $reason = null
+        $reason = null,
     ) {
         $this->statusCode = (int) $status;
 

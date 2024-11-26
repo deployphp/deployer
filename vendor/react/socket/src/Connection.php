@@ -68,14 +68,14 @@ class Connection extends EventEmitter implements ConnectionInterface
             $resource,
             $loop,
             $clearCompleteBuffer ? -1 : null,
-            new WritableResourceStream($resource, $loop, null, $limitWriteChunks ? 8192 : null)
+            new WritableResourceStream($resource, $loop, null, $limitWriteChunks ? 8192 : null),
         );
 
         $this->stream = $resource;
 
-        Util::forwardEvents($this->input, $this, array('data', 'end', 'error', 'close', 'pipe', 'drain'));
+        Util::forwardEvents($this->input, $this, ['data', 'end', 'error', 'close', 'pipe', 'drain']);
 
-        $this->input->on('close', array($this, 'close'));
+        $this->input->on('close', [$this, 'close']);
     }
 
     public function isReadable()
@@ -98,7 +98,7 @@ class Connection extends EventEmitter implements ConnectionInterface
         $this->input->resume();
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         return $this->input->pipe($dest, $options);
     }
@@ -164,12 +164,12 @@ class Connection extends EventEmitter implements ConnectionInterface
             // remove trailing colon from address for HHVM < 3.19: https://3v4l.org/5C1lo
             // note that technically ":" is a valid address, so keep this in place otherwise
             if (\substr($address, -1) === ':' && \defined('HHVM_VERSION_ID') && \HHVM_VERSION_ID < 31900) {
-                $address = (string)\substr($address, 0, -1); // @codeCoverageIgnore
+                $address = (string) \substr($address, 0, -1); // @codeCoverageIgnore
             }
 
             // work around unknown addresses should return null value: https://3v4l.org/5C1lo and https://bugs.php.net/bug.php?id=74556
             // PHP uses "\0" string and HHVM uses empty string (colon removed above)
-            if ($address === '' || $address[0] === "\x00" ) {
+            if ($address === '' || $address[0] === "\x00") {
                 return null; // @codeCoverageIgnore
             }
 

@@ -75,7 +75,7 @@ class ApplicationTester
                 unset($_SERVER['SHELL_VERBOSITY']);
             } else {
                 if (\function_exists('putenv')) {
-                    @putenv('SHELL_VERBOSITY='.$prevShellVerbosity);
+                    @putenv('SHELL_VERBOSITY=' . $prevShellVerbosity);
                 }
                 $_ENV['SHELL_VERBOSITY'] = $prevShellVerbosity;
                 $_SERVER['SHELL_VERBOSITY'] = $prevShellVerbosity;

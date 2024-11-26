@@ -2,6 +2,4 @@
 
 namespace JsonSchema\Exception;
 
-interface ExceptionInterface
-{
-}
+interface ExceptionInterface {}

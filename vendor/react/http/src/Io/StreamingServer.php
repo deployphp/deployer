@@ -114,14 +114,14 @@ final class StreamingServer extends EventEmitter
             $that->handleRequest($conn, $request);
         });
 
-        $this->parser->on('error', function(\Exception $e, ConnectionInterface $conn) use ($that) {
-            $that->emit('error', array($e));
+        $this->parser->on('error', function (\Exception $e, ConnectionInterface $conn) use ($that) {
+            $that->emit('error', [$e]);
 
             // parsing failed => assume dummy request and send appropriate error
             $that->writeError(
                 $conn,
                 $e->getCode() !== 0 ? $e->getCode() : Response::STATUS_BAD_REQUEST,
-                new ServerRequest('GET', '/')
+                new ServerRequest('GET', '/'),
             );
         });
     }
@@ -134,7 +134,7 @@ final class StreamingServer extends EventEmitter
      */
     public function listen(ServerInterface $socket)
     {
-        $socket->on('connection', array($this->parser, 'handle'));
+        $socket->on('connection', [$this->parser, 'handle']);
     }
 
     /** @internal */
@@ -181,7 +181,7 @@ final class StreamingServer extends EventEmitter
                     $message = \sprintf($message, \is_object($response) ? \get_class($response) : \gettype($response));
                     $exception = new \RuntimeException($message);
 
-                    $that->emit('error', array($exception));
+                    $that->emit('error', [$exception]);
                     return $that->writeError($conn, Response::STATUS_INTERNAL_SERVER_ERROR, $request);
                 }
                 $that->handleResponse($conn, $request, $response);
@@ -198,9 +198,9 @@ final class StreamingServer extends EventEmitter
 
                 $exception = new \RuntimeException($message, 0, $previous);
 
-                $that->emit('error', array($exception));
+                $that->emit('error', [$exception]);
                 return $that->writeError($conn, Response::STATUS_INTERNAL_SERVER_ERROR, $request);
-            }
+            },
         );
     }
 
@@ -209,11 +209,11 @@ final class StreamingServer extends EventEmitter
     {
         $response = new Response(
             $code,
-            array(
+            [
                 'Content-Type' => 'text/plain',
-                'Connection' => 'close' // we do not want to keep the connection open after an error
-            ),
-            'Error ' . $code
+                'Connection' => 'close', // we do not want to keep the connection open after an error
+            ],
+            'Error ' . $code,
         );
 
         // append reason phrase to response body if known
@@ -248,7 +248,7 @@ final class StreamingServer extends EventEmitter
         // assign default "Server" header automatically
         if (!$response->hasHeader('Server')) {
             $response = $response->withHeader('Server', 'ReactPHP/1');
-        } elseif ($response->getHeaderLine('Server') === ''){
+        } elseif ($response->getHeaderLine('Server') === '') {
             $response = $response->withoutHeader('Server');
         }
 
@@ -256,7 +256,7 @@ final class StreamingServer extends EventEmitter
         if (!$response->hasHeader('Date')) {
             // IMF-fixdate  = day-name "," SP date1 SP time-of-day SP GMT
             $response = $response->withHeader('Date', gmdate('D, d M Y H:i:s') . ' GMT');
-        } elseif ($response->getHeaderLine('Date') === ''){
+        } elseif ($response->getHeaderLine('Date') === '') {
             $response = $response->withoutHeader('Date');
         }
 
@@ -269,7 +269,7 @@ final class StreamingServer extends EventEmitter
             // 304 Not Modified: preserve explicit Content-Length and preserve missing header if body is empty
         } elseif ($body->getSize() !== null) {
             // assign Content-Length header when using a "normal" buffered body string
-            $response = $response->withHeader('Content-Length', (string)$body->getSize());
+            $response = $response->withHeader('Content-Length', (string) $body->getSize());
         } elseif (!$response->hasHeader('Content-Length') && $version === '1.1') {
             // assign chunked transfer-encoding if no 'content-length' is given for HTTP/1.1 responses
             $chunked = true;
@@ -366,14 +366,14 @@ final class StreamingServer extends EventEmitter
         // Close response stream once connection closes.
         // Note that this TCP/IP close detection may take some time,
         // in particular this may only fire on a later read/write attempt.
-        $connection->on('close', array($body, 'close'));
+        $connection->on('close', [$body, 'close']);
 
         // write streaming body and then wait for next request over persistent connection
         if ($persist) {
-            $body->pipe($connection, array('end' => false));
+            $body->pipe($connection, ['end' => false]);
             $parser = $this->parser;
             $body->on('end', function () use ($connection, $parser, $body) {
-                $connection->removeListener('close', array($body, 'close'));
+                $connection->removeListener('close', [$body, 'close']);
                 $parser->handle($connection);
             });
         } else {

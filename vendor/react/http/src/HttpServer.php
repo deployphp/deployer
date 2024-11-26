@@ -185,7 +185,7 @@ final class HttpServer extends EventEmitter
      *
      * @internal
      */
-    const MAXIMUM_BUFFER_SIZE = 65536; // 64 KiB
+    public const MAXIMUM_BUFFER_SIZE = 65536; // 64 KiB
 
     /**
      * @var StreamingServer
@@ -226,7 +226,7 @@ final class HttpServer extends EventEmitter
             }
         }
 
-        $middleware = array();
+        $middleware = [];
         if (!$streaming) {
             $maxSize = $this->getMaxRequestSize();
             $concurrency = $this->getConcurrentRequestsLimit(\ini_get('memory_limit'), $maxSize);
@@ -259,7 +259,7 @@ final class HttpServer extends EventEmitter
 
         $that = $this;
         $this->streamingServer->on('error', function ($error) use ($that) {
-            $that->emit('error', array($error));
+            $that->emit('error', [$error]);
         });
     }
 

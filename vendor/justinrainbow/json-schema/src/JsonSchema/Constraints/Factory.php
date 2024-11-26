@@ -39,7 +39,7 @@ class Factory
     /**
      * @var TypeCheck\TypeCheckInterface[]
      */
-    private $typeCheck = array();
+    private $typeCheck = [];
 
     /**
      * @var int Validation context
@@ -49,7 +49,7 @@ class Factory
     /**
      * @var array
      */
-    protected $constraintMap = array(
+    protected $constraintMap = [
         'array' => 'JsonSchema\Constraints\CollectionConstraint',
         'collection' => 'JsonSchema\Constraints\CollectionConstraint',
         'object' => 'JsonSchema\Constraints\ObjectConstraint',
@@ -60,13 +60,13 @@ class Factory
         'enum' => 'JsonSchema\Constraints\EnumConstraint',
         'format' => 'JsonSchema\Constraints\FormatConstraint',
         'schema' => 'JsonSchema\Constraints\SchemaConstraint',
-        'validator' => 'JsonSchema\Validator'
-    );
+        'validator' => 'JsonSchema\Validator',
+    ];
 
     /**
      * @var array<ConstraintInterface>
      */
-    private $instanceCache = array();
+    private $instanceCache = [];
 
     /**
      * @param SchemaStorage         $schemaStorage
@@ -74,9 +74,9 @@ class Factory
      * @param int                   $checkMode
      */
     public function __construct(
-        SchemaStorageInterface $schemaStorage = null,
-        UriRetrieverInterface $uriRetriever = null,
-        $checkMode = Constraint::CHECK_MODE_NORMAL
+        ?SchemaStorageInterface $schemaStorage = null,
+        ?UriRetrieverInterface $uriRetriever = null,
+        $checkMode = Constraint::CHECK_MODE_NORMAL,
     ) {
         // set provided config options
         $this->setConfig($checkMode);

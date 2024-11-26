@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\MessageInterface;
@@ -78,7 +79,7 @@ function uri_for($uri)
  * @return Stream
  * @throws \InvalidArgumentException if the $resource arg is not valid.
  */
-function stream_for($resource = '', array $options = array())
+function stream_for($resource = '', array $options = [])
 {
     switch (gettype($resource)) {
         case 'string':
@@ -130,10 +131,10 @@ function stream_for($resource = '', array $options = array())
 function parse_header($header)
 {
     static $trimmed = "\"'  \n\t\r";
-    $params = $matches = array();
+    $params = $matches = [];
 
     foreach (normalize_header($header) as $val) {
-        $part = array();
+        $part = [];
         foreach (preg_split('/;(?=([^"]*"[^"]*")*[^"]*$)/', $val) as $kvp) {
             if (preg_match_all('/<[^>]+>|[^=]+/', $kvp, $matches)) {
                 $m = $matches[0];
@@ -166,7 +167,7 @@ function normalize_header($header)
         return array_map('trim', explode(',', $header));
     }
 
-    $result = array();
+    $result = [];
     foreach ($header as $value) {
         foreach ((array) $value as $v) {
             if (strpos($v, ',') === false) {
@@ -237,7 +238,7 @@ function modify_request(RequestInterface $request, array $changes)
         isset($changes['body']) ? $changes['body'] : $request->getBody(),
         isset($changes['version'])
             ? $changes['version']
-            : $request->getProtocolVersion()
+            : $request->getProtocolVersion(),
     );
 }
 
@@ -281,7 +282,7 @@ function try_fopen($filename, $mode)
             'Unable to open %s using mode %s: %s',
             $filename,
             $mode,
-            $fargs[1]
+            $fargs[1],
         ));
     });
 
@@ -350,7 +351,7 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
 function copy_to_stream(
     StreamInterface $source,
     StreamInterface $dest,
-    $maxLen = -1
+    $maxLen = -1,
 ) {
     if ($maxLen === -1) {
         while (!$source->eof()) {
@@ -388,7 +389,7 @@ function copy_to_stream(
 function hash(
     StreamInterface $stream,
     $algo,
-    $rawOutput = false
+    $rawOutput = false,
 ) {
     $pos = $stream->tell();
 
@@ -445,12 +446,12 @@ function readline(StreamInterface $stream, $maxLength = null)
 function parse_request($message)
 {
     $data = _parse_message($message);
-    $matches = array();
+    $matches = [];
     if (!preg_match('/^[a-zA-Z]+\s+([a-zA-Z]+:\/\/|\/).*/', $data['start-line'], $matches)) {
         throw new \InvalidArgumentException('Invalid request string');
     }
     $parts = explode(' ', $data['start-line'], 3);
-    $subParts = isset($parts[2]) ?  explode('/', $parts[2]) : array();
+    $subParts = isset($parts[2]) ? explode('/', $parts[2]) : [];
     $version = isset($parts[2]) ? $subParts[1] : '1.1';
 
     $request = new Request(
@@ -458,7 +459,7 @@ function parse_request($message)
         $matches[1] === '/' ? _parse_request_uri($parts[1], $data['headers']) : $parts[1],
         $data['headers'],
         $data['body'],
-        $version
+        $version,
     );
 
     return $matches[1] === '/' ? $request : $request->withRequestTarget($parts[1]);
@@ -473,7 +474,7 @@ function parse_request($message)
  *
  * @return ServerRequest
  */
-function parse_server_request($message, array $serverParams = array())
+function parse_server_request($message, array $serverParams = [])
 {
     $request = parse_request($message);
 
@@ -483,7 +484,7 @@ function parse_server_request($message, array $serverParams = array())
         $request->getHeaders(),
         $request->getBody(),
         $request->getProtocolVersion(),
-        $serverParams
+        $serverParams,
     );
 }
 
@@ -511,7 +512,7 @@ function parse_response($message)
         $data['headers'],
         $data['body'],
         $subParts[1],
-        isset($parts[2]) ? $parts[2] : null
+        isset($parts[2]) ? $parts[2] : null,
     );
 }
 
@@ -530,7 +531,7 @@ function parse_response($message)
  */
 function parse_query($str, $urlEncoding = true)
 {
-    $result = array();
+    $result = [];
 
     if ($str === '') {
         return $result;
@@ -556,7 +557,7 @@ function parse_query($str, $urlEncoding = true)
             $result[$key] = $value;
         } else {
             if (!is_array($result[$key])) {
-                $result[$key] = array($result[$key]);
+                $result[$key] = [$result[$key]];
             }
             $result[$key][] = $value;
         }
@@ -639,7 +640,7 @@ function mimetype_from_filename($filename)
  */
 function mimetype_from_extension($extension)
 {
-    static $mimetypes = array(
+    static $mimetypes = [
         '7z' => 'application/x-7z-compressed',
         'aac' => 'audio/x-aac',
         'ai' => 'application/postscript',
@@ -738,7 +739,7 @@ function mimetype_from_extension($extension)
         'yaml' => 'text/yaml',
         'yml' => 'text/yaml',
         'zip' => 'application/zip',
-    );
+    ];
 
     $extension = strtolower($extension);
 
@@ -767,7 +768,7 @@ function _parse_message($message)
 
     // Iterate over each line in the message, accounting for line endings
     $lines = preg_split('/(\\r?\\n)/', $message, -1, PREG_SPLIT_DELIM_CAPTURE);
-    $result = array('start-line' => array_shift($lines), 'headers' => array(), 'body' => '');
+    $result = ['start-line' => array_shift($lines), 'headers' => [], 'body' => ''];
     array_shift($lines);
 
     for ($i = 0, $totalLines = count($lines); $i < $totalLines; $i += 2) {
@@ -819,7 +820,7 @@ function _parse_request_uri($path, array $headers)
 /** @internal */
 function _caseless_remove($keys, array $data)
 {
-    $result = array();
+    $result = [];
 
     foreach ($keys as &$key) {
         $key = strtolower($key);

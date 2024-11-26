@@ -63,11 +63,11 @@ abstract class AbstractUnicodeString extends AbstractString
             if (0x80 > $code %= 0x200000) {
                 $string .= \chr($code);
             } elseif (0x800 > $code) {
-                $string .= \chr(0xC0 | $code >> 6).\chr(0x80 | $code & 0x3F);
+                $string .= \chr(0xC0 | $code >> 6) . \chr(0x80 | $code & 0x3F);
             } elseif (0x10000 > $code) {
-                $string .= \chr(0xE0 | $code >> 12).\chr(0x80 | $code >> 6 & 0x3F).\chr(0x80 | $code & 0x3F);
+                $string .= \chr(0xE0 | $code >> 12) . \chr(0x80 | $code >> 6 & 0x3F) . \chr(0x80 | $code & 0x3F);
             } else {
-                $string .= \chr(0xF0 | $code >> 18).\chr(0x80 | $code >> 12 & 0x3F).\chr(0x80 | $code >> 6 & 0x3F).\chr(0x80 | $code & 0x3F);
+                $string .= \chr(0xF0 | $code >> 18) . \chr(0x80 | $code >> 12 & 0x3F) . \chr(0x80 | $code >> 6 & 0x3F) . \chr(0x80 | $code & 0x3F);
             }
         }
 
@@ -203,12 +203,12 @@ abstract class AbstractUnicodeString extends AbstractString
         return $str;
     }
 
-    public function join(array $strings, string $lastGlue = null): parent
+    public function join(array $strings, ?string $lastGlue = null): parent
     {
         $str = clone $this;
 
-        $tail = null !== $lastGlue && 1 < \count($strings) ? $lastGlue.array_pop($strings) : '';
-        $str->string = implode($this->string, $strings).$tail;
+        $tail = null !== $lastGlue && 1 < \count($strings) ? $lastGlue . array_pop($strings) : '';
+        $str->string = implode($this->string, $strings) . $tail;
 
         if (!preg_match('//u', $str->string)) {
             throw new InvalidArgumentException('Invalid UTF-8 string.');
@@ -236,12 +236,12 @@ abstract class AbstractUnicodeString extends AbstractString
         set_error_handler(static function ($t, $m) { throw new InvalidArgumentException($m); });
 
         try {
-            if (false === $match($regexp.'u', $this->string, $matches, $flags | \PREG_UNMATCHED_AS_NULL, $offset)) {
+            if (false === $match($regexp . 'u', $this->string, $matches, $flags | \PREG_UNMATCHED_AS_NULL, $offset)) {
                 $lastError = preg_last_error();
 
                 foreach (get_defined_constants(true)['pcre'] as $k => $v) {
                     if ($lastError === $v && '_ERROR' === substr($k, -6)) {
-                        throw new RuntimeException('Matching failed with '.$k.'.');
+                        throw new RuntimeException('Matching failed with ' . $k . '.');
                     }
                 }
 
@@ -335,12 +335,12 @@ abstract class AbstractUnicodeString extends AbstractString
         set_error_handler(static function ($t, $m) { throw new InvalidArgumentException($m); });
 
         try {
-            if (null === $string = $replace($fromRegexp.'u', $to, $this->string)) {
+            if (null === $string = $replace($fromRegexp . 'u', $to, $this->string)) {
                 $lastError = preg_last_error();
 
                 foreach (get_defined_constants(true)['pcre'] as $k => $v) {
                     if ($lastError === $v && '_ERROR' === substr($k, -6)) {
-                        throw new RuntimeException('Matching failed with '.$k.'.');
+                        throw new RuntimeException('Matching failed with ' . $k . '.');
                     }
                 }
 
@@ -522,22 +522,22 @@ abstract class AbstractUnicodeString extends AbstractString
 
         switch ($type) {
             case \STR_PAD_RIGHT:
-                return $this->append(str_repeat($pad->string, intdiv($freeLen, $padLen)).($len ? $pad->slice(0, $len) : ''));
+                return $this->append(str_repeat($pad->string, intdiv($freeLen, $padLen)) . ($len ? $pad->slice(0, $len) : ''));
 
             case \STR_PAD_LEFT:
-                return $this->prepend(str_repeat($pad->string, intdiv($freeLen, $padLen)).($len ? $pad->slice(0, $len) : ''));
+                return $this->prepend(str_repeat($pad->string, intdiv($freeLen, $padLen)) . ($len ? $pad->slice(0, $len) : ''));
 
             case \STR_PAD_BOTH:
                 $freeLen /= 2;
 
                 $rightLen = ceil($freeLen);
                 $len = $rightLen % $padLen;
-                $str = $this->append(str_repeat($pad->string, intdiv($rightLen, $padLen)).($len ? $pad->slice(0, $len) : ''));
+                $str = $this->append(str_repeat($pad->string, intdiv($rightLen, $padLen)) . ($len ? $pad->slice(0, $len) : ''));
 
                 $leftLen = floor($freeLen);
                 $len = $leftLen % $padLen;
 
-                return $str->prepend(str_repeat($pad->string, intdiv($leftLen, $padLen)).($len ? $pad->slice(0, $len) : ''));
+                return $str->prepend(str_repeat($pad->string, intdiv($leftLen, $padLen)) . ($len ? $pad->slice(0, $len) : ''));
 
             default:
                 throw new InvalidArgumentException('Invalid padding type.');
@@ -573,7 +573,7 @@ abstract class AbstractUnicodeString extends AbstractString
             }
 
             if (null === self::$tableZero) {
-                self::$tableZero = require __DIR__.'/Resources/data/wcswidth_table_zero.php';
+                self::$tableZero = require __DIR__ . '/Resources/data/wcswidth_table_zero.php';
             }
 
             if ($codePoint >= self::$tableZero[0][0] && $codePoint <= self::$tableZero[$ubound = \count(self::$tableZero) - 1][1]) {
@@ -592,7 +592,7 @@ abstract class AbstractUnicodeString extends AbstractString
             }
 
             if (null === self::$tableWide) {
-                self::$tableWide = require __DIR__.'/Resources/data/wcswidth_table_wide.php';
+                self::$tableWide = require __DIR__ . '/Resources/data/wcswidth_table_wide.php';
             }
 
             if ($codePoint >= self::$tableWide[0][0] && $codePoint <= self::$tableWide[$ubound = \count(self::$tableWide) - 1][1]) {

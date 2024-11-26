@@ -1,4 +1,5 @@
 <?php
+
 /*
 This recipes works with Custom Integrations and Publishing Bots.
 

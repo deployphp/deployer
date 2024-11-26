@@ -87,7 +87,7 @@ class Browser
         $loop = $loop ?: Loop::get();
         $this->transaction = new Transaction(
             Sender::createFromLoop($loop, $connector),
-            $loop
+            $loop,
         );
     }
 
@@ -108,7 +108,7 @@ class Browser
      * @param array  $headers
      * @return PromiseInterface<ResponseInterface>
      */
-    public function get($url, array $headers = array())
+    public function get($url, array $headers = [])
     {
         return $this->requestMayBeStreaming('GET', $url, $headers);
     }
@@ -169,7 +169,7 @@ class Browser
      * @param string|ReadableStreamInterface $body
      * @return PromiseInterface<ResponseInterface>
      */
-    public function post($url, array $headers = array(), $body = '')
+    public function post($url, array $headers = [], $body = '')
     {
         return $this->requestMayBeStreaming('POST', $url, $headers, $body);
     }
@@ -189,7 +189,7 @@ class Browser
      * @param array  $headers
      * @return PromiseInterface<ResponseInterface>
      */
-    public function head($url, array $headers = array())
+    public function head($url, array $headers = [])
     {
         return $this->requestMayBeStreaming('HEAD', $url, $headers);
     }
@@ -231,9 +231,9 @@ class Browser
      * @param string|ReadableStreamInterface $body
      * @return PromiseInterface<ResponseInterface>
      */
-    public function patch($url, array $headers = array(), $body = '')
+    public function patch($url, array $headers = [], $body = '')
     {
-        return $this->requestMayBeStreaming('PATCH', $url , $headers, $body);
+        return $this->requestMayBeStreaming('PATCH', $url, $headers, $body);
     }
 
     /**
@@ -275,7 +275,7 @@ class Browser
      * @param string|ReadableStreamInterface $body
      * @return PromiseInterface<ResponseInterface>
      */
-    public function put($url, array $headers = array(), $body = '')
+    public function put($url, array $headers = [], $body = '')
     {
         return $this->requestMayBeStreaming('PUT', $url, $headers, $body);
     }
@@ -296,7 +296,7 @@ class Browser
      * @param string|ReadableStreamInterface $body
      * @return PromiseInterface<ResponseInterface>
      */
-    public function delete($url, array $headers = array(), $body = '')
+    public function delete($url, array $headers = [], $body = '')
     {
         return $this->requestMayBeStreaming('DELETE', $url, $headers, $body);
     }
@@ -344,9 +344,9 @@ class Browser
      * @param string|ReadableStreamInterface $body     HTTP request body contents
      * @return PromiseInterface<ResponseInterface,\Exception>
      */
-    public function request($method, $url, array $headers = array(), $body = '')
+    public function request($method, $url, array $headers = [], $body = '')
     {
-        return $this->withOptions(array('streaming' => false))->requestMayBeStreaming($method, $url, $headers, $body);
+        return $this->withOptions(['streaming' => false])->requestMayBeStreaming($method, $url, $headers, $body);
     }
 
     /**
@@ -417,9 +417,9 @@ class Browser
      * @param string|ReadableStreamInterface $body     HTTP request body contents
      * @return PromiseInterface<ResponseInterface,\Exception>
      */
-    public function requestStreaming($method, $url, $headers = array(), $body = '')
+    public function requestStreaming($method, $url, $headers = [], $body = '')
     {
-        return $this->withOptions(array('streaming' => true))->requestMayBeStreaming($method, $url, $headers, $body);
+        return $this->withOptions(['streaming' => true])->requestMayBeStreaming($method, $url, $headers, $body);
     }
 
     /**
@@ -464,9 +464,9 @@ class Browser
             $timeout = 0;
         }
 
-        return $this->withOptions(array(
+        return $this->withOptions([
             'timeout' => $timeout,
-        ));
+        ]);
     }
 
     /**
@@ -526,10 +526,10 @@ class Browser
      */
     public function withFollowRedirects($followRedirects)
     {
-        return $this->withOptions(array(
+        return $this->withOptions([
             'followRedirects' => $followRedirects !== false,
-            'maxRedirects' => \is_bool($followRedirects) ? null : $followRedirects
-        ));
+            'maxRedirects' => \is_bool($followRedirects) ? null : $followRedirects,
+        ]);
     }
 
     /**
@@ -580,9 +580,9 @@ class Browser
      */
     public function withRejectErrorResponse($obeySuccessCode)
     {
-        return $this->withOptions(array(
+        return $this->withOptions([
             'obeySuccessCode' => $obeySuccessCode,
-        ));
+        ]);
     }
 
     /**
@@ -632,7 +632,7 @@ class Browser
         }
 
         $browser->baseUrl = new Uri($baseUrl);
-        if (!\in_array($browser->baseUrl->getScheme(), array('http', 'https')) || $browser->baseUrl->getHost() === '') {
+        if (!\in_array($browser->baseUrl->getScheme(), ['http', 'https']) || $browser->baseUrl->getHost() === '') {
             throw new \InvalidArgumentException('Base URL must be absolute');
         }
 
@@ -667,7 +667,7 @@ class Browser
      */
     public function withProtocolVersion($protocolVersion)
     {
-        if (!\in_array($protocolVersion, array('1.0', '1.1'), true)) {
+        if (!\in_array($protocolVersion, ['1.0', '1.1'], true)) {
             throw new InvalidArgumentException('Invalid HTTP protocol version, must be one of "1.1" or "1.0"');
         }
 
@@ -720,9 +720,9 @@ class Browser
      */
     public function withResponseBuffer($maximumSize)
     {
-        return $this->withOptions(array(
-            'maximumSize' => $maximumSize
-        ));
+        return $this->withOptions([
+            'maximumSize' => $maximumSize,
+        ]);
     }
 
     /**
@@ -772,7 +772,7 @@ class Browser
      * @param string|ReadableStreamInterface $body
      * @return PromiseInterface<ResponseInterface,\Exception>
      */
-    private function requestMayBeStreaming($method, $url, array $headers = array(), $body = '')
+    private function requestMayBeStreaming($method, $url, array $headers = [], $body = '')
     {
         if ($this->baseUrl !== null) {
             // ensure we're actually below the base URL
@@ -784,7 +784,7 @@ class Browser
         }
 
         return $this->transaction->send(
-            new Request($method, $url, $headers, $body, $this->protocolVersion)
+            new Request($method, $url, $headers, $body, $this->protocolVersion),
         );
     }
 }

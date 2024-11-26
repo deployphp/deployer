@@ -37,5 +37,5 @@ interface PromiseInterface
      * @param callable|null $onProgress This argument is deprecated and should not be used anymore.
      * @return PromiseInterface
      */
-    public function then(callable $onFulfilled = null, callable $onRejected = null, callable $onProgress = null);
+    public function then(?callable $onFulfilled = null, ?callable $onRejected = null, ?callable $onProgress = null);
 }

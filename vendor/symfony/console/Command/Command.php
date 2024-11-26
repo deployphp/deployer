@@ -96,7 +96,7 @@ class Command
      *
      * @throws LogicException When the command name is empty
      */
-    public function __construct(string $name = null)
+    public function __construct(?string $name = null)
     {
         $this->definition = new InputDefinition();
 
@@ -132,7 +132,7 @@ class Command
         $this->ignoreValidationErrors = true;
     }
 
-    public function setApplication(Application $application = null)
+    public function setApplication(?Application $application = null)
     {
         $this->application = $application;
         if ($application) {
@@ -185,9 +185,7 @@ class Command
     /**
      * Configures the current command.
      */
-    protected function configure()
-    {
-    }
+    protected function configure() {}
 
     /**
      * Executes the current command.
@@ -215,9 +213,7 @@ class Command
      * This means that this is the only place where the command can
      * interactively ask for values of missing required arguments.
      */
-    protected function interact(InputInterface $input, OutputInterface $output)
-    {
-    }
+    protected function interact(InputInterface $input, OutputInterface $output) {}
 
     /**
      * Initializes the command after the input has been bound and before the input
@@ -229,9 +225,7 @@ class Command
      * @see InputInterface::bind()
      * @see InputInterface::validate()
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-    }
+    protected function initialize(InputInterface $input, OutputInterface $output) {}
 
     /**
      * Runs the command.
@@ -308,9 +302,7 @@ class Command
     /**
      * Adds suggestions to $suggestions for the current completion input (e.g. option or argument).
      */
-    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
-    {
-    }
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void {}
 
     /**
      * Sets the code to execute when running this command.
@@ -433,7 +425,7 @@ class Command
      *
      * @return $this
      */
-    public function addArgument(string $name, int $mode = null, string $description = '', $default = null)
+    public function addArgument(string $name, ?int $mode = null, string $description = '', $default = null)
     {
         $this->definition->addArgument(new InputArgument($name, $mode, $description, $default));
         if (null !== $this->fullDefinition) {
@@ -454,7 +446,7 @@ class Command
      *
      * @return $this
      */
-    public function addOption(string $name, $shortcut = null, int $mode = null, string $description = '', $default = null)
+    public function addOption(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
     {
         $this->definition->addOption(new InputOption($name, $shortcut, $mode, $description, $default));
         if (null !== $this->fullDefinition) {
@@ -594,7 +586,7 @@ class Command
         ];
         $replacements = [
             $name,
-            $isSingleCommand ? $_SERVER['PHP_SELF'] : $_SERVER['PHP_SELF'].' '.$name,
+            $isSingleCommand ? $_SERVER['PHP_SELF'] : $_SERVER['PHP_SELF'] . ' ' . $name,
         ];
 
         return str_replace($placeholders, $replacements, $this->getHelp() ?: $this->getDescription());

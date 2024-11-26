@@ -44,7 +44,8 @@ class HelpCommand extends Command
                 new InputOption('raw', null, InputOption::VALUE_NONE, 'To output raw command help'),
             ])
             ->setDescription('Display help for a command')
-            ->setHelp(<<<'EOF'
+            ->setHelp(
+                <<<'EOF'
 The <info>%command.name%</info> command displays help for a given command:
 
   <info>%command.full_name% list</info>
@@ -54,7 +55,7 @@ You can also output the help in other formats by using the <comment>--format</co
   <info>%command.full_name% --format=xml list</info>
 
 To display the list of available commands, please use the <info>list</info> command.
-EOF
+EOF,
             )
         ;
     }

@@ -16,6 +16,4 @@ namespace Symfony\Component\Console\Exception;
  *
  * @author Pierre du Plessis <pdples@gmail.com>
  */
-class NamespaceNotFoundException extends CommandNotFoundException
-{
-}
+class NamespaceNotFoundException extends CommandNotFoundException {}

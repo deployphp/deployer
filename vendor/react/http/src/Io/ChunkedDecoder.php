@@ -17,8 +17,8 @@ use Exception;
  */
 class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
 {
-    const CRLF = "\r\n";
-    const MAX_CHUNK_HEADER_SIZE = 1024;
+    public const CRLF = "\r\n";
+    public const MAX_CHUNK_HEADER_SIZE = 1024;
 
     private $closed = false;
     private $input;
@@ -31,10 +31,10 @@ class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
     {
         $this->input = $input;
 
-        $this->input->on('data', array($this, 'handleData'));
-        $this->input->on('end', array($this, 'handleEnd'));
-        $this->input->on('error', array($this, 'handleError'));
-        $this->input->on('close', array($this, 'close'));
+        $this->input->on('data', [$this, 'handleData']);
+        $this->input->on('end', [$this, 'handleEnd']);
+        $this->input->on('error', [$this, 'handleError']);
+        $this->input->on('close', [$this, 'close']);
     }
 
     public function isReadable()
@@ -52,7 +52,7 @@ class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
         $this->input->resume();
     }
 
-    public function pipe(WritableStreamInterface $dest, array $options = array())
+    public function pipe(WritableStreamInterface $dest, array $options = [])
     {
         Util::pipe($this, $dest, $options);
 
@@ -86,7 +86,7 @@ class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
     /** @internal */
     public function handleError(Exception $e)
     {
-        $this->emit('error', array($e));
+        $this->emit('error', [$e]);
         $this->close();
     }
 
@@ -102,12 +102,12 @@ class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
                 if ($positionCrlf === false) {
                     // Header shouldn't be bigger than 1024 bytes
                     if (isset($this->buffer[static::MAX_CHUNK_HEADER_SIZE])) {
-                        $this->handleError(new Exception('Chunk header size inclusive extension bigger than' . static::MAX_CHUNK_HEADER_SIZE. ' bytes'));
+                        $this->handleError(new Exception('Chunk header size inclusive extension bigger than' . static::MAX_CHUNK_HEADER_SIZE . ' bytes'));
                     }
                     return;
                 }
 
-                $header = \strtolower((string)\substr($this->buffer, 0, $positionCrlf));
+                $header = \strtolower((string) \substr($this->buffer, 0, $positionCrlf));
                 $hexValue = $header;
 
                 if (\strpos($header, ';') !== false) {
@@ -128,19 +128,19 @@ class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
                     return;
                 }
 
-                $this->buffer = (string)\substr($this->buffer, $positionCrlf + 2);
+                $this->buffer = (string) \substr($this->buffer, $positionCrlf + 2);
                 $this->headerCompleted = true;
                 if ($this->buffer === '') {
                     return;
                 }
             }
 
-            $chunk = (string)\substr($this->buffer, 0, $this->chunkSize - $this->transferredSize);
+            $chunk = (string) \substr($this->buffer, 0, $this->chunkSize - $this->transferredSize);
 
             if ($chunk !== '') {
                 $this->transferredSize += \strlen($chunk);
-                $this->emit('data', array($chunk));
-                $this->buffer = (string)\substr($this->buffer, \strlen($chunk));
+                $this->emit('data', [$chunk]);
+                $this->buffer = (string) \substr($this->buffer, \strlen($chunk));
             }
 
             $positionCrlf = \strpos($this->buffer, static::CRLF);
@@ -154,10 +154,10 @@ class ChunkedDecoder extends EventEmitter implements ReadableStreamInterface
                 $this->chunkSize = 0;
                 $this->headerCompleted = false;
                 $this->transferredSize = 0;
-                $this->buffer = (string)\substr($this->buffer, 2);
+                $this->buffer = (string) \substr($this->buffer, 2);
             } elseif ($this->chunkSize === 0) {
                 // end chunk received, skip all trailer data
-                $this->buffer = (string)\substr($this->buffer, $positionCrlf);
+                $this->buffer = (string) \substr($this->buffer, $positionCrlf);
             }
 
             if ($positionCrlf !== 0 && $this->chunkSize !== 0 && $this->chunkSize === $this->transferredSize && \strlen($this->buffer) > 2) {

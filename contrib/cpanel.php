@@ -1,4 +1,5 @@
 <?php
+
 /*
 ### Description
 This is a recipe that uses the [cPanel 2 API](https://documentation.cPanel.net/display/DD/Guide+to+cPanel+API+2).

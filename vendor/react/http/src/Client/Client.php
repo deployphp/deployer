@@ -13,16 +13,16 @@ class Client
 {
     private $connector;
 
-    public function __construct(LoopInterface $loop, ConnectorInterface $connector = null)
+    public function __construct(LoopInterface $loop, ?ConnectorInterface $connector = null)
     {
         if ($connector === null) {
-            $connector = new Connector(array(), $loop);
+            $connector = new Connector([], $loop);
         }
 
         $this->connector = $connector;
     }
 
-    public function request($method, $url, array $headers = array(), $protocolVersion = '1.0')
+    public function request($method, $url, array $headers = [], $protocolVersion = '1.0')
     {
         $requestData = new RequestData($method, $url, $headers, $protocolVersion);
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -9,7 +10,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class CachingStream extends StreamDecoratorTrait implements StreamInterface
 {
-
     /** @var StreamInterface Stream being wrapped */
     private $remoteStream;
 
@@ -24,7 +24,7 @@ class CachingStream extends StreamDecoratorTrait implements StreamInterface
      */
     public function __construct(
         StreamInterface $stream,
-        StreamInterface $target = null
+        ?StreamInterface $target = null,
     ) {
         $this->remoteStream = $stream;
         parent::__construct($target ?: new Stream(fopen('php://temp', 'r+')));
@@ -82,7 +82,7 @@ class CachingStream extends StreamDecoratorTrait implements StreamInterface
             // the remote stream to emulate overwriting bytes from that
             // position. This mimics the behavior of other PHP stream wrappers.
             $remoteData = $this->remoteStream->read(
-                $remaining + $this->skipReadBytes
+                $remaining + $this->skipReadBytes,
             );
 
             if ($this->skipReadBytes) {
@@ -127,7 +127,7 @@ class CachingStream extends StreamDecoratorTrait implements StreamInterface
 
     private function cacheEntireStream()
     {
-        $target = new FnStream(array('write' => 'strlen'));
+        $target = new FnStream(['write' => 'strlen']);
         copy_to_stream($this, $target);
 
         return $this->tell();

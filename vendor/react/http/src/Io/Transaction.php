@@ -77,7 +77,7 @@ class Transaction
         $deferred->numRequests = 0;
 
         // use timeout from options or default to PHP's default_socket_timeout (60)
-        $timeout = (float)($this->timeout !== null ? $this->timeout : ini_get("default_socket_timeout"));
+        $timeout = (float) ($this->timeout !== null ? $this->timeout : ini_get("default_socket_timeout"));
 
         $loop = $this->loop;
         $this->next($request, $deferred)->then(
@@ -96,7 +96,7 @@ class Transaction
                 }
                 $timeout = -1;
                 $deferred->reject($e);
-            }
+            },
         );
 
         if ($timeout < 0) {
@@ -128,7 +128,7 @@ class Transaction
     {
         $deferred->timeout = $this->loop->addTimer($timeout, function () use ($timeout, $deferred) {
             $deferred->reject(new \RuntimeException(
-                'Request timed out after ' . $timeout . ' seconds'
+                'Request timed out after ' . $timeout . ' seconds',
             ));
             if (isset($deferred->pending)) {
                 $deferred->pending->cancel();
@@ -139,7 +139,7 @@ class Transaction
 
     private function next(RequestInterface $request, Deferred $deferred)
     {
-        $this->progress('request', array($request));
+        $this->progress('request', [$request]);
 
         $that = $this;
         ++$deferred->numRequests;
@@ -157,7 +157,7 @@ class Transaction
         return $promise->then(
             function (ResponseInterface $response) use ($request, $that, $deferred) {
                 return $that->onResponse($response, $request, $deferred);
-            }
+            },
         );
     }
 
@@ -175,7 +175,7 @@ class Transaction
             $stream->close();
             return \React\Promise\reject(new \OverflowException(
                 'Response body size of ' . $size . ' bytes exceeds maximum of ' . $this->maximumSize . ' bytes',
-                \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0
+                \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0,
             ));
         }
 
@@ -197,12 +197,12 @@ class Transaction
                 if ($e instanceof \OverflowException) {
                     $e = new \OverflowException(
                         'Response body size exceeds maximum of ' . $maximumSize . ' bytes',
-                        \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0
+                        \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0,
                     );
                 }
 
                 throw $e;
-            }
+            },
         );
 
         $deferred->pending = $promise;
@@ -219,7 +219,7 @@ class Transaction
      */
     public function onResponse(ResponseInterface $response, RequestInterface $request, $deferred)
     {
-        $this->progress('response', array($response, $request));
+        $this->progress('response', [$response, $request]);
 
         // follow 3xx (Redirection) response status codes if Location header is present and not explicitly disabled
         // @link https://tools.ietf.org/html/rfc7231#section-6.4
@@ -248,7 +248,7 @@ class Transaction
         $location = Uri::resolve($request->getUri(), $response->getHeaderLine('Location'));
 
         $request = $this->makeRedirectRequest($request, $location);
-        $this->progress('redirect', array($request));
+        $this->progress('redirect', [$request]);
 
         if ($deferred->numRequests >= $this->maxRedirects) {
             throw new \RuntimeException('Maximum number of redirects (' . $this->maxRedirects . ') exceeded');
@@ -281,7 +281,7 @@ class Transaction
         return new Request($method, $location, $request->getHeaders());
     }
 
-    private function progress($name, array $args = array())
+    private function progress($name, array $args = [])
     {
         return;
 

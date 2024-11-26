@@ -71,7 +71,7 @@ final class LimitConcurrentRequestsMiddleware
 {
     private $limit;
     private $pending = 0;
-    private $queue = array();
+    private $queue = [];
 
     /**
      * @param int $limit Maximum amount of concurrent requests handled.
@@ -125,12 +125,12 @@ final class LimitConcurrentRequestsMiddleware
             // replace with buffering body to ensure any readable events will be buffered
             $request = $request->withBody(new HttpBodyStream(
                 $body,
-                $size
+                $size,
             ));
         }
 
         // get next queue position
-        $queue =& $this->queue;
+        $queue = & $this->queue;
         $queue[] = null;
         \end($queue);
         $id = \key($queue);

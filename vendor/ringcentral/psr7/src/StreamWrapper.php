@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -38,9 +39,9 @@ class StreamWrapper
                 . 'writable, or both.');
         }
 
-        return fopen('guzzle://stream', $mode, null, stream_context_create(array(
-            'guzzle' => array('stream' => $stream)
-        )));
+        return fopen('guzzle://stream', $mode, null, stream_context_create([
+            'guzzle' => ['stream' => $stream],
+        ]));
     }
 
     /**
@@ -96,13 +97,13 @@ class StreamWrapper
 
     public function stream_stat()
     {
-        static $modeMap = array(
+        static $modeMap = [
             'r'  => 33060,
             'r+' => 33206,
-            'w'  => 33188
-        );
+            'w'  => 33188,
+        ];
 
-        return array(
+        return [
             'dev'     => 0,
             'ino'     => 0,
             'mode'    => $modeMap[$this->mode],
@@ -115,7 +116,7 @@ class StreamWrapper
             'mtime'   => 0,
             'ctime'   => 0,
             'blksize' => 0,
-            'blocks'  => 0
-        );
+            'blocks'  => 0,
+        ];
     }
 }

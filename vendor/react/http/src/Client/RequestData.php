@@ -12,7 +12,7 @@ class RequestData
     private $headers;
     private $protocolVersion;
 
-    public function __construct($method, $url, array $headers = array(), $protocolVersion = '1.0')
+    public function __construct($method, $url, array $headers = [], $protocolVersion = '1.0')
     {
         $this->method = $method;
         $this->url = $url;
@@ -23,16 +23,16 @@ class RequestData
     private function mergeDefaultheaders(array $headers)
     {
         $port = ($this->getDefaultPort() === $this->getPort()) ? '' : ":{$this->getPort()}";
-        $connectionHeaders = ('1.1' === $this->protocolVersion) ? array('Connection' => 'close') : array();
+        $connectionHeaders = ('1.1' === $this->protocolVersion) ? ['Connection' => 'close'] : [];
         $authHeaders = $this->getAuthHeaders();
 
         $defaults = array_merge(
-            array(
-                'Host'          => $this->getHost().$port,
+            [
+                'Host'          => $this->getHost() . $port,
                 'User-Agent'    => 'ReactPHP/1',
-            ),
+            ],
             $connectionHeaders,
-            $authHeaders
+            $authHeaders,
         );
 
         // remove all defaults that already exist in $headers
@@ -73,7 +73,7 @@ class RequestData
 
         // assume "/" path by default, but allow "OPTIONS *"
         if ($path === null) {
-            $path = ($this->method === 'OPTIONS' && $queryString === null) ? '*': '/';
+            $path = ($this->method === 'OPTIONS' && $queryString === null) ? '*' : '/';
         }
         if ($queryString !== null) {
             $path .= '?' . $queryString;
@@ -94,7 +94,7 @@ class RequestData
         $data = '';
         $data .= "{$this->method} {$this->getPath()} HTTP/{$this->protocolVersion}\r\n";
         foreach ($headers as $name => $values) {
-            foreach ((array)$values as $value) {
+            foreach ((array) $values as $value) {
                 $data .= "$name: $value\r\n";
             }
         }
@@ -108,21 +108,21 @@ class RequestData
         $components = parse_url($this->url);
 
         if (isset($components['user'])) {
-            return array(
+            return [
                 'user' => $components['user'],
                 'pass' => isset($components['pass']) ? $components['pass'] : null,
-            );
+            ];
         }
     }
 
     private function getAuthHeaders()
     {
         if (null !== $auth = $this->getUrlUserPass()) {
-            return array(
-                'Authorization' => 'Basic ' . base64_encode($auth['user'].':'.$auth['pass']),
-            );
+            return [
+                'Authorization' => 'Basic ' . base64_encode($auth['user'] . ':' . $auth['pass']),
+            ];
         }
 
-        return array();
+        return [];
     }
 }

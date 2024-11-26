@@ -10,12 +10,12 @@ use RingCentral\Psr7\Request;
  */
 class ServerRequest extends Request implements ServerRequestInterface
 {
-    private $attributes = array();
+    private $attributes = [];
 
-    private $serverParams = array();
-    private $fileParams = array();
-    private $cookies = array();
-    private $queryParams = array();
+    private $serverParams = [];
+    private $fileParams = [];
+    private $cookies = [];
+    private $queryParams = [];
     private $parsedBody = null;
 
     /**
@@ -31,10 +31,10 @@ class ServerRequest extends Request implements ServerRequestInterface
     public function __construct(
         $method,
         $uri,
-        array $headers = array(),
+        array $headers = [],
         $body = null,
         $protocolVersion = '1.1',
-        $serverParams = array()
+        $serverParams = [],
     ) {
         parent::__construct($method, $uri, $headers, $body, $protocolVersion);
         $this->serverParams = $serverParams;

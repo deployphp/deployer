@@ -1,4 +1,5 @@
 <?php
+
 namespace RingCentral\Psr7;
 
 use Psr\Http\Message\StreamInterface;
@@ -9,7 +10,6 @@ use Psr\Http\Message\StreamInterface;
  */
 class LazyOpenStream extends StreamDecoratorTrait implements StreamInterface
 {
-
     /** @var string File to open */
     private $filename;
 

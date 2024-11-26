@@ -75,7 +75,7 @@ final class FdServer extends EventEmitter implements ServerInterface
      * @throws \InvalidArgumentException if the listening address is invalid
      * @throws \RuntimeException if listening on this address fails (already in use etc.)
      */
-    public function __construct($fd, LoopInterface $loop = null)
+    public function __construct($fd, ?LoopInterface $loop = null)
     {
         if (\preg_match('#^php://fd/(\d+)$#', $fd, $m)) {
             $fd = (int) $m[1];
@@ -83,7 +83,7 @@ final class FdServer extends EventEmitter implements ServerInterface
         if (!\is_int($fd) || $fd < 0 || $fd >= \PHP_INT_MAX) {
             throw new \InvalidArgumentException(
                 'Invalid FD number given (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
             );
         }
 
@@ -100,7 +100,7 @@ final class FdServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . SocketServer::errconst($errno),
-                $errno
+                $errno,
             );
         }
 
@@ -113,7 +113,7 @@ final class FdServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . ' (ENOTSOCK)',
-                $errno
+                $errno,
             );
         }
 
@@ -127,7 +127,7 @@ final class FdServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . ' (EISCONN)',
-                $errno
+                $errno,
             );
         }
 
@@ -182,7 +182,7 @@ final class FdServer extends EventEmitter implements ServerInterface
             try {
                 $newSocket = SocketServer::accept($master);
             } catch (\RuntimeException $e) {
-                $that->emit('error', array($e));
+                $that->emit('error', [$e]);
                 return;
             }
             $that->handleConnection($newSocket);
@@ -207,6 +207,6 @@ final class FdServer extends EventEmitter implements ServerInterface
         $connection = new Connection($socket, $this->loop);
         $connection->unix = $this->unix;
 
-        $this->emit('connection', array($connection));
+        $this->emit('connection', [$connection]);
     }
 }

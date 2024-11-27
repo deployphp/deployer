@@ -57,7 +57,7 @@ class ObjectConstraint extends Constraint
         $this->validateElement($element, $matches, $schema, $path, $properties, $additionalProp);
     }
 
-    public function validatePatternProperties($element, ?JsonPointer $path = null, $patternProperties)
+    public function validatePatternProperties($element, ?JsonPointer $path = null, $patternProperties = [])
     {
         $try = ['/', '#', '+', '~', '%'];
         $matches = [];

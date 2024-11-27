@@ -39,7 +39,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
      *
      * @return JsonPointer;
      */
-    protected function incrementPath(?JsonPointer $path = null, $i)
+    protected function incrementPath(?JsonPointer $path = null, $i = null)
     {
         $path = $path ?: new JsonPointer('');
 

@@ -28,7 +28,7 @@ Additionally, Deployer has a lot of other features, like:
 You can read more about Deployer in [Getting Started](/docs/getting-started.md).
 
 The [deploy](#deploy) task of **Magento 2** consists of:
-* [deploy:prepare](/docs/recipe/common.md#deploy-prepare) – Prepares a new release
+  * [deploy:prepare](/docs/recipe/common.md#deploy-prepare) – Prepares a new release
   * [deploy:info](/docs/recipe/deploy/info.md#deploy-info) – Displays info about deployment
   * [deploy:setup](/docs/recipe/deploy/setup.md#deploy-setup) – Prepares host for deploy
   * [deploy:lock](/docs/recipe/deploy/lock.md#deploy-lock) – Locks deploy
@@ -80,7 +80,9 @@ hosts:
 ```
 to your deploy yaml.
 
-The [artifact:build](#artifact:build) command of **Magento 2** consists of: * [build:prepare](/docs/recipe/magento2.md#build-prepare) – Prepare local artifact build
+The [artifact:build](#artifact:build) command of **Magento 2** consists of: 
+
+* [build:prepare](/docs/recipe/magento2.md#build-prepare) – Prepare local artifact build
 * [build:remove-generated](/docs/recipe/magento2.md#build-remove-generated) – Clears generated files prior to building.
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
 * [magento:compile](/docs/recipe/magento2.md#magento-compile) – Compiles magento di

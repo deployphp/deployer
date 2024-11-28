@@ -1,11 +1,11 @@
 # Selector
 
-Deployer uses the selector to choose hosts. Each host can have a set of labels. 
-Labels are key-value pairs. 
+Deployer uses the selector to choose hosts. Each host can have a set of labels.
+Labels are key-value pairs.
 
-For example, `stage: production` or `role: web`. 
+For example, `stage: production` or `role: web`.
 
-You can use labels to select hosts. For example, `dep deploy stage=production` 
+You can use labels to select hosts. For example, `dep deploy stage=production`
 will deploy to all hosts with `stage: production` label.
 
 Let's define two labels, **type** and **env**, to our hosts:
@@ -53,18 +53,8 @@ task info
 
 ## Selector syntax
 
-Label syntax is represented by [disjunctive normal form](https://en.wikipedia.org/wiki/Disjunctive_normal_form) 
-(**OR of ANDs**).
-```
-(condition1 AND condition2) OR (condition3 AND condition4)
-```
-
-Each condition in the subquery that is represented by [conjunctive normal form](https://en.wikipedia.org/wiki/Conjunctive_normal_form)
-```
-(condition1 OR condition2) AND (condition3 OR condition4)
-```
-
-### Explanation
+Selector syntax consists of a list of conditions, separated by `,` or `&`. There comma means **OR**
+and `&` means **AND**.
 
 For example, `type=web,env=prod` is a selector of: `type=web` **OR** `env=prod`.
 
@@ -93,6 +83,7 @@ for hosts with (`type: web` **OR** `type: db`) **AND** `env: prod` labels.
 $ dep info 'type=web|db & env=prod'
 task info
 [web.example.com] type:web env:prod
+[db.example.com] type:db env:prod
 ```
 
 We can also use `!=` to negate a label. For example, `type!=web` is a selector for
@@ -104,8 +95,8 @@ task info
 [db.example.com] type:db env:prod
 ```
 
-:::note 
-Deployer CLI can take a few selectors as arguments. For example, 
+:::note
+Deployer CLI can take a few selectors as arguments. For example,
 `dep info type=web env=prod` is the same as `dep info 'type=web,env=prod'`.
 
 You can install bash autocompletion for Deployer CLI, which will help you to

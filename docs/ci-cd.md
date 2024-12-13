@@ -76,6 +76,53 @@ deploy:
     - master
 ```
 
+## Bitbucket Pipelines
+
+Firstly, [generate a new SSH key and add it to your workspace for the server](https://support.atlassian.com/bitbucket-cloud/docs/configure-ssh-and-two-step-verification/). There are instructions on the SSH Keys page that can help you add this key to your server.
+
+You may also need to [define your environment variables](https://support.atlassian.com/bitbucket-cloud/docs/set-up-and-monitor-deployments/#Step-1--Define-your-environments) that you need to use in your deploy commands.
+
+Create a bitbucket-pipelines.yml file with the following content:
+
+```yml
+pipelines:
+  branches:
+    develop:
+      - stage:
+          # this is the target deployment name and it will inherit the environment from it
+          deployment: staging
+          name: Deploy Staging
+          steps:
+            - step:
+              name: Composer Install
+              image: composer/composer:2.2
+              caches:
+                - composer
+              script:
+                - composer install --quiet
+              artifacts:
+                # we need to save all these files so that they can be picked up in the actual deployment
+                - vendor/**
+            - step:
+                name: NPM Install
+                image: node:22-bullseye-slim
+                caches:
+                  - node
+                script:
+                  - npm install --silent
+                artifacts:
+                  # we need to save all these files so that they can be picked up in the actual deployment
+                  - public/build/**
+            - step:
+              name: Deployer Deploy
+              timeout: 6m # if it takes longer than this, error out
+              # @see https://hub.docker.com/r/deployphp/deployer/tags?name=v7.5
+              image: deployphp/deployer:v7.5.8
+              script:
+                # pass $DEVELOP and $STAGING variables from the "staging" deployment environment
+                - php /bin/deployer.phar deploy --branch=$DEVELOP stage=$STAGING
+```
+
 ### Deployment concurrency
 
 Only one deployment job runs at a time with the [`resource_group` keyword](https://docs.gitlab.com/ee/ci/yaml/index.html#resource_group) in .gitlab-ci.yml.

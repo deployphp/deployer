@@ -11,6 +11,7 @@ unless this is not possible or feasible with a reasonable effort.
 
 | Version | Supported          |
 |---------|--------------------|
+| 8       | :white_check_mark: |
 | 7       | :white_check_mark: |
 | < 7     | :x:                |
 

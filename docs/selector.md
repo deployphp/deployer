@@ -23,7 +23,7 @@ host('db.example.com')
         'env' => 'prod',
     ]);
 ```
-or use `->addLables()` method to add labels to the existing host.
+or use `->addLabels()` method to add labels to the existing host.
 
 Now let's define a task to check labels:
 

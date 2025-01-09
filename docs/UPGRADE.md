@@ -80,7 +80,7 @@
 9. Verbosity functions (`isDebug()`, etc) got deleted. Use `output()->isDebug()` instead.
 10. `runLocally()` commands are executed relative to the recipe file directory. This behaviour can be overridden via an environment variable:
     ```
-    DEPLOYER_ROOT=. vendor/bin/dep taskname`
+    DEPLOYER_ROOT=. vendor/bin/dep taskname
     ```
 11. Replace `local()` tasks with combination of `once()` and `runLocally()` func.
 12. Replace `locateBinaryPath()` with `which()` func.

@@ -41,6 +41,7 @@
           run('npm clean-install');
       });
       ```
+   3. Remove `shallow()` tasks options.      
 6. Third party recipes now live inside main Deployer repo in _contrib_:
    ```php
    require 'contrib/rsync.php';

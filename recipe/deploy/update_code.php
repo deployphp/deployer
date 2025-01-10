@@ -74,6 +74,10 @@ task('deploy:update_code', function () {
     $repository = get('repository');
     $target = get('target');
 
+    if (empty($repository)) {
+        throw new ConfigurationException("Missing 'repository' configuration.");
+    }
+
     $targetWithDir = $target;
     if (!empty(get('sub_directory'))) {
         $targetWithDir .= ':{{sub_directory}}';

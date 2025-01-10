@@ -76,7 +76,7 @@ before('deploy', 'chatwork:notify');
 If you want to notify about successful end of deployment add this too:
 
 ```php
-after('success', 'chatwork:notify:success');
+after('deploy:success', 'chatwork:notify:success');
 ```
 If you want to notify about failed deployment add this too:
 

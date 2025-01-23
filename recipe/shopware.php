@@ -169,7 +169,7 @@ task('sw-build-without-db:get-remote-config', static function () {
         run('{{bin/php}} ./bin/console bundle:dump');
         download('{{current_path}}/var/plugins.json', './var/');
 
-        run('{{bin/php}} ./bin/console theme:dump');
+        run('{{bin/php}} ./bin/console theme:dump -n');
         download('{{current_path}}/files/theme-config', './files/');
     });
 });

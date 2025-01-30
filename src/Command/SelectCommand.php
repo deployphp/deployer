@@ -52,7 +52,7 @@ abstract class SelectCommand extends Command
             define('NO_ANSI', 'true');
         }
         $selector = $input->getArgument('selector');
-        $selector = empty($selector) ? Deployer::get()->config->get('default_selector') : $selector;
+        $selector = empty($selector) ? Deployer::get()->config->get('default_selector', '') : $selector;
         $selectExpression = is_array($selector) ? implode(',', $selector) : $selector;
 
         if (empty($selectExpression)) {

@@ -51,7 +51,8 @@ abstract class SelectCommand extends Command
         if (!$output->isDecorated() && !defined('NO_ANSI')) {
             define('NO_ANSI', 'true');
         }
-        $selector = Deployer::get()->config->get('default_selector', $input->getArgument('selector'));
+        $selector = $input->getArgument('selector');
+        $selector = empty($selector) ? Deployer::get()->config->get('default_selector', '') : $selector;
         $selectExpression = is_array($selector) ? implode(',', $selector) : $selector;
 
         if (empty($selectExpression)) {

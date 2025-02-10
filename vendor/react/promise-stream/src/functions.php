@@ -71,7 +71,7 @@ function buffer(ReadableStreamInterface $stream, $maxLength = null)
             $reject(new \RuntimeException(
                 'An error occured on the underlying stream while buffering: ' . $e->getMessage(),
                 $e->getCode(),
-                $e,
+                $e
             ));
         });
 
@@ -151,7 +151,7 @@ function first(EventEmitterInterface $stream, $event = 'data')
                 $reject(new \RuntimeException(
                     'An error occured on the underlying stream while waiting for event: ' . $e->getMessage(),
                     $e->getCode(),
-                    $e,
+                    $e
                 ));
             });
         }
@@ -221,7 +221,7 @@ function all(EventEmitterInterface $stream, $event = 'data')
             $reject(new \RuntimeException(
                 'An error occured on the underlying stream while buffering: ' . $e->getMessage(),
                 $e->getCode(),
-                $e,
+                $e
             ));
         });
 

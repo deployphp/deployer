@@ -64,7 +64,7 @@ class ExecutableFinder
         } else {
             $dirs = array_merge(
                 explode(\PATH_SEPARATOR, getenv('PATH') ?: getenv('Path')),
-                $extraDirs,
+                $extraDirs
             );
         }
 

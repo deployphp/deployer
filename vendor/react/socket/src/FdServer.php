@@ -83,7 +83,7 @@ final class FdServer extends EventEmitter implements ServerInterface
         if (!\is_int($fd) || $fd < 0 || $fd >= \PHP_INT_MAX) {
             throw new \InvalidArgumentException(
                 'Invalid FD number given (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             );
         }
 
@@ -100,7 +100,7 @@ final class FdServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . SocketServer::errconst($errno),
-                $errno,
+                $errno
             );
         }
 
@@ -113,7 +113,7 @@ final class FdServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . ' (ENOTSOCK)',
-                $errno,
+                $errno
             );
         }
 
@@ -127,7 +127,7 @@ final class FdServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on FD ' . $fd . ': ' . $errstr . ' (EISCONN)',
-                $errno,
+                $errno
             );
         }
 

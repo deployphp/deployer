@@ -48,7 +48,7 @@ class Dumper
                 : '',
             $version->getBuild()
                 ? '+' . join('.', $version->getBuild())
-                : '',
+                : ''
         );
     }
 }

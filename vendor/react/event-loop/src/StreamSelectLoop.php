@@ -105,7 +105,7 @@ final class StreamSelectLoop implements LoopInterface
 
         unset(
             $this->readStreams[$key],
-            $this->readListeners[$key],
+            $this->readListeners[$key]
         );
     }
 
@@ -115,7 +115,7 @@ final class StreamSelectLoop implements LoopInterface
 
         unset(
             $this->writeStreams[$key],
-            $this->writeListeners[$key],
+            $this->writeListeners[$key]
         );
     }
 

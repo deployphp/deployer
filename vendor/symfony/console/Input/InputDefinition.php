@@ -390,7 +390,7 @@ class InputDefinition
                         ' %s%s%s',
                         $option->isValueOptional() ? '[' : '',
                         strtoupper($option->getName()),
-                        $option->isValueOptional() ? ']' : '',
+                        $option->isValueOptional() ? ']' : ''
                     );
                 }
 

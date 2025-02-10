@@ -36,7 +36,7 @@ final class SecureConnector implements ConnectorInterface
         if (!$parts || !isset($parts['scheme']) || $parts['scheme'] !== 'tls') {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $uri . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             ));
         }
 
@@ -44,7 +44,7 @@ final class SecureConnector implements ConnectorInterface
         $encryption = $this->streamEncryption;
         $connected = false;
         $promise = $this->connector->connect(
-            \str_replace('tls://', '', $uri),
+            \str_replace('tls://', '', $uri)
         )->then(function (ConnectionInterface $connection) use ($context, $encryption, $uri, &$promise, &$connected) {
             // (unencrypted) TCP/IP connection succeeded
             $connected = true;
@@ -66,7 +66,7 @@ final class SecureConnector implements ConnectorInterface
 
                 throw new \RuntimeException(
                     'Connection to ' . $uri . ' failed during TLS handshake: ' . $error->getMessage(),
-                    $error->getCode(),
+                    $error->getCode()
                 );
             });
         }, function (\Exception $e) use ($uri) {
@@ -75,7 +75,7 @@ final class SecureConnector implements ConnectorInterface
                 $e = new \RuntimeException(
                     'Connection to ' . $uri . $message,
                     $e->getCode(),
-                    $e,
+                    $e
                 );
 
                 // avoid garbage references by replacing all closures in call stack.
@@ -110,13 +110,13 @@ final class SecureConnector implements ConnectorInterface
                 if ($connected) {
                     $reject(new \RuntimeException(
                         'Connection to ' . $uri . ' cancelled during TLS handshake (ECONNABORTED)',
-                        \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103,
+                        \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103
                     ));
                 }
 
                 $promise->cancel();
                 $promise = null;
-            },
+            }
         );
     }
 }

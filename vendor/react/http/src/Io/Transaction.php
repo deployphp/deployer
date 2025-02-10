@@ -96,7 +96,7 @@ class Transaction
                 }
                 $timeout = -1;
                 $deferred->reject($e);
-            },
+            }
         );
 
         if ($timeout < 0) {
@@ -128,7 +128,7 @@ class Transaction
     {
         $deferred->timeout = $this->loop->addTimer($timeout, function () use ($timeout, $deferred) {
             $deferred->reject(new \RuntimeException(
-                'Request timed out after ' . $timeout . ' seconds',
+                'Request timed out after ' . $timeout . ' seconds'
             ));
             if (isset($deferred->pending)) {
                 $deferred->pending->cancel();
@@ -157,7 +157,7 @@ class Transaction
         return $promise->then(
             function (ResponseInterface $response) use ($request, $that, $deferred) {
                 return $that->onResponse($response, $request, $deferred);
-            },
+            }
         );
     }
 
@@ -175,7 +175,7 @@ class Transaction
             $stream->close();
             return \React\Promise\reject(new \OverflowException(
                 'Response body size of ' . $size . ' bytes exceeds maximum of ' . $this->maximumSize . ' bytes',
-                \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0,
+                \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0
             ));
         }
 
@@ -197,12 +197,12 @@ class Transaction
                 if ($e instanceof \OverflowException) {
                     $e = new \OverflowException(
                         'Response body size exceeds maximum of ' . $maximumSize . ' bytes',
-                        \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0,
+                        \defined('SOCKET_EMSGSIZE') ? \SOCKET_EMSGSIZE : 0
                     );
                 }
 
                 throw $e;
-            },
+            }
         );
 
         $deferred->pending = $promise;

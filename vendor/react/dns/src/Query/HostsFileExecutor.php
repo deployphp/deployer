@@ -40,7 +40,7 @@ final class HostsFileExecutor implements ExecutorInterface
 
             if ($records) {
                 return Promise\resolve(
-                    Message::createResponseWithAnswersForQuery($query, $records),
+                    Message::createResponseWithAnswersForQuery($query, $records)
                 );
             }
         } elseif ($query->class === Message::CLASS_IN && $query->type === Message::TYPE_PTR) {
@@ -55,7 +55,7 @@ final class HostsFileExecutor implements ExecutorInterface
 
                 if ($records) {
                     return Promise\resolve(
-                        Message::createResponseWithAnswersForQuery($query, $records),
+                        Message::createResponseWithAnswersForQuery($query, $records)
                     );
                 }
             }

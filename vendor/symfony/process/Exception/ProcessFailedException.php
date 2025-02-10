@@ -33,14 +33,14 @@ class ProcessFailedException extends RuntimeException
             $process->getCommandLine(),
             $process->getExitCode(),
             $process->getExitCodeText(),
-            $process->getWorkingDirectory(),
+            $process->getWorkingDirectory()
         );
 
         if (!$process->isOutputDisabled()) {
             $error .= sprintf(
                 "\n\nOutput:\n================\n%s\n\nError Output:\n================\n%s",
                 $process->getOutput(),
-                $process->getErrorOutput(),
+                $process->getErrorOutput()
             );
         }
 

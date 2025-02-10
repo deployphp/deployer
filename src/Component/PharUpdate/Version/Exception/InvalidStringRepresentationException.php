@@ -28,8 +28,8 @@ class InvalidStringRepresentationException extends VersionException
         parent::__construct(
             sprintf(
                 'The version string representation "%s" is invalid.',
-                $version,
-            ),
+                $version
+            )
         );
 
         $this->version = $version;

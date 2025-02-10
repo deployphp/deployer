@@ -13,7 +13,7 @@ set('http_user', function () {
     if (empty($httpUser)) {
         throw new \RuntimeException(
             "Can't detect http user name.\n" .
-            "Please setup `http_user` config parameter.",
+            "Please setup `http_user` config parameter."
         );
     }
 
@@ -30,7 +30,7 @@ set('http_group', function () {
     if (empty($httpGroup)) {
         throw new \RuntimeException(
             "Can't detect http user name.\n" .
-            "Please setup `http_group` config parameter.",
+            "Please setup `http_group` config parameter."
         );
     }
 

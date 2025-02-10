@@ -112,12 +112,12 @@ class ClassLoader
             if ($prepend) {
                 $this->fallbackDirsPsr0 = array_merge(
                     (array) $paths,
-                    $this->fallbackDirsPsr0,
+                    $this->fallbackDirsPsr0
                 );
             } else {
                 $this->fallbackDirsPsr0 = array_merge(
                     $this->fallbackDirsPsr0,
-                    (array) $paths,
+                    (array) $paths
                 );
             }
 
@@ -133,12 +133,12 @@ class ClassLoader
         if ($prepend) {
             $this->prefixesPsr0[$first][$prefix] = array_merge(
                 (array) $paths,
-                $this->prefixesPsr0[$first][$prefix],
+                $this->prefixesPsr0[$first][$prefix]
             );
         } else {
             $this->prefixesPsr0[$first][$prefix] = array_merge(
                 $this->prefixesPsr0[$first][$prefix],
-                (array) $paths,
+                (array) $paths
             );
         }
     }
@@ -160,12 +160,12 @@ class ClassLoader
             if ($prepend) {
                 $this->fallbackDirsPsr4 = array_merge(
                     (array) $paths,
-                    $this->fallbackDirsPsr4,
+                    $this->fallbackDirsPsr4
                 );
             } else {
                 $this->fallbackDirsPsr4 = array_merge(
                     $this->fallbackDirsPsr4,
-                    (array) $paths,
+                    (array) $paths
                 );
             }
         } elseif (!isset($this->prefixDirsPsr4[$prefix])) {
@@ -180,13 +180,13 @@ class ClassLoader
             // Prepend directories for an already registered namespace.
             $this->prefixDirsPsr4[$prefix] = array_merge(
                 (array) $paths,
-                $this->prefixDirsPsr4[$prefix],
+                $this->prefixDirsPsr4[$prefix]
             );
         } else {
             // Append directories for an already registered namespace.
             $this->prefixDirsPsr4[$prefix] = array_merge(
                 $this->prefixDirsPsr4[$prefix],
-                (array) $paths,
+                (array) $paths
             );
         }
     }

@@ -59,7 +59,7 @@ class Comparator
 
         return self::compareIdentifiers(
             $left->getPreRelease(),
-            $right->getPreRelease(),
+            $right->getPreRelease()
         );
     }
 

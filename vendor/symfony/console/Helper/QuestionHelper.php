@@ -323,7 +323,7 @@ class QuestionHelper extends Helper
                             $autocomplete($ret),
                             function ($match) use ($ret) {
                                 return '' === $ret || str_starts_with($match, $ret);
-                            },
+                            }
                         );
                         $numMatches = \count($matches);
                         $ofs = -1;

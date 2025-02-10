@@ -118,7 +118,7 @@ final class Parser
             new Query(
                 implode('.', $labels),
                 $type,
-                $class,
+                $class
             ),
             $consumed,
         ];
@@ -294,8 +294,8 @@ final class Parser
                     function ($label) {
                         return \addcslashes($label, "\0..\40.\177");
                     },
-                    $labels,
-                ),
+                    $labels
+                )
             ),
             $consumed,
         ];

@@ -114,7 +114,7 @@ class Manifest
                 $update->sha1,
                 $update->url,
                 Parser::toVersion($update->version),
-                $update->publicKey ?? null,
+                $update->publicKey ?? null
             );
         }
 
@@ -123,9 +123,9 @@ class Manifest
             function (Update $a, Update $b) {
                 return Comparator::isGreaterThan(
                     $a->getVersion(),
-                    $b->getVersion(),
+                    $b->getVersion()
                 ) ? 1 : 0;
-            },
+            }
         );
 
         return new static($updates);

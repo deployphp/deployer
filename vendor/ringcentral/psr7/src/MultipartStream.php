@@ -96,7 +96,7 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
             $element['name'],
             $element['contents'],
             isset($element['filename']) ? $element['filename'] : null,
-            isset($element['headers']) ? $element['headers'] : [],
+            isset($element['headers']) ? $element['headers'] : []
         );
 
         $stream->addStream(stream_for($this->getHeaders($headers)));
@@ -116,7 +116,7 @@ class MultipartStream extends StreamDecoratorTrait implements StreamInterface
                 ? sprintf(
                     'form-data; name="%s"; filename="%s"',
                     $name,
-                    basename($filename),
+                    basename($filename)
                 )
                 : "form-data; name=\"{$name}\"";
         }

@@ -91,7 +91,7 @@ task('workplace:notify', function () {
             parse_url(get('workplace_webhook'), PHP_URL_SCHEME),
             parse_url(get('workplace_webhook'), PHP_URL_HOST),
             $response['id'],
-            parse_url(get('workplace_webhook'), PHP_URL_QUERY),
+            parse_url(get('workplace_webhook'), PHP_URL_QUERY)
         );
         // Replace the webhook with a url that points to the created post
         set('workplace_webhook', $url);

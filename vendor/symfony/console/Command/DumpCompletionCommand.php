@@ -72,7 +72,7 @@ Or dump the script to a local file and source it:
 Add this to the end of your shell configuration file (e.g. <info>"~/.bashrc"</>):
 
     <info>eval "$({$fullCommand} completion bash)"</>
-EOH,
+EOH
             )
             ->addArgument('shell', InputArgument::OPTIONAL, 'The shell type (e.g. "bash"), the value of the "$SHELL" env var will be used if this is not given')
             ->addOption('debug', null, InputOption::VALUE_NONE, 'Tail the completion debug log')

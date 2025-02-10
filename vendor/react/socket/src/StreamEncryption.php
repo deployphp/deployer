@@ -126,12 +126,12 @@ class StreamEncryption
                 // EOF or failed without error => connection closed during handshake
                 $d->reject(new \UnexpectedValueException(
                     'Connection lost during TLS handshake (ECONNRESET)',
-                    \defined('SOCKET_ECONNRESET') ? \SOCKET_ECONNRESET : 104,
+                    \defined('SOCKET_ECONNRESET') ? \SOCKET_ECONNRESET : 104
                 ));
             } else {
                 // handshake failed with error message
                 $d->reject(new \UnexpectedValueException(
-                    $error,
+                    $error
                 ));
             }
         } else {

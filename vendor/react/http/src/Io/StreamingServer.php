@@ -121,7 +121,7 @@ final class StreamingServer extends EventEmitter
             $that->writeError(
                 $conn,
                 $e->getCode() !== 0 ? $e->getCode() : Response::STATUS_BAD_REQUEST,
-                new ServerRequest('GET', '/'),
+                new ServerRequest('GET', '/')
             );
         });
     }
@@ -200,7 +200,7 @@ final class StreamingServer extends EventEmitter
 
                 $that->emit('error', [$exception]);
                 return $that->writeError($conn, Response::STATUS_INTERNAL_SERVER_ERROR, $request);
-            },
+            }
         );
     }
 
@@ -213,7 +213,7 @@ final class StreamingServer extends EventEmitter
                 'Content-Type' => 'text/plain',
                 'Connection' => 'close', // we do not want to keep the connection open after an error
             ],
-            'Error ' . $code,
+            'Error ' . $code
         );
 
         // append reason phrase to response body if known

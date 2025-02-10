@@ -50,8 +50,8 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
         $path = $path->withPropertyPaths(
             array_merge(
                 $path->getPropertyPaths(),
-                [$i],
-            ),
+                [$i]
+            )
         );
 
         return $path;
@@ -90,7 +90,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
         $properties = null,
         $additionalProperties = null,
         $patternProperties = null,
-        $appliedDefaults = [],
+        $appliedDefaults = []
     ) {
         $validator = $this->factory->createInstanceFor('object');
         $validator->check($value, $schema, $path, $properties, $additionalProperties, $patternProperties, $appliedDefaults);
@@ -216,7 +216,7 @@ abstract class Constraint extends BaseConstraint implements ConstraintInterface
             function ($path) {
                 return sprintf(is_numeric($path) ? '[%d]' : '.%s', $path);
             },
-            $pointer->getPropertyPaths(),
+            $pointer->getPropertyPaths()
         );
 
         return trim(implode('', $result), '.');

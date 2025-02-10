@@ -118,7 +118,7 @@ final class ExtEventLoop implements LoopInterface
             unset(
                 $this->readEvents[$key],
                 $this->readListeners[$key],
-                $this->readRefs[$key],
+                $this->readRefs[$key]
             );
         }
     }
@@ -132,7 +132,7 @@ final class ExtEventLoop implements LoopInterface
             unset(
                 $this->writeEvents[$key],
                 $this->writeListeners[$key],
-                $this->writeRefs[$key],
+                $this->writeRefs[$key]
             );
         }
     }

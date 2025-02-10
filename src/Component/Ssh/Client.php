@@ -102,7 +102,7 @@ class Client
             $this->run($host, "kill -9 -$pid");
             throw new TimeoutException(
                 $command,
-                $exception->getExceededTimeout(),
+                $exception->getExceededTimeout()
             );
         }
 
@@ -115,7 +115,7 @@ class Client
                 $command,
                 $exitCode,
                 $output,
-                $process->getErrorOutput(),
+                $process->getErrorOutput()
             );
         }
 

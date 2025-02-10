@@ -88,7 +88,7 @@ class Response extends MessageTrait implements ResponseInterface
         array $headers = [],
         $body = null,
         $version = '1.1',
-        $reason = null,
+        $reason = null
     ) {
         $this->statusCode = (int) $status;
 

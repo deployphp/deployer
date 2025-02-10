@@ -60,7 +60,7 @@ class Validator extends BaseConstraint
         $validator = $this->factory->createInstanceFor('schema');
         $validator->check(
             $value,
-            $this->factory->getSchemaStorage()->getSchema($schemaURI),
+            $this->factory->getSchemaStorage()->getSchema($schemaURI)
         );
 
         $this->factory->setConfig($initialCheckMode);

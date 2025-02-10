@@ -78,7 +78,7 @@ class Rsync
             array_merge(['rsync', $flags], $options, $source, [$destination]),
             function (string $value) {
                 return $value !== '';
-            },
+            }
         ));
 
         $commandString = $command[0];
@@ -149,7 +149,7 @@ class Rsync
                 $commandString,
                 $process->getExitCode(),
                 $process->getOutput(),
-                $process->getErrorOutput(),
+                $process->getErrorOutput()
             );
         } finally {
             if ($progressBar) {

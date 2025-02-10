@@ -39,7 +39,7 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
                     throw new InvalidArgumentException('Not a writable stream');
                 }
                 return $stream;
-            },
+            }
         )->then(
             function (WritableStreamInterface $stream) use ($out, &$store, &$buffer, &$ending, &$closed) {
                 // stream is already closed, make sure to close output stream
@@ -98,7 +98,7 @@ class UnwrapWritableStream extends EventEmitter implements WritableStreamInterfa
                     $out->emit('error', [$e, $out]);
                     $out->close();
                 }
-            },
+            }
         );
     }
 

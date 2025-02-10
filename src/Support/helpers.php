@@ -92,7 +92,7 @@ function env_stringify(array $array): string
             return sprintf("%s=%s", $key, escapeshellarg((string) $value));
         },
         array_keys($array),
-        $array,
+        $array
     ));
 }
 

@@ -48,7 +48,7 @@ class TextDescriptor extends Descriptor
             str_repeat(' ', $spacingWidth),
             // + 4 = 2 spaces before <info>, 2 spaces after </info>
             preg_replace('/\s*[\r\n]\s*/', "\n" . str_repeat(' ', $totalWidth + 4), $argument->getDescription()),
-            $default,
+            $default
         ), $options);
     }
 
@@ -76,7 +76,7 @@ class TextDescriptor extends Descriptor
         $synopsis = sprintf(
             '%s%s',
             $option->getShortcut() ? sprintf('-%s, ', $option->getShortcut()) : '    ',
-            sprintf($option->isNegatable() ? '--%1$s|--no-%1$s' : '--%1$s%2$s', $option->getName(), $value),
+            sprintf($option->isNegatable() ? '--%1$s|--no-%1$s' : '--%1$s%2$s', $option->getName(), $value)
         );
 
         $spacingWidth = $totalWidth - Helper::width($synopsis);
@@ -88,7 +88,7 @@ class TextDescriptor extends Descriptor
             // + 4 = 2 spaces before <info>, 2 spaces after </info>
             preg_replace('/\s*[\r\n]\s*/', "\n" . str_repeat(' ', $totalWidth + 4), $option->getDescription()),
             $default,
-            $option->isArray() ? '<comment> (multiple values allowed)</comment>' : '',
+            $option->isArray() ? '<comment> (multiple values allowed)</comment>' : ''
         ), $options);
     }
 
@@ -255,7 +255,7 @@ class TextDescriptor extends Descriptor
     {
         $this->write(
             isset($options['raw_text']) && $options['raw_text'] ? strip_tags($content) : $content,
-            isset($options['raw_output']) ? !$options['raw_output'] : true,
+            isset($options['raw_output']) ? !$options['raw_output'] : true
         );
     }
 

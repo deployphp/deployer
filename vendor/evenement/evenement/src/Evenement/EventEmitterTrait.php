@@ -97,12 +97,12 @@ trait EventEmitterTrait
         if ($event === null) {
             $events = [];
             $eventNames = \array_unique(
-                \array_merge(\array_keys($this->listeners), \array_keys($this->onceListeners)),
+                \array_merge(\array_keys($this->listeners), \array_keys($this->onceListeners))
             );
             foreach ($eventNames as $eventName) {
                 $events[$eventName] = \array_merge(
                     isset($this->listeners[$eventName]) ? $this->listeners[$eventName] : [],
-                    isset($this->onceListeners[$eventName]) ? $this->onceListeners[$eventName] : [],
+                    isset($this->onceListeners[$eventName]) ? $this->onceListeners[$eventName] : []
                 );
             }
             return $events;
@@ -110,7 +110,7 @@ trait EventEmitterTrait
 
         return \array_merge(
             isset($this->listeners[$event]) ? $this->listeners[$event] : [],
-            isset($this->onceListeners[$event]) ? $this->onceListeners[$event] : [],
+            isset($this->onceListeners[$event]) ? $this->onceListeners[$event] : []
         );
     }
 

@@ -178,7 +178,7 @@ final class DuplexResourceStream extends EventEmitter implements DuplexStreamInt
                 0,
                 $errno,
                 $errfile,
-                $errline,
+                $errline
             );
         });
 

@@ -177,8 +177,8 @@ function some($promisesOrValues, $howMany)
                             $howMany,
                             1 === $howMany ? '' : 's',
                             $len,
-                            1 === $len ? '' : 's',
-                        ),
+                            1 === $len ? '' : 's'
+                        )
                     );
                 }
 
@@ -263,7 +263,7 @@ function map($promisesOrValues, callable $mapFunc)
                                 }
                             },
                             $reject,
-                            $notify,
+                            $notify
                         );
                 }
             }, $reject, $notify);

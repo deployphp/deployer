@@ -68,7 +68,7 @@ class Connection extends EventEmitter implements ConnectionInterface
             $resource,
             $loop,
             $clearCompleteBuffer ? -1 : null,
-            new WritableResourceStream($resource, $loop, null, $limitWriteChunks ? 8192 : null),
+            new WritableResourceStream($resource, $loop, null, $limitWriteChunks ? 8192 : null)
         );
 
         $this->stream = $resource;

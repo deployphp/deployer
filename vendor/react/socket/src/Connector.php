@@ -86,7 +86,7 @@ final class Connector implements ConnectorInterface
         } else {
             $tcp = new TcpConnector(
                 $loop,
-                \is_array($context['tcp']) ? $context['tcp'] : [],
+                \is_array($context['tcp']) ? $context['tcp'] : []
             );
         }
 
@@ -107,7 +107,7 @@ final class Connector implements ConnectorInterface
                 $factory = new DnsFactory();
                 $resolver = $factory->createCached(
                     $config,
-                    $loop,
+                    $loop
                 );
             }
 
@@ -125,7 +125,7 @@ final class Connector implements ConnectorInterface
                 $context['tcp'] = new TimeoutConnector(
                     $context['tcp'],
                     $context['timeout'],
-                    $loop,
+                    $loop
                 );
             }
 
@@ -137,7 +137,7 @@ final class Connector implements ConnectorInterface
                 $context['tls'] = new SecureConnector(
                     $tcp,
                     $loop,
-                    \is_array($context['tls']) ? $context['tls'] : [],
+                    \is_array($context['tls']) ? $context['tls'] : []
                 );
             }
 
@@ -145,7 +145,7 @@ final class Connector implements ConnectorInterface
                 $context['tls'] = new TimeoutConnector(
                     $context['tls'],
                     $context['timeout'],
-                    $loop,
+                    $loop
                 );
             }
 
@@ -170,7 +170,7 @@ final class Connector implements ConnectorInterface
         if (!isset($this->connectors[$scheme])) {
             return \React\Promise\reject(new \RuntimeException(
                 'No connector available for URI scheme "' . $scheme . '" (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             ));
         }
 

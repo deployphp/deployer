@@ -47,7 +47,7 @@ class PredefinedArray extends AbstractRetriever
         if (!array_key_exists($uri, $this->schemas)) {
             throw new \JsonSchema\Exception\ResourceNotFoundException(sprintf(
                 'The JSON schema "%s" was not found.',
-                $uri,
+                $uri
             ));
         }
 

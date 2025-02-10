@@ -76,7 +76,7 @@ task('deploy:rabbit', function () {
             $message,
             $host->getHostname(),
             $stageInfo,
-            $releasePath,
+            $releasePath
         );
     }
 

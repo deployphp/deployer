@@ -49,9 +49,9 @@ final class CachingExecutor implements ExecutorInterface
                             }
 
                             return $message;
-                        },
+                        }
                     );
-                },
+                }
             )->then($resolve, function ($e) use ($reject, &$pending) {
                 $reject($e);
                 $pending = null;

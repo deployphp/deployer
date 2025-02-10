@@ -63,7 +63,7 @@ class Uri implements UriInterface
             $this->getAuthority(),
             $this->getPath(),
             $this->query,
-            $this->fragment,
+            $this->fragment
         );
     }
 
@@ -180,7 +180,7 @@ class Uri implements UriInterface
             $parts['authority'],
             $parts['path'],
             $parts['query'],
-            $parts['fragment'],
+            $parts['fragment']
         ));
     }
 
@@ -380,7 +380,7 @@ class Uri implements UriInterface
     {
         if (!is_string($path)) {
             throw new \InvalidArgumentException(
-                'Invalid path provided; must be a string',
+                'Invalid path provided; must be a string'
             );
         }
 
@@ -399,7 +399,7 @@ class Uri implements UriInterface
     {
         if (!is_string($query) && !method_exists($query, '__toString')) {
             throw new \InvalidArgumentException(
-                'Query string must be a string',
+                'Query string must be a string'
             );
         }
 
@@ -555,7 +555,7 @@ class Uri implements UriInterface
             $port = (int) $port;
             if (1 > $port || 0xffff < $port) {
                 throw new \InvalidArgumentException(
-                    sprintf('Invalid port: %d. Must be between 1 and 65535', $port),
+                    sprintf('Invalid port: %d. Must be between 1 and 65535', $port)
                 );
             }
         }
@@ -575,7 +575,7 @@ class Uri implements UriInterface
         return preg_replace_callback(
             '/(?:[^' . self::$charUnreserved . self::$charSubDelims . ':@\/%]+|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
-            $path,
+            $path
         );
     }
 
@@ -591,7 +591,7 @@ class Uri implements UriInterface
         return preg_replace_callback(
             '/(?:[^' . self::$charUnreserved . self::$charSubDelims . '%:@\/\?]+|%(?![A-Fa-f0-9]{2}))/',
             [$this, 'rawurlencodeMatchZero'],
-            $str,
+            $str
         );
     }
 

@@ -84,7 +84,7 @@ You can also exclude one or more specific files:
 
   <info>php %command.full_name% dirname --exclude="dirname/foo.yaml" --exclude="dirname/bar.yaml"</info>
 
-EOF,
+EOF
             )
         ;
     }
@@ -257,7 +257,7 @@ EOF,
         $default = function ($directory) {
             return new \RecursiveIteratorIterator(
                 new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::FOLLOW_SYMLINKS),
-                \RecursiveIteratorIterator::LEAVES_ONLY,
+                \RecursiveIteratorIterator::LEAVES_ONLY
             );
         };
 

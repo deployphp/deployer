@@ -87,7 +87,7 @@ class Browser
         $loop = $loop ?: Loop::get();
         $this->transaction = new Transaction(
             Sender::createFromLoop($loop, $connector),
-            $loop,
+            $loop
         );
     }
 
@@ -784,7 +784,7 @@ class Browser
         }
 
         return $this->transaction->send(
-            new Request($method, $url, $headers, $body, $this->protocolVersion),
+            new Request($method, $url, $headers, $body, $this->protocolVersion)
         );
     }
 }

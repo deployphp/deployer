@@ -21,6 +21,6 @@ if ($issues) {
     }
     trigger_error(
         'Composer detected issues in your platform: ' . implode(' ', $issues),
-        E_USER_ERROR,
+        E_USER_ERROR
     );
 }

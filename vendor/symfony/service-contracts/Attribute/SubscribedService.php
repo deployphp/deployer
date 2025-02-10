@@ -27,6 +27,6 @@ final class SubscribedService
      *                         If null, use "ClassName::methodName"
      */
     public function __construct(
-        public ?string $key = null,
+        public ?string $key = null
     ) {}
 }

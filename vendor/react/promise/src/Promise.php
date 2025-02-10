@@ -51,7 +51,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                 }
 
                 $parent = null;
-            },
+            }
         );
     }
 
@@ -154,7 +154,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
 
         if ($promise === $this) {
             $promise = new RejectedPromise(
-                new \LogicException('Cannot resolve a promise with itself.'),
+                new \LogicException('Cannot resolve a promise with itself.')
             );
         }
 
@@ -242,7 +242,7 @@ class Promise implements ExtendedPromiseInterface, CancellablePromiseInterface
                         foreach ($progressHandlers as $handler) {
                             $handler($update);
                         }
-                    },
+                    }
                 );
             }
         } catch (\Throwable $e) {

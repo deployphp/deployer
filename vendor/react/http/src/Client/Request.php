@@ -81,7 +81,7 @@ class Request extends EventEmitter implements WritableStreamInterface
                     }
                 }
             },
-            [$this, 'closeError'],
+            [$this, 'closeError']
         );
 
         $this->on('close', function () use ($promise) {
@@ -168,7 +168,7 @@ class Request extends EventEmitter implements WritableStreamInterface
     public function handleEnd()
     {
         $this->closeError(new \RuntimeException(
-            "Connection ended before receiving response",
+            "Connection ended before receiving response"
         ));
     }
 
@@ -178,7 +178,7 @@ class Request extends EventEmitter implements WritableStreamInterface
         $this->closeError(new \RuntimeException(
             "An error occurred in the underlying stream",
             0,
-            $error,
+            $error
         ));
     }
 
@@ -220,7 +220,7 @@ class Request extends EventEmitter implements WritableStreamInterface
         $scheme = $this->requestData->getScheme();
         if ($scheme !== 'https' && $scheme !== 'http') {
             return Promise\reject(
-                new \InvalidArgumentException('Invalid request URL given'),
+                new \InvalidArgumentException('Invalid request URL given')
             );
         }
 

@@ -101,7 +101,7 @@ class CollectionConstraint extends Constraint
                                 $path,
                                 'The item ' . $i . '[' . $k . '] is not defined and the definition does not allow additional items',
                                 'additionalItems',
-                                ['additionalItems' => $schema->additionalItems],
+                                ['additionalItems' => $schema->additionalItems]
                             );
                         }
                     } else {

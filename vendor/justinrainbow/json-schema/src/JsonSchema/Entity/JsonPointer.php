@@ -72,7 +72,7 @@ class JsonPointer
     {
         return array_map(
             [$this, 'encodePath'],
-            $this->getPropertyPaths(),
+            $this->getPropertyPaths()
         );
     }
 

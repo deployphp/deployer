@@ -55,7 +55,7 @@ class TreeCommand extends Command
         $this->addArgument(
             'task',
             InputArgument::REQUIRED,
-            'Task to display the tree for',
+            'Task to display the tree for'
         );
     }
 

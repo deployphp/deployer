@@ -80,12 +80,12 @@ class ProcessRunner
                 $command,
                 $process->getExitCode(),
                 $process->getOutput(),
-                $process->getErrorOutput(),
+                $process->getErrorOutput()
             );
         } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line can be thrown but is absent from the phpdoc
             throw new TimeoutException(
                 $command,
-                $exception->getExceededTimeout(),
+                $exception->getExceededTimeout()
             );
         }
     }

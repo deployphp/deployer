@@ -130,7 +130,7 @@ final class ExtUvLoop implements LoopInterface
             $event,
             $this->convertFloatSecondsToMilliseconds($interval),
             0,
-            $callback,
+            $callback
         );
 
         return $timer;
@@ -154,7 +154,7 @@ final class ExtUvLoop implements LoopInterface
             $event,
             $interval,
             (int) $interval === 0 ? 1 : $interval,
-            $callback,
+            $callback
         );
 
         return $timer;
@@ -333,7 +333,7 @@ final class ExtUvLoop implements LoopInterface
 
         if (($intInterval <= 0 && $interval > 1) || $intInterval >= $maxValue) {
             throw new \InvalidArgumentException(
-                "Interval overflow, value must be lower than '{$maxValue}', but '{$interval}' passed.",
+                "Interval overflow, value must be lower than '{$maxValue}', but '{$interval}' passed."
             );
         }
 

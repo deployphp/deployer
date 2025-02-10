@@ -46,7 +46,7 @@ class Server
 
     public function __construct(
         OutputInterface $output,
-        Deployer        $deployer,
+        Deployer        $deployer
     ) {
         $this->output = $output;
         $this->deployer = $deployer;
@@ -66,7 +66,7 @@ class Server
                     Deployer::printException($this->output, $exception);
                     return new React\Http\Message\Response(500, ['Content-Type' => 'text/plain'], 'Master error: ' . $exception->getMessage());
                 }
-            },
+            }
         );
         $socket = new React\Socket\Server(0, $this->loop);
         $server->listen($socket);

@@ -80,7 +80,7 @@ task('deploy:cloudflare', function () {
 
         // get the mysterious zone id from Cloud Flare
         $zones = json_decode($makeRequest(
-            "zones?name={$config['domain']}",
+            "zones?name={$config['domain']}"
         ), true);
 
         if (!empty($zones['errors'])) {
@@ -98,8 +98,8 @@ task('deploy:cloudflare', function () {
             CURLOPT_POSTFIELDS    => json_encode(
                 [
                     'purge_everything' => true,
-                ],
+                ]
             ),
-        ],
+        ]
     );
 });

@@ -28,8 +28,8 @@ class InvalidIdentifierException extends VersionException
         parent::__construct(
             sprintf(
                 'The identifier "%s" is invalid.',
-                $identifier,
-            ),
+                $identifier
+            )
         );
 
         $this->identifier = $identifier;

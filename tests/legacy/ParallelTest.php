@@ -70,7 +70,7 @@ class ParallelTest extends AbstractTest
             [
                 'verbosity' => Output::VERBOSITY_DEBUG,
                 'interactive' => false,
-            ],
+            ]
         );
 
         $display = $this->tester->getDisplay();

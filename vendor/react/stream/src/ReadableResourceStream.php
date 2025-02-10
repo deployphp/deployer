@@ -130,7 +130,7 @@ final class ReadableResourceStream extends EventEmitter implements ReadableStrea
                 0,
                 $errno,
                 $errfile,
-                $errline,
+                $errline
             );
         });
 

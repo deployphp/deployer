@@ -156,14 +156,14 @@ final class TcpServer extends EventEmitter implements ServerInterface
         if (!$parts || !isset($parts['scheme'], $parts['host'], $parts['port']) || $parts['scheme'] !== 'tcp') {
             throw new \InvalidArgumentException(
                 'Invalid URI "' . $uri . '" given (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             );
         }
 
         if (@\inet_pton(\trim($parts['host'], '[]')) === false) {
             throw new \InvalidArgumentException(
                 'Given URI "' . $uri . '" does not contain a valid host IP (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             );
         }
 
@@ -172,7 +172,7 @@ final class TcpServer extends EventEmitter implements ServerInterface
             $errno,
             $errstr,
             \STREAM_SERVER_BIND | \STREAM_SERVER_LISTEN,
-            \stream_context_create(['socket' => $context + ['backlog' => 511]]),
+            \stream_context_create(['socket' => $context + ['backlog' => 511]])
         );
         if (false === $this->master) {
             if ($errno === 0) {
@@ -183,7 +183,7 @@ final class TcpServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on "' . $uri . '": ' . $errstr . SocketServer::errconst($errno),
-                $errno,
+                $errno
             );
         }
         \stream_set_blocking($this->master, false);

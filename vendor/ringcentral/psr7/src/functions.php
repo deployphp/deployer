@@ -238,7 +238,7 @@ function modify_request(RequestInterface $request, array $changes)
         isset($changes['body']) ? $changes['body'] : $request->getBody(),
         isset($changes['version'])
             ? $changes['version']
-            : $request->getProtocolVersion(),
+            : $request->getProtocolVersion()
     );
 }
 
@@ -282,7 +282,7 @@ function try_fopen($filename, $mode)
             'Unable to open %s using mode %s: %s',
             $filename,
             $mode,
-            $fargs[1],
+            $fargs[1]
         ));
     });
 
@@ -459,7 +459,7 @@ function parse_request($message)
         $matches[1] === '/' ? _parse_request_uri($parts[1], $data['headers']) : $parts[1],
         $data['headers'],
         $data['body'],
-        $version,
+        $version
     );
 
     return $matches[1] === '/' ? $request : $request->withRequestTarget($parts[1]);
@@ -484,7 +484,7 @@ function parse_server_request($message, array $serverParams = [])
         $request->getHeaders(),
         $request->getBody(),
         $request->getProtocolVersion(),
-        $serverParams,
+        $serverParams
     );
 }
 
@@ -512,7 +512,7 @@ function parse_response($message)
         $data['headers'],
         $data['body'],
         $subParts[1],
-        isset($parts[2]) ? $parts[2] : null,
+        isset($parts[2]) ? $parts[2] : null
     );
 }
 

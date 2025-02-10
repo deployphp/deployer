@@ -39,20 +39,20 @@ class RunCommand extends SelectCommand
         $this->addArgument(
             'command-to-run',
             InputArgument::REQUIRED,
-            'Command to run on a remote host',
+            'Command to run on a remote host'
         );
         parent::configure();
         $this->addOption(
             'option',
             'o',
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Set configuration option',
+            'Set configuration option'
         );
         $this->addOption(
             'timeout',
             't',
             Option::VALUE_REQUIRED,
-            'Command timeout in seconds',
+            'Command timeout in seconds'
         );
     }
 

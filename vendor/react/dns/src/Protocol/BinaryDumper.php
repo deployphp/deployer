@@ -98,7 +98,7 @@ final class BinaryDumper
                 case Message::TYPE_MX:
                     $binary = \pack(
                         'n',
-                        $record->data['priority'],
+                        $record->data['priority']
                     );
                     $binary .= $this->domainNameToBinary($record->data['target']);
                     break;
@@ -107,7 +107,7 @@ final class BinaryDumper
                         'n*',
                         $record->data['priority'],
                         $record->data['weight'],
-                        $record->data['port'],
+                        $record->data['port']
                     );
                     $binary .= $this->domainNameToBinary($record->data['target']);
                     break;
@@ -120,14 +120,14 @@ final class BinaryDumper
                         $record->data['refresh'],
                         $record->data['retry'],
                         $record->data['expire'],
-                        $record->data['minimum'],
+                        $record->data['minimum']
                     );
                     break;
                 case Message::TYPE_CAA:
                     $binary = \pack(
                         'C*',
                         $record->data['flag'],
-                        \strlen($record->data['tag']),
+                        \strlen($record->data['tag'])
                     );
                     $binary .= $record->data['tag'];
                     $binary .= $record->data['value'];
@@ -137,7 +137,7 @@ final class BinaryDumper
                         'CCH*',
                         $record->data['algorithm'],
                         $record->data['type'],
-                        $record->data['fingerprint'],
+                        $record->data['fingerprint']
                     );
                     break;
                 case Message::TYPE_OPT:
@@ -191,9 +191,9 @@ final class BinaryDumper
                 'stripcslashes',
                 \preg_split(
                     '/(?<!\\\\)\./',
-                    $host . '.',
-                ),
-            ),
+                    $host . '.'
+                )
+            )
         );
     }
 }

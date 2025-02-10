@@ -76,7 +76,7 @@ class Update
         string $sha1,
         string $url,
         Version $version,
-        ?string $key = null,
+        ?string $key = null
     ) {
         $this->name = $name;
         $this->publicKey = $key;
@@ -97,7 +97,7 @@ class Update
     {
         if (null === $this->file) {
             throw LogicException::create(
-                'The update file has not been downloaded.',
+                'The update file has not been downloaded.'
             );
         }
 
@@ -203,7 +203,7 @@ class Update
                 throw FileException::create(
                     'Mismatch of the SHA1 checksum (%s) of the downloaded file (%s).',
                     $this->sha1,
-                    $sha1,
+                    $sha1
                 );
             }
 

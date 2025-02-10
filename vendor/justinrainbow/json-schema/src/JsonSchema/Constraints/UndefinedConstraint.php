@@ -77,7 +77,7 @@ class UndefinedConstraint extends Constraint
                 isset($schema->properties) ? $schema->properties : null,
                 isset($schema->additionalProperties) ? $schema->additionalProperties : null,
                 isset($schema->patternProperties) ? $schema->patternProperties : null,
-                $this->appliedDefaults,
+                $this->appliedDefaults
             );
         }
 
@@ -135,7 +135,7 @@ class UndefinedConstraint extends Constraint
                         $this->addError(
                             $this->incrementPath($path ?: new JsonPointer(''), $required),
                             'The property ' . $required . ' is required',
-                            'required',
+                            'required'
                         );
                     }
                 }
@@ -147,7 +147,7 @@ class UndefinedConstraint extends Constraint
                     $this->addError(
                         $path,
                         'The property ' . $propertyName . ' is required',
-                        'required',
+                        'required'
                     );
                 }
             } else {

@@ -69,7 +69,7 @@ abstract class SelectCommand extends Command
                 $helper = $this->getHelper('question');
                 $question = new ChoiceQuestion(
                     '<question>Select hosts:</question> (comma separated)',
-                    $hostsAliases,
+                    $hostsAliases
                 );
                 $question->setMultiselect(true);
                 $question->setErrorMessage('There is no "%s" host.');

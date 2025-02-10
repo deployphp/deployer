@@ -52,7 +52,7 @@ class Builder extends Version
             $this->minor,
             $this->patch,
             $this->preRelease,
-            $this->build,
+            $this->build
         );
     }
 

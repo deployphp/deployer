@@ -18,7 +18,7 @@ class SchemaStorage implements SchemaStorageInterface
 
     public function __construct(
         ?UriRetrieverInterface $uriRetriever = null,
-        ?UriResolverInterface $uriResolver = null,
+        ?UriResolverInterface $uriResolver = null
     ) {
         $this->uriRetriever = $uriRetriever ?: new UriRetriever();
         $this->uriResolver = $uriResolver ?: new UriResolver();
@@ -130,7 +130,7 @@ class SchemaStorage implements SchemaStorageInterface
         if (!strlen($fileName)) {
             throw new UnresolvableJsonPointerException(sprintf(
                 "Could not resolve fragment '%s': no file is defined",
-                $jsonPointer->getPropertyPathAsString(),
+                $jsonPointer->getPropertyPathAsString()
             ));
         }
 
@@ -145,7 +145,7 @@ class SchemaStorage implements SchemaStorageInterface
                 throw new UnresolvableJsonPointerException(sprintf(
                     'File: %s is found, but could not resolve fragment: %s',
                     $jsonPointer->getFilename(),
-                    $jsonPointer->getPropertyPathAsString(),
+                    $jsonPointer->getPropertyPathAsString()
                 ));
             }
         }

@@ -59,7 +59,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
         } elseif (\substr($path, 0, 7) !== 'unix://') {
             throw new \InvalidArgumentException(
                 'Given URI "' . $path . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             );
         }
 
@@ -68,7 +68,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
             $errno,
             $errstr,
             \STREAM_SERVER_BIND | \STREAM_SERVER_LISTEN,
-            \stream_context_create(['socket' => $context]),
+            \stream_context_create(['socket' => $context])
         );
         if (false === $this->master) {
             // PHP does not seem to report errno/errstr for Unix domain sockets (UDS) right now.
@@ -84,7 +84,7 @@ final class UnixServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Failed to listen on Unix domain socket "' . $path . '": ' . $errstr . SocketServer::errconst($errno),
-                $errno,
+                $errno
             );
         }
         \stream_set_blocking($this->master, 0);

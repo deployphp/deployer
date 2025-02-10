@@ -1574,7 +1574,7 @@ class Process implements \IteratorAggregate
 
                 return $varCache[$m[0]] = '!' . $var . '!';
             },
-            $cmd,
+            $cmd
         );
 
         $cmd = 'cmd /V:ON /E:ON /D /C (' . str_replace("\n", ' ', $cmd) . ')';

@@ -111,7 +111,7 @@ final class ExtLibeventLoop implements LoopInterface
 
             unset(
                 $this->readEvents[$key],
-                $this->readListeners[$key],
+                $this->readListeners[$key]
             );
         }
     }
@@ -127,7 +127,7 @@ final class ExtLibeventLoop implements LoopInterface
 
             unset(
                 $this->writeEvents[$key],
-                $this->writeListeners[$key],
+                $this->writeListeners[$key]
             );
         }
     }
@@ -249,7 +249,7 @@ final class ExtLibeventLoop implements LoopInterface
             if ($timer->isPeriodic()) {
                 \event_add(
                     $timers[$timer],
-                    $timer->getInterval() * ExtLibeventLoop::MICROSECONDS_PER_SECOND,
+                    $timer->getInterval() * ExtLibeventLoop::MICROSECONDS_PER_SECOND
                 );
 
                 // Clean-up one shot timers ...

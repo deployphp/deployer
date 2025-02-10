@@ -68,7 +68,7 @@ final class UploadedFile implements UploadedFileInterface
             \UPLOAD_ERR_EXTENSION,
         ])) {
             throw new InvalidArgumentException(
-                'Invalid error code, must be an UPLOAD_ERR_* constant',
+                'Invalid error code, must be an UPLOAD_ERR_* constant'
             );
         }
         $this->error = $error;

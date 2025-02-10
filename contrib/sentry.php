@@ -92,7 +92,7 @@ task(
                 if (is_callable($value)) {
                     $value = $value($config);
                 }
-            },
+            }
         );
 
         if (
@@ -113,7 +113,7 @@ task(
                             'token' => 'd47828...',
                         ]
                     );"
-                    EXAMPLE,
+                    EXAMPLE
             );
         }
 
@@ -127,12 +127,12 @@ task(
                 'dateReleased' => $config['date_released'],
                 'projects' => $config['projects'],
                 'previousCommit' => $config['previous_commit'],
-            ],
+            ]
         );
 
         $releasesApiUrl = $config['sentry_server'] . '/api/0/organizations/' . $config['organization'] . '/releases/';
         $response = Httpie::post(
-            $releasesApiUrl,
+            $releasesApiUrl
         )
             ->setopt(CURLOPT_TIMEOUT, 10)
             ->header('Authorization', sprintf('Bearer %s', $config['token']))
@@ -148,8 +148,8 @@ task(
                 '<info>Sentry:</info> Release of version <comment>%s</comment> ' .
                 'for projects: <comment>%s</comment> created successfully.',
                 $response['version'],
-                implode(', ', array_column($response['projects'], 'slug')),
-            ),
+                implode(', ', array_column($response['projects'], 'slug'))
+            )
         );
 
         $deployData = array_filter(
@@ -159,11 +159,11 @@ task(
                 'url' => $config['url'],
                 'dateStarted' => $config['date_deploy_started'],
                 'dateFinished' => $config['date_deploy_finished'],
-            ],
+            ]
         );
 
         $response = Httpie::post(
-            $releasesApiUrl . $response['version'] . '/deploys/',
+            $releasesApiUrl . $response['version'] . '/deploys/'
         )
             ->setopt(CURLOPT_TIMEOUT, 10)
             ->header('Authorization', sprintf('Bearer %s', $config['token']))
@@ -179,8 +179,8 @@ task(
                 '<info>Sentry:</info> Deployment <comment>%s</comment> ' .
                 'for environment <comment>%s</comment> created successfully',
                 $response['id'],
-                $response['environment'],
-            ),
+                $response['environment']
+            )
         );
     }
 );
@@ -269,7 +269,7 @@ function getGitCommitsRefs(): Closure
                 array_map('trim', array_slice(explode("\n", $result), 0, 200)),
                 static function (string $line): bool {
                     return !empty($line) && strpos($line, 'commit') !== 0;
-                },
+                }
             );
 
             return array_map(
@@ -284,7 +284,7 @@ function getGitCommitsRefs(): Closure
                         'timestamp' => date(\DateTime::ATOM, (int) $timestamp),
                     ];
                 },
-                $lines,
+                $lines
             );
 
         } catch (\Deployer\Exception\RunException $e) {

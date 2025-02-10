@@ -139,8 +139,8 @@ class TypeConstraint extends Constraint
                 sprintf(
                     'No wording for %s available, expected wordings are: [%s]',
                     var_export($type, true),
-                    implode(', ', array_filter(self::$wording)),
-                ),
+                    implode(', ', array_filter(self::$wording))
+                )
             );
         }
     }

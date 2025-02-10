@@ -25,7 +25,7 @@ class LimitStream extends StreamDecoratorTrait implements StreamInterface
     public function __construct(
         StreamInterface $stream,
         $limit = -1,
-        $offset = 0,
+        $offset = 0
     ) {
         parent::__construct($stream);
         $this->setLimit($limit);
@@ -72,7 +72,7 @@ class LimitStream extends StreamDecoratorTrait implements StreamInterface
             throw new \RuntimeException(sprintf(
                 'Cannot seek to offset % with whence %s',
                 $offset,
-                $whence,
+                $whence
             ));
         }
 

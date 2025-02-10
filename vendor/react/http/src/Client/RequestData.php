@@ -32,7 +32,7 @@ class RequestData
                 'User-Agent'    => 'ReactPHP/1',
             ],
             $connectionHeaders,
-            $authHeaders,
+            $authHeaders
         );
 
         // remove all defaults that already exist in $headers

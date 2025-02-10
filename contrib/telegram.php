@@ -101,7 +101,7 @@ task('telegram:notify', function () {
             'chat_id' => get('telegram_chat_id'),
             'text' => get('telegram_text'),
             'parse_mode' => 'Markdown',
-        ],
+        ]
     );
 
     $httpie = Httpie::get($telegramUrl);
@@ -132,7 +132,7 @@ task('telegram:notify:success', function () {
             'chat_id' => get('telegram_chat_id'),
             'text' => get('telegram_success_text'),
             'parse_mode' => 'Markdown',
-        ],
+        ]
     );
 
     $httpie = Httpie::get($telegramUrl);
@@ -163,7 +163,7 @@ task('telegram:notify:failure', function () {
             'chat_id' => get('telegram_chat_id'),
             'text' => get('telegram_failure_text'),
             'parse_mode' => 'Markdown',
-        ],
+        ]
     );
 
     $httpie = Httpie::get($telegramUrl);

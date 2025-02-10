@@ -44,7 +44,7 @@ class Httpie
         if (!extension_loaded('curl')) {
             throw new \Exception(
                 "Please, install curl extension.\n" .
-                "https://php.net/curl.installation",
+                "https://php.net/curl.installation"
             );
         }
     }
@@ -202,7 +202,7 @@ class Httpie
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new HttpieException(
                 'JSON Error: ' . json_last_error_msg() . '\n' .
-                'Response: ' . $result,
+                'Response: ' . $result
             );
         }
         return $response;

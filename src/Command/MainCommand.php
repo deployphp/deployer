@@ -49,43 +49,43 @@ class MainCommand extends SelectCommand
             'option',
             'o',
             Option::VALUE_REQUIRED | Option::VALUE_IS_ARRAY,
-            'Set configuration option',
+            'Set configuration option'
         );
         $this->addOption(
             'limit',
             'l',
             Option::VALUE_REQUIRED,
-            'How many tasks to run in parallel?',
+            'How many tasks to run in parallel?'
         );
         $this->addOption(
             'no-hooks',
             null,
             Option::VALUE_NONE,
-            'Run tasks without after/before hooks',
+            'Run tasks without after/before hooks'
         );
         $this->addOption(
             'plan',
             null,
             Option::VALUE_NONE,
-            'Show execution plan',
+            'Show execution plan'
         );
         $this->addOption(
             'start-from',
             null,
             Option::VALUE_REQUIRED,
-            'Start execution from this task',
+            'Start execution from this task'
         );
         $this->addOption(
             'log',
             null,
             Option::VALUE_REQUIRED,
-            'Write log to a file',
+            'Write log to a file'
         );
         $this->addOption(
             'profile',
             null,
             Option::VALUE_REQUIRED,
-            'Write profile to a file',
+            'Write profile to a file'
         );
     }
 

@@ -43,7 +43,7 @@ final class FutureTickQueue
 
         while ($count--) {
             \call_user_func(
-                $this->queue->dequeue(),
+                $this->queue->dequeue()
             );
         }
     }

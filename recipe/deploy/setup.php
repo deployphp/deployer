@@ -11,7 +11,7 @@ task('deploy:setup', function () {
             [ -d .dep ] || mkdir .dep;
             [ -d releases ] || mkdir releases;
             [ -d shared ] || mkdir shared;
-            EOF,
+            EOF
     );
 
     // If current_path points to something like "/var/www/html", make sure it is

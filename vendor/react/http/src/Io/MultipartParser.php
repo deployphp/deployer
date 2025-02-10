@@ -156,7 +156,7 @@ final class MultipartParser
                 $name,
                 $filename,
                 isset($headers['content-type'][0]) ? $headers['content-type'][0] : null,
-                $body,
+                $body
             );
         } else {
             $this->parsePost($name, $body);
@@ -173,7 +173,7 @@ final class MultipartParser
         $this->request = $this->request->withUploadedFiles($this->extractPost(
             $this->request->getUploadedFiles(),
             $name,
-            $file,
+            $file
         ));
     }
 
@@ -193,7 +193,7 @@ final class MultipartParser
                 $size,
                 \UPLOAD_ERR_NO_FILE,
                 $filename,
-                $contentType,
+                $contentType
             );
         }
 
@@ -209,7 +209,7 @@ final class MultipartParser
                 $size,
                 \UPLOAD_ERR_INI_SIZE,
                 $filename,
-                $contentType,
+                $contentType
             );
         }
 
@@ -220,7 +220,7 @@ final class MultipartParser
                 $size,
                 \UPLOAD_ERR_FORM_SIZE,
                 $filename,
-                $contentType,
+                $contentType
             );
         }
 
@@ -229,7 +229,7 @@ final class MultipartParser
             $size,
             \UPLOAD_ERR_OK,
             $filename,
-            $contentType,
+            $contentType
         );
     }
 
@@ -243,7 +243,7 @@ final class MultipartParser
         $this->request = $this->request->withParsedBody($this->extractPost(
             $this->request->getParsedBody(),
             $name,
-            $value,
+            $value
         ));
 
         if (\strtoupper($name) === 'MAX_FILE_SIZE') {

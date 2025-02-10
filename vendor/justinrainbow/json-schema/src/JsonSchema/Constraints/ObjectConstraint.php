@@ -34,7 +34,7 @@ class ObjectConstraint extends Constraint
         $properties = null,
         $additionalProp = null,
         $patternProperties = null,
-        $appliedDefaults = [],
+        $appliedDefaults = []
     ) {
         if ($element instanceof UndefinedConstraint) {
             return;
@@ -102,7 +102,7 @@ class ObjectConstraint extends Constraint
         $schema = null,
         ?JsonPointer $path = null,
         $properties = null,
-        $additionalProp = null,
+        $additionalProp = null
     ) {
         $this->validateMinMaxConstraint($element, $schema, $path);
 

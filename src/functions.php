@@ -301,7 +301,7 @@ function fail(string $task, $do)
 function option(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null): void
 {
     Deployer::get()->inputDefinition->addOption(
-        new InputOption($name, $shortcut, $mode, $description, $default),
+        new InputOption($name, $shortcut, $mode, $description, $default)
     );
 }
 

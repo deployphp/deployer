@@ -24,7 +24,7 @@ class CachingStream extends StreamDecoratorTrait implements StreamInterface
      */
     public function __construct(
         StreamInterface $stream,
-        ?StreamInterface $target = null,
+        ?StreamInterface $target = null
     ) {
         $this->remoteStream = $stream;
         parent::__construct($target ?: new Stream(fopen('php://temp', 'r+')));
@@ -82,7 +82,7 @@ class CachingStream extends StreamDecoratorTrait implements StreamInterface
             // the remote stream to emulate overwriting bytes from that
             // position. This mimics the behavior of other PHP stream wrappers.
             $remoteData = $this->remoteStream->read(
-                $remaining + $this->skipReadBytes,
+                $remaining + $this->skipReadBytes
             );
 
             if ($this->skipReadBytes) {

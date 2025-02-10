@@ -48,7 +48,7 @@ class InitCommand extends Command
                     │                                       │
                     ╰───────────────────────────────────────╯
 
-                    EOF,
+                    EOF
             );
         } else {
             $output->write(
@@ -65,7 +65,7 @@ class InitCommand extends Command
                     │                                       │
                     ╰───────────────────────────────────────╯
 
-                    EOF,
+                    EOF
             );
         }
 
@@ -119,7 +119,7 @@ class InitCommand extends Command
                     \$json = json_decode(\$result);
                     \$host = parse_url(\$json->blog, PHP_URL_HOST);
                     file_put_contents('$tempHostFile', \$host);
-                    EOF,
+                    EOF
             );
             $php->start();
         }
@@ -151,7 +151,7 @@ class InitCommand extends Command
         $this->telemetry();
         $output->writeln(sprintf(
             '<info>Successfully created</info> <comment>%s</comment>',
-            $recipePath,
+            $recipePath
         ));
         return 0;
     }

@@ -28,8 +28,8 @@ class InvalidNumberException extends VersionException
         parent::__construct(
             sprintf(
                 'The version number "%s" is invalid.',
-                $number,
-            ),
+                $number
+            )
         );
 
         $this->number = $number;

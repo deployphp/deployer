@@ -35,13 +35,13 @@ class Request extends MessageTrait implements RequestInterface
         $uri,
         array $headers = [],
         $body = null,
-        $protocolVersion = '1.1',
+        $protocolVersion = '1.1'
     ) {
         if (is_string($uri)) {
             $uri = new Uri($uri);
         } elseif (!($uri instanceof UriInterface)) {
             throw new \InvalidArgumentException(
-                'URI must be a string or Psr\Http\Message\UriInterface',
+                'URI must be a string or Psr\Http\Message\UriInterface'
             );
         }
 
@@ -81,7 +81,7 @@ class Request extends MessageTrait implements RequestInterface
     {
         if (preg_match('#\s#', $requestTarget)) {
             throw new InvalidArgumentException(
-                'Invalid request target provided; cannot contain whitespace',
+                'Invalid request target provided; cannot contain whitespace'
             );
         }
 

@@ -105,7 +105,7 @@ final class HappyEyeBallsConnectionBuilder
         }, function ($_, $reject) use ($that, &$timer) {
             $reject(new \RuntimeException(
                 'Connection to ' . $that->uri . ' cancelled' . (!$that->connectionPromises ? ' during DNS lookup' : '') . ' (ECONNABORTED)',
-                \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103,
+                \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103
             ));
             $_ = $reject = null;
 
@@ -149,7 +149,7 @@ final class HappyEyeBallsConnectionBuilder
                 $reject(new \RuntimeException(
                     $that->error(),
                     0,
-                    $e,
+                    $e
                 ));
             }
 
@@ -211,7 +211,7 @@ final class HappyEyeBallsConnectionBuilder
                 $reject(new \RuntimeException(
                     $that->error(),
                     $e->getCode(),
-                    $e,
+                    $e
                 ));
             }
         });

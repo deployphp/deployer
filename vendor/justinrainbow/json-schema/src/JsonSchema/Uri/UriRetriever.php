@@ -142,14 +142,14 @@ class UriRetriever implements BaseUriRetrieverInterface
                 } else {
                     throw new ResourceNotFoundException(
                         'Fragment "' . $parsed['fragment'] . '" not found'
-                        . ' in ' . $uri,
+                        . ' in ' . $uri
                     );
                 }
 
                 if (!is_object($jsonSchema)) {
                     throw new ResourceNotFoundException(
                         'Fragment part "' . $pathElement . '" is no object '
-                        . ' in ' . $uri,
+                        . ' in ' . $uri
                     );
                 }
             }

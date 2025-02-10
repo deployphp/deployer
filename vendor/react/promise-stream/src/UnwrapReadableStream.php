@@ -35,7 +35,7 @@ class UnwrapReadableStream extends EventEmitter implements ReadableStreamInterfa
                     throw new InvalidArgumentException('Not a readable stream');
                 }
                 return $stream;
-            },
+            }
         )->then(
             function (ReadableStreamInterface $stream) use ($out, &$closed) {
                 // stream is already closed, make sure to close output stream
@@ -83,7 +83,7 @@ class UnwrapReadableStream extends EventEmitter implements ReadableStreamInterfa
 
                 // resume() and pause() may attach to this promise, so ensure we actually reject here
                 throw $e;
-            },
+            }
         );
     }
 

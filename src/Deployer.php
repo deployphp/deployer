@@ -92,7 +92,7 @@ class Deployer extends Container
          ******************************/
 
         $console->getDefinition()->addOption(
-            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'Recipe file path'),
+            new InputOption('file', 'f', InputOption::VALUE_REQUIRED, 'Recipe file path')
         );
 
         $this['console'] = function () use ($console) {
@@ -166,7 +166,7 @@ class Deployer extends Container
         $this['server'] = function ($c) {
             return new Server(
                 $c['output'],
-                $this,
+                $this
             );
         };
         $this['master'] = function ($c) {
@@ -174,7 +174,7 @@ class Deployer extends Container
                 $c['input'],
                 $c['output'],
                 $c['server'],
-                $c['messenger'],
+                $c['messenger']
             );
         };
         $this['importer'] = function () {

@@ -33,7 +33,7 @@ final class DnsConnector implements ConnectorInterface
         if (!$parts || !isset($parts['host'])) {
             return Promise\reject(new \InvalidArgumentException(
                 'Given URI "' . $original . '" is invalid (EINVAL)',
-                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
             ));
         }
 
@@ -55,14 +55,14 @@ final class DnsConnector implements ConnectorInterface
                     $resolved = $ip;
 
                     return $promise = $connector->connect(
-                        Connector::uri($parts, $host, $ip),
+                        Connector::uri($parts, $host, $ip)
                     )->then(null, function (\Exception $e) use ($uri) {
                         if ($e instanceof \RuntimeException) {
                             $message = \preg_replace('/^(Connection to [^ ]+)[&?]hostname=[^ &]+/', '$1', $e->getMessage());
                             $e = new \RuntimeException(
                                 'Connection to ' . $uri . ' failed: ' . $message,
                                 $e->getCode(),
-                                $e,
+                                $e
                             );
 
                             // avoid garbage references by replacing all closures in call stack.
@@ -98,7 +98,7 @@ final class DnsConnector implements ConnectorInterface
                 if ($resolved === null) {
                     $reject(new \RuntimeException(
                         'Connection to ' . $uri . ' cancelled during DNS lookup (ECONNABORTED)',
-                        \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103,
+                        \defined('SOCKET_ECONNABORTED') ? \SOCKET_ECONNABORTED : 103
                     ));
                 }
 
@@ -111,7 +111,7 @@ final class DnsConnector implements ConnectorInterface
                     $promise->cancel();
                     $promise = null;
                 }
-            },
+            }
         );
     }
 }

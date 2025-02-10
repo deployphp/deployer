@@ -34,7 +34,7 @@ class ServerRequest extends Request implements ServerRequestInterface
         array $headers = [],
         $body = null,
         $protocolVersion = '1.1',
-        $serverParams = [],
+        $serverParams = []
     ) {
         parent::__construct($method, $uri, $headers, $body, $protocolVersion);
         $this->serverParams = $serverParams;

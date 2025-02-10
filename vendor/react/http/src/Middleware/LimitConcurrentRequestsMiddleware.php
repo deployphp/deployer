@@ -125,7 +125,7 @@ final class LimitConcurrentRequestsMiddleware
             // replace with buffering body to ensure any readable events will be buffered
             $request = $request->withBody(new HttpBodyStream(
                 $body,
-                $size,
+                $size
             ));
         }
 

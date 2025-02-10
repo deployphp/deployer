@@ -48,7 +48,7 @@ class Parser
     public static function toBuilder(string $version): Builder
     {
         return Builder::create()->importComponents(
-            self::toComponents($version),
+            self::toComponents($version)
         );
     }
 
@@ -111,7 +111,7 @@ class Parser
             $components['minor'],
             $components['patch'],
             $components['pre'],
-            $components['build'],
+            $components['build']
         );
     }
 }

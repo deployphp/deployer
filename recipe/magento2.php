@@ -372,7 +372,7 @@ desc('Packages all relevant files in an artifact.');
 task('artifact:package', function () {
     if (!test('[ -f {{artifact_excludes_file}} ]')) {
         throw new GracefulShutdownException(
-            "No artifact excludes file provided, provide one at artifacts/excludes or change location",
+            "No artifact excludes file provided, provide one at artifacts/excludes or change location"
         );
     }
     run('{{bin/tar}} --exclude-from={{artifact_excludes_file}} -czf {{artifact_path}} -C {{release_or_current_path}} .');

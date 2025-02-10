@@ -41,8 +41,10 @@ set('crontab:use_sudo', false);
 desc('Sync crontab jobs');
 task('crontab:sync', function () {
     $cronJobsLocal = array_map(
-        fn($job) => parse($job),
-        get('crontab:jobs', []),
+        function ($job) {
+            return parse($job);
+        },
+        get('crontab:jobs', [])
     );
 
     if (count($cronJobsLocal) == 0) {

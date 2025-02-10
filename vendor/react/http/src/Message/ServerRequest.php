@@ -55,7 +55,7 @@ final class ServerRequest extends Request implements ServerRequestInterface
         array $headers = [],
         $body = '',
         $version = '1.1',
-        $serverParams = [],
+        $serverParams = []
     ) {
         $stream = null;
         if (\is_string($body)) {

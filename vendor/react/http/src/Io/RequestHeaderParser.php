@@ -59,7 +59,7 @@ class RequestHeaderParser extends EventEmitter
                 $request = $that->parseRequest(
                     (string) \substr($buffer, 0, $endOfHeader + 2),
                     $conn->getRemoteAddress(),
-                    $conn->getLocalAddress(),
+                    $conn->getLocalAddress()
                 );
             } catch (Exception $exception) {
                 $buffer = '';
@@ -224,7 +224,7 @@ class RequestHeaderParser extends EventEmitter
             $fields,
             '',
             $start['version'],
-            $serverParams,
+            $serverParams
         );
 
         // only assign request target if it is not in origin-form (happy path for most normal requests)

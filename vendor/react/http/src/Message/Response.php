@@ -148,14 +148,14 @@ final class Response extends Psr7Response implements StatusCodeInterface
     {
         $json = @\json_encode(
             $data,
-            (\defined('JSON_PRETTY_PRINT') ? \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE : 0) | (\defined('JSON_PRESERVE_ZERO_FRACTION') ? \JSON_PRESERVE_ZERO_FRACTION : 0),
+            (\defined('JSON_PRETTY_PRINT') ? \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE : 0) | (\defined('JSON_PRESERVE_ZERO_FRACTION') ? \JSON_PRESERVE_ZERO_FRACTION : 0)
         );
 
         // throw on error, now `false` but used to be `(string) "null"` before PHP 5.5
         if ($json === false || (\PHP_VERSION_ID < 50500 && \json_last_error() !== \JSON_ERROR_NONE)) {
             throw new \InvalidArgumentException(
                 'Unable to encode given data as JSON' . (\function_exists('json_last_error_msg') ? ': ' . \json_last_error_msg() : ''),
-                \json_last_error(),
+                \json_last_error()
             );
         }
 
@@ -270,7 +270,7 @@ final class Response extends Psr7Response implements StatusCodeInterface
         array $headers = [],
         $body = '',
         $version = '1.1',
-        $reason = null,
+        $reason = null
     ) {
         if (\is_string($body)) {
             $body = new BufferedBody($body);
@@ -285,7 +285,7 @@ final class Response extends Psr7Response implements StatusCodeInterface
             $headers,
             $body,
             $version,
-            $reason,
+            $reason
         );
     }
 }

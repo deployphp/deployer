@@ -54,7 +54,7 @@ final class SocketServer extends EventEmitter implements ServerInterface
             if (preg_match('#^(?:\w+://)?\d+$#', $uri)) {
                 throw new \InvalidArgumentException(
                     'Invalid URI given (EINVAL)',
-                    \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22,
+                    \defined('SOCKET_EINVAL') ? \SOCKET_EINVAL : 22
                 );
             }
 
@@ -117,7 +117,7 @@ final class SocketServer extends EventEmitter implements ServerInterface
 
             throw new \RuntimeException(
                 'Unable to accept new connection: ' . $errstr . self::errconst($errno),
-                $errno,
+                $errno
             );
         }
 

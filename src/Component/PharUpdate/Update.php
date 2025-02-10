@@ -1,4 +1,4 @@
-<?php // lint >= 8.0
+<?php
 
 declare(strict_types=1);
 
@@ -101,7 +101,7 @@ class Update
             );
         }
 
-        $mode = 0o755;
+        $mode = 0755;
 
         if (file_exists($file)) {
             $mode = fileperms($file) & 511;

@@ -73,6 +73,7 @@ desc('Updates code');
 task('deploy:update_code', function () {
     $strategy = get('update_code_strategy');
     $target = get('target');
+    $git = get('bin/git');
 
     $targetWithDir = $target;
     if (!empty(get('sub_directory'))) {
@@ -80,16 +81,14 @@ task('deploy:update_code', function () {
     }
 
     if ($strategy === 'local_archive') {
-        $host = currentHost()->connectionString();
-
-        // Copy to release_path.
-        runLocally(<<<BASH
-            git archive {$targetWithDir} | ssh {$host} "tar -x -f - -C {{release_path}} 2>&1"
-            BASH);
+        runLocally("$git archive $targetWithDir -o archive.tar");
+        upload('archive.tar', '{{release_path}}/archive.tar');
+        run("tar -xf {{release_path}}/archive.tar -C {{release_path}}");
+        run("rm {{release_path}}/archive.tar");
+        unlink('archive.tar');
 
         $rev = escapeshellarg(runLocally("git rev-list $target -1"));
     } else {
-        $git = get('bin/git');
         $repository = get('repository');
 
         if (empty($repository)) {

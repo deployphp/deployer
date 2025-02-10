@@ -42,5 +42,5 @@ task(
         'deploy:prepare',
         'deploy:vendors',
         'deploy:publish',
-    ],
+    ]
 );

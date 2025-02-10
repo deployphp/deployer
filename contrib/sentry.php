@@ -182,7 +182,7 @@ task(
                 $response['environment'],
             ),
         );
-    },
+    }
 );
 
 function getPreviousReleaseRevision()

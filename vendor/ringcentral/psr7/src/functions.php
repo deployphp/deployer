@@ -351,7 +351,7 @@ function copy_to_string(StreamInterface $stream, $maxLen = -1)
 function copy_to_stream(
     StreamInterface $source,
     StreamInterface $dest,
-    $maxLen = -1,
+    $maxLen = -1
 ) {
     if ($maxLen === -1) {
         while (!$source->eof()) {
@@ -389,7 +389,7 @@ function copy_to_stream(
 function hash(
     StreamInterface $stream,
     $algo,
-    $rawOutput = false,
+    $rawOutput = false
 ) {
     $pos = $stream->tell();
 

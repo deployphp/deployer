@@ -42,12 +42,12 @@
     ],
     "require": {
         "php": ">=8.2",
-        "symfony/console": "^7.1",
-        "symfony/process": "^7.1",
-        "symfony/yaml": "^7.1"
+        "symfony/console": "^7.2",
+        "symfony/process": "^7.2",
+        "symfony/yaml": "^7.2"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.64",
+        "friendsofphp/php-cs-fixer": "^3.68",
         "pestphp/pest": "^3.3",
         "phpstan/phpstan": "^1.4",
         "phpunit/php-code-coverage": "^11.0",

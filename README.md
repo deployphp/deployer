@@ -33,6 +33,7 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 ## Additional resources
 
 * [GitHub Action for Deployer](https://github.com/deployphp/action)
+* [Deployer Docker Image](https://hub.docker.com/r/deployphp/deployer)
 
 ## License
 [MIT](https://github.com/deployphp/deployer/blob/master/LICENSE)

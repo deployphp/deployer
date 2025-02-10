@@ -20,7 +20,6 @@ jobs:
         with:
           php-version: ${{ matrix.php-versions }}
           tools: cs2pr, parallel-lint
-          extensions: mbstring, intl
 
       - name: Lint sources
         run: composer exec --no-interaction -- parallel-lint bin/ contrib/ recipe/ src/ tests/ --checkstyle | cs2pr

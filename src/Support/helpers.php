@@ -71,7 +71,8 @@ function array_merge_alternate(array $original, array $override)
  * @param array $array The array to check.
  * @return bool Returns true if the array is a list, false otherwise.
  */
-function array_is_list(array $array): bool {
+function array_is_list(array $array): bool
+{
     $keys = array_keys($array);
     return $keys === array_keys($keys);
 }

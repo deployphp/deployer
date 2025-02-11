@@ -980,16 +980,3 @@ function fetch(string $url, string $method = 'get', array $headers = [], ?string
     }
     return $http->send($info);
 }
-
-/**
- * Polyfill for the array_is_list function introduced in PHP 8.1.
- *
- * @param array $array The array to check.
- * @return bool Returns true if the array is a list, false otherwise.
- */
-if (!function_exists('array_is_list')) {
-    function array_is_list(array $array): bool {
-        $keys = array_keys($array);
-        return $keys === array_keys($keys);
-    }
-}

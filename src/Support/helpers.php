@@ -66,6 +66,17 @@ function array_merge_alternate(array $original, array $override)
 }
 
 /**
+ * Polyfill for the array_is_list function introduced in PHP 8.1.
+ *
+ * @param array $array The array to check.
+ * @return bool Returns true if the array is a list, false otherwise.
+ */
+function array_is_list(array $array): bool {
+    $keys = array_keys($array);
+    return $keys === array_keys($keys);
+}
+
+/**
  * Determines if the given string contains the given value.
  */
 function str_contains(string $haystack, string $needle): bool

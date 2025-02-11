@@ -10,6 +10,8 @@ use Deployer\Exception\GracefulShutdownException;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
 
+use function Deployer\Support\array_is_list;
+
 const CONFIG_IMPORT_NEEDED_EXIT_CODE = 2;
 const DB_UPDATE_NEEDED_EXIT_CODE = 2;
 const MAINTENANCE_MODE_ACTIVE_OUTPUT_MSG = 'maintenance mode is active';

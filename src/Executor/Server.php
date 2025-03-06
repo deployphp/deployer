@@ -150,7 +150,7 @@ class Server
     private function readClientRequest($clientSocket)
     {
         $request = '';
-        while (($chunk = @fread($clientSocket, 8192)) !== false) {
+        while (($chunk = @fread($clientSocket, 16384)) !== false) {
             $request .= $chunk;
             if (strpos($request, "\r\n\r\n") !== false) {
                 break;

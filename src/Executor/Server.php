@@ -153,7 +153,7 @@ class Server
         while (($chunk = @fread($clientSocket, 1024)) !== false) {
             $request .= $chunk;
             if (strpos($request, "\r\n\r\n") !== false) {
-                break;
+                //break;
             }
         }
 

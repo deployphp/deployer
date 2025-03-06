@@ -149,16 +149,10 @@ class Server
 
     private function readClientRequest($clientSocket)
     {
-        $request = '';
-        while (($chunk = @fread($clientSocket, 16384)) !== false) {
-            $request .= $chunk;
-            if (strpos($request, "\r\n\r\n") !== false) {
-                break;
-            }
-        }
+        $request = stream_get_contents($clientSocket);
 
-        if ($chunk === false && !feof($clientSocket)) {
-            throw new Exception("Socket read failed");
+        if ($request === false) {
+            throw new Exception('Socket read failed');
         }
 
         return $request;

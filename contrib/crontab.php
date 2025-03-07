@@ -101,7 +101,7 @@ task('crontab:remove', function () {
         // Remove the existing section
         array_splice($cronJobs, $start + 1, $end - $start - 1);
         writeln("Crontab: Found existing section, removed jobs");
-    } else if (count($cronJobsLocal) > 0) {
+    } elseif (count($cronJobsLocal) > 0) {
         $foundJobs = false;
         // Remove individual jobs if no section is present
         foreach ($cronJobs as $index => $cronJob) {

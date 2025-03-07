@@ -82,3 +82,11 @@ Sync crontab jobs.
 
 
 
+### crontab\:remove {#crontab-remove}
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L85)
+
+Remove crontab jobs.
+
+
+
+

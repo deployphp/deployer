@@ -81,6 +81,49 @@ task('crontab:sync', function () {
     setRemoteCrontab($cronJobs);
 });
 
+desc('Remove crontab jobs');
+task('crontab:remove', function () {
+    $cronJobsLocal = array_map(
+        fn($job) => parse($job),
+        get('crontab:jobs', []),
+    );
+
+    $cronJobs = getRemoteCrontab();
+    $identifier = get('crontab:identifier');
+    $sectionStart = "###< $identifier";
+    $sectionEnd = "###> $identifier";
+
+    // Find our cronjob section
+    $start = array_search($sectionStart, $cronJobs);
+    $end = array_search($sectionEnd, $cronJobs);
+
+    if ($start && $end) {
+        // Remove the existing section
+        array_splice($cronJobs, $start + 1, $end - $start - 1);
+        writeln("Crontab: Found existing section, removed jobs");
+    } elseif (count($cronJobsLocal) > 0) {
+        $foundJobs = false;
+        // Remove individual jobs if no section is present
+        foreach ($cronJobs as $index => $cronJob) {
+            if (in_array($cronJob, $cronJobsLocal)) {
+                unset($cronJobs[$index]);
+                $foundJobs = true;
+            }
+        }
+        if ($foundJobs) {
+            writeln("Crontab: Found existing jobs in crontab, removed jobs");
+        } else {
+            writeln("Crontab: No existing jobs in crontab, skipping");
+            return;
+        }
+    } else {
+        writeln("Crontab: Found no section and crontab:jobs is not configured, skipping");
+        return;
+    }
+
+    setRemoteCrontab($cronJobs);
+});
+
 function setRemoteCrontab(array $lines): void
 {
     $sudo = get('crontab:use_sudo') ? 'sudo' : '';

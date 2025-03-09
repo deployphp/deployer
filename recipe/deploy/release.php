@@ -179,14 +179,16 @@ task('releases', function () {
             } else {
                 $status = "<info>$release</info>";
             }
+            try {
+                $revision = run("cat releases/$release/REVISION");
+            } catch (\Throwable $e) {
+                $revision = 'unknown';
+            }
+        } else {
+            $revision = 'unknown';
         }
         if ($release === $currentRelease) {
             $status .= ' (current)';
-        }
-        try {
-            $revision = run("cat releases/$release/REVISION");
-        } catch (\Throwable $e) {
-            $revision = 'unknown';
         }
         $table[] = [
             $date->format("Y-m-d H:i:s"),

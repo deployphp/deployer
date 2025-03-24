@@ -71,6 +71,13 @@ set('writable_dirs', [
     'var',
 ]);
 
+// This sets the shopware version to the version of the shopware console command.
+set('shopware_version', function () {
+    $versionOutput = run('cd {{release_path}} && {{bin/console}} -V');
+    preg_match('/(\d+\.\d+\.\d+\.\d+)/', $versionOutput, $matches);
+    return $matches[0] ?? '6.6.0';
+});
+
 // This task remotely executes the `cache:clear` console command on the target server.
 task('sw:cache:clear', static function () {
     run('cd {{release_path}} && {{bin/console}} cache:clear --no-warmup');
@@ -80,7 +87,11 @@ task('sw:cache:clear', static function () {
 // visits the website, doesn't have to wait for the cache to be built up.
 task('sw:cache:warmup', static function () {
     run('cd {{release_path}} && {{bin/console}} cache:warmup');
-    run('cd {{release_path}} && {{bin/console}} http:cache:warm:up');
+
+    // Shopware 6.6+ dropped support for the http:cache:warmup command, so only execute it if the version is less than 6.6
+    if (version_compare(get('shopware_version'), '6.6.0') < 0) {
+        run('cd {{release_path}} && {{bin/console}} http:cache:warm:up');
+    }
 });
 
 // This task remotely executes the `database:migrate` console command on the target server.

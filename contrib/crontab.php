@@ -24,6 +24,8 @@ add('crontab:jobs', [
 
 namespace Deployer;
 
+use function Deployer\Support\escape_shell_argument;
+
 // Get path to bin
 set('bin/crontab', function () {
     return which('crontab');
@@ -135,7 +137,7 @@ function setRemoteCrontab(array $lines): void
     }
 
     foreach ($lines as $line) {
-        run("echo '" . $line . "' >> $tmpCrontabPath");
+        run("echo " . escape_shell_argument($line) . " >> $tmpCrontabPath");
     }
 
     run("$sudo {{bin/crontab}} " . $tmpCrontabPath);

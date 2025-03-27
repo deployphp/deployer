@@ -61,7 +61,6 @@ task('grafana:annotation', function () {
 
     Httpie::post($config['url'])
         ->header('Authorization', 'Bearer ' . $config['token'])
-        ->header('Content-type', 'application/json')
         ->jsonBody($params)
         ->send();
 });

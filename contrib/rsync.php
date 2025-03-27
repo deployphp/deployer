@@ -237,12 +237,14 @@ task('rsync', function () {
         throw new \RuntimeException('You need to specify a destination path.');
     }
 
+    $rsyncFlags = (is_string($config['flags']) && trim($config['flags']) !== '') ? "-{$config['flags']}" : '';
+
     $host = Context::get()->getHost();
     if ($host instanceof Localhost) {
-        runLocally("rsync -{$config['flags']} {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$dst/'", $config);
+        runLocally("rsync {$rsyncFlags} {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$dst/'", $config);
         return;
     }
 
     $sshArguments = $host->connectionOptionsString();
-    runLocally("rsync -{$config['flags']} -e 'ssh $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '{$host->connectionString()}:$dst/'", $config);
+    runLocally("rsync {$rsyncFlags} -e 'ssh $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '{$host->connectionString()}:$dst/'", $config);
 });

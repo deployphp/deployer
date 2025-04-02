@@ -2,6 +2,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Helper\Table;
 
@@ -70,7 +71,14 @@ set('release_path', function () {
 
 // Current release revision. Usually a git hash.
 set('release_revision', function () {
-    return run('cat {{release_path}}/REVISION');
+    if (get('update_code_strategy') === 'archive') {
+        return run('cat {{release_path}}/REVISION');
+    }
+    if (get('update_code_strategy') === 'clone') {
+        return trim(run(sprintf('cd {{release_path}} && %s rev-parse HEAD', get('bin/git'))));
+    }
+
+    throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
 });
 
 // Return the release path during a deployment
@@ -183,9 +191,11 @@ task('releases', function () {
         if ($release === $currentRelease) {
             $status .= ' (current)';
         }
-        try {
+        if (test("[ -f releases/$release/REVISION ]")) {
             $revision = run("cat releases/$release/REVISION");
-        } catch (\Throwable $e) {
+        } elseif (test("[ -d releases/$release/.git ]")) {
+            $revision = trim(run(sprintf('cd releases/%s && %s rev-parse HEAD', $release, get('bin/git'))));
+        } else {
             $revision = 'unknown';
         }
         $table[] = [

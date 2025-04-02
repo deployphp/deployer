@@ -17,10 +17,12 @@ task('deploy:check_remote', function () {
         if (!test('[ -f {{current_path}}/REVISION ]')) {
             return;
         }
+        $lastDeployedRevision = run('cat {{current_path}}/REVISION');
     } elseif (get('update_code_strategy') === 'clone') {
         if (!test('[ -d {{current_path}}/.git ]')) {
             return;
         }
+        $lastDeployedRevision = trim(run(sprintf('cd {{current_path}} && %s rev-parse HEAD', get('bin/git'))));
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }
@@ -50,15 +52,6 @@ task('deploy:check_remote', function () {
 
     // Compare commit hashes. We use strpos to support short versions.
     $targetRevision = trim($targetRevision);
-
-    if (get('update_code_strategy') === 'archive') {
-        $lastDeployedRevision = run('cat {{current_path}}/REVISION');
-    } elseif (get('update_code_strategy') === 'clone') {
-        $lastDeployedRevision = trim(run(sprintf('cd {{current_path}} && %s rev-parse HEAD', get('bin/git'))));
-    } else {
-        throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
-    }
-
     if ($targetRevision && strpos($lastDeployedRevision, $targetRevision) === 0) {
         throw new GracefulShutdownException("Already up-to-date.");
     }

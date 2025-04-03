@@ -23,12 +23,13 @@ task('provision:server', function () {
 
 desc('Provision website');
 task('provision:website', function () {
+    set('deploy_path', run("realpath {{deploy_path}}"));
+
     $restoreBecome = become('deployer');
 
     run("[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}}");
     run("chown -R deployer:deployer {{deploy_path}}");
 
-    set('deploy_path', run("realpath {{deploy_path}}"));
     cd('{{deploy_path}}');
 
     run("[ -d log ] || mkdir log");

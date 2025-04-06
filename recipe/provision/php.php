@@ -11,7 +11,7 @@ set('php_version', function () {
         $defaultPhpVersion = "$parts[0].$parts[1]";
     }
 
-    return ask(' What PHP version to install? ', $defaultPhpVersion, ['5.6', '7.4', '8.0', '8.1', '8.2']);
+    return ask(' What PHP version to install? ', $defaultPhpVersion, ['5.6', '7.4', '8.0', '8.1', '8.2', '8.3']);
 });
 
 desc('Installs PHP packages');

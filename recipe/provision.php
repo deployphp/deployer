@@ -123,8 +123,17 @@ desc('Adds repositories and update');
 task('provision:update', function () {
     set('remote_user', get('provision_user'));
 
+    // Update before installing anything
+    run('apt-get update', env: ['DEBIAN_FRONTEND' => 'noninteractive']);
+
+    // Pre-requisites
+    run('apt install -y curl gpg software-properties-common', env: ['DEBIAN_FRONTEND' => 'noninteractive']);
+
     // PHP
-    run('apt-add-repository ppa:ondrej/php -y', env: ['DEBIAN_FRONTEND' => 'noninteractive']);
+    run('apt-add-repository ppa:ondrej/php -y', env: [
+        'DEBIAN_FRONTEND' => 'noninteractive',
+        'LC_ALL' => 'C.UTF-8',
+    ]);
 
     // Caddy
     run("curl -1sLf 'https://dl.cloudsmith.io/public/caddy/stable/gpg.key' | gpg --dearmor --yes -o /usr/share/keyrings/caddy-stable-archive-keyring.gpg");

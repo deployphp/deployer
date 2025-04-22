@@ -50,7 +50,6 @@ set('shared_dirs', [
     'files',
     'var/log',
     'public/media',
-    'public/theme',
     'public/thumbnail',
     'public/sitemap',
 ]);

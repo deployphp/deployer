@@ -448,6 +448,7 @@ task('deploy:additional-shared', function () {
  * ```php
  * after('deploy:shared', 'magento:set_cache_prefix');
  * after('deploy:magento', 'magento:cleanup_cache_prefix');
+ * before('magento:compile', 'magento:cache:flush');
  * ```
  **/
 desc('Update cache id_prefix');

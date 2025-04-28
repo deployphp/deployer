@@ -11,7 +11,7 @@ task('provision:node', function () {
     set('remote_user', get('provision_user'));
 
     if (has('nodejs_version')) {
-        throw new \RuntimeException('nodejs_version is deprecated, use node_version_version instead.');
+        throw new \RuntimeException('nodejs_version is deprecated, use node_version instead.');
     }
     $arch = run('uname -m');
 

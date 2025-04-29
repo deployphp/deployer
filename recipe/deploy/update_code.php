@@ -45,6 +45,7 @@ set('target', function () {
 // Can be one of:
 // - archive
 // - clone (if you need the origin repository `.git` dir in your {{release_path}})
+// - close_submodule (same as `clone`, but running `git submodule init` and `git submodule update` as well)
 set('update_code_strategy', 'archive');
 
 // Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.
@@ -114,6 +115,13 @@ task('deploy:update_code', function () {
         run("$git clone -l $bare .");
         run("$git remote set-url origin $repository", env: $env);
         run("$git checkout --force $target");
+    } elseif (get('update_code_strategy') === 'clone_submodule') {
+        cd('{{release_path}}');
+        run("$git clone -l $bare .");
+        run("$git remote set-url origin $repository", env: $env);
+        run("$git checkout --force $target");
+        run("$git submodule init");
+        run("$git submodule update");
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }

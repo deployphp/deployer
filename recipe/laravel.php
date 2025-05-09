@@ -22,7 +22,8 @@ set('writable_dirs', [
 ]);
 set('log_files', 'storage/logs/*.log');
 set('laravel_version', function () {
-    $result = run('{{bin/php}} {{release_or_current_path}}/artisan --version');
+    $artisan = artisan_path();
+    $result = run("{{bin/php}} $artisan --version");
     preg_match_all('/(\d+\.?)+/', $result, $matches);
     return $matches[0][0] ?? 5.5;
 });
@@ -67,7 +68,7 @@ function artisan($command, $options = [])
             return;
         }
 
-        $artisan = '{{release_or_current_path}}/artisan';
+        $artisan = artisan_path();
 
         // Run the artisan command.
         $output = run("{{bin/php}} $artisan $command");
@@ -77,6 +78,15 @@ function artisan($command, $options = [])
             writeln("<info>$output</info>");
         }
     };
+}
+
+function artisan_path()
+{
+    if (has('artisan_path')) {
+        return '{{artisan_path}}/artisan';
+    }
+
+    return '{{release_or_current_path}}/artisan';
 }
 
 function laravel_version_compare($version, $comparator)

@@ -45,7 +45,7 @@ set('target', function () {
 // Can be one of:
 // - archive
 // - clone (if you need the origin repository `.git` dir in your {{release_path}})
-// - close_submodule (same as `clone`, but running `git submodule init` and `git submodule update` as well)
+// - clone_submodule (same as `clone`, but running `git submodule init` and `git submodule update` as well)
 set('update_code_strategy', 'archive');
 
 // Sets environment variable _GIT_SSH_COMMAND_ for `git clone` command.

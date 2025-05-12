@@ -21,8 +21,9 @@ set('writable_dirs', [
     'storage/logs',
 ]);
 set('log_files', 'storage/logs/*.log');
+set('bin/artisan', '{{release_or_current_path}}/artisan');
 set('laravel_version', function () {
-    $result = run('{{bin/php}} {{release_or_current_path}}/artisan --version');
+    $result = run("{{bin/php}} {{bin/artisan}} --version");
     preg_match_all('/(\d+\.?)+/', $result, $matches);
     return $matches[0][0] ?? 5.5;
 });
@@ -67,10 +68,8 @@ function artisan($command, $options = [])
             return;
         }
 
-        $artisan = '{{release_or_current_path}}/artisan';
-
         // Run the artisan command.
-        $output = run("{{bin/php}} $artisan $command");
+        $output = run("{{bin/php}} {{bin/artisan}} $command");
 
         // Output the results when appropriate.
         if (in_array('showOutput', $options)) {

@@ -209,6 +209,13 @@ desc('Publish all of the Horizon resources');
 task('artisan:horizon:publish', artisan('horizon:publish'));
 
 /*
+ * Scheduler.
+ */
+
+desc('Interrupt in-progress schedule:run invocations');
+task('artisan:schedule:interrupt', artisan('schedule:interrupt'));
+
+/*
  * Telescope.
  */
 

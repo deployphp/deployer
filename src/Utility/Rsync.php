@@ -67,7 +67,7 @@ class Rsync
         if ($connectionOptions !== '') {
             $options = array_merge($options, ['-e', "ssh $connectionOptions"]);
         }
-        if ($host->has("become")) {
+        if ($host->has('become') && !empty($host->get('become'))) {
             $options = array_merge($options, ['--rsync-path', "sudo -H -u {$host->get('become')} rsync"]);
         }
         if (!is_array($source)) {

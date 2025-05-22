@@ -5,10 +5,15 @@ namespace Deployer;
 // Defines "what" text for the 'deploy:info' task.
 // Uses one of the following sources:
 // 1. Repository name
+// 2. Application name
 set('what', function () {
     $repo = get('repository');
     if (!empty($repo)) {
         return preg_replace('/\.git$/', '', basename($repo));
+    }
+    $application = get('application');
+    if (!empty($application)) {
+        return $application;
     }
     return 'something';
 });

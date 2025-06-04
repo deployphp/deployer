@@ -187,14 +187,17 @@ task('artisan:horizon', artisan('horizon'));
 desc('Deletes all of the jobs from the specified queue');
 task('artisan:horizon:clear', artisan('horizon:clear --force'));
 
-desc('Instructs the master supervisor to continue processing jobs');
-task('artisan:horizon:continue', artisan('horizon:continue'));
+desc('Deletes metrics for all jobs and queues');
+task('artisan:horizon:clear-metrics', artisan('horizon:clear-metrics'));
 
 desc('Lists all of the deployed machines');
 task('artisan:horizon:list', artisan('horizon:list', ['showOutput']));
 
 desc('Pauses the master supervisor');
-task('artisan:horizon:pause', artisan('horizon:pause'));
+task('artisan:horizon:pause ', artisan('horizon:pause'));
+
+desc('Instructs the master supervisor to continue processing jobs');
+task('artisan:horizon:continue', artisan('horizon:continue'));
 
 desc('Terminates any rogue Horizon processes');
 task('artisan:horizon:purge', artisan('horizon:purge'));
@@ -205,8 +208,14 @@ task('artisan:horizon:status', artisan('horizon:status', ['showOutput']));
 desc('Terminates the master supervisor so it can be restarted');
 task('artisan:horizon:terminate', artisan('horizon:terminate'));
 
+desc('Lists all of the supervisors');
+task('artisan:horizon:supervisors', artisan('horizon:supervisors', ['showOutput']));
+
 desc('Publish all of the Horizon resources');
 task('artisan:horizon:publish', artisan('horizon:publish'));
+
+desc('Stores a snapshot of the queue metrics');
+task('horizon:snapshot  ', artisan('horizon:snapshot'));
 
 /*
  * Scheduler.

@@ -215,7 +215,7 @@ desc('Deletes metrics for all jobs and queues');
 task('artisan:horizon:clear-metrics', artisan('horizon:clear-metrics'));
 
 desc('Stores a snapshot of the queue metrics');
-task('horizon:snapshot  ', artisan('horizon:snapshot'));
+task('artisan:horizon:snapshot', artisan('horizon:snapshot'));
 
 /*
  * Scheduler.

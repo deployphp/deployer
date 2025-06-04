@@ -136,6 +136,9 @@ task('sw:plugin:update:all', static function () {
 });
 
 task('sw:writable:jwt', static function () {
+    if (!test('[ -d {{deploy_path}}/config/jwt/ ]')) {
+        return;
+    }
     run('cd {{release_path}} && chmod -R 660 config/jwt/*');
 });
 

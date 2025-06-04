@@ -187,6 +187,9 @@ task('artisan:horizon', artisan('horizon'));
 desc('Deletes all of the jobs from the specified queue');
 task('artisan:horizon:clear', artisan('horizon:clear --force'));
 
+desc('Instructs the master supervisor to continue processing jobs');
+task('artisan:horizon:continue', artisan('horizon:continue'));
+
 desc('Deletes metrics for all jobs and queues');
 task('artisan:horizon:clear-metrics', artisan('horizon:clear-metrics'));
 
@@ -195,9 +198,6 @@ task('artisan:horizon:list', artisan('horizon:list', ['showOutput']));
 
 desc('Pauses the master supervisor');
 task('artisan:horizon:pause ', artisan('horizon:pause'));
-
-desc('Instructs the master supervisor to continue processing jobs');
-task('artisan:horizon:continue', artisan('horizon:continue'));
 
 desc('Terminates any rogue Horizon processes');
 task('artisan:horizon:purge', artisan('horizon:purge'));

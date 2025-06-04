@@ -208,6 +208,15 @@ task('artisan:horizon:terminate', artisan('horizon:terminate'));
 desc('Publish all of the Horizon resources');
 task('artisan:horizon:publish', artisan('horizon:publish'));
 
+desc('Lists all of the supervisors');
+task('artisan:horizon:supervisors', artisan('horizon:supervisors', ['showOutput']));
+
+desc('Deletes metrics for all jobs and queues');
+task('artisan:horizon:clear-metrics', artisan('horizon:clear-metrics'));
+
+desc('Stores a snapshot of the queue metrics');
+task('artisan:horizon:snapshot', artisan('horizon:snapshot'));
+
 /*
  * Scheduler.
  */

@@ -444,6 +444,14 @@ Deletes metrics for all jobs and queues.
 
 
 
+### artisan\:horizon\:snapshot {#artisan-horizon-snapshot}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L218)
+
+Stores a snapshot of the queue metrics.
+
+
+
+
 ### artisan\:schedule\:interrupt {#artisan-schedule-interrupt}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L225)
 

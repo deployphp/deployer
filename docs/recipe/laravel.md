@@ -428,8 +428,24 @@ Publish all of the Horizon resources.
 
 
 
+### artisan\:horizon\:supervisors {#artisan-horizon-supervisors}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L212)
+
+Lists all of the supervisors.
+
+
+
+
+### artisan\:horizon\:clear-metrics {#artisan-horizon-clear-metrics}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L215)
+
+Deletes metrics for all jobs and queues.
+
+
+
+
 ### artisan\:schedule\:interrupt {#artisan-schedule-interrupt}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L216)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L225)
 
 Interrupt in-progress schedule:run invocations.
 
@@ -437,7 +453,7 @@ Scheduler.
 
 
 ### artisan\:telescope\:clear {#artisan-telescope-clear}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L223)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L232)
 
 Clears all entries from Telescope.
 
@@ -445,7 +461,7 @@ Telescope.
 
 
 ### artisan\:telescope\:prune {#artisan-telescope-prune}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L226)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L235)
 
 Prunes stale entries from the Telescope database.
 
@@ -453,7 +469,7 @@ Prunes stale entries from the Telescope database.
 
 
 ### artisan\:octane {#artisan-octane}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L233)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L242)
 
 Starts the octane server.
 
@@ -461,7 +477,7 @@ Octane.
 
 
 ### artisan\:octane\:reload {#artisan-octane-reload}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L236)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L245)
 
 Reloads the octane server.
 
@@ -469,7 +485,7 @@ Reloads the octane server.
 
 
 ### artisan\:octane\:stop {#artisan-octane-stop}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L239)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L248)
 
 Stops the octane server.
 
@@ -477,7 +493,7 @@ Stops the octane server.
 
 
 ### artisan\:octane\:status {#artisan-octane-status}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L242)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L251)
 
 Check the status of the octane server.
 
@@ -485,7 +501,7 @@ Check the status of the octane server.
 
 
 ### artisan\:nova\:publish {#artisan-nova-publish}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L249)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L258)
 
 Publish all of the Laravel Nova resources.
 
@@ -493,7 +509,7 @@ Nova.
 
 
 ### artisan\:reverb\:start {#artisan-reverb-start}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L256)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L265)
 
 Starts the Reverb server.
 
@@ -501,7 +517,7 @@ Reverb.
 
 
 ### artisan\:reverb\:restart {#artisan-reverb-restart}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L259)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L268)
 
 Restarts the Reverb server.
 
@@ -509,7 +525,7 @@ Restarts the Reverb server.
 
 
 ### artisan\:pulse\:check {#artisan-pulse-check}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L266)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L275)
 
 Starts the Pulse server.
 
@@ -517,7 +533,7 @@ Pulse.
 
 
 ### artisan\:pulse\:restart {#artisan-pulse-restart}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L269)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L278)
 
 Restarts the Pulse server.
 
@@ -525,7 +541,7 @@ Restarts the Pulse server.
 
 
 ### artisan\:pulse\:purge {#artisan-pulse-purge}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L272)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L281)
 
 Purges all Pulse data from storage.
 
@@ -533,7 +549,7 @@ Purges all Pulse data from storage.
 
 
 ### artisan\:pulse\:work {#artisan-pulse-work}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L275)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L284)
 
 Process incoming Pulse data from the ingest stream.
 
@@ -541,7 +557,7 @@ Process incoming Pulse data from the ingest stream.
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L281)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/laravel.php#L290)
 
 Deploys your project.
 

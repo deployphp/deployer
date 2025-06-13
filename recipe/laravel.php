@@ -58,12 +58,15 @@ function artisan($command, $options = [])
             return;
         }
 
+        // Get the dotenv path or use default.
+        $dotenv = get('dotenv', '{{release_or_current_path}}/.env');
+
         // Ensure we warn or fail when a command relies on the ".env" file.
-        if (in_array('failIfNoEnv', $options) && !test('[ -s {{release_or_current_path}}/.env ]')) {
+        if (in_array('failIfNoEnv', $options) && !test("[ -s $dotenv ]")) {
             throw new \Exception('Your .env file is empty! Cannot proceed.');
         }
 
-        if (in_array('skipIfNoEnv', $options) && !test('[ -s {{release_or_current_path}}/.env ]')) {
+        if (in_array('skipIfNoEnv', $options) && !test("[ -s $dotenv ]")) {
             warning("Your .env file is empty! Skipping...</>");
             return;
         }

@@ -91,6 +91,7 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
     'storage',
     'storage/app',
     'storage/app/public',
+    'storage/app/private',
     'storage/framework',
     'storage/framework/cache',
     'storage/framework/cache/data',

@@ -5,7 +5,7 @@
 Do **not** reload php-fpm. Some user requests could fail or not complete in the
 process of reloading.
 
-Instead, configure your server [properly](https://ï.at/avoid-php-fpm-reloading). If you're using Deployer's provision
+Instead, configure your server [properly](avoid-php-fpm-reloading). If you're using Deployer's provision
 recipe, it's already configured the right way and no php-fpm reload is needed.
 :::
 
@@ -40,6 +40,6 @@ set('php_fpm_service', 'php{{php_fpm_version}}-fpm');
 
 desc('Reloads the php-fpm service');
 task('php-fpm:reload', function () {
-    warning('Avoid reloading php-fpm [ï.at/avoid-php-fpm-reloading]');
+    warning('Avoid reloading php-fpm [deployer.org/docs/8.x/avoid-php-fpm-reloading]');
     run('sudo systemctl reload {{php_fpm_service}}');
 });

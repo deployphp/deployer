@@ -12,8 +12,8 @@
  * ```php
  * host('SSH-HOSTNAME')
  *     ->set('remote_user', 'SSH-USER')
- *     ->set('deploy_path', '/var/www/shopware') // This is the path, where deployer will create its directory structure
- *     ->set('http_user', 'www-data') // Not needed, if the `user` is the same user, the webserver is running with
+ *     ->set('deploy_path', '/var/www/shopware') // This is the path where deployer will create its directory structure
+ *     ->set('http_user', 'www-data') // Not needed, if the `user` is the same, the web server is running with
  *     ->set('http_group', 'www-data')
  *     ->set('writable_mode', 'chmod')
  *     ->set('writable_recursive', true)
@@ -50,6 +50,7 @@ set('shared_dirs', [
     'files',
     'var/log',
     'public/media',
+    'public/plugins'
     'public/thumbnail',
     'public/sitemap',
 ]);
@@ -65,13 +66,14 @@ set('writable_dirs', [
     'public/fonts',
     'public/js',
     'public/media',
+    'public/plugins'
     'public/sitemap',
     'public/theme',
     'public/thumbnail',
     'var',
 ]);
 
-// This sets the shopware version to the version of the shopware console command.
+// This sets the Shopware version to the version of the Shopware console command.
 set('shopware_version', function () {
     $versionOutput = run('cd {{release_path}} && {{bin/console}} -V');
     preg_match('/(\d+\.\d+\.\d+\.\d+)/', $versionOutput, $matches);
@@ -111,7 +113,7 @@ task('sw:theme:refresh', function () {
     run('cd {{release_path}} && {{bin/console}} theme:refresh');
 });
 
-// This task is not used per default, but can be used, e.g. in combination with `SHOPWARE_SKIP_THEME_COMPILE=1`,
+// This task is not used by default, but can be used, e.g. in combination with `SHOPWARE_SKIP_THEME_COMPILE=1`,
 // to build the theme remotely instead of locally.
 task('sw:theme:compile', function () {
     run('cd {{release_path}} && {{bin/console}} theme:compile');

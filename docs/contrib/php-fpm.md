@@ -15,7 +15,7 @@ require 'contrib/php-fpm.php';
 :::caution
 Do **not** reload php-fpm. Some user requests could fail or not complete in the
 process of reloading.
-Instead, configure your server [properly](https://ï.at/avoid-php-fpm-reloading). If you're using Deployer's provision
+Instead, configure your server [properly](avoid-php-fpm-reloading). If you're using Deployer's provision
 recipe, it's already configured the right way and no php-fpm reload is needed.
 :::
 ## Configuration
@@ -39,7 +39,7 @@ after('deploy', 'php-fpm:reload');
 :::caution
 Do **not** reload php-fpm. Some user requests could fail or not complete in the
 process of reloading.
-Instead, configure your server [properly](https://ï.at/avoid-php-fpm-reloading). If you're using Deployer's provision
+Instead, configure your server [properly](avoid-php-fpm-reloading). If you're using Deployer's provision
 recipe, it's already configured the right way and no php-fpm reload is needed.
 :::
 ## Configuration

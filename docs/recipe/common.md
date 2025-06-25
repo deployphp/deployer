@@ -96,7 +96,7 @@ run('echo $KEY', env: ['KEY' => 'over']);
 Path to `.env` file which will be used as environment variables for each command per `run()`.
 
 ```php
-set('dotenv', '{{release_or_current_path}}/.env');
+set('dotenv', '{{current_path}}/.env');
 ```
 
 ```php title="Default value"

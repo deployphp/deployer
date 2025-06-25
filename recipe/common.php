@@ -81,7 +81,7 @@ set('env', []);
  * Path to `.env` file which will be used as environment variables for each command per `run()`.
  *
  * ```php
- * set('dotenv', '{{current_path}}/.env');
+ * set('dotenv', '{{release_or_current_path}}/.env');
  * ```
  */
 set('dotenv', false);

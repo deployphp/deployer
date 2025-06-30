@@ -30,7 +30,7 @@ class ConfigCommand extends SelectCommand
     protected function configure()
     {
         parent::configure();
-        $this->addOption('format', null, InputOption::VALUE_OPTIONAL, 'The output format (json, yaml)', 'yaml');
+        $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (json, yaml)', 'yaml');
         $this->getDefinition()->getArgument('selector')->setDefault(['all']);
     }
 

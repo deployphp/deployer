@@ -28,7 +28,7 @@ class InitCommand extends Command
         $this
             ->setName('init')
             ->setDescription('Initialize deployer in your project')
-            ->addOption('path', 'p', InputOption::VALUE_OPTIONAL, 'Recipe path');
+            ->addOption('path', 'p', InputOption::VALUE_REQUIRED, 'Recipe path');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

@@ -134,7 +134,7 @@ These directories are shared among all releases.
     'files',
     'var/log',
     'public/media',
-    'public/plugins'
+    'public/plugins',
     'public/thumbnail',
     'public/sitemap',
 ]
@@ -159,7 +159,7 @@ Please note that the files in `config/jwt/*` receive special attention in the `s
     'public/fonts',
     'public/js',
     'public/media',
-    'public/plugins'
+    'public/plugins',
     'public/sitemap',
     'public/theme',
     'public/thumbnail',

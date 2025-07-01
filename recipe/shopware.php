@@ -50,7 +50,7 @@ set('shared_dirs', [
     'files',
     'var/log',
     'public/media',
-    'public/plugins'
+    'public/plugins',
     'public/thumbnail',
     'public/sitemap',
 ]);
@@ -66,7 +66,7 @@ set('writable_dirs', [
     'public/fonts',
     'public/js',
     'public/media',
-    'public/plugins'
+    'public/plugins',
     'public/sitemap',
     'public/theme',
     'public/thumbnail',

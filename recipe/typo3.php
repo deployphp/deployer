@@ -76,48 +76,51 @@ set('writable_dirs', [
  */
 set('composer_options', ' --no-dev --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader');
 
+
 /**
- * Determine if 'repository' is defined in config.yaml and set deployment strategy based on presence of 'repository'
+ * If set in the config this recipe uses rsync. Default: false (use the Git repository)
  */
-$useGitDeployment = has('repository') && !empty(get('repository'));
-$updateCodeTask = $useGitDeployment ? 'deploy:update_code' : 'rsync';
+set('use_rsync', false);
 
-if (!$useGitDeployment) {
-    $exclude = [
-        '.Build',
-        '.git',
-        '.gitlab',
-        '.ddev',
-        '.deployer',
-        '.idea',
-        '.DS_Store',
-        '.gitlab-ci.yml',
-        '.npm',
-        'deploy.yaml',
-        'package.json',
-        'package-lock.json',
-        'node_modules/',
-        'var/',
-        'public/fileadmin/',
-        'public/typo3temp/',
-    ];
+set('update_code_task', function () {
+    return get('use_rsync') ? 'rsync' : 'deploy:update_code';
+});
 
+task('typo3:update_code', function () {
+    invoke(get('update_code_task'));
+});
 
-    set('rsync', [
-        'exclude' => array_merge(get('shared_dirs'), get('shared_files'), $exclude),
-        'exclude-file' => false,
-        'include' => ['vendor'],
-        'include-file' => false,
-        'filter' => ['dir-merge,-n /.gitignore'],
-        'filter-file' => false,
-        'filter-perdir' => false,
-        'flags' => 'avz',
-        'options' => ['delete', 'keep-dirlinks', 'links'],
-        'timeout' => 600,
-    ]);
+$exclude = [
+    '.Build',
+    '.git',
+    '.gitlab',
+    '.ddev',
+    '.deployer',
+    '.idea',
+    '.DS_Store',
+    '.gitlab-ci.yml',
+    '.npm',
+    'deploy.yaml',
+    'package.json',
+    'package-lock.json',
+    'node_modules/',
+    'var/',
+    'public/fileadmin/',
+    'public/typo3temp/',
+];
 
-}
-
+set('rsync', [
+    'exclude' => array_merge(get('shared_dirs'), get('shared_files'), $exclude),
+    'exclude-file' => false,
+    'include' => ['vendor'],
+    'include-file' => false,
+    'filter' => ['dir-merge,-n /.gitignore'],
+    'filter-file' => false,
+    'filter-perdir' => false,
+    'flags' => 'avz',
+    'options' => ['delete', 'keep-dirlinks', 'links'],
+    'timeout' => 600,
+]);
 
 desc('TYPO3 - Cache warmup for system caches');
 task('typo3:cache:warmup', function () {
@@ -158,7 +161,7 @@ task('deploy', [
     'deploy:setup',
     'deploy:lock',
     'deploy:release',
-    $updateCodeTask,
+    'typo3:update_code',
     'deploy:shared',
     'deploy:writable',
     'deploy:vendors',

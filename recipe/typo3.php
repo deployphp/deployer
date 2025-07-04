@@ -142,38 +142,6 @@ task('typo3:extension:setup', function () {
     run('{{bin/php}} {{bin/typo3}} extension:setup');
 });
 
-
-$tasksToRemove = [
-    'logs:caddy',
-    'logs:caddy:syslog',
-    'provision',
-    'provision:server',
-    'provision:ssh',
-    'provision:databases',
-    'provision:firewall',
-    'provision:install',
-    'provision:npm',
-    'provision:php',
-    'provision:postgresql',
-    'provision:mariadb',
-    'provision:mysql',
-    'provision:update',
-    'provision:upgrade',
-    'provision:verify',
-    'provision:website',
-    'provision:composer',
-    'provision:configure',
-    'provision:deployer',
-    'provision:check',
-];
-foreach ($tasksToRemove as $task) {
-    try {
-        task($task)->hidden()->disable();
-    } catch (\InvalidArgumentException $e) {
-        // Task not found ...
-    }
-}
-
 /**
  * Configure "deploy" task group.
  */

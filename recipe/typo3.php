@@ -2,16 +2,21 @@
 
 namespace Deployer;
 
-require_once 'recipe/common.php';
+require_once __DIR__ . '/common.php';
 require_once 'contrib/rsync.php';
-$composerConfig = json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
 
 add('recipes', ['typo3']);
+
+set('composer_config', function () {
+    return json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
+});
 
 /**
  * DocumentRoot / WebRoot for the TYPO3 installation
  */
-set('typo3_webroot', function () use ($composerConfig) {
+set('typo3_webroot', function () {
+    $composerConfig = get('composer_config');
+
     if ($composerConfig['extra']['typo3/cms']['web-dir'] ?? false) {
         return $composerConfig['extra']['typo3/cms']['web-dir'];
     }
@@ -22,7 +27,9 @@ set('typo3_webroot', function () use ($composerConfig) {
 /**
  * Path to TYPO3 cli
  */
-set('bin/typo3', function () use ($composerConfig) {
+set('bin/typo3', function () {
+    $composerConfig = get('composer_config');
+
     if ($composerConfig['config']['bin-dir'] ?? false) {
         return $composerConfig['config']['bin-dir'] . '/typo3';
     }

@@ -87,7 +87,7 @@ set('composer_options', ' --no-dev --verbose --prefer-dist --no-progress --no-in
 set('use_rsync', false);
 
 set('update_code_task', function () {
-    return get('use_rsync') ? 'rsync' : 'deploy:update_code';
+    return get('use_rsync') ? 'deploy:rsync' : 'deploy:update_code';
 });
 
 task('typo3:update_code', function () {
@@ -113,7 +113,7 @@ $exclude = [
     'public/typo3temp/',
 ];
 
-set('rsync', [
+set('deploy:rsync', [
     'exclude' => array_merge(get('shared_dirs'), get('shared_files'), $exclude),
     'exclude-file' => false,
     'include' => ['vendor'],

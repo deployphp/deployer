@@ -109,8 +109,9 @@ $exclude = [
     'package-lock.json',
     'node_modules/',
     'var/',
-    'public/fileadmin/',
-    'public/typo3temp/',
+    '/{{typo3/public_dir}}/assets',
+    '/{{typo3/public_dir}}/fileadmin',
+    '/{{typo3/public_dir}}/typo3temp',
 ];
 
 set('deploy:rsync', [

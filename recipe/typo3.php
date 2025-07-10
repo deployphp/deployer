@@ -14,7 +14,7 @@ set('composer_config', function () {
 /**
  * DocumentRoot / WebRoot for the TYPO3 installation
  */
-set('typo3_webroot', function () {
+set('typo3/public_dir', function () {
     $composerConfig = get('composer_config');
 
     if ($composerConfig['extra']['typo3/cms']['web-dir'] ?? false) {
@@ -46,12 +46,13 @@ set('log_files', 'var/log/typo3_*.log');
  * Shared directories
  */
 set('shared_dirs', [
-    '{{typo3_webroot}}/fileadmin',
-    '{{typo3_webroot}}/typo3temp',
-    'var/session',
-    'var/log',
+    '{{typo3/public_dir}}/fileadmin',
+    '{{typo3/public_dir}}/assets',
+    '{{typo3/public_dir}}/typo3temp/assets',
     'var/lock',
-    'var/charset',
+    'var/log',
+    'var/session',
+    'var/spool',
 ]);
 
 /**
@@ -66,9 +67,12 @@ set('shared_files', [
  * Writeable directories
  */
 set('writable_dirs', [
-    '{{typo3_webroot}}/fileadmin',
-    '{{typo3_webroot}}/typo3temp',
-    'var',
+    '{{typo3/public_dir}}/fileadmin',
+    '{{typo3/public_dir}}/assets',
+    '{{typo3/public_dir}}/typo3temp/assets',
+    'var/cache',
+    'var/lock',
+    'var/log',
 ]);
 
 /**

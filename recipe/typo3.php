@@ -61,7 +61,6 @@ set('shared_dirs', [
 if (!has('shared_files') || empty(get('shared_files'))) {
     set('shared_files', [
         'config/system/settings.php',
-        '.env',
     ]);
 }
 

@@ -58,10 +58,12 @@ set('shared_dirs', [
 /**
  * Shared files
  */
-set('shared_files', [
-    'config/system/settings.php',
-    '.env',
-]);
+if (!has('shared_files') || empty(get('shared_files'))) {
+    set('shared_files', [
+        'config/system/settings.php',
+        '.env',
+    ]);
+}
 
 /**
  * Writeable directories

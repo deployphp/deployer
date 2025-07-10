@@ -129,14 +129,15 @@ set('deploy:rsync', [
     'timeout' => 600,
 ]);
 
+
+desc('TYPO3 - Clear all caches');
+task('typo3:cache:flush', function () {
+    run('{{bin/php}} {{release_path}}/public/typo3 cache:flush ');
+});
+
 desc('TYPO3 - Cache warmup for system caches');
 task('typo3:cache:warmup', function () {
     run('{{bin/php}} {{release_path}}/public/typo3 cache:warmup --group system');
-});
-
-desc('TYPO3 - Cache clearing for frontend caches');
-task('typo3:cache:flush', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 cache:flush --group pages');
 });
 
 desc('TYPO3 - Update the language files of all activated extensions');

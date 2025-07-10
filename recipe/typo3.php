@@ -132,11 +132,6 @@ task('typo3:cache:flush', function () {
     run('{{bin/php}} {{release_path}}/public/typo3 cache:flush --group pages');
 });
 
-desc('TYPO3 - Cache warmup for frontend caches');
-task('typo3:cache:pages:warmup', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 cache:warmup --group pages');
-});
-
 desc('TYPO3 - Update the language files of all activated extensions');
 task('typo3:language:update', function () {
     run('{{bin/php}} {{release_path}}/public/typo3 language:update');
@@ -164,7 +159,6 @@ task('deploy', [
     'typo3:extension:setup',
     'typo3:language:update',
     'typo3:cache:flush',
-    'typo3:cache:pages:warmup',
     'deploy:unlock',
     'deploy:cleanup',
     'deploy:success',

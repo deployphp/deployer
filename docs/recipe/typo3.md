@@ -39,8 +39,7 @@ The [deploy](#deploy) task of **TYPO3** consists of:
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup) – TYPO3 - Cache warmup for system caches
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Set up all extensions
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update) – TYPO3 - Update the language files of all activated extensions
-* [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush) – TYPO3 - Cache clearing for frontend caches
-* [typo3:cache:pages:warmup](/docs/recipe/typo3.md#typo3-cache-pages-warmup) – TYPO3 - Cache warmup for frontend caches
+* [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush) – TYPO3 - Clear all caches
 * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
 * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
 * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
@@ -59,7 +58,7 @@ return json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_O
 ```
 
 
-### typo3_webroot
+### typo3/public_dir
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L17)
 
 DocumentRoot / WebRoot for the TYPO3 installation
@@ -100,33 +99,19 @@ Shared directories
 
 ```php title="Default value"
 [
-    '{{typo3_webroot}}/fileadmin',
-    '{{typo3_webroot}}/typo3temp',
-    'var/session',
-    'var/log',
+    '{{typo3/public_dir}}/fileadmin',
+    '{{typo3/public_dir}}/assets',
+    '{{typo3/public_dir}}/typo3temp/assets',
     'var/lock',
-    'var/charset',
-]
-```
-
-
-### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L60)
-
-Overrides [shared_files](/docs/recipe/deploy/shared.md#shared_files) from `recipe/deploy/shared.php`.
-
-Shared files
-
-```php title="Default value"
-[
-    'config/system/settings.php',
-    '.env',
+    'var/log',
+    'var/session',
+    'var/spool',
 ]
 ```
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L68)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L70)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -134,15 +119,18 @@ Writeable directories
 
 ```php title="Default value"
 [
-    '{{typo3_webroot}}/fileadmin',
-    '{{typo3_webroot}}/typo3temp',
-    'var',
+    '{{typo3/public_dir}}/fileadmin',
+    '{{typo3/public_dir}}/assets',
+    '{{typo3/public_dir}}/typo3temp/assets',
+    'var/cache',
+    'var/lock',
+    'var/log',
 ]
 ```
 
 
 ### composer_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L77)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L82)
 
 Overrides [composer_options](/docs/recipe/deploy/vendors.md#composer_options) from `recipe/deploy/vendors.php`.
 
@@ -154,7 +142,7 @@ Composer options
 
 
 ### use_rsync
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L88)
 
 If set in the config this recipe uses rsync. Default: false (use the Git repository)
 
@@ -164,7 +152,7 @@ false
 
 
 ### update_code_task
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L85)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L90)
 
 
 
@@ -174,7 +162,7 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 
 
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L112)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L118)
 
 
 
@@ -198,39 +186,31 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 ## Tasks
 
 ### typo3\:update_code {#typo3-update_code}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L89)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L94)
 
 
+
+
+
+
+### typo3\:cache\:flush {#typo3-cache-flush}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L133)
+
+TYPO3 - Clear all caches.
 
 
 
 
 ### typo3\:cache\:warmup {#typo3-cache-warmup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L126)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L138)
 
 TYPO3 - Cache warmup for system caches.
 
 
 
 
-### typo3\:cache\:flush {#typo3-cache-flush}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L132)
-
-TYPO3 - Cache clearing for frontend caches.
-
-
-
-
-### typo3\:cache\:pages\:warmup {#typo3-cache-pages-warmup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L138)
-
-TYPO3 - Cache warmup for frontend caches.
-
-
-
-
 ### typo3\:language\:update {#typo3-language-update}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L144)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L143)
 
 TYPO3 - Update the language files of all activated extensions.
 
@@ -238,7 +218,7 @@ TYPO3 - Update the language files of all activated extensions.
 
 
 ### typo3\:extension\:setup {#typo3-extension-setup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L150)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L148)
 
 TYPO3 - Set up all extensions.
 
@@ -246,7 +226,7 @@ TYPO3 - Set up all extensions.
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L159)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L156)
 
 Deploys a TYPO3 project.
 
@@ -266,7 +246,6 @@ This task is group task which contains next tasks:
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup)
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update)
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush)
-* [typo3:cache:pages:warmup](/docs/recipe/typo3.md#typo3-cache-pages-warmup)
 * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock)
 * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup)
 * [deploy:success](/docs/recipe/common.md#deploy-success)

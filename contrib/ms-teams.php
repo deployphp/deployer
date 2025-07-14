@@ -80,6 +80,9 @@ set('teams_title', function () {
     return get('application', 'Project');
 });
 
+// Allow Continue on Failure
+set('teams_failure_continue', false);
+
 // Deploy message
 set('teams_text', '_{{user}}_ deploying `{{what}}` to *{{where}}*');
 set('teams_success_text', 'Deploy to *{{where}}* successful');
@@ -97,10 +100,19 @@ task('teams:notify', function () {
         return;
     }
 
-    Httpie::post(get('teams_webhook'))->jsonBody([
-        "themeColor" => get('teams_color'),
-        'text'       => get('teams_text'),
-    ])->send();
+    try {
+        Httpie::post(get('teams_webhook'))->jsonBody([
+            "themeColor" => get('teams_color'),
+            'text'       => get('teams_text'),
+        ])->send();
+    } catch (\Exception $e) {
+        if (get('teams_failure_continue', false)) {
+            warning('Error sending Teams Notification: ' . $e->getMessage());
+        } else {
+            throw $e;
+        }
+    }
+
 })
     ->once()
     ->hidden();
@@ -112,10 +124,18 @@ task('teams:notify:success', function () {
         return;
     }
 
-    Httpie::post(get('teams_webhook'))->jsonBody([
-        "themeColor" => get('teams_success_color'),
-        'text'       => get('teams_success_text'),
-    ])->send();
+    try {
+        Httpie::post(get('teams_webhook'))->jsonBody([
+            "themeColor" => get('teams_success_color'),
+            'text'       => get('teams_success_text'),
+        ])->send();
+    } catch (\Exception $e) {
+        if (get('teams_failure_continue', false)) {
+            warning('Error sending Teams Notification: ' . $e->getMessage());
+        } else {
+            throw $e;
+        }
+    }
 })
     ->once()
     ->hidden();
@@ -127,10 +147,18 @@ task('teams:notify:failure', function () {
         return;
     }
 
-    Httpie::post(get('teams_webhook'))->jsonBody([
-        "themeColor" => get('teams_failure_color'),
-        'text'       => get('teams_failure_text'),
-    ])->send();
+    try {
+        Httpie::post(get('teams_webhook'))->jsonBody([
+            "themeColor" => get('teams_failure_color'),
+            'text'       => get('teams_failure_text'),
+        ])->send();
+    } catch (\Exception $e) {
+        if (get('teams_failure_continue', false)) {
+            warning('Error sending Teams Notification: ' . $e->getMessage());
+        } else {
+            throw $e;
+        }
+    }
 })
     ->once()
     ->hidden();

@@ -66,7 +66,7 @@ task('deploy:cache:clear', function () {
 desc('Optimize environment variables');
 task('deploy:dump-env', function () {
     within('{{release_or_current_path}}', function () {
-        run('{{bin/composer}} dump-env "${APP_ENV:-prod}"');
+        run('{{bin/composer}} dump-env');
     });
 });
 

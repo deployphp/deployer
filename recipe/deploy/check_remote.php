@@ -2,6 +2,7 @@
 
 namespace Deployer;
 
+use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Deployer\Exception\GracefulShutdownException;
 
@@ -12,8 +13,18 @@ task('deploy:check_remote', function () {
     $repository = get('repository');
 
     // Skip if there is no current deployment to compare
-    if (!test('[ -d {{current_path}}/.git ]')) {
-        return;
+    if (get('update_code_strategy') === 'archive') {
+        if (!test('[ -f {{current_path}}/REVISION ]')) {
+            return;
+        }
+        $lastDeployedRevision = run('cat {{current_path}}/REVISION');
+    } elseif (get('update_code_strategy') === 'clone') {
+        if (!test('[ -d {{current_path}}/.git ]')) {
+            return;
+        }
+        $lastDeployedRevision = trim(run(sprintf('cd {{current_path}} && %s rev-parse HEAD', get('bin/git'))));
+    } else {
+        throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }
 
     // Determine the hash of the remote revision about to be deployed
@@ -41,7 +52,6 @@ task('deploy:check_remote', function () {
 
     // Compare commit hashes. We use strpos to support short versions.
     $targetRevision = trim($targetRevision);
-    $lastDeployedRevision = run('cat {{current_path}}/REVISION');
     if ($targetRevision && strpos($lastDeployedRevision, $targetRevision) === 0) {
         throw new GracefulShutdownException("Already up-to-date.");
     }

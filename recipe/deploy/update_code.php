@@ -109,6 +109,9 @@ task('deploy:update_code', function () {
     // Copy to release_path.
     if (get('update_code_strategy') === 'archive') {
         run("$git archive $targetWithDir | tar -x -f - -C {{release_path}} 2>&1");
+        // Save git revision in REVISION file.
+        $rev = escapeshellarg(run("$git rev-list $target -1"));
+        run("echo $rev > {{release_path}}/REVISION");
     } elseif (get('update_code_strategy') === 'clone') {
         cd('{{release_path}}');
         run("$git clone -l $bare .");
@@ -117,8 +120,4 @@ task('deploy:update_code', function () {
     } else {
         throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
     }
-
-    // Save git revision in REVISION file.
-    $rev = escapeshellarg(run("$git rev-list $target -1"));
-    run("echo $rev > {{release_path}}/REVISION");
 });

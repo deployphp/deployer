@@ -29,21 +29,8 @@ add('crontab:jobs', [
 
 ## Configuration
 ### bin/crontab
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L28)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L31)
 
-Recipe for adding crontab jobs.
-This recipe creates a new section in the crontab file with the configured jobs.
-The section is identified by the *crontab:identifier* variable, by default the application name.
-## Configuration
-- *crontab:jobs* - An array of strings with crontab lines.
-## Usage
-```php
-require 'contrib/crontab.php';
-after('deploy:success', 'crontab:sync');
-add('crontab:jobs', [
-    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
-]);
-```
 Get path to bin
 
 ```php title="Default value"
@@ -52,7 +39,7 @@ return which('crontab');
 
 
 ### crontab:identifier
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L36)
 
 Set the identifier used in the crontab, application name by default
 
@@ -62,7 +49,7 @@ return get('application', 'application');
 
 
 ### crontab:use_sudo
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L38)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L41)
 
 Use sudo to run crontab. When running crontab with sudo, you can use the `-u` parameter to change a crontab for a different user.
 
@@ -75,7 +62,7 @@ false
 ## Tasks
 
 ### crontab:sync
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L41)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L44)
 
 Sync crontab jobs.
 

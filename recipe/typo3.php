@@ -131,22 +131,22 @@ set('rsync', [
 
 desc('TYPO3 - Clear all caches');
 task('typo3:cache:flush', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 cache:flush ');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} cache:flush');
 });
 
 desc('TYPO3 - Cache warmup for system caches');
 task('typo3:cache:warmup', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 cache:warmup --group system');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} cache:warmup --group system');
 });
 
 desc('TYPO3 - Update the language files of all activated extensions');
 task('typo3:language:update', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 language:update');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} language:update');
 });
 
 desc('TYPO3 - Set up all extensions');
 task('typo3:extension:setup', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 extension:setup');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} extension:setup');
 });
 
 /**

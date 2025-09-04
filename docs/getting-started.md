@@ -13,8 +13,8 @@ First, [install Deployer](installation.md). Once installed, navigate to your pro
 dep init
 ```
 
-Deployer will prompt you with a series of questions. After completing them, you'll have a **deploy.php** or *
-*deploy.yaml** file—your deployment recipe. This file defines hosts, tasks, and dependencies on other recipes.
+Deployer will prompt you with a series of questions. After completing them, you'll have a **deploy.php** or 
+**deploy.yaml** file—your deployment recipe. This file defines hosts, tasks, and dependencies on other recipes.
 Framework-specific recipes provided by Deployer are based on the [common](recipe/common.md) recipe.
 
 ---

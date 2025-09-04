@@ -1,5 +1,25 @@
 <?php
 
+/**
+ * TYPO3 Deployer Recipe
+ *
+ * Usage Examples:
+ *
+ * Deploy to production (using Git as source):
+ *     vendor/bin/dep deploy production
+ *
+ * Deploy to staging using rsync:
+ *     # In deploy.php or servers config, enable rsync
+ *     set('use_rsync', true);
+ *     vendor/bin/dep deploy staging
+ *
+ * Common TYPO3 commands:
+ *     vendor/bin/dep typo3:cache:flush       # Clear all TYPO3 caches
+ *     vendor/bin/dep typo3:cache:warmup      # Warmup system caches
+ *     vendor/bin/dep typo3:language:update   # Update extension language files
+ *     vendor/bin/dep typo3:extension:setup   # Set up all extensions
+ */
+
 namespace Deployer;
 
 require_once __DIR__ . '/common.php';
@@ -7,12 +27,18 @@ require_once 'contrib/rsync.php';
 
 add('recipes', ['typo3']);
 
+/**
+ * Parse composer.json and return its contents as an array.
+ * Used for auto-detecting TYPO3 settings like public_dir and bin_dir.
+ */
 set('composer_config', function () {
     return json_decode(file_get_contents('./composer.json'), true, 512, JSON_THROW_ON_ERROR);
 });
 
 /**
- * DocumentRoot / WebRoot for the TYPO3 installation
+ * TYPO3 public (web) directory.
+ * Automatically determined from composer.json.
+ * Defaults to "public".
  */
 set('typo3/public_dir', function () {
     $composerConfig = get('composer_config');
@@ -25,7 +51,8 @@ set('typo3/public_dir', function () {
 });
 
 /**
- * Path to TYPO3 cli
+ * Path to the TYPO3 CLI binary.
+ * Determined from composer.json "config.bin-dir" or defaults to "vendor/bin/typo3".
  */
 set('bin/typo3', function () {
     $composerConfig = get('composer_config');
@@ -43,7 +70,8 @@ set('bin/typo3', function () {
 set('log_files', 'var/log/typo3_*.log');
 
 /**
- * Shared directories
+ * Directories that persist between releases.
+ * Shared via symlinks from the shared/ directory.
  */
 set('shared_dirs', [
     '{{typo3/public_dir}}/fileadmin',
@@ -56,7 +84,8 @@ set('shared_dirs', [
 ]);
 
 /**
- * Shared files
+ * Files that persist between releases.
+ * By default: config/system/settings.php
  */
 if (!has('shared_files') || empty(get('shared_files'))) {
     set('shared_files', [
@@ -77,13 +106,14 @@ set('writable_dirs', [
 ]);
 
 /**
- * Composer options
+ * Composer install options for production.
  */
 set('composer_options', ' --no-dev --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader');
 
 
 /**
- * If set in the config this recipe uses rsync. Default: false (use the Git repository)
+ * If set in the config this recipe uses rsync.
+ * Default setting: false (uses the Git repository)
  */
 set('use_rsync', false);
 
@@ -129,28 +159,45 @@ set('rsync', [
 ]);
 
 
+/**
+ * TYPO3 Commands
+ * All run via {{bin/php}} {{release_path}}/{{bin/typo3}} <command>
+ */
+
 desc('TYPO3 - Clear all caches');
 task('typo3:cache:flush', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 cache:flush ');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} cache:flush');
 });
 
 desc('TYPO3 - Cache warmup for system caches');
 task('typo3:cache:warmup', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 cache:warmup --group system');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} cache:warmup --group system');
 });
 
 desc('TYPO3 - Update the language files of all activated extensions');
 task('typo3:language:update', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 language:update');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} language:update');
 });
 
 desc('TYPO3 - Set up all extensions');
 task('typo3:extension:setup', function () {
-    run('{{bin/php}} {{release_path}}/public/typo3 extension:setup');
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} extension:setup');
 });
 
 /**
- * Configure "deploy" task group.
+ * Main deploy task for TYPO3.
+ *
+ * 1. Lock deploy to avoid concurrent runs
+ * 2. Create release directory
+ * 3. Update code (Git or rsync)
+ * 4. Symlink shared dirs/files
+ * 5. Ensure writable dirs
+ * 6. Install vendors
+ * 7. Warm up TYPO3 caches
+ * 8. Run extension setup
+ * 9. Update language files
+ * 10. Flush caches
+ * 11. Unlock and clean up
  */
 desc('Deploys a TYPO3 project');
 task('deploy', [

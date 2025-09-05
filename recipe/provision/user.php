@@ -44,7 +44,9 @@ task('provision:user', function () {
         try {
             run('chown -R deployer:deployer /home/deployer');
             run('chmod -R 755 /home/deployer');
-            run('chmod 700 /home/deployer/.ssh/id_ed25519');
+            run('chmod 700 /home/deployer/.ssh');
+            run('chmod 600 /home/deployer/.ssh/id_ed25519');
+            run('chmod 600 /home/deployer/.ssh/authorized_keys');
         } catch (\Throwable $e) {
             warning($e->getMessage());
         }

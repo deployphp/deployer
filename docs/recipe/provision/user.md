@@ -34,7 +34,7 @@ Setups a deployer user.
 
 
 ### provision\:ssh_copy_id {#provision-ssh_copy_id}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L59)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/provision/user.php#L61)
 
 Copy public key to remote server.
 

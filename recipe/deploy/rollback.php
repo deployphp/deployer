@@ -8,7 +8,7 @@ use Deployer\Exception\Exception;
  * Rollback candidate will be automatically chosen by looking
  * at output of `ls` command and content of `.dep/releases_log`.
  *
- * If rollback candidate is marked as **BAD_RELEASE**, it will be skipped.
+ * If rollback candidate is marked as **BAD_RELEASE** or **DIRTY_RELEASE**, it will be skipped.
  *
  * :::tip
  * You can override rollback candidate via:
@@ -37,7 +37,10 @@ set('rollback_candidate', function () {
         $candidate = $releasesBeforeCurrent[0];
 
         // Skip all bad releases.
-        if (test("[ -f {{deploy_path}}/releases/$candidate/BAD_RELEASE ]")) {
+        if (
+            test("[ -f {{deploy_path}}/releases/$candidate/BAD_RELEASE ]")
+            || test("[ -f {{deploy_path}}/releases/$candidate/DIRTY_RELEASE ]")
+        ) {
             array_shift($releasesBeforeCurrent);
             continue;
         }

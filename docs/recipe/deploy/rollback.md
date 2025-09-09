@@ -18,7 +18,7 @@ require 'recipe/deploy/rollback.php';
 Rollback candidate will be automatically chosen by looking
 at output of `ls` command and content of `.dep/releases_log`.
 
-If rollback candidate is marked as **BAD_RELEASE**, it will be skipped.
+If rollback candidate is marked as **BAD_RELEASE** or **DIRTY_RELEASE**, it will be skipped.
 
 :::tip
 You can override rollback candidate via:

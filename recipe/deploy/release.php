@@ -176,6 +176,8 @@ task('releases', function () {
                 $status = "<error>$release</error> (bad)";
             } elseif (test("[ -f releases/$release/DIRTY_RELEASE ]")) {
                 $status = "<error>$release</error> (dirty)";
+            } elseif (!test("[ -f releases/$release/FINISHED_RELEASE ]")) {
+                $status = "<warning>$release (unfinished)</warning>";
             } else {
                 $status = "<info>$release</info>";
             }

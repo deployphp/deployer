@@ -213,9 +213,7 @@ task('deploy', [
     'typo3:extension:setup',
     'typo3:language:update',
     'typo3:cache:flush',
-    'deploy:unlock',
-    'deploy:cleanup',
-    'deploy:success',
+    'deploy:publish',
 ]);
 
 after('deploy:failed', 'deploy:unlock');

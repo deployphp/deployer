@@ -19,3 +19,9 @@ task('deploy:symlink', function () {
         run("cd {{deploy_path}} && rm release"); // Remove release link.
     }
 });
+
+desc('Marks release as finished');
+task('deploy:finished', function () {
+    run("echo '{{user}}' > {{release_path}}/FINISHED_RELEASE");
+});
+after('deploy:symlink', 'deploy:finished');

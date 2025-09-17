@@ -40,9 +40,11 @@ The [deploy](#deploy) task of **TYPO3** consists of:
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Set up all extensions
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update) – TYPO3 - Update the language files of all activated extensions
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush) – TYPO3 - Clear all caches
-* [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
-* [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
-* [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
+* [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink) – Creates symlink to release
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
+  * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
 
 
 The typo3 recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -269,7 +271,7 @@ Main deploy task for TYPO3.
 8. Run extension setup
 9. Update language files
 10. Flush caches
-11. Unlock and clean up
+11. Publish ready release
 
 
 This task is group task which contains next tasks:
@@ -285,8 +287,10 @@ This task is group task which contains next tasks:
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup)
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update)
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush)
-* [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock)
-* [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup)
-* [deploy:success](/docs/recipe/common.md#deploy-success)
+* [deploy:publish](/docs/recipe/common.md#deploy-publish)
+  * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink)
+  * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock)
+  * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup)
+  * [deploy:success](/docs/recipe/common.md#deploy-success)
 
 

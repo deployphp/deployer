@@ -37,6 +37,7 @@ The [deploy](#deploy) task of **TYPO3** consists of:
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup) – TYPO3 - Cache warmup for system caches
+* [typo3:database:updateschema](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Perform schema updates
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Set up all extensions
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update) – TYPO3 - Update the language files of all activated extensions
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush) – TYPO3 - Clear all caches
@@ -210,19 +211,27 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 ```
 
 
+### typo3_updateschema_types
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L165)
+
+List of schema update types
+
+```php title="Default value"
+'safe'
+```
+
+`safe` includes all necessary operations, to add or change fields or tables. See [TYPO3 Reference](https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/DatabaseUpdateschema.html) for more information.
+
 
 ## Tasks
 
 ### typo3\:update_code {#typo3-update_code}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L124)
-
-
-
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L123)
 
 
 
 ### typo3\:cache\:flush {#typo3-cache-flush}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L168)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L174)
 
 TYPO3 - Clear all caches.
 
@@ -231,31 +240,31 @@ All run via [bin/php](/docs/recipe/common.md#bin/php) [release_path](/docs/recip
 
 
 ### typo3\:cache\:warmup {#typo3-cache-warmup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L173)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L179)
 
 TYPO3 - Cache warmup for system caches.
 
 
-
-
 ### typo3\:language\:update {#typo3-language-update}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L178)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L184)
 
 TYPO3 - Update the language files of all activated extensions.
 
 
-
-
 ### typo3\:extension\:setup {#typo3-extension-setup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L183)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L189)
 
 TYPO3 - Set up all extensions.
 
 
+### typo3\:extension\:setup {#typo3-database-updateschema}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L194)
+
+TYPO3 - Perform schema updates.
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L203)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L215)
 
 Deploys a TYPO3 project.
 
@@ -268,10 +277,11 @@ Main deploy task for TYPO3.
 5. Ensure writable dirs
 6. Install vendors
 7. Warm up TYPO3 caches
-8. Run extension setup
-9. Update language files
-10. Flush caches
-11. Unlock and clean up
+8. Perform schema updates
+9. Run extension setup
+10. Update language files
+11. Flush caches
+12. Unlock and clean up
 
 
 This task is group task which contains next tasks:
@@ -284,6 +294,7 @@ This task is group task which contains next tasks:
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable)
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup)
+* [typo3:database:updateschema](/docs/recipe/typo3.md#typo3-database-updateschema)
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup)
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update)
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush)

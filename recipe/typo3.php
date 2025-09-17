@@ -158,9 +158,8 @@ set('rsync', [
 ]);
 
 /**
- * List of schema update types
- * default: safe (includes all necessary operations, to add or change fields or tables)
- * https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/DatabaseUpdateschema.html
+ * List of schema update types.
+ * `safe` includes all necessary operations, to add or change fields or tables.
  */
 set('typo3_updateschema_types', 'safe');
 

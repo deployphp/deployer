@@ -37,7 +37,7 @@ The [deploy](#deploy) task of **TYPO3** consists of:
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup) – TYPO3 - Cache warmup for system caches
-* [typo3:database:updateschema](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Perform schema updates
+* [typo3:database:updateschema](/docs/recipe/typo3.md#typo3-database-updateschema) – TYPO3 - Update database schema
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Set up all extensions
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update) – TYPO3 - Update the language files of all activated extensions
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush) – TYPO3 - Clear all caches
@@ -170,7 +170,7 @@ Composer install options for production.
 
 
 ### use_rsync
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L118)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L117)
 
 If set in the config this recipe uses rsync.
 Default setting: false (uses the Git repository)
@@ -181,7 +181,7 @@ false
 
 
 ### update_code_task
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L119)
 
 
 
@@ -191,7 +191,7 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 
 
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L148)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L147)
 
 
 
@@ -212,15 +212,15 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 
 
 ### typo3_updateschema_types
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L165)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L164)
 
-List of schema update types
+List of schema update types.
+`safe` includes all necessary operations, to add or change fields or tables.
 
 ```php title="Default value"
 'safe'
 ```
 
-`safe` includes all necessary operations, to add or change fields or tables. See [TYPO3 Reference](https://docs.typo3.org/p/helhum/typo3-console/main/en-us/CommandReference/DatabaseUpdateschema.html) for more information.
 
 
 ## Tasks
@@ -230,8 +230,11 @@ List of schema update types
 
 
 
+
+
+
 ### typo3\:cache\:flush {#typo3-cache-flush}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L174)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L173)
 
 TYPO3 - Clear all caches.
 
@@ -240,31 +243,39 @@ All run via [bin/php](/docs/recipe/common.md#bin/php) [release_path](/docs/recip
 
 
 ### typo3\:cache\:warmup {#typo3-cache-warmup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L179)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L178)
 
 TYPO3 - Cache warmup for system caches.
 
 
+
+
 ### typo3\:language\:update {#typo3-language-update}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L184)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L183)
 
 TYPO3 - Update the language files of all activated extensions.
 
 
+
+
 ### typo3\:extension\:setup {#typo3-extension-setup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L189)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L188)
 
 TYPO3 - Set up all extensions.
 
 
-### typo3\:extension\:setup {#typo3-database-updateschema}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L194)
 
-TYPO3 - Perform schema updates.
+
+### typo3\:database\:updateschema {#typo3-database-updateschema}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L193)
+
+TYPO3 - Update database schema.
+
+
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L215)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L214)
 
 Deploys a TYPO3 project.
 

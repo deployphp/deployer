@@ -110,7 +110,6 @@ set('writable_dirs', [
  */
 set('composer_options', ' --no-dev --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader');
 
-
 /**
  * If set in the config this recipe uses rsync.
  * Default setting: false (uses the Git repository)
@@ -158,6 +157,12 @@ set('rsync', [
     'timeout' => 600,
 ]);
 
+/**
+ * List of schema update types.
+ * `safe` includes all necessary operations, to add or change fields or tables.
+ */
+set('typo3_updateschema_types', 'safe');
+
 
 /**
  * TYPO3 Commands
@@ -184,6 +189,11 @@ task('typo3:extension:setup', function () {
     run('{{bin/php}} {{release_path}}/{{bin/typo3}} extension:setup');
 });
 
+desc('TYPO3 - Update database schema');
+task('typo3:database:updateschema', function () {
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} database:updateschema {{typo3_updateschema_types}}');
+});
+
 /**
  * Main deploy task for TYPO3.
  *
@@ -194,10 +204,11 @@ task('typo3:extension:setup', function () {
  * 5. Ensure writable dirs
  * 6. Install vendors
  * 7. Warm up TYPO3 caches
- * 8. Run extension setup
- * 9. Update language files
- * 10. Flush caches
- * 11. Unlock and clean up
+ * 8. Perform schema updates
+ * 9. Run extension setup
+ * 10. Update language files
+ * 11. Flush caches
+ * 12. Unlock and clean up
  */
 desc('Deploys a TYPO3 project');
 task('deploy', [
@@ -210,6 +221,7 @@ task('deploy', [
     'deploy:writable',
     'deploy:vendors',
     'typo3:cache:warmup',
+    'typo3:database:updateschema',
     'typo3:extension:setup',
     'typo3:language:update',
     'typo3:cache:flush',

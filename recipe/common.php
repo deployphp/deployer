@@ -12,6 +12,7 @@ require __DIR__ . '/deploy/info.php';
 require __DIR__ . '/deploy/lock.php';
 require __DIR__ . '/deploy/push.php';
 require __DIR__ . '/deploy/release.php';
+require __DIR__ . '/deploy/reset_opcache.php';
 require __DIR__ . '/deploy/rollback.php';
 require __DIR__ . '/deploy/setup.php';
 require __DIR__ . '/deploy/shared.php';

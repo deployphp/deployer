@@ -246,23 +246,25 @@ If you need to create a new configuration option based on the overridden one, us
 
 set('dir_name', 'test');
 
+// calling get during recipe initialization will give you the original value defined above
+set('uses_original_dir_name', '/path/to/' . get('dir_name'));
+
+// use dynamic configuration syntax if you need to get a value passed via -o option
 set('uses_overridden_dir_name', function () {
     return '/path/to/' . get('dir_name');
 });
 
-set('uses_original_dir_name', '/path/to/' . get('dir_name'));
-
 task('my_task', function () {
-    writeln('Path: {{uses_overridden_dir_name}}');
     writeln('Path: {{uses_original_dir_name}}');
+    writeln('Path: {{uses_overridden_dir_name}}');
 });
 ```
 
 ```sh
 $ dep my_task deployer.org -v -o dir_name="prod"
 task my_task
-[deployer.org] Path: /path/to/prod
 [deployer.org] Path: /path/to/test
+[deployer.org] Path: /path/to/prod
 ```
 :::
 

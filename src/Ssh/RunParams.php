@@ -13,11 +13,11 @@ class RunParams
         public ?int    $timeout = null,
         public ?int    $idleTimeout = null,
         public bool    $forceOutput = false,
-        public ?array  $secrets = null,
+        #[\SensitiveParameter] public ?array  $secrets = null,
     ) {}
 
     public function with(
-        ?array $secrets = null,
+        #[\SensitiveParameter] ?array $secrets = null,
         ?int $timeout = null,
     ): self {
         $params = clone $this;

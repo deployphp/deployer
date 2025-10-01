@@ -233,6 +233,7 @@ run(
     string  $command,
     ?string $cwd = null,
     ?array  $env = null,
+    #[\SensitiveParameter]
     ?string $secret = null,
     ?bool   $nothrow = false,
     ?bool   $forceOutput = false,
@@ -278,6 +279,7 @@ runLocally(
     ?string $cwd = null,
     ?int    $timeout = null,
     ?int    $idleTimeout = null,
+    #[\SensitiveParameter]
     ?string $secret = null,
     ?array  $env = null,
     ?bool   $forceOutput = false,

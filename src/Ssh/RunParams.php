@@ -13,10 +13,12 @@ class RunParams
         public ?int    $timeout = null,
         public ?int    $idleTimeout = null,
         public bool    $forceOutput = false,
+        #[\SensitiveParameter]
         public ?array  $secrets = null,
     ) {}
 
     public function with(
+        #[\SensitiveParameter]
         ?array $secrets = null,
         ?int $timeout = null,
     ): self {

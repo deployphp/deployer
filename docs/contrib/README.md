@@ -29,6 +29,7 @@
 * [Slack Recipe](/docs/contrib/slack.md)
 * [Supervisord-monitor Recipe](/docs/contrib/supervisord-monitor.md)
 * [Telegram Recipe](/docs/contrib/telegram.md)
+* [Tideways Recipe](/docs/contrib/tideways.md)
 * [Webpack_encore Recipe](/docs/contrib/webpack_encore.md)
 * [Workplace Recipe](/docs/contrib/workplace.md)
 * [Yammer Recipe](/docs/contrib/yammer.md)

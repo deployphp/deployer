@@ -149,3 +149,4 @@ function getReleaseGitRef(): \Closure
     };
 }
 
+after('deploy:success', 'deploy:tideways');

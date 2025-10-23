@@ -115,7 +115,9 @@ class InitCommand extends Command
                     curl_setopt(\$ch, CURLOPT_CONNECTTIMEOUT, 5);
                     curl_setopt(\$ch, CURLOPT_TIMEOUT, 5);
                     \$result = curl_exec(\$ch);
-                    curl_close(\$ch);
+                    if (PHP_MAJOR_VERSION < 8) {
+                        curl_close(\$ch);
+                    }
                     \$json = json_decode(\$result);
                     \$host = parse_url(\$json->blog, PHP_URL_HOST);
                     file_put_contents('$tempHostFile', \$host);

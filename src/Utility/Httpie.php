@@ -158,11 +158,15 @@ class Httpie
             } else {
                 $error = curl_error($ch);
                 $errno = curl_errno($ch);
-                curl_close($ch);
+                if (PHP_MAJOR_VERSION < 8) {
+                    curl_close($ch);
+                }
                 throw new HttpieException($error, $errno);
             }
         }
-        curl_close($ch);
+        if (PHP_MAJOR_VERSION < 8) {
+            curl_close($ch);
+        }
         return $result;
     }
 

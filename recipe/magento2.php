@@ -130,7 +130,7 @@ set('config_import_needed', function () {
 });
 
 set('database_upgrade_needed', function () {
-    // detect if setup:upgrade is needed
+    // detect if db upgrade is needed
     try {
         run('{{bin/php}} {{bin/magento}} setup:db:status');
     } catch (RunException $e) {
@@ -142,6 +142,21 @@ set('database_upgrade_needed', function () {
     }
 
     return false;
+});
+
+set('full_upgrade_needed', function(){
+    //Some conditions, such as new RabittMQ services require a full upgrade and are not detecet by setup:db:status
+    //TODO: Add checks, once implemented, for detecting necessary full upgrade process. See future RabbitMQ Check: https://github.com/magento/magento2/pull/39698
+    return false;
+});
+
+set('upgrade_needed', function(){
+    // Detect necessary upgrade, partial db or full upgrade
+    try{
+        return get('database_upgrade_needed') || get('full_upgrade_needed');
+    }catch (RunException $e){
+        throw $e;
+    }
 });
 
 // Deploy without setting maintenance mode if possible
@@ -274,7 +289,7 @@ task('magento:maintenance:disable', function () {
 
 desc('Set maintenance mode if needed');
 task('magento:maintenance:enable-if-needed', function () {
-    ! get('enable_zerodowntime') || get('database_upgrade_needed') || get('config_import_needed') ?
+    ! get('enable_zerodowntime') || get('upgrade_needed') || get('config_import_needed') ?
         invoke('magento:maintenance:enable') :
         writeln('Config and database up to date => no maintenance mode');
 });
@@ -296,6 +311,15 @@ task('magento:upgrade:db', function () {
     } else {
         writeln('Database schema is up to date => upgrade skipped');
     }
+});
+
+desc('Run upgrades if needed');
+task('magento:upgrade', function () {
+    if (get('full_upgrade_needed')) {
+        run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated");
+    } else if(get('database_upgrade_needed')) {
+       invoke('magento:upgrade:db');
+    }
 })->once();
 
 desc('Flushes Magento Cache');
@@ -308,7 +332,7 @@ task('deploy:magento', [
     'magento:build',
     'magento:maintenance:enable-if-needed',
     'magento:config:import',
-    'magento:upgrade:db',
+    'magento:upgrade',
     'magento:maintenance:disable',
 ]);
 
@@ -519,7 +543,7 @@ task('magento:cron:stop', function () {
  * Install cron in crontab
  * To use this feature, add the following to your deployer scripts:
  *   ```php
- *   after('magento:upgrade:db', 'magento:cron:install');
+ *   after('magento:upgrade', 'magento:cron:install');
  *   ```
  */
 desc('Install cron in crontab');
@@ -555,7 +579,7 @@ task('artifact:deploy', [
     'artifact:prepare',
     'magento:maintenance:enable-if-needed',
     'magento:config:import',
-    'magento:upgrade:db',
+    'magento:upgrade',
     'magento:maintenance:disable',
     'deploy:symlink',
     'artifact:finish',

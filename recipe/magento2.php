@@ -144,17 +144,17 @@ set('database_upgrade_needed', function () {
     return false;
 });
 
-set('full_upgrade_needed', function(){
+set('full_upgrade_needed', function () {
     //Some conditions, such as new RabittMQ services require a full upgrade and are not detecet by setup:db:status
     //TODO: Add checks, once implemented, for detecting necessary full upgrade process. See future RabbitMQ Check: https://github.com/magento/magento2/pull/39698
     return false;
 });
 
-set('upgrade_needed', function(){
+set('upgrade_needed', function () {
     // Detect necessary upgrade, partial db or full upgrade
-    try{
+    try {
         return get('database_upgrade_needed') || get('full_upgrade_needed');
-    }catch (RunException $e){
+    } catch (RunException $e) {
         throw $e;
     }
 });
@@ -317,8 +317,8 @@ desc('Run upgrades if needed');
 task('magento:upgrade', function () {
     if (get('full_upgrade_needed')) {
         run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated");
-    } else if(get('database_upgrade_needed')) {
-       invoke('magento:upgrade:db');
+    } elseif (get('database_upgrade_needed')) {
+        invoke('magento:upgrade:db');
     }
 })->once();
 

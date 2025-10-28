@@ -8,8 +8,8 @@ body:
     id: deployer-version
     attributes:
       label: Deployer Version
-      description: Which version of Deployer are you using? Please provide the full version, e.g. v7.4.0.
-      placeholder: v7.4.0
+      description: Which version of Deployer are you using? Please provide the full version.
+      placeholder: v8.0.0
     validations:
       required: true
 
@@ -17,8 +17,8 @@ body:
     id: target-os
     attributes:
       label: Target OS
-      description: Which operating system are you using? Please provide the full version, e.g. Ubuntu 22.04.
-      placeholder: Ubuntu 22.04
+      description: Which operating system are you using? Please provide the full version.
+      placeholder: Ubuntu 24.04
     validations:
       required: true
 
@@ -27,6 +27,7 @@ body:
     attributes:
       label: Which PHP version are you using?
       options:
+        - PHP 8.5
         - PHP 8.4
         - PHP 8.3
         - PHP 8.2

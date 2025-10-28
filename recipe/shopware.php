@@ -141,7 +141,7 @@ task('sw:writable:jwt', static function () {
     if (!test('[ -d {{deploy_path}}/config/jwt/ ]')) {
         return;
     }
-    run('cd {{release_path}} && chmod -R 660 config/jwt/*');
+    run('cd {{release_path}} && find config/jwt/ -type f -exec chmod -R 660 {} +');
 });
 
 /**

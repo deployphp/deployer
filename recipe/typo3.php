@@ -14,10 +14,11 @@
  *     vendor/bin/dep deploy staging
  *
  * Common TYPO3 commands:
- *     vendor/bin/dep typo3:cache:flush       # Clear all TYPO3 caches
- *     vendor/bin/dep typo3:cache:warmup      # Warmup system caches
- *     vendor/bin/dep typo3:language:update   # Update extension language files
- *     vendor/bin/dep typo3:extension:setup   # Set up all extensions
+ *     vendor/bin/dep typo3:cache:flush                     # Clear all TYPO3 caches
+ *     vendor/bin/dep typo3:cache:warmup                    # Warmup system caches
+ *     vendor/bin/dep typo3:language:update                 # Update extension language files
+ *     vendor/bin/dep typo3:extension:setup                 # Set up all extensions
+ *     vendor/bin/dep typo3:install:fixfolderstructure      # Automatically create required files and folders for TYPO3
  */
 
 namespace Deployer;
@@ -189,9 +190,9 @@ task('typo3:extension:setup', function () {
     run('{{bin/php}} {{release_path}}/{{bin/typo3}} extension:setup');
 });
 
-desc('TYPO3 - Update database schema');
-task('typo3:database:updateschema', function () {
-    run('{{bin/php}} {{release_path}}/{{bin/typo3}} database:updateschema {{typo3_updateschema_types}}');
+desc('TYPO3 - Fix folder structure');
+task('typo3:install:fixfolderstructure', function () {
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} install:fixfolderstructure');
 });
 
 /**
@@ -218,6 +219,7 @@ task('deploy', [
     'deploy:release',
     'typo3:update_code',
     'deploy:shared',
+    'typo3:install:fixfolderstructure',
     'deploy:writable',
     'deploy:vendors',
     'typo3:cache:warmup',

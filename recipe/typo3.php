@@ -202,13 +202,13 @@ task('typo3:install:fixfolderstructure', function () {
  * 2. Create release directory
  * 3. Update code (Git or rsync)
  * 4. Symlink shared dirs/files
- * 5. Ensure writable dirs
- * 6. Install vendors
- * 7. Warm up TYPO3 caches
- * 8. Perform schema updates
- * 9. Run extension setup
- * 10. Update language files
- * 11. Flush caches
+ * 5. Fix TYPO3 folder structure
+ * 6. Ensure writable dirs
+ * 7. Run extension setup & perform schema updates
+ * 8. Update language files
+ * 9. Install composer vendors
+ * 10. Flush caches
+ * 11. Warm up TYPO3 caches
  * 12. Unlock and clean up
  */
 desc('Deploys a TYPO3 project');
@@ -221,12 +221,11 @@ task('deploy', [
     'deploy:shared',
     'typo3:install:fixfolderstructure',
     'deploy:writable',
-    'deploy:vendors',
-    'typo3:cache:warmup',
-    'typo3:database:updateschema',
     'typo3:extension:setup',
     'typo3:language:update',
+    'deploy:vendors',
     'typo3:cache:flush',
+    'typo3:cache:warmup',
     'deploy:publish',
 ]);
 

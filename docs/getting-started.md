@@ -30,6 +30,8 @@ If you already have a configured web server, skip to [deployment](#deploy).
 Create a new VPS with a provider like Linode, DigitalOcean, Vultr, AWS, or GCP. Use an **Ubuntu** image, as it's
 supported by Deployer's [provision](recipe/provision.md) recipe.
 
+To utilize Deployer for server provisioning, you must initially configure your server to permit key-based authentication for the root user (which is disabled by default for recent Ubuntu images). Once provisioning is complete, this root access via SSH can be disabled.
+
 :::tip
 Set up a DNS record pointing your domain to your server's IP address. This allows you to SSH into the server using your
 domain name instead of its IP.

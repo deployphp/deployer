@@ -14,10 +14,11 @@
  *     vendor/bin/dep deploy staging
  *
  * Common TYPO3 commands:
- *     vendor/bin/dep typo3:cache:flush       # Clear all TYPO3 caches
- *     vendor/bin/dep typo3:cache:warmup      # Warmup system caches
- *     vendor/bin/dep typo3:language:update   # Update extension language files
- *     vendor/bin/dep typo3:extension:setup   # Set up all extensions
+ *     vendor/bin/dep typo3:cache:flush                     # Clear all TYPO3 caches
+ *     vendor/bin/dep typo3:cache:warmup                    # Warmup system caches
+ *     vendor/bin/dep typo3:language:update                 # Update extension language files
+ *     vendor/bin/dep typo3:extension:setup                 # Set up all extensions
+ *     vendor/bin/dep typo3:install:fixfolderstructure      # Automatically create required files and folders for TYPO3
  */
 
 namespace Deployer;
@@ -189,9 +190,9 @@ task('typo3:extension:setup', function () {
     run('{{bin/php}} {{release_path}}/{{bin/typo3}} extension:setup');
 });
 
-desc('TYPO3 - Update database schema');
-task('typo3:database:updateschema', function () {
-    run('{{bin/php}} {{release_path}}/{{bin/typo3}} database:updateschema {{typo3_updateschema_types}}');
+desc('TYPO3 - Fix folder structure');
+task('typo3:install:fixfolderstructure', function () {
+    run('{{bin/php}} {{release_path}}/{{bin/typo3}} install:fixfolderstructure');
 });
 
 /**
@@ -201,13 +202,13 @@ task('typo3:database:updateschema', function () {
  * 2. Create release directory
  * 3. Update code (Git or rsync)
  * 4. Symlink shared dirs/files
- * 5. Ensure writable dirs
- * 6. Install vendors
- * 7. Warm up TYPO3 caches
- * 8. Perform schema updates
- * 9. Run extension setup
- * 10. Update language files
- * 11. Flush caches
+ * 5. Fix TYPO3 folder structure
+ * 6. Ensure writable dirs
+ * 7. Run extension setup & perform schema updates
+ * 8. Update language files
+ * 9. Install composer vendors
+ * 10. Flush caches
+ * 11. Warm up TYPO3 caches
  * 12. Unlock and clean up
  */
 desc('Deploys a TYPO3 project');
@@ -218,13 +219,13 @@ task('deploy', [
     'deploy:release',
     'typo3:update_code',
     'deploy:shared',
+    'typo3:install:fixfolderstructure',
     'deploy:writable',
-    'deploy:vendors',
-    'typo3:cache:warmup',
-    'typo3:database:updateschema',
     'typo3:extension:setup',
     'typo3:language:update',
+    'deploy:vendors',
     'typo3:cache:flush',
+    'typo3:cache:warmup',
     'deploy:publish',
 ]);
 

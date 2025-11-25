@@ -39,10 +39,7 @@ The [deploy](#deploy) task of **Laravel** consists of:
   * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
 * [artisan:storage:link](/docs/recipe/laravel.md#artisan-storage-link) – Creates the symbolic links configured for the application
-* [artisan:config:cache](/docs/recipe/laravel.md#artisan-config-cache) – Creates a cache file for faster configuration loading
-* [artisan:route:cache](/docs/recipe/laravel.md#artisan-route-cache) – Creates a route cache file for faster route registration
-* [artisan:view:cache](/docs/recipe/laravel.md#artisan-view-cache) – Compiles all of the application\'s Blade templates
-* [artisan:event:cache](/docs/recipe/laravel.md#artisan-event-cache) – Discovers and cache the application\'s events and listeners
+* [artisan:optimize](/docs/recipe/laravel.md#artisan-optimize) – Cache the framework bootstrap files
 * [artisan:migrate](/docs/recipe/laravel.md#artisan-migrate) – Runs the database migrations
 * [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
   * [deploy:symlink](/docs/recipe/deploy/symlink.md#deploy-symlink) – Creates symlink to release
@@ -577,10 +574,7 @@ This task is group task which contains next tasks:
 * [deploy:prepare](/docs/recipe/common.md#deploy-prepare)
 * [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
 * [artisan:storage:link](/docs/recipe/laravel.md#artisan-storage-link)
-* [artisan:config:cache](/docs/recipe/laravel.md#artisan-config-cache)
-* [artisan:route:cache](/docs/recipe/laravel.md#artisan-route-cache)
-* [artisan:view:cache](/docs/recipe/laravel.md#artisan-view-cache)
-* [artisan:event:cache](/docs/recipe/laravel.md#artisan-event-cache)
+* [artisan:optimize](/docs/recipe/laravel.md#artisan-optimize)
 * [artisan:migrate](/docs/recipe/laravel.md#artisan-migrate)
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)
 

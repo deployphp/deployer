@@ -99,8 +99,8 @@ task('deploy:writable', function () {
             $remoteUser = run('whoami');
         }
         $httpUser = get('http_user');
-        if (strpos(run("chmod 2>&1; true"), '+a') !== false) {
-            // Try OS-X specific setting of access-rights
+        if (run("uname -s") === 'Darwin') {
+            // macOS supports chmod +a for ACL management
 
             run("$sudo chmod +a \"$httpUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");
             run("$sudo chmod +a \"$remoteUser allow delete,write,append,file_inherit,directory_inherit\" $dirs");

@@ -61,6 +61,9 @@ set('writable_chmod_mode', '0755');
 // List of additional groups to give write permission to.
 set('writable_acl_groups', []);
 
+// Force setting ACLs even when writable dirs already have them.
+set('writable_acl_force', false);
+
 desc('Makes writable dirs');
 task('deploy:writable', function () {
     $dirs = join(' ', get('writable_dirs'));
@@ -121,14 +124,16 @@ task('deploy:writable', function () {
             if (empty($sudo)) {
                 // When running without sudo, exception may be thrown
                 // if executing setfacl on files created by http user (in directory that has been setfacl before).
-                // These directories/files should be skipped.
-                // Now, we will check each directory for ACL and only setfacl for which has not been set before.
+                // These directories/files should be skipped unless forcing ACL reset.
+                // Now, we will check each directory for ACL and only setfacl for which has not been set before,
+                // unless writable_acl_force is enabled.
                 $writeableDirs = get('writable_dirs');
+                $forceAcl = get('writable_acl_force');
                 foreach ($writeableDirs as $dir) {
                     // Check if ACL has been set or not
                     $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
                     // Set ACL for directory if it has not been set before
-                    if (!$hasfacl) {
+                    if ($forceAcl || !$hasfacl) {
                         run("setfacl -L $recursive $setFaclUsers $setFaclGroups $dir");
                         run("setfacl -dL $recursive $setFaclUsers $setFaclGroups $dir");
                     }

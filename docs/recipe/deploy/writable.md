@@ -98,11 +98,21 @@ List of additional groups to give write permission to.
 
 
 
+### writable_acl_force
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L65)
+
+Force setting ACLs even when writable dirs already have them.
+
+```php title="Default value"
+false
+```
+
+
 
 ## Tasks
 
 ### deploy\:writable {#deploy-writable}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L68)
 
 Makes writable dirs.
 

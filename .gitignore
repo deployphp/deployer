@@ -3,3 +3,4 @@
 .phpunit.result.cache
 docker-compose.override.yml
 .php-cs-fixer.cache
+.idea/

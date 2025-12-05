@@ -132,7 +132,7 @@ task('deploy:writable', function () {
                 foreach ($writeableDirs as $dir) {
                     // Check if ACL has been set or not
                     $hasfacl = run("getfacl -p $dir | grep \"^user:$httpUser:.*w\" | wc -l");
-                    // Set ACL for directory if it has not been set before
+                    // Set ACL for directory if it has not been set before or if forcing ACL reset
                     if ($forceAcl || !$hasfacl) {
                         run("setfacl -L $recursive $setFaclUsers $setFaclGroups $dir");
                         run("setfacl -dL $recursive $setFaclUsers $setFaclGroups $dir");

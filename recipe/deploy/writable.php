@@ -61,7 +61,7 @@ set('writable_chmod_mode', '0755');
 // List of additional groups to give write permission to.
 set('writable_acl_groups', []);
 
-// Force setting ACLs even when writable dirs already have them.
+// Force ACLs to be reapplied even if they already exist. Useful when recursive ACLs need to reach new nested paths but sudo isn't available. Slower, so enable only to fix writable dir permissions.
 set('writable_acl_force', false);
 
 desc('Makes writable dirs');

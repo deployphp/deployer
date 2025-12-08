@@ -98,11 +98,21 @@ List of additional groups to give write permission to.
 
 
 
+### writable_acl_force
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L65)
+
+Force ACLs to be reapplied even if they already exist. Useful when recursive ACLs need to reach new nested paths but sudo isn't available. Slower, so enable only to fix writable dir permissions.
+
+```php title="Default value"
+false
+```
+
+
 
 ## Tasks
 
 ### deploy\:writable {#deploy-writable}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L65)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/writable.php#L68)
 
 Makes writable dirs.
 

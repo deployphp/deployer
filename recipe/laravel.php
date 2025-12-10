@@ -154,6 +154,9 @@ task('artisan:optimize', artisan('optimize'));
 desc('Removes the cached bootstrap files');
 task('artisan:optimize:clear', artisan('optimize:clear'));
 
+desc('Reload running services');
+task('artisan:reload', artisan('reload'));
+
 desc('Creates a route cache file for faster route registration');
 task('artisan:route:cache', artisan('route:cache'));
 

@@ -129,7 +129,7 @@ Shared via symlinks from the shared/ directory.
 ```php title="Default value"
 [
     '{{typo3/public_dir}}/fileadmin',
-    '{{typo3/public_dir}}/assets',
+    '{{typo3/public_dir}}/_assets',
     '{{typo3/public_dir}}/typo3temp/assets',
     'var/lock',
     'var/log',
@@ -149,7 +149,7 @@ Writeable directories
 ```php title="Default value"
 [
     '{{typo3/public_dir}}/fileadmin',
-    '{{typo3/public_dir}}/assets',
+    '{{typo3/public_dir}}/_assets',
     '{{typo3/public_dir}}/typo3temp/assets',
     'var/cache',
     'var/lock',

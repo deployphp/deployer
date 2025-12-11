@@ -76,7 +76,6 @@ set('log_files', 'var/log/typo3_*.log');
  */
 set('shared_dirs', [
     '{{typo3/public_dir}}/fileadmin',
-    '{{typo3/public_dir}}/_assets',
     '{{typo3/public_dir}}/typo3temp/assets',
     'var/lock',
     'var/log',
@@ -99,7 +98,6 @@ if (!has('shared_files') || empty(get('shared_files'))) {
  */
 set('writable_dirs', [
     '{{typo3/public_dir}}/fileadmin',
-    '{{typo3/public_dir}}/_assets',
     '{{typo3/public_dir}}/typo3temp/assets',
     'var/cache',
     'var/lock',
@@ -140,7 +138,6 @@ $exclude = [
     'package-lock.json',
     'node_modules/',
     'var/',
-    '/{{typo3/public_dir}}/_assets',
     '/{{typo3/public_dir}}/fileadmin',
     '/{{typo3/public_dir}}/typo3temp',
 ];

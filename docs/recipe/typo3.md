@@ -129,7 +129,6 @@ Shared via symlinks from the shared/ directory.
 ```php title="Default value"
 [
     '{{typo3/public_dir}}/fileadmin',
-    '{{typo3/public_dir}}/assets',
     '{{typo3/public_dir}}/typo3temp/assets',
     'var/lock',
     'var/log',
@@ -140,7 +139,7 @@ Shared via symlinks from the shared/ directory.
 
 
 ### writable_dirs
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L100)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L99)
 
 Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `recipe/deploy/writable.php`.
 
@@ -149,7 +148,6 @@ Writeable directories
 ```php title="Default value"
 [
     '{{typo3/public_dir}}/fileadmin',
-    '{{typo3/public_dir}}/assets',
     '{{typo3/public_dir}}/typo3temp/assets',
     'var/cache',
     'var/lock',
@@ -159,7 +157,7 @@ Writeable directories
 
 
 ### composer_options
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L112)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L110)
 
 Overrides [composer_options](/docs/recipe/deploy/vendors.md#composer_options) from `recipe/deploy/vendors.php`.
 
@@ -171,7 +169,7 @@ Composer install options for production.
 
 
 ### use_rsync
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L118)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L116)
 
 If set in the config this recipe uses rsync.
 Default setting: false (uses the Git repository)
@@ -182,7 +180,7 @@ false
 
 
 ### update_code_task
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L118)
 
 
 
@@ -192,7 +190,7 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 
 
 ### rsync
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L148)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L145)
 
 
 
@@ -213,7 +211,7 @@ return get('use_rsync') ? 'rsync' : 'deploy:update_code';
 
 
 ### typo3_updateschema_types
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L165)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L162)
 
 List of schema update types.
 `safe` includes all necessary operations, to add or change fields or tables.
@@ -227,7 +225,7 @@ List of schema update types.
 ## Tasks
 
 ### typo3\:update_code {#typo3-update_code}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L124)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L122)
 
 
 
@@ -235,7 +233,7 @@ List of schema update types.
 
 
 ### typo3\:cache\:flush {#typo3-cache-flush}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L174)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L171)
 
 TYPO3 - Clear all caches.
 
@@ -244,7 +242,7 @@ All run via [bin/php](/docs/recipe/common.md#bin/php) [release_path](/docs/recip
 
 
 ### typo3\:cache\:warmup {#typo3-cache-warmup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L179)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L176)
 
 TYPO3 - Cache warmup for system caches.
 
@@ -252,7 +250,7 @@ TYPO3 - Cache warmup for system caches.
 
 
 ### typo3\:language\:update {#typo3-language-update}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L184)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L181)
 
 TYPO3 - Update the language files of all activated extensions.
 
@@ -260,7 +258,7 @@ TYPO3 - Update the language files of all activated extensions.
 
 
 ### typo3\:extension\:setup {#typo3-extension-setup}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L189)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L186)
 
 TYPO3 - Set up all extensions.
 
@@ -268,7 +266,7 @@ TYPO3 - Set up all extensions.
 
 
 ### typo3\:install\:fixfolderstructure {#typo3-install-fixfolderstructure}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L194)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L191)
 
 TYPO3 - Fix folder structure.
 
@@ -276,7 +274,7 @@ TYPO3 - Fix folder structure.
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L215)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/typo3.php#L212)
 
 Deploys a TYPO3 project.
 

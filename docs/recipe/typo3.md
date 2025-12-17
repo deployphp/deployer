@@ -34,11 +34,11 @@ The [deploy](#deploy) task of **TYPO3** consists of:
 * [deploy:release](/docs/recipe/deploy/release.md#deploy-release) – Prepares release
 * [typo3:update_code](/docs/recipe/typo3.md#typo3-update_code) – 
 * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared) – Creates symlinks for shared files and dirs
-* [typo3:install:fixfolderstructure](/docs/recipe/typo3.md#typo3-install-fixfolderstructure) – TYPO3 - Fix folder structure
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable) – Makes writable dirs
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
+* [typo3:install:fixfolderstructure](/docs/recipe/typo3.md#typo3-install-fixfolderstructure) – TYPO3 - Fix folder structure
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup) – TYPO3 - Set up all extensions
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update) – TYPO3 - Update the language files of all activated extensions
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors) – Installs vendors
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush) – TYPO3 - Clear all caches
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup) – TYPO3 - Cache warmup for system caches
 * [deploy:publish](/docs/recipe/common.md#deploy-publish) – Publishes the release
@@ -301,11 +301,11 @@ This task is group task which contains next tasks:
 * [deploy:release](/docs/recipe/deploy/release.md#deploy-release)
 * [typo3:update_code](/docs/recipe/typo3.md#typo3-update_code)
 * [deploy:shared](/docs/recipe/deploy/shared.md#deploy-shared)
-* [typo3:install:fixfolderstructure](/docs/recipe/typo3.md#typo3-install-fixfolderstructure)
 * [deploy:writable](/docs/recipe/deploy/writable.md#deploy-writable)
+* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
+* [typo3:install:fixfolderstructure](/docs/recipe/typo3.md#typo3-install-fixfolderstructure)
 * [typo3:extension:setup](/docs/recipe/typo3.md#typo3-extension-setup)
 * [typo3:language:update](/docs/recipe/typo3.md#typo3-language-update)
-* [deploy:vendors](/docs/recipe/deploy/vendors.md#deploy-vendors)
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush)
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup)
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)

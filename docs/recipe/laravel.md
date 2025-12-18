@@ -46,6 +46,7 @@ The [deploy](#deploy) task of **Laravel** consists of:
   * [deploy:unlock](/docs/recipe/deploy/lock.md#deploy-unlock) – Unlocks deploy
   * [deploy:cleanup](/docs/recipe/deploy/cleanup.md#deploy-cleanup) – Cleanup old releases
   * [deploy:success](/docs/recipe/common.md#deploy-success) – Deploys your project
+* [artisan:reload](/docs/recipe/laravel.md#artisan-reload) – Reload running services
 
 
 The laravel recipe is based on the [common](/docs/recipe/common.md) recipe.
@@ -585,5 +586,6 @@ This task is group task which contains next tasks:
 * [artisan:optimize](/docs/recipe/laravel.md#artisan-optimize)
 * [artisan:migrate](/docs/recipe/laravel.md#artisan-migrate)
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)
+* [artisan:reload](/docs/recipe/laravel.md#artisan-reload)
 
 

@@ -13,10 +13,14 @@
 
 ---
 
-<p style="font-size:21px; color:black;">Browser testing via 
-        <a href="https://www.lambdatest.com/" target="_blank">
-            <img src="https://www.lambdatest.com/blue-logo.png" style="vertical-align: middle;" width="250" height="45" />
-        </a>
+<p style="font-size: 21px; color:black;">
+    Browser testing via<br> 
+    <a href="https://www.testmu.ai" target="_blank">
+        <picture>
+            <source media="(prefers-color-scheme: dark)" srcset=".github/testmu-black-logo.png" width="800">
+            <img src=".github/testmu-white-logo.png" alt="Testmu AI" width="800">
+        </picture>
+    </a>
 </p>
 
 ---

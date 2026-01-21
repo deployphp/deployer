@@ -187,7 +187,7 @@ function task(string $name, callable|array|null $body = null): Task
 {
     $deployer = Deployer::get();
 
-    if (empty($body)) {
+    if ($body === null) {
         return $deployer->tasks->get($name);
     }
 
@@ -195,8 +195,6 @@ function task(string $name, callable|array|null $body = null): Task
         $task = new Task($name, $body);
     } elseif (is_array($body)) {
         $task = new GroupTask($name, $body);
-    } else {
-        throw new \InvalidArgumentException('Task body should be a function or an array.');
     }
 
     if ($deployer->tasks->has($name)) {

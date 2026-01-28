@@ -306,6 +306,8 @@ task('magento:config:import', function () {
 desc('Upgrades magento database');
 task('magento:upgrade:db', function () {
     if (get('database_upgrade_needed')) {
+        // clear config cache, so there is no error when a new MQ topic is introduced
+        run("{{bin/php}} {{bin/magento}} cache:clean config");
         run("{{bin/php}} {{bin/magento}} setup:db-schema:upgrade --no-interaction");
         run("{{bin/php}} {{bin/magento}} setup:db-data:upgrade --no-interaction");
     } else {

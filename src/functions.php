@@ -595,10 +595,12 @@ function on($hosts, callable $callback): void
  */
 function invoke(string $taskName): void
 {
-    $task = Deployer::get()->tasks->get($taskName);
-    Deployer::get()->messenger->startTask($task);
-    $task->run(Context::get());
-    Deployer::get()->messenger->endTask($task);
+    $tasks = Deployer::get()->scriptManager->getTasks($taskName);
+    foreach ($tasks as $task) {
+        Deployer::get()->messenger->startTask($task);
+        $task->run(Context::get());
+        Deployer::get()->messenger->endTask($task);
+    }
 }
 
 /**

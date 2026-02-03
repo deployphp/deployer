@@ -49,21 +49,31 @@ http://gordalina.github.io/cachetool/
 namespace Deployer;
 
 set('cachetool', '');
-/**
- * URL to download cachetool from if it is not available
- *
- * CacheTool 9.x works with PHP >=8.1
- * CacheTool 8.x works with PHP >=8.0
- * CacheTool 7.x works with PHP >=7.3
- */
-set('cachetool_url', 'https://github.com/gordalina/cachetool/releases/download/9.1.0/cachetool.phar');
 set('cachetool_args', '');
+set('cachetool_version', null);
+
+// Returns Cachetool binary path if found. Otherwise, tries to install Cachetool to `.dep/cachetool.phar`.
 set('bin/cachetool', function () {
-    if (!test('[ -f {{release_or_current_path}}/cachetool.phar ]')) {
-        run("cd {{release_or_current_path}} && curl -sLO {{cachetool_url}}");
+    if (test('[ -f {{deploy_path}}/.dep/cachetool.phar ]')) {
+        if (empty(get('cachetool_version')) || preg_match(parse('/Cachetool.*{{cachetool_version}}/'), run('{{bin/php}} {{deploy_path}}/.dep/cachetool.phar --version'))) {
+            return '{{bin/php}} {{deploy_path}}/.dep/cachetool.phar';
+        }
     }
-    return '{{release_or_current_path}}/cachetool.phar';
+
+    if (has('cachetool_url')) {
+        warning('The option "cachetool_url" is outdated, use "cachetool_version" instead.');
+    }
+
+    $urlLatest = 'https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar';
+    $urlVersion = 'https://github.com/gordalina/cachetool/releases/download/%1$s/cachetool.phar';
+    $url = get('cachetool_version') ? sprintf($urlVersion, get('cachetool_version')) : (has('cachetool_url') ? get('cachetool_url') : $urlLatest);
+    $versionAsName = get('cachetool_version') ? ' {{cachetool_version}}' : '';
+    warning("Cachetool{$versionAsName} wasn't found. Installing to \"{{deploy_path}}/.dep/cachetool.phar\".");
+    run("cd {{deploy_path}} && curl -sSL $url -o cachetool.phar");
+    run('mv {{deploy_path}}/cachetool.phar {{deploy_path}}/.dep/cachetool.phar');
+    return '{{bin/php}} {{deploy_path}}/.dep/cachetool.phar';
 });
+
 set('cachetool_options', function () {
     $options = (array) get('cachetool');
     $fullOptions = (string) get('cachetool_args');

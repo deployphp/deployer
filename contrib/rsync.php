@@ -241,10 +241,10 @@ task('rsync', function () {
 
     $host = Context::get()->getHost();
     if ($host instanceof Localhost) {
-        runLocally("rsync {$rsyncFlags} {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$dst/'", $config);
+        runLocally("rsync {$rsyncFlags} {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '$dst/'", timeout: $config['timeout']);
         return;
     }
 
     $sshArguments = $host->connectionOptionsString();
-    runLocally("rsync {$rsyncFlags} -e 'ssh $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '{$host->connectionString()}:$dst/'", $config);
+    runLocally("rsync {$rsyncFlags} -e 'ssh $sshArguments' {{rsync_options}}{{rsync_includes}}{{rsync_excludes}}{{rsync_filter}} '$src/' '{$host->connectionString()}:$dst/'", timeout: $config['timeout']);
 });

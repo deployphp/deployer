@@ -65,8 +65,8 @@ set('bin/cachetool', function () {
     }
 
     $urlLatest = 'https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar';
-    $urlVersion = 'https://github.com/gordalina/cachetool/releases/download/%1$s/cachetool.phar';
-    $url = get('cachetool_version') ? sprintf($urlVersion, get('cachetool_version')) : (has('cachetool_url') ? get('cachetool_url') : $urlLatest);
+    $urlVersion = 'https://github.com/gordalina/cachetool/releases/download/{{cachetool_version}}/cachetool.phar';
+    $url = get('cachetool_version') ? parse($urlVersion) : (has('cachetool_url') ? get('cachetool_url') : $urlLatest);
     $versionAsName = get('cachetool_version') ? ' {{cachetool_version}}' : '';
     warning("Cachetool{$versionAsName} wasn't found. Installing to \"{{deploy_path}}/.dep/cachetool.phar\".");
     run("cd {{deploy_path}} && curl -sSL $url -o cachetool.phar");

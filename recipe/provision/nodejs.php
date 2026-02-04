@@ -4,7 +4,7 @@ namespace Deployer;
 
 use function Deployer\Support\escape_shell_argument;
 
-set('node_version', '23.x');
+set('node_version', '--lts');
 
 desc('Installs npm packages');
 task('provision:node', function () {

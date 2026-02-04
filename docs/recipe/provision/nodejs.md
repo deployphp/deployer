@@ -18,7 +18,7 @@ require 'recipe/provision/nodejs.php';
 
 
 ```php title="Default value"
-'23.x'
+'--lts'
 ```
 
 

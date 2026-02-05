@@ -11,16 +11,8 @@ set('shared_files', ['.env']);
 set('writable_dirs', [
     'bootstrap/cache',
     'storage',
-    'storage/app',
-    'storage/app/public',
-    'storage/app/private',
-    'storage/framework',
-    'storage/framework/cache',
-    'storage/framework/cache/data',
-    'storage/framework/sessions',
-    'storage/framework/views',
-    'storage/logs',
 ]);
+set('writable_recursive', true);
 set('log_files', 'storage/logs/*.log');
 set('bin/artisan', '{{release_or_current_path}}/artisan');
 set('laravel_version', function () {

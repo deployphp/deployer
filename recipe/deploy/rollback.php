@@ -36,8 +36,12 @@ set('rollback_candidate', function () {
     while (isset($releasesBeforeCurrent[0])) {
         $candidate = $releasesBeforeCurrent[0];
 
-        // Skip all bad releases.
-        if (test("[ -f {{deploy_path}}/releases/$candidate/BAD_RELEASE ]")) {
+        if (
+            // Only consider successful releases.
+            !test("[ -f {{deploy_path}}/releases/$candidate/FINISHED_RELEASE ]")
+            // Skip all bad releases (that have previously been rolled back).
+            || test("[ -f {{deploy_path}}/releases/$candidate/BAD_RELEASE ]")
+        ) {
             array_shift($releasesBeforeCurrent);
             continue;
         }

@@ -18,4 +18,6 @@ task('deploy:symlink', function () {
         run("cd {{deploy_path}} && {{bin/symlink}} {{release_path}} {{current_path}}"); // Atomic override symlink.
         run("cd {{deploy_path}} && rm release"); // Remove release link.
     }
+
+    run("echo '{{user}}' > {{release_path}}/FINISHED_RELEASE");
 });

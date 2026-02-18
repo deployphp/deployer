@@ -512,13 +512,12 @@ task('magento:set_cache_prefix', function () {
 PHP;
 
     // Run PHP code on server
-    run(sprintf(
-        'php -r %s %s %s %s',
-        escapeshellarg($phpCode),
-        escapeshellarg($envConfigFile),
-        escapeshellarg($tmpEnvConfigFile),
+    run(
+        "{{bin/php}} -r " . escapeshellarg($phpCode) . " -- " . 
+        escapeshellarg($envConfigFile) . " " . 
+        escapeshellarg($tmpEnvConfigFile) . " " . 
         escapeshellarg($newPrefix)
-    ));
+    );
 
     // Remove symlink for env.php
     run("rm {{release_or_current_path}}/" . ENV_CONFIG_FILE_PATH);

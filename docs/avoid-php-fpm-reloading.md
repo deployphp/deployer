@@ -54,7 +54,7 @@ php_fastcgi * unix//run/php/php-fpm.sock {
 ```
 
 :::tip
-FrankenPHP (which based on Caddy) has resolve_root_symlink activated by default.
+FrankenPHP (which is based on Caddy) has `resolve_root_symlink` activated by default.
 :::
 
 ## Fix for Apache

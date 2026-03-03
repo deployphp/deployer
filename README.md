@@ -11,6 +11,17 @@
 
 <p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>
 
+<hr>
+<p>
+  <a href="https://crow.watch"><img align="left" src="https://crow.watch/static/logo-rounded.png" alt="Crow Watch" width="140" height="140"></a>
+  <h3>Crow Watch</h3>
+  A computing-focused community.
+</p>
+<p>Join at <strong><a href="https://crow.watch/join/zx">crow.watch/join/deployer</a></strong></p>
+<p>Share great links, cool code, and new tools.</p>
+<hr>
+
+
 ---
 
 <p style="font-size: 21px; color:black;">

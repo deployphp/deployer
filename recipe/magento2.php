@@ -493,39 +493,51 @@ task('deploy:additional-shared', function () {
  **/
 desc('Update cache id_prefix');
 task('magento:set_cache_prefix', function () {
-    //download current env config
-    $tmpConfigFile = tempnam(sys_get_temp_dir(), 'deployer_config');
-    download('{{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH, $tmpConfigFile);
-    $envConfigArray = include($tmpConfigFile);
-    //set prefix to `alias_releasename_`
-    $prefixUpdate = get('alias') . '_' . get('release_name') . '_';
+    $envConfigFile = "{{deploy_path}}/shared" . '/' . ENV_CONFIG_FILE_PATH;
+    $tmpEnvConfigFile = "{{deploy_path}}/shared" . '/' . TMP_ENV_CONFIG_FILE_PATH;
+    $newPrefix = get('alias') . '_' . get('release_name') . '_';
 
-    //check for preload keys and update
-    if (isset($envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'])) {
-        $oldPrefix = $envConfigArray['cache']['frontend']['default']['id_prefix'];
-        $preloadKeys = $envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'];
-        $newPreloadKeys = [];
-        foreach ($preloadKeys as $preloadKey) {
-            $newPreloadKeys[] = preg_replace('/^' . $oldPrefix . '/', $prefixUpdate, $preloadKey);
+    $phpCode = <<<'PHP'
+        $envConfigFile = $argv[1];
+        $tmpEnvConfigFile = $argv[2];
+        $newPrefix = $argv[3];
+        $config = include $envConfigFile;
+
+        $defaultCache = &$config['cache']['frontend']['default'];
+        $pageCache = &$config['cache']['frontend']['page_cache'];
+
+        $oldPrefix = $defaultCache['id_prefix'] ?? '';
+
+        // Update preload_keys if they exist to match the new prefix
+        if (isset($defaultCache['backend_options']['preload_keys'])) {
+            foreach ($defaultCache['backend_options']['preload_keys'] as &$key) {
+                if ($oldPrefix !== '' && str_starts_with($key, $oldPrefix)) {
+                    $key = $newPrefix . substr($key, strlen($oldPrefix));
+                }
+            }
         }
-        $envConfigArray['cache']['frontend']['default']['backend_options']['preload_keys'] = $newPreloadKeys;
-    }
 
-    //update id_prefix to include release name
-    $envConfigArray['cache']['frontend']['default']['id_prefix'] = $prefixUpdate;
-    $envConfigArray['cache']['frontend']['page_cache']['id_prefix'] = $prefixUpdate;
+        // Apply the new prefix
+        $defaultCache['id_prefix'] = $newPrefix;
+        $pageCache['id_prefix'] = $newPrefix;
 
-    //Generate configuration array as string
-    $envConfigStr = '<?php return ' . var_export($envConfigArray, true) . ';';
-    file_put_contents($tmpConfigFile, $envConfigStr);
-    //upload updated config to server
-    upload($tmpConfigFile, '{{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH);
-    //cleanup tmp file
-    unlink($tmpConfigFile);
-    //delete the symlink for env.php
-    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
-    //link the env to the tmp version
-    run('{{bin/symlink}} {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
+        // Save with clean formatting
+        $content = "<?php\nreturn " . var_export($config, true) . ";\n";
+        file_put_contents($tmpEnvConfigFile, $content);
+PHP;
+
+    // Run PHP code on server
+    run(
+        "{{bin/php}} -r " . escapeshellarg($phpCode) . " -- " . 
+        escapeshellarg($envConfigFile) . " " . 
+        escapeshellarg($tmpEnvConfigFile) . " " . 
+        escapeshellarg($newPrefix)
+    );
+
+    // Remove symlink for env.php
+    run("rm {{release_or_current_path}}/" . ENV_CONFIG_FILE_PATH);
+    // Create symlink to tmp env file
+    run("{{bin/symlink}} $tmpEnvConfigFile {{release_path}}/" . ENV_CONFIG_FILE_PATH);
 });
 
 /**

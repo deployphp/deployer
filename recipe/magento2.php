@@ -233,6 +233,8 @@ function magentoDeployAssetsSplit(string $area)
         throw new ConfigurationException("\$area must be either 'frontend' or 'backend', '$area' given");
     }
 
+    $maxProcesses = get('static_content_jobs');
+
     $isFrontend = $area === 'frontend';
     $suffix = $isFrontend
         ? ''
@@ -251,18 +253,31 @@ function magentoDeployAssetsSplit(string $area)
         ? 'frontend'
         : 'adminhtml';
 
+    // group themes by their languages to minimize number of static content deploy commands, and allow parallel jobs
+    $themeGroups = [];
     if ($useDefaultLanguages) {
-        $themes = '-t ' . implode(' -t ', $themes);
-
-        run("{{bin/php}} {{bin/magento}} setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $defaultLanguages $themes -j {{static_content_jobs}}");
-        return;
+        $themeGroups[$defaultLanguages] = $themes;
+    } else {
+        foreach ($themes as $theme) {
+            $locales = array_unique(array_filter(explode(' ', parse($themesConfig[$theme] ?? $defaultLanguages))));
+            sort($locales); // sort locales to ensure consistent grouping
+            $localesSorted = implode(' ', $locales);
+            $themeGroups[$localesSorted][] = $theme;
+        }
     }
 
-    foreach ($themes as $theme) {
-        $languages = parse($themesConfig[$theme] ?? $defaultLanguages);
-
-        run("{{bin/php}} {{bin/magento}} setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $languages -t $theme -j {{static_content_jobs}}");
+    foreach ($themeGroups as $locales => $themes) {
+        $localeCount = substr_count($locales, ' ') + 1;
+        // how many themes can we process in parallel?
+        $maxConcurrentThemes = max(1, floor($maxProcesses / $localeCount));
+        // WARNING: when static_content_jobs>1, and it's doing more than 1 theme-locale per process, it can get stuck - so we do 1batch at a time
+        do {
+            $chunk = array_splice($themes, 0, $maxConcurrentThemes);
+            $themeArgs = '-t ' . implode(' -t ', $chunk);
+            run("{{bin/php}} {{bin/magento}} setup:static-content:deploy -f --area=$staticContentArea --content-version={{content_version}} {{static_deploy_options}} $locales $themeArgs -j {{static_content_jobs}}");
+        } while (!empty($themes));
     }
+
 }
 
 desc('Syncs content version');

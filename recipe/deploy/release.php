@@ -23,7 +23,7 @@ set('releases_log', function () {
         return [];
     }
 
-    $keep_releases = get('keep_releases', 300);
+    $keep_releases = get('releases_log_limit', get('keep_releases', 300));
 
     $releaseLogs = array_map(function ($line) {
         return json_decode($line, true);

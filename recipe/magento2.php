@@ -370,13 +370,13 @@ task('deploy', [
 
 after('deploy:symlink', 'magento:cache:flush');
 
-after('deploy:failed','deploy:magento:failed');
+after('deploy:failed', 'deploy:magento:failed');
 
 //Run Magento Deployment Failure Tasks
 desc('Run magento post deployment failure tasks.');
-task('deploy:magento:failed',[
+task('deploy:magento:failed', [
     'magento:config:import',
-    'magento:maintenance:disable'
+    'magento:maintenance:disable',
 ]);
 
 // Artifact deployment section

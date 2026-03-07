@@ -647,6 +647,11 @@ Run magento post deployment failure tasks.
 Run Magento Deployment Failure Tasks
 
 
+This task is group task which contains next tasks:
+* [magento:config:import](/docs/recipe/magento2.md#magento-config-import)
+* [magento:maintenance:disable](/docs/recipe/magento2.md#magento-maintenance-disable)
+
+
 ### artifact\:package {#artifact-package}
 [Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L420)
 

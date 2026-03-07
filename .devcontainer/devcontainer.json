@@ -1,9 +1,3 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/universal:2",
-  "features": {
-    "ghcr.io/devcontainers/features/php:1": {
-       "version": 8.2,
-       "installComposer": true
-    }
-  }
+  "image": "mcr.microsoft.com/devcontainers/php:1-8.2-bookworm" 
 }

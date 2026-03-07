@@ -333,7 +333,7 @@ task('magento:upgrade:db', function () {
 desc('Run upgrades if needed');
 task('magento:upgrade', function () {
     if (get('full_upgrade_needed')) {
-        run("{{bin/php}} {{bin/magento}} setup:upgrade --keep-generated");
+        run("{{bin/php}} {{bin/magento}} setup:upgrade --no-interaction --keep-generated");
     } elseif (get('database_upgrade_needed')) {
         invoke('magento:upgrade:db');
     }

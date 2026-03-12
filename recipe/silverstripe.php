@@ -7,9 +7,9 @@ require_once __DIR__ . '/common.php';
 add('recipes', ['silverstripe']);
 
 /**
- * Silverstripe configuration
+ * Path to the assets folder.
+ * Defaults to `"public/assets"` (or `"assets"` on older installations).
  */
-
 set('shared_assets', function () {
     if (test('[ -d {{release_or_current_path}}/public ]') || test('[ -d {{deploy_path}}/shared/public ]')) {
         return 'public/assets';
@@ -18,25 +18,42 @@ set('shared_assets', function () {
 });
 
 
-// Silverstripe shared dirs
 set('shared_dirs', [
     '{{shared_assets}}',
 ]);
 
-// Silverstripe writable dirs
 set('writable_dirs', [
     '{{shared_assets}}',
 ]);
 
-// Silverstripe cli script
+/**
+ * Path to the `sake` binary.
+ * Defaults to `"vendor/bin/sake"`, if it exists.
+ */
+set('silverstripe_sake', function () {
+    $candidates = [
+        'vendor/bin/sake',
+        'vendor/silverstripe/framework/bin/sake',
+    ];
+    foreach ($candidates as $candidate) {
+        if (test("[ -x '{{release_or_current_path}}/$candidate' ]")) {
+            return $candidate;
+        }
+    }
+});
+
+/**
+ * Deprecated option, retained for backward compatibility.
+ * For Silverstripe 6 and above, use `silverstripe_sake` instead.
+ */
 set('silverstripe_cli_script', function () {
-    $paths = [
+    $candidates = [
         'framework/cli-script.php',
         'vendor/silverstripe/framework/cli-script.php',
     ];
-    foreach ($paths as $path) {
-        if (test('[ -f {{release_or_current_path}}/' . $path . ' ]')) {
-            return $path;
+    foreach ($candidates as $candidate) {
+        if (test("[ -f '{{release_or_current_path}}/$candidate' ]")) {
+            return $candidate;
         }
     }
 });
@@ -44,14 +61,26 @@ set('silverstripe_cli_script', function () {
 /**
  * Helper tasks
  */
-desc('Runs /dev/build');
+desc('Rebuild the database');
 task('silverstripe:build', function () {
-    run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build');
+    if (get('silverstripe_cli_script')) {
+        // Old behavior (Silverstripe < 6)
+        run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build');
+    } elseif (get('silverstripe_sake')) {
+        // New behavior (Silverstripe >= 6)
+        run('{{release_or_current_path}}/{{silverstripe_sake}} db:build');
+    }
 });
 
-desc('Runs /dev/build?flush=all');
+desc('Rebuild database and cache');
 task('silverstripe:buildflush', function () {
-    run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
+    if (get('silverstripe_cli_script')) {
+        // Old behavior (Silverstripe < 6)
+        run('{{bin/php}} {{release_or_current_path}}/{{silverstripe_cli_script}} /dev/build flush=all');
+    } elseif (get('silverstripe_sake')) {
+        // New behavior (Silverstripe >= 6)
+        run('{{release_or_current_path}}/{{silverstripe_sake}} -f db:build');
+    }
 });
 
 /**

@@ -31,7 +31,6 @@
     },
     "scripts": {
         "test": "pest",
-        "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
         "check": "composer iphp-cs-fixer check",
         "fix": "php-cs-fixer fix",
         "phpstan": "phpstan analyse -c phpstan.neon --memory-limit 1G",

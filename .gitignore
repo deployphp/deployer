@@ -4,3 +4,5 @@
 docker-compose.override.yml
 .php-cs-fixer.cache
 .idea/
+deploy.php
+deploy.maml

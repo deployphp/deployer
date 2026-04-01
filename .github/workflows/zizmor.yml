@@ -1,0 +1,30 @@
+name: Zizmor
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['**']
+
+permissions: {}
+
+jobs:
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          persist-credentials: false
+
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba #v6.3.1
+        with:
+          enable-cache: false
+
+      - name: Run zizmor
+        run: uvx zizmor@1.14.0 .github/workflows -v -p --min-severity=medium

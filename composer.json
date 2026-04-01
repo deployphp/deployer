@@ -32,7 +32,7 @@
     "scripts": {
         "test": "pest",
         "test:e2e": "pest --config tests/e2e/phpunit-e2e.xml",
-        "check": "php-cs-fixer check",
+        "check": "composer iphp-cs-fixer check",
         "fix": "php-cs-fixer fix",
         "phpstan": "phpstan analyse -c phpstan.neon --memory-limit 1G",
         "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
@@ -41,10 +41,10 @@
         "bin/dep"
     ],
     "require": {
-        "php": ">=8.2",
-        "symfony/console": "^7.2",
-        "symfony/process": "^7.2",
-        "symfony/yaml": "^7.2"
+        "php": "^8.3",
+        "symfony/console": "^7.4.0 || ^8.0.0",
+        "symfony/process": "^7.4.0 || ^8.0.0",
+        "symfony/yaml": "^7.4.0 || ^8.0.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.68",

@@ -190,13 +190,13 @@ class Deployer extends Container
     public function init(): void
     {
         $this->addTaskCommands();
-        $this->getConsole()->add(new BlackjackCommand());
-        $this->getConsole()->add(new ConfigCommand($this));
-        $this->getConsole()->add(new WorkerCommand($this));
-        $this->getConsole()->add(new InitCommand());
-        $this->getConsole()->add(new TreeCommand($this));
-        $this->getConsole()->add(new SshCommand($this));
-        $this->getConsole()->add(new RunCommand($this));
+        $this->getConsole()->addCommand(new BlackjackCommand());
+        $this->getConsole()->addCommand(new ConfigCommand($this));
+        $this->getConsole()->addCommand(new WorkerCommand($this));
+        $this->getConsole()->addCommand(new InitCommand());
+        $this->getConsole()->addCommand(new TreeCommand($this));
+        $this->getConsole()->addCommand(new SshCommand($this));
+        $this->getConsole()->addCommand(new RunCommand($this));
         if (self::isPharArchive()) {
             $selfUpdate = new PharUpdateCommand('self-update');
             $selfUpdate->setDescription('Updates deployer.phar to the latest version');
@@ -216,7 +216,7 @@ class Deployer extends Container
             $command = new MainCommand($name, $task->getDescription(), $this);
             $command->setHidden($task->isHidden());
 
-            $this->getConsole()->add($command);
+            $this->getConsole()->addCommand($command);
         }
     }
 

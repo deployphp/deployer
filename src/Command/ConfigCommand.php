@@ -27,7 +27,7 @@ class ConfigCommand extends SelectCommand
         $this->setDescription('Get all configuration options for hosts');
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
         $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (json, yaml)', 'yaml');

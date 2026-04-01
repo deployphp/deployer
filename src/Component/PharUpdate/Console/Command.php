@@ -73,7 +73,7 @@ class Command extends Base
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Updates the application.');
         $this->addOption(

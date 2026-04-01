@@ -27,7 +27,7 @@ class WorkerCommand extends MainCommand
         $this->setHidden(true);
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
         $this->addOption('task', null, Option::VALUE_REQUIRED);

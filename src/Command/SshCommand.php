@@ -41,7 +41,7 @@ class SshCommand extends Command
         $this->deployer = $deployer;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument(
             'hostname',

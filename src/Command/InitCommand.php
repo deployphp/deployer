@@ -23,7 +23,7 @@ class InitCommand extends Command
 {
     use CommandCommon;
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('init')

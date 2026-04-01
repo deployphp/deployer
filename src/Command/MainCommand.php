@@ -34,7 +34,7 @@ class MainCommand extends SelectCommand
         }
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
 

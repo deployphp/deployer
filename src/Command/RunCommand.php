@@ -34,7 +34,7 @@ class RunCommand extends SelectCommand
         $this->setDescription('Run any arbitrary command on hosts');
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument(
             'command-to-run',

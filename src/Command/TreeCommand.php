@@ -50,7 +50,7 @@ class TreeCommand extends Command
         $this->tree = [];
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this->addArgument(
             'task',

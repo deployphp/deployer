@@ -37,11 +37,11 @@ class Worker
             $task->run($context);
 
             if ($task->getName() !== 'connect') {
-                $this->deployer->messenger->endOnHost($host);
+                $this->deployer->logger->endOnHost($host);
             }
             return 0;
         } catch (Throwable $e) {
-            $this->deployer->messenger->renderException($e, $host);
+            $this->deployer->logger->renderException($e, $host);
             if ($e instanceof GracefulShutdownException) {
                 return GracefulShutdownException::EXIT_CODE;
             }

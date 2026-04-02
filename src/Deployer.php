@@ -22,18 +22,17 @@ use Deployer\Command\WorkerCommand;
 use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
 use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Deployer\Component\Pimple\Container;
-use Deployer\Logger\Logger;
-use Deployer\ProcessRunner\ProcessRunner;
-use Deployer\Ssh\SshClient;
 use Deployer\Executor\Master;
-use Deployer\Executor\Messenger;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
 use Deployer\Host\Localhost;
 use Deployer\Importer\Importer;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
+use Deployer\Logger\Logger;
+use Deployer\ProcessRunner\ProcessRunner;
 use Deployer\Selector\Selector;
+use Deployer\Ssh\SshClient;
 use Deployer\Task\ScriptManager;
 use Deployer\Task\TaskCollection;
 use Deployer\Utility\Httpie;
@@ -61,7 +60,6 @@ use Throwable;
  * @property Task\ScriptManager $scriptManager
  * @property Selector $selector
  * @property Master $master
- * @property Messenger $messenger
  * @property Logger $logger
  * @property Collection $fail
  * @property InputDefinition $inputDefinition
@@ -127,7 +125,7 @@ class Deployer extends Container
                 : new NullHandler();
         };
         $this['logger'] = function ($c) {
-            return new Logger($c['output'], $this['logHandler']);
+            return new Logger($c['input'], $c['output'], $this['logHandler']);
         };
         $this['sshClient'] = function ($c) {
             return new SshClient($c['output'], $c['logger']);
@@ -153,15 +151,12 @@ class Deployer extends Container
         $this['fail'] = function () {
             return new Collection();
         };
-        $this['messenger'] = function ($c) {
-            return new Messenger($c['input'], $c['output']);
-        };
         $this['master'] = function ($c) {
             return new Master(
                 $c['hosts'],
                 $c['input'],
                 $c['output'],
-                $c['messenger'],
+                $c['logger'],
             );
         };
         $this['importer'] = function () {

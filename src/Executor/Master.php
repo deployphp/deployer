@@ -13,6 +13,7 @@ namespace Deployer\Executor;
 use Deployer\Deployer;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
+use Deployer\Logger\Logger;
 use Deployer\Selector\Selector;
 use Deployer\Ssh\IOArguments;
 use Deployer\Task\Context;
@@ -35,19 +36,19 @@ class Master
     private HostCollection $hosts;
     private InputInterface $input;
     private OutputInterface $output;
-    private Messenger $messenger;
+    private Logger $logger;
     private string|false $phpBin;
 
     public function __construct(
         HostCollection  $hosts,
         InputInterface  $input,
         OutputInterface $output,
-        Messenger       $messenger,
+        Logger          $logger,
     ) {
         $this->hosts = $hosts;
         $this->input = $input;
         $this->output = $output;
-        $this->messenger = $messenger;
+        $this->logger = $logger;
         $this->phpBin = (new PhpExecutableFinder())->find();
     }
 
@@ -61,7 +62,7 @@ class Master
 
         foreach ($tasks as $task) {
             if (!$plan) {
-                $this->messenger->startTask($task);
+                $this->logger->startTask($task);
             }
 
             $plannedHosts = $hosts;
@@ -134,7 +135,7 @@ class Master
             }
 
             if (!$plan) {
-                $this->messenger->endTask($task);
+                $this->logger->endTask($task);
             }
         }
 
@@ -156,7 +157,7 @@ class Master
                 $worker = new Worker(Deployer::get());
                 $exitCode = $worker->execute($task, $host);
                 if ($exitCode !== 0) {
-                    $this->messenger->endTask($task, true);
+                    $this->logger->endTask($task);
                     return $exitCode;
                 }
             }
@@ -235,7 +236,7 @@ class Master
         $this->gatherOutput($processes, $echoCallback);
 
         if ($this->cumulativeExitCode($processes) !== 0) {
-            $this->messenger->endTask($task, true);
+            $this->logger->endTask($task);
         }
 
         return $this->cumulativeExitCode($processes);

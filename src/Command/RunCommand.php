@@ -89,7 +89,7 @@ class RunCommand extends SelectCommand
             try {
                 $task->run(new Context($host));
             } catch (\Throwable $exception) {
-                $this->deployer->messenger->renderException($exception, $host);
+                $this->deployer->logger->renderException($exception, $host);
             }
         }
 

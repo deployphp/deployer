@@ -575,7 +575,7 @@ function on($hosts, callable $callback): void
                 $callback($host);
                 $host->config()->save();
             } catch (GracefulShutdownException $e) {
-                Deployer::get()->messenger->renderException($e, $host);
+                Deployer::get()->logger->renderException($e, $host);
             } finally {
                 Context::pop();
             }
@@ -596,9 +596,9 @@ function on($hosts, callable $callback): void
 function invoke(string $taskName): void
 {
     $task = Deployer::get()->tasks->get($taskName);
-    Deployer::get()->messenger->startTask($task);
+    Deployer::get()->logger->startTask($task);
     $task->run(Context::get());
-    Deployer::get()->messenger->endTask($task);
+    Deployer::get()->logger->endTask($task);
 }
 
 /**

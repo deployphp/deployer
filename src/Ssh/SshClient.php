@@ -10,26 +10,25 @@ declare(strict_types=1);
 
 namespace Deployer\Ssh;
 
-use Deployer\ProcessRunner\Printer;
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
+use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
-
 use function Deployer\Support\env_stringify;
 use function Deployer\Support\replace_secrets;
 
 class SshClient
 {
     private OutputInterface $output;
-    private Printer $pop;
+    private Logger $logger;
 
-    public function __construct(OutputInterface $output, Printer $pop)
+    public function __construct(OutputInterface $output, Logger $logger)
     {
         $this->output = $output;
-        $this->pop = $pop;
+        $this->logger = $logger;
     }
 
     public function run(Host $host, string $command, RunParams $params): string
@@ -60,7 +59,7 @@ class SshClient
             $command = "export $env; $command";
         }
 
-        $this->pop->command($host, 'run', $command);
+        $this->logger->command($host, 'run', $command);
 
         $process = new Process($ssh);
         $process
@@ -69,7 +68,7 @@ class SshClient
             ->setIdleTimeout($params->idleTimeout);
 
         $callback = function ($type, $buffer) use ($params, $host) {
-            $this->pop->callback($host, $params->forceOutput)($type, $buffer);
+            $this->logger->callback($host, $params->forceOutput)($type, $buffer);
         };
 
         try {

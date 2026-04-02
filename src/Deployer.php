@@ -22,10 +22,9 @@ use Deployer\Command\WorkerCommand;
 use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
 use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Deployer\Component\Pimple\Container;
-use Deployer\ProcessRunner\Printer;
+use Deployer\Logger\Logger;
 use Deployer\ProcessRunner\ProcessRunner;
 use Deployer\Ssh\SshClient;
-use Deployer\Configuration;
 use Deployer\Executor\Master;
 use Deployer\Executor\Messenger;
 use Deployer\Host\Host;
@@ -63,7 +62,7 @@ use Throwable;
  * @property Selector $selector
  * @property Master $master
  * @property Messenger $messenger
- * @property Printer $pop
+ * @property Logger $logger
  * @property Collection $fail
  * @property InputDefinition $inputDefinition
  * @property Importer $importer
@@ -127,17 +126,17 @@ class Deployer extends Container
                 ? new FileHandler($this['log'])
                 : new NullHandler();
         };
-        $this['pop'] = function ($c) {
-            return new Printer($c['output'], $this['logHandler']);
+        $this['logger'] = function ($c) {
+            return new Logger($c['output'], $this['logHandler']);
         };
         $this['sshClient'] = function ($c) {
-            return new SshClient($c['output'], $c['pop']);
+            return new SshClient($c['output'], $c['logger']);
         };
         $this['rsync'] = function ($c) {
-            return new Rsync($c['pop'], $c['output']);
+            return new Rsync($c['output'], $c['logger']);
         };
         $this['processRunner'] = function ($c) {
-            return new ProcessRunner($c['pop']);
+            return new ProcessRunner($c['logger']);
         };
         $this['tasks'] = function () {
             return new TaskCollection();

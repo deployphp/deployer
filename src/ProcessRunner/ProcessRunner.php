@@ -13,29 +13,29 @@ namespace Deployer\ProcessRunner;
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
+use Deployer\Logger\Logger;
 use Deployer\Ssh\RunParams;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
-
 use function Deployer\Support\deployer_root;
 use function Deployer\Support\env_stringify;
 use function Deployer\Support\replace_secrets;
 
 class ProcessRunner
 {
-    private Printer $pop;
+    private Logger $logger;
 
-    public function __construct(Printer $pop)
+    public function __construct(Logger $logger)
     {
-        $this->pop = $pop;
+        $this->logger = $logger;
     }
 
     public function run(Host $host, string $command, RunParams $params): string
     {
-        $this->pop->command($host, 'run', $command);
+        $this->logger->command($host, 'run', $command);
 
-        $terminalOutput = $this->pop->callback($host, $params->forceOutput);
+        $terminalOutput = $this->logger->callback($host, $params->forceOutput);
         $callback = function ($type, $buffer) use ($host, $terminalOutput) {
             $terminalOutput($type, $buffer);
         };

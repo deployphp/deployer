@@ -8,13 +8,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Deployer\ProcessRunner;
+namespace Deployer\Logger;
 
 use Deployer\Host\Host;
 use Deployer\Logger\Handler\HandlerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Printer
+class Logger
 {
     private OutputInterface $output;
     private HandlerInterface $log;

@@ -23,34 +23,37 @@ $output = new ConsoleOutput();
 $app = new Application('DocGen', '1.0.0');
 $app->setDefaultCommand('all');
 
-$api = function () use ($output) {
+$api = function () use ($output): int {
     $parser = new ApiGen();
     $parser->parse(file_get_contents(__DIR__ . '/../src/functions.php'));
     $md = $parser->markdown();
     file_put_contents(__DIR__ . '/../docs/api.md', $md);
     $output->writeln('API Reference documentation updated.');
+    return 0;
 };
 
-$recipes = function () use ($input, $output) {
+$recipes = function () use ($input, $output): int {
     $docgen = new DocGen(__DIR__ . '/..');
     $docgen->parse(__DIR__ . '/../recipe');
     $docgen->parse(__DIR__ . '/../contrib');
 
     if ($input->getOption('json')) {
         echo json_encode($docgen->recipes, JSON_PRETTY_PRINT);
-        return;
+        return 0;
     }
 
     $docgen->gen(__DIR__ . '/../docs');
     $output->writeln('Recipes documentation updated.');
+    return 0;
 };
 
 $app->register('api')->setCode($api);
 $app->register('recipes')->setCode($recipes)->addOption('json');
-$app->register('all')->setCode(function () use ($recipes, $api) {
+$app->register('all')->setCode(function () use ($recipes, $api): int {
     $api();
     $recipes();
-    echo `git status`;
+    echo shell_exec('git status');
+    return 0;
 })->addOption('json');
 
 $app->run($input, $output);

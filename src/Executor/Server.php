@@ -189,10 +189,10 @@ class Server
     {
         $code = $response->getStatus();
         $content = json_encode($response->getBody(), flags: JSON_PRETTY_PRINT);
-        $headers = "HTTP/1.1 $code OK\r\n" .
-            "Content-Type: application/json\r\n" .
-            "Content-Length: " . strlen($content) . "\r\n" .
-            "Connection: close\r\n\r\n";
+        $headers = "HTTP/1.1 $code OK\r\n"
+            . "Content-Type: application/json\r\n"
+            . "Content-Length: " . strlen($content) . "\r\n"
+            . "Connection: close\r\n\r\n";
         fwrite($clientSocket, $headers . $content);
     }
 

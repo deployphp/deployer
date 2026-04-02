@@ -6,11 +6,6 @@ parameters:
 			path: ../src/Command/BlackjackCommand.php
 
 		-
-			message: "#^Else branch is unreachable because previous condition is always true\\.$#"
-			count: 1
-			path: ../src/Command/BlackjackCommand.php
-
-		-
 			message: "#^If condition is always false\\.$#"
 			count: 1
 			path: ../src/Command/BlackjackCommand.php

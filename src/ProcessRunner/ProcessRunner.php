@@ -78,7 +78,7 @@ class ProcessRunner
                 $process->getOutput(),
                 $process->getErrorOutput(),
             );
-        } catch (ProcessTimedOutException $exception) { // @phpstan-ignore-line PHPStan doesn't know about ProcessTimedOutException for some reason.
+        } catch (ProcessTimedOutException $exception) {
             throw new TimeoutException(
                 $command,
                 $exception->getExceededTimeout(),

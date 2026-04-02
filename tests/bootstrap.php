@@ -12,8 +12,8 @@ foreach ([__DIR__ . '/../../../autoload.php', __DIR__ . '/../vendor/autoload.php
 
 if (!$loaded) {
     die(
-        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
-        'composer install' . PHP_EOL
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL
+        . 'composer install' . PHP_EOL
     );
 }
 

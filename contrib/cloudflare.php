@@ -66,10 +66,6 @@ task('deploy:cloudflare', function () {
             throw new \RuntimeException("Error making curl request (result: $res)");
         }
 
-        if (PHP_MAJOR_VERSION < 8) {
-            curl_close($ch);
-        }
-
         return $res;
     };
 

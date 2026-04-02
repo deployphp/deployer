@@ -25,7 +25,7 @@ class DocTask
      */
     public $comment;
     /**
-     * @var array
+     * @var array|null
      */
     public $group;
     /**

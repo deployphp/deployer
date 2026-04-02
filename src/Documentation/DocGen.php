@@ -401,8 +401,8 @@ function recipe_to_md_link(string $recipe): string
 
 function is_framework_recipe(DocRecipe $recipe): bool
 {
-    return preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath) &&
-    !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
+    return preg_match('/recipe\/[\w_\d]+\.php$/', $recipe->recipePath)
+    && !in_array($recipe->recipeName, ['common', 'composer', 'provision'], true);
 }
 
 function framework_brand_name(string $brandName): string

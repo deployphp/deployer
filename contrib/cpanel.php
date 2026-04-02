@@ -158,12 +158,12 @@ function getCpanel()
     }
 
 
-    if (!is_array($config) ||
-        !isset($config['host']) ||
-        !isset($config['port']) ||
-        !isset($config['username']) ||
-        !isset($config['token']) ||
-        !isset($config['user'])) {
+    if (!is_array($config)
+        || !isset($config['host'])
+        || !isset($config['port'])
+        || !isset($config['username'])
+        || !isset($config['token'])
+        || !isset($config['user'])) {
         throw new \RuntimeException("<comment>Please configure CPanel config:</comment> <info>set('cpanel', array('host' => 'xxx.xxx.xxx.xxx:', 'port' => 2087 , 'username' => 'root', 'token' => 'asdfasdf', 'cpaneluser' => 'guy'));</info>");
     }
 

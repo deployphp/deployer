@@ -91,10 +91,7 @@ class Task
         try {
             call_user_func($this->callback); // call task
         } finally {
-            if ($context->getConfig() !== null) {
-                $context->getConfig()->set('working_path', null);
-            }
-
+            $context->getConfig()->set('working_path', null);
             Context::pop();
         }
     }

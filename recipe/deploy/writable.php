@@ -12,8 +12,8 @@ set('http_user', function () {
 
     if (empty($httpUser)) {
         throw new \RuntimeException(
-            "Can't detect http user name.\n" .
-            "Please setup `http_user` config parameter.",
+            "Can't detect http user name.\n"
+            . "Please setup `http_user` config parameter.",
         );
     }
 
@@ -29,8 +29,8 @@ set('http_group', function () {
 
     if (empty($httpGroup)) {
         throw new \RuntimeException(
-            "Can't detect http user name.\n" .
-            "Please setup `http_group` config parameter.",
+            "Can't detect http user name.\n"
+            . "Please setup `http_group` config parameter.",
         );
     }
 
@@ -149,12 +149,12 @@ task('deploy:writable', function () {
     } elseif ($mode === 'sticky') {
         // Changes the group of the files, sets sticky bit to the directories
         // and add the writable bit for all files
-        run("for dir in $dirs;" .
-            'do ' .
-            'chgrp -L -R {{http_group}} ${dir}; ' .
-            'find ${dir} -type d -exec chmod g+rwxs \{\} \;;' .
-            'find ${dir} -type f -exec chmod g+rw \{\} \;;' .
-            'done');
+        run("for dir in $dirs;"
+            . 'do '
+            . 'chgrp -L -R {{http_group}} ${dir}; '
+            . 'find ${dir} -type d -exec chmod g+rwxs \{\} \;;'
+            . 'find ${dir} -type f -exec chmod g+rw \{\} \;;'
+            . 'done');
     } elseif ($mode === 'skip') {
         // Does nothing, saves time if no changes are required for some environments
         return;

@@ -89,13 +89,12 @@ task('deploy:rabbit', function () {
 
     $config = array_merge($defaultConfig, $config);
 
-    if (!is_array($config) ||
-        !isset($config['channel']) ||
-        !isset($config['host']) ||
-        !isset($config['port']) ||
-        !isset($config['username']) ||
-        !isset($config['password']) ||
-        !isset($config['vhost'])) {
+    if (!isset($config['channel'])
+        || !isset($config['host'])
+        || !isset($config['port'])
+        || !isset($config['username'])
+        || !isset($config['password'])
+        || !isset($config['vhost'])) {
         throw new \RuntimeException("<comment>Please configure rabbit config:</comment> <info>set('rabbit', array('channel' => 'channel', 'host' => 'host', 'port' => 'port', 'username' => 'username', 'password' => 'password'));</info>");
     }
 

@@ -11,8 +11,8 @@ task('deploy:lock', function () {
     if ($locked === '+locked') {
         $lockedUser = run("cat {{deploy_path}}/.dep/deploy.lock");
         throw new GracefulShutdownException(
-            "Deploy locked by $lockedUser.\n" .
-            "Execute \"deploy:unlock\" task to unlock.",
+            "Deploy locked by $lockedUser.\n"
+            . "Execute \"deploy:unlock\" task to unlock.",
         );
     }
 });

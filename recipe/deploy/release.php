@@ -112,7 +112,7 @@ task('deploy:release', function () {
     }
 
     // Save release_name.
-    if (is_numeric($releaseName) && is_integer(intval($releaseName))) {
+    if (is_numeric($releaseName)) {
         run("echo $releaseName > .dep/latest_release");
     }
 

@@ -162,9 +162,9 @@ class InitCommand extends Command
     {
         $h = "";
         foreach ($hosts as $host) {
-            $h .= "host('{$host}')\n" .
-                "    ->set('remote_user', 'deployer')\n" .
-                "    ->set('deploy_path', '~/{$project}');\n";
+            $h .= "host('{$host}')\n"
+                . "    ->set('remote_user', 'deployer')\n"
+                . "    ->set('deploy_path', '~/{$project}');\n";
         }
 
         return <<<PHP
@@ -195,9 +195,9 @@ class InitCommand extends Command
     {
         $h = "";
         foreach ($hosts as $host) {
-            $h .= "  $host:\n" .
-                "    remote_user: deployer\n" .
-                "    deploy_path: '~/{$project}'\n";
+            $h .= "  $host:\n"
+                . "    remote_user: deployer\n"
+                . "    deploy_path: '~/{$project}'\n";
         }
 
         $additionalConfigs = $this->getAdditionalConfigs($template);

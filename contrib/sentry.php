@@ -144,8 +144,8 @@ task(
 
         writeln(
             sprintf(
-                '<info>Sentry:</info> Release of version <comment>%s</comment> ' .
-                'for projects: <comment>%s</comment> created successfully.',
+                '<info>Sentry:</info> Release of version <comment>%s</comment> '
+                . 'for projects: <comment>%s</comment> created successfully.',
                 $response['version'],
                 implode(', ', array_column($response['projects'], 'slug')),
             ),
@@ -175,8 +175,8 @@ task(
 
         writeln(
             sprintf(
-                '<info>Sentry:</info> Deployment <comment>%s</comment> ' .
-                'for environment <comment>%s</comment> created successfully',
+                '<info>Sentry:</info> Deployment <comment>%s</comment> '
+                . 'for environment <comment>%s</comment> created successfully',
                 $response['id'],
                 $response['environment'],
             ),

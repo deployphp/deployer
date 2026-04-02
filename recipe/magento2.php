@@ -246,7 +246,7 @@ function magentoDeployAssetsSplit(string $area)
 
     /** @var list<string> $themes */
     $themes = $useDefaultLanguages
-        ? array_values($themesConfig)
+        ? $themesConfig
         : array_keys($themesConfig);
 
     $staticContentArea = $isFrontend
@@ -304,9 +304,9 @@ task('magento:maintenance:disable', function () {
 
 desc('Set maintenance mode if needed');
 task('magento:maintenance:enable-if-needed', function () {
-    ! get('enable_zerodowntime') || get('upgrade_needed') || get('config_import_needed') ?
-        invoke('magento:maintenance:enable') :
-        writeln('Config and database up to date => no maintenance mode');
+    ! get('enable_zerodowntime') || get('upgrade_needed') || get('config_import_needed')
+        ? invoke('magento:maintenance:enable')
+        : writeln('Config and database up to date => no maintenance mode');
 });
 
 desc('Config Import');

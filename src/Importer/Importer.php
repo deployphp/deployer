@@ -114,10 +114,11 @@ class Importer
             $task = task($name, $body);
 
             foreach ($steps as $step) {
-                $buildStep = function ($step) use (&$body, $task) {
-                    extract($step);
+                $buildStep = function (array $step) use (&$body, $task) {
+                    $has = null;
 
-                    if (isset($cd)) {
+                    if (isset($step['cd'])) {
+                        $cd = $step['cd'];
                         $prev = $body;
                         $body = function () use ($cd, $prev) {
                             $prev();
@@ -125,8 +126,9 @@ class Importer
                         };
                     }
 
-                    if (isset($run)) {
+                    if (isset($step['run'])) {
                         $has = 'run';
+                        $run = $step['run'];
                         $prev = $body;
                         $body = function () use ($run, $prev) {
                             $prev();
@@ -140,11 +142,12 @@ class Importer
                         };
                     }
 
-                    if (isset($run_locally)) {
-                        if (isset($has)) {
+                    if (isset($step['run_locally'])) {
+                        if ($has !== null) {
                             throw new ConfigurationException("Task step can not have both $has and run_locally.");
                         }
                         $has = 'run_locally';
+                        $run_locally = $step['run_locally'];
                         $prev = $body;
                         $body = function () use ($run_locally, $prev) {
                             $prev();
@@ -158,11 +161,12 @@ class Importer
                         };
                     }
 
-                    if (isset($upload)) {
-                        if (isset($has)) {
+                    if (isset($step['upload'])) {
+                        if ($has !== null) {
                             throw new ConfigurationException("Task step can not have both $has and upload.");
                         }
                         $has = 'upload';
+                        $upload = $step['upload'];
                         $prev = $body;
                         $body = function () use ($upload, $prev) {
                             $prev();
@@ -170,28 +174,21 @@ class Importer
                         };
                     }
 
-                    if (isset($download)) {
-                        if (isset($has)) {
+                    if (isset($step['download'])) {
+                        if ($has !== null) {
                             throw new ConfigurationException("Task step can not have both $has and download.");
                         }
-                        $has = 'download';
                         $prev = $body;
+                        $download = $step['download'];
                         $body = function () use ($download, $prev) {
                             $prev();
                             download($download['src'], $download['dest']);
                         };
                     }
 
-                    $methods = [
-                        'desc',
-                        'once',
-                        'hidden',
-                        'limit',
-                        'select',
-                    ];
-                    foreach ($methods as $method) {
-                        if (isset($$method)) {
-                            $task->$method($$method);
+                    foreach (['desc', 'once', 'hidden', 'limit', 'select'] as $method) {
+                        if (isset($step[$method])) {
+                            $task->$method($step[$method]);
                         }
                     }
                 };

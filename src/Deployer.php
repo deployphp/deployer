@@ -202,7 +202,7 @@ class Deployer extends Container
             $selfUpdate->setDescription('Updates deployer.phar to the latest version');
             $selfUpdate->setManifestUri('https://deployer.org/manifest.json');
             $selfUpdate->setRunningFile(DEPLOYER_BIN);
-            $this->getConsole()->add($selfUpdate);
+            $this->getConsole()->addCommand($selfUpdate);
             $this->getConsole()->getHelperSet()->set(new PharUpdateHelper());
         }
     }

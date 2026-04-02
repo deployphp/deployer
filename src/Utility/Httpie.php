@@ -25,8 +25,8 @@ class Httpie
     {
         if (!extension_loaded('curl')) {
             throw new \Exception(
-                "Please, install curl extension.\n" .
-                "https://php.net/curl.installation",
+                "Please, install curl extension.\n"
+                . "https://php.net/curl.installation",
             );
         }
     }
@@ -128,6 +128,9 @@ class Httpie
         return $this;
     }
 
+    /**
+     * @param-out array $info
+     */
     public function send(?array &$info = null): string
     {
         if ($this->url === '') {
@@ -151,21 +154,15 @@ class Httpie
             curl_setopt($ch, $key, $value);
         }
         $result = curl_exec($ch);
-        $info = curl_getinfo($ch);
+        $info = curl_getinfo($ch) ?: [];
         if ($result === false) {
             if ($this->nothrow) {
                 $result = '';
             } else {
                 $error = curl_error($ch);
                 $errno = curl_errno($ch);
-                if (PHP_MAJOR_VERSION < 8) {
-                    curl_close($ch);
-                }
                 throw new HttpieException($error, $errno);
             }
-        }
-        if (PHP_MAJOR_VERSION < 8) {
-            curl_close($ch);
         }
         return $result;
     }
@@ -176,8 +173,8 @@ class Httpie
         $response = json_decode($result, true);
         if (json_last_error() !== JSON_ERROR_NONE) {
             throw new HttpieException(
-                'JSON Error: ' . json_last_error_msg() . '\n' .
-                'Response: ' . $result,
+                'JSON Error: ' . json_last_error_msg() . '\n'
+                . 'Response: ' . $result,
             );
         }
         return $response;

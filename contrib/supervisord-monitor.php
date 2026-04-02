@@ -100,10 +100,10 @@ function supervisordCheckConfig()
         }
     }
 
-    if (!get('supervisord_uri') ||
-        !get('supervisord_basic_auth_user') ||
-        !get('supervisord_basic_auth_password') ||
-        !get('supervisord_process_name')) {
+    if (!get('supervisord_uri')
+        || !get('supervisord_basic_auth_user')
+        || !get('supervisord_basic_auth_password')
+        || !get('supervisord_process_name')) {
         throw new \RuntimeException("<comment>Please configure Supervisord config:</comment> <info>set('supervisord', array('uri' => 'yourdomain.xyz/supervisor', 'basic_auth_user' => 'abc' , 'basic_auth_password' => 'xyz', 'process_name' => 'process01,process02'));</info> or <info>set('supervisord_uri', 'yourdomain.xyz/supervisor'); set('supervisord_basic_auth_user', 'abc'); etc</info>");
     }
 }

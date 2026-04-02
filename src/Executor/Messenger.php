@@ -37,7 +37,7 @@ class Messenger
     private $logger;
 
     /**
-     * @var int|double
+     * @var float
      */
     private $startTime;
 

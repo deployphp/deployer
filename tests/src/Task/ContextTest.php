@@ -21,7 +21,7 @@ class ContextTest extends TestCase
         $host
             ->expects($this->once())
             ->method('config')
-            ->willReturn($this->createMock(Configuration::class));
+            ->willReturn($this->createStub(Configuration::class));
 
         $context = new Context($host);
 

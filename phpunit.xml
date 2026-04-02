@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/bootstrap.php" colors="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" stopOnError="false" stopOnFailure="false" verbose="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage includeUncoveredFiles="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         stopOnError="false"
+         stopOnFailure="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/12.5/phpunit.xsd">
+  <source>
     <include>
       <directory>src/</directory>
       <directory>recipe/</directory>
@@ -9,16 +14,18 @@
       <directory suffix=".php">vendor/</directory>
       <directory>bin/</directory>
     </exclude>
-  </coverage>
+  </source>
   <testsuites>
     <testsuite name="Src">
       <directory>tests/src/</directory>
     </testsuite>
     <testsuite name="Legacy">
       <directory>tests/legacy/</directory>
+      <exclude>tests/legacy/AbstractTest.php</exclude>
     </testsuite>
     <testsuite name="Joy">
       <directory>tests/joy/</directory>
+      <exclude>tests/joy/JoyTest.php</exclude>
     </testsuite>
   </testsuites>
 </phpunit>

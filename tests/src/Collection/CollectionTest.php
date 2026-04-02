@@ -9,6 +9,8 @@ namespace Deployer\Collection;
 
 use Deployer\Host\HostCollection;
 use Deployer\Task\TaskCollection;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
@@ -22,9 +24,7 @@ class CollectionTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider collections
-     */
+    #[DataProvider('collections')]
     public function testCollection($collection)
     {
         $this->assertInstanceOf(Collection::class, $collection);
@@ -40,10 +40,8 @@ class CollectionTest extends TestCase
         }));
     }
 
-    /**
-     * @dataProvider collections
-     * @depends      testCollection
-     */
+    #[DataProvider('collections')]
+    #[Depends('testCollection')]
     public function testException($collection)
     {
         $this->expectException(\InvalidArgumentException::class);

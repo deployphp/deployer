@@ -19,8 +19,8 @@ class DeployerTest extends TestCase
     protected function setUp(): void
     {
         $console = new Application();
-        $input = $this->createMock(InputInterface::class);
-        $output = $this->createMock(OutputInterface::class);
+        $input = $this->createStub(InputInterface::class);
+        $output = $this->createStub(OutputInterface::class);
         $this->deployer = new Deployer($console, $input, $output);
     }
 

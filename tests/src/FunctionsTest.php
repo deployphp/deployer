@@ -31,8 +31,8 @@ class FunctionsTest extends TestCase
     {
         $console = new Application();
 
-        $input = $this->createMock(Input::class);
-        $output = $this->createMock(Output::class);
+        $input = $this->createStub(Input::class);
+        $output = $this->createStub(Output::class);
         $host = new Localhost();
 
         $this->deployer = new Deployer($console);

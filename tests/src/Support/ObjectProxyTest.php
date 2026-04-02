@@ -9,13 +9,16 @@ namespace Deployer\Support;
 
 use PHPUnit\Framework\TestCase;
 
+interface MockableWithFoo
+{
+    public function foo(string $a, string $b): void;
+}
+
 class ObjectProxyTest extends TestCase
 {
     public function testObjectProxy()
     {
-        $mock = self::getMockBuilder('stdClass')
-            ->addMethods(['foo'])
-            ->getMock();
+        $mock = $this->createMock(MockableWithFoo::class);
         $mock
             ->expects(self::once())
             ->method('foo')

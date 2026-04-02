@@ -32,10 +32,10 @@ require_once __DIR__ . '/joy/JoyTest.php';
 // Init repository
 $repository = __REPOSITORY__;
 
-`cd $repository && git init`;
-$branch = trim(`git rev-parse --abbrev-ref HEAD`);
-`cd $repository && git checkout -B $branch 2>&1`;
-`cd $repository && git add .`;
-`cd $repository && git config user.name 'Anton Medvedev'`;
-`cd $repository && git config user.email 'anton.medv@example.com'`;
-`cd $repository && git commit -m 'first commit'`;
+shell_exec("cd $repository && git init");
+$branch = trim(shell_exec('git rev-parse --abbrev-ref HEAD'));
+shell_exec("cd $repository && git checkout -B $branch 2>&1");
+shell_exec("cd $repository && git add .");
+shell_exec("cd $repository && git config user.name 'Anton Medvedev'");
+shell_exec("cd $repository && git config user.email 'anton.medv@example.com'");
+shell_exec("cd $repository && git commit -m 'first commit'");

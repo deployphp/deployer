@@ -46,7 +46,7 @@ class YamlTest extends AbstractTest
             self::assertFileExists($deployPath . '/shared/.env');
             self::assertFileExists($deployPath . '/current/config/test.yaml');
             self::assertFileExists($deployPath . '/shared/config/test.yaml');
-            self::assertEquals(1, intval(`cd $deployPath && ls -1 releases | wc -l`));
+            self::assertEquals(1, intval(shell_exec("cd $deployPath && ls -1 releases | wc -l")));
         }
     }
 }

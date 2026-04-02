@@ -7,6 +7,7 @@
 
 namespace Deployer;
 
+use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Component\Console\Output\Output;
 
 class DeployTest extends AbstractTest
@@ -76,9 +77,7 @@ class DeployTest extends AbstractTest
         }
     }
 
-    /**
-     * @depends testKeepReleases
-     */
+    #[Depends('testKeepReleases')]
     public function testRollback()
     {
         $this->dep(self::RECIPE, 'rollback');
@@ -106,9 +105,7 @@ class DeployTest extends AbstractTest
         }
     }
 
-    /**
-     * @depends testFail
-     */
+    #[Depends('testFail')]
     public function testCleanup()
     {
         $this->dep(self::RECIPE, 'deploy:cleanup');

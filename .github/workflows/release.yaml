@@ -9,20 +9,23 @@ on:
         description: 'Version'
         required: true
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          persist-credentials: false
 
       - name: Get version
         run: |
           echo "RELEASE_VERSION=${GITHUB_REF#refs/*/v}" >> $GITHUB_ENV
           if [ -n "$VERSION" ]; then
-            echo "RELEASE_VERSION=${{ inputs.version }}" >> $GITHUB_ENV
+            echo "RELEASE_VERSION=$VERSION" >> $GITHUB_ENV
           fi
         env:
           VERSION: ${{ inputs.version }}

@@ -18,6 +18,7 @@ use Deployer\Ssh\RunParams;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
+
 use function Deployer\Support\deployer_root;
 use function Deployer\Support\env_stringify;
 use function Deployer\Support\replace_secrets;
@@ -36,7 +37,7 @@ class ProcessRunner
         $this->logger->command($host, 'run', $command);
 
         $terminalOutput = $this->logger->callback($host, $params->forceOutput);
-        $callback = function ($type, $buffer) use ($host, $terminalOutput) {
+        $callback = function ($type, $buffer) use ($terminalOutput) {
             $terminalOutput($type, $buffer);
         };
 

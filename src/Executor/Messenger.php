@@ -13,7 +13,6 @@ namespace Deployer\Executor;
 use Deployer\Exception\Exception;
 use Deployer\Exception\RunException;
 use Deployer\Host\Host;
-use Deployer\Logger\Logger;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Output\Output;
@@ -32,20 +31,14 @@ class Messenger
     private $output;
 
     /**
-     * @var Logger
-     */
-    private $logger;
-
-    /**
      * @var float
      */
     private $startTime;
 
-    public function __construct(Input $input, Output $output, Logger $logger)
+    public function __construct(Input $input, Output $output)
     {
         $this->input = $input;
         $this->output = $output;
-        $this->logger = $logger;
     }
 
     public function startTask(Task $task): void
@@ -60,7 +53,6 @@ class Messenger
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }
-        $this->logger->log("task {$task->getName()}");
     }
 
     /*
@@ -91,7 +83,6 @@ class Messenger
             $this->output->writeln("\e[0K\e[31;1mERROR: Task {$task->getName()} failed!\e[0;m");
             return;
         }
-        $this->logger->log("done {$task->getName()} $taskTime");
 
         if (!empty($this->input->getOption('profile'))) {
             $line = sprintf("%s\t%s\n", $task->getName(), $taskTime);
@@ -158,8 +149,6 @@ class Messenger
             }
             $this->output->write($message);
         }
-
-        $this->logger->log($exception->__toString());
 
         if ($exception->getPrevious()) {
             $this->renderException($exception->getPrevious(), $host);

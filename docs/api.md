@@ -280,7 +280,7 @@ runLocally(
     ?int    $timeout = null,
     ?int    $idleTimeout = null,
     #[\SensitiveParameter]
-    ?string $secret = null,
+    ?array  $secrets = null,
     ?array  $env = null,
     ?bool   $forceOutput = false,
     ?bool   $nothrow = false,
@@ -306,7 +306,7 @@ runLocally("echo $user");
 | `$cwd` | `string` or `null` | Sets the process working directory. If not set {{working_path}} will be used. |
 | `$timeout` | `int` or `null` | Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable). |
 | `$idleTimeout` | `int` or `null` | Sets the process idle timeout (max. time since last output) in seconds. |
-| `$secret` | `string` or `null` | Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs. |
+| `$secrets` | `array` or `null` | Placeholder `%secret%` for sensitive information. |
 | `$env` | `array` or `null` | Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);` |
 | `$forceOutput` | `bool` or `null` | Print command output in real-time. |
 | `$nothrow` | `bool` or `null` | Don't throw an exception of non-zero exit code. |

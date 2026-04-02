@@ -12,12 +12,9 @@ namespace Deployer\Command;
 
 use Deployer\Deployer;
 use Deployer\Executor\Worker;
-use Deployer\Host\Localhost;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption as Option;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use function Deployer\localhost;
 
 class WorkerCommand extends MainCommand
 {

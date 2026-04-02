@@ -14,7 +14,6 @@ use Deployer\ProcessRunner\Printer;
 use Deployer\Exception\RunException;
 use Deployer\Exception\TimeoutException;
 use Deployer\Host\Host;
-use Deployer\Logger\Logger;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
@@ -26,13 +25,11 @@ class SshClient
 {
     private OutputInterface $output;
     private Printer $pop;
-    private Logger $logger;
 
-    public function __construct(OutputInterface $output, Printer $pop, Logger $logger)
+    public function __construct(OutputInterface $output, Printer $pop)
     {
         $this->output = $output;
         $this->pop = $pop;
-        $this->logger = $logger;
     }
 
     public function run(Host $host, string $command, RunParams $params): string
@@ -64,8 +61,6 @@ class SshClient
         }
 
         $this->pop->command($host, 'run', $command);
-        $this->logger->log("[{$host->getAlias()}] run $command");
-
 
         $process = new Process($ssh);
         $process
@@ -74,7 +69,6 @@ class SshClient
             ->setIdleTimeout($params->idleTimeout);
 
         $callback = function ($type, $buffer) use ($params, $host) {
-            $this->logger->printBuffer($host, $type, $buffer);
             $this->pop->callback($host, $params->forceOutput)($type, $buffer);
         };
 

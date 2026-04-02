@@ -54,6 +54,12 @@ class RunCommand extends SelectCommand
             Option::VALUE_REQUIRED,
             'Command timeout in seconds',
         );
+        $this->addOption(
+            'raw',
+            'r',
+            Option::VALUE_NONE,
+            'No formatting, raw command output',
+        );
     }
 
     protected function execute(Input $input, Output $output): int

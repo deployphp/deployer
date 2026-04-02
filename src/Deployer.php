@@ -34,7 +34,6 @@ use Deployer\Host\Localhost;
 use Deployer\Importer\Importer;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
-use Deployer\Logger\Logger;
 use Deployer\Selector\Selector;
 use Deployer\Task\ScriptManager;
 use Deployer\Task\TaskCollection;
@@ -64,7 +63,6 @@ use Throwable;
  * @property Selector $selector
  * @property Master $master
  * @property Messenger $messenger
- * @property Messenger $logger
  * @property Printer $pop
  * @property Collection $fail
  * @property InputDefinition $inputDefinition
@@ -124,17 +122,22 @@ class Deployer extends Container
          *            Core            *
          ******************************/
 
+        $this['logHandler'] = function () {
+            return !empty($this['log'])
+                ? new FileHandler($this['log'])
+                : new NullHandler();
+        };
         $this['pop'] = function ($c) {
-            return new Printer($c['output']);
+            return new Printer($c['output'], $this['logHandler']);
         };
         $this['sshClient'] = function ($c) {
-            return new SshClient($c['output'], $c['pop'], $c['logger']);
+            return new SshClient($c['output'], $c['pop']);
         };
         $this['rsync'] = function ($c) {
             return new Rsync($c['pop'], $c['output']);
         };
         $this['processRunner'] = function ($c) {
-            return new ProcessRunner($c['pop'], $c['logger']);
+            return new ProcessRunner($c['pop']);
         };
         $this['tasks'] = function () {
             return new TaskCollection();
@@ -152,7 +155,7 @@ class Deployer extends Container
             return new Collection();
         };
         $this['messenger'] = function ($c) {
-            return new Messenger($c['input'], $c['output'], $c['logger']);
+            return new Messenger($c['input'], $c['output']);
         };
         $this['master'] = function ($c) {
             return new Master(
@@ -164,19 +167,6 @@ class Deployer extends Container
         };
         $this['importer'] = function () {
             return new Importer();
-        };
-
-        /******************************
-         *           Logger           *
-         ******************************/
-
-        $this['log_handler'] = function () {
-            return !empty($this['log'])
-                ? new FileHandler($this['log'])
-                : new NullHandler();
-        };
-        $this['logger'] = function () {
-            return new Logger($this['log_handler']);
         };
 
         self::$instance = $this;

@@ -11,15 +11,18 @@ declare(strict_types=1);
 namespace Deployer\ProcessRunner;
 
 use Deployer\Host\Host;
+use Deployer\Logger\Handler\HandlerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Printer
 {
     private OutputInterface $output;
+    private HandlerInterface $log;
 
-    public function __construct(OutputInterface $output)
+    public function __construct(OutputInterface $output, HandlerInterface $log)
     {
         $this->output = $output;
+        $this->log = $log;
     }
 
     public function command(Host $host, string $type, string $command): void

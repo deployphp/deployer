@@ -21,6 +21,7 @@ use Symfony\Component\Process\Process;
 
 use function Deployer\Support\deployer_root;
 use function Deployer\Support\env_stringify;
+use function Deployer\Support\replace_secrets;
 
 class ProcessRunner
 {
@@ -43,12 +44,6 @@ class ProcessRunner
             $terminalOutput($type, $buffer);
         };
 
-        if (!empty($params->secrets)) {
-            foreach ($params->secrets as $key => $value) {
-                $command = str_replace('%' . $key . '%', $value, $command);
-            }
-        }
-
         if (!empty($params->env)) {
             $env = env_stringify($params->env);
             $command = "export $env; $command";
@@ -59,7 +54,7 @@ class ProcessRunner
         }
 
         $process = Process::fromShellCommandline($params->shell)
-            ->setInput($command)
+            ->setInput(replace_secrets($command, $params->secrets))
             ->setTimeout($params->timeout)
             ->setIdleTimeout($params->idleTimeout)
             ->setWorkingDirectory($params->cwd ?? deployer_root());

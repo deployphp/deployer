@@ -65,6 +65,16 @@ function env_stringify(array $array): string
     ));
 }
 
+function replace_secrets(string $command, ?array $secrets): string
+{
+    if (!empty($secrets)) {
+        foreach ($secrets as $key => $value) {
+            $command = str_replace('%' . $key . '%', strval($value), $command);
+        }
+    }
+    return $command;
+}
+
 function is_closure(mixed $var): bool
 {
     return is_object($var) && ($var instanceof \Closure);

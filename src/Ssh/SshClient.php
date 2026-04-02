@@ -20,6 +20,7 @@ use Symfony\Component\Process\Exception\ProcessTimedOutException;
 use Symfony\Component\Process\Process;
 
 use function Deployer\Support\env_stringify;
+use function Deployer\Support\replace_secrets;
 
 class SshClient
 {
@@ -62,19 +63,13 @@ class SshClient
             $command = "export $env; $command";
         }
 
-        if (!empty($params->secrets)) {
-            foreach ($params->secrets as $key => $value) {
-                $command = str_replace('%' . $key . '%', strval($value), $command);
-            }
-        }
-
         $this->pop->command($host, 'run', $command);
         $this->logger->log("[{$host->getAlias()}] run $command");
 
 
         $process = new Process($ssh);
         $process
-            ->setInput($command)
+            ->setInput(replace_secrets($command, $params->secrets))
             ->setTimeout($params->timeout)
             ->setIdleTimeout($params->idleTimeout);
 

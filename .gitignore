@@ -1,8 +1,12 @@
 /vendor/
-*.phar
+composer.lock
+
+# Cahces
 .phpunit.result.cache
-docker-compose.override.yml
 .php-cs-fixer.cache
-.idea/
+
+# Custom local files
+deployer.phar
+docker-compose.override.yml
 deploy.php
 deploy.maml

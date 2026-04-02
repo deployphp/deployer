@@ -125,7 +125,7 @@ class Deployer extends Container
                 : new NullHandler();
         };
         $this['logger'] = function ($c) {
-            return new Logger($c['input'], $c['output'], $this['logHandler']);
+            return new Logger($c['output'], $this['logHandler']);
         };
         $this['sshClient'] = function ($c) {
             return new SshClient($c['output'], $c['logger']);

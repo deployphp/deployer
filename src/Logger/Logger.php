@@ -21,15 +21,13 @@ use Throwable;
 
 class Logger
 {
-    private InputInterface $input;
     private OutputInterface $output;
     private HandlerInterface $fileLog;
 
     private ?float $startTime = null;
 
-    public function __construct(InputInterface $input, OutputInterface $output, HandlerInterface $log)
+    public function __construct(OutputInterface $output, HandlerInterface $log)
     {
-        $this->input = $input;
         $this->output = $output;
         $this->fileLog = $log;
     }
@@ -40,6 +38,7 @@ class Logger
         if ($this->output->isVerbose()) {
             $this->output->writeln("[$host] <fg=green;options=bold>$type</> $command");
         }
+        $this->fileLog->log("[{$host->getAlias()}] $type: $command");
     }
 
     /**
@@ -62,20 +61,12 @@ class Logger
     public function printBuffer(string $type, Host $host, string $buffer): void
     {
         foreach (explode("\n", rtrim($buffer)) as $line) {
-            $this->writeln($type, $host, $line);
+            if (empty($line)) {
+                return;
+            }
+            $this->output->writeln("[$host] $line");
         }
     }
-
-    public function writeln(string $type, Host $host, string $line): void
-    {
-        // Omit empty lines
-        if (empty($line)) {
-            return;
-        }
-
-        $this->output->writeln("[$host] $line");
-    }
-
 
     public function startTask(Task $task): void
     {
@@ -89,6 +80,7 @@ class Logger
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }
+        $this->fileLog->log("# task {$task->getName()}");
     }
 
     public function endTask(Task $task): void
@@ -113,10 +105,7 @@ class Logger
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
         }
 
-        if (!empty($this->input->getOption('profile'))) {
-            $line = sprintf("%s\t%s\n", $task->getName(), $taskTime);
-            file_put_contents($this->input->getOption('profile'), $line, FILE_APPEND);
-        }
+        $this->fileLog->log("# done {$task->getName()} $taskTime");
     }
 
     public function endOnHost(Host $host): void
@@ -129,7 +118,6 @@ class Logger
     public function renderException(Throwable $exception, Host $host): void
     {
         if ($exception instanceof RunException) {
-
             $message = "[$host] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
             if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
                 $message .= "[$host] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
@@ -148,7 +136,6 @@ class Logger
             }
             $message .= "[$host] <fg=red>exit code</> {$exception->getExitCode()} ({$exception->getExitCodeText()})\n";
             $this->output->write($message);
-
         } else {
             $message = "";
             $class = get_class($exception);
@@ -177,6 +164,8 @@ class Logger
             }
             $this->output->write($message);
         }
+
+        $this->fileLog->log($exception->__toString());
 
         if ($exception->getPrevious()) {
             $this->renderException($exception->getPrevious(), $host);

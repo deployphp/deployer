@@ -41,7 +41,7 @@ Creates a database on DirectAdmin.
 
 
 ### directadmin\:deletedb {#directadmin-deletedb}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L96)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L95)
 
 Deletes a database on DirectAdmin.
 
@@ -49,7 +49,7 @@ Deletes a database on DirectAdmin.
 
 
 ### directadmin\:createdomain {#directadmin-createdomain}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L111)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L109)
 
 Creates a domain on DirectAdmin.
 
@@ -57,7 +57,7 @@ Creates a domain on DirectAdmin.
 
 
 ### directadmin\:deletedomain {#directadmin-deletedomain}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L129)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L126)
 
 Deletes a domain on DirectAdmin.
 
@@ -65,7 +65,7 @@ Deletes a domain on DirectAdmin.
 
 
 ### directadmin\:symlink-private-html {#directadmin-symlink-private-html}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L145)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L141)
 
 Symlink your private_html to public_html.
 
@@ -73,7 +73,7 @@ Symlink your private_html to public_html.
 
 
 ### directadmin\:php-version {#directadmin-php-version}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L161)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/directadmin.php#L156)
 
 Changes the PHP version from a domain.
 

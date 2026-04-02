@@ -367,7 +367,7 @@ function within(string $path, callable $callback): mixed
  * ```php
  * run('echo hello world');
  * run('cd {{deploy_path}} && git status');
- * run('password %secret%', secret: getenv('CI_SECRET'));
+ * run('password %my_secret%', secrets: ['my_secret' => getenv('SECRET')]);
  * run('curl medv.io', timeout: 5);
  * ```
  *
@@ -380,7 +380,7 @@ function within(string $path, callable $callback): mixed
  * @param string|null $cwd Sets the process working directory. If not set {{working_path}} will be used.
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).
  * @param int|null $idleTimeout Sets the process idle timeout (max. time since last output) in seconds.
- * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ * @param array|null $secrets Placeholder `%secret%` for sensitive information.
  * @param array|null $env Array of environment variables: `run('echo $KEY', env: ['key' => 'value']);`
  * @param bool|null $forceOutput Print command output in real-time.
  * @param bool|null $nothrow Don't throw an exception of non-zero exit code.
@@ -394,7 +394,7 @@ function run(
     ?string $cwd = null,
     ?array  $env = null,
     #[\SensitiveParameter]
-    ?string $secret = null,
+    ?array  $secrets = null,
     ?bool   $nothrow = false,
     ?bool   $forceOutput = false,
     ?int    $timeout = null,
@@ -408,7 +408,7 @@ function run(
         timeout: $timeout ?? get('default_timeout', 300),
         idleTimeout: $idleTimeout,
         forceOutput: $forceOutput,
-        secrets: empty($secret) ? null : ['secret' => $secret],
+        secrets: $secrets,
     );
 
     $dotenv = get('dotenv', false);
@@ -469,7 +469,7 @@ function run(
  * @param string|null $cwd Sets the process working directory. If not set {{working_path}} will be used.
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec, `null` to disable).
  * @param int|null $idleTimeout Sets the process idle timeout (max. time since last output) in seconds.
- * @param string|null $secret Placeholder `%secret%` can be used in command. Placeholder will be replaced with this value and will not appear in any logs.
+ * @param array|null $secrets Placeholder `%secret%` for sensitive information.
  * @param array|null $env Array of environment variables: `runLocally('echo $KEY', env: ['key' => 'value']);`
  * @param bool|null $forceOutput Print command output in real-time.
  * @param bool|null $nothrow Don't throw an exception of non-zero exit code.
@@ -485,7 +485,7 @@ function runLocally(
     ?int    $timeout = null,
     ?int    $idleTimeout = null,
     #[\SensitiveParameter]
-    ?string $secret = null,
+    ?array  $secrets = null,
     ?array  $env = null,
     ?bool   $forceOutput = false,
     ?bool   $nothrow = false,
@@ -499,7 +499,7 @@ function runLocally(
         timeout: $timeout,
         idleTimeout: $idleTimeout,
         forceOutput: $forceOutput,
-        secrets: empty($secret) ? null : ['secret' => $secret],
+        secrets: $secrets,
     );
 
     $process = Deployer::get()->processRunner;

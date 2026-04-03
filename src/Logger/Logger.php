@@ -35,7 +35,7 @@ class Logger
     public function command(Host $host, string $type, string $command): void
     {
         if ($this->output->isVerbose()) {
-            $this->output->writeln("[$host] <fg=green;options=bold>$type</> $command");
+            $this->output->writeln("[{$host->getTag()}] <fg=green;options=bold>$type</> $command");
         }
         $this->fileLog->writeln("[{$host->getAlias()}] $type: $command");
     }
@@ -47,7 +47,7 @@ class Logger
                 if (empty($line)) {
                     return;
                 }
-                $this->output->writeln("[$host] $line");
+                $this->output->writeln("[{$host->getTag()}] $line");
             }
         }
         foreach (explode("\n", rtrim($buffer)) as $line) {
@@ -101,7 +101,7 @@ class Logger
     public function endOnHost(Host $host): void
     {
         if ($this->output->isVeryVerbose()) {
-            $this->output->writeln("<fg=yellow;options=bold>done</> on $host");
+            $this->output->writeln("<fg=yellow;options=bold>done</> on {$host->getTag()}");
         }
 
         $this->fileLog->writeln("# done on {$host->getAlias()}");
@@ -110,23 +110,23 @@ class Logger
     public function renderException(Throwable $exception, Host $host): void
     {
         if ($exception instanceof RunException) {
-            $message = "[$host] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
+            $message = "[{$host->getTag()}] <fg=white;bg=red> error </> <comment>in {$exception->getTaskFilename()} on line {$exception->getTaskLineNumber()}:</>\n";
             if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_NORMAL) {
-                $message .= "[$host] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
+                $message .= "[{$host->getTag()}] <fg=green;options=bold>run</> {$exception->getCommand()}\n";
                 foreach (explode("\n", $exception->getErrorOutput()) as $line) {
                     $line = trim($line);
                     if ($line !== "") {
-                        $message .= "[$host] <fg=red>err</> $line\n";
+                        $message .= "[{$host->getTag()}] <fg=red>err</> $line\n";
                     }
                 }
                 foreach (explode("\n", $exception->getOutput()) as $line) {
                     $line = trim($line);
                     if ($line !== "") {
-                        $message .= "[$host] $line\n";
+                        $message .= "[{$host->getTag()}] $line\n";
                     }
                 }
             }
-            $message .= "[$host] <fg=red>exit code</> {$exception->getExitCode()} ({$exception->getExitCodeText()})\n";
+            $message .= "[{$host->getTag()}] <fg=red>exit code</> {$exception->getExitCode()} ({$exception->getExitCodeText()})\n";
             $this->output->write($message);
         } else {
             $message = "";
@@ -137,27 +137,27 @@ class Logger
                 $file = $exception->getTaskFilename();
                 $line = $exception->getTaskLineNumber();
             }
-            $message .= "[$host] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
-            $message .= "[$host]\n";
+            $message .= "[{$host->getTag()}] <fg=white;bg=red> $class </> <comment>in $file on line $line:</>\n";
+            $message .= "[{$host->getTag()}]\n";
             foreach (explode("\n", $exception->getMessage()) as $line) {
                 $line = trim($line);
                 if ($line !== "") {
-                    $message .= "[$host]   <comment>$line</comment>\n";
+                    $message .= "[{$host->getTag()}]   <comment>$line</comment>\n";
                 }
             }
-            $message .= "[$host]\n";
+            $message .= "[{$host->getTag()}]\n";
             if ($this->output->isDebug()) {
                 foreach (explode("\n", $exception->getTraceAsString()) as $line) {
                     $line = trim($line);
                     if ($line !== "") {
-                        $message .= "[$host] $line\n";
+                        $message .= "[{$host->getTag()}] $line\n";
                     }
                 }
             }
             $this->output->write($message);
         }
 
-        $this->fileLog->writeln($exception->__toString());
+        $this->fileLog->writeln("[{$host->getAlias()}] $exception");
 
         if ($exception->getPrevious()) {
             $this->renderException($exception->getPrevious(), $host);

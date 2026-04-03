@@ -39,7 +39,7 @@ class Host
 
     public function __toString(): string
     {
-        return $this->getTag();
+        return $this->getAlias();
     }
 
     public function config(): Configuration

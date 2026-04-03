@@ -24,6 +24,6 @@ class FileHandler implements HandlerInterface
 
     public function log(string $message): void
     {
-        file_put_contents($this->filePath, $message, FILE_APPEND);
+        file_put_contents($this->filePath, $message . "\n", FILE_APPEND);
     }
 }

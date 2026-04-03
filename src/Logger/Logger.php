@@ -103,6 +103,8 @@ class Logger
         if ($this->output->isVeryVerbose()) {
             $this->output->writeln("<fg=yellow;options=bold>done</> on $host");
         }
+
+        $this->fileLog->log("# done on {$host->getAlias()}");
     }
 
     public function renderException(Throwable $exception, Host $host): void

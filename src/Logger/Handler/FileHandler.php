@@ -22,7 +22,7 @@ class FileHandler implements HandlerInterface
         $this->filePath = $filePath;
     }
 
-    public function log(string $message): void
+    public function writeln(string $message): void
     {
         file_put_contents($this->filePath, $message . "\n", FILE_APPEND);
     }

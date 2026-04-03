@@ -12,5 +12,5 @@ namespace Deployer\Logger\Handler;
 
 interface HandlerInterface
 {
-    public function log(string $message): void;
+    public function writeln(string $message): void;
 }

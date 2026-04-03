@@ -37,7 +37,7 @@ class Logger
         if ($this->output->isVerbose()) {
             $this->output->writeln("[$host] <fg=green;options=bold>$type</> $command");
         }
-        $this->fileLog->log("[{$host->getAlias()}] $type: $command");
+        $this->fileLog->writeln("[{$host->getAlias()}] $type: $command");
     }
 
     public function print(Host $host, string $buffer, bool $force = false): void
@@ -54,7 +54,7 @@ class Logger
             if (empty($line)) {
                 return;
             }
-            $this->fileLog->log("[{$host->getAlias()}] $line");
+            $this->fileLog->writeln("[{$host->getAlias()}] $line");
         }
     }
 
@@ -70,7 +70,7 @@ class Logger
         } else {
             $this->output->writeln("<fg=cyan;options=bold>task</> {$task->getName()}");
         }
-        $this->fileLog->log("# task {$task->getName()}");
+        $this->fileLog->writeln("# task {$task->getName()}");
     }
 
     public function endTask(Task $task): void
@@ -95,7 +95,7 @@ class Logger
             $this->output->writeln("<fg=yellow;options=bold>done</> {$task->getName()} $taskTime");
         }
 
-        $this->fileLog->log("# done {$task->getName()} $taskTime");
+        $this->fileLog->writeln("# done {$task->getName()} $taskTime");
     }
 
     public function endOnHost(Host $host): void
@@ -104,7 +104,7 @@ class Logger
             $this->output->writeln("<fg=yellow;options=bold>done</> on $host");
         }
 
-        $this->fileLog->log("# done on {$host->getAlias()}");
+        $this->fileLog->writeln("# done on {$host->getAlias()}");
     }
 
     public function renderException(Throwable $exception, Host $host): void
@@ -157,7 +157,7 @@ class Logger
             $this->output->write($message);
         }
 
-        $this->fileLog->log($exception->__toString());
+        $this->fileLog->writeln($exception->__toString());
 
         if ($exception->getPrevious()) {
             $this->renderException($exception->getPrevious(), $host);

@@ -69,7 +69,7 @@ class SshClient
             ->setIdleTimeout($params->idleTimeout);
 
         $callback = function ($type, $buffer) use ($params, $host) {
-            $this->logger->callback($host, $params->forceOutput)($type, $buffer);
+            $this->logger->print($host, $buffer, $params->forceOutput);
         };
 
         try {

@@ -34,37 +34,27 @@ class Logger
 
     public function command(Host $host, string $type, string $command): void
     {
-        // -v for run command
         if ($this->output->isVerbose()) {
             $this->output->writeln("[$host] <fg=green;options=bold>$type</> $command");
         }
         $this->fileLog->log("[{$host->getAlias()}] $type: $command");
     }
 
-    /**
-     * Returns a callable for use with the symfony Process->run($callable) method.
-     *
-     * @return callable A function expecting a int $type (e.g. Process::OUT or Process::ERR) and string $buffer parameters.
-     */
-    public function callback(Host $host, bool $forceOutput): callable
+    public function print(Host $host, string $buffer, bool $force = false): void
     {
-        return function ($type, $buffer) use ($forceOutput, $host) {
-            if ($this->output->isVerbose() || $forceOutput) {
-                $this->printBuffer($type, $host, $buffer);
+        if ($this->output->isVerbose() || $force) {
+            foreach (explode("\n", rtrim($buffer)) as $line) {
+                if (empty($line)) {
+                    return;
+                }
+                $this->output->writeln("[$host] $line");
             }
-        };
-    }
-
-    /**
-     * @param string $type Process::OUT or Process::ERR
-     */
-    public function printBuffer(string $type, Host $host, string $buffer): void
-    {
+        }
         foreach (explode("\n", rtrim($buffer)) as $line) {
             if (empty($line)) {
                 return;
             }
-            $this->output->writeln("[$host] $line");
+            $this->fileLog->log("[{$host->getAlias()}] $line");
         }
     }
 

@@ -106,9 +106,7 @@ class Rsync
                 }
                 return;
             }
-            if ($this->output->isVerbose()) {
-                $this->logger->printBuffer($type, $host, $buffer);
-            }
+            $this->logger->print($host, $buffer);
         };
 
         $process = new Process($command);

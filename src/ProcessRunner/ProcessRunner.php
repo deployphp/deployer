@@ -36,11 +36,6 @@ class ProcessRunner
     {
         $this->logger->command($host, 'run', $command);
 
-        $terminalOutput = $this->logger->callback($host, $params->forceOutput);
-        $callback = function ($type, $buffer) use ($terminalOutput) {
-            $terminalOutput($type, $buffer);
-        };
-
         if (!empty($params->env)) {
             $env = env_stringify($params->env);
             $command = "export $env; $command";
@@ -55,6 +50,10 @@ class ProcessRunner
             ->setTimeout($params->timeout)
             ->setIdleTimeout($params->idleTimeout)
             ->setWorkingDirectory($params->cwd ?? deployer_root());
+
+        $callback = function ($type, $buffer) use ($params, $host) {
+            $this->logger->print($host, $buffer, $params->forceOutput);
+        };
 
         try {
             $process->mustRun($callback);

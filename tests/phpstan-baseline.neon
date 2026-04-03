@@ -16,11 +16,6 @@ parameters:
 			path: ../src/Command/BlackjackCommand.php
 
 		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 2
-			path: ../src/Component/PharUpdate/Exception/Exception.php
-
-		-
 			message: "#^If condition is always true\\.$#"
 			count: 1
 			path: ../src/Host/Host.php

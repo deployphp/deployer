@@ -19,8 +19,6 @@ use Deployer\Command\RunCommand;
 use Deployer\Command\SshCommand;
 use Deployer\Command\TreeCommand;
 use Deployer\Command\WorkerCommand;
-use Deployer\Component\PharUpdate\Console\Command as PharUpdateCommand;
-use Deployer\Component\PharUpdate\Console\Helper as PharUpdateHelper;
 use Deployer\Component\Pimple\Container;
 use Deployer\Executor\Master;
 use Deployer\Host\Host;
@@ -181,14 +179,6 @@ class Deployer extends Container
         $this->getConsole()->addCommand(new TreeCommand($this));
         $this->getConsole()->addCommand(new SshCommand($this));
         $this->getConsole()->addCommand(new RunCommand($this));
-        if (self::isPharArchive()) {
-            $selfUpdate = new PharUpdateCommand('self-update');
-            $selfUpdate->setDescription('Updates deployer.phar to the latest version');
-            $selfUpdate->setManifestUri('https://deployer.org/manifest.json');
-            $selfUpdate->setRunningFile(DEPLOYER_BIN);
-            $this->getConsole()->addCommand($selfUpdate);
-            $this->getConsole()->getHelperSet()->set(new PharUpdateHelper());
-        }
     }
 
     /**

@@ -41,6 +41,7 @@
     ],
     "require": {
         "php": "^8.3",
+        "maml/maml": "^3.0",
         "symfony/console": "^7.4.0 || ^8.0.0",
         "symfony/process": "^7.4.0 || ^8.0.0",
         "symfony/yaml": "^7.4.0 || ^8.0.0"

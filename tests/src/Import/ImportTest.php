@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Deployer\Importer;
+namespace Deployer\Import;
 
 use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +27,7 @@ class ImporterTest extends TestCase
 
     public function testCanOneOverrideStaticMethod(): void
     {
-        $extendedImporter = new class extends Importer {
+        $extendedImporter = new class extends Import {
             public static $config = [];
 
             protected static function config(array $config)
@@ -70,7 +70,7 @@ class ImporterTest extends TestCase
             # test.yaml
             EOL;
 
-        Importer::import("data:text/yaml,$data");
+        Import::import("data:text/yaml,$data");
         self::assertTrue(Deployer::get()->hosts->has('production'));
         self::assertTrue(Deployer::get()->hosts->has('acceptance'));
         self::assertTrue(Deployer::get()->hosts->has('production.beta'));

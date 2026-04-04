@@ -18,7 +18,7 @@ use Deployer\Exception\WillAskUser;
 use Deployer\Host\Host;
 use Deployer\Host\Localhost;
 use Deployer\Host\Range;
-use Deployer\Importer\Importer;
+use Deployer\Import\Import;
 use Deployer\Ssh\RunParams;
 use Deployer\Support\ObjectProxy;
 use Deployer\Task\Context;
@@ -157,7 +157,7 @@ function selectedHosts(): array
  */
 function import(string $file): void
 {
-    Importer::import($file);
+    Import::import($file);
 }
 
 /**

@@ -8,7 +8,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Deployer\Importer;
+namespace Deployer\Import;
 
 use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
@@ -25,63 +25,32 @@ use function Deployer\localhost;
 use function Deployer\run;
 use function Deployer\runLocally;
 use function Deployer\set;
-use function Deployer\Support\find_line_number;
 use function Deployer\task;
 use function Deployer\upload;
 
 use const ARRAY_FILTER_USE_KEY;
 
-class Importer
+class YamlRecipe
 {
-    /**
-     * @var string
-     */
-    private static $recipeFilename;
-    /**
-     * @var string
-     */
-    private static $recipeSource;
+    private static string $filename;
 
-    /**
-     * @param string|string[] $paths
-     */
-    public static function import($paths)
+    public static function exec(string $path): void
     {
-        if (!is_array($paths)) {
-            $paths = [$paths];
+        self::$filename = basename($path);
+        $content = file_get_contents($path, true);
+
+        $root = array_filter(Yaml::parse($content), static function (string $key) {
+            return !str_starts_with($key, '.');
+        }, ARRAY_FILTER_USE_KEY);
+
+        foreach (array_keys($root) as $key) {
+            static::$key($root[$key]);
         }
-        foreach ($paths as $path) {
-            if (preg_match('/\.php$/i', $path)) {
-                // Prevent variable leak into deploy.php file
-                call_user_func(function () use ($path) {
-                    // Reorder autoload stack
-                    $originStack = spl_autoload_functions();
+    }
 
-                    require $path;
-
-                    $newStack = spl_autoload_functions();
-                    if ($originStack[0] !== $newStack[0]) {
-                        foreach (array_reverse($originStack) as $loader) {
-                            spl_autoload_unregister($loader);
-                            spl_autoload_register($loader, true, true);
-                        }
-                    }
-                });
-            } elseif (preg_match('/\.ya?ml$/i', $path)) {
-                self::$recipeFilename = basename($path);
-                self::$recipeSource = file_get_contents($path, true);
-
-                $root = array_filter(Yaml::parse(self::$recipeSource), static function (string $key) {
-                    return !str_starts_with($key, '.');
-                }, ARRAY_FILTER_USE_KEY);
-
-                foreach (array_keys($root) as $key) {
-                    static::$key($root[$key]);
-                }
-            } else {
-                throw new Exception("Unknown file format: $path\nOnly .php and .yaml supported.");
-            }
-        }
+    protected static function import(mixed $paths): void
+    {
+        Import::import($paths);
     }
 
     protected static function hosts(array $hosts)
@@ -135,8 +104,7 @@ class Importer
                             try {
                                 run($run);
                             } catch (Exception $e) {
-                                $e->setTaskFilename(self::$recipeFilename);
-                                $e->setTaskLineNumber(find_line_number(self::$recipeSource, $run));
+                                $e->setTaskFilename(self::$filename);
                                 throw $e;
                             }
                         };
@@ -154,8 +122,7 @@ class Importer
                             try {
                                 runLocally($run_locally);
                             } catch (Exception $e) {
-                                $e->setTaskFilename(self::$recipeFilename);
-                                $e->setTaskLineNumber(find_line_number(self::$recipeSource, $run_locally));
+                                $e->setTaskFilename(self::$filename);
                                 throw $e;
                             }
                         };

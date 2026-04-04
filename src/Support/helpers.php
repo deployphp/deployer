@@ -121,16 +121,6 @@ function parse_home_dir(string $path): string
     return $path;
 }
 
-function find_line_number(string $source, string $string): int
-{
-    $string = explode(PHP_EOL, $string)[0];
-    $before = strstr($source, $string, true);
-    if (false !== $before) {
-        return count(explode(PHP_EOL, $before));
-    }
-    return 1;
-}
-
 function colorize_host(string $alias): string
 {
     if (defined('NO_ANSI')) {

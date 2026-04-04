@@ -24,7 +24,7 @@ use Deployer\Executor\Master;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
 use Deployer\Host\Localhost;
-use Deployer\Importer\Importer;
+use Deployer\Import\Import;
 use Deployer\Logger\Handler\FileHandler;
 use Deployer\Logger\Handler\NullHandler;
 use Deployer\Logger\Logger;
@@ -61,7 +61,7 @@ use Throwable;
  * @property Logger $logger
  * @property Collection $fail
  * @property InputDefinition $inputDefinition
- * @property Importer $importer
+ * @property Import $importer
  */
 class Deployer extends Container
 {
@@ -158,7 +158,7 @@ class Deployer extends Container
             );
         };
         $this['importer'] = function () {
-            return new Importer();
+            return new Import();
         };
 
         self::$instance = $this;

@@ -270,16 +270,16 @@ class MamlRecipe
         $task = task($name, $body)->desc($desc);
 
         foreach ($array->elements as $element) {
-            $step = $element->value;
-            if (!$step instanceof ObjectNode) {
-                $this->throwException('Task step must be an object', $step->span);
+            $object = $element->value;
+            if (!$object instanceof ObjectNode) {
+                $this->throwException('Task step must be an object', $object->span);
             }
 
-            foreach ($step->properties as $property) {
-                $key = $property->key->value;
-                $x = Maml::toValue($property->value);
+            $x = Maml::toValue($element->value);
+            $prev = $body;
 
-                $prev = $body;
+            foreach ($object->properties as $property) {
+                $key = $property->key->value;
 
                 $body = match ($key) {
                     'cd' => function () use ($x, $prev, $property) {

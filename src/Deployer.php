@@ -20,6 +20,7 @@ use Deployer\Command\SshCommand;
 use Deployer\Command\TreeCommand;
 use Deployer\Command\WorkerCommand;
 use Deployer\Component\Pimple\Container;
+use Deployer\Exception\SchemaException;
 use Deployer\Executor\Master;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
@@ -274,18 +275,24 @@ class Deployer extends Container
 
     public static function printException(OutputInterface $output, Throwable $exception): void
     {
-        $class = get_class($exception);
-        $file = basename($exception->getFile());
-        $output->writeln([
-            "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
-            "",
-            implode("\n", array_map(function ($line) {
-                return "  " . $line;
-            }, explode("\n", $exception->getMessage()))),
-            "",
-        ]);
-        if ($output->isDebug()) {
-            $output->writeln($exception->getTraceAsString());
+        if ($exception instanceof SchemaException) {
+            $output->writeln([
+                "<fg=white;bg=red> Schema error </> {$exception->getMessage()}",
+            ]);
+        } else {
+            $class = get_class($exception);
+            $file = basename($exception->getFile());
+            $output->writeln([
+                "<fg=white;bg=red> {$class} </> <comment>in {$file} on line {$exception->getLine()}:</>",
+                "",
+                implode("\n", array_map(function ($line) {
+                    return "  " . $line;
+                }, explode("\n", $exception->getMessage()))),
+                "",
+            ]);
+            if ($output->isDebug()) {
+                $output->writeln($exception->getTraceAsString());
+            }
         }
 
         if ($exception->getPrevious()) {

@@ -46,51 +46,6 @@ class MamlRecipe
         $this->content = file_get_contents($path, true);
     }
 
-    public function run(): void
-    {
-        $recipe = Maml::parseAst($this->content);
-
-        $validationErrors = Maml::validate($recipe, $this->schema());
-
-        $exception = null;
-        foreach ($validationErrors as $error) {
-            $exception = new SchemaException(Maml::errorSnippet(
-                $this->content,
-                $error->span,
-                $error->message,
-                context: 3,
-                gutter: true,
-            ));
-        }
-        if ($exception) {
-            throw $exception;
-        }
-
-        foreach ($recipe->value->properties as $property) {
-            $key = $property->key->value;
-            switch ($key) {
-                case 'import':
-                    $this->import($property);
-                    break;
-
-                case 'config':
-                    $this->config($property);
-                    break;
-
-                case 'hosts':
-                    $this->hosts($property);
-                    break;
-
-                case 'tasks':
-                    $this->tasks($property);
-                    break;
-
-                default:
-                    $this->throwException("Unknown property $key", $property->key->span);
-            }
-        }
-    }
-
     private function schema(): SchemaType
     {
         $step = S::object([
@@ -136,12 +91,78 @@ class MamlRecipe
                 ),
             ),
             'before' => S::optional(
-                S::map(S::string()),
+                S::map(
+                    S::union(
+                        S::string(),
+                        S::arrayOf(S::string()),
+                    ),
+                ),
             ),
             'after' => S::optional(
-                S::map(S::string()),
+                S::map(
+                    S::union(
+                        S::string(),
+                        S::arrayOf(S::string()),
+                    ),
+                ),
             ),
         ]);
+    }
+
+    public function run(): void
+    {
+        $recipe = Maml::parseAst($this->content);
+
+        $validationErrors = Maml::validate($recipe, $this->schema());
+
+        $exception = null;
+        foreach ($validationErrors as $error) {
+            $exception = new SchemaException(
+                Maml::errorSnippet(
+                    $this->content,
+                    $error->span,
+                    $error->message,
+                    context: 3,
+                    gutter: true,
+                ),
+                $exception,
+            );
+        }
+        if ($exception) {
+            throw $exception;
+        }
+
+        foreach ($recipe->value->properties as $property) {
+            $key = $property->key->value;
+            switch ($key) {
+                case 'import':
+                    $this->import($property);
+                    break;
+
+                case 'config':
+                    $this->config($property);
+                    break;
+
+                case 'hosts':
+                    $this->hosts($property);
+                    break;
+
+                case 'tasks':
+                    $this->tasks($property);
+                    break;
+
+                case 'before':
+                    $this->before($property);
+                    break;
+
+                case 'after':
+                    $this->after($property);
+                    break;
+
+                default:
+                    $this->throwException("Unknown property $key", $property->key->span);
+            }
+        }
     }
 
     private function import(Property $property): void
@@ -245,6 +266,8 @@ class MamlRecipe
             // Empty task body.
         };
 
+        $task = task($name, $body)->desc($desc);
+
         foreach ($array->elements as $element) {
             $step = $element->value;
             if (!$step instanceof ObjectNode) {
@@ -253,184 +276,82 @@ class MamlRecipe
 
             foreach ($step->properties as $property) {
                 $key = $property->key->value;
-                $value = $property->value;
-
-                $str = null;
-                if ($value instanceof StringNode || $value instanceof RawStringNode) {
-                    $str = $value->value;
-                } else {
-                    $this->throwException('Task step value must be a string', $value->span);
-                }
+                $x = Maml::toValue($property->value);
 
                 $prev = $body;
 
-                switch ($key) {
-                    case 'cd':
-                        $body = function () use ($str, $prev, $property) {
-                            $prev();
-                            try {
-                                cd($str);
-                            } catch (\Throwable $e) {
-                                $this->wrapException($e, $property->span);
-                            }
-                        };
-                        break;
-
-                    case 'run':
-                        $body = function () use ($str, $prev, $property) {
-                            $prev();
-                            try {
-                                run($str);
-                            } catch (\Throwable $e) {
-                                $this->wrapException($e, $property->span);
-                            }
-                        };
-                        break;
-
-                    case 'run_locally':
-                        $body = function () use ($str, $prev, $property) {
-                            $prev();
-                            try {
-                                runLocally($str);
-                            } catch (\Throwable $e) {
-                                $this->wrapException($e, $property->span);
-                            }
-                        };
-                        break;
-
-                    default:
-                        $this->throwException("Unknown task step $key", $property->key->span);
-                }
-            }
-        }
-
-        task($name, $body)->desc($desc);
-    }
-
-    protected function tasks1(Property $property): void
-    {
-        $buildTask = function ($name, $steps) {
-            $body = function () {
-            };
-            $task = task($name, $body);
-
-            foreach ($steps as $step) {
-                $buildStep = function (array $step) use (&$body, $task) {
-                    $has = null;
-
-                    if (isset($step['cd'])) {
-                        $cd = $step['cd'];
-                        $prev = $body;
-                        $body = function () use ($cd, $prev) {
-                            $prev();
-                            cd($cd);
-                        };
-                    }
-
-                    if (isset($step['run'])) {
-                        $has = 'run';
-                        $run = $step['run'];
-                        $prev = $body;
-                        $body = function () use ($run, $prev) {
-                            $prev();
-                            try {
-                                run($run);
-                            } catch (Exception $e) {
-                                $e->setTaskFilename($this->filename);
-                                throw $e;
-                            }
-                        };
-                    }
-
-                    if (isset($step['run_locally'])) {
-                        if ($has !== null) {
-                            throw new ConfigurationException("Task step can not have both $has and run_locally.");
+                $body = match ($key) {
+                    'cd' => function () use ($x, $prev, $property) {
+                        $prev();
+                        try {
+                            cd($x['cd']);
+                        } catch (\Throwable $e) {
+                            $this->wrapException($e, $property->span);
                         }
-                        $has = 'run_locally';
-                        $run_locally = $step['run_locally'];
-                        $prev = $body;
-                        $body = function () use ($run_locally, $prev) {
-                            $prev();
-                            try {
-                                runLocally($run_locally);
-                            } catch (Exception $e) {
-                                $e->setTaskFilename($this->filename);
-                                throw $e;
-                            }
-                        };
-                    }
-
-                    if (isset($step['upload'])) {
-                        if ($has !== null) {
-                            throw new ConfigurationException("Task step can not have both $has and upload.");
+                    },
+                    'run' => function () use ($x, $prev, $property) {
+                        $prev();
+                        try {
+                            run(
+                                $x['run'],
+                            );
+                        } catch (\Throwable $e) {
+                            $this->wrapException($e, $property->span);
                         }
-                        $has = 'upload';
-                        $upload = $step['upload'];
-                        $prev = $body;
-                        $body = function () use ($upload, $prev) {
-                            $prev();
-                            upload($upload['src'], $upload['dest']);
-                        };
-                    }
-
-                    if (isset($step['download'])) {
-                        if ($has !== null) {
-                            throw new ConfigurationException("Task step can not have both $has and download.");
+                    },
+                    'run_locally' => function () use ($x, $prev, $property) {
+                        $prev();
+                        try {
+                            runLocally(
+                                $x['run_locally'],
+                            );
+                        } catch (\Throwable $e) {
+                            $this->wrapException($e, $property->span);
                         }
-                        $prev = $body;
-                        $download = $step['download'];
-                        $body = function () use ($download, $prev) {
-                            $prev();
-                            download($download['src'], $download['dest']);
-                        };
-                    }
-
-                    foreach (['desc', 'once', 'hidden', 'limit', 'select'] as $method) {
-                        if (isset($step[$method])) {
-                            $task->$method($step[$method]);
+                    },
+                    'upload' => function () use ($x, $prev, $property) {
+                        $prev();
+                        try {
+                            upload(
+                                $x['src'],
+                                $x['dest'],
+                            );
+                        } catch (\Throwable $e) {
+                            $this->wrapException($e, $property->span);
                         }
-                    }
+                    },
+                    'download' => function () use ($x, $prev, $property) {
+                        $prev();
+                        try {
+                            download(
+                                $x['src'],
+                                $x['dest'],
+                            );
+                        } catch (\Throwable $e) {
+                            $this->wrapException($e, $property->span);
+                        }
+                    },
+                    'desc', 'once', 'hidden', 'limit', 'select' => $task->$key($x[$key]),
+                    default => $this->throwException("Unknown task step $key", $property->key->span),
                 };
-
-                $buildStep($step);
-                $task->setCallback($body);
-            }
-        };
-
-        foreach ($tasks as $name => $config) {
-            foreach ($config as $key => $value) {
-                if (!is_int($key) || !is_string($value)) {
-                    goto not_a_group_task;
-                }
-            }
-
-// Create a group task.
-            task($name, $config);
-            continue;
-
-            not_a_group_task:
-            $buildTask($name, $config);
-        }
-    }
-
-    protected
-    function after(array $after)
-    {
-        foreach ($after as $key => $value) {
-            if (is_array($value)) {
-                foreach (array_reverse($value) as $v) {
-                    after($key, $v);
-                }
-            } else {
-                after($key, $value);
             }
         }
+
+        $task->setCallback($body);
+
+        return $task;
     }
 
-    protected
-    function before(array $before)
+    protected function before(Property $property): void
     {
-        foreach ($before as $key => $value) {
+        $object = $property->value;
+        if (!$object instanceof ObjectNode) {
+            $this->throwException('Invalid before format', $object->span);
+        }
+        foreach ($object->properties as $property) {
+            $key = $property->key->value;
+            $value = Maml::toValue($property->value);
+
             if (is_array($value)) {
                 foreach (array_reverse($value) as $v) {
                     before($key, $v);
@@ -441,9 +362,35 @@ class MamlRecipe
         }
     }
 
+    protected function after(Property $property): void
+    {
+        $object = $property->value;
+        if (!$object instanceof ObjectNode) {
+            $this->throwException('Invalid after format', $object->span);
+        }
+        foreach ($object->properties as $property) {
+            $key = $property->key->value;
+            $value = Maml::toValue($property->value);
+
+            if (is_array($value)) {
+                foreach (array_reverse($value) as $v) {
+                    after($key, $v);
+                }
+            } else {
+                after($key, $value);
+            }
+        }
+    }
+
     private function throwException(string $string, Span $span): never
     {
-        throw new Exception(Maml::errorSnippet($this->content, $span, $string));
+        throw new Exception(Maml::errorSnippet(
+            $this->content,
+            $span,
+            $string,
+            context: 3,
+            gutter: true,
+        ));
     }
 
     private function wrapException(\Throwable $e, Span $span): never

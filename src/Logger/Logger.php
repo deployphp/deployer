@@ -12,6 +12,7 @@ namespace Deployer\Logger;
 
 use Deployer\Exception\Exception;
 use Deployer\Exception\RunException;
+use Deployer\Exception\SchemaException;
 use Deployer\Host\Host;
 use Deployer\Logger\Handler\HandlerInterface;
 use Deployer\Task\Task;

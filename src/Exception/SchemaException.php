@@ -10,4 +10,12 @@ declare(strict_types=1);
 
 namespace Deployer\Exception;
 
-class SchemaException extends \RuntimeException {}
+use Throwable;
+
+class SchemaException extends \RuntimeException
+{
+    public function __construct(string $message = "", ?Throwable $previous = null)
+    {
+        parent::__construct($message, 0, $previous);
+    }
+}

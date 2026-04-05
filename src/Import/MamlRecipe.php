@@ -275,64 +275,64 @@ class MamlRecipe
                 $this->throwException('Task step must be an object', $object->span);
             }
 
-            $x = Maml::toValue($element->value);
+            $step = Maml::toValue($element->value);
             $prev = $body;
 
             foreach ($object->properties as $property) {
                 $key = $property->key->value;
 
                 $body = match ($key) {
-                    'cd' => function () use ($x, $prev, $property) {
+                    'cd' => function () use ($step, $prev, $property) {
                         $prev();
                         try {
-                            cd($x['cd']);
+                            cd($step['cd']);
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'run' => function () use ($x, $prev, $property) {
+                    'run' => function () use ($step, $prev, $property) {
                         $prev();
                         try {
                             run(
-                                $x['run'],
+                                $step['run'],
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'run_locally' => function () use ($x, $prev, $property) {
+                    'run_locally' => function () use ($step, $prev, $property) {
                         $prev();
                         try {
                             runLocally(
-                                $x['run_locally'],
+                                $step['run_locally'],
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'upload' => function () use ($x, $prev, $property) {
+                    'upload' => function () use ($step, $prev, $property) {
                         $prev();
                         try {
                             upload(
-                                $x['src'],
-                                $x['dest'],
+                                $step['src'],
+                                $step['dest'],
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'download' => function () use ($x, $prev, $property) {
+                    'download' => function () use ($step, $prev, $property) {
                         $prev();
                         try {
                             download(
-                                $x['src'],
-                                $x['dest'],
+                                $step['src'],
+                                $step['dest'],
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'desc', 'once', 'hidden', 'limit', 'select' => $task->$key($x[$key]),
+                    'desc', 'once', 'hidden', 'limit', 'select' => $task->$key($step[$key]),
                     default => $this->throwException("Unknown task step $key", $property->key->span),
                 };
             }

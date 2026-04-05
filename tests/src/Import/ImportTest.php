@@ -7,7 +7,7 @@ namespace Deployer\Import;
 use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
 
-class ImporterTest extends TestCase
+class ImportTest extends TestCase
 {
     private $previousInput;
     private $previousOutput;

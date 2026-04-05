@@ -49,24 +49,45 @@ class MamlRecipe
 
     private function schema(): SchemaType
     {
-        $step = S::object([
+        $cd = S::object([
+            'cd' => S::string(),
+        ]);
+
+        $run = S::object([
+            'run' => S::string(),
             'cd' => S::optional(S::string()),
-            'run' => S::optional(S::string()),
-            'run_locally' => S::optional(S::string()),
-            'upload' => S::optional(S::object([
-                'src' => S::union(S::string(), S::arrayOf(S::string())),
-                'dest' => S::string(),
-            ])),
-            'download' => S::optional(S::object([
-                'src' => S::string(),
-                'dest' => S::string(),
-            ])),
+        ]);
+
+        $runLocally = S::object([
+            'run_locally' => S::string(),
+        ]);
+
+        $upload = S::object([
+            'src' => S::union(S::string(), S::arrayOf(S::string())),
+            'dest' => S::string(),
+        ]);
+
+        $download = S::object([
+            'src' => S::string(),
+            'dest' => S::string(),
+        ]);
+
+        $taskConfig = S::object([
             'desc' => S::optional(S::string()),
             'once' => S::optional(S::boolean()),
             'hidden' => S::optional(S::boolean()),
             'limit' => S::optional(S::number()),
             'select' => S::optional(S::string()),
         ]);
+
+        $step = S::union(
+            $cd,
+            $run,
+            $runLocally,
+            $upload,
+            $download,
+            $taskConfig,
+        );
 
         return S::object([
             'import' => S::optional(
@@ -276,10 +297,10 @@ class MamlRecipe
             }
 
             $step = Maml::toValue($element->value);
-            $prev = $body;
 
             foreach ($object->properties as $property) {
                 $key = $property->key->value;
+                $prev = $body;
 
                 $body = match ($key) {
                     'cd' => function () use ($step, $prev, $property) {

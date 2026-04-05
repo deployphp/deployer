@@ -56,6 +56,13 @@ class MamlRecipe
         $run = S::object([
             'run' => S::string(),
             'cd' => S::optional(S::string()),
+            'cwd' => S::optional(S::string()),
+            'env' => S::optional(S::map(S::string())),
+            'secrets' => S::optional(S::map(S::string())),
+            'nothrow' => S::optional(S::boolean()),
+            'forceOutput' => S::optional(S::boolean()),
+            'timeout' => S::optional(S::number()),
+            'idleTimeout' => S::optional(S::number()),
         ]);
 
         $runLocally = S::object([
@@ -316,6 +323,13 @@ class MamlRecipe
                         try {
                             run(
                                 $step['run'],
+                                cwd: $step['cwd'] ?? null,
+                                env: $step['env'] ?? null,
+                                secrets: $step['secrets'] ?? null,
+                                nothrow: $step['nothrow'] ?? false,
+                                forceOutput: $step['forceOutput'] ?? false,
+                                timeout: $step['timeout'] ?? null,
+                                idleTimeout: $step['idleTimeout'] ?? null,
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
@@ -354,7 +368,7 @@ class MamlRecipe
                         }
                     },
                     'desc', 'once', 'hidden', 'limit', 'select' => $task->$key($step[$key]),
-                    default => $this->throwException("Unknown task step $key", $property->key->span),
+                    default => $body,
                 };
             }
         }

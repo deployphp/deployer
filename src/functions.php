@@ -402,7 +402,7 @@ function run(
 ): string {
     $runParams = new RunParams(
         shell: currentHost()->getShell(),
-        cwd: $cwd ?? has('working_path') ? get('working_path') : null,
+        cwd: $cwd ?? (has('working_path') ? get('working_path') : null),
         env: array_merge_alternate(get('env', []), $env ?? []),
         nothrow: $nothrow,
         timeout: $timeout ?? get('default_timeout', 300),

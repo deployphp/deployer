@@ -724,4 +724,50 @@ class MamlRecipeTest extends TestCase
 
         self::assertInstanceOf(\Closure::class, $callbackProp->getValue($task));
     }
+
+    public function testFailHook(): void
+    {
+        $this->runMaml('{
+            tasks: {
+                deploy: [
+                    { run: "echo deploy" }
+                ]
+                rollback: [
+                    { run: "echo rollback" }
+                ]
+            }
+            fail: {
+                deploy: "rollback"
+            }
+        }');
+
+        self::assertEquals('rollback', $this->deployer->fail->get('deploy'));
+    }
+
+    public function testFailHookMultipleTasks(): void
+    {
+        $this->runMaml('{
+            tasks: {
+                deploy: [
+                    { run: "echo deploy" }
+                ]
+                migrate: [
+                    { run: "echo migrate" }
+                ]
+                rollback: [
+                    { run: "echo rollback" }
+                ]
+                unlock: [
+                    { run: "echo unlock" }
+                ]
+            }
+            fail: {
+                deploy: "rollback"
+                migrate: "unlock"
+            }
+        }');
+
+        self::assertEquals('rollback', $this->deployer->fail->get('deploy'));
+        self::assertEquals('unlock', $this->deployer->fail->get('migrate'));
+    }
 }

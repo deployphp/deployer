@@ -28,6 +28,7 @@ use function Deployer\after;
 use function Deployer\before;
 use function Deployer\cd;
 use function Deployer\download;
+use function Deployer\fail;
 use function Deployer\host;
 use function Deployer\localhost;
 use function Deployer\run;
@@ -147,6 +148,9 @@ class MamlRecipe
                     ),
                 ),
             ),
+            'fail' => S::optional(
+                S::map(S::string()),
+            ),
         ]);
     }
 
@@ -198,6 +202,10 @@ class MamlRecipe
 
                 case 'after':
                     $this->after($property);
+                    break;
+
+                case 'fail':
+                    $this->fail($property);
                     break;
 
                 default:
@@ -440,6 +448,19 @@ class MamlRecipe
             } else {
                 after($key, $value);
             }
+        }
+    }
+
+    protected function fail(Property $property): void
+    {
+        $object = $property->value;
+        if (!$object instanceof ObjectNode) {
+            $this->throwException('Invalid fail format', $object->span);
+        }
+        foreach ($object->properties as $property) {
+            $key = $property->key->value;
+            $value = Maml::toValue($property->value);
+            fail($key, $value);
         }
     }
 

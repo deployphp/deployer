@@ -78,13 +78,17 @@ class MamlRecipe
         ]);
 
         $upload = S::object([
-            'src' => S::union(S::string(), S::arrayOf(S::string())),
-            'dest' => S::string(),
+            'upload' => S::object([
+                'src' => S::union(S::string(), S::arrayOf(S::string())),
+                'dest' => S::string(),
+            ]),
         ]);
 
         $download = S::object([
-            'src' => S::string(),
-            'dest' => S::string(),
+            'download' => S::object([
+                'src' => S::string(),
+                'dest' => S::string(),
+            ]),
         ]);
 
         $taskConfig = S::object([
@@ -274,7 +278,7 @@ class MamlRecipe
         foreach ($tasks->properties as $task) {
             $name = $task->key->value;
             $value = $task->value;
-            $desc = trim(implode('\n', array_map(fn($comment) => $comment->value, $task->leadingComments)));
+            $desc = trim(implode("\n", array_map(fn($comment) => $comment->value, $task->leadingComments)));
             if (!$value instanceof ArrayNode) {
                 $this->throwException('Task must be an array', $value->span);
             }
@@ -315,6 +319,12 @@ class MamlRecipe
 
             foreach ($object->properties as $property) {
                 $key = $property->key->value;
+
+                if (in_array($key, ['desc', 'once', 'hidden', 'limit', 'select'])) {
+                    $task->$key($step[$key]);
+                    continue;
+                }
+
                 $prev = $body;
 
                 $body = match ($key) {
@@ -365,8 +375,8 @@ class MamlRecipe
                         $prev();
                         try {
                             upload(
-                                $step['src'],
-                                $step['dest'],
+                                $step['upload']['src'],
+                                $step['upload']['dest'],
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
@@ -376,14 +386,13 @@ class MamlRecipe
                         $prev();
                         try {
                             download(
-                                $step['src'],
-                                $step['dest'],
+                                $step['download']['src'],
+                                $step['download']['dest'],
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'desc', 'once', 'hidden', 'limit', 'select' => $task->$key($step[$key]),
                     default => $body,
                 };
             }

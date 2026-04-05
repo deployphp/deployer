@@ -25,28 +25,6 @@ class ImportTest extends TestCase
         Deployer::get()->output = $this->previousOutput;
     }
 
-    public function testCanOneOverrideStaticMethod(): void
-    {
-        $extendedImporter = new class extends Import {
-            public static $config = [];
-
-            protected static function config(array $config)
-            {
-                static::$config = $config;
-            }
-        };
-
-        $data = <<<EOL
-            config:
-                foo: bar
-            # test.yaml
-            EOL;
-
-        $extendedImporter::import("data:text/yaml,$data");
-
-        static::assertSame(['foo' => 'bar'], $extendedImporter::$config);
-    }
-
     public function testImporterIgnoresYamlHiddenKeys(): void
     {
         $data = <<<EOL

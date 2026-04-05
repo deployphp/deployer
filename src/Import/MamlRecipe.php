@@ -67,6 +67,14 @@ class MamlRecipe
 
         $runLocally = S::object([
             'run_locally' => S::string(),
+            'cwd' => S::optional(S::string()),
+            'timeout' => S::optional(S::number()),
+            'idleTimeout' => S::optional(S::number()),
+            'secrets' => S::optional(S::map(S::string())),
+            'env' => S::optional(S::map(S::string())),
+            'nothrow' => S::optional(S::boolean()),
+            'forceOutput' => S::optional(S::boolean()),
+            'shell' => S::optional(S::string()),
         ]);
 
         $upload = S::object([
@@ -340,6 +348,14 @@ class MamlRecipe
                         try {
                             runLocally(
                                 $step['run_locally'],
+                                cwd: $step['cwd'] ?? null,
+                                timeout: $step['timeout'] ?? null,
+                                idleTimeout: $step['idleTimeout'] ?? null,
+                                secrets: $step['secrets'] ?? null,
+                                env: $step['env'] ?? null,
+                                forceOutput: $step['forceOutput'] ?? false,
+                                nothrow: $step['nothrow'] ?? false,
+                                shell: $step['shell'] ?? null,
                             );
                         } catch (\Throwable $e) {
                             $this->wrapException($e, $property->span);

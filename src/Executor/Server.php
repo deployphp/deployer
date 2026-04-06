@@ -18,9 +18,7 @@ class Server
 {
     private string $host;
     private int $port;
-
     private OutputInterface $output;
-
     private bool $stop = false;
 
     /**
@@ -29,30 +27,33 @@ class Server
     private $socket;
 
     /**
-     * @var resource[]
+     * Each client is tracked with its socket, read buffer, and connection timestamp.
+     * @var array<int, array{socket: resource, buffer: string, connectedAt: float}>
      */
-    private array $clientSockets = [];
+    private array $clients = [];
+
+    private int $nextClientId = 0;
 
     private Closure $afterCallback;
     private Closure $tickerCallback;
     private Closure $routerCallback;
 
-    public function __construct($host, $port, OutputInterface $output)
+    /**
+     * Timeout in seconds for idle client connections.
+     */
+    private float $clientTimeout = 30.0;
+
+    private const REASON_PHRASES = [
+        200 => 'OK',
+        404 => 'Not Found',
+        500 => 'Internal Server Error',
+    ];
+
+    public function __construct(string $host, int $port, OutputInterface $output)
     {
-        self::checkRequiredExtensionsExists();
         $this->host = $host;
         $this->port = $port;
         $this->output = $output;
-    }
-
-    public static function checkRequiredExtensionsExists(): void
-    {
-        if (!function_exists('socket_import_stream')) {
-            throw new Exception('Required PHP extension "sockets" is not loaded');
-        }
-        if (!function_exists('stream_set_blocking')) {
-            throw new Exception('Required PHP extension "stream" is not loaded');
-        }
     }
 
     public function run(): void
@@ -84,6 +85,9 @@ class Server
                 $this->output->writeln("[master] Stopping server at http://{$this->host}:{$this->port}");
             }
         } finally {
+            foreach ($this->clients as $id => $client) {
+                $this->closeClient($id);
+            }
             if (isset($this->socket)) {
                 fclose($this->socket);
             }
@@ -112,7 +116,7 @@ class Server
     {
         $name = stream_socket_get_name($this->socket, false);
         if ($name) {
-            list(, $port) = explode(':', $name);
+            [, $port] = explode(':', $name);
             $this->port = (int) $port;
         } else {
             throw new Exception("Failed to get the assigned port");
@@ -121,46 +125,104 @@ class Server
 
     private function acceptNewConnections(): void
     {
-        $newClientSocket = @stream_socket_accept($this->socket, 0);
-        if ($newClientSocket) {
+        while ($newClientSocket = @stream_socket_accept($this->socket, 0)) {
             if (!stream_set_blocking($newClientSocket, false)) {
-                throw new Exception("Failed to set client socket to non-blocking mode");
+                fclose($newClientSocket);
+                continue;
             }
-            $this->clientSockets[] = $newClientSocket;
+            $id = $this->nextClientId++;
+            $this->clients[$id] = [
+                'socket' => $newClientSocket,
+                'buffer' => '',
+                'connectedAt' => microtime(true),
+            ];
         }
     }
 
     private function handleClientRequests(): void
     {
-        foreach ($this->clientSockets as $key => $clientSocket) {
-            if (feof($clientSocket)) {
-                $this->closeClientSocket($clientSocket, $key);
+        foreach ($this->clients as $id => $client) {
+            $socket = $client['socket'];
+
+            if (feof($socket)) {
+                $this->closeClient($id);
                 continue;
             }
 
-            $request = $this->readClientRequest($clientSocket);
-            list($path, $payload) = $this->parseRequest($request);
-            $response = ($this->routerCallback)($path, $payload);
+            // Read available data into the buffer.
+            $data = @fread($socket, 65536);
+            if ($data !== false && $data !== '') {
+                $this->clients[$id]['buffer'] .= $data;
+            }
 
-            $this->sendResponse($clientSocket, $response);
-            $this->closeClientSocket($clientSocket, $key);
+            // Check if we have a complete request.
+            $buffer = $this->clients[$id]['buffer'];
+            if (!self::isCompleteRequest($buffer)) {
+                // Check for idle timeout.
+                if (microtime(true) - $client['connectedAt'] > $this->clientTimeout) {
+                    $this->closeClient($id);
+                }
+                continue;
+            }
+
+            // Process the complete request.
+            try {
+                [$path, $payload] = self::parseRequest($buffer);
+                $response = ($this->routerCallback)($path, $payload);
+                $this->sendResponse($socket, $response);
+            } catch (\Throwable $e) {
+                $errorResponse = new Response(500, ['error' => $e->getMessage()]);
+                try {
+                    $this->sendResponse($socket, $errorResponse);
+                } catch (\Throwable) {
+                    // Best effort — socket may be broken.
+                }
+            } finally {
+                $this->closeClient($id);
+            }
         }
     }
 
-    private function readClientRequest($clientSocket)
+    /**
+     * Check if the buffer contains a complete HTTP request
+     * (headers terminated by \r\n\r\n, and body length matches Content-Length).
+     */
+    public static function isCompleteRequest(string $buffer): bool
     {
-        $request = stream_get_contents($clientSocket);
-
-        if ($request === false) {
-            throw new Exception('Socket read failed');
+        $headerEnd = strpos($buffer, "\r\n\r\n");
+        if ($headerEnd === false) {
+            return false;
         }
 
-        return $request;
+        $headers = substr($buffer, 0, $headerEnd);
+        $bodyStart = $headerEnd + 4;
+
+        // Extract Content-Length from headers.
+        if (preg_match('/^Content-Length:\s*(\d+)/mi', $headers, $matches)) {
+            $contentLength = (int) $matches[1];
+            return strlen($buffer) - $bodyStart >= $contentLength;
+        }
+
+        // No Content-Length header — request is complete after headers.
+        return true;
     }
 
-    private function parseRequest($request)
+    /**
+     * Parse a complete HTTP request into path and JSON payload.
+     *
+     * @return array{0: string, 1: mixed}
+     */
+    public static function parseRequest(string $request): array
     {
-        $lines = explode("\r\n", $request);
+        $headerEnd = strpos($request, "\r\n\r\n");
+        if ($headerEnd === false) {
+            throw new Exception("Malformed request: no header terminator found");
+        }
+
+        $headerSection = substr($request, 0, $headerEnd);
+        $body = substr($request, $headerEnd + 4);
+
+        $lines = explode("\r\n", $headerSection);
         $requestLine = $lines[0];
         $parts = explode(' ', $requestLine);
         if (count($parts) !== 3) {
@@ -171,50 +233,81 @@ class Server
         $headers = [];
         for ($i = 1; $i < count($lines); $i++) {
             $line = $lines[$i];
-            if (empty($line)) {
-                break;
+            if (str_contains($line, ':')) {
+                [$key, $value] = explode(':', $line, 2);
+                $headers[strtolower(trim($key))] = trim($value);
             }
-            [$key, $value] = explode(':', $line, 2);
-            $headers[$key] = trim($value);
         }
-        if (empty($headers['Content-Type']) || $headers['Content-Type'] !== 'application/json') {
+
+        if (empty($headers['content-type']) || $headers['content-type'] !== 'application/json') {
             throw new Exception("Malformed request: invalid Content-Type");
         }
 
-        $payload = json_decode(implode("\n", array_slice($lines, $i + 1)), true, flags: JSON_THROW_ON_ERROR);
+        // Trim body to Content-Length if present (ignore trailing data).
+        if (isset($headers['content-length'])) {
+            $body = substr($body, 0, (int) $headers['content-length']);
+        }
+
+        $payload = json_decode($body, true, flags: JSON_THROW_ON_ERROR);
         return [$path, $payload];
     }
 
-    private function sendResponse($clientSocket, Response $response)
+    /**
+     * @param resource $socket
+     */
+    private function sendResponse($socket, Response $response): void
     {
         $code = $response->getStatus();
+        $reason = self::REASON_PHRASES[$code] ?? 'Unknown';
         $content = json_encode($response->getBody(), flags: JSON_PRETTY_PRINT);
-        $headers = "HTTP/1.1 $code OK\r\n"
+        $data = "HTTP/1.1 $code $reason\r\n"
             . "Content-Type: application/json\r\n"
             . "Content-Length: " . strlen($content) . "\r\n"
-            . "Connection: close\r\n\r\n";
-        fwrite($clientSocket, $headers . $content);
+            . "Connection: close\r\n\r\n"
+            . $content;
+
+        self::writeAll($socket, $data);
     }
 
-    private function closeClientSocket($clientSocket, $key): void
+    /**
+     * Write all data to socket, handling partial writes.
+     *
+     * @param resource $socket
+     */
+    public static function writeAll($socket, string $data): void
     {
-        fclose($clientSocket);
-        unset($this->clientSockets[$key]);
+        $written = 0;
+        $len = strlen($data);
+        while ($written < $len) {
+            $bytes = @fwrite($socket, substr($data, $written));
+            if ($bytes === false || $bytes === 0) {
+                throw new Exception('Socket write failed');
+            }
+            $written += $bytes;
+        }
     }
 
-    public function afterRun(Closure $param): void
+    private function closeClient(int $id): void
     {
-        $this->afterCallback = $param;
+        if (isset($this->clients[$id])) {
+            fclose($this->clients[$id]['socket']);
+            unset($this->clients[$id]);
+        }
     }
 
-    public function ticker(Closure $param): void
+    public function afterRun(Closure $callback): void
     {
-        $this->tickerCallback = $param;
+        $this->afterCallback = $callback;
     }
 
-    public function router(Closure $param)
+    public function ticker(Closure $callback): void
     {
-        $this->routerCallback = $param;
+        $this->tickerCallback = $callback;
+    }
+
+    public function router(Closure $callback): void
+    {
+        $this->routerCallback = $callback;
     }
 
     public function stop(): void

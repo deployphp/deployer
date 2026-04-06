@@ -973,6 +973,35 @@ function timestamp(): string
 }
 
 /**
+ * Quotes a string for safe use as a shell argument using ANSI-C $'...' syntax.
+ * Safe characters (alphanumeric, `/.-+@:=,%`) are returned unquoted.
+ *
+ * ```php
+ * run('git log --format=' . quote($format));
+ * run('echo ' . quote("it's a test"));  // echo $'it\'s a test'
+ * ```
+ */
+function quote(string $arg): string
+{
+    if ($arg === '') {
+        return "\$''";
+    }
+    if (preg_match('/^[\w\/.\-+@:=,%]+$/', $arg)) {
+        return $arg;
+    }
+    return "\$'" . strtr($arg, [
+            '\\' => '\\\\',
+            "'" => "\\'",
+            "\f" => '\\f',
+            "\n" => '\\n',
+            "\r" => '\\r',
+            "\t" => '\\t',
+            "\v" => '\\v',
+            "\0" => '\\0',
+        ]) . "'";
+}
+
+/**
  * Example usage:
  * ```php
  * $result = fetch('{{domain}}', info: $info);

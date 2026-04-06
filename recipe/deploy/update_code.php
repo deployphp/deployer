@@ -82,13 +82,13 @@ task('deploy:update_code', function () {
 
     if ($strategy === 'local_archive') {
         $gitRoot = runLocally("$git rev-parse --show-toplevel");
-        runLocally("$git -C " . escapeshellarg($gitRoot) . " archive $targetWithDir -o archive.tar");
+        runLocally("$git -C " . quote($gitRoot) . " archive $targetWithDir -o archive.tar");
         upload("$gitRoot/archive.tar", '{{release_path}}/archive.tar');
         run("tar -xf {{release_path}}/archive.tar -C {{release_path}}");
         run("rm {{release_path}}/archive.tar");
         unlink("$gitRoot/archive.tar");
 
-        $rev = escapeshellarg(runLocally("git rev-list $target -1"));
+        $rev = quote(runLocally("git rev-list $target -1"));
     } else {
         $repository = get('repository');
 
@@ -130,7 +130,7 @@ task('deploy:update_code', function () {
             throw new ConfigurationException(parse("Unknown `update_code_strategy` option: {{update_code_strategy}}."));
         }
 
-        $rev = escapeshellarg(run("$git rev-list $target -1"));
+        $rev = quote(run("$git rev-list $target -1"));
     }
 
     // Save git revision in REVISION file.

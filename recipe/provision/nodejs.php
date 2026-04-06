@@ -2,7 +2,6 @@
 
 namespace Deployer;
 
-use function Deployer\Support\escape_shell_argument;
 
 set('node_version', '--lts');
 
@@ -33,6 +32,6 @@ task('provision:node', function () {
     run('chmod +x /usr/local/bin/fnm');
 
     run('fnm install {{node_version}}');
-    run("echo " . escape_shell_argument('eval "`fnm env`"') . " >> /etc/profile.d/fnm.sh");
+    run("echo " . quote('eval "`fnm env`"') . " >> /etc/profile.d/fnm.sh");
 })
     ->oncePerNode();

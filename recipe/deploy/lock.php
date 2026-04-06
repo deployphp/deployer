@@ -6,7 +6,7 @@ use Deployer\Exception\GracefulShutdownException;
 
 desc('Locks deploy');
 task('deploy:lock', function () {
-    $user = escapeshellarg(get('user'));
+    $user = quote(get('user'));
     $locked = run("[ -f {{deploy_path}}/.dep/deploy.lock ] && echo +locked || echo $user > {{deploy_path}}/.dep/deploy.lock");
     if ($locked === '+locked') {
         $lockedUser = run("cat {{deploy_path}}/.dep/deploy.lock");

@@ -444,7 +444,7 @@ function run(
             $run("chmod a+x $askpass");
             $command = preg_replace('/^sudo\b/', 'sudo -A', $command);
             $output = $run(" SUDO_ASKPASS=$askpass PASSWORD=%sudo_pass% $command", $runParams->with(
-                secrets: ['sudo_pass' => escapeshellarg($password)],
+                secrets: ['sudo_pass' => quote($password)],
             ));
             $run("rm $askpass");
             return $output;
@@ -923,14 +923,14 @@ function commandSupportsOption(string $command, string $option): bool
  */
 function which(string $name): string
 {
-    $nameEscaped = escapeshellarg($name);
+    $nameQuoted = quote($name);
 
     // Try `command`, should cover all Bourne-like shells
     // Try `which`, should cover most other cases
     // Fallback to `type` command, if the rest fails
-    $path = run("command -v $nameEscaped || which $nameEscaped || type -p $nameEscaped");
+    $path = run("command -v $nameQuoted || which $nameQuoted || type -p $nameQuoted");
     if (empty($path)) {
-        throw new \RuntimeException("Can't locate [$nameEscaped] - neither of [command|which|type] commands are available");
+        throw new \RuntimeException("Can't locate [$nameQuoted] - neither of [command|which|type] commands are available");
     }
 
     // Deal with issue when `type -p` outputs something like `type -ap` in some implementations

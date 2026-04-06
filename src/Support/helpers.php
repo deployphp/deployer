@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Deployer\Support;
 
+use function Deployer\quote;
+
 function array_flatten(array $array): array
 {
     $flatten = [];
@@ -58,7 +60,7 @@ function env_stringify(array $array): string
 {
     return implode(' ', array_map(
         function ($key, $value) {
-            return sprintf("%s=%s", $key, escapeshellarg((string) $value));
+            return sprintf("%s=%s", $key, quote((string) $value));
         },
         array_keys($array),
         $array,

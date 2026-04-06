@@ -18,6 +18,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\Process;
 
+use function Deployer\quote;
 use function Deployer\writeln;
 
 class Rsync
@@ -76,7 +77,7 @@ class Rsync
 
         $commandString = $command[0];
         for ($i = 1; $i < count($command); $i++) {
-            $commandString .= ' ' . escapeshellarg($command[$i]);
+            $commandString .= ' ' . quote($command[$i]);
         }
         if ($this->output->isVerbose()) {
             $this->output->writeln("[$host] $commandString");

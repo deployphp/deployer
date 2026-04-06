@@ -141,10 +141,10 @@ set('rsync_excludes', function () {
     $excludeFile = $config['exclude-file'];
     $excludesRsync = '';
     foreach ($excludes as $exclude) {
-        $excludesRsync .= ' --exclude=' . escapeshellarg($exclude);
+        $excludesRsync .= ' --exclude=' . quote($exclude);
     }
     if (!empty($excludeFile) && file_exists($excludeFile) && is_file($excludeFile) && is_readable($excludeFile)) {
-        $excludesRsync .= ' --exclude-from=' . escapeshellarg($excludeFile);
+        $excludesRsync .= ' --exclude-from=' . quote($excludeFile);
     }
 
     return $excludesRsync;
@@ -156,10 +156,10 @@ set('rsync_includes', function () {
     $includeFile = $config['include-file'];
     $includesRsync = '';
     foreach ($includes as $include) {
-        $includesRsync .= ' --include=' . escapeshellarg($include);
+        $includesRsync .= ' --include=' . quote($include);
     }
     if (!empty($includeFile) && file_exists($includeFile) && is_file($includeFile) && is_readable($includeFile)) {
-        $includesRsync .= ' --include-from=' . escapeshellarg($includeFile);
+        $includesRsync .= ' --include-from=' . quote($includeFile);
     }
 
     return $includesRsync;

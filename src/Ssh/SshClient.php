@@ -46,7 +46,7 @@ class SshClient
         if ($this->output->isDebug()) {
             $sshString = $ssh[0];
             for ($i = 1; $i < count($ssh); $i++) {
-                $sshString .= ' ' . escapeshellarg((string) $ssh[$i]);
+                $sshString .= ' ' . \Deployer\quote((string) $ssh[$i]);
             }
             $this->output->writeln("[$host] $sshString");
         }

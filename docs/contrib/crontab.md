@@ -29,8 +29,21 @@ add('crontab:jobs', [
 
 ## Configuration
 ### bin/crontab
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L30)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L28)
 
+Recipe for adding crontab jobs.
+This recipe creates a new section in the crontab file with the configured jobs.
+The section is identified by the *crontab:identifier* variable, by default the application name.
+## Configuration
+- *crontab:jobs* - An array of strings with crontab lines.
+## Usage
+```php
+require 'contrib/crontab.php';
+after('deploy:success', 'crontab:sync');
+add('crontab:jobs', [
+    '* * * * * cd {{current_path}} && {{bin/php}} artisan schedule:run >> /dev/null 2>&1',
+]);
+```
 Get path to bin
 
 ```php title="Default value"
@@ -39,7 +52,7 @@ return which('crontab');
 
 
 ### crontab:identifier
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L35)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L33)
 
 Set the identifier used in the crontab, application name by default
 
@@ -49,7 +62,7 @@ return get('application', 'application');
 
 
 ### crontab:use_sudo
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L40)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L38)
 
 Use sudo to run crontab. When running crontab with sudo, you can use the `-u` parameter to change a crontab for a different user.
 
@@ -62,7 +75,7 @@ false
 ## Tasks
 
 ### crontab\:sync {#crontab-sync}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L43)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L41)
 
 Sync crontab jobs.
 
@@ -70,7 +83,7 @@ Sync crontab jobs.
 
 
 ### crontab\:remove {#crontab-remove}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L87)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/crontab.php#L85)
 
 Remove crontab jobs.
 

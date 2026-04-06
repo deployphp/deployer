@@ -600,6 +600,21 @@ timestamp(): string
 Returns current timestamp in UTC timezone in ISO8601 format.
 
 
+## quote()
+
+```php
+quote(string $arg): string
+```
+
+Quotes a string for safe use as a shell argument using ANSI-C $'...' syntax.
+Safe characters (alphanumeric, `/.-+@:=,%`) are returned unquoted.
+
+```php
+run('git log --format=' . quote($format));
+run('echo ' . quote("it's a test"));  // echo $'it\'s a test'
+```
+
+
 ## fetch()
 
 ```php

@@ -2,7 +2,6 @@
 
 namespace Deployer;
 
-
 set('node_version', '--lts');
 
 desc('Installs npm packages');

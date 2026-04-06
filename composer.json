@@ -33,6 +33,7 @@
         "test": "phpunit",
         "check": "php-cs-fixer check",
         "fix": "php-cs-fixer fix",
+        "docgen": "php bin/docgen",
         "phpstan": "phpstan analyse -c phpstan.neon --memory-limit 1G",
         "phpstan:baseline": "@phpstan --generate-baseline tests/phpstan-baseline.neon"
     },

@@ -24,7 +24,6 @@ add('crontab:jobs', [
 
 namespace Deployer;
 
-
 // Get path to bin
 set('bin/crontab', function () {
     return which('crontab');

@@ -5,7 +5,6 @@ namespace Deployer;
 use Deployer\Exception\Exception;
 use Symfony\Component\Console\Helper\Table;
 
-
 // The name of the release.
 set('release_name', function () {
     return within('{{deploy_path}}', function () {

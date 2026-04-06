@@ -10,6 +10,8 @@ namespace Deployer;
 
 use Deployer\Documentation\ApiGen;
 use Deployer\Documentation\DocGen;
+use Deployer\Import\MamlRecipe;
+use Maml\Maml;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -47,11 +49,23 @@ $recipes = function () use ($input, $output): int {
     return 0;
 };
 
+$schema = function () use ($output): int {
+    $newSchema = [
+        '$id' => "https://deployer.org/schema.json#",
+        ...Maml::jsonSchema(MamlRecipe::schema()),
+    ];
+    file_put_contents(__DIR__ . '/../src/schema.json', json_encode($newSchema, JSON_PRETTY_PRINT));
+    $output->writeln('Schema updated.');
+    return 0;
+};
+
 $app->register('api')->setCode($api);
 $app->register('recipes')->setCode($recipes)->addOption('json');
-$app->register('all')->setCode(function () use ($recipes, $api): int {
+$app->register('schema')->setCode($schema);
+$app->register('all')->setCode(function () use ($schema, $recipes, $api): int {
     $api();
     $recipes();
+    $schema();
     echo shell_exec('git status');
     return 0;
 })->addOption('json');

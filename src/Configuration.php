@@ -115,8 +115,15 @@ class Configuration implements \ArrayAccess
     {
         if (is_string($value)) {
             $normalizedValue = normalize_line_endings($value);
-            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*\}\}/', function (array $matches) {
-                return $this->get($matches[1]);
+            return preg_replace_callback('/\{\{\s*([\w\.\/-]+)\s*(?:\|\s*(\w+)\s*)?\}\}/', function (array $matches) {
+                $value = $this->get($matches[1]);
+                if (isset($matches[2])) {
+                    $value = match ($matches[2]) {
+                        'quote' => quote((string) $value),
+                        default => throw new \InvalidArgumentException("Unknown filter: {$matches[2]}"),
+                    };
+                }
+                return $value;
             }, $normalizedValue);
         }
 

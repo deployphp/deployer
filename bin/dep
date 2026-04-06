@@ -46,6 +46,9 @@ if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.php');
 }
 if (empty($deployFile)) {
+    $deployFile = $lookUp('deploy.maml');
+}
+if (empty($deployFile)) {
     $deployFile = $lookUp('deploy.yaml');
 }
 if (empty($deployFile)) {

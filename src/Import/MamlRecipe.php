@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Deployer\Import;
 
-use Deployer\Exception\ConfigurationException;
 use Deployer\Exception\Exception;
 use Deployer\Exception\SchemaException;
 use Maml\Ast\ArrayNode;
@@ -48,7 +47,7 @@ class MamlRecipe
         $this->content = file_get_contents($path, true);
     }
 
-    private function schema(): SchemaType
+    public static function schema(): SchemaType
     {
         $cd = S::object([
             'cd' => S::string(),
@@ -158,7 +157,7 @@ class MamlRecipe
     {
         $recipe = Maml::parseAst($this->content);
 
-        $validationErrors = Maml::validate($recipe, $this->schema());
+        $validationErrors = Maml::validate($recipe, self::schema());
 
         $exception = null;
         foreach ($validationErrors as $error) {

@@ -258,6 +258,12 @@ $path = run('readlink {{deploy_path}}/current');
 run("echo $path");
 ```
 
+Use `| quote` filter to safely quote config values as shell arguments:
+```php
+run('echo {{ message | quote }}');
+run('grep -r {{ pattern | quote }} {{release_path}}');
+```
+
 
 
 | Argument | Type | Comment |

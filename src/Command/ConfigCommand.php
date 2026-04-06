@@ -13,6 +13,7 @@ namespace Deployer\Command;
 use Deployer\Deployer;
 use Deployer\Exception\WillAskUser;
 use Deployer\Task\Context;
+use Maml\Maml;
 use Symfony\Component\Console\Input\InputInterface as Input;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\NullOutput;
@@ -30,7 +31,7 @@ class ConfigCommand extends SelectCommand
     protected function configure(): void
     {
         parent::configure();
-        $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (json, yaml)', 'yaml');
+        $this->addOption('format', null, InputOption::VALUE_REQUIRED, 'The output format (json, maml, yaml)', 'maml');
         $this->getDefinition()->getArgument('selector')->setDefault(['all']);
     }
 
@@ -41,7 +42,9 @@ class ConfigCommand extends SelectCommand
         $hosts = $this->selectHosts($input, $output);
         $data = [];
         $keys = $this->deployer->config->keys();
-        define('DEPLOYER_NO_ASK', true);
+        if (!defined('DEPLOYER_NO_ASK')) {
+            define('DEPLOYER_NO_ASK', true);
+        }
         foreach ($hosts as $host) {
             Context::push(new Context($host));
             $values = [];
@@ -65,6 +68,10 @@ class ConfigCommand extends SelectCommand
         switch ($format) {
             case 'json':
                 $output->writeln(json_encode($data, JSON_PRETTY_PRINT));
+                break;
+
+            case 'maml':
+                $output->writeln(Maml::stringify($data));
                 break;
 
             case 'yaml':

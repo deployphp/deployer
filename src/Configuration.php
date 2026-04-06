@@ -183,6 +183,7 @@ class Configuration implements \ArrayAccess
         $values = Httpie::get(MASTER_ENDPOINT . '/load')
             ->setopt(CURLOPT_CONNECTTIMEOUT, 0)
             ->setopt(CURLOPT_TIMEOUT, 0)
+            ->header('Authorization', 'Bearer ' . MASTER_TOKEN)
             ->jsonBody([
                 'host' => $this->get('alias'),
             ])
@@ -199,6 +200,7 @@ class Configuration implements \ArrayAccess
         Httpie::get(MASTER_ENDPOINT . '/save')
             ->setopt(CURLOPT_CONNECTTIMEOUT, 0)
             ->setopt(CURLOPT_TIMEOUT, 0)
+            ->header('Authorization', 'Bearer ' . MASTER_TOKEN)
             ->jsonBody([
                 'host' => $this->get('alias'),
                 'config' => $this->persist(),

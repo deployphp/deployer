@@ -38,6 +38,8 @@ class Server
     private Closure $tickerCallback;
     private Closure $routerCallback;
 
+    private ?string $authToken = null;
+
     /**
      * Timeout in seconds for idle client connections.
      */
@@ -45,6 +47,7 @@ class Server
 
     private const REASON_PHRASES = [
         200 => 'OK',
+        403 => 'Forbidden',
         404 => 'Not Found',
         500 => 'Internal Server Error',
     ];
@@ -167,7 +170,16 @@ class Server
 
             // Process the complete request.
             try {
-                [$path, $payload] = self::parseRequest($buffer);
+                [$path, $payload, $headers] = self::parseRequest($buffer);
+
+                if ($this->authToken !== null) {
+                    $provided = $headers['authorization'] ?? '';
+                    if ($provided !== "Bearer {$this->authToken}") {
+                        $this->sendResponse($socket, new Response(403, ['error' => 'Forbidden']));
+                        continue;
+                    }
+                }
+
                 $response = ($this->routerCallback)($path, $payload);
                 $this->sendResponse($socket, $response);
             } catch (\Throwable $e) {
@@ -208,9 +220,9 @@ class Server
     }
 
     /**
-     * Parse a complete HTTP request into path and JSON payload.
+     * Parse a complete HTTP request into path, payload, and headers.
      *
-     * @return array{0: string, 1: mixed}
+     * @return array{0: string, 1: mixed, 2: array<string, string>}
      */
     public static function parseRequest(string $request): array
     {
@@ -249,7 +261,7 @@ class Server
         }
 
         $payload = json_decode($body, true, flags: JSON_THROW_ON_ERROR);
-        return [$path, $payload];
+        return [$path, $payload, $headers];
     }
 
     /**
@@ -308,6 +320,11 @@ class Server
     public function router(Closure $callback): void
     {
         $this->routerCallback = $callback;
+    }
+
+    public function setAuthToken(string $token): void
+    {
+        $this->authToken = $token;
     }
 
     public function stop(): void

@@ -44,6 +44,7 @@ class WorkerCommand extends MainCommand
         }
 
         define('MASTER_ENDPOINT', 'http://localhost:' . $input->getOption('port'));
+        define('MASTER_TOKEN', getenv('DEPLOYER_MASTER_TOKEN') ?: '');
 
         $task = $this->deployer->tasks->get($input->getOption('task'));
         $host = $this->deployer->hosts->get($input->getOption('host'));

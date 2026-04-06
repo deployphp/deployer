@@ -165,13 +165,15 @@ class Master
         }
 
         $server = new Server('127.0.0.1', 0, $this->output);
+        $authToken = bin2hex(random_bytes(16));
+        $server->setAuthToken($authToken);
 
         /** @var Process[] $processes */
         $processes = [];
 
-        $server->afterRun(function (int $port) use (&$processes, $hosts, $task) {
+        $server->afterRun(function (int $port) use (&$processes, $hosts, $task, $authToken) {
             foreach ($hosts as $host) {
-                $processes[] = $this->createProcess($host, $task, $port);
+                $processes[] = $this->createProcess($host, $task, $port, $authToken);
             }
 
             foreach ($processes as $process) {
@@ -242,7 +244,7 @@ class Master
         return $this->cumulativeExitCode($processes);
     }
 
-    protected function createProcess(Host $host, Task $task, int $port): Process
+    protected function createProcess(Host $host, Task $task, int $port, string $authToken): Process
     {
         $command = [
             $this->phpBin, DEPLOYER_BIN,
@@ -257,7 +259,9 @@ class Master
         if ($this->output->isDebug()) {
             $this->output->writeln("[$host] " . join(' ', $command));
         }
-        return new Process($command);
+        $process = new Process($command);
+        $process->setEnv(['DEPLOYER_MASTER_TOKEN' => $authToken]);
+        return $process;
     }
 
     /**

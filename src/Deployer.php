@@ -317,6 +317,7 @@ class Deployer extends Container
         return Httpie::get(MASTER_ENDPOINT . '/proxy')
             ->setopt(CURLOPT_CONNECTTIMEOUT, 0) // no timeout
             ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
+            ->header('Authorization', 'Bearer ' . MASTER_TOKEN)
             ->jsonBody([
                 'host' => $host->getAlias(),
                 'func' => $func,

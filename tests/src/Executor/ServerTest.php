@@ -71,10 +71,11 @@ class ServerTest extends TestCase
         $body = '{"host":"web","config":{}}';
         $request = "POST /save HTTP/1.1\r\nContent-Type: application/json\r\nContent-Length: " . strlen($body) . "\r\n\r\n" . $body;
 
-        [$path, $payload] = Server::parseRequest($request);
+        [$path, $payload, $headers] = Server::parseRequest($request);
 
         self::assertSame('/save', $path);
         self::assertSame(['host' => 'web', 'config' => []], $payload);
+        self::assertSame('application/json', $headers['content-type']);
     }
 
     #[Group('unit')]
@@ -83,7 +84,7 @@ class ServerTest extends TestCase
         $body = '{"a":1}';
         $request = "POST /save HTTP/1.1\r\nContent-Type: application/json\r\nContent-Length: " . strlen($body) . "\r\n\r\n" . $body . "garbage";
 
-        [$path, $payload] = Server::parseRequest($request);
+        [$path, $payload, $headers] = Server::parseRequest($request);
 
         self::assertSame('/save', $path);
         self::assertSame(['a' => 1], $payload);
@@ -95,7 +96,7 @@ class ServerTest extends TestCase
         $body = '{"ok":true}';
         $request = "POST /load HTTP/1.1\r\ncontent-type: application/json\r\ncontent-length: " . strlen($body) . "\r\n\r\n" . $body;
 
-        [$path, $payload] = Server::parseRequest($request);
+        [$path, $payload, $headers] = Server::parseRequest($request);
 
         self::assertSame('/load', $path);
         self::assertSame(['ok' => true], $payload);
@@ -117,6 +118,18 @@ class ServerTest extends TestCase
         $this->expectExceptionMessage('no header terminator');
 
         Server::parseRequest("POST /save HTTP/1.1\r\nContent-Type: application/json");
+    }
+
+    #[Group('unit')]
+    public function testParseRequestReturnsAuthorizationHeader(): void
+    {
+        $body = '{"a":1}';
+        $request = "POST /load HTTP/1.1\r\nContent-Type: application/json\r\nAuthorization: Bearer secret123\r\nContent-Length: " . strlen($body) . "\r\n\r\n" . $body;
+
+        [$path, $payload, $headers] = Server::parseRequest($request);
+
+        self::assertSame('/load', $path);
+        self::assertSame('Bearer secret123', $headers['authorization']);
     }
 
     #[Group('unit')]
@@ -165,14 +178,16 @@ class ServerTest extends TestCase
 
     // ─── Integration: real server lifecycle ──────────────────────
 
-    private static function buildHttpRequest(string $method, string $path, array $payload): string
+    private static function buildHttpRequest(string $method, string $path, array $payload, ?string $token = null): string
     {
         $body = json_encode($payload);
-        return "$method $path HTTP/1.1\r\n"
+        $headers = "$method $path HTTP/1.1\r\n"
             . "Content-Type: application/json\r\n"
-            . "Content-Length: " . strlen($body) . "\r\n"
-            . "\r\n"
-            . $body;
+            . "Content-Length: " . strlen($body) . "\r\n";
+        if ($token !== null) {
+            $headers .= "Authorization: Bearer $token\r\n";
+        }
+        return $headers . "\r\n" . $body;
     }
 
     #[Group('integration')]
@@ -323,5 +338,150 @@ class ServerTest extends TestCase
         $server->run();
 
         self::assertSame(2, $requestCount);
+    }
+
+    #[Group('integration')]
+    public function testServerRejectsRequestWithoutToken(): void
+    {
+        $output = new BufferedOutput();
+        $server = new Server('127.0.0.1', 0, $output);
+        $server->setAuthToken('secret-token');
+
+        $routerCalled = false;
+        $server->router(function (string $path, array $payload) use (&$routerCalled) {
+            $routerCalled = true;
+            return new Response(200, ['ok' => true]);
+        });
+
+        $clientSocket = null;
+        $responseData = '';
+
+        $server->afterRun(function (int $port) use (&$clientSocket) {
+            $clientSocket = stream_socket_client("tcp://127.0.0.1:$port", $errno, $errstr, 5);
+            stream_set_blocking($clientSocket, false);
+            // Send request without Authorization header.
+            fwrite($clientSocket, self::buildHttpRequest('POST', '/load', ['host' => 'web']));
+        });
+
+        $tickCount = 0;
+        $server->ticker(function () use ($server, &$tickCount, &$clientSocket, &$responseData) {
+            $tickCount++;
+            if ($clientSocket) {
+                $chunk = @fread($clientSocket, 65536);
+                if ($chunk !== false && $chunk !== '') {
+                    $responseData .= $chunk;
+                }
+                if ($responseData !== '' && feof($clientSocket)) {
+                    fclose($clientSocket);
+                    $clientSocket = null;
+                    $server->stop();
+                    return;
+                }
+            }
+            if ($tickCount >= 30) {
+                $server->stop();
+            }
+        });
+
+        $server->run();
+
+        self::assertFalse($routerCalled, 'Router should not be called for unauthorized request');
+        self::assertStringContainsString('403 Forbidden', $responseData);
+    }
+
+    #[Group('integration')]
+    public function testServerRejectsRequestWithWrongToken(): void
+    {
+        $output = new BufferedOutput();
+        $server = new Server('127.0.0.1', 0, $output);
+        $server->setAuthToken('correct-token');
+
+        $routerCalled = false;
+        $server->router(function (string $path, array $payload) use (&$routerCalled) {
+            $routerCalled = true;
+            return new Response(200, ['ok' => true]);
+        });
+
+        $clientSocket = null;
+        $responseData = '';
+
+        $server->afterRun(function (int $port) use (&$clientSocket) {
+            $clientSocket = stream_socket_client("tcp://127.0.0.1:$port", $errno, $errstr, 5);
+            stream_set_blocking($clientSocket, false);
+            fwrite($clientSocket, self::buildHttpRequest('POST', '/load', ['host' => 'web'], 'wrong-token'));
+        });
+
+        $tickCount = 0;
+        $server->ticker(function () use ($server, &$tickCount, &$clientSocket, &$responseData) {
+            $tickCount++;
+            if ($clientSocket) {
+                $chunk = @fread($clientSocket, 65536);
+                if ($chunk !== false && $chunk !== '') {
+                    $responseData .= $chunk;
+                }
+                if ($responseData !== '' && feof($clientSocket)) {
+                    fclose($clientSocket);
+                    $clientSocket = null;
+                    $server->stop();
+                    return;
+                }
+            }
+            if ($tickCount >= 30) {
+                $server->stop();
+            }
+        });
+
+        $server->run();
+
+        self::assertFalse($routerCalled, 'Router should not be called for wrong token');
+        self::assertStringContainsString('403 Forbidden', $responseData);
+    }
+
+    #[Group('integration')]
+    public function testServerAcceptsRequestWithCorrectToken(): void
+    {
+        $output = new BufferedOutput();
+        $server = new Server('127.0.0.1', 0, $output);
+        $server->setAuthToken('correct-token');
+
+        $routerCalled = false;
+        $server->router(function (string $path, array $payload) use (&$routerCalled) {
+            $routerCalled = true;
+            return new Response(200, ['ok' => true]);
+        });
+
+        $clientSocket = null;
+        $responseData = '';
+
+        $server->afterRun(function (int $port) use (&$clientSocket) {
+            $clientSocket = stream_socket_client("tcp://127.0.0.1:$port", $errno, $errstr, 5);
+            stream_set_blocking($clientSocket, false);
+            fwrite($clientSocket, self::buildHttpRequest('POST', '/load', ['host' => 'web'], 'correct-token'));
+        });
+
+        $tickCount = 0;
+        $server->ticker(function () use ($server, &$tickCount, &$clientSocket, &$responseData) {
+            $tickCount++;
+            if ($clientSocket) {
+                $chunk = @fread($clientSocket, 65536);
+                if ($chunk !== false && $chunk !== '') {
+                    $responseData .= $chunk;
+                }
+                if ($responseData !== '' && feof($clientSocket)) {
+                    fclose($clientSocket);
+                    $clientSocket = null;
+                    $server->stop();
+                    return;
+                }
+            }
+            if ($tickCount >= 30) {
+                $server->stop();
+            }
+        });
+
+        $server->run();
+
+        self::assertTrue($routerCalled, 'Router should be called for authorized request');
+        self::assertStringContainsString('200 OK', $responseData);
     }
 }

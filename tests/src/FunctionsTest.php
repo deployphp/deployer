@@ -33,11 +33,12 @@ class FunctionsTest extends TestCase
 
         $input = $this->createStub(Input::class);
         $output = $this->createStub(Output::class);
-        $host = new Localhost();
 
         $this->deployer = new Deployer($console);
         $this->deployer['input'] = $input;
         $this->deployer['output'] = $output;
+
+        $host = new Localhost();
         Context::push(new Context($host));
     }
 

@@ -314,7 +314,7 @@ class Deployer extends Container
         // in order for ticker gather worker outputs and print it to user.
         usleep(100_000); // Sleep 100ms.
 
-        return Httpie::get(MASTER_ENDPOINT . '/proxy')
+        return Httpie::post(MASTER_ENDPOINT . '/proxy')
             ->setopt(CURLOPT_CONNECTTIMEOUT, 0) // no timeout
             ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
             ->header('Authorization', 'Bearer ' . MASTER_TOKEN)

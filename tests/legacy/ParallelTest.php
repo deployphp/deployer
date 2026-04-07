@@ -7,9 +7,10 @@
 
 namespace Deployer;
 
+use joy\JoyTest;
 use Symfony\Component\Console\Output\Output;
 
-class ParallelTest extends AbstractTest
+class ParallelTest extends JoyTest
 {
     public const RECIPE = __DIR__ . '/recipe/parallel.php';
 

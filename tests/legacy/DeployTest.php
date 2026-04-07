@@ -7,16 +7,17 @@
 
 namespace Deployer;
 
+use joy\JoyTest;
 use PHPUnit\Framework\Attributes\Depends;
 use Symfony\Component\Console\Output\Output;
 
-class DeployTest extends AbstractTest
+class DeployTest extends JoyTest
 {
     public const RECIPE = __DIR__ . '/recipe/deploy.php';
 
     public function testDeploy()
     {
-        $display = $this->dep(self::RECIPE, 'deploy');
+        $this->depFile(self::RECIPE, 'deploy');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);
@@ -56,17 +57,17 @@ class DeployTest extends AbstractTest
     public function testKeepReleases()
     {
         for ($i = 0; $i < 3; $i++) {
-            $this->dep(self::RECIPE, 'deploy');
+            $this->depFile(self::RECIPE, 'deploy');
             self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
         }
 
         for ($i = 0; $i < 6; $i++) {
-            $this->dep(self::RECIPE, 'deploy:fail');
+            $this->depFile(self::RECIPE, 'deploy:fail');
             self::assertEquals(1, $this->tester->getStatusCode(), $this->tester->getDisplay());
         }
 
         for ($i = 0; $i < 3; $i++) {
-            $this->dep(self::RECIPE, 'deploy');
+            $this->depFile(self::RECIPE, 'deploy');
             self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
         }
 
@@ -80,7 +81,7 @@ class DeployTest extends AbstractTest
     #[Depends('testKeepReleases')]
     public function testRollback()
     {
-        $this->dep(self::RECIPE, 'rollback');
+        $this->depFile(self::RECIPE, 'rollback');
 
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
 
@@ -93,7 +94,7 @@ class DeployTest extends AbstractTest
 
     public function testFail()
     {
-        $this->dep(self::RECIPE, 'deploy:fail');
+        $this->depFile(self::RECIPE, 'deploy:fail');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(1, $this->tester->getStatusCode(), $display);
@@ -108,7 +109,7 @@ class DeployTest extends AbstractTest
     #[Depends('testFail')]
     public function testCleanup()
     {
-        $this->dep(self::RECIPE, 'deploy:cleanup');
+        $this->depFile(self::RECIPE, 'deploy:cleanup');
 
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
 
@@ -121,8 +122,8 @@ class DeployTest extends AbstractTest
 
     public function testIsUnlockedExitsWithOneWhenDeployIsLocked()
     {
-        $this->dep(self::RECIPE, 'deploy:lock');
-        $this->dep(self::RECIPE, 'deploy:is_locked');
+        $this->depFile(self::RECIPE, 'deploy:lock');
+        $this->depFile(self::RECIPE, 'deploy:is_locked');
         $display = $this->tester->getDisplay();
 
         self::assertStringContainsString('Deploy is locked by ', $display);
@@ -131,8 +132,8 @@ class DeployTest extends AbstractTest
 
     public function testIsUnlockedExitsWithZeroWhenDeployIsNotLocked()
     {
-        $this->dep(self::RECIPE, 'deploy:unlock');
-        $this->dep(self::RECIPE, 'deploy:is_locked');
+        $this->depFile(self::RECIPE, 'deploy:unlock');
+        $this->depFile(self::RECIPE, 'deploy:is_locked');
         $display = $this->tester->getDisplay();
 
         self::assertStringContainsString('Deploy is unlocked.', $display);

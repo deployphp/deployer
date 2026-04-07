@@ -219,6 +219,16 @@ class Master
                 case '/proxy':
                     ['host' => $host, 'func' => $func, 'arguments' => $arguments] = $payload;
 
+                    $allowedFunctions = [
+                        'Deployer\ask',
+                        'Deployer\askChoice',
+                        'Deployer\askConfirmation',
+                        'Deployer\askHiddenResponse',
+                    ];
+                    if (!in_array($func, $allowedFunctions, true)) {
+                        return new Response(403, ['error' => "Function not allowed: $func"]);
+                    }
+
                     Context::push(new Context($this->hosts->get($host)));
                     $answer = call_user_func($func, ...$arguments);
                     Context::pop();

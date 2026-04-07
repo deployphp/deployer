@@ -73,5 +73,22 @@ abstract class JoyTest extends TestCase
         ]);
     }
 
-    abstract protected function recipe(): string;
+    protected function depFile(string $recipe, string $task, array $args = []): int
+    {
+        $this->init($recipe);
+        return $this->tester->run(array_merge([
+            $task,
+            'selector' => 'all',
+            '--file' => $recipe,
+            '--limit' => 1,
+        ], $args), [
+            'verbosity' => OutputInterface::VERBOSITY_VERBOSE,
+            'interactive' => false,
+        ]);
+    }
+
+    protected function recipe(): string
+    {
+        return '';
+    }
 }

@@ -51,3 +51,7 @@ jobs:
 
       - name: Run test suite
         run: composer test
+
+      - name: Run tests with coverage
+        if: matrix.php-versions == '8.3'
+        run: vendor/bin/phpunit --coverage-text --coverage-clover=build/clover.xml

@@ -7,13 +7,15 @@
 
 namespace Deployer;
 
-class EnvTest extends AbstractTest
+use joy\JoyTest;
+
+class EnvTest extends JoyTest
 {
     public const RECIPE = __DIR__ . '/recipe/env.php';
 
     public function testOnce()
     {
-        $this->dep(self::RECIPE, 'test');
+        $this->depFile(self::RECIPE, 'test');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);

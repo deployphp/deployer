@@ -7,9 +7,10 @@
 
 namespace Deployer;
 
+use joy\JoyTest;
 use Symfony\Component\Console\Output\Output;
 
-class SelectTest extends AbstractTest
+class SelectTest extends JoyTest
 {
     public const RECIPE = __DIR__ . '/recipe/select.php';
 

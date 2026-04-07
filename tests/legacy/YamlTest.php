@@ -7,9 +7,10 @@
 
 namespace Deployer;
 
+use joy\JoyTest;
 use Symfony\Component\Console\Output\Output;
 
-class YamlTest extends AbstractTest
+class YamlTest extends JoyTest
 {
     public const RECIPE = __DIR__ . '/recipe/deploy.yaml';
 

@@ -12,6 +12,8 @@ namespace Deployer\Exception;
 
 class WillAskUser extends Exception
 {
+    public static bool $noAsk = false;
+
     public function __construct(string $message)
     {
         parent::__construct($message);

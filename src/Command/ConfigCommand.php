@@ -42,9 +42,7 @@ class ConfigCommand extends SelectCommand
         $hosts = $this->selectHosts($input, $output);
         $data = [];
         $keys = $this->deployer->config->keys();
-        if (!defined('DEPLOYER_NO_ASK')) {
-            define('DEPLOYER_NO_ASK', true);
-        }
+        WillAskUser::$noAsk = true;
         foreach ($hosts as $host) {
             Context::push(new Context($host));
             $values = [];

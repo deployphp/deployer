@@ -763,7 +763,7 @@ function has(string $name): bool
 
 function ask(string $message, ?string $default = null, ?array $autocomplete = null): ?string
 {
-    if (defined('DEPLOYER_NO_ASK')) {
+        if (WillAskUser::$noAsk) {
         throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
@@ -798,7 +798,7 @@ function ask(string $message, ?string $default = null, ?array $autocomplete = nu
  */
 function askChoice(string $message, array $availableChoices, $default = null, bool $multiselect = false)
 {
-    if (defined('DEPLOYER_NO_ASK')) {
+    if (WillAskUser::$noAsk) {
         throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
@@ -837,7 +837,7 @@ function askChoice(string $message, array $availableChoices, $default = null, bo
 
 function askConfirmation(string $message, bool $default = false): bool
 {
-    if (defined('DEPLOYER_NO_ASK')) {
+    if (WillAskUser::$noAsk) {
         throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);
@@ -865,7 +865,7 @@ function askConfirmation(string $message, bool $default = false): bool
 
 function askHiddenResponse(string $message): string
 {
-    if (defined('DEPLOYER_NO_ASK')) {
+    if (WillAskUser::$noAsk) {
         throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);

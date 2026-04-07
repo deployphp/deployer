@@ -7,13 +7,15 @@
 
 namespace Deployer;
 
-class OncePerNodeTest extends AbstractTest
+use joy\JoyTest;
+
+class OncePerNodeTest extends JoyTest
 {
     public const RECIPE = __DIR__ . '/recipe/once_per_node.php';
 
     public function testOnce()
     {
-        $this->dep(self::RECIPE, 'test_once_per_node');
+        $this->depFile(self::RECIPE, 'test_once_per_node');
 
         $display = $this->tester->getDisplay();
         self::assertEquals(0, $this->tester->getStatusCode(), $display);

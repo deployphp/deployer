@@ -763,7 +763,7 @@ function has(string $name): bool
 
 function ask(string $message, ?string $default = null, ?array $autocomplete = null): ?string
 {
-        if (WillAskUser::$noAsk) {
+    if (WillAskUser::$noAsk) {
         throw new WillAskUser($message);
     }
     Context::required(__FUNCTION__);

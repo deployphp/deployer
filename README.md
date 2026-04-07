@@ -9,7 +9,7 @@
 </h1>
 <p>The PHP deployment tool with support for popular frameworks out of the box.</p>
 
-<p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>
+<p align="center"><br><br><a href="https://deployer.org"><img src="https://medv.io/assets/deployer/deployer-rounded.gif" alt="Deployer Screenshot" width="530"></a><br><br><br></p>
 
 ---
 

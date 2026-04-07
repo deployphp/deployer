@@ -43,24 +43,28 @@ class ConfigCommand extends SelectCommand
         $data = [];
         $keys = $this->deployer->config->keys();
         WillAskUser::$noAsk = true;
-        foreach ($hosts as $host) {
-            Context::push(new Context($host));
-            $values = [];
-            foreach ($keys as $key) {
-                try {
-                    $values[$key] = $host->get($key);
-                } catch (WillAskUser $exception) {
-                    $values[$key] = ['ask' => $exception->getMessage()];
-                } catch (\Throwable $exception) {
-                    $values[$key] = ['error' => $exception->getMessage()];
+        try {
+            foreach ($hosts as $host) {
+                Context::push(new Context($host));
+                $values = [];
+                foreach ($keys as $key) {
+                    try {
+                        $values[$key] = $host->get($key);
+                    } catch (WillAskUser $exception) {
+                        $values[$key] = ['ask' => $exception->getMessage()];
+                    } catch (\Throwable $exception) {
+                        $values[$key] = ['error' => $exception->getMessage()];
+                    }
                 }
+                foreach ($host->config()->persist() as $k => $v) {
+                    $values[$k] = $v;
+                }
+                ksort($values);
+                $data[$host->getAlias()] = $values;
+                Context::pop();
             }
-            foreach ($host->config()->persist() as $k => $v) {
-                $values[$k] = $v;
-            }
-            ksort($values);
-            $data[$host->getAlias()] = $values;
-            Context::pop();
+        } finally {
+            WillAskUser::$noAsk = false;
         }
         $format = $input->getOption('format');
         switch ($format) {

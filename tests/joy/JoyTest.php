@@ -47,6 +47,12 @@ abstract class JoyTest extends TestCase
 
     protected function init(string $recipe)
     {
+        // Clear any leftover Context from other tests to prevent
+        // recipe set() calls from writing to a stale host config.
+        while (\Deployer\Task\Context::has()) {
+            \Deployer\Task\Context::pop();
+        }
+
         $console = new Application();
         $console->setAutoExit(false);
         $this->tester = new ApplicationTester($console);

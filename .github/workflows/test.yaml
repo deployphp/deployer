@@ -50,7 +50,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Run test suite
-        run: composer test
+        run: vendor/bin/phpunit --order-by random
 
       - name: Run tests with coverage
         if: matrix.php-versions == '8.3'

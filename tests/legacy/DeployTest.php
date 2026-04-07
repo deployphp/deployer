@@ -43,6 +43,7 @@ class DeployTest extends JoyTest
         }
     }
 
+    #[Depends('testDeploy')]
     public function testDeploySelectHosts()
     {
         $this->init(self::RECIPE);
@@ -54,6 +55,7 @@ class DeployTest extends JoyTest
         self::assertEquals(0, $this->tester->getStatusCode(), $this->tester->getDisplay());
     }
 
+    #[Depends('testDeploySelectHosts')]
     public function testKeepReleases()
     {
         for ($i = 0; $i < 3; $i++) {
@@ -92,6 +94,7 @@ class DeployTest extends JoyTest
         }
     }
 
+    #[Depends('testRollback')]
     public function testFail()
     {
         $this->depFile(self::RECIPE, 'deploy:fail');
@@ -120,6 +123,7 @@ class DeployTest extends JoyTest
         }
     }
 
+    #[Depends('testCleanup')]
     public function testIsUnlockedExitsWithOneWhenDeployIsLocked()
     {
         $this->depFile(self::RECIPE, 'deploy:lock');
@@ -130,6 +134,7 @@ class DeployTest extends JoyTest
         self::assertSame(1, $this->tester->getStatusCode());
     }
 
+    #[Depends('testIsUnlockedExitsWithOneWhenDeployIsLocked')]
     public function testIsUnlockedExitsWithZeroWhenDeployIsNotLocked()
     {
         $this->depFile(self::RECIPE, 'deploy:unlock');

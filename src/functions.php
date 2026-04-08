@@ -382,6 +382,11 @@ function within(string $path, callable $callback): mixed
  * run('grep -r {{ pattern | quote }} {{release_path}}');
  * ```
  *
+ * To output literal `{{` without replacement, escape with a backslash `\{{`:
+ * ```php
+ * run('echo \{{not_replaced}}'); // outputs: {{not_replaced}}
+ * ```
+ *
  * @param string $command Command to run on remote host.
  * @param string|null $cwd Sets the process working directory. If not set {{working_path}} will be used.
  * @param int|null $timeout Sets the process timeout (max. runtime). The timeout in seconds (default: 300 sec; see {{default_timeout}}, `null` to disable).

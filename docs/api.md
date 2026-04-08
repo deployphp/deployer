@@ -264,6 +264,11 @@ run('echo {{ message | quote }}');
 run('grep -r {{ pattern | quote }} {{release_path}}');
 ```
 
+To output literal `{{` without replacement, escape with a backslash `\{{`:
+```php
+run('echo \{{not_replaced}}'); // outputs: {{not_replaced}}
+```
+
 
 
 | Argument | Type | Comment |

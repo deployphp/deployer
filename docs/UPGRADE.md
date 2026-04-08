@@ -2,10 +2,95 @@
 
 ## Upgrade from 7.x to 8.x
 
-- `run()` and `runLocally()` doesn't accept `options` parameter anymore. Use named arguments instead.
-   - `no_throw` is now `nothrow`.
-   - `real_time_output` is now `forceOutput`.
-   - `idle_timeout` is now `idleTimeout`.
+### Requirements
+
+- PHP 8.3 or later is required.
+- Symfony 7.4+ or 8.0+ components are now required.
+
+### `run()` and `runLocally()` changes
+
+The `$options` array parameter has been removed. Use named arguments instead.
+
+```php
+# Before (v7):
+run('command', ['timeout' => 5, 'no_throw' => true]);
+
+# After (v8):
+run('command', timeout: 5, nothrow: true);
+```
+
+Parameter renames:
+- `no_throw` → `nothrow`
+- `real_time_output` → `forceOutput`
+- `idle_timeout` → `idleTimeout`
+
+The `secret` parameter has been replaced with `secrets` (an associative array of multiple named secrets):
+
+```php
+# Before (v7):
+run('echo %secret%', secret: getenv('MY_SECRET'));
+
+# After (v8):
+run('echo %my_secret%', secrets: ['my_secret' => getenv('MY_SECRET')]);
+```
+
+A new `cwd` parameter allows setting the working directory directly:
+
+```php
+run('ls', cwd: '/var/www');
+```
+
+### `escapeshellarg()` → `quote()`
+
+All uses of PHP's `escapeshellarg()` have been replaced with Deployer's own `quote()` function,
+which uses ANSI-C `$'...'` quoting syntax for better shell compatibility:
+
+```php
+# Before (v7):
+run('echo ' . escapeshellarg($arg));
+
+# After (v8):
+run('echo ' . quote($arg));
+```
+
+You can also use the `quote` filter in config templates:
+
+```php
+run('echo {{ message | quote }}');
+```
+
+### Template escaping
+
+To output literal `{{` in commands without config replacement, escape with a backslash:
+
+```php
+run('echo \{{not_replaced}}'); // outputs: {{not_replaced}}
+```
+
+### `Httpie` changes
+
+- `Httpie::send()` now returns an `HttpResponse` object instead of a string.
+  Use `->send()->body()` to get the response body as a string.
+- `Httpie::getJson()` is deprecated. Use `sendJson()` instead.
+- `Httpie` methods no longer clone the object — they mutate and return `$this`.
+- The `fetch()` function now supports `put`, `patch`, and `delete` methods.
+
+
+### Other breaking changes
+
+- Self-update functionality has been removed.
+
+### New features
+
+- **MAML recipes**: A new `deploy.maml` recipe format is now supported alongside PHP and YAML recipes.
+- **`local_archive` strategy**: A new `update_code_strategy` option that copies code from the local machine instead of fetching from a remote repository.
+- **`composer_version` config**: Install a specific Composer version on the remote host:
+  ```php
+  set('composer_version', '2.7');
+  ```
+- **`Host::setShellPath()`**: Customize the shell path per host.
+- **CI user detection**: Automatic detection of CI usernames from GitLab, GitHub Actions, CircleCI, and Drone CI environments.
+- **ACL improvements**: New `writable_acl_groups` and `writable_acl_force` config options for `deploy:writable`.
 
 ## Upgrade from 6.x to 7.x
 

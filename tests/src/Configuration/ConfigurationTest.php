@@ -159,6 +159,16 @@ class ConfigurationTest extends TestCase
         self::assertEquals(['a', 'b', 'c'], $alpha->get('files'));
     }
 
+    public function testParseEscapedBraces()
+    {
+        $config = new Configuration();
+        $config->set('foo', 'a');
+
+        self::assertEquals('{{foo}}', $config->parse('\{{foo}}'));
+        self::assertEquals('a {{bar}}', $config->parse('{{foo}} \{{bar}}'));
+        self::assertEquals('{{foo}} {{bar}}', $config->parse('\{{foo}} \{{bar}}'));
+    }
+
     public function testParseQuoteFilter()
     {
         $config = new Configuration();

@@ -264,6 +264,11 @@ run('echo {{ message | quote }}');
 run('grep -r {{ pattern | quote }} {{release_path}}');
 ```
 
+To output literal `{{` without replacement, escape with a backslash `\{{`:
+```php
+run('echo \{{not_replaced}}'); // outputs: {{not_replaced}}
+```
+
 
 
 | Argument | Type | Comment |
@@ -459,7 +464,7 @@ Writes a message to the output and adds a newline at the end.
 parse(string $value): string
 ```
 
-Parse set values.
+Parse set values. Use `\{{` to escape brackets and prevent replacement.
 
 
 ## set()

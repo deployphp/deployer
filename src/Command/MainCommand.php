@@ -160,7 +160,7 @@ class MainCommand extends SelectCommand
     private function checkUpdates()
     {
         try {
-            fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send());
+            fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send()->body());
         } catch (\Throwable $e) {
             // Meh
         }
@@ -177,7 +177,7 @@ class MainCommand extends SelectCommand
             if (function_exists('posix_isatty') && posix_isatty(STDOUT)) {
                 $withColors = '_with_colors';
             }
-            fwrite(STDERR, Httpie::get("https://deployer.medv.io/banners/" . $this->getName() . $withColors)->send());
+            fwrite(STDERR, Httpie::get("https://deployer.medv.io/banners/" . $this->getName() . $withColors)->send()->body());
         } catch (\Throwable $e) {
             // Meh
         }

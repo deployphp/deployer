@@ -181,13 +181,12 @@ class Configuration implements \ArrayAccess
         }
 
         $values = Httpie::post(MASTER_ENDPOINT . '/load')
-            ->setopt(CURLOPT_CONNECTTIMEOUT, 0)
-            ->setopt(CURLOPT_TIMEOUT, 0)
-            ->header('Authorization', 'Bearer ' . MASTER_TOKEN)
+            ->noTimeout()
+            ->bearerToken(MASTER_TOKEN)
             ->jsonBody([
                 'host' => $this->get('alias'),
             ])
-            ->getJson();
+            ->sendJson();
         $this->update($values);
     }
 
@@ -198,14 +197,13 @@ class Configuration implements \ArrayAccess
         }
 
         Httpie::post(MASTER_ENDPOINT . '/save')
-            ->setopt(CURLOPT_CONNECTTIMEOUT, 0)
-            ->setopt(CURLOPT_TIMEOUT, 0)
-            ->header('Authorization', 'Bearer ' . MASTER_TOKEN)
+            ->noTimeout()
+            ->bearerToken(MASTER_TOKEN)
             ->jsonBody([
                 'host' => $this->get('alias'),
                 'config' => $this->persist(),
             ])
-            ->getJson();
+            ->sendJson();
     }
 
     public function persist(): array

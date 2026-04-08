@@ -315,15 +315,14 @@ class Deployer extends Container
         usleep(100_000); // Sleep 100ms.
 
         return Httpie::post(MASTER_ENDPOINT . '/proxy')
-            ->setopt(CURLOPT_CONNECTTIMEOUT, 0) // no timeout
-            ->setopt(CURLOPT_TIMEOUT, 0) // no timeout
-            ->header('Authorization', 'Bearer ' . MASTER_TOKEN)
+            ->noTimeout()
+            ->bearerToken(MASTER_TOKEN)
             ->jsonBody([
                 'host' => $host->getAlias(),
                 'func' => $func,
                 'arguments' => $arguments,
             ])
-            ->getJson();
+            ->sendJson();
     }
 
     public static function isPharArchive(): bool

@@ -14,6 +14,8 @@ use Deployer\Exception\HttpieException;
 
 class Httpie
 {
+    private static bool $extensionChecked = false;
+
     private string $method = 'GET';
     private string $url = '';
     private array $headers = [];
@@ -23,15 +25,18 @@ class Httpie
 
     public function __construct()
     {
-        if (!extension_loaded('curl')) {
-            throw new \Exception(
-                "Please, install curl extension.\n"
-                . "https://php.net/curl.installation",
-            );
+        if (!self::$extensionChecked) {
+            if (!extension_loaded('curl')) {
+                throw new \Exception(
+                    "Please, install curl extension.\n"
+                    . "https://php.net/curl.installation",
+                );
+            }
+            self::$extensionChecked = true;
         }
     }
 
-    public static function get(string $url): Httpie
+    public static function get(string $url): self
     {
         $http = new self();
         $http->method = 'GET';
@@ -39,7 +44,7 @@ class Httpie
         return $http;
     }
 
-    public static function post(string $url): Httpie
+    public static function post(string $url): self
     {
         $http = new self();
         $http->method = 'POST';
@@ -47,7 +52,7 @@ class Httpie
         return $http;
     }
 
-    public static function patch(string $url): Httpie
+    public static function patch(string $url): self
     {
         $http = new self();
         $http->method = 'PATCH';
@@ -55,8 +60,7 @@ class Httpie
         return $http;
     }
 
-
-    public static function put(string $url): Httpie
+    public static function put(string $url): self
     {
         $http = new self();
         $http->method = 'PUT';
@@ -64,7 +68,7 @@ class Httpie
         return $http;
     }
 
-    public static function delete(string $url): Httpie
+    public static function delete(string $url): self
     {
         $http = new self();
         $http->method = 'DELETE';
@@ -74,7 +78,8 @@ class Httpie
 
     public function query(array $params): self
     {
-        $this->url .= '?' . http_build_query($params);
+        $separator = str_contains($this->url, '?') ? '&' : '?';
+        $this->url .= $separator . http_build_query($params);
         return $this;
     }
 
@@ -84,32 +89,52 @@ class Httpie
         return $this;
     }
 
+    public function bearerToken(string $token): self
+    {
+        $this->headers['Authorization'] = 'Bearer ' . $token;
+        return $this;
+    }
+
+    public function basicAuth(string $user, string $pass): self
+    {
+        $this->curlopts[CURLOPT_USERPWD] = "$user:$pass";
+        return $this;
+    }
+
+    public function timeout(int $seconds): self
+    {
+        $this->curlopts[CURLOPT_TIMEOUT] = $seconds;
+        $this->curlopts[CURLOPT_CONNECTTIMEOUT] = $seconds;
+        return $this;
+    }
+
+    public function noTimeout(): self
+    {
+        $this->curlopts[CURLOPT_TIMEOUT] = 0;
+        $this->curlopts[CURLOPT_CONNECTTIMEOUT] = 0;
+        return $this;
+    }
+
     public function body(string $body): self
     {
         $this->body = $body;
-        $this->headers = array_merge($this->headers, [
-            'Content-Length' => strlen($this->body),
-        ]);
+        $this->headers['Content-Length'] = (string) strlen($this->body);
         return $this;
     }
 
     public function jsonBody(array $data): self
     {
         $this->body = json_encode($data, JSON_PRETTY_PRINT);
-        $this->headers = array_merge($this->headers, [
-            'Content-Type' => 'application/json',
-            'Content-Length' => strlen($this->body),
-        ]);
+        $this->headers['Content-Type'] = 'application/json';
+        $this->headers['Content-Length'] = (string) strlen($this->body);
         return $this;
     }
 
     public function formBody(array $data): self
     {
         $this->body = http_build_query($data);
-        $this->headers = array_merge($this->headers, [
-            'Content-type' => 'application/x-www-form-urlencoded',
-            'Content-Length' => strlen($this->body),
-        ]);
+        $this->headers['Content-type'] = 'application/x-www-form-urlencoded';
+        $this->headers['Content-Length'] = (string) strlen($this->body);
         return $this;
     }
 
@@ -129,9 +154,9 @@ class Httpie
     }
 
     /**
-     * @param-out array $info
+     * Send the request and return a response object.
      */
-    public function send(?array &$info = null): string
+    public function send(?array &$info = null): HttpResponse
     {
         if ($this->url === '') {
             throw new \RuntimeException('URL must not be empty to Httpie::send()');
@@ -157,26 +182,55 @@ class Httpie
         $info = curl_getinfo($ch) ?: [];
         if ($result === false) {
             if ($this->nothrow) {
-                $result = '';
-            } else {
-                $error = curl_error($ch);
-                $errno = curl_errno($ch);
-                throw new HttpieException($error, $errno);
+                return new HttpResponse('', $info);
             }
+            $error = curl_error($ch);
+            $errno = curl_errno($ch);
+            throw new HttpieException($error, $errno);
         }
-        return $result;
+        return new HttpResponse($result, $info);
     }
 
+    /**
+     * Send the request and return the decoded JSON response.
+     */
+    public function sendJson(): mixed
+    {
+        return $this->send()->json();
+    }
+
+    /**
+     * @deprecated Use sendJson() instead.
+     */
     public function getJson(): mixed
     {
-        $result = $this->send();
-        $response = json_decode($result, true);
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new HttpieException(
-                'JSON Error: ' . json_last_error_msg() . '\n'
-                . 'Response: ' . $result,
-            );
-        }
-        return $response;
+        return $this->sendJson();
+    }
+
+    // Getters for testing.
+
+    public function getMethod(): string
+    {
+        return $this->method;
+    }
+
+    public function getUrl(): string
+    {
+        return $this->url;
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
+    }
+
+    public function getBody(): string
+    {
+        return $this->body;
+    }
+
+    public function getCurlopts(): array
+    {
+        return $this->curlopts;
     }
 }

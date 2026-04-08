@@ -1017,13 +1017,14 @@ function quote(string $arg): string
 function fetch(string $url, string $method = 'get', array $headers = [], ?string $body = null, ?array &$info = null, bool $nothrow = false): string
 {
     $url = parse($url);
-    if (strtolower($method) === 'get') {
-        $http = Httpie::get($url);
-    } elseif (strtolower($method) === 'post') {
-        $http = Httpie::post($url);
-    } else {
-        throw new \InvalidArgumentException("Unknown method \"$method\".");
-    }
+    $http = match (strtolower($method)) {
+        'get' => Httpie::get($url),
+        'post' => Httpie::post($url),
+        'put' => Httpie::put($url),
+        'patch' => Httpie::patch($url),
+        'delete' => Httpie::delete($url),
+        default => throw new \InvalidArgumentException("Unknown method \"$method\"."),
+    };
     $http = $http->nothrow($nothrow);
     foreach ($headers as $key => $value) {
         $http = $http->header($key, $value);
@@ -1031,5 +1032,5 @@ function fetch(string $url, string $method = 'get', array $headers = [], ?string
     if ($body !== null) {
         $http = $http->body($body);
     }
-    return $http->send($info);
+    return $http->send($info)->body();
 }

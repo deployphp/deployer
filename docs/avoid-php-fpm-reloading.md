@@ -53,6 +53,14 @@ php_fastcgi * unix//run/php/php-fpm.sock {
 }
 ```
 
+## Fix for FrankenPHP
+
+FrankenPHP currently require a force reload with:
+
+```bash
+./frankenphp reload --force --config /path/to/Caddyfile
+```
+
 ## Fix for Apache
 
 Enable `revalidate_path` in `php.ini`:

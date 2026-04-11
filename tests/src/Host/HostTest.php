@@ -30,6 +30,7 @@ class HostTest extends TestCase
         $host
             ->setHostname('hostname')
             ->setRemoteUser('remote_user')
+            ->setPath('/var/www')
             ->setPort(22)
             ->setConfigFile('~/.ssh/config')
             ->setIdentityFile('~/.ssh/id_rsa')
@@ -40,6 +41,7 @@ class HostTest extends TestCase
         self::assertStringContainsString('host', $host->getTag());
         self::assertEquals('hostname', $host->getHostname());
         self::assertEquals('remote_user', $host->getRemoteUser());
+        self::assertEquals('/var/www', $host->getPath());
         self::assertEquals(22, $host->getPort());
         self::assertEquals('~/.ssh/config', $host->getConfigFile());
         self::assertEquals('~/.ssh/id_rsa', $host->getIdentityFile());

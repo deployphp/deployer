@@ -76,6 +76,16 @@ host('example.org')
     ->setRemoteUser('deployer');
 ```
 
+### Path
+
+You can store an arbitrary path string in the `path` config (for example to reuse in `{{path}}` placeholders). On a host, prefer `setPath()` over `set('path', …)` so the value is typed as a string and IDEs or static analysis can catch mistakes such as passing a number, which the generic `set()` method does not flag. In the recipe file (outside a host definition), use the global [set()](api.md#set) function—for example `set('path', '/var/www/myapp')`.
+
+```php
+host('example.org')->setPath('/var/www/myapp');
+
+set('path', '/var/www/myapp');
+```
+
 ---
 
 ## Host Labels
@@ -128,6 +138,7 @@ set('default_selector', "stage=prod&role=web,role=special");
 | **`port`**             | SSH port. Default is `22`.                                                                     |
 | **`config_file`**      | SSH config file location. Default is `~/.ssh/config`.                                          |
 | **`identity_file`**    | SSH private key file. E.g., `~/.ssh/id_rsa`.                                                   |
+| **`path`**             | Optional path string for custom use (e.g. `{{path}}`). Use `setPath()` on the host for a typed setter. |
 | **`forward_agent`**    | Enable SSH agent forwarding. Default is `true`.                                                |
 | **`ssh_multiplexing`** | Enable SSH multiplexing for performance. Default is `true`.                                    |
 | **`shell`**            | Shell to use. Default is `bash -ls`.                                                           |

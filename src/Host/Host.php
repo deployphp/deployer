@@ -123,6 +123,17 @@ class Host
         return $this->config->get('port', null);
     }
 
+    public function setPath(string $path): self
+    {
+        $this->config->set('path', $path);
+        return $this;
+    }
+
+    public function getPath(): ?string
+    {
+        return $this->config->get('path', null);
+    }
+
     public function setConfigFile(string $file): self
     {
         $this->config->set('config_file', $file);

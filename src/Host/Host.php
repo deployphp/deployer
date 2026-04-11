@@ -29,7 +29,7 @@ class Host
     public function __construct(string $hostname)
     {
         $parent = null;
-        if (Deployer::get()) {
+        if (Deployer::hasInstance()) {
             $parent = Deployer::get()->config;
         }
         $this->config = new Configuration($parent);

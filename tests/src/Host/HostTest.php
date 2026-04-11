@@ -8,10 +8,16 @@
 namespace Deployer\Host;
 
 use Deployer\Configuration;
+use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
 
 class HostTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        Deployer::resetInstance();
+    }
+
     public function testHost()
     {
         $host = new Host('host');

@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Command;
 
+use Deployer\Deployer;
 use Maml\Maml;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,11 +35,10 @@ class InitCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-       // TODO
-
         $io = new SymfonyStyle($input, $output);
-        $recipePath = $input->getOption('path');
+        $io->block('Deployer ' . DEPLOYER_VERSION);
 
+        $recipePath = $input->getOption('path');
         $language = $io->choice('Select recipe language', ['php', 'maml'], 'php');
         if (empty($recipePath)) {
             $recipePath = "deploy.$language";

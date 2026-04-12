@@ -10,9 +10,15 @@ namespace Deployer\Host;
 use Deployer\Configuration;
 use Deployer\Deployer;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 
 class HostTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        new Deployer(new Application());
+    }
+
     protected function tearDown(): void
     {
         Deployer::resetInstance();

@@ -28,10 +28,7 @@ class Host
 
     public function __construct(string $hostname)
     {
-        $parent = null;
-        if (Deployer::hasInstance()) {
-            $parent = Deployer::get()->config;
-        }
+        $parent = Deployer::get()->config;
         $this->config = new Configuration($parent);
         $this->set('#alias', $hostname);
         $this->set('hostname', preg_replace('/\/.+$/', '', $hostname));

@@ -7,8 +7,12 @@
 
 namespace Deployer\Task;
 
+use Deployer\Deployer;
 use Deployer\Host\Host;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\Input;
+use Symfony\Component\Console\Output\Output;
 
 use function Deployer\invoke;
 use function Deployer\task;
@@ -20,9 +24,18 @@ interface MockableCallback
 
 class TaskTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        $console = new Application();
+        $deployer = new Deployer($console);
+        $deployer['input'] = $this->createStub(Input::class);
+        $deployer['output'] = $this->createStub(Output::class);
+    }
+
     protected function tearDown(): void
     {
         StubTask::$runned = 0;
+        Deployer::resetInstance();
     }
 
     public function testTask()

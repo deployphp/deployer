@@ -2,12 +2,24 @@
 
 namespace Deployer\Selector;
 
+use Deployer\Deployer;
 use Deployer\Host\Host;
 use Deployer\Host\HostCollection;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Application;
 
 class SelectorTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        new Deployer(new Application());
+    }
+
+    protected function tearDown(): void
+    {
+        Deployer::resetInstance();
+    }
+
     public function testSelectHosts()
     {
         $prod = (new Host('prod.domain.com'))->set('labels', ['stage' => 'prod']);

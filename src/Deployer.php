@@ -174,11 +174,6 @@ class Deployer extends Container
         return self::$instance;
     }
 
-    public static function hasInstance(): bool
-    {
-        return self::$instance !== null;
-    }
-
     /**
      * @internal For tests that need a clean Deployer singleton between cases.
      */

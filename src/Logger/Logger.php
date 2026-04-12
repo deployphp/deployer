@@ -17,6 +17,7 @@ use Deployer\Logger\Handler\HandlerInterface;
 use Deployer\Task\Task;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
+
 use function Deployer\Support\ci_name;
 
 class Logger

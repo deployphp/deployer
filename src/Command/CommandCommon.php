@@ -12,6 +12,7 @@ namespace Deployer\Command;
 
 use Deployer\Deployer;
 use Deployer\Support\Reporter;
+
 use function Deployer\Support\ci_name;
 
 trait CommandCommon

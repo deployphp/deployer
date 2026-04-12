@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace Deployer\Command;
 
 use Deployer\Deployer;
+use Maml\Annotated;
 use Maml\Maml;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -168,20 +169,27 @@ class InitCommand extends Command
     private function maml(string $template, string $project, string $repository, array $hosts): string
     {
         $recipe = [
-            "import" => [
+            "import" => Annotated::with([
                 "recipe/$template.php",
-            ],
-            "config" => [
+            ])->comment(
+                ' You can import other php or maml recipes.',
+                ' Import recipes directly from recipe/ folder.',
+            ),
+            "config" => Annotated::with([
                 "repository" => "$repository",
-            ],
+            ])->emptyLineBefore(),
             "hosts" => [],
-            "tasks" => [
+            "tasks" => Annotated::with([
                 "example" => [
                     [
                         "run" => "date",
+                        "cwd" => "~",
                     ],
                 ],
-            ],
+            ])->emptyLineBefore()->comment(
+                ' Define tasks as list of steps to run,',
+                ' or use array to strings to define group task.',
+            ),
         ];
 
         foreach ($hosts as $host) {
@@ -190,6 +198,12 @@ class InitCommand extends Command
                 "deploy_path" => "~/$project",
             ];
         }
+
+        $recipe['hosts'] = Annotated::with($recipe['hosts'])
+            ->emptyLineBefore()
+            ->comment(
+                ' Hosts',
+            );
 
         return Maml::stringify($recipe);
     }

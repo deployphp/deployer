@@ -66,7 +66,7 @@ class MamlRecipe
         ]);
 
         $runLocally = S::object([
-            'run_locally' => S::string(),
+            'runLocally' => S::string(),
             'cwd' => S::optional(S::string()),
             'timeout' => S::optional(S::number()),
             'idleTimeout' => S::optional(S::number()),
@@ -360,11 +360,11 @@ class MamlRecipe
                             $this->wrapException($e, $property->span);
                         }
                     },
-                    'run_locally' => function () use ($step, $prev, $property) {
+                    'runLocally' => function () use ($step, $prev, $property) {
                         $prev();
                         try {
                             runLocally(
-                                $step['run_locally'],
+                                $step['runLocally'],
                                 cwd: $step['cwd'] ?? null,
                                 timeout: $step['timeout'] ?? null,
                                 idleTimeout: $step['idleTimeout'] ?? null,

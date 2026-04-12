@@ -471,7 +471,7 @@ class MamlRecipeTest extends TestCase
             tasks: {
                 my_local_task: [
                     {
-                        run_locally: "echo local"
+                        runLocally: "echo local"
                         timeout: 120
                         nothrow: true
                     }
@@ -488,7 +488,7 @@ class MamlRecipeTest extends TestCase
             tasks: {
                 local_cwd: [
                     {
-                        run_locally: "ls"
+                        runLocally: "ls"
                         cwd: "/tmp"
                         shell: "/bin/bash"
                         forceOutput: true

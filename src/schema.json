@@ -92,7 +92,7 @@
                                 {
                                     "type": "object",
                                     "properties": {
-                                        "run_locally": {
+                                        "runLocally": {
                                             "type": "string"
                                         },
                                         "cwd": {
@@ -127,7 +127,7 @@
                                         }
                                     },
                                     "required": [
-                                        "run_locally"
+                                        "runLocally"
                                     ],
                                     "additionalProperties": false
                                 },

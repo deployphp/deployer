@@ -1,8 +1,19 @@
 FROM php:8.4-cli-alpine
 
-RUN apk update && apk add --no-cache linux-headers bash git openssh-client rsync zip unzip libzip-dev curl-dev
-
-RUN docker-php-ext-install pcntl sockets curl zip
+RUN set -eux; \
+    apk add --no-cache \
+        bash \
+        git \
+        libzip \
+        openssh-client \
+        rsync \
+        unzip \
+        zip; \
+    apk add --no-cache --virtual .build-deps \
+        libzip-dev \
+        linux-headers; \
+    docker-php-ext-install -j"$(nproc)" pcntl sockets zip; \
+    apk del .build-deps
 
 COPY --chmod=755 deployer.phar /bin/dep
 

@@ -12,13 +12,12 @@ namespace Deployer\Logger;
 
 use Deployer\Exception\Exception;
 use Deployer\Exception\RunException;
-use Deployer\Exception\SchemaException;
 use Deployer\Host\Host;
 use Deployer\Logger\Handler\HandlerInterface;
 use Deployer\Task\Task;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Throwable;
+use function Deployer\Support\ci_name;
 
 class Logger
 {
@@ -62,9 +61,10 @@ class Logger
     public function startTask(Task $task): void
     {
         $this->startTime = round(microtime(true) * 1000);
-        if (getenv('GITHUB_WORKFLOW')) {
+        $ci = ci_name();
+        if ($ci === 'github') {
             $this->output->writeln("::group::task {$task->getName()}");
-        } elseif (getenv('GITLAB_CI')) {
+        } elseif ($ci === 'gitlab') {
             $sectionId = md5($task->getName());
             $start = round($this->startTime / 1000);
             $this->output->writeln("\e[0Ksection_start:{$start}:{$sectionId}\r\e[0K{$task->getName()}");
@@ -86,9 +86,10 @@ class Logger
         $millis = $millis - $seconds * 1000;
         $taskTime = ($seconds > 0 ? "{$seconds}s " : "") . "{$millis}ms";
 
-        if (getenv('GITHUB_WORKFLOW')) {
+        $ci = ci_name();
+        if ($ci === 'github') {
             $this->output->writeln("::endgroup::");
-        } elseif (getenv('GITLAB_CI')) {
+        } elseif ($ci === 'gitlab') {
             $sectionId = md5($task->getName());
             $endTime = round($endTime / 1000);
             $this->output->writeln("\e[0Ksection_end:{$endTime}:{$sectionId}\r\e[0K");

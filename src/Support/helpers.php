@@ -210,9 +210,15 @@ function colorize_host(string $alias): string
     return "<$tag>$alias</>";
 }
 
-function escape_shell_argument(string $argument): string
+function ci_name(): ?string
 {
-    return "'" . str_replace("'", "'\\''", $argument) . "'";
+    if (getenv('GITHUB_WORKFLOW')) {
+        return 'github';
+    }
+    if (getenv('GITLAB_CI')) {
+        return 'gitlab';
+    }
+    return null;
 }
 
 function deployer_root(): string

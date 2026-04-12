@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Deployer\Command;
 
+use Maml\Maml;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -72,7 +73,7 @@ class InitCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $recipePath = $input->getOption('path');
 
-        $language = $io->choice('Select recipe language', ['php', 'yaml'], 'php');
+        $language = $io->choice('Select recipe language', ['php', 'maml'], 'php');
         if (empty($recipePath)) {
             $recipePath = "deploy.$language";
         }
@@ -148,7 +149,14 @@ class InitCommand extends Command
             $hosts = [];
         }
 
-        file_put_contents($recipePath, $this->$language($template, $project, $repository, $hosts));
+
+        $code = match ($language) {
+            'php' => $this->php($template, $project, $repository, $hosts),
+            'maml' => $this->maml($template, $project, $repository, $hosts),
+            default => $default,
+        };
+
+        file_put_contents($recipePath, $code);
 
         $this->telemetry();
         $output->writeln(sprintf(
@@ -191,51 +199,33 @@ class InitCommand extends Command
             PHP;
     }
 
-    private function yaml(string $template, string $project, string $repository, array $hosts): string
+    private function maml(string $template, string $project, string $repository, array $hosts): string
     {
-        $h = "";
+        $recipe = [
+            "import" => [
+                "recipe/$template.php",
+            ],
+            "config" => [
+                "repository" => "$repository",
+            ],
+            "hosts" => [],
+            "tasks" => [
+                "example" => [
+                    [
+                        "run" => "date",
+                    ],
+                ],
+            ],
+        ];
+
         foreach ($hosts as $host) {
-            $h .= "  $host:\n"
-                . "    remote_user: deployer\n"
-                . "    deploy_path: '~/{$project}'\n";
+            $recipe['hosts'][$host] = [
+                "remote_user" => "deployer",
+                "deploy_path" => "~/$project",
+            ];
         }
 
-        $additionalConfigs = $this->getAdditionalConfigs($template);
-
-        return <<<YAML
-            import: 
-              - recipe/$template.php
-
-            config:
-              repository: '$repository'
-            $additionalConfigs
-            hosts:
-            $h
-            tasks:
-              build:
-                - run: uptime  
-
-            after:
-              deploy:failed: deploy:unlock
-
-            YAML;
-    }
-
-    private function getAdditionalConfigs(string $template): string
-    {
-        if ($template !== 'common') {
-            return '';
-        }
-
-        return <<<YAML
-              shared_files:
-                - .env
-              shared_dirs:
-                - uploads
-              writable_dirs:
-                - uploads
-              
-            YAML;
+        return Maml::stringify($recipe);
     }
 
     private function recipes(): array

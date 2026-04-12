@@ -10,7 +10,6 @@ declare(strict_types=1);
 
 namespace Deployer\Support;
 
-use Deployer\Utility\Httpie;
 use Symfony\Component\Process\PhpProcess;
 
 /**

@@ -66,7 +66,7 @@ use Throwable;
  */
 class Deployer extends Container
 {
-    private static Deployer $instance;
+    private static ?self $instance = null;
 
     public function __construct(Application $console)
     {
@@ -167,7 +167,19 @@ class Deployer extends Container
 
     public static function get(): self
     {
+        if (self::$instance === null) {
+            throw new \RuntimeException('Deployer is not initialized.');
+        }
+
         return self::$instance;
+    }
+
+    /**
+     * @internal For tests that need a clean Deployer singleton between cases.
+     */
+    public static function resetInstance(): void
+    {
+        self::$instance = null;
     }
 
     public function init(): void

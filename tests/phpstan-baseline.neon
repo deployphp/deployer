@@ -16,11 +16,6 @@ parameters:
 			path: ../src/Command/BlackjackCommand.php
 
 		-
-			message: "#^If condition is always true\\.$#"
-			count: 1
-			path: ../src/Host/Host.php
-
-		-
 			message: "#^Unreachable statement \\- code above always terminates\\.$#"
 			count: 1
 			path: ../src/Import/YamlRecipe.php

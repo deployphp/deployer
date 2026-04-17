@@ -94,6 +94,7 @@ class MainCommand extends SelectCommand
             'project_hash' => empty($this->deployer->config['repository']) ? null : sha1($this->deployer->config['repository']),
             'hosts_count' => $this->deployer->hosts->count(),
             'recipes' => $this->deployer->config->get('recipes', []),
+            'recipe_type' => $this->deployer->config->get('recipe_type', ''),
         ]);
 
         $hosts = $this->selectHosts($input, $output);

@@ -269,6 +269,12 @@ class Deployer extends Container
 
             // Import recipe file
             if (is_readable($deployFile ?? '')) {
+                $deployer->config->set('recipe_type', match (pathinfo($deployFile, PATHINFO_EXTENSION)) {
+                    'php' => 'php',
+                    'maml' => 'maml',
+                    'yaml', 'yml' => 'yaml',
+                    default => 'unknown',
+                });
                 $deployer->importer->import($deployFile);
             }
 

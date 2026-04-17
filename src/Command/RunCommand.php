@@ -26,6 +26,7 @@ use function Deployer\test;
 
 class RunCommand extends SelectCommand
 {
+    use CommandCommon;
     use CustomOption;
 
     public function __construct(Deployer $deployer)
@@ -66,6 +67,7 @@ class RunCommand extends SelectCommand
     {
         $this->deployer->input = $input;
         $this->deployer->output = $output;
+        $this->telemetry();
 
         $command = $input->getArgument('command-to-run') ?? '';
         $hosts = $this->selectHosts($input, $output);

@@ -8,6 +8,7 @@
 
 ```php
 after('deploy:update_code', 'yarn:install');
+after('yarn:install', 'yarn:build');
 ```
  */
 
@@ -25,5 +26,10 @@ task('yarn:install', function () {
             run('cp -R {{previous_release}}/node_modules {{release_path}}');
         }
     }
-    run("cd {{release_path}} && {{bin/yarn}}");
+    run('cd {{release_path}} && {{bin/yarn}}');
+});
+
+desc('Runs Yarn build');
+task('yarn:build', function () {
+    run('cd {{release_path}} && {{bin/yarn}} build');
 });

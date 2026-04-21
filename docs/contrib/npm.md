@@ -17,18 +17,20 @@ require 'contrib/npm.php';
 ## Usage
 ```php
 after('deploy:update_code', 'npm:install');
+after('npm:install', 'npm:build');
 ```
 
 
 ## Configuration
 ### bin/npm
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L17)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L18)
 
 ## Configuration
 - `bin/npm` *(optional)*: set npm binary, automatically detected otherwise.
 ## Usage
 ```php
 after('deploy:update_code', 'npm:install');
+after('npm:install', 'npm:build');
 ```
 
 ```php title="Default value"
@@ -40,7 +42,7 @@ return which('npm');
 ## Tasks
 
 ### npm\:install {#npm-install}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L27)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L28)
 
 Installs npm packages.
 
@@ -49,5 +51,13 @@ except it's meant to be used in automated environments such as
 test platforms, continuous integration, and deployment -- or
 any situation where you want to make sure you're doing a clean
 install of your dependencies.
+
+
+### npm\:build {#npm-build}
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L33)
+
+Runs npm build.
+
+
 
 

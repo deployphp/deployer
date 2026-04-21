@@ -17,18 +17,20 @@ require 'contrib/yarn.php';
 ## Usage
 ```php
 after('deploy:update_code', 'yarn:install');
+after('yarn:install', 'yarn:build');
 ```
 
 
 ## Configuration
 ### bin/yarn
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L16)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L17)
 
 ## Configuration
 - **bin/yarn** *(optional)*: set Yarn binary, automatically detected otherwise.
 ## Usage
 ```php
 after('deploy:update_code', 'yarn:install');
+after('yarn:install', 'yarn:build');
 ```
 
 ```php title="Default value"
@@ -40,10 +42,18 @@ return which('yarn');
 ## Tasks
 
 ### yarn\:install {#yarn-install}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L22)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L23)
 
 Installs Yarn packages.
 
 In there is a {{previous_release}}, node_modules will be copied from it before installing deps with yarn.
+
+
+### yarn\:build {#yarn-build}
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/yarn.php#L33)
+
+Runs Yarn build.
+
+
 
 

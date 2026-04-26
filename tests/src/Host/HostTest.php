@@ -81,6 +81,17 @@ class HostTest extends TestCase
         self::assertEquals($value, $host->getIdentityFile());
     }
 
+    public function testHostWithPathFromParams()
+    {
+        $host = new Host('host');
+        $value = 'new_value';
+        $host
+            ->set('env', $value)
+            ->set('path', '{{env}}');
+
+        self::assertEquals($value, $host->getPath());
+    }
+
     public function testHostWithUserFromConfig()
     {
         $parent = new Configuration();

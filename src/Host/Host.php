@@ -123,17 +123,6 @@ class Host
         return $this->config->get('port', null);
     }
 
-    public function setPath(string $path): self
-    {
-        $this->config->set('path', $path);
-        return $this;
-    }
-
-    public function getPath(): ?string
-    {
-        return $this->config->get('path', null);
-    }
-
     public function setConfigFile(string $file): self
     {
         $this->config->set('config_file', $file);
@@ -209,6 +198,29 @@ class Host
     public function getDeployPath(): ?string
     {
         return $this->config->get('deploy_path', null);
+    }
+
+    /**
+     * Set the optional `path` configuration value (the `path` key).
+     *
+     * Use it for recipe-defined or host-specific data exposed as `{{path}}` in task strings. This is
+     * not the remote deployment root; for that, use `setDeployPath()`.
+     */
+    public function setPathConfig(string $value): self
+    {
+        $this->config->set('path', $value);
+        return $this;
+    }
+
+    /**
+     * Get the optional `path` configuration value, or `null` if the key is not set.
+     *
+     * This is the `path` key (e.g. for `{{path}}` in tasks), not the remote deployment directory;
+     * for that, use `getDeployPath()`.
+     */
+    public function getPathConfig(): ?string
+    {
+        return $this->get('path', null);
     }
 
     public function setLabels(array $labels): self

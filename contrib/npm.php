@@ -26,6 +26,12 @@ set('bin/npm', function () {
 // install of your dependencies.
 desc('Installs npm packages');
 task('npm:install', function () {
+    if (has('previous_release')) {
+        if (test('[ -d {{previous_release}}/node_modules ]')) {
+            run('cp -R {{previous_release}}/node_modules {{release_path}}');
+        }
+    }
+    
     run('cd {{release_path}} && {{bin/npm}} ci');
 });
 

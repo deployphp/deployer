@@ -278,7 +278,7 @@ class Host
             }
         }
         if ($this->has('port')) {
-            $options = array_merge($options, ['-p', $this->getPort()]);
+            $options = array_merge($options, ['-p', (string) $this->getPort()]);
         }
         if ($this->has('config_file')) {
             $options = array_merge($options, ['-F', parse_home_dir($this->getConfigFile())]);

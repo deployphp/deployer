@@ -71,7 +71,8 @@ The typed setter methods give better IDE autocompletion:
 ```php
 host('example.org')
     ->setHostname('example.cloud.google.com')
-    ->setRemoteUser('deployer');
+    ->setRemoteUser('deployer')
+    ->setBranch('production');
 ```
 
 ---
@@ -130,6 +131,7 @@ set('default_selector', "stage=prod&role=web,role=special");
 | **`ssh_multiplexing`** | Enable SSH multiplexing for performance. Default is `true`.                                    |
 | **`shell`**            | Shell to use. Default is `bash -ls`.                                                           |
 | **`deploy_path`**      | Directory for deployments. E.g., `~/myapp`.                                                    |
+| **`branch`**           | Git branch to deploy for this host. Overrides the global `branch` config when set. Use `setBranch()` for a typed setter. |
 | **`labels`**           | Key-value pairs for host selection.                                                            |
 | **`ssh_arguments`**    | Additional SSH options. E.g., `['-o UserKnownHostsFile=/dev/null']`.                           |
 | **`ssh_control_path`** | Control path for SSH multiplexing. Default is `~/.ssh/%C` or `/dev/shm/%C` in CI environments. |

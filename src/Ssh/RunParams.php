@@ -9,15 +9,15 @@ class RunParams
      * @param array<string, scalar>|null $secrets
      */
     public function __construct(
-        public ?string  $shell = null,
-        public ?string $cwd = null,
-        public ?array  $env = null,
+        public readonly ?string  $shell = null,
+        public readonly ?string $cwd = null,
+        public readonly ?array  $env = null,
         public ?string $dotenv = null,
-        public bool    $nothrow = false,
+        public readonly bool    $nothrow = false,
         public ?int    $timeout = null,
         public bool    $killOnTimeout = true,
-        public ?int    $idleTimeout = null,
-        public bool    $forceOutput = false,
+        public readonly ?int    $idleTimeout = null,
+        public readonly bool    $forceOutput = false,
         #[\SensitiveParameter]
         public ?array  $secrets = null,
     ) {}

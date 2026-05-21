@@ -495,8 +495,8 @@ function within(string $path, callable $callback): mixed
  * @param string|null $cwd Working directory for this run. Defaults to `{{working_path}}` (set by `cd()`).
  * @param int|null $timeout Max runtime in seconds (default: `{{default_timeout}}`, 300; `null` disables).
  * @param int|null $idleTimeout Max seconds without output before aborting.
- * @param array|null $secrets Map of `%name%` placeholders to redacted values.
- * @param array|null $env Environment variables: `run('echo $KEY', env: ['KEY' => 'value']);`
+ * @param array<string, scalar>|null $secrets Map of `%name%` placeholders to redacted values.
+ * @param array<string, scalar>|null $env Environment variables: `run('echo $KEY', env: ['KEY' => 'value']);`
  * @param bool|null $forceOutput Print command output in real time.
  * @param bool|null $nothrow Return output instead of throwing on non-zero exit.
  * @throws RunException
@@ -581,8 +581,8 @@ function run(
  * @param string|null $cwd Working directory for this run. Defaults to `{{working_path}}`.
  * @param int|null $timeout Max runtime in seconds (default 300, `null` disables).
  * @param int|null $idleTimeout Max seconds without output before aborting.
- * @param array|null $secrets Map of `%name%` placeholders to redacted values.
- * @param array|null $env Environment variables: `runLocally('echo $KEY', env: ['KEY' => 'value']);`
+ * @param array<string, scalar>|null $secrets Map of `%name%` placeholders to redacted values.
+ * @param array<string, scalar>|null $env Environment variables: `runLocally('echo $KEY', env: ['KEY' => 'value']);`
  * @param bool|null $forceOutput Print command output in real time.
  * @param bool|null $nothrow Return output instead of throwing on non-zero exit.
  * @param string|null $shell Shell to run in. Default `bash -s`.

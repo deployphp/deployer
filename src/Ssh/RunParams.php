@@ -4,6 +4,10 @@ namespace Deployer\Ssh;
 
 class RunParams
 {
+    /**
+     * @param array<string, scalar>|null $env
+     * @param array<string, scalar>|null $secrets
+     */
     public function __construct(
         public ?string  $shell = null,
         public ?string $cwd = null,
@@ -18,6 +22,9 @@ class RunParams
         public ?array  $secrets = null,
     ) {}
 
+    /**
+     * @param array<string, scalar>|null $secrets
+     */
     public function with(
         #[\SensitiveParameter]
         ?array $secrets = null,

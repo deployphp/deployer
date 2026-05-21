@@ -67,6 +67,10 @@ function env_stringify(array $array): string
     ));
 }
 
+/**
+ * @param array<string, scalar>|null $secrets
+ * @return string
+ */
 function replace_secrets(string $command, ?array $secrets): string
 {
     if (!empty($secrets)) {

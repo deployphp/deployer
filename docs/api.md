@@ -382,8 +382,8 @@ run('echo \{{not_replaced}}'); // outputs: {{not_replaced}}
 | `$cwd` | `string` or `null` | Working directory for this run. Defaults to `{{working_path}}` (set by `cd()`). |
 | `$timeout` | `int` or `null` | Max runtime in seconds (default: `{{default_timeout}}`, 300; `null` disables). |
 | `$idleTimeout` | `int` or `null` | Max seconds without output before aborting. |
-| `$secrets` | `array` or `null` | Map of `%name%` placeholders to redacted values. |
-| `$env` | `array` or `null` | Environment variables: `run('echo $KEY', env: ['KEY' => 'value']);` |
+| `$secrets` | `array<string, scalar>` or `null` | Map of `%name%` placeholders to redacted values. |
+| `$env` | `array<string, scalar>` or `null` | Environment variables: `run('echo $KEY', env: ['KEY' => 'value']);` |
 | `$forceOutput` | `bool` or `null` | Print command output in real time. |
 | `$nothrow` | `bool` or `null` | Return output instead of throwing on non-zero exit. |
 
@@ -420,8 +420,8 @@ runLocally('npm run build', timeout: 600);
 | `$cwd` | `string` or `null` | Working directory for this run. Defaults to `{{working_path}}`. |
 | `$timeout` | `int` or `null` | Max runtime in seconds (default 300, `null` disables). |
 | `$idleTimeout` | `int` or `null` | Max seconds without output before aborting. |
-| `$secrets` | `array` or `null` | Map of `%name%` placeholders to redacted values. |
-| `$env` | `array` or `null` | Environment variables: `runLocally('echo $KEY', env: ['KEY' => 'value']);` |
+| `$secrets` | `array<string, scalar>` or `null` | Map of `%name%` placeholders to redacted values. |
+| `$env` | `array<string, scalar>` or `null` | Environment variables: `runLocally('echo $KEY', env: ['KEY' => 'value']);` |
 | `$forceOutput` | `bool` or `null` | Print command output in real time. |
 | `$nothrow` | `bool` or `null` | Return output instead of throwing on non-zero exit. |
 | `$shell` | `string` or `null` | Shell to run in. Default `bash -s`. |

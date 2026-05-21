@@ -318,7 +318,7 @@ class DocGen
         return null;
     }
 
-    public function generateRecipesIndex(string $destination)
+    public function generateRecipesIndex(string $destination): void
     {
         $index = "# All Recipes\n\n";
         $list = [];
@@ -333,7 +333,7 @@ class DocGen
         file_put_contents("$destination/recipe/README.md", $index);
     }
 
-    public function generateContribIndex(string $destination)
+    public function generateContribIndex(string $destination): void
     {
         $index = "# All Contrib Recipes\n\n";
         $list = [];

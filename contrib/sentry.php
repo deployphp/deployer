@@ -184,7 +184,7 @@ task(
     },
 );
 
-function getPreviousReleaseRevision()
+function getPreviousReleaseRevision(): ?string
 {
     switch (get('update_code_strategy')) {
         case 'local_archive':
@@ -206,7 +206,7 @@ function getPreviousReleaseRevision()
     }
 }
 
-function getCurrentReleaseRevision()
+function getCurrentReleaseRevision(): string
 {
     switch (get('update_code_strategy')) {
         case 'local_archive':

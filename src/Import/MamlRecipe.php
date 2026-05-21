@@ -12,6 +12,7 @@ namespace Deployer\Import;
 
 use Deployer\Exception\Exception;
 use Deployer\Exception\SchemaException;
+use Deployer\Task\Task;
 use Maml\Ast\ArrayNode;
 use Maml\Ast\BooleanNode;
 use Maml\Ast\ObjectNode;
@@ -293,7 +294,7 @@ class MamlRecipe
         }
     }
 
-    private function createTask(string $name, ArrayNode $array, string $desc)
+    private function createTask(string $name, ArrayNode $array, string $desc): ?Task
     {
         $isGroupTask = true;
         $groupTasks = [];
@@ -307,7 +308,7 @@ class MamlRecipe
 
         if ($isGroupTask) {
             task($name, $groupTasks)->desc($desc);
-            return;
+            return null;
         }
 
         $body = function () {

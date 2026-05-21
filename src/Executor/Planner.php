@@ -63,7 +63,7 @@ class Planner
         $this->table->addRow($row);
     }
 
-    public function render()
+    public function render(): void
     {
         $this->table->render();
     }

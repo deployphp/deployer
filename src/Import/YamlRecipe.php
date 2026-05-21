@@ -53,7 +53,7 @@ class YamlRecipe
         Import::import($paths);
     }
 
-    protected static function hosts(array $hosts)
+    protected static function hosts(array $hosts): void
     {
         foreach ($hosts as $alias => $config) {
             if ($config['local'] ?? false) {
@@ -69,14 +69,14 @@ class YamlRecipe
         }
     }
 
-    protected static function config(array $config)
+    protected static function config(array $config): void
     {
         foreach ($config as $key => $value) {
             set($key, $value);
         }
     }
 
-    protected static function tasks(array $tasks)
+    protected static function tasks(array $tasks): void
     {
         $buildTask = function ($name, $steps) {
             $body = function () {};
@@ -181,7 +181,7 @@ class YamlRecipe
         }
     }
 
-    protected static function after(array $after)
+    protected static function after(array $after): void
     {
         foreach ($after as $key => $value) {
             if (is_array($value)) {
@@ -194,7 +194,7 @@ class YamlRecipe
         }
     }
 
-    protected static function before(array $before)
+    protected static function before(array $before): void
     {
         foreach ($before as $key => $value) {
             if (is_array($value)) {

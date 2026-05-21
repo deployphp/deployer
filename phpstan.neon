@@ -2,7 +2,7 @@ includes:
     - tests/phpstan-baseline.neon
 
 parameters:
-    level: 5
+    level: 6
     paths:
         - bin
         - src
@@ -23,3 +23,7 @@ parameters:
         - "#^Constant MASTER_TOKEN not found\\.$#"
         - "#CpanelPhp#"
         - "#AMQPMessage#"
+        - identifier: missingType.iterableValue
+        -
+            identifier: missingType.generics
+            path: src/Component/Pimple/Container.php

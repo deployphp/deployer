@@ -18,7 +18,7 @@ trait CustomOption
      * @param Host[] $hosts
      * @param string[] $options
      */
-    protected function applyOverrides(array $hosts, array $options)
+    protected function applyOverrides(array $hosts, array $options): void
     {
         $override = [];
         foreach ($options as $option) {

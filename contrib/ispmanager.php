@@ -694,7 +694,7 @@ task('ispmanager:process', function () {
     }
 });
 
-function ispmanagerRequest($method, $requestData)
+function ispmanagerRequest(string $method, array $requestData): mixed
 {
     $config = get('ispmanager');
     $dsnData = parse_url($config['api']['dsn']);
@@ -722,7 +722,7 @@ function ispmanagerRequest($method, $requestData)
     }
 }
 
-function ispmanagerAuthRequest($url, $login, $pass)
+function ispmanagerAuthRequest(string $url, string $login, string $pass): void
 {
     $authRequestData = [
         'func' => 'auth',
@@ -743,7 +743,7 @@ function ispmanagerAuthRequest($url, $login, $pass)
     }
 }
 
-function prepareRequest($requestData)
+function prepareRequest(array $requestData): array
 {
     $config = get('ispmanager');
     $dsnData = parse_url($config['api']['dsn']);
@@ -763,9 +763,9 @@ function prepareRequest($requestData)
     return $requestData;
 }
 
-function generatePassword($lenght)
+function generatePassword(int $length): string
 {
-    return substr(md5(uniqid()), 0, $lenght);
+    return substr(md5(uniqid()), 0, $length);
 }
 
 // Callbacks before actions under domains

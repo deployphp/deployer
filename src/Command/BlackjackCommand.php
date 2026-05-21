@@ -302,12 +302,12 @@ class BlackjackCommand extends Command
         return $sum;
     }
 
-    private function print(string $text = "")
+    private function print(string $text = ""): void
     {
         $this->output->writeln(" $text");
     }
 
-    private function printHand(array $hand, int $offset = 1)
+    private function printHand(array $hand, int $offset = 1): void
     {
         $cards = [];
         for ($i = 0; $i < count($hand) - $offset; $i++) {
@@ -345,7 +345,7 @@ class BlackjackCommand extends Command
         }
     }
 
-    private function printWhiskey(int $whiskeyLevel)
+    private function printWhiskey(int $whiskeyLevel): void
     {
         if ($whiskeyLevel == 4) {
             echo <<<ASCII

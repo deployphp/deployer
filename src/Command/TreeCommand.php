@@ -70,12 +70,12 @@ class TreeCommand extends Command
         return 0;
     }
 
-    private function buildTree(string $taskName)
+    private function buildTree(string $taskName): void
     {
         $this->createTreeFromTaskName($taskName, '', true);
     }
 
-    private function createTreeFromTaskName(string $taskName, string $postfix = '', bool $isLast = false)
+    private function createTreeFromTaskName(string $taskName, string $postfix = '', bool $isLast = false): void
     {
         $task = $this->deployer->tasks->get($taskName);
 
@@ -130,7 +130,7 @@ class TreeCommand extends Command
         }
     }
 
-    private function addTaskToTree(string $taskName, bool $isLast = false)
+    private function addTaskToTree(string $taskName, bool $isLast = false): void
     {
         $this->tree[] = [
             'taskName' => $taskName,
@@ -140,7 +140,7 @@ class TreeCommand extends Command
         ];
     }
 
-    private function outputTree(string $taskName)
+    private function outputTree(string $taskName): void
     {
         $this->output->writeln("The task-tree for <info>$taskName</info>:");
 

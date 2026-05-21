@@ -167,7 +167,7 @@ class MainCommand extends SelectCommand
         return $exitCode;
     }
 
-    private function checkUpdates()
+    private function checkUpdates(): void
     {
         try {
             fwrite(STDERR, Httpie::get('https://deployer.org/check-updates/' . DEPLOYER_VERSION)->send()->body());
@@ -176,7 +176,7 @@ class MainCommand extends SelectCommand
         }
     }
 
-    private function showBanner()
+    private function showBanner(): void
     {
         if (getenv('DO_NOT_SHOW_BANNER') === 'true') {
             return;

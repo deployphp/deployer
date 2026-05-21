@@ -80,7 +80,7 @@ function spark($command, $options = [])
     };
 }
 
-function codeigniter4_version_compare($version, $comparator)
+function codeigniter4_version_compare(string $version, string $comparator): bool
 {
     return version_compare(get('codeigniter4_version'), $version, $comparator);
 }

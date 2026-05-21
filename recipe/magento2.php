@@ -253,7 +253,7 @@ task('magento:deploy:assets:frontend', function () {
  *
  * @throws ConfigurationException
  */
-function magentoDeployAssetsSplit(string $area)
+function magentoDeployAssetsSplit(string $area): void
 {
     if (!in_array($area, ['frontend', 'backend'], true)) {
         throw new ConfigurationException("\$area must be either 'frontend' or 'backend', '$area' given");

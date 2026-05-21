@@ -13,6 +13,9 @@ namespace Deployer\Collection;
 use Countable;
 use IteratorAggregate;
 
+/**
+ * @implements IteratorAggregate<string, mixed>
+ */
 class Collection implements Countable, IteratorAggregate
 {
     protected array $values = [];
@@ -35,7 +38,7 @@ class Collection implements Countable, IteratorAggregate
         return array_key_exists($name, $this->values);
     }
 
-    public function set(string $name, mixed $object)
+    public function set(string $name, mixed $object): void
     {
         $this->values[$name] = $object;
     }

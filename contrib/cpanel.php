@@ -179,7 +179,7 @@ function getCpanel()
     return $cpanel;
 }
 
-function getDomainInfo()
+function getDomainInfo(): array
 {
     $domain = vsprintf(get('cpanel')['create_domain_format'], get('cpanel')['create_domain_values']);
     $cleanDomain = str_replace(['.', ',', ' ', '/', '-'], '', $domain);

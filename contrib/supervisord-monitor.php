@@ -91,7 +91,7 @@ namespace Deployer;
 
 use Deployer\Utility\Httpie;
 
-function supervisordCheckConfig()
+function supervisordCheckConfig(): void
 {
     $config = get('supervisord', []);
     foreach ($config as $key => $value) {
@@ -108,12 +108,12 @@ function supervisordCheckConfig()
     }
 }
 
-function supervisordGetBasicAuthToken()
+function supervisordGetBasicAuthToken(): string
 {
     return 'Basic ' . base64_encode(get('supervisord_basic_auth_user') . ':' . get('supervisord_basic_auth_password'));
 }
 
-function supervisordIsAuthenticated()
+function supervisordIsAuthenticated(): bool
 {
     supervisordCheckConfig();
 
@@ -123,7 +123,7 @@ function supervisordIsAuthenticated()
     return $authResponseInfo['http_code'] === 200;
 }
 
-function supervisordControlAction($name, $action = 'stop')
+function supervisordControlAction(string $name, string $action = 'stop'): bool
 {
     $stopResponseInfo = [];
     Httpie::post(get('supervisord_uri') . '/control/' . $action . '/localhost/' . $name)->header('Authorization', supervisordGetBasicAuthToken())->send($stopResponseInfo);

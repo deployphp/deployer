@@ -19,6 +19,8 @@ use Deployer\Component\Pimple\Exception\UnknownIdentifierException;
  * Container main class.
  *
  * @author Fabien Potencier
+ *
+ * @implements \ArrayAccess<string, mixed>
  */
 class Container implements \ArrayAccess
 {

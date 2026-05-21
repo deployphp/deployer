@@ -17,6 +17,9 @@ use function Deployer\Support\array_merge_alternate;
 use function Deployer\Support\is_closure;
 use function Deployer\Support\normalize_line_endings;
 
+/**
+ * @implements \ArrayAccess<string, mixed>
+ */
 class Configuration implements \ArrayAccess
 {
     private ?Configuration $parent;

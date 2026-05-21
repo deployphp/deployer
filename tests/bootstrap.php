@@ -21,10 +21,7 @@ if (!$loaded) {
 set_include_path(__DIR__ . '/..' . PATH_SEPARATOR . get_include_path());
 
 putenv('DEPLOYER_LOCAL_WORKER=true');
-define('DEPLOYER_BIN', __DIR__ . '/../bin/dep');
-define('__FIXTURES__', __DIR__ . '/fixtures');
-define('__REPOSITORY__', __DIR__ . '/fixtures/repository');
-define('__TEMP_DIR__', sys_get_temp_dir() . '/deployer');
+require_once __DIR__ . '/constants.php';
 
 require_once __DIR__ . '/spec/SpecTest.php';
 

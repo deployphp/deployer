@@ -358,7 +358,7 @@ $path = run('readlink {{deploy_path}}/current');
 run("echo $path");
 ```
 
-Pass secrets via `%name%` placeholders so they are redacted in logs:
+Pass secrets via placeholders (e.g. `%token%`) so they are redacted in logs:
 ```php
 run('curl -u admin:%token% https://api.example', secrets: ['token' => getenv('TOKEN')]);
 ```

@@ -200,6 +200,17 @@ class Host
         return $this->config->get('deploy_path', null);
     }
 
+    public function setBranch(string $branch): self
+    {
+        $this->config->set('branch', $branch);
+        return $this;
+    }
+
+    public function getBranch(): ?string
+    {
+        return $this->config->get('branch', null);
+    }
+
     public function setLabels(array $labels): self
     {
         $this->config->set('labels', $labels);

@@ -34,7 +34,8 @@ class HostTest extends TestCase
             ->setConfigFile('~/.ssh/config')
             ->setIdentityFile('~/.ssh/id_rsa')
             ->setForwardAgent(true)
-            ->setSshMultiplexing(true);
+            ->setSshMultiplexing(true)
+            ->setBranch('develop');
 
         self::assertEquals('host', $host->getAlias());
         self::assertStringContainsString('host', $host->getTag());
@@ -45,6 +46,7 @@ class HostTest extends TestCase
         self::assertEquals('~/.ssh/id_rsa', $host->getIdentityFile());
         self::assertEquals(true, $host->getForwardAgent());
         self::assertEquals(true, $host->getSshMultiplexing());
+        self::assertEquals('develop', $host->getBranch());
     }
 
     public function testConfigurationAccessor()

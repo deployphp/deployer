@@ -23,8 +23,20 @@ set('shared_dirs', ['storage']);
 
 
 
+### shared_dirs_populate
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L18)
+
+When true, populate existing shared dirs with any new files/dirs present in the release.
+Useful when new subdirectories are added to the repo over time and should be propagated to shared.
+Existing files in shared are never overwritten.
+
+```php title="Default value"
+true
+```
+
+
 ### shared_files
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L20)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L25)
 
 List of files what will be shared between releases.
 Each release will have symlink to those files stored in [deploy_path](/docs/recipe/common.md#deploy_path)/shared dir.
@@ -38,7 +50,7 @@ set('shared_files', ['.env']);
 ## Tasks
 
 ### deploy\:shared {#deploy-shared}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L23)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/shared.php#L28)
 
 Creates symlinks for shared files and dirs.
 

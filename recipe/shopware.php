@@ -181,6 +181,10 @@ task('sw-build-without-db:get-remote-config', static function () {
     if (!test('[ -d {{current_path}} ]')) {
         return;
     }
+    // Copy .env files into build directory so we don't default to APP_ENV=dev and APP_DEBUG=1 during build
+    download("{{current_path}}/", "./", [
+        "options" => ["--copy-links", "--include=.env*", "--exclude=*"],
+    ]);
     within('{{current_path}}', function () {
         run('{{bin/php}} ./bin/console bundle:dump');
         download('{{current_path}}/var/plugins.json', './var/');

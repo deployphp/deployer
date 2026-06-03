@@ -1,21 +1,2 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Comparison operation \"\\>\" between 100|125|200|100000 and 0 is always true\\.$#"
-			count: 1
-			path: ../src/Command/BlackjackCommand.php
-
-		-
-			message: "#^If condition is always false\\.$#"
-			count: 1
-			path: ../src/Command/BlackjackCommand.php
-
-		-
-			message: "#^Comparison operation \"\\>\" between 0 and 0 is always false\\.$#"
-			count: 1
-			path: ../src/Command/BlackjackCommand.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../src/Import/YamlRecipe.php

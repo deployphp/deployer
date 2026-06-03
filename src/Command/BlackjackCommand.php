@@ -99,7 +99,7 @@ class BlackjackCommand extends Command
             if ($bet > $money) {
                 goto start;
             }
-        } elseif ($hasWatch) { // @phpstan-ignore-line
+        } elseif ($hasWatch) {
             $answer = $io->askQuestion(new ChoiceQuestion('?', ['leave', '- Here, take my watch! [$25]'], 0));
             if ($answer == 'leave') {
                 goto leave;

@@ -595,7 +595,7 @@ task('magento:cleanup_cache_prefix', function () {
  */
 desc('Remove cron from crontab and kill running cron jobs');
 task('magento:cron:stop', function () {
-    if (has('previous_release')) {
+    if (has('previous_release') && test("[ -f {{previous_release}}/{{magento_dir}}/bin/magento ]")) {
         run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
     }
 

@@ -61,7 +61,7 @@ stages:
 deploy:
   stage: deploy
   image:
-    name: deployphp/deployer:v7
+    name: deployphp/deployer:v8
     entrypoint: [""]
   before_script:
     - mkdir -p ~/.ssh
@@ -116,11 +116,11 @@ pipelines:
             - step:
               name: Deployer Deploy
               timeout: 6m # if it takes longer than this, error out
-              # @see https://hub.docker.com/r/deployphp/deployer/tags?name=v7.5
-              image: deployphp/deployer:v7.5.8
+              # @see https://hub.docker.com/r/deployphp/deployer/tags?name=v8
+              image: deployphp/deployer:v8
               script:
                 # pass $DEVELOP and $STAGING variables from the "staging" deployment environment
-                - php /bin/deployer.phar deploy --branch=$DEVELOP stage=$STAGING
+                - php /bin/dep deploy --branch=$DEVELOP stage=$STAGING
 ```
 
 ### Deployment concurrency

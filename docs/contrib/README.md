@@ -15,6 +15,7 @@
 * [Ispmanager Recipe](/docs/contrib/ispmanager.md)
 * [Mattermost Recipe](/docs/contrib/mattermost.md)
 * [Ms-teams Recipe](/docs/contrib/ms-teams.md)
+* [Ms-teams-workflows Recipe](/docs/contrib/ms-teams-workflows.md)
 * [Newrelic Recipe](/docs/contrib/newrelic.md)
 * [Npm Recipe](/docs/contrib/npm.md)
 * [Ntfy Recipe](/docs/contrib/ntfy.md)

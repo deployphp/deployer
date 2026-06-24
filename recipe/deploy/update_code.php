@@ -81,11 +81,12 @@ task('deploy:update_code', function () {
 
     if ($strategy === 'local_archive') {
         $gitRoot = runLocally("git rev-parse --show-toplevel");
-        runLocally("git -C " . quote($gitRoot) . " archive $targetWithDir -o archive.tar");
-        upload("$gitRoot/archive.tar", '{{release_path}}/archive.tar');
+        $archive = tempnam(sys_get_temp_dir(), 'deployer_archive_');
+        runLocally("git -C " . quote($gitRoot) . " archive $targetWithDir -o " . quote($archive));
+        upload($archive, '{{release_path}}/archive.tar');
         run("tar -xf {{release_path}}/archive.tar -C {{release_path}}");
         run("rm {{release_path}}/archive.tar");
-        unlink("$gitRoot/archive.tar");
+        unlink($archive);
 
         $rev = quote(runLocally("git rev-list $target -1"));
     } else {

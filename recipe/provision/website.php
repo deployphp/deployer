@@ -27,6 +27,9 @@ task('provision:website', function () {
 
     run("[ -d {{deploy_path}}/log ] || mkdir -p {{deploy_path}}/log");
     run("chown deployer:caddy {{deploy_path}}/log");
+    // Group-writable so the caddy daemon (group caddy) can create access.log;
+    // otherwise `service caddy reload` fails to open the log writer.
+    run("chmod 775 {{deploy_path}}/log");
 
     $restoreBecome = become('deployer');
 

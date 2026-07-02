@@ -46,7 +46,7 @@ task(
             'description' => null,
             'environment' => null,
             'service' => null,
-            'compareAfterMinutes' => 90
+            'compareAfterMinutes' => 90,
         ];
 
         $config = array_merge($defaultConfig, (array) get('tideways'));
@@ -84,7 +84,7 @@ task(
                 'type' => $config['type'],
                 'environment' => $config['environment'],
                 'service' => $config['service'],
-                'compareAfterMinutes' => $config['compareAfterMinutes']
+                'compareAfterMinutes' => $config['compareAfterMinutes'],
             ],
         );
 
@@ -96,7 +96,7 @@ task(
         if (!isset($response['ok'], $response['id']) || $response['ok'] !== true) {
             throw new \RuntimeException(sprintf('Unable to create a release: %s', print_r($response, true)));
         }
-        
+
         writeln(
             sprintf(
                 '<info>Tideways:</info> Release of version <comment>%s</comment> '

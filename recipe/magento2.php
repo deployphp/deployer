@@ -249,8 +249,6 @@ task('magento:deploy:assets:frontend', function () {
 });
 
 /**
- * @phpstan-param 'frontend'|'backend' $area
- *
  * @throws ConfigurationException
  */
 function magentoDeployAssetsSplit(string $area): void

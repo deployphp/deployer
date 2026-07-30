@@ -26,6 +26,7 @@
 * [Rocketchat Recipe](/docs/contrib/rocketchat.md)
 * [Rollbar Recipe](/docs/contrib/rollbar.md)
 * [Rsync Recipe](/docs/contrib/rsync.md)
+* [Rumvision Recipe](/docs/contrib/rumvision.md)
 * [Sentry Recipe](/docs/contrib/sentry.md)
 * [Slack Recipe](/docs/contrib/slack.md)
 * [Supervisord-monitor Recipe](/docs/contrib/supervisord-monitor.md)

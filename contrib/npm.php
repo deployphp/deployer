@@ -19,6 +19,10 @@ set('bin/npm', function () {
     return which('npm');
 });
 
+set('bin/npx', function () {
+    return which('npx');
+});
+
 // Uses `npm ci` command. This command is similar to npm install,
 // except it's meant to be used in automated environments such as
 // test platforms, continuous integration, and deployment -- or

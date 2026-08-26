@@ -30,9 +30,3 @@ See [deployer.org](https://deployer.org) for more information and documentation.
 
 ## License
 [MIT](https://github.com/deployphp/deployer/blob/master/LICENSE)
-
-<p align="center">
-  <a href="https://crow.watch/join/deployer">
-    <img src="https://github.com/user-attachments/assets/37c84073-6533-4746-951d-d879f90a7fd2" alt="Join Crow Watch" width="900" hight="600">  
-  </a>
-</p>

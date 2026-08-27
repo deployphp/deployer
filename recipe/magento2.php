@@ -593,8 +593,18 @@ task('magento:cleanup_cache_prefix', function () {
  */
 desc('Remove cron from crontab and kill running cron jobs');
 task('magento:cron:stop', function () {
-    if (has('previous_release') && test("[ -f {{previous_release}}/{{magento_dir}}/bin/magento ]")) {
-        run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+    // Magento keys each crontab block to the base path `cron:install` was run from
+    // (CrontabManager::getTasksBlockStart() appends hash('sha256', BP)), so `cron:remove` only
+    // removes the block of the installation it is run from. The block to remove therefore belongs to
+    // the release that is currently live, which is not necessarily {{previous_release}}: that is
+    // releases_list[1], so a release directory left behind by a failed deploy takes its place.
+    // Removing the wrong block leaves the live one in the crontab, and magento:cron:install then adds
+    // a second, leaving two cron:run entries running every minute.
+    //
+    // This task runs before deploy:symlink, so {{current_path}} is still the live release. __DIR__
+    // resolves the symlink, so BP is the real release path and the hash matches.
+    if (test("[ -f {{current_path}}/{{magento_dir}}/bin/magento ]")) {
+        run('{{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento cron:remove');
     }
 
     run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');

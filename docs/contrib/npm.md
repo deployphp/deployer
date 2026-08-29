@@ -38,11 +38,21 @@ return which('npm');
 ```
 
 
+### bin/npx
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L22)
+
+
+
+```php title="Default value"
+return which('npx');
+```
+
+
 
 ## Tasks
 
 ### npm\:install {#npm-install}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L28)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L32)
 
 Installs npm packages.
 
@@ -54,7 +64,7 @@ install of your dependencies.
 
 
 ### npm\:build {#npm-build}
-[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L33)
+[Source](https://github.com/deployphp/deployer/blob/master/contrib/npm.php#L37)
 
 Runs npm build.
 

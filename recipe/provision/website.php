@@ -23,16 +23,18 @@ task('provision:server', function () {
 
 desc('Provision website');
 task('provision:website', function () {
-    $restoreBecome = become('deployer');
+    set('remote_user', get('provision_user'));
 
-    run("[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}}");
-    run("chown -R deployer:deployer {{deploy_path}}");
+    run("[ -d {{deploy_path}}/log ] || mkdir -p {{deploy_path}}/log");
+    run("chown deployer:caddy {{deploy_path}}/log");
+    // Group-writable so the caddy daemon (group caddy) can create access.log;
+    // otherwise `service caddy reload` fails to open the log writer.
+    run("chmod 775 {{deploy_path}}/log");
+
+    $restoreBecome = become('deployer');
 
     set('deploy_path', run("realpath {{deploy_path}}"));
     cd('{{deploy_path}}');
-
-    run("[ -d log ] || mkdir log");
-    run("chgrp caddy log");
 
     $caddyfile = parse(file_get_contents(__DIR__ . '/Caddyfile'));
 

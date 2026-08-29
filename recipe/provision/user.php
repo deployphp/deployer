@@ -35,11 +35,25 @@ task('provision:user', function () {
         $password = run("mkpasswd -m sha-512 '%password%'", secrets: ['password' => get('sudo_password')]);
         run("usermod --password '%password%' deployer", secrets: ['password' => $password]);
 
-        // Copy root public key to deployer user so user can login without password.
-        run('cp /root/.ssh/authorized_keys /home/deployer/.ssh/authorized_keys');
+        $authorizedKeys = '/root/.ssh/authorized_keys';
+        if (!test("[ -f $authorizedKeys ]")) {
+            $provisionHome = run('getent passwd ' . get('provision_user') . ' | cut -d: -f6');
+            $authorizedKeys = "$provisionHome/.ssh/authorized_keys";
+        }
 
-        // Create ssh key if not already exists.
-        run('ssh-keygen -f /home/deployer/.ssh/id_ed25519 -t ed25519 -N ""');
+        try {
+            // Copy the public key to the deployer user so it can login without password.
+            run("cp $authorizedKeys /home/deployer/.ssh/authorized_keys");
+
+            // Create ssh key if not already exists.
+            run('ssh-keygen -f /home/deployer/.ssh/id_ed25519 -t ed25519 -N ""');
+        } catch (\Throwable $e) {
+            // Copy the public key to the deployer user so it can login without password.
+            run("sudo cp $authorizedKeys /home/deployer/.ssh/authorized_keys");
+
+            // Create ssh key if not already exists.
+            run('sudo ssh-keygen -f /home/deployer/.ssh/id_ed25519 -t ed25519 -N ""');
+        }
 
         try {
             run('chown -R deployer:deployer /home/deployer');
@@ -54,6 +68,9 @@ task('provision:user', function () {
         run('usermod -a -G www-data deployer');
         run('usermod -a -G caddy deployer');
     }
+
+    run("[ -d {{deploy_path}} ] || mkdir -p {{deploy_path}}");
+    run("chown -R deployer:deployer {{deploy_path}}");
 })->oncePerNode();
 
 

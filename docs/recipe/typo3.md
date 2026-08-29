@@ -3,7 +3,7 @@
 <!-- Then run bin/docgen -->
 
 # How to Deploy a TYPO3 Project
-
+      
 ```php
 require 'recipe/typo3.php';
 ```
@@ -298,5 +298,7 @@ This task is group task which contains next tasks:
 * [typo3:cache:flush](/docs/recipe/typo3.md#typo3-cache-flush)
 * [typo3:cache:warmup](/docs/recipe/typo3.md#typo3-cache-warmup)
 * [deploy:publish](/docs/recipe/common.md#deploy-publish)
+
+* 
 
 

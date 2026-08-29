@@ -100,8 +100,16 @@ Overrides [writable_dirs](/docs/recipe/deploy/writable.md#writable_dirs) from `r
 
 ## Tasks
 
+### craft\:up {#craft-up}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L89)
+
+Applies pending migrations and project config changes.
+
+Combined update
+
+
 ### craft\:gc {#craft-gc}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L120)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L127)
 
 Runs garbage collection.
 
@@ -109,7 +117,7 @@ Garbage collection
 
 
 ### deploy {#deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L127)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/craftcms.php#L134)
 
 Deploys Craft CMS.
 

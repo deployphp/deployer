@@ -82,6 +82,13 @@ desc('Applies project config file changes.');
 task('craft:project-config/apply', craft('project-config/apply'));
 
 /*
+ * Combined update
+ */
+
+desc('Applies pending migrations and project config changes');
+task('craft:up', craft('up'));
+
+/*
  * Caches
  */
 
@@ -128,8 +135,7 @@ task('deploy', [
     'deploy:prepare',
     'deploy:vendors',
     'craft:clear-caches/compiled-classes',
-    'craft:migrate/all',
-    'craft:project-config/apply',
+    'craft:up',
     'craft:gc',
     'craft:clear-caches/all',
     'deploy:publish',

@@ -12,6 +12,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 // ```
 set('shared_dirs', []);
 
+// When true, populate existing shared dirs with any new files/dirs present in the release.
+// Useful when new subdirectories are added to the repo over time and should be propagated to shared.
+// Existing files in shared are never overwritten.
+set('shared_dirs_populate', true);
+
 // List of files what will be shared between releases.
 // Each release will have symlink to those files stored in {{deploy_path}}/shared dir.
 // ```php
@@ -46,6 +51,9 @@ task('deploy:shared', function () {
             if (test("[ -d $(echo {{release_path}}/$dir) ]")) {
                 run("cp -r$copyVerbosity {{release_path}}/$dir $sharedPath/" . dirname($dir));
             }
+        } elseif (get('shared_dirs_populate') && test("[ -d $(echo {{release_path}}/$dir) ]")) {
+            // Populate shared dir with new files/dirs from release without overwriting existing content.
+            run("cp -r$copyVerbosity --no-dereference --no-clobber {{release_path}}/$dir/. $sharedPath/$dir/");
         }
 
         // Remove from source.

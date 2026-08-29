@@ -91,3 +91,16 @@ php deployer.phar init
 
 No Composer required.
 
+import { fromJson } from "@bufbuild/protobuf";
+import { EvaluateResponseSchema } from "replapi-types";
+
+const body = await fetch(`/api/v1/sessions/${sessionId}/evaluate`, {
+	method: "POST",
+	headers: { "Content-Type": "application/json" },
+	body: JSON.stringify({ schemaVersion: 1, source: "1 + 2" }),
+}).then((response) => response.json());
+
+const decoded = fromJson(EvaluateResponseSchema, body);
+console.log(decoded.cell?.execution?.status);Remove-Item -Recurse -Force node_modules
+Remove-Item -Force package-lock.json
+npm install

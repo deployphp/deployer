@@ -101,6 +101,50 @@ class LoggerTest extends TestCase
         $logger->print($this->host, "output line\n", true);
     }
 
+    public function testPrintSkipsEmptyLinesWithoutTruncatingOutput(): void
+    {
+        $output = $this->createMock(OutputInterface::class);
+        $output->method('isVerbose')->willReturn(true);
+        $writelnArgs = [];
+        $output->expects($this->exactly(4))
+            ->method('writeln')
+            ->willReturnCallback(function ($msg) use (&$writelnArgs) {
+                $writelnArgs[] = $msg;
+            });
+
+        $fileLog = $this->createStub(HandlerInterface::class);
+
+        $logger = new Logger($output, $fileLog);
+        $logger->print($this->host, "first\n\nsecond\n0\n\nthird\n");
+
+        $this->assertStringEndsWith('first', $writelnArgs[0]);
+        $this->assertStringEndsWith('second', $writelnArgs[1]);
+        $this->assertStringEndsWith('0', $writelnArgs[2]);
+        $this->assertStringEndsWith('third', $writelnArgs[3]);
+    }
+
+    public function testPrintWritesAllNonEmptyLinesToFileLog(): void
+    {
+        $output = $this->createStub(OutputInterface::class);
+        $output->method('isVerbose')->willReturn(false);
+
+        $fileLog = $this->createMock(HandlerInterface::class);
+        $writelnArgs = [];
+        $fileLog->expects($this->exactly(4))
+            ->method('writeln')
+            ->willReturnCallback(function ($msg) use (&$writelnArgs) {
+                $writelnArgs[] = $msg;
+            });
+
+        $logger = new Logger($output, $fileLog);
+        $logger->print($this->host, "first\n\nsecond\n0\n\nthird\n");
+
+        $this->assertSame('[test-host] first', $writelnArgs[0]);
+        $this->assertSame('[test-host] second', $writelnArgs[1]);
+        $this->assertSame('[test-host] 0', $writelnArgs[2]);
+        $this->assertSame('[test-host] third', $writelnArgs[3]);
+    }
+
     public function testStartTaskDefault(): void
     {
         $output = $this->createMock(OutputInterface::class);

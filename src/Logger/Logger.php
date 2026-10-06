@@ -46,15 +46,15 @@ class Logger
     {
         if ($this->output->isVerbose() || $force) {
             foreach (explode("\n", rtrim($buffer)) as $line) {
-                if (empty($line)) {
-                    return;
+                if ($line === '') {
+                    continue;
                 }
                 $this->output->writeln("[{$host->getTag()}] $line");
             }
         }
         foreach (explode("\n", rtrim($buffer)) as $line) {
-            if (empty($line)) {
-                return;
+            if ($line === '') {
+                continue;
             }
             $this->fileLog->writeln("[{$host->getAlias()}] $line");
         }

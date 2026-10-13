@@ -176,10 +176,31 @@ set('full_upgrade_needed', function () {
     return false;
 });
 
+// Where the themes registered by the last deploy are recorded, so the next deploy can tell
+// whether the set of themes changed.
+set('theme_fingerprint_file', '{{deploy_path}}/.dep/theme_fingerprint');
+
+set('theme_registration_needed', function () {
+    // A db or full upgrade registers the themes on its way through, so there is nothing to add.
+    if (get('database_upgrade_needed') || get('full_upgrade_needed')) {
+        return false;
+    }
+
+    $fingerprint = magentoThemeFingerprint('{{release_or_current_path}}');
+
+    if (test('[ -f {{theme_fingerprint_file}} ]')) {
+        return $fingerprint !== run('cat {{theme_fingerprint_file}}');
+    }
+
+    // Nothing recorded yet, so fall back to the release that is live. That keeps the first
+    // deploy after upgrading Deployer from registering themes it has no reason to touch.
+    return has('previous_release') && $fingerprint !== magentoThemeFingerprint('{{previous_release}}');
+});
+
 set('upgrade_needed', function () {
     // Detect necessary upgrade, partial db or full upgrade
     try {
-        return get('database_upgrade_needed') || get('full_upgrade_needed');
+        return get('database_upgrade_needed') || get('full_upgrade_needed') || get('theme_registration_needed');
     } catch (RunException $e) {
         throw $e;
     }
@@ -247,6 +268,25 @@ desc('Deploys assets for frontend only');
 task('magento:deploy:assets:frontend', function () {
     magentoDeployAssetsSplit('frontend');
 });
+
+/**
+ * Fingerprints the themes of a release: which theme.xml files it has and what they declare.
+ * A different fingerprint means themes were added, removed or re-parented, so the theme table
+ * no longer describes what is on disk.
+ */
+function magentoThemeFingerprint(string $path): string
+{
+    $themes = run("cd $path/{{magento_dir}} && find vendor app/design -maxdepth 6 -name theme.xml 2>/dev/null | sort");
+
+    if ($themes === '') {
+        return '';
+    }
+
+    $paths = array_map('escapeshellarg', explode("\n", $themes));
+    $declarations = run("cd $path/{{magento_dir}} && cat " . implode(' ', $paths));
+
+    return md5($themes . $declarations);
+}
 
 /**
  * @throws ConfigurationException
@@ -368,13 +408,34 @@ task('magento:upgrade:db', function () {
     }
 });
 
+desc('Registers the themes of this release');
+task('magento:theme:register', function () {
+    // Themes are registered by Magento_Theme's recurring data script, which stores the themes
+    // found on disk and re-points the children of a theme that is gone. It runs as part of the
+    // data upgrade, which setup:db:status does not ask for when only the themes changed. The
+    // theme table then keeps pointing at a directory that no longer exists, and every page
+    // fails with "Required parameter 'theme_dir' was not passed".
+    run("{{bin/php}} {{bin/magento}} setup:db-data:upgrade --no-interaction");
+});
+
+desc('Records the themes registered for this release');
+task('magento:theme:fingerprint', function () {
+    $fingerprint = magentoThemeFingerprint('{{release_or_current_path}}');
+
+    run('mkdir -p $(dirname {{theme_fingerprint_file}}) && echo ' . escapeshellarg($fingerprint) . ' > {{theme_fingerprint_file}}');
+});
+
 desc('Run upgrades if needed');
 task('magento:upgrade', function () {
     if (get('full_upgrade_needed')) {
         run("{{bin/php}} {{bin/magento}} setup:upgrade --no-interaction --keep-generated");
     } elseif (get('database_upgrade_needed')) {
         invoke('magento:upgrade:db');
+    } elseif (get('theme_registration_needed')) {
+        invoke('magento:theme:register');
     }
+
+    invoke('magento:theme:fingerprint');
 })->once();
 
 desc('Flushes Magento Cache');

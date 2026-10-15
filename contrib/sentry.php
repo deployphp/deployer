@@ -184,19 +184,38 @@ task(
     },
 );
 
+function getPreviousReleasePath(): ?string
+{
+    // Set by `deploy:release` when running as part of a deployment.
+    if (has('previous_release')) {
+        return get('previous_release');
+    }
+
+    // Standalone run (e.g. `dep deploy:sentry`): the newest release is the current
+    // one, so the previous one is the second in the list.
+    $releasesList = get('releases_list');
+    if (isset($releasesList[1])) {
+        return parse("{{deploy_path}}/releases/{$releasesList[1]}");
+    }
+
+    return null;
+}
+
 function getPreviousReleaseRevision(): ?string
 {
+    $previousReleasePath = getPreviousReleasePath();
+
     switch (get('update_code_strategy')) {
         case 'local_archive':
         case 'archive':
-            if (has('previous_release')) {
-                return run('cat {{previous_release}}/REVISION');
+            if ($previousReleasePath !== null) {
+                return trim(run("cat $previousReleasePath/REVISION"));
             }
 
             return null;
         case 'clone':
-            if (has('previous_release')) {
-                cd('{{previous_release}}');
+            if ($previousReleasePath !== null) {
+                cd($previousReleasePath);
                 return trim(run('git rev-parse HEAD'));
             }
 
@@ -211,10 +230,10 @@ function getCurrentReleaseRevision(): string
     switch (get('update_code_strategy')) {
         case 'local_archive':
         case 'archive':
-            return run('cat {{release_path}}/REVISION');
+            return run('cat {{release_or_current_path}}/REVISION');
 
         case 'clone':
-            cd('{{release_path}}');
+            cd('{{release_or_current_path}}');
             return trim(run('git rev-parse HEAD'));
 
         default:
@@ -230,7 +249,7 @@ function getReleaseGitRef(): Closure
         if ($strategy === 'archive') {
             cd('{{deploy_path}}/.dep/repo');
         } else {
-            cd('{{release_path}}');
+            cd('{{release_or_current_path}}');
         }
 
         if (isset($config['git_version_command'])) {
@@ -261,13 +280,13 @@ function getGitCommitsRefs(): Closure
             if (get('update_code_strategy') === 'archive') {
                 cd('{{deploy_path}}/.dep/repo');
             } else {
-                cd('{{release_path}}');
+                cd('{{release_or_current_path}}');
             }
 
-            $result = run(sprintf('git rev-list --pretty="%s" %s', 'format:%H#%an#%ae#%at#%s', $commitRange));
+            // limit number of commits for first release with many commits
+            $result = run(sprintf('git rev-list --max-count=200 --pretty="%s" %s', 'format:%H#%an#%ae#%at#%s', $commitRange));
             $lines = array_filter(
-                // limit number of commits for first release with many commits
-                array_map('trim', array_slice(explode("\n", $result), 0, 200)),
+                array_map('trim', explode("\n", $result)),
                 static function (string $line): bool {
                     return !empty($line) && strpos($line, 'commit') !== 0;
                 },

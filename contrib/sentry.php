@@ -258,13 +258,20 @@ function getGitCommitsRefs(): Closure
         }
 
         try {
-            if (get('update_code_strategy') === 'archive') {
-                cd('{{deploy_path}}/.dep/repo');
-            } else {
-                cd('{{release_path}}');
-            }
+            $gitLog = sprintf('git rev-list --pretty="%s" %s', 'format:%H#%an#%ae#%at#%s', $commitRange);
 
-            $result = run(sprintf('git rev-list --pretty="%s" %s', 'format:%H#%an#%ae#%at#%s', $commitRange));
+            if (get('update_code_strategy') === 'local_archive') {
+                // The git repository only exists on the local machine.
+                $result = runLocally($gitLog);
+            } else {
+                if (get('update_code_strategy') === 'archive') {
+                    cd('{{deploy_path}}/.dep/repo');
+                } else {
+                    cd('{{release_path}}');
+                }
+
+                $result = run($gitLog);
+            }
             $lines = array_filter(
                 // limit number of commits for first release with many commits
                 array_map('trim', array_slice(explode("\n", $result), 0, 200)),

@@ -68,8 +68,18 @@ return run('cat {{release_path}}/REVISION');
 ```
 
 
+### release_version
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L75)
+
+Current release version, saved when `release_version_file` is set. Usually a git tag.
+
+```php title="Default value"
+return run('cat {{release_path}}/{{release_version_file}}');
+```
+
+
 ### release_or_current_path
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L76)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L81)
 
 Return the release path during a deployment
 but fallback to the current path otherwise.
@@ -84,7 +94,7 @@ return $releaseExists ? get('release_path') : get('current_path');
 ## Tasks
 
 ### deploy\:release {#deploy-release}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L83)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L88)
 
 Prepares release.
 
@@ -92,7 +102,7 @@ Clean up unfinished releases and prepare next release
 
 
 ### releases {#releases}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L158)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/release.php#L163)
 
 Shows releases list.
 

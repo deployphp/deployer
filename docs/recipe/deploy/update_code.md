@@ -78,11 +78,35 @@ false
 ```
 
 
+### release_version_file
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L73)
+
+File, relative to [`release_path`](/docs/recipe/deploy/release.md#release_path), where the release version is saved.
+Disabled by default. Set it to `VERSION` to expose a human-readable version to the deployed application.
+
+```php title="Default value"
+false
+```
+
+
+### release_version_command
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L81)
+
+Git command computing the release version saved in [`release_version_file`](#release_version_file).
+Defaults to `git describe`: the tag pointing at the deployed target (`v1.2.0`), the latest tag followed by
+the number of commits since and the abbreviated commit hash (`v1.2.0-3-gabc1234`), or the abbreviated
+commit hash if there is no tag.
+
+```php title="Default value"
+'git describe --tags --always {{target}}'
+```
+
+
 
 ## Tasks
 
 ### deploy\:update_code {#deploy-update_code}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L73)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/deploy/update_code.php#L87)
 
 Updates code.
 

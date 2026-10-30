@@ -8,6 +8,7 @@
 - **token** *(required)*: authentication token. Can be created at [https://sentry.io/settings/account/api/auth-tokens/]
 - **version** *(required)* – a version identifier for this release.
 Can be a version number, a commit hash etc. (Defaults is set to git log -n 1 --format="%h".)
+When [`release_version_file`](/docs/recipe/deploy/update_code.md#release_version_file) is set and the file exists, defaults to its content.
 - **version_prefix** *(optional)* - a string prefixed to version.
 Releases are global per organization so indipentent projects needs to prefix version number with unique string to avoid conflicts
 - **environment** *(optional)* - the environment you’re deploying to. By default framework's environment is used.
@@ -235,6 +236,10 @@ function getReleaseGitRef(): Closure
 
         if (isset($config['git_version_command'])) {
             return trim(run($config['git_version_command']));
+        }
+
+        if (!empty(get('release_version_file')) && test('[ -f {{current_path}}/{{release_version_file}} ]')) {
+            return run('cat {{current_path}}/{{release_version_file}}');
         }
 
         if ($strategy !== 'clone') {

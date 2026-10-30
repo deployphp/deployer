@@ -71,6 +71,11 @@ set('release_revision', function () {
     return run('cat {{release_path}}/REVISION');
 });
 
+// Current release version, saved when `release_version_file` is set. Usually a git tag.
+set('release_version', function () {
+    return run('cat {{release_path}}/{{release_version_file}}');
+});
+
 // Return the release path during a deployment
 // but fallback to the current path otherwise.
 set('release_or_current_path', function () {

@@ -67,6 +67,20 @@ set('git_ssh_command', 'ssh -o StrictHostKeyChecking=accept-new');
 set('sub_directory', false);
 
 /**
+ * File, relative to [`release_path`](/docs/recipe/deploy/release.md#release_path), where the release version is saved.
+ * Disabled by default. Set it to `VERSION` to expose a human-readable version to the deployed application.
+ */
+set('release_version_file', false);
+
+/**
+ * Git command computing the release version saved in [`release_version_file`](#release_version_file).
+ * Defaults to `git describe`: the tag pointing at the deployed target (`v1.2.0`), the latest tag followed by
+ * the number of commits since and the abbreviated commit hash (`v1.2.0-3-gabc1234`), or the abbreviated
+ * commit hash if there is no tag.
+ */
+set('release_version_command', 'git describe --tags --always {{target}}');
+
+/**
  * Update code at {{release_path}} on host.
  */
 desc('Updates code');
@@ -88,6 +102,9 @@ task('deploy:update_code', function () {
         unlink("$gitRoot/archive.tar");
 
         $rev = quote(runLocally("git rev-list $target -1"));
+        if (!empty(get('release_version_file'))) {
+            $version = quote(runLocally(get('release_version_command')));
+        }
     } else {
         $git = get('bin/git');
         $repository = get('repository');
@@ -131,8 +148,15 @@ task('deploy:update_code', function () {
         }
 
         $rev = quote(run("$git rev-list $target -1"));
+        if (!empty(get('release_version_file'))) {
+            $version = quote(run(get('release_version_command')));
+        }
     }
 
     // Save git revision in REVISION file.
     run("echo $rev > {{release_path}}/REVISION");
+
+    if (isset($version)) {
+        run("echo $version > {{release_path}}/{{release_version_file}}");
+    }
 });

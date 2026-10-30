@@ -132,6 +132,10 @@ class Configuration implements \ArrayAccess
             return str_replace("\x00\x00", '{{', $result);
         }
 
+        if (is_array($value)) {
+            return array_map($this->parse(...), $value);
+        }
+
         return $value;
     }
 

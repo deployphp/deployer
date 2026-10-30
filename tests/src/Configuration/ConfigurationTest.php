@@ -17,6 +17,24 @@ class ConfigurationTest extends TestCase
         self::assertEquals('a b', $config->parse('{{foo}} {{bar}}'));
     }
 
+    public function testParseArray()
+    {
+        $config = new Configuration();
+        $config->set('foo', 'a');
+        $config->set('bar', 'b');
+        $config->set('list', ['{{foo}}', '{{bar}}', 'c']);
+        $config->set('nested', [
+            'key' => '{{foo}}',
+            'deep' => ['{{bar}}', 42, null],
+        ]);
+
+        self::assertEquals(['a', 'b', 'c'], $config->get('list'));
+        self::assertEquals([
+            'key' => 'a',
+            'deep' => ['b', 42, null],
+        ], $config->get('nested'));
+    }
+
     public function testUnset()
     {
         $config = new Configuration();

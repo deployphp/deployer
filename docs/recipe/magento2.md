@@ -760,8 +760,21 @@ Cleanup cache id_prefix env files.
 After successful deployment, move the tmp_env.php file to env.php ready for next deployment
 
 
+### magento\:queue\:consumers\:stop {#magento-queue-consumers-stop}
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L596)
+
+Kill running queue consumers.
+
+Kill running queue consumers, so cron starts them again from the new release.
+A consumer only stops after `max_messages` messages. Until then, it runs the code of the previous release.
+To use this feature, add the following to your deployer scripts:
+ ```php
+ after('deploy:symlink', 'magento:queue:consumers:stop');
+ ```
+
+
 ### magento\:cron\:stop {#magento-cron-stop}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L595)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L608)
 
 Remove cron from crontab and kill running cron jobs.
 
@@ -773,7 +786,7 @@ To use this feature, add the following to your deployer scripts:
 
 
 ### magento\:cron\:install {#magento-cron-install}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L611)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L625)
 
 Install cron in crontab.
 
@@ -785,7 +798,7 @@ To use this feature, add the following to your deployer scripts:
 
 
 ### artifact\:prepare {#artifact-prepare}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L617)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L631)
 
 Prepares an artifact on the target server.
 
@@ -805,7 +818,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact\:finish {#artifact-finish}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L630)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L644)
 
 Executes the tasks after artifact is released.
 
@@ -821,7 +834,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact\:deploy {#artifact-deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L639)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L653)
 
 Actually releases the artifact deployment.
 

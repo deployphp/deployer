@@ -585,6 +585,19 @@ task('magento:cleanup_cache_prefix', function () {
 });
 
 /**
+ * Kill running queue consumers, so cron starts them again from the new release.
+ * A consumer only stops after `max_messages` messages. Until then, it runs the code of the previous release.
+ * To use this feature, add the following to your deployer scripts:
+ *  ```php
+ *  after('deploy:symlink', 'magento:queue:consumers:stop');
+ *  ```
+ */
+desc('Kill running queue consumers');
+task('magento:queue:consumers:stop', function () {
+    run('pgrep -U "$(id -u)" -f "bin/magento +queue:consumers:start" | xargs -r kill');
+});
+
+/**
  * Remove cron from crontab and kill running cron jobs
  * To use this feature, add the following to your deployer scripts:
  *  ```php
@@ -597,7 +610,8 @@ task('magento:cron:stop', function () {
         run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
     }
 
-    run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');
+    run('pgrep -U "$(id -u)" -f "bin/magento +cron:run" | xargs -r kill');
+    invoke('magento:queue:consumers:stop');
 });
 
 /**

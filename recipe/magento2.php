@@ -412,6 +412,7 @@ after('deploy:failed', 'deploy:magento:failed');
 
 desc('Run Magento post-deployment failure tasks');
 task('deploy:magento:failed', [
+    'magento:cron:failed',
     'magento:config:import:on-current',
     'magento:maintenance:disable',
 ]);
@@ -593,11 +594,61 @@ task('magento:cleanup_cache_prefix', function () {
  */
 desc('Remove cron from crontab and kill running cron jobs');
 task('magento:cron:stop', function () {
-    if (has('previous_release') && test("[ -f {{previous_release}}/{{magento_dir}}/bin/magento ]")) {
-        run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
+    // Magento keys each crontab block to the base path `cron:install` was run from
+    // (CrontabManager::getTasksBlockStart() appends hash('sha256', BP)), so `cron:remove` only
+    // removes the block of the installation it is run from. The block to remove therefore belongs to
+    // the release that is currently live, which is not necessarily {{previous_release}}: that is
+    // releases_list[1], so a release directory left behind by a failed deploy takes its place, and
+    // after a rollback the release that was rolled back from still has its block.
+    // Removing the wrong block leaves the live one in the crontab, and magento:cron:install then adds
+    // a second, leaving two cron:run entries running every minute.
+    //
+    // This task runs before deploy:symlink, so {{current_path}} is still the live release. __DIR__
+    // resolves the symlink, so BP is the real release path and the hash matches.
+    // Its block is removed first and a failure there stops the deploy. The block of every other release
+    // that has bin/magento is then removed too; a failure there is ignored, as most have no block.
+    if (test("[ -f {{current_path}}/{{magento_dir}}/bin/magento ]")) {
+        run('{{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento cron:remove');
     }
 
+    foreach (get('releases_list') as $release) {
+        if (test("[ -f {{deploy_path}}/releases/$release/{{magento_dir}}/bin/magento ]")) {
+            run("{{bin/php}} {{deploy_path}}/releases/$release/{{magento_dir}}/bin/magento cron:remove || true");
+        }
+    }
+
+    // Lets magento:cron:failed know that this deploy removed the cron.
+    set('magento_cron_stopped', true);
+
     run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');
+});
+
+/**
+ * Put cron back in crontab after a failed deploy. It runs only when magento:cron:stop ran in this deploy,
+ * so the crontab is left alone for projects that do not use magento:cron:stop.
+ */
+desc('Reinstall cron from the current release after a failed deploy');
+task('magento:cron:failed', function () {
+    if (!get('magento_cron_stopped', false)) {
+        return;
+    }
+
+    // do not use {{bin/magento}} as it points at the failed release in failure scenarios
+    // The failed release may have run magento:cron:install already. Remove its block so that
+    // installing the current release's block does not leave two cron:run entries.
+    // release_path throws when the release link is gone, as after deploy:symlink, so test the link first.
+    if (test('[ -h {{deploy_path}}/release ]') && test("[ -f {{release_path}}/{{magento_dir}}/bin/magento ]")) {
+        // a failure here must not stop the live release's cron from being installed
+        run('{{bin/php}} {{release_path}}/{{magento_dir}}/bin/magento cron:remove || true');
+    }
+
+    if (test("[ -f {{current_path}}/{{magento_dir}}/bin/magento ]")) {
+        // cron:install exits with an error when the block already exists, which is fine here,
+        // but it also does when the crontab cannot be saved, so warn instead of staying silent
+        if (!test('{{bin/php}} {{current_path}}/{{magento_dir}}/bin/magento cron:install >/dev/null 2>&1')) {
+            writeln('<comment>magento:cron:install exited with an error; check that the crontab has the cron:run entry</comment>');
+        }
+    }
 });
 
 /**

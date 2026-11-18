@@ -773,7 +773,7 @@ To use this feature, add the following to your deployer scripts:
 
 
 ### magento\:cron\:install {#magento-cron-install}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L611)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L612)
 
 Install cron in crontab.
 
@@ -785,7 +785,7 @@ To use this feature, add the following to your deployer scripts:
 
 
 ### artifact\:prepare {#artifact-prepare}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L617)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L618)
 
 Prepares an artifact on the target server.
 
@@ -805,7 +805,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact\:finish {#artifact-finish}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L630)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L631)
 
 Executes the tasks after artifact is released.
 
@@ -821,7 +821,7 @@ This task is group task which contains next tasks:
 
 
 ### artifact\:deploy {#artifact-deploy}
-[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L639)
+[Source](https://github.com/deployphp/deployer/blob/master/recipe/magento2.php#L640)
 
 Actually releases the artifact deployment.
 

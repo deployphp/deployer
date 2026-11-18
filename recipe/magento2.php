@@ -577,10 +577,9 @@ task('magento:set_cache_prefix', function () {
  */
 desc('Cleanup cache id_prefix env files');
 task('magento:cleanup_cache_prefix', function () {
-    run('rm {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
-    run('rm {{release_or_current_path}}/' . ENV_CONFIG_FILE_PATH);
-    run('mv {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
-    // Symlink shared dir to release dir
+    // Atomic rename, so the currently served release never sees a missing env.php.
+    run('mv -f {{deploy_path}}/shared/' . TMP_ENV_CONFIG_FILE_PATH . ' {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH);
+    // Symlink shared dir to release dir, {{bin/symlink}} already forces the overwrite
     run('{{bin/symlink}} {{deploy_path}}/shared/' . ENV_CONFIG_FILE_PATH . ' {{release_path}}/' . ENV_CONFIG_FILE_PATH);
 });
 

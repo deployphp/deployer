@@ -173,6 +173,9 @@ task('deploy:update_code')->setCallback(static function () {
             '--exclude=.git',
             '--exclude=deploy.php',
             '--exclude=node_modules',
+            // Apply the remote umask instead of copying the local modes (CI checkouts are often 666/777)
+            '--no-perms',
+            '--chmod=ugo=rwX',
         ],
     ]);
 });

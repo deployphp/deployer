@@ -597,7 +597,8 @@ task('magento:cron:stop', function () {
         run('{{bin/php}} {{previous_release}}/{{magento_dir}}/bin/magento cron:remove');
     }
 
-    run('pgrep -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | xargs -r kill');
+    // Only kill this installation's processes, several deploy paths can share a box and a user.
+    run('pgrep -a -U "$(id -u)" -f "bin/magento +(cron:run|queue:consumers:start)" | grep -F "{{deploy_path}}/" | cut -d" " -f1 | xargs -r kill');
 });
 
 /**

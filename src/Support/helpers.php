@@ -283,7 +283,7 @@ function rsync_rsh(array $args): string
 {
     $parts = ['ssh'];
     foreach ($args as $option) {
-        if (is_integer($option)) {
+        if (is_int($option)) {
             $option = (string) $option;
         }
         if (str_contains($option, "\0")) {

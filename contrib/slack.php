@@ -89,7 +89,7 @@ set('slack_rollback_color', '#eba211');
 
 function checkSlackAnswer(mixed $result): bool
 {
-    if ('invalid_token' === $result) {
+    if ('invalid_token' === (string) $result) {
         warning('Invalid Slack token');
         return false;
     }
